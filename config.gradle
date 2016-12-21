@@ -39,6 +39,8 @@ ext {
             "rxpermissions"          : "com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar",
             //图片处理框架
             "glide"                  : "com.github.bumptech.glide:glide:3.7.0",
+            //倒計時
+            "countdownview"          : "com.github.iwgang:countdownview:2.1.2",
 
             //test
             "junit"                  : "junit:junit:4.12",
@@ -46,5 +48,7 @@ ext {
             "timber"                 : "com.jakewharton.timber:timber:4.1.2",
             "canary-debug"           : "com.squareup.leakcanary:leakcanary-android:1.4-beta2",
             "canary-release"         : "com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2"
+
+
     ]
 }

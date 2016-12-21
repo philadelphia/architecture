@@ -53,4 +53,6 @@ dependencies {
     releaseCompile rootProject.ext.dependencies["canary-release"]
     testCompile rootProject.ext.dependencies["canary-release"]
     compile 'com.supercwn.superrecycleview:superlibrary:1.2.0'
+
+    compile rootProject.ext.dependencies["countdownview"]
 }
