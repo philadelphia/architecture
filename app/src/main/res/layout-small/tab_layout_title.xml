@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/c_cfcfcf"
+              android:orientation="horizontal">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tl_title"
+            app:tabSelectedTextColor="@color/c_ffffff"
+            android:background="@color/c_cfcfcf"
+            app:tabIndicatorColor="@color/c_418BC9"
+            app:tabTextColor="@color/c_000000"
+            android:layout_width="wrap_content"
+            style="@style/abLayout"
+            android:layout_height="32dp"></android.support.design.widget.TabLayout>
+    </LinearLayout>
+

@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -13,6 +14,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.main.mvp.MainPresenter;
+import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +85,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "PCB库房":
                 break;
             case "PCB库房1":
+                IntentUtils.showIntent(this, StorageWarningActivity.class);
                 break;
             case "PCB库房2":
                 break;

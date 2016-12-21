@@ -55,4 +55,5 @@ dependencies {
     compile 'com.supercwn.superrecycleview:superlibrary:1.2.0'
 
     compile rootProject.ext.dependencies["countdownview"]
+    compile rootProject.ext.dependencies["tableLayout"]
 }

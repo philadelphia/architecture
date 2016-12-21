@@ -31,11 +31,6 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
     protected abstract void initData();
 
 
-    @Override
-    protected int getContentViewId() {
-        return 0;
-    }
-
     protected abstract void componentInject(AppComponent appComponent);
 
 

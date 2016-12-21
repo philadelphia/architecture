@@ -1,5 +1,6 @@
 package com.delta.smt.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
-import com.delta.smt.MainActivity;
 import com.delta.smt.app.App;
 import com.delta.smt.di.component.AppComponent;
 
@@ -29,13 +29,13 @@ public abstract class BaseFragment<p extends BasePresenter> extends Fragment {
     protected p mPresenter;
     private App application;
     private View rootView;
-    private MainActivity mainActivity;
+    private Activity mainActivity;
     private Unbinder bind;
 
     @Override
     public void onAttach(Context context) {
-        if (context instanceof MainActivity) {
-            mainActivity = (MainActivity) getActivity();
+        if (context instanceof Activity) {
+            mainActivity =  getActivity();
         } else {
             throw new ClassCastException("Activity can't cast to MainActivity");
         }
@@ -58,7 +58,7 @@ public abstract class BaseFragment<p extends BasePresenter> extends Fragment {
 
     protected abstract void initView();
 
-    public MainActivity getMainActivity() {
+    public Activity getmActivity() {
         return mainActivity;
     }
 
