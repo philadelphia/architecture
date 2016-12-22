@@ -56,4 +56,5 @@ dependencies {
 
     compile rootProject.ext.dependencies["countdownview"]
     compile rootProject.ext.dependencies["tableLayout"]
+    compile 'com.android.support:recyclerview-v7:24.1.1'
 }

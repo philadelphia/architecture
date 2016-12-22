@@ -36,6 +36,9 @@
             android:name=".ui.storage_manger.StorageWarningActivity"
             android:screenOrientation="portrait" />
 
-
+        <!--production warning activity-->
+        <activity android:name=".ui.production_warning.mvp.view.ProductionLineActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>
