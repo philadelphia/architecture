@@ -3,7 +3,6 @@ package com.delta.smt.ui.storage_manger.di;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.storage_manger.StorageReadyFragment;
-import com.delta.smt.ui.storage_manger.mvp.StorageReadyModel;
 
 import dagger.Component;
 
@@ -13,7 +12,7 @@ import dagger.Component;
 
 
 @ActivityScope
-@Component(modules = StorageReadyModel.class, dependencies = AppComponent.class)
+@Component(modules = StorageReadyModule.class, dependencies = AppComponent.class)
 public interface StorageReadyComponent {
 
     void inject(StorageReadyFragment fragment);

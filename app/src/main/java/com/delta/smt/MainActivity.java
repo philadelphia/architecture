@@ -14,7 +14,6 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.main.mvp.MainPresenter;
-import com.delta.smt.ui.production_warning.mvp.view.ProductionLineActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 
 import java.util.ArrayList;
@@ -65,7 +64,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
     protected void initData() {
         fuctionString = new ArrayList<>();
         fuctionString.add("Feeder缓冲区");
-        fuctionString.add("PCB库房1");
+        fuctionString.add("仓库房");
         fuctionString.add("PCB库房2");
         fuctionString.add("PCB库房3");
         fuctionString.add("PCB库房4");
@@ -86,7 +85,8 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "Feeder缓冲区":
                 IntentUtils.showIntent(this, com.delta.smt.ui.feederCacheRegion.FeederCacheRegionActivity.class);
                 break;
-            case "PCB库房1":
+            case "仓库房":
+                IntentUtils.showIntent(this, StorageWarningActivity.class);
                 break;
             case "PCB库房2":
                 break;

@@ -4,6 +4,8 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.StorageReady;
 
+import javax.inject.Inject;
+
 import rx.functions.Action1;
 
 /**
@@ -14,6 +16,7 @@ import rx.functions.Action1;
 public class StorageReadyPresenter extends BasePresenter<StorageReadyContract.Model , StorageReadyContract.View> {
 
 
+    @Inject
     public StorageReadyPresenter(StorageReadyContract.Model model, StorageReadyContract.View mView) {
         super(model, mView);
     }
