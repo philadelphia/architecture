@@ -55,4 +55,6 @@ dependencies {
     compile 'com.supercwn.superrecycleview:superlibrary:1.2.0'
 
     compile rootProject.ext.dependencies["countdownview"]
+    compile rootProject.ext.dependencies["tableLayout"]
+    compile 'com.android.support:recyclerview-v7:24.1.1'
 }

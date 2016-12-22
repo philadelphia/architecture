@@ -20,23 +20,18 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
         initView();
     }
 
-    protected abstract void initView();
-
     @Override
     protected void initCData() {
         componentInject(getMApplication().getAppComponent());//依赖注入
         initData();
     }
 
+    protected abstract void componentInject(AppComponent appComponent);
+
     protected abstract void initData();
 
 
-    @Override
-    protected int getContentViewId() {
-        return 0;
-    }
-
-    protected abstract void componentInject(AppComponent appComponent);
+    protected abstract void initView();
 
 
     public p getPresenter() {

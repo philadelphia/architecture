@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/c_ffffff"
+        android:background="@color/save_unpressed"
+        android:text="产线选择"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ryv_production_line"
+        android:layout_marginTop="25px"
+        android:layout_marginRight="20px"
+        android:layout_marginLeft="20px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="32px"
+        android:layout_marginBottom="15px">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="25px"
+            style="@style/button_style"
+            android:text="确实"
+            android:id="@+id/btn_confirm"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="25px"
+            style="@style/button_style"
+            android:text="全部勾选"
+            android:id="@+id/btn_all_select"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="25px"
+            style="@style/button_style"
+            android:text="全部取消"
+            android:layout_marginRight="20px"
+            android:id="@+id/btn_all_cancel"/>
+    </LinearLayout>
+</LinearLayout>
