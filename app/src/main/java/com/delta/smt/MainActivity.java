@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
