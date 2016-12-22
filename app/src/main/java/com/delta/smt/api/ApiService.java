@@ -1,7 +1,6 @@
 package com.delta.smt.api;
 
 
-
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.User;
 
@@ -16,5 +15,4 @@ import rx.Observable;
 public interface ApiService {
     @POST("ams/library/user/login2")
     Observable<LoginResult> login(@Body User user);
-
 }
