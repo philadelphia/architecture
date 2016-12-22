@@ -44,7 +44,7 @@
 
         <activity
             android:name=".ui.feederCacheRegion.FeederCacheRegionActivity"
-            android:label="@string/title_activity_ware_house_management"
+            android:label="@string/title_activity_feeder_cache_region"
             android:theme="@style/AppTheme">
         </activity>
     </application>
