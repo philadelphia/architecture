@@ -66,8 +66,8 @@ public class StorageWarningActivity extends BaseActiviy<LoginPresenter> implemen
     public void onTabSelected(TabLayout.Tab tab) {
 
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        switch (tab.getText().toString()) {
-            case "备料":
+        switch (tab.getPosition()) {
+            case 0:
                 if (mStorageReadyFragment == null) {
                     mStorageReadyFragment = new StorageReadyFragment();
                     mFragmentTransaction.add(R.id.fl_container, mStorageReadyFragment, "备料");
@@ -77,10 +77,10 @@ public class StorageWarningActivity extends BaseActiviy<LoginPresenter> implemen
                 currentFragment = mStorageReadyFragment;
 
                 break;
-            case "退料":
+            case 1:
                 if (mStorageReturnFragment == null) {
                     mStorageReturnFragment = new StorageReturnFragment();
-                    mFragmentTransaction.add(R.id.fl_container, mStorageReturnFragment);
+                    mFragmentTransaction.add(R.id.fl_container, mStorageReturnFragment,"入库");
                 }
                 mFragmentTransaction.show(mStorageReturnFragment).hide(currentFragment).commit();
                 currentFragment = mStorageReturnFragment;
