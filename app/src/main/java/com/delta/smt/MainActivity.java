@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -61,7 +62,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
     @Override
     protected void initData() {
         fuctionString = new ArrayList<>();
-        fuctionString.add("PCB库房");
+        fuctionString.add("Feeder缓冲区");
         fuctionString.add("PCB库房1");
         fuctionString.add("PCB库房2");
         fuctionString.add("PCB库房3");
@@ -80,7 +81,8 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         Log.e(TAG, "onItemClick: " + item + position);
         ToastUtils.showMessage(this, item);
         switch (item) {
-            case "PCB库房":
+            case "Feeder缓冲区":
+                IntentUtils.showIntent(this, com.delta.smt.ui.feederCacheRegion.FeederCacheRegionActivity.class);
                 break;
             case "PCB库房1":
                 break;
