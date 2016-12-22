@@ -1,6 +1,5 @@
 package com.delta.smt;
 
-import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +14,6 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.main.mvp.MainPresenter;
-import com.delta.smt.ui.production_warning.mvp.view.ProductionLineActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 
 import java.util.ArrayList;
@@ -66,7 +64,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
     protected void initData() {
         fuctionString = new ArrayList<>();
         fuctionString.add("PCB库房");
-        fuctionString.add("PCB库房1");
+        fuctionString.add("仓库房");
         fuctionString.add("PCB库房2");
         fuctionString.add("PCB库房3");
         fuctionString.add("PCB库房4");
@@ -86,7 +84,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         switch (item) {
             case "PCB库房":
                 break;
-            case "PCB库房1":
+            case "仓库房":
                 IntentUtils.showIntent(this, StorageWarningActivity.class);
                 break;
             case "PCB库房2":
@@ -96,7 +94,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "PCB库房4":
                 break;
             case "sample":
-                startActivity(new Intent(this, ProductionLineActivity.class));
+
                 break;
             default:
                 break;
