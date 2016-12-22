@@ -43,7 +43,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         CommonBaseAdapter<String> adapter = new CommonBaseAdapter<String>(this, fuctionString) {
             @Override
             protected void convert(CommonViewHolder holder, String item, int position) {
-
+                holder.setImageResource(R.id.iv_function,R.drawable.title);
                 Log.e(TAG, "convert: " + item);
                 holder.setText(R.id.tv_function, item);
             }
