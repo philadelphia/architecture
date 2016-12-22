@@ -2,4 +2,7 @@
     <string name="app_name">MVP_Dagger2_Retrofit</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_ware_house_management">
+        WareHouseManagementActivity
+    </string>
 </resources>
