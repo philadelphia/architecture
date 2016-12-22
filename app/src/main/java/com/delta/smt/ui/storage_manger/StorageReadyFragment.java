@@ -3,13 +3,14 @@ package com.delta.smt.ui.storage_manger;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.ui.login.mvp.LoginPresenter;
+import com.delta.smt.ui.storage_manger.mvp.StorageReadyContract;
+import com.delta.smt.ui.storage_manger.mvp.StorageReadyPresenter;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/21.
  */
 
-public class StorageReadyFragment extends BaseFragment<LoginPresenter> {
+public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> implements StorageReadyContract.View{
     @Override
     protected void initView() {
 
@@ -28,5 +29,15 @@ public class StorageReadyFragment extends BaseFragment<LoginPresenter> {
     @Override
     protected int getContentViewId() {
         return R.layout.fragment_storage_ready;
+    }
+
+    @Override
+    public void getStorageReadySucess() {
+
+    }
+
+    @Override
+    public void getStorageReadyFailed() {
+
     }
 }
