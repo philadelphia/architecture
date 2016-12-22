@@ -41,5 +41,11 @@
         <activity android:name=".ui.production_warning.mvp.view.ProductionLineActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.feederCacheRegion.FeederCacheRegionActivity"
+            android:label="@string/title_activity_ware_house_management"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 </manifest>
