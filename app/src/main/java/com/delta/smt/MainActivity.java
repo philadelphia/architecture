@@ -1,6 +1,5 @@
 package com.delta.smt;
 
-import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -65,8 +64,8 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
     @Override
     protected void initData() {
         fuctionString = new ArrayList<>();
-        fuctionString.add("PCB库房");
-        fuctionString.add("仓库房");
+        fuctionString.add("Feeder缓冲区");
+        fuctionString.add("PCB库房1");
         fuctionString.add("PCB库房2");
         fuctionString.add("PCB库房3");
         fuctionString.add("PCB库房4");
@@ -84,10 +83,10 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         Log.e(TAG, "onItemClick: " + item + position);
         ToastUtils.showMessage(this, item);
         switch (item) {
-            case "PCB库房":
+            case "Feeder缓冲区":
+                IntentUtils.showIntent(this, com.delta.smt.ui.feederCacheRegion.FeederCacheRegionActivity.class);
                 break;
-            case "仓库房":
-                IntentUtils.showIntent(this, StorageWarningActivity.class);
+            case "PCB库房1":
                 break;
             case "PCB库房2":
                 break;
@@ -96,7 +95,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "PCB库房4":
                 break;
             case "sample":
-                IntentUtils.showIntent(this, ProductionLineActivity.class);
+
                 break;
             default:
                 break;
