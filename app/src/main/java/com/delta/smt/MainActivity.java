@@ -64,7 +64,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
     protected void initData() {
         fuctionString = new ArrayList<>();
         fuctionString.add("PCB库房");
-        fuctionString.add("PCB库房1");
+        fuctionString.add("仓库房");
         fuctionString.add("PCB库房2");
         fuctionString.add("PCB库房3");
         fuctionString.add("PCB库房4");
@@ -84,7 +84,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         switch (item) {
             case "PCB库房":
                 break;
-            case "PCB库房1":
+            case "仓库房":
                 IntentUtils.showIntent(this, StorageWarningActivity.class);
                 break;
             case "PCB库房2":
