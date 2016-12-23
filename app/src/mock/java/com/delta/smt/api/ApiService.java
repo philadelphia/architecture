@@ -3,6 +3,7 @@ package com.delta.smt.api;
 
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.User;
+import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.List;
@@ -18,6 +19,9 @@ import rx.Observable;
 public interface ApiService {
     @POST("ams/library/user/login2")
     Observable<LoginResult> login(@Body User user);
+
+    @POST
+    Observable<List<WareHouse>> getAllWareHouse();
 
     Observable<List<ItemProduceLine>> getLineDatas();
 }

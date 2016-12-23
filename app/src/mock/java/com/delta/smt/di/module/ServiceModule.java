@@ -2,6 +2,7 @@ package com.delta.smt.di.module;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.User;
+import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.ArrayList;
@@ -34,6 +35,15 @@ public class ServiceModule {
                 return Observable.just(result);
             }
 
+            @Override
+            public Observable<List<WareHouse>> getAllWareHouse() {
+                List<WareHouse> dataList = new ArrayList<>();
+                dataList.add(new WareHouse(1, "刘能"));
+                dataList.add(new WareHouse(2, "张三"));
+                dataList.add(new WareHouse(3, "赵四"));
+
+                return Observable.just(dataList);
+            }
             @Override
             public Observable<List<ItemProduceLine>> getLineDatas() {
                 List<ItemProduceLine> datas = new ArrayList<>();
