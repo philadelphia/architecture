@@ -15,7 +15,7 @@ import rx.Observable;
 
 public interface FeederCacheRegionContract {
     interface View extends IView{
-        void onSucess();
+        void onSucess(List<WareHouse> wareHouses);
         void onFailed();
     }
     interface Model extends IModel{

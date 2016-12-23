@@ -1,27 +1,68 @@
 package com.delta.smt.ui.feederCacheRegion;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.common.CommonBaseAdapter;
+import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.feederCacheRegion.di.DaggerFeederCacheRegionComponent;
 import com.delta.smt.ui.feederCacheRegion.di.FeederCacheRegionModule;
 import com.delta.smt.ui.feederCacheRegion.mvp.FeederCacheRegionContract;
 import com.delta.smt.ui.feederCacheRegion.mvp.FeederCacheRegionPresenter;
+import com.delta.smt.ui.feederwarning.FeederWarningActivity;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPresenter> implements FeederCacheRegionContract.View {
-
+public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPresenter> implements FeederCacheRegionContract.View, CommonBaseAdapter.OnItemClickListener<WareHouse> {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.btn_selectWareHouse)
     Button btnSelectWareHouse;
+    @BindView(R.id.header_back)
+    TextView headerBack;
+    @BindView(R.id.header_title)
+    TextView headerTitle;
+    @BindView(R.id.header_setting)
+    TextView headerSetting;
+
+    private List<WareHouse> mDataList = new ArrayList<>();
+    private CommonBaseAdapter<WareHouse> adapter;
+    private static final String TAG = "FeederCacheRegionActivi";
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+    private Map<Integer,CheckBox> checkBoxMap = new HashMap<>();
+
 
     @Override
     protected int getContentViewId() {
@@ -35,16 +76,37 @@ public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPres
 
     @Override
     protected void initData() {
-
+        getPresenter().fetchWareHouse();
     }
 
     @Override
     protected void initView() {
+        headerTitle.setText("仓库选择");
+        adapter = new CommonBaseAdapter<WareHouse>(getBaseContext(), mDataList) {
+            @Override
+            protected void convert(CommonViewHolder holder, WareHouse item, int position) {
+                holder.setText(R.id.chcekbox, item.getName());
+                CheckBox box = (CheckBox) holder.getView(R.id.chcekbox);
+                box.setTag(position);
+                checkBoxMap.put(position,box);
+            }
 
+            @Override
+            protected int getItemViewLayoutId(int position, WareHouse item) {
+                return R.layout.item_warehouse;
+            }
+        };
+
+        adapter.setOnItemClickListener(this);
+        recyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), 2));
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
-    public void onSucess() {
+    public void onSucess(List<WareHouse> wareHouses) {
+        mDataList.clear();
+        mDataList.addAll(wareHouses);
+        adapter.notifyDataSetChanged();
 
     }
 
@@ -53,8 +115,41 @@ public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPres
 
     }
 
-
-    @OnClick(R.id.btn_selectWareHouse)
-    public void onClick() {
+    @OnClick({R.id.header_back, R.id.header_setting, R.id.btn_selectWareHouse})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.header_back:
+                onBackPressed();
+                break;
+            case R.id.header_setting:
+                break;
+            case R.id.btn_selectWareHouse:
+                IntentUtils.showIntent(this, FeederWarningActivity.class);
+                break;
+            default:
+                break;
+        }
     }
+
+
+    @Override
+    public void onItemClick(View view, WareHouse item, int position) {
+        CheckBox checkBox = checkBoxMap.get(position);
+        if (checkBox.isChecked()) {
+            checkBox.setChecked(false);
+            for (CheckBox box : checkBoxMap.values()) {
+                box.setFocusable(true);
+                Log.i(TAG, "onItemClick: " + box.isChecked());
+            }
+        } else {
+            for (CheckBox box : checkBoxMap.values()) {
+                box.setChecked(false);
+                Log.i(TAG, "onItemClick: " + box.isChecked());
+            }
+            checkBox.setChecked(true);
+        }
+
+    }
+
+
 }

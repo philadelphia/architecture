@@ -5,6 +5,9 @@
     <string name="title_activity_feeder_cache_region">
         FeederCacheRegionActivity
     </string>
+    <string name="title_activity_feeder_warning">
+        FeederWarningActivity
+    </string>
 
     <!--PCB  库房-->
     <string name="confirm">确定</string>
