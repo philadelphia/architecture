@@ -14,6 +14,9 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.main.mvp.MainPresenter;
+import com.delta.smt.ui.production_warning.mvp.presenter.ProductionLinePresenter;
+import com.delta.smt.ui.production_warning.mvp.view.ProductionLineActivity;
+import com.delta.smt.ui.production_warning.mvp.view.ProductionWarningActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 
 import java.util.ArrayList;
@@ -95,7 +98,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "PCB库房4":
                 break;
             case "sample":
-
+                IntentUtils.showIntent(this, ProductionLineActivity.class);
                 break;
             default:
                 break;

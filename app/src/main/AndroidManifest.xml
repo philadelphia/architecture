@@ -41,6 +41,9 @@
         <activity android:name=".ui.production_warning.mvp.view.ProductionLineActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.production_warning.mvp.view.ProductionWarningActivity"
+            android:screenOrientation="portrait"/>
+
 
         <activity
             android:name=".ui.feederCacheRegion.FeederCacheRegionActivity"

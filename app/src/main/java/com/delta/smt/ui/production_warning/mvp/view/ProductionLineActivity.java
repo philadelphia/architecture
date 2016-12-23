@@ -1,5 +1,6 @@
 package com.delta.smt.ui.production_warning.mvp.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.print.PrintHelper;
 import android.support.v7.widget.GridLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.delta.smt.R;
+import com.delta.smt.StartActivity;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
@@ -83,7 +85,7 @@ public class ProductionLineActivity extends BaseActiviy<ProductionLinePresenter>
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_confirm:
-
+                startActivity(new Intent(this,ProductionWarningActivity.class));
                 break;
             case R.id.btn_all_select:
 
