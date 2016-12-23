@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
               android:descendantFocusability="blocksDescendants"
             >
    <CheckBox
@@ -10,6 +10,9 @@
        android:checked="false"
        android:focusable="false"
        android:clickable="false"
+       android:textSize="12sp"
+       android:layout_marginBottom="20px"
+       android:layout_marginLeft="18px"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"/>
 </LinearLayout>

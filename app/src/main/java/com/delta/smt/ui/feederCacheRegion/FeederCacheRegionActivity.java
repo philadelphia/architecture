@@ -2,6 +2,7 @@ package com.delta.smt.ui.feederCacheRegion;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPres
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.btn_selectWareHouse)
-    Button btnSelectWareHouse;
+    AppCompatButton btnSelectWareHouse;
     @BindView(R.id.header_back)
     TextView headerBack;
     @BindView(R.id.header_title)
@@ -56,11 +57,6 @@ public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPres
     private List<WareHouse> mDataList = new ArrayList<>();
     private CommonBaseAdapter<WareHouse> adapter;
     private static final String TAG = "FeederCacheRegionActivi";
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
     private Map<Integer,CheckBox> checkBoxMap = new HashMap<>();
 
 
@@ -98,7 +94,7 @@ public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPres
         };
 
         adapter.setOnItemClickListener(this);
-        recyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), 3));
         recyclerView.setAdapter(adapter);
     }
 

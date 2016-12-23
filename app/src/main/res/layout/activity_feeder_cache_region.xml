@@ -18,14 +18,16 @@
         android:layout_height="wrap_content">
 </android.support.v7.widget.RecyclerView>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_selectWareHouse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/confirm"
-        android:textSize="14sp"
+        android:layout_width="300px"
+        android:layout_height="80px"
+        android:layout_marginTop="32px"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_selector"
         android:gravity="center"
-
-        android:layout_gravity="bottom"/>
+        android:textSize="12sp"
+        android:layout_gravity="bottom|center_horizontal"/>
 
 </LinearLayout>
