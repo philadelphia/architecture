@@ -5,4 +5,33 @@
     <string name="title_activity_feeder_cache_region">
         FeederCacheRegionActivity
     </string>
+
+    <!--PCB  库房-->
+    <string name="confirm">确定</string>
+    <string name="check_all">全部选择</string>
+    <string name="cancel">取消</string>
+    <string name="option_stock">备料</string>
+    <string name="option_storage">入库</string>
+    <string name="option_check">盘点</string>
+    <string name="tv_work">工单号:</string>
+    <string name="tv_machine">机种:</string>
+    <string name="tv_pcb">PCB料号:</string>
+    <string name="waring_buttom">点亮对应位置的灯</string>
+    <string name="storage_enterbtn">手动键入</string>
+    <string name="storage_emptybtn">全部清空</string>
+    <string name="storage_pcbtv">PCB料号：</string>
+    <string name="storage_vendortv">Vendor:</string>
+    <string name="storage_datacodetv">Data Code:</string>
+    <string name="storage_labeltv">标签编号：</string>
+    <string name="storage_idtv">对应架位ID：</string>
+    <string name="storage_numbertv">入库数量：</string>
+    <string name="storage_factorytv">厂别：</string>
+    <string name="storage_pcbcodetv">PCBCode:</string>
+    <string name="cargonumber">散料数量:</string>
+    <string name="cargon_affirm">散料确认</string>
+    <string name="cargon_clean">清空列表</string>
+    <string name="storage_text">当前需要入库的料箱信息</string>
+    <string name="cargon_text">当前盘点架位</string>
+    <string name="back">返回</string>
+    <string name="setting">设置</string>
 </resources>

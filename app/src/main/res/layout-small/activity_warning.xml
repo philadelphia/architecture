@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <include layout="@layout/main_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_20"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/tv_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_work"
+            style="@style/waring_text"
+
+            />
+        <TextView
+            android:id="@+id/ed_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_work"
+            style="@style/waring_editext"
+            />
+        <TextView
+            android:id="@+id/tv_machine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/waring_text"
+            android:text="@string/tv_machine"
+            android:layout_below="@id/tv_work"
+            />
+        <TextView
+            android:id="@+id/ed_machine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/waring_editext"
+            android:layout_below="@id/tv_work"
+            android:layout_toRightOf="@id/tv_machine"
+            />
+        <TextView
+            android:id="@+id/tv_pcb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/waring_text"
+            android:text="@string/tv_pcb"
+            android:layout_toRightOf="@id/ed_work"
+            android:layout_marginLeft="@dimen/dp_30"
+            />
+        <TextView
+            android:id="@+id/ed_pcb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/waring_editext"
+            android:layout_toRightOf="@id/tv_pcb"
+            />
+    </RelativeLayout>
+    <include layout="@layout/main_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/waring_buttom"
+        style="@style/pcb_button"
+        android:layout_marginBottom="@dimen/dp_6"
+        android:id="@+id/button" />
+
+</LinearLayout>

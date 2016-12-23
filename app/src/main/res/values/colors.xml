@@ -15,6 +15,16 @@
     <color name="c_000000">#000000</color>
 
 
+<!--lin-->
+    <color name="textcolor">#FFFF</color>
+    <color name="background">#428bca</color>
+    <color name="option_background">#f2f2f2</color>
+    <color name="option_frame">#cfcfcf</color>
+    <color name="waring_text">#111111</color>
+    <color name="waring_editext">#333333</color>
+    <color name="buttoncolor">#ff0000</color>
+
+
 
 </resources>
 
