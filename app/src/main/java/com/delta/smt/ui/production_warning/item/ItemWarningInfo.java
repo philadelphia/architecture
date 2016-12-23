@@ -1,9 +1,5 @@
 package com.delta.smt.ui.production_warning.item;
 
-import android.support.annotation.VisibleForTesting;
-
-import com.delta.smt.ui.production_warning.mvp.view.ProductionLineActivity;
-
 /**
  * Created by Fuxiang.Zhang on 2016/12/23.
  */

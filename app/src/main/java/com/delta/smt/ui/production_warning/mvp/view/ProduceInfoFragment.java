@@ -9,7 +9,7 @@ import com.delta.smt.ui.login.mvp.LoginPresenter;
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
-public class ProductionInfoFragment extends BaseFragment<LoginPresenter>{
+public class ProduceInfoFragment extends BaseFragment<LoginPresenter>{
     @Override
     protected void initView() {
 
