@@ -6,6 +6,9 @@
 
     <CheckBox
         android:text="CheckBox"
+        android:textSize="12sp"
+        android:layout_marginBottom="20px"
+        android:layout_marginLeft="18px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/cb_production_line" />

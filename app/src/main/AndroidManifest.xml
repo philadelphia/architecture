@@ -37,11 +37,11 @@
 
         <!--production warning activity-->
         <activity
-            android:name=".ui.production_warning.mvp.view.ProductionLineActivity"
+            android:name=".ui.production_warning.mvp.view.ProduceLineActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.production_warning.mvp.view.ProductionWarningActivity"
+            android:name=".ui.production_warning.mvp.view.ProduceWarningActivity"
             android:screenOrientation="portrait" />
 
 

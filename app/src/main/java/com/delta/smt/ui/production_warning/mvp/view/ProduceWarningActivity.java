@@ -13,7 +13,7 @@ import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.ui.production_warning.mvp.presenter.ProductionWarningPresenter;
+import com.delta.smt.ui.production_warning.mvp.presenter.ProduceWarningPresenter;
 import com.delta.smt.utils.ViewUtils;
 
 import butterknife.BindView;
@@ -24,7 +24,7 @@ import butterknife.OnClick;
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
-public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPresenter> implements TabLayout.OnTabSelectedListener {
+public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter> implements TabLayout.OnTabSelectedListener {
 
     @BindView(R.id.tl_title)
     TabLayout tlTitle;
@@ -36,9 +36,9 @@ public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPres
     TextView mHeaderTitle;
     @BindView(R.id.header_setting)
     TextView mHeaderSetting;
-    private ProductionWarningFragment mProductionWarningFragment;
-    private ProductionBreakdownFragment mProductionBreakdownFragment;
-    private ProductionInfoFragment mProductionInfoFragment;
+    private ProduceWarningFragment mProduceWarningFragment;
+    private ProduceBreakdownFragment mProduceBreakdownFragment;
+    private ProduceInfoFragment mProduceInfoFragment;
 
     private FragmentTransaction mFragmentTransaction;
     private Fragment currentFragment;
@@ -52,6 +52,7 @@ public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPres
     protected void componentInject(AppComponent appComponent) {
 
     }
+
 
     @Override
     protected void initData() {
@@ -68,15 +69,15 @@ public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPres
         ViewUtils.setTabTitle(tlTitle, titles);
         tlTitle.addOnTabSelectedListener(this);
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        mProductionWarningFragment = new ProductionWarningFragment();
-        mFragmentTransaction.add(R.id.fl_container, mProductionWarningFragment);
-        mFragmentTransaction.show(mProductionWarningFragment).commit();
-        currentFragment = mProductionWarningFragment;
+        mProduceWarningFragment = new ProduceWarningFragment();
+        mFragmentTransaction.add(R.id.fl_container, mProduceWarningFragment);
+        mFragmentTransaction.show(mProduceWarningFragment).commit();
+        currentFragment = mProduceWarningFragment;
     }
 
     @Override
     protected int getContentViewId() {
-        return R.layout.activity_production_warning;
+        return R.layout.activity_produce_warning;
     }
 
     @Override
@@ -92,30 +93,30 @@ public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPres
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
-                if (mProductionWarningFragment == null) {
-                    mProductionWarningFragment = new ProductionWarningFragment();
-                    mFragmentTransaction.add(R.id.fl_container, mProductionWarningFragment);
+                if (mProduceWarningFragment == null) {
+                    mProduceWarningFragment = new ProduceWarningFragment();
+                    mFragmentTransaction.add(R.id.fl_container, mProduceWarningFragment);
                 }
 
-                mFragmentTransaction.show(mProductionWarningFragment).hide(currentFragment).commit();
-                currentFragment = mProductionWarningFragment;
+                mFragmentTransaction.show(mProduceWarningFragment).hide(currentFragment).commit();
+                currentFragment = mProduceWarningFragment;
 
                 break;
             case 1:
-                if (mProductionBreakdownFragment == null) {
-                    mProductionBreakdownFragment = new ProductionBreakdownFragment();
-                    mFragmentTransaction.add(R.id.fl_container, mProductionBreakdownFragment);
+                if (mProduceBreakdownFragment == null) {
+                    mProduceBreakdownFragment = new ProduceBreakdownFragment();
+                    mFragmentTransaction.add(R.id.fl_container, mProduceBreakdownFragment);
                 }
-                mFragmentTransaction.show(mProductionBreakdownFragment).hide(currentFragment).commit();
-                currentFragment = mProductionBreakdownFragment;
+                mFragmentTransaction.show(mProduceBreakdownFragment).hide(currentFragment).commit();
+                currentFragment = mProduceBreakdownFragment;
                 break;
             case 2:
-                if (mProductionInfoFragment == null) {
-                    mProductionInfoFragment = new ProductionInfoFragment();
-                    mFragmentTransaction.add(R.id.fl_container, mProductionInfoFragment);
+                if (mProduceInfoFragment == null) {
+                    mProduceInfoFragment = new ProduceInfoFragment();
+                    mFragmentTransaction.add(R.id.fl_container, mProduceInfoFragment);
                 }
-                mFragmentTransaction.show(mProductionInfoFragment).hide(currentFragment).commit();
-                currentFragment = mProductionInfoFragment;
+                mFragmentTransaction.show(mProduceInfoFragment).hide(currentFragment).commit();
+                currentFragment = mProduceInfoFragment;
                 break;
         }
     }
