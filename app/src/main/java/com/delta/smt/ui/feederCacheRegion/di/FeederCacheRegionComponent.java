@@ -2,6 +2,7 @@ package com.delta.smt.ui.feederCacheRegion.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.ui.feederCacheRegion.FeederCacheRegionActivity;
 
 import dagger.Component;
 
@@ -12,4 +13,5 @@ import dagger.Component;
 @ActivityScope
 @Component(modules = FeederCacheRegionModule.class,  dependencies = AppComponent.class)
 public interface FeederCacheRegionComponent {
+    void inject(FeederCacheRegionActivity activity);
 }

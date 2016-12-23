@@ -3,6 +3,9 @@ package com.delta.smt.api;
 
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.User;
+import com.delta.smt.entity.WareHouse;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -15,4 +18,7 @@ import rx.Observable;
 public interface ApiService {
     @POST("ams/library/user/login2")
     Observable<LoginResult> login(@Body User user);
+
+    @POST
+    Observable<List<WareHouse>> getAllWareHouse();
 }
