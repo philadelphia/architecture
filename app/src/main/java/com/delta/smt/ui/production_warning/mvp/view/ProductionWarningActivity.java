@@ -7,16 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.production_warning.mvp.presenter.ProductionWarningPresenter;
-import com.delta.smt.ui.storage_manger.StorageReadyFragment;
-import com.delta.smt.ui.storage_manger.StorageReturnFragment;
 import com.delta.smt.utils.ViewUtils;
-import com.squareup.haha.perflib.Main;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,12 +24,18 @@ import butterknife.OnClick;
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
-public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPresenter> implements TabLayout.OnTabSelectedListener{
+public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPresenter> implements TabLayout.OnTabSelectedListener {
 
     @BindView(R.id.tl_title)
     TabLayout tlTitle;
     @BindView(R.id.fl_container)
     FrameLayout flContainer;
+    @BindView(R.id.header_back)
+    TextView mHeaderBack;
+    @BindView(R.id.header_title)
+    TextView mHeaderTitle;
+    @BindView(R.id.header_setting)
+    TextView mHeaderSetting;
     private ProductionWarningFragment mProductionWarningFragment;
     private ProductionBreakdownFragment mProductionBreakdownFragment;
     private ProductionInfoFragment mProductionInfoFragment;
@@ -40,9 +44,9 @@ public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPres
     private Fragment currentFragment;
     private String[] titles;
 
-    private int warning_number=3;
-    private int breakdown_number=1;
-    private int info_number=2;
+    private int warning_number = 3;
+    private int breakdown_number = 1;
+    private int info_number = 2;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -51,20 +55,21 @@ public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPres
 
     @Override
     protected void initData() {
-        titles = new String[]{"预警("+warning_number+")", "故障("+breakdown_number+")","消息("+info_number+")"};
+        titles = new String[]{"预警(" + warning_number + ")", "故障(" + breakdown_number + ")", "消息(" + info_number + ")"};
 
     }
 
     @Override
     protected void initView() {
+        mHeaderTitle.setText("生产中预警");
         for (int i = 0; i < titles.length; i++) {
             tlTitle.addTab(tlTitle.newTab());
         }
         ViewUtils.setTabTitle(tlTitle, titles);
         tlTitle.addOnTabSelectedListener(this);
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        mProductionWarningFragment=new ProductionWarningFragment();
-        mFragmentTransaction.add(R.id.fl_container,mProductionWarningFragment);
+        mProductionWarningFragment = new ProductionWarningFragment();
+        mFragmentTransaction.add(R.id.fl_container, mProductionWarningFragment);
         mFragmentTransaction.show(mProductionWarningFragment).commit();
         currentFragment = mProductionWarningFragment;
     }
@@ -81,23 +86,13 @@ public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPres
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.tv_setting, R.id.tv_back})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_setting:
-                break;
-            case R.id.tv_back:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-        }
-    }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
-                if (mProductionWarningFragment== null) {
+                if (mProductionWarningFragment == null) {
                     mProductionWarningFragment = new ProductionWarningFragment();
                     mFragmentTransaction.add(R.id.fl_container, mProductionWarningFragment);
                 }
@@ -133,5 +128,16 @@ public class ProductionWarningActivity extends BaseActiviy<ProductionWarningPres
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @OnClick({R.id.header_back, R.id.header_setting})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.header_back:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+            case R.id.header_setting:
+                break;
+        }
     }
 }
