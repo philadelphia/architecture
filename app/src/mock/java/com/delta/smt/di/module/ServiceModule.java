@@ -1,6 +1,4 @@
 package com.delta.smt.di.module;
-
-
 import com.delta.smt.api.ApiService;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.User;
@@ -20,6 +18,7 @@ public class ServiceModule {
     @Singleton
     @Provides
     ApiService provideCommonService(Retrofit retrofit) {
+
         return new ApiService() {
             @Override
             public Observable<LoginResult> login(@Body User user) {

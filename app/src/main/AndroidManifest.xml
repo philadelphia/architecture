@@ -10,9 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <!-- welcome activity -->
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -38,17 +36,19 @@
             android:screenOrientation="portrait" />
 
         <!--production warning activity-->
-        <activity android:name=".ui.production_warning.mvp.view.ProductionLineActivity"
+        <activity
+            android:name=".ui.production_warning.mvp.view.ProductionLineActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.production_warning.mvp.view.ProductionWarningActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.production_warning.mvp.view.ProductionWarningActivity"
+            android:screenOrientation="portrait" />
 
 
         <activity
             android:name=".ui.feederCacheRegion.FeederCacheRegionActivity"
             android:label="@string/title_activity_feeder_cache_region"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
     </application>
 </manifest>

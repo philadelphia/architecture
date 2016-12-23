@@ -43,10 +43,30 @@ public class LoginResult {
         this.message = message;
     }
 
+    @Override
+    public String toString() {
+        return "LoginResult{" +
+                "status=" + status +
+                ", message=" + message +
+                '}';
+    }
+
     public static class MessageBean {
         private int userId;
         private int roleId;
         private String userName;
+
+        @Override
+        public String toString() {
+            return "MessageBean{" +
+                    "userId=" + userId +
+                    ", roleId=" + roleId +
+                    ", userName='" + userName + '\'' +
+                    ", token='" + token + '\'' +
+                    ", menu=" + menu +
+                    '}';
+        }
+
         private String token;
         /**
          * userType : 2
