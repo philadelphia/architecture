@@ -8,6 +8,8 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.login.mvp.LoginPresenter;
+import com.delta.smt.ui.storage_manger.backDetail.StorageReturnFragment;
+import com.delta.smt.ui.storage_manger.ready.StorageReadyFragment;
 import com.delta.smt.utils.ViewUtils;
 
 import butterknife.BindView;

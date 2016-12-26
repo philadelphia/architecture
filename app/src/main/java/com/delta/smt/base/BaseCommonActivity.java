@@ -1,5 +1,6 @@
 package com.delta.smt.base;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,11 +10,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.delta.smt.app.App;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -153,6 +156,25 @@ public abstract class BaseCommonActivity extends AppCompatActivity {
                         break;
                 }
             }
+        }
+    }
+
+    //判断Activity是否在栈顶
+    private boolean isTaskTop(Context context, String currentActivityName) {
+        ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> runningTaskInfoList = am.getRunningTasks(1);
+        String topActivityName = null;
+        if (null != runningTaskInfoList) {
+            topActivityName = (runningTaskInfoList.get(0).topActivity).getClassName();
+        }
+        if (TextUtils.isEmpty(topActivityName))
+            return false;
+        if (TextUtils.isEmpty(currentActivityName))
+            throw new IllegalArgumentException();
+        if (topActivityName.equals(currentActivityName)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
