@@ -1,6 +1,5 @@
 package com.delta.smt.ui.feederwarning;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +16,6 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.utils.ViewUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class FeederWarningActivity extends BaseActiviy implements TabLayout.OnTabSelectedListener {
@@ -104,11 +102,8 @@ public class FeederWarningActivity extends BaseActiviy implements TabLayout.OnTa
         tlTitle.addOnTabSelectedListener(this);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction() ;
-//        checkinFragment = new CheckinFragment();
         feederSupplyFragment = new FeederSupplyFragment();
         fragmentTransaction.add(R.id.fl_container,feederSupplyFragment,"备料");
-//        fragmentTransaction.add(R.id.fl_container,checkinFragment,"入库");
-//        fragmentTransaction.hide(checkinFragment);
         fragmentTransaction.show(feederSupplyFragment).commit();
         currentFragment = feederSupplyFragment;
 
