@@ -8,13 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
@@ -29,10 +23,7 @@ import com.delta.smt.ui.feederCacheRegion.di.FeederCacheRegionModule;
 import com.delta.smt.ui.feederCacheRegion.mvp.FeederCacheRegionContract;
 import com.delta.smt.ui.feederCacheRegion.mvp.FeederCacheRegionPresenter;
 import com.delta.smt.ui.feederwarning.FeederWarningActivity;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
