@@ -1,7 +1,10 @@
 package com.delta.smt.ui.feederCacheRegion;
 
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -123,12 +126,10 @@ public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPres
             checkBox.setChecked(false);
             for (CheckBox box : checkBoxMap.values()) {
                 box.setFocusable(true);
-                Log.i(TAG, "onItemClick: " + box.isChecked());
             }
         } else {
             for (CheckBox box : checkBoxMap.values()) {
                 box.setChecked(false);
-                Log.i(TAG, "onItemClick: " + box.isChecked());
             }
             checkBox.setChecked(true);
         }

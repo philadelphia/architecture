@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.delta.smt">
+          package="com.delta.smt">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".app.App"
         android:allowBackup="true"
@@ -16,36 +17,35 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <!--login activity-->
+        <!-- login activity -->
         <activity
             android:name=".ui.login.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
 
-        <!--main activity-->
+        <!-- main activity -->
         <activity
             android:name=".StartActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
 
-        <!--StorageWarningActivity  -->
+        <!-- StorageWarningActivity -->
         <activity
             android:name=".ui.storage_manger.StorageWarningActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
 
-        <!--production warning activity-->
+        <!-- production warning activity -->
         <activity
             android:name=".ui.production_warning.mvp.view.ProduceLineActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.production_warning.mvp.view.ProduceWarningActivity"
-            android:screenOrientation="portrait" />
-
-
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.feederCacheRegion.FeederCacheRegionActivity"
             android:label="@string/title_activity_feeder_cache_region"
@@ -53,11 +53,17 @@
         <activity
             android:name=".ui.feederwarning.FeederWarningActivity"
             android:label="@string/title_activity_feeder_warning">
-        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        </activity>
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
+
+        <activity android:name=".ui.feederwarning.FeederCheckInActivity">
+        </activity>
     </application>
 
 </manifest>

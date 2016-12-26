@@ -1,10 +1,10 @@
 package com.delta.smt.di.module;
 import com.delta.smt.api.ApiService;
+import com.delta.smt.entity.FeederSupplyWorkItem;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
-import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +53,35 @@ public class ServiceModule {
 
                 return Observable.just(dataList);
             }
+
+            @Override
+            public Observable<List<FeederSupplyWorkItem>> getAllCheckedInFeeders() {
+                List<FeederSupplyWorkItem> dataList = new ArrayList<>();
+                dataList.add(new FeederSupplyWorkItem(1,"342","A","dsajg"));
+                dataList.add(new FeederSupplyWorkItem(2,"342","B","dsajg"));
+                dataList.add(new FeederSupplyWorkItem(3,"342","C","dsajg"));
+                dataList.add(new FeederSupplyWorkItem(4,"342","D","dsajg"));
+                dataList.add(new FeederSupplyWorkItem(5,"342","E","dsajg"));
+                dataList.add(new FeederSupplyWorkItem(6,"342","F","dsajg"));
+
+                return  Observable.just(dataList);
+
+            }
+
+            @Override
+            public Observable<List<FeederSupplyWorkItem>> getAllSupplyWorkItems() {
+                List<FeederSupplyWorkItem> dataList = new ArrayList<>();
+                dataList.add(new FeederSupplyWorkItem(1,"342","A","dsajg"));
+                dataList.add(new FeederSupplyWorkItem(2,"342","B","dsajg"));
+                dataList.add(new FeederSupplyWorkItem(3,"342","C","dsajg"));
+                dataList.add(new FeederSupplyWorkItem(4,"342","D","dsajg"));
+                dataList.add(new FeederSupplyWorkItem(5,"342","E","dsajg"));
+                dataList.add(new FeederSupplyWorkItem(6,"342","F","dsajg"));
+
+                return  Observable.just(dataList);
+            }
+
+
             @Override
             public Observable<List<ItemProduceLine>> getLineDatas() {
                 List<ItemProduceLine> datas = new ArrayList<>();
@@ -63,12 +92,6 @@ public class ServiceModule {
                 return Observable.just(datas);
             }
 
-            @Override
-            public Observable<TitleNumber> getTitleDatas() {
-                TitleNumber mTitleNumber=new TitleNumber(2,3,1);
-
-                return Observable.just(mTitleNumber);
-            }
         };
     }
 
