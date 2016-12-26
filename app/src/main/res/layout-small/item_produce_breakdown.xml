@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/rl_item"
+    android:padding="8dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:padding="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    <TextView
+        android:id="@+id/tv_title"
+        android:textColor="@android:color/black"
+        android:text="贴片机-卡料故障"
+        android:textSize="12sp"
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_produce_line"
+        android:textColor="@android:color/black"
+        android:text="产线：H13"
+        android:layout_below="@+id/tv_title"
+        android:textSize="12sp"
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_make_process"
+            android:textColor="@android:color/black"
+            android:text="制程：叠送一体机"
+            android:layout_below="@+id/tv_produce_line"
+            android:textSize="12sp"
+            android:padding="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_material_station"
+            android:textColor="@android:color/black"
+            android:text="料站：06T022"
+            android:layout_below="@+id/tv_make_process"
+            android:textSize="12sp"
+            android:padding="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_breakdown_info"
+            android:textColor="@android:color/black"
+            android:text="故障信息：卡料故障"
+            android:layout_below="@+id/tv_material_station"
+            android:textSize="12sp"
+            android:padding="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <!--<TextView-->
+            <!--android:id="@+id/info_text_6"-->
+            <!--android:text="第六行数据"-->
+            <!--android:layout_below="@+id/info_text_5"-->
+            <!--android:textSize="12sp"-->
+            <!--android:padding="1dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+<!--这里右边的倒数计我是默认和左边的第三个和第四个高度保持一致的，数据少可自行更改-->
+        <cn.iwgang.countdownview.CountdownView
+            android:id="@+id/cv_countdownViewTest"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:isShowDay="true"
+            app:isShowHour="true"
+            app:isShowMillisecond="true"
+            app:isShowMinute="true"
+            app:isShowSecond="true"
+            app:suffixGravity="center"
+            app:suffixTextColor="#000000"
+            app:suffixTextSize="20sp"
+            app:timeTextColor="#000000"
+            app:timeTextSize="20sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+        <TextView
+            android:id="@+id/time_remain"
+            android:text="故障持续时间"
+            android:singleLine="true"
+            android:textSize="12sp"
+            android:layout_alignTop="@+id/cv_countdownViewTest"
+            android:layout_alignLeft="@+id/cv_countdownViewTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

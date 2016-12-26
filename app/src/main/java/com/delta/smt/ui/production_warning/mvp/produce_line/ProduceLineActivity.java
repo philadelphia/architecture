@@ -34,6 +34,13 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
     private List<ItemProduceLine> datas=new ArrayList<>();
 
     String submitline="dfsdf";
+
+    @Override
+    protected void initData() {
+        getPresenter().getProductionLineDatas();
+
+    }
+
     @Override
     protected void initView() {
         //设置Recyleview的adapter
@@ -45,7 +52,7 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
 
             @Override
             protected int getItemViewLayoutId(int position, ItemProduceLine item) {
-                return R.layout.item_production_line;
+                return R.layout.item_produce_line;
             }
         };
         ryvProductionLine.setLayoutManager(new GridLayoutManager(this,3));
@@ -54,16 +61,13 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
 
     }
 
-    @Override
-    protected void initData() {
-        getPresenter().getProductionLineDatas();
 
-    }
 
     @Override
     protected void componentInject(AppComponent appComponent) {
 
-        DaggerProduceLineCompnent.builder().appComponent(appComponent).produceLineModule(new ProduceLineModule(this)).build().inject(this);
+        DaggerProduceLineCompnent.builder().appComponent(appComponent).
+                produceLineModule(new ProduceLineModule(this)).build().inject(this);
     }
 
     @Override

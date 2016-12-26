@@ -5,6 +5,7 @@ import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
+import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.List;
@@ -24,7 +25,11 @@ public interface  ApiService {
     @POST
     Observable<List<WareHouse>> getAllWareHouse();
 
+
     Observable<List<ItemProduceLine>> getLineDatas();
 
     Observable<TitleNumber> getTitleDatas();
+
+    Observable<List<ItemWarningInfo>> getItemWarningDatas();
+
 }

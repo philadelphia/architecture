@@ -1,4 +1,4 @@
-package com.delta.smt.ui.production_warning.di.title_number;
+package com.delta.smt.ui.production_warning.di.produce_warning;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.api.ApiService;

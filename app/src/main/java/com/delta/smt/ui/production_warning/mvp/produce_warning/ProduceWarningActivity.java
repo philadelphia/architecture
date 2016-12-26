@@ -14,8 +14,8 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.di.component.AppComponent;
 
-import com.delta.smt.ui.production_warning.di.title_number.DaggerTitleNumberCompent;
-import com.delta.smt.ui.production_warning.di.title_number.TitleNumberModule;
+import com.delta.smt.ui.production_warning.di.produce_warning.DaggerTitleNumberCompent;
+import com.delta.smt.ui.production_warning.di.produce_warning.TitleNumberModule;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.ProduceBreakdownFragment;
 import com.delta.smt.ui.production_warning.mvp.produce_info_fragment.ProduceInfoFragment;

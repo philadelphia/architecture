@@ -4,6 +4,7 @@ import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
+import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.ArrayList;
@@ -65,9 +66,19 @@ public class ServiceModule {
 
             @Override
             public Observable<TitleNumber> getTitleDatas() {
-                TitleNumber mTitleNumber=new TitleNumber(2,3,1);
+                TitleNumber mTitleNumber=new TitleNumber(3,2,1);
 
                 return Observable.just(mTitleNumber);
+            }
+
+            @Override
+            public Observable<List<ItemWarningInfo>> getItemWarningDatas() {
+                List<ItemWarningInfo> datas = new ArrayList<>();
+                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
+                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
+                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
+
+                return Observable.just(datas);
             }
         };
     }

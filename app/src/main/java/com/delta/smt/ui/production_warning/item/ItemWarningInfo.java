@@ -10,6 +10,7 @@ public class ItemWarningInfo {
     private String makeprocess;
     private String warninginfo;
 
+
     public ItemWarningInfo(){}
 
     public ItemWarningInfo(String title,String productionline,String makeprocess,String warninginfo){
@@ -18,6 +19,9 @@ public class ItemWarningInfo {
         this.makeprocess=makeprocess;
         this.warninginfo=warninginfo;
     }
+
+
+
     public String getTitle() {
         return title;
     }

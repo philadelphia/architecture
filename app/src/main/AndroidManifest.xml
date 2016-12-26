@@ -54,6 +54,7 @@
             android:name=".ui.feederwarning.FeederWarningActivity"
             android:label="@string/title_activity_feeder_warning">
         </activity>
+
     </application>
 
 </manifest>
