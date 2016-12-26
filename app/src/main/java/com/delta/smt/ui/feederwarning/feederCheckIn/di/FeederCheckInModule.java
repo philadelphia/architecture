@@ -1,6 +1,7 @@
 package com.delta.smt.ui.feederwarning.feederCheckIn.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.ui.feederwarning.feederCheckIn.mvp.FeederCheckInContract;
 import com.delta.smt.ui.feederwarning.feederCheckIn.mvp.FeederCheckInModel;
@@ -20,13 +21,13 @@ public class FeederCheckInModule {
         this.view = view;
     }
 
-    @ActivityScope
+    @FragmentScope
     @Provides
     FeederCheckInContract.View providesView(){
         return  view;
     }
 
-    @ActivityScope
+    @FragmentScope
     @Provides
     FeederCheckInContract.Model providesModel(ApiService apiService){
         return new FeederCheckInModel(apiService);

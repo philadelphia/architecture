@@ -1,10 +1,8 @@
 package com.delta.smt.ui.feederwarning.feederCheckIn.mvp;
 
-import android.util.Log;
-
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.FeederSupplyWorkItem;
-import com.delta.smt.entity.WareHouse;
 
 import java.util.List;
 
@@ -16,6 +14,7 @@ import rx.functions.Action1;
  * Created by Tao.ZT.Zhang on 2016/12/26.
  */
 
+@FragmentScope
 public class FeederCheckInPresenter extends BasePresenter<FeederCheckInContract.Model, FeederCheckInContract.View> {
     @Inject
     public FeederCheckInPresenter(FeederCheckInContract.Model model, FeederCheckInContract.View mView) {

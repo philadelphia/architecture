@@ -1,6 +1,7 @@
 package com.delta.smt.ui.feederwarning.FeederSupply.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.FeederSupplyWorkItem;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import rx.functions.Action1;
  * Created by Tao.ZT.Zhang on 2016/12/26.
  */
 
+@FragmentScope
 public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Model, FeederSupplyContract.View>{
     @Inject
     public FeederSupplyPresenter(FeederSupplyContract.Model model, FeederSupplyContract.View mView) {
