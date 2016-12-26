@@ -17,35 +17,36 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- login activity -->
+        <!--login activity-->
         <activity
             android:name=".ui.login.LoginActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!-- main activity -->
+        <!--main activity-->
         <activity
             android:name=".StartActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!-- StorageWarningActivity -->
+        <!--StorageWarningActivity  -->
         <activity
             android:name=".ui.storage_manger.StorageWarningActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!-- production warning activity -->
+        <!--production warning activity-->
         <activity
             android:name=".ui.production_warning.mvp.view.ProduceLineActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.production_warning.mvp.view.ProduceWarningActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+
+
         <activity
             android:name=".ui.feederCacheRegion.FeederCacheRegionActivity"
             android:label="@string/title_activity_feeder_cache_region"
