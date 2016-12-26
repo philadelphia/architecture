@@ -11,11 +11,7 @@ import javax.inject.Inject;
 
 import rx.functions.Action1;
 
-/**
- * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/16 9:42
- */
+
 
 @ActivityScope
 public class ProduceLinePresenter extends BasePresenter<ProduceLineContract.Model, ProduceLineContract.View> {

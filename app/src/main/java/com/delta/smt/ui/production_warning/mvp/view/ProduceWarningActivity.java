@@ -13,6 +13,10 @@ import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.ui.production_warning.di.DaggerTitleNumberCompent;
+import com.delta.smt.ui.production_warning.di.TitleNumberModule;
+import com.delta.smt.ui.production_warning.item.TitleNumber;
+import com.delta.smt.ui.production_warning.mvp.contract.ProduceWarningContract;
 import com.delta.smt.ui.production_warning.mvp.presenter.ProduceWarningPresenter;
 import com.delta.smt.utils.ViewUtils;
 
@@ -24,7 +28,7 @@ import butterknife.OnClick;
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
-public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter> implements TabLayout.OnTabSelectedListener {
+public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter> implements TabLayout.OnTabSelectedListener,ProduceWarningContract.View {
 
     @BindView(R.id.tl_title)
     TabLayout tlTitle;
@@ -44,20 +48,17 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
     private Fragment currentFragment;
     private String[] titles;
 
-    private int warning_number = 3;
-    private int breakdown_number = 1;
-    private int info_number = 2;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-
+        DaggerTitleNumberCompent.builder().appComponent(appComponent).titleNumberModule(new TitleNumberModule(this)).build().inject(this);
     }
 
 
     @Override
     protected void initData() {
-        titles = new String[]{"预警(" + warning_number + ")", "故障(" + breakdown_number + ")", "消息(" + info_number + ")"};
-
+//        titles = new String[]{"预警(" + warning_number + ")", "故障(" + breakdown_number + ")", "消息(" + info_number + ")"};
+        getPresenter().getTitileNumber();
     }
 
     @Override
@@ -73,6 +74,8 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
         mFragmentTransaction.add(R.id.fl_container, mProduceWarningFragment);
         mFragmentTransaction.show(mProduceWarningFragment).commit();
         currentFragment = mProduceWarningFragment;
+
+
     }
 
     @Override
@@ -140,5 +143,20 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
             case R.id.header_setting:
                 break;
         }
+    }
+
+
+    @Override
+    public void getTitleDatas(TitleNumber titleNumber) {
+
+        titles = new String[]{"预警(" + titleNumber.getWarning_number() + ")",
+                "故障(" + titleNumber.getBreakdown_number() + ")",
+                "消息(" + titleNumber.getInfo_number() + ")"};
+
+    }
+
+    @Override
+    public void getTitleDatasFailed() {
+        titles = new String[]{"预警", "故障", "消息"};
     }
 }

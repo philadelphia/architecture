@@ -4,6 +4,7 @@ import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
+import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,12 @@ public class ServiceModule {
                 return Observable.just(datas);
             }
 
+            @Override
+            public Observable<TitleNumber> getTitleDatas() {
+                TitleNumber mTitleNumber=new TitleNumber(2,3,1);
+
+                return Observable.just(mTitleNumber);
+            }
         };
     }
 
