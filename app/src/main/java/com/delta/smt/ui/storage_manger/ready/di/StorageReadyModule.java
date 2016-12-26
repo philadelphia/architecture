@@ -1,9 +1,9 @@
-package com.delta.smt.ui.storage_manger.di;
+package com.delta.smt.ui.storage_manger.ready.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.api.ApiService;
-import com.delta.smt.ui.storage_manger.mvp.StorageReadyContract;
-import com.delta.smt.ui.storage_manger.mvp.StorageReadyModel;
+import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyContract;
+import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyModel;
 
 import dagger.Module;
 import dagger.Provides;

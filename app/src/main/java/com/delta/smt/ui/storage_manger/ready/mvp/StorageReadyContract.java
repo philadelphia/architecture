@@ -1,4 +1,4 @@
-package com.delta.smt.ui.storage_manger.mvp;
+package com.delta.smt.ui.storage_manger.ready.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;

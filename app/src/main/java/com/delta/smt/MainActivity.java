@@ -102,4 +102,5 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 break;
         }
     }
+
 }

@@ -1,10 +1,10 @@
-package com.delta.smt.ui.storage_manger;
+package com.delta.smt.ui.storage_manger.ready;
 
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.ui.storage_manger.mvp.StorageReadyContract;
-import com.delta.smt.ui.storage_manger.mvp.StorageReadyPresenter;
+import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyContract;
+import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyPresenter;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/21.

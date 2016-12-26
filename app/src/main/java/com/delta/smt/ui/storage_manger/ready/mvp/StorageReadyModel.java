@@ -1,4 +1,4 @@
-package com.delta.smt.ui.storage_manger.mvp;
+package com.delta.smt.ui.storage_manger.ready.mvp;
 
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;

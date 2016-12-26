@@ -1,4 +1,4 @@
-package com.delta.smt.ui.storage_manger;
+package com.delta.smt.ui.storage_manger.backDetail;
 
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
