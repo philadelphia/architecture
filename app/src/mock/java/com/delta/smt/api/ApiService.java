@@ -1,6 +1,7 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.entity.FeederSupplyWorkItem;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
@@ -25,6 +26,11 @@ public interface  ApiService {
     @POST
     Observable<List<WareHouse>> getAllWareHouse();
 
+    @POST
+    Observable<List<FeederSupplyWorkItem>> getAllCheckedInFeeders();
+
+    @POST
+    Observable<List<FeederSupplyWorkItem>> getAllSupplyWorkItems();
 
     Observable<List<ItemProduceLine>> getLineDatas();
 

@@ -47,11 +47,11 @@
 
 
         <activity
-            android:name=".ui.feederCacheRegion.FeederCacheRegionActivity"
+            android:name=".ui.feeder.feederCacheRegion.FeederCacheRegionActivity"
             android:label="@string/title_activity_feeder_cache_region"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.feederwarning.FeederWarningActivity"
+            android:name=".ui.feeder.feederwarning.FeederWarningActivity"
             android:label="@string/title_activity_feeder_warning">
         </activity>
 

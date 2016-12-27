@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feederCacheRegion.mvp;
+package com.delta.smt.ui.feeder.feederCacheRegion.mvp;
 
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;

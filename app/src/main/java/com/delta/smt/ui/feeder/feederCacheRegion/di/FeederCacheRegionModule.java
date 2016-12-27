@@ -1,9 +1,9 @@
-package com.delta.smt.ui.feederCacheRegion.di;
+package com.delta.smt.ui.feeder.feederCacheRegion.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.api.ApiService;
-import com.delta.smt.ui.feederCacheRegion.mvp.FeederCacheRegionContract;
-import com.delta.smt.ui.feederCacheRegion.mvp.FeederCacheRegionModel;
+import com.delta.smt.ui.feeder.feederCacheRegion.mvp.FeederCacheRegionContract;
+import com.delta.smt.ui.feeder.feederCacheRegion.mvp.FeederCacheRegionModel;
 
 import dagger.Module;
 import dagger.Provides;

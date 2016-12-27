@@ -1,8 +1,8 @@
-package com.delta.smt.ui.feederCacheRegion.di;
+package com.delta.smt.ui.feeder.feederCacheRegion.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.ui.feederCacheRegion.FeederCacheRegionActivity;
+import com.delta.smt.ui.feeder.feederCacheRegion.FeederCacheRegionActivity;
 
 import dagger.Component;
 

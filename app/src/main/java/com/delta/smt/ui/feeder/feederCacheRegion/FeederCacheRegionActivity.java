@@ -1,9 +1,8 @@
-package com.delta.smt.ui.feederCacheRegion;
+package com.delta.smt.ui.feeder.feederCacheRegion;
 
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -15,11 +14,11 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.WareHouse;
-import com.delta.smt.ui.feederCacheRegion.di.DaggerFeederCacheRegionComponent;
-import com.delta.smt.ui.feederCacheRegion.di.FeederCacheRegionModule;
-import com.delta.smt.ui.feederCacheRegion.mvp.FeederCacheRegionContract;
-import com.delta.smt.ui.feederCacheRegion.mvp.FeederCacheRegionPresenter;
-import com.delta.smt.ui.feederwarning.FeederWarningActivity;
+import com.delta.smt.ui.feeder.feederCacheRegion.di.DaggerFeederCacheRegionComponent;
+import com.delta.smt.ui.feeder.feederCacheRegion.di.FeederCacheRegionModule;
+import com.delta.smt.ui.feeder.feederCacheRegion.mvp.FeederCacheRegionContract;
+import com.delta.smt.ui.feeder.feederCacheRegion.mvp.FeederCacheRegionPresenter;
+import com.delta.smt.ui.feeder.feederwarning.FeederWarningActivity;
 
 
 import java.util.ArrayList;
@@ -123,12 +122,10 @@ public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPres
             checkBox.setChecked(false);
             for (CheckBox box : checkBoxMap.values()) {
                 box.setFocusable(true);
-                Log.i(TAG, "onItemClick: " + box.isChecked());
             }
         } else {
             for (CheckBox box : checkBoxMap.values()) {
                 box.setChecked(false);
-                Log.i(TAG, "onItemClick: " + box.isChecked());
             }
             checkBox.setChecked(true);
         }

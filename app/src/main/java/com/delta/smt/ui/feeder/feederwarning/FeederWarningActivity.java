@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feederwarning;
+package com.delta.smt.ui.feeder.feederwarning;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
