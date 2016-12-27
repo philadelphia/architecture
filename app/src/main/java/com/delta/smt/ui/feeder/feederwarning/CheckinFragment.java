@@ -1,11 +1,13 @@
 package com.delta.smt.ui.feeder.feederWarning;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -16,6 +18,8 @@ import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.di.DaggerFeederCheckI
 import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.di.FeederCheckInModule;
 import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.mvp.FeederCheckInContract;
 import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.mvp.FeederCheckInPresenter;
+import com.delta.smt.Constant;
+import com.delta.smt.ui.feeder.feederWorkItemHandle.feederCheckIn.FeederCheckInActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +86,10 @@ public class CheckinFragment extends BaseFragment<FeederCheckInPresenter> implem
 
     @Override
     public void onItemClick(View view, FeederSupplyWorkItem item, int position) {
-
+        Log.i(TAG, "onItemClick: ");
+        Log.i(TAG, "onItemClick: " + view.getClass().getSimpleName() + position);
+        String workItemID = item.getWorkItemID();
+//        Bundle bundle = new Bundle();
+        IntentUtils.showIntent(getmActivity(), FeederCheckInActivity.class,new String[]{Constant.WORK_ITEM_ID},new String[]{workItemID});
     }
 }

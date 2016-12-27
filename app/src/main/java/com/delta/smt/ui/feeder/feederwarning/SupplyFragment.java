@@ -1,10 +1,14 @@
 package com.delta.smt.ui.feeder.feederWarning;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -15,6 +19,8 @@ import com.delta.smt.ui.feeder.feederWarning.FeederSupply.di.DaggerFeederSupplyC
 import com.delta.smt.ui.feeder.feederWarning.FeederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.feederWarning.FeederSupply.mvp.FeederSupplyContract;
 import com.delta.smt.ui.feeder.feederWarning.FeederSupply.mvp.FeederSupplyPresenter;
+import com.delta.smt.ui.feeder.feederWorkItemHandle.feederCheckIn.FeederCheckInActivity;
+import com.delta.smt.ui.feeder.feederWorkItemHandle.feederSupply.FeederSupplyActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +33,7 @@ public class SupplyFragment extends BaseFragment<FeederSupplyPresenter> implemen
     RecyclerView recyclerview;
     private List<FeederSupplyWorkItem> dataList = new ArrayList<>();
     private CommonBaseAdapter<FeederSupplyWorkItem> adapter;
-    private static final String TAG = "FeederSupplyFragment";
+    private static final String TAG = "SupplyFragment";
 
 
     @Override
@@ -47,9 +53,9 @@ public class SupplyFragment extends BaseFragment<FeederSupplyPresenter> implemen
             }
         };
 
-        adapter.setOnItemClickListener(this);
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         recyclerview.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -85,6 +91,11 @@ public class SupplyFragment extends BaseFragment<FeederSupplyPresenter> implemen
 
     @Override
     public void onItemClick(View view, FeederSupplyWorkItem item, int position) {
-        Log.i(TAG, "onItemClick: " + position);
+        Log.i(TAG, "onItemClick: ");
+        Log.i(TAG, "onItemClick: " + view.getClass().getSimpleName() + position);
+        String workItemID = item.getWorkItemID();
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.WORK_ITEM_ID,workItemID);
+        IntentUtils.showIntent(getmActivity(), FeederSupplyActivity.class);
     }
 }

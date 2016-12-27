@@ -54,10 +54,6 @@
         <activity android:name=".ui.checkstock.CheckStockActivity"
             android:screenOrientation="portrait"/>
 
-
-
-
-
         <activity
             android:name=".ui.feeder.wareSelect.WareSelectActivity"
             android:label="@string/title_activity_feeder_cache_region"
@@ -67,6 +63,11 @@
             android:label="@string/title_activity_feeder_warning">
         </activity>
 
+        <activity android:name=".ui.feeder.feederWorkItemHandle.feederCheckIn.FeederCheckInActivity"
+                    android:label="FeederCheckInActivity"/>
+
+        <activity android:name=".ui.feeder.feederWorkItemHandle.feederSupply.FeederSupplyActivity"
+                  android:label="feederSupplyActivity"/>
     </application>
 
 </manifest>
