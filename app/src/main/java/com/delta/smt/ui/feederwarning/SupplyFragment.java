@@ -22,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 
 
-public class FeederSupplyFragment extends BaseFragment<FeederSupplyPresenter> implements FeederSupplyContract.View , CommonBaseAdapter.OnItemClickListener<FeederSupplyWorkItem>{
+public class SupplyFragment extends BaseFragment<FeederSupplyPresenter> implements FeederSupplyContract.View , CommonBaseAdapter.OnItemClickListener<FeederSupplyWorkItem>{
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     private List<FeederSupplyWorkItem> dataList = new ArrayList<>();

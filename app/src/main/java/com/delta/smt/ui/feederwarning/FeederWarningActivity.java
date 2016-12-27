@@ -31,7 +31,7 @@ public class FeederWarningActivity extends BaseActiviy implements TabLayout.OnTa
     LinearLayout activityFeederWarning;
     private String[] mTitles;
     private CheckinFragment checkinFragment;
-    private FeederSupplyFragment feederSupplyFragment;
+    private SupplyFragment supplyFragment;
     private FragmentManager fragmentManager;
     private Fragment currentFragment;
     private FragmentTransaction fragmentTransaction;
@@ -48,13 +48,13 @@ public class FeederWarningActivity extends BaseActiviy implements TabLayout.OnTa
         switch (tab.getPosition()) {
             case 0:
                 Log.i(TAG, "onTabSelected: 0");
-                if (feederSupplyFragment == null) {
-                    feederSupplyFragment = new FeederSupplyFragment();
-                    fragmentTransaction.add(R.id.fl_container, feederSupplyFragment, "备料");
+                if (supplyFragment == null) {
+                    supplyFragment = new SupplyFragment();
+                    fragmentTransaction.add(R.id.fl_container, supplyFragment, "备料");
                 }
 
-                fragmentTransaction.show(feederSupplyFragment).hide(currentFragment).commit();
-                currentFragment = feederSupplyFragment;
+                fragmentTransaction.show(supplyFragment).hide(currentFragment).commit();
+                currentFragment = supplyFragment;
 
                 break;
             case 1:
@@ -102,10 +102,10 @@ public class FeederWarningActivity extends BaseActiviy implements TabLayout.OnTa
         tlTitle.addOnTabSelectedListener(this);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction() ;
-        feederSupplyFragment = new FeederSupplyFragment();
-        fragmentTransaction.add(R.id.fl_container,feederSupplyFragment,"备料");
-        fragmentTransaction.show(feederSupplyFragment).commit();
-        currentFragment = feederSupplyFragment;
+        supplyFragment = new SupplyFragment();
+        fragmentTransaction.add(R.id.fl_container,supplyFragment,"备料");
+        fragmentTransaction.show(supplyFragment).commit();
+        currentFragment = supplyFragment;
 
     }
 
