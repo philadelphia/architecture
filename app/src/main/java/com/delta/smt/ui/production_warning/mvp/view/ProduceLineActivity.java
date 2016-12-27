@@ -1,4 +1,4 @@
-package com.delta.smt.ui.production_warning.mvp.view;
+package com.delta.smt.ui.production_warning.mvp.produce_line;
 
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,12 +10,10 @@ import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.ui.login.di.LoginModule;
-import com.delta.smt.ui.production_warning.di.DaggerProduceLineCompnent;
-import com.delta.smt.ui.production_warning.di.ProduceLineModule;
+import com.delta.smt.ui.production_warning.di.produce_line.DaggerProduceLineCompnent;
+import com.delta.smt.ui.production_warning.di.produce_line.ProduceLineModule;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
-import com.delta.smt.ui.production_warning.mvp.contract.ProduceLineContract;
-import com.delta.smt.ui.production_warning.mvp.presenter.ProduceLinePresenter;
+import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +33,17 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
     private CommonBaseAdapter<ItemProduceLine> mAdapter;
     private List<ItemProduceLine> datas=new ArrayList<>();
 
-    private int count=15;
     String submitline="dfsdf";
+
+    @Override
+    protected void initData() {
+        getPresenter().getProductionLineDatas();
+
+    }
+
     @Override
     protected void initView() {
+        //设置Recyleview的adapter
         mAdapter=new CommonBaseAdapter<ItemProduceLine>(this,datas) {
             @Override
             protected void convert(CommonViewHolder holder, ItemProduceLine item, int position) {
@@ -47,7 +52,7 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
 
             @Override
             protected int getItemViewLayoutId(int position, ItemProduceLine item) {
-                return R.layout.item_production_line;
+                return R.layout.item_produce_line;
             }
         };
         ryvProductionLine.setLayoutManager(new GridLayoutManager(this,3));
@@ -56,18 +61,13 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
 
     }
 
-    @Override
-    protected void initData() {
-//        for (int i=1;i<=count;i++){
-//            datas.add(new ItemProduceLine("SMT_H"+i));
-//        }
-        getPresenter().getProductionLineDatas();
 
-    }
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-        DaggerProduceLineCompnent.builder().appComponent(appComponent).produceLineModule(new ProduceLineModule(this)).build().inject(this);
+
+        DaggerProduceLineCompnent.builder().appComponent(appComponent).
+                produceLineModule(new ProduceLineModule(this)).build().inject(this);
     }
 
     @Override
@@ -81,7 +81,9 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_confirm:
+
                 getPresenter().sumbitLine(submitline);
+
                 startActivity(new Intent(this,ProduceWarningActivity.class));
                 break;
             case R.id.btn_all_select:
@@ -97,6 +99,7 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
     public void getDataLineDatas(List<ItemProduceLine> itemProduceLines) {
         datas.clear();
         datas.addAll(itemProduceLines);
+        //对adapter刷新改变
         mAdapter.notifyDataSetChanged();
     }
 
