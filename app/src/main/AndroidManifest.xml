@@ -59,7 +59,7 @@
 
 
         <activity
-            android:name=".ui.feeder.feederCacheRegion.FeederCacheRegionActivity"
+            android:name=".ui.feeder.wareSelect.WareSelectActivity"
             android:label="@string/title_activity_feeder_cache_region"
             android:screenOrientation="portrait"/>
         <activity
