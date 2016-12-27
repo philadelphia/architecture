@@ -13,8 +13,11 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.login.mvp.LoginPresenter;
+import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.DaggerProduceBreakdownFragmentCompnent;
+import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.ProduceBreakdownFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
+import com.delta.smt.ui.production_warning.mvp.produce_warning_fragment.ProduceWarningFragmentPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,7 @@ import butterknife.ButterKnife;
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
-public class ProduceBreakdownFragment extends BaseFragment<LoginPresenter> {
+public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragmentPresenter> implements ProduceBreakdownFragmentContract.View{
 
 
     @BindView(R.id.ryv_produce_breakdown)
@@ -36,8 +39,7 @@ public class ProduceBreakdownFragment extends BaseFragment<LoginPresenter> {
 
     @Override
     protected void initData() {
-        datas.add(new ItemBreakDown("贴片机-卡料故障","产线：H13","制程：叠送一体机","料站：06T022","故障信息：卡料故障"));
-        datas.add(new ItemBreakDown("贴片机-卷带故障","产线：H13","制程：贴片机","料站：06T022","故障信息：卷带故障"));
+        getPresenter().getItemBreakdownDatas();
     }
 
     @Override
@@ -64,7 +66,9 @@ public class ProduceBreakdownFragment extends BaseFragment<LoginPresenter> {
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-
+        DaggerProduceBreakdownFragmentCompnent.builder().appComponent(appComponent)
+                .produceBreakdownFragmentModule(new ProduceBreakdownFragmentModule(this))
+                .build().inject(this);
     }
 
 
@@ -79,5 +83,18 @@ public class ProduceBreakdownFragment extends BaseFragment<LoginPresenter> {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void getItemBreakdownDatas(List<ItemBreakDown> itemBreakDown) {
+        datas.clear();
+        datas.addAll(itemBreakDown);
+        //对adapter刷新改变
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getItemBreakdownDatasFailed() {
+
     }
 }
