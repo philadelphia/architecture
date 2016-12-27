@@ -14,7 +14,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.main.mvp.MainPresenter;
-import com.delta.smt.ui.production_warning.mvp.view.ProduceLineActivity;
+import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 
 import java.util.ArrayList;
@@ -102,4 +102,5 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 break;
         }
     }
+
 }
