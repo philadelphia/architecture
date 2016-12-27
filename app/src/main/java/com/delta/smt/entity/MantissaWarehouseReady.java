@@ -12,24 +12,14 @@ public class MantissaWarehouseReady {
     private String number;
     private String time;
 
-    public MantissaWarehouseReady(String time, String number, String line, String face, String type) {
-        this.time = time;
-        this.number = number;
+    public MantissaWarehouseReady(String line, String face, String type, String number, String time) {
         this.line = line;
         this.face = face;
         this.type = type;
+        this.number = number;
+        this.time = time;
     }
 
-    @Override
-    public String toString() {
-        return "StorageReady{" +
-                "line='" + line + '\'' +
-                ", face='" + face + '\'' +
-                ", type='" + type + '\'' +
-                ", number='" + number + '\'' +
-                ", time='" + time + '\'' +
-                '}';
-    }
 
     public String getLine() {
         return line;

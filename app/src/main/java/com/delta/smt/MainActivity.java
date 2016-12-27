@@ -15,6 +15,7 @@ import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.checkstock.CheckStockActivity;
 import com.delta.smt.ui.main.mvp.MainPresenter;
+import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
@@ -73,6 +74,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         fuctionString.add("PCB库房3");
         fuctionString.add("PCB库房4");
         fuctionString.add("sample");
+        fuctionString.add("尾数仓入库及退料");
     }
 
     @Override
@@ -103,6 +105,9 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 break;
             case "sample":
                 IntentUtils.showIntent(this, ProduceLineActivity.class);
+                break;
+            case "尾数仓入库及退料":
+                IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class);
                 break;
             default:
                 break;
