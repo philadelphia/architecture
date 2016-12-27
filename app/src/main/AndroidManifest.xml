@@ -63,7 +63,7 @@
             android:label="@string/title_activity_feeder_cache_region"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.feeder.feederwarning.FeederWarningActivity"
+            android:name=".ui.feeder.feederWarning.FeederWorkItemActivity"
             android:label="@string/title_activity_feeder_warning">
         </activity>
 
