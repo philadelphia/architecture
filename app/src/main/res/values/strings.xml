@@ -38,4 +38,5 @@
     <string name="back">返回</string>
     <string name="setting">设置</string>
     <string name="storetitle">PCB库房发料</string>
+    <string name="timetext">剩余发料时间：</string>
 </resources>

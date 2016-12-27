@@ -74,4 +74,8 @@ android {
         compile rootProject.ext.dependencies["tableLayout"]
         compile 'com.android.support:recyclerview-v7:24.1.1'
         compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+
+
+        compile rootProject.ext.dependencies["barcodecollector"]
+
     }

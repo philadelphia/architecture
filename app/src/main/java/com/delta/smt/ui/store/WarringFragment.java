@@ -1,5 +1,6 @@
 package com.delta.smt.ui.store;
 
+import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.store.mvp.WarningPresenter;
@@ -26,6 +27,6 @@ public class WarringFragment extends BaseFragment<WarningPresenter> {
 
     @Override
     protected int getContentViewId() {
-        return 0;
+        return R.layout.main_list;
     }
 }
