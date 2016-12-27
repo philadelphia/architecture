@@ -84,7 +84,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         ToastUtils.showMessage(this, item);
         switch (item) {
             case "Feeder缓冲区":
-                IntentUtils.showIntent(this, com.delta.smt.ui.feederCacheRegion.FeederCacheRegionActivity.class);
+                IntentUtils.showIntent(this, com.delta.smt.ui.feeder.feederCacheRegion.FeederCacheRegionActivity.class);
                 break;
             case "仓库房":
                 IntentUtils.showIntent(this, StorageWarningActivity.class);
