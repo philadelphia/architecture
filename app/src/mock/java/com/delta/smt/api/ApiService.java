@@ -3,6 +3,7 @@ package com.delta.smt.api;
 
 import com.delta.smt.entity.FeederSupplyWorkItem;
 import com.delta.smt.entity.LoginResult;
+import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
@@ -33,6 +34,9 @@ public interface  ApiService {
     Observable<List<FeederSupplyWorkItem>> getAllSupplyWorkItems();
 
     Observable<List<ItemProduceLine>> getLineDatas();
+
+    Observable<List<StorageReady>> getStorageReadyDates();
+
 
     Observable<TitleNumber> getTitleDatas();
 

@@ -4,6 +4,8 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.StorageReady;
 
+import java.util.List;
+
 import rx.Observable;
 
 /**
@@ -15,13 +17,13 @@ public interface StorageReadyContract {
     interface Model extends IModel{
 
 
-        Observable<StorageReady> getStorageReady(String StorageName);
+        Observable<List<StorageReady>> getStorageReady();
 
     }
 
     interface View extends IView {
 
-        void getStorageReadySucess();
+        void getStorageReadySucess(List<StorageReady> storageReadies);
         void getStorageReadyFailed();
 
     }

@@ -1,7 +1,9 @@
 package com.delta.smt.di.module;
+
 import com.delta.smt.api.ApiService;
 import com.delta.smt.entity.FeederSupplyWorkItem;
 import com.delta.smt.entity.LoginResult;
+import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
@@ -36,6 +38,16 @@ public class ServiceModule {
                 messageBean.setToken("---------------");
                 result.setMessage(messageBean);
                 return Observable.just(result);
+            }
+
+            @Override
+            public Observable<List<StorageReady>> getStorageReadyDates() {
+                List<StorageReady> datas = new ArrayList<>();
+                datas.add(new StorageReady("H11","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new StorageReady("H12","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new StorageReady("H13","A","等待仓库A备货","2016121200000012","06:00:00"));
+
+                return Observable.just(datas);
             }
 
             @Override
