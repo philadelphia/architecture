@@ -1,9 +1,9 @@
-package com.delta.smt.ui.feeder.feederwarning.feederCheckIn.di;
+package com.delta.smt.ui.feeder.feederWarning.feederCheckIn.di;
 
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.api.ApiService;
-import com.delta.smt.ui.feeder.feederwarning.feederCheckIn.mvp.FeederCheckInContract;
-import com.delta.smt.ui.feeder.feederwarning.feederCheckIn.mvp.FeederCheckInModel;
+import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.mvp.FeederCheckInContract;
+import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.mvp.FeederCheckInModel;
 
 import dagger.Module;
 import dagger.Provides;

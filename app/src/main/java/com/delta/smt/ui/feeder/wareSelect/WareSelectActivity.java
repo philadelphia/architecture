@@ -14,7 +14,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.WareHouse;
-import com.delta.smt.ui.feeder.feederwarning.FeederWarningActivity;
+import com.delta.smt.ui.feeder.feederWarning.FeederWorkItemActivity;
 import com.delta.smt.ui.feeder.wareSelect.di.DaggerWareSelectComponent;
 import com.delta.smt.ui.feeder.wareSelect.di.WareSelectModule;
 import com.delta.smt.ui.feeder.wareSelect.mvp.WareSelectContract;
@@ -107,7 +107,7 @@ public class WareSelectActivity extends BaseActiviy<WareSelectPresenter> impleme
             case R.id.header_setting:
                 break;
             case R.id.btn_selectWareHouse:
-                IntentUtils.showIntent(this, FeederWarningActivity.class);
+                IntentUtils.showIntent(this, FeederWorkItemActivity.class);
                 break;
             default:
                 break;

@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederwarning;
+package com.delta.smt.ui.feeder.feederWarning;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +11,10 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyWorkItem;
-import com.delta.smt.ui.feeder.feederwarning.FeederSupply.di.DaggerFeederSupplyComponent;
-import com.delta.smt.ui.feeder.feederwarning.FeederSupply.di.FeederSupplyModule;
-import com.delta.smt.ui.feeder.feederwarning.FeederSupply.mvp.FeederSupplyContract;
-import com.delta.smt.ui.feeder.feederwarning.FeederSupply.mvp.FeederSupplyPresenter;
+import com.delta.smt.ui.feeder.feederWarning.FeederSupply.di.DaggerFeederSupplyComponent;
+import com.delta.smt.ui.feeder.feederWarning.FeederSupply.di.FeederSupplyModule;
+import com.delta.smt.ui.feeder.feederWarning.FeederSupply.mvp.FeederSupplyContract;
+import com.delta.smt.ui.feeder.feederWarning.FeederSupply.mvp.FeederSupplyPresenter;
 
 import java.util.ArrayList;
 import java.util.List;

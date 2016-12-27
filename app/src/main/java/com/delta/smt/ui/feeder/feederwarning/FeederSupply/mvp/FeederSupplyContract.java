@@ -1,9 +1,8 @@
-package com.delta.smt.ui.feeder.feederwarning.FeederSupply.mvp;
+package com.delta.smt.ui.feeder.feederWarning.FeederSupply.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.FeederSupplyWorkItem;
-import com.delta.smt.entity.WareHouse;
 
 import java.util.List;
 

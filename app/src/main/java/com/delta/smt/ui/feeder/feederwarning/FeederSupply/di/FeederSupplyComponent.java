@@ -1,8 +1,8 @@
-package com.delta.smt.ui.feeder.feederwarning.FeederSupply.di;
+package com.delta.smt.ui.feeder.feederWarning.FeederSupply.di;
 
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.ui.feeder.feederwarning.SupplyFragment;
+import com.delta.smt.ui.feeder.feederWarning.SupplyFragment;
 
 import dagger.Component;
 

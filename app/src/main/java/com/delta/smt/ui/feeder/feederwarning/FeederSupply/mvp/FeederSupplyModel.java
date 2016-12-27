@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederwarning.FeederSupply.mvp;
+package com.delta.smt.ui.feeder.feederWarning.FeederSupply.mvp;
 
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
