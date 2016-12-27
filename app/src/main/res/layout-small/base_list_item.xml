@@ -57,32 +57,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 <!--这里右边的倒数计我是默认和左边的第三个和第四个高度保持一致的，数据少可自行更改-->
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/time_remain"
+                        android:text="剩余时间："
+                        android:textSize="12sp"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/time_remain"
-                android:text="剩余时间："
-                android:textSize="12sp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content" />
-
-            <cn.iwgang.countdownview.CountdownView
-                android:id="@+id/cv_countdownViewTest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/time_remain"
-                android:layout_below="@+id/time_remain"
-                app:isShowDay="false"
-                app:isShowHour="true"
-                app:isShowMillisecond="false"
-                app:isShowMinute="true"
-                app:isShowSecond="true"
-                app:suffixGravity="center"
-                app:suffixTextColor="#000000"
-                app:suffixTextSize="20sp"
-                app:timeTextColor="#000000"
-                app:timeTextSize="20sp"
-                />
-
-            </RelativeLayout>
+                    <cn.iwgang.countdownview.CountdownView
+                        android:id="@+id/cv_countdownViewTest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/time_remain"
+                        android:layout_below="@+id/time_remain"
+                        app:isShowDay="false"
+                        app:isShowHour="true"
+                        app:isShowMillisecond="false"
+                        app:isShowMinute="true"
+                        app:isShowSecond="true"
+                        app:suffixGravity="center"
+                        app:suffixTextColor="#000000"
+                        app:suffixTextSize="20sp"
+                        app:timeTextColor="#000000"
+                        app:timeTextSize="20sp"
+                        />
+        </LinearLayout>
+</RelativeLayout>
