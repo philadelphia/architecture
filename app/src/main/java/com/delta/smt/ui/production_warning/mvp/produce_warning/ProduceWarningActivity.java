@@ -1,7 +1,6 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,7 +12,6 @@ import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.di.component.AppComponent;
-
 import com.delta.smt.ui.production_warning.di.produce_warning.DaggerTitleNumberCompent;
 import com.delta.smt.ui.production_warning.di.produce_warning.TitleNumberModule;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
@@ -23,7 +21,6 @@ import com.delta.smt.ui.production_warning.mvp.produce_warning_fragment.ProduceW
 import com.delta.smt.utils.ViewUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -85,12 +82,6 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
         return R.layout.activity_produce_warning;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
 
     @Override

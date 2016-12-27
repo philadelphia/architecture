@@ -48,7 +48,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> im
 
             @Override
             protected int getItemViewLayoutId(int position, StorageReady item) {
-                return R.layout.feeder_supply_list_item;
+                return R.layout.fragment_storage_ready;
             }
         };
 
@@ -93,6 +93,8 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> im
 
     @Override
     public void onItemClick(View view, StorageReady item, int position) {
+
+
 
     }
 }
