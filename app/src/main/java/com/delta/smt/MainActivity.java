@@ -13,9 +13,12 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.ui.checkstock.CheckStockActivity;
 import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
+import com.delta.smt.ui.store.StoreIssueActivity;
+import com.delta.smt.ui.storeroom.StoreRoomActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,10 +93,13 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 IntentUtils.showIntent(this, StorageWarningActivity.class);
                 break;
             case "PCB库房2":
+                IntentUtils.showIntent(this, StoreIssueActivity.class);
                 break;
             case "PCB库房3":
+                IntentUtils.showIntent(this, StoreRoomActivity.class);
                 break;
             case "PCB库房4":
+                IntentUtils.showIntent(this, CheckStockActivity.class);
                 break;
             case "sample":
                 IntentUtils.showIntent(this, ProduceLineActivity.class);
