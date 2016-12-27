@@ -1,5 +1,6 @@
 package com.delta.smt.ui.feeder.feederWarning.feederCheckIn.di;
 
+
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.mvp.FeederCheckInContract;
