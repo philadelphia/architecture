@@ -65,6 +65,7 @@ public class ServiceModule {
                 datas.add(new StorageReady("H11","A","等待仓库A备货","2016121200000012","06:00:00"));
                 datas.add(new StorageReady("H12","A","等待仓库A备货","2016121200000012","06:00:00"));
                 datas.add(new StorageReady("H13","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new StorageReady("H14","A","等待仓库A备货","2016121200000012","06:00:00"));
 
                 return Observable.just(datas);
             }
