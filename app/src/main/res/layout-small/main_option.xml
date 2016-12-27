@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/option_frame"
     >
 
-    <RadioButton
+    <TextView
         android:id="@+id/option_storage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,23 +15,23 @@
 
         />
 
-    <RadioButton
+    <TextView
         android:id="@+id/option_stock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
         android:text="@string/option_stock"
         style="@style/style_option"
-        android:background="@drawable/option_onclick"
+
         />
 
-    <RadioButton
+    <TextView
         android:id="@+id/option_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/style_option"
         android:visibility="gone"
         android:text="@string/option_check"
-        android:background="@drawable/option_onclick"
+
         />
-</RadioGroup>
+</LinearLayout>

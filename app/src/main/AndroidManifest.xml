@@ -44,6 +44,18 @@
         <activity
             android:name=".ui.production_warning.mvp.produce_warning.ProduceWarningActivity"
             android:screenOrientation="portrait" />
+        <!--lin-->
+        <activity
+            android:name=".ui.store.StoreIssueActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.storeroom.StoreRoomActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.checkstock.CheckStockActivity"
+            android:screenOrientation="portrait"/>
+
+
+
 
 
         <activity

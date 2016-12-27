@@ -25,7 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         style="@style/style_title"
-        android:visibility="visible"
         android:text="@string/setting"
         />
 </LinearLayout>
