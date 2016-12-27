@@ -1,11 +1,11 @@
 package com.delta.smt.di.module;
-
 import com.delta.smt.api.ApiService;
 import com.delta.smt.entity.FeederSupplyWorkItem;
 import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
+import com.delta.smt.ui.production_warning.item.ItemBreakDown;
+import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
@@ -38,16 +38,6 @@ public class ServiceModule {
                 messageBean.setToken("---------------");
                 result.setMessage(messageBean);
                 return Observable.just(result);
-            }
-
-            @Override
-            public Observable<List<StorageReady>> getStorageReadyDates() {
-                List<StorageReady> datas = new ArrayList<>();
-                datas.add(new StorageReady("H11","A","等待仓库A备货","2016121200000012","06:00:00"));
-                datas.add(new StorageReady("H12","A","等待仓库A备货","2016121200000012","06:00:00"));
-                datas.add(new StorageReady("H13","A","等待仓库A备货","2016121200000012","06:00:00"));
-
-                return Observable.just(datas);
             }
 
             @Override
@@ -95,7 +85,7 @@ public class ServiceModule {
                 return  Observable.just(dataList);
             }
 
-
+            /*预警模块的模拟service接口*/
             @Override
             public Observable<List<ItemProduceLine>> getLineDatas() {
                 List<ItemProduceLine> datas = new ArrayList<>();
@@ -116,10 +106,28 @@ public class ServiceModule {
             @Override
             public Observable<List<ItemWarningInfo>> getItemWarningDatas() {
                 List<ItemWarningInfo> datas = new ArrayList<>();
-                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
-                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
-                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
 
+                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
+                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
+                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<ItemBreakDown>> getItemBreakDownDatas() {
+                 List<ItemBreakDown> datas=new ArrayList<>();
+
+                datas.add(new ItemBreakDown("贴片机-卡料故障","产线：H13","制程：叠送一体机","料站：06T022","故障信息：卡料故障"));
+                datas.add(new ItemBreakDown("贴片机-卷带故障","产线：H13","制程：贴片机","料站：06T022","故障信息：卷带故障"));
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<ItemInfo>> getItemInfoDatas() {
+                List<ItemInfo> datas=new ArrayList<>();
+
+                datas.add(new ItemInfo("锡膏配送中","产线：H13","消息：锡膏即将配送到产线，请确认"));
+                datas.add(new ItemInfo("替换钢网配送中","产线：H13","消息：替换钢网配送产线，请确认"));
                 return Observable.just(datas);
             }
         };
