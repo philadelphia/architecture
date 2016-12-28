@@ -18,7 +18,7 @@ public class StorageDetailsModule {
     StorageDetailsContract.View view;
 
     public StorageDetailsModule(StorageDetailsContract.View view) {
-        view = view;
+        this.view = view;
     }
 
     @ActivityScope

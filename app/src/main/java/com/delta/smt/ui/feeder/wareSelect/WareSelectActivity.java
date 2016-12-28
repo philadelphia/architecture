@@ -3,6 +3,7 @@ package com.delta.smt.ui.feeder.wareSelect;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -14,11 +15,11 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.WareHouse;
-import com.delta.smt.ui.feeder.feederWarning.FeederWorkItemActivity;
 import com.delta.smt.ui.feeder.wareSelect.di.DaggerWareSelectComponent;
 import com.delta.smt.ui.feeder.wareSelect.di.WareSelectModule;
 import com.delta.smt.ui.feeder.wareSelect.mvp.WareSelectContract;
 import com.delta.smt.ui.feeder.wareSelect.mvp.WareSelectPresenter;
+import com.delta.smt.ui.feeder.warning.FeederWorkItemActivity;
 
 
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public class WareSelectActivity extends BaseActiviy<WareSelectPresenter> impleme
 
     @Override
     protected void initView() {
+        Log.i(TAG, "initView: ");
         headerTitle.setText("仓库选择");
         adapter = new CommonBaseAdapter<WareHouse>(getBaseContext(), mDataList) {
             @Override
