@@ -1,7 +1,9 @@
 package com.delta.smt.ui.hand_add.mvp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,6 +14,7 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
+import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.hand_add.di.DaggerHandAddCompent;
 import com.delta.smt.ui.hand_add.di.HandAddModule;
@@ -38,6 +41,8 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
 
     private CommonBaseAdapter<ItemHandAdd> mAdapter;
     private List<ItemHandAdd> datas=new ArrayList<>();
+
+    DialogRelativelayout mDialogRelativelayout;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -112,8 +117,29 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
 
 
     @Override
-    public void onItemClick(View view, ItemHandAdd item, int position) {
-        item.setInfo("预警信息：手补件完成，等待品管确认");
-        mAdapter.notifyDataSetChanged();
+    public void onItemClick(View view, final ItemHandAdd item, int position) {
+
+        final AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        mDialogRelativelayout=new DialogRelativelayout(this);
+        mDialogRelativelayout.setStrSecondTitle("请求确认");
+        final ArrayList<String> datas = new ArrayList<>();
+        datas.add("手补件完成？");
+        mDialogRelativelayout.setStrContent(datas);
+        dialog.setView(mDialogRelativelayout)
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        item.setInfo("预警信息：手补件完成，等待品管确认");
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }).show();
+
     }
 }
