@@ -44,6 +44,9 @@
         <activity
             android:name=".ui.production_warning.mvp.produce_warning.ProduceWarningActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".ui.hand_add.mvp.HandAddActivity"
+                  android:screenOrientation="portrait"/>
         <!--lin-->
         <activity
             android:name=".ui.store.StoreIssueActivity"
@@ -59,8 +62,7 @@
             android:label="@string/title_activity_feeder_cache_region"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.feeder.feederWarning.FeederWorkItemActivity"
-            android:label="@string/title_activity_feeder_warning">
+            android:name=".ui.feeder.feederWarning.FeederWorkItemActivity">
         </activity>
 
         <activity android:name=".ui.feeder.feederWorkItemHandle.feederCheckIn.FeederCheckInActivity"

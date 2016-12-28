@@ -5,6 +5,7 @@ import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
+import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
@@ -69,6 +70,8 @@ public class ServiceModule {
 
                 return Observable.just(datas);
             }
+
+
 
             @Override
             public Observable<List<FeederSupplyWorkItem>> getAllCheckedInFeeders() {
@@ -140,6 +143,15 @@ public class ServiceModule {
 
                 datas.add(new ItemInfo("锡膏配送中","产线：H13","消息：锡膏即将配送到产线，请确认"));
                 datas.add(new ItemInfo("替换钢网配送中","产线：H13","消息：替换钢网配送产线，请确认"));
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<ItemHandAdd>> getItemHandAddDatas() {
+                List<ItemHandAdd> datas=new ArrayList<>();
+                datas.add(new ItemHandAdd("料站Pass预警","产线：H13","模组料站：06T021","预计Pass数量：2","预警信息：IC201位置需要手补件"));
+                datas.add(new ItemHandAdd("料站Pass预警","产线：H14","模组料站：06T022","预计Pass数量：4","预警信息：IC201位置需要手补件"));
+
                 return Observable.just(datas);
             }
         };
