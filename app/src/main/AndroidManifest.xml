@@ -36,6 +36,14 @@
             android:name=".ui.storage_manger.StorageWarningActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.storage_manger.details.StorageDetailsActivity"
+            android:screenOrientation="portrait" />
+
         <!--production warning activity-->
         <activity
             android:name=".ui.production_warning.mvp.produce_line.ProduceLineActivity"
@@ -44,6 +52,9 @@
         <activity
             android:name=".ui.production_warning.mvp.produce_warning.ProduceWarningActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".ui.hand_add.mvp.HandAddActivity"
+                  android:screenOrientation="portrait"/>
         <!--lin-->
         <activity
             android:name=".ui.store.StoreIssueActivity"
@@ -54,19 +65,19 @@
         <activity android:name=".ui.checkstock.CheckStockActivity"
             android:screenOrientation="portrait"/>
 
-
-
-
-
         <activity
-            android:name=".ui.feeder.feederCacheRegion.FeederCacheRegionActivity"
+            android:name=".ui.feeder.wareSelect.WareSelectActivity"
             android:label="@string/title_activity_feeder_cache_region"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.feeder.feederwarning.FeederWarningActivity"
-            android:label="@string/title_activity_feeder_warning">
+            android:name=".ui.feeder.feederWarning.FeederWorkItemActivity">
         </activity>
 
+        <activity android:name=".ui.feeder.feederWorkItemHandle.feederCheckIn.FeederCheckInActivity"
+                    android:label="FeederCheckInActivity"/>
+
+        <activity android:name=".ui.feeder.feederWorkItemHandle.feederSupply.FeederSupplyActivity"
+                  android:label="feederSupplyActivity"/>
     </application>
 
 </manifest>

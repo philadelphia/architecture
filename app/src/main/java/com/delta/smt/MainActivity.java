@@ -14,7 +14,10 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.checkstock.CheckStockActivity;
+import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
+import com.delta.smt.ui.hand_add.mvp.HandAddContract;
 import com.delta.smt.ui.main.mvp.MainPresenter;
+import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
@@ -73,6 +76,8 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         fuctionString.add("PCB库房3");
         fuctionString.add("PCB库房4");
         fuctionString.add("sample");
+        fuctionString.add("手补件通知");
+        fuctionString.add("尾数仓入库及退料");
     }
 
     @Override
@@ -87,7 +92,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         ToastUtils.showMessage(this, item);
         switch (item) {
             case "Feeder缓冲区":
-                IntentUtils.showIntent(this, com.delta.smt.ui.feeder.feederCacheRegion.FeederCacheRegionActivity.class);
+                IntentUtils.showIntent(this, com.delta.smt.ui.feeder.wareSelect.WareSelectActivity.class);
                 break;
             case "仓库房":
                 IntentUtils.showIntent(this, StorageWarningActivity.class);
@@ -103,6 +108,12 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 break;
             case "sample":
                 IntentUtils.showIntent(this, ProduceLineActivity.class);
+                break;
+            case "手补件通知":
+                IntentUtils.showIntent(this, HandAddActivity.class);
+                break;
+            case "尾数仓入库及退料":
+                IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class);
                 break;
             default:
                 break;

@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederCacheRegion.mvp;
+package com.delta.smt.ui.feeder.wareSelect.mvp;
 
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
@@ -13,8 +13,8 @@ import rx.Observable;
  * Created by Tao.ZT.Zhang on 2016/12/21.
  */
 
-public class FeederCacheRegionModel extends BaseModel<ApiService> implements FeederCacheRegionContract.Model {
-    public FeederCacheRegionModel(ApiService apiService) {
+public class WareSelectModel extends BaseModel<ApiService> implements WareSelectContract.Model {
+    public WareSelectModel(ApiService apiService) {
         super(apiService);
     }
 

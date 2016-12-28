@@ -12,6 +12,8 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.ui.production_warning.di.produce_info_fragment.DaggerProduceInfoFragmentCompent;
+import com.delta.smt.ui.production_warning.di.produce_info_fragment.ProduceInfoFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
 
@@ -25,7 +27,8 @@ import butterknife.ButterKnife;
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
-public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresenter> {
+public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresenter>
+    implements ProduceInfoFragmentContract.View, CommonBaseAdapter.OnItemClickListener<ItemInfo> {
 
 
     @BindView(R.id.ryv_produce_info)
@@ -35,8 +38,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
     @Override
     protected void initData() {
-        datas.add(new ItemInfo("锡膏配送中","产线：H13","消息：锡膏即将配送到产线，请确认"));
-        datas.add(new ItemInfo("替换钢网配送中","产线：H13","消息：替换钢网配送产线，请确认"));
+        getPresenter().getItemInfoDatas();
     }
 
     @Override
@@ -44,7 +46,9 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         mAdapter=new CommonBaseAdapter<ItemInfo>(getContext(),datas) {
             @Override
             protected void convert(CommonViewHolder holder, ItemInfo item, int position) {
-
+                holder.setText(R.id.tv_title,item.getTitle());
+                holder.setText(R.id.tv_produce_line,item.getProduceline());
+                holder.setText(R.id.tv_info,item.getInfo());
             }
 
             @Override
@@ -54,12 +58,15 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         };
         mRyvProduceInfo.setLayoutManager(new LinearLayoutManager(getContext()));
         mRyvProduceInfo.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(this);
 
     }
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-
+        DaggerProduceInfoFragmentCompent.builder().appComponent(appComponent)
+                .produceInfoFragmentModule(new ProduceInfoFragmentModule(this))
+                .build().inject(this);
     }
 
 
@@ -75,5 +82,25 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void getItemInfoDatas(List<ItemInfo> itemInfos) {
+        datas.clear();
+        datas.addAll(itemInfos);
+        //对adapter刷新改变
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getItemInfoDatasFailed() {
+
+    }
+
+
+    @Override
+    public void onItemClick(View view, ItemInfo item, int position) {
+        item.setInfo("dfsafa");
+        mAdapter.notifyDataSetChanged();
     }
 }

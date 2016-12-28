@@ -4,6 +4,8 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.StorageReady;
 
+import java.util.List;
+
 import rx.Observable;
 
 /**
@@ -19,7 +21,7 @@ public class StorageReadyModel extends BaseModel<ApiService> implements StorageR
 
 
     @Override
-    public Observable<StorageReady> getStorageReady(String StorageName) {
-        return null;
+    public Observable<List<StorageReady>> getStorageReady() {
+        return getService().getStorageReadyDates();
     }
 }

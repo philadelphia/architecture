@@ -12,5 +12,52 @@ public class StorageReady {
     private String number;
     private String time;
 
+    public StorageReady(String line, String face, String type, String number, String time) {
+        this.line = line;
+        this.face = face;
+        this.type = type;
+        this.number = number;
+        this.time = time;
+    }
+    
 
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
+
+    public String getFace() {
+        return face;
+    }
+
+    public void setFace(String face) {
+        this.face = face;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 }

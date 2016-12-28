@@ -3,8 +3,13 @@ package com.delta.smt.api;
 
 import com.delta.smt.entity.FeederSupplyWorkItem;
 import com.delta.smt.entity.LoginResult;
+import com.delta.smt.entity.MantissaWarehouseReady;
+import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
+import com.delta.smt.ui.hand_add.item.ItemHandAdd;
+import com.delta.smt.ui.production_warning.item.ItemBreakDown;
+import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
@@ -32,10 +37,22 @@ public interface  ApiService {
     @POST
     Observable<List<FeederSupplyWorkItem>> getAllSupplyWorkItems();
 
+
+    /*预警模块的模拟接口*/
     Observable<List<ItemProduceLine>> getLineDatas();
 
     Observable<TitleNumber> getTitleDatas();
 
     Observable<List<ItemWarningInfo>> getItemWarningDatas();
+
+    Observable<List<ItemBreakDown>> getItemBreakDownDatas();
+
+    Observable<List<ItemInfo>> getItemInfoDatas();
+
+    Observable<List<StorageReady>> getStorageReadyDates();
+
+    Observable<List<ItemHandAdd>> getItemHandAddDatas();
+
+    Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
 }

@@ -11,4 +11,6 @@ public class Constant {
     public static final int NOMAL = 0;
     public static final int PUllTOREFRESH = 1;
     public static final int UPLOADMORE = 2;
+
+    public static final String WORK_ITEM_ID = "WorkItemID";
 }

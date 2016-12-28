@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederwarning.FeederSupply.mvp;
+package com.delta.smt.ui.feeder.feederWarning.FeederSupply.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;

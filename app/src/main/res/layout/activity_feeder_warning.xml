@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
-    tools:context="com.delta.smt.ui.feeder.feederwarning.FeederWarningActivity">
+    tools:context="com.delta.smt.ui.feeder.feederWarning.FeederWarningActivity">
 
     <include
         layout="@layout/main_header"

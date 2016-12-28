@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederCacheRegion;
+package com.delta.smt.ui.feeder.wareSelect;
 
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,11 +14,11 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.WareHouse;
-import com.delta.smt.ui.feeder.feederCacheRegion.di.DaggerFeederCacheRegionComponent;
-import com.delta.smt.ui.feeder.feederCacheRegion.di.FeederCacheRegionModule;
-import com.delta.smt.ui.feeder.feederCacheRegion.mvp.FeederCacheRegionContract;
-import com.delta.smt.ui.feeder.feederCacheRegion.mvp.FeederCacheRegionPresenter;
-import com.delta.smt.ui.feeder.feederwarning.FeederWarningActivity;
+import com.delta.smt.ui.feeder.feederWarning.FeederWorkItemActivity;
+import com.delta.smt.ui.feeder.wareSelect.di.DaggerWareSelectComponent;
+import com.delta.smt.ui.feeder.wareSelect.di.WareSelectModule;
+import com.delta.smt.ui.feeder.wareSelect.mvp.WareSelectContract;
+import com.delta.smt.ui.feeder.wareSelect.mvp.WareSelectPresenter;
 
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPresenter> implements FeederCacheRegionContract.View, CommonBaseAdapter.OnItemClickListener<WareHouse> {
+public class WareSelectActivity extends BaseActiviy<WareSelectPresenter> implements WareSelectContract.View, CommonBaseAdapter.OnItemClickListener<WareHouse> {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.btn_selectWareHouse)
@@ -54,7 +54,7 @@ public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPres
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-        DaggerFeederCacheRegionComponent.builder().appComponent(appComponent).feederCacheRegionModule(new FeederCacheRegionModule(this)).build().inject(this);
+        DaggerWareSelectComponent.builder().appComponent(appComponent).wareSelectModule(new WareSelectModule(this)).build().inject(this);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class FeederCacheRegionActivity extends BaseActiviy<FeederCacheRegionPres
             case R.id.header_setting:
                 break;
             case R.id.btn_selectWareHouse:
-                IntentUtils.showIntent(this, FeederWarningActivity.class);
+                IntentUtils.showIntent(this, FeederWorkItemActivity.class);
                 break;
             default:
                 break;

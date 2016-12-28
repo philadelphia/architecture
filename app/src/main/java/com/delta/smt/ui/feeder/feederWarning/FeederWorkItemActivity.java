@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederwarning;
+package com.delta.smt.ui.feeder.feederWarning;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,7 +18,7 @@ import com.delta.smt.utils.ViewUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class FeederWarningActivity extends BaseActiviy implements TabLayout.OnTabSelectedListener {
+public class FeederWorkItemActivity extends BaseActiviy implements TabLayout.OnTabSelectedListener {
     @BindView(R.id.header_back)
     TextView headerBack;
     @BindView(R.id.header_title)
@@ -95,6 +95,7 @@ public class FeederWarningActivity extends BaseActiviy implements TabLayout.OnTa
 
     @Override
     protected void initView() {
+        headerTitle.setText("Feeder 暂存区预警");
         for (int i = 0; i < mTitles.length; i++) {
             tlTitle.addTab(tlTitle.newTab());
         }

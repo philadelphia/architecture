@@ -2,8 +2,13 @@ package com.delta.smt.di.module;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.entity.FeederSupplyWorkItem;
 import com.delta.smt.entity.LoginResult;
+import com.delta.smt.entity.MantissaWarehouseReady;
+import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
+import com.delta.smt.ui.hand_add.item.ItemHandAdd;
+import com.delta.smt.ui.production_warning.item.ItemBreakDown;
+import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
@@ -57,6 +62,30 @@ public class ServiceModule {
             }
 
             @Override
+            public Observable<List<StorageReady>> getStorageReadyDates() {
+                List<StorageReady> datas = new ArrayList<>();
+                datas.add(new StorageReady("H11","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new StorageReady("H12","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new StorageReady("H13","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new StorageReady("H14","A","等待仓库A备货","2016121200000012","06:00:00"));
+
+                return Observable.just(datas);
+            }
+
+
+
+            @Override
+            public Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates() {
+                List<MantissaWarehouseReady> datas = new ArrayList<>();
+                datas.add(new MantissaWarehouseReady("H11","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new MantissaWarehouseReady("H12","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new MantissaWarehouseReady("H13","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new MantissaWarehouseReady("H14","A","等待仓库A备货","2016121200000012","06:00:00"));
+
+                return Observable.just(datas);
+            }
+
+            @Override
             public Observable<List<FeederSupplyWorkItem>> getAllCheckedInFeeders() {
                 List<FeederSupplyWorkItem> dataList = new ArrayList<>();
                 dataList.add(new FeederSupplyWorkItem(1,"342","A","dsajg"));
@@ -83,7 +112,7 @@ public class ServiceModule {
                 return  Observable.just(dataList);
             }
 
-
+            /*预警模块的模拟service接口*/
             @Override
             public Observable<List<ItemProduceLine>> getLineDatas() {
                 List<ItemProduceLine> datas = new ArrayList<>();
@@ -104,9 +133,36 @@ public class ServiceModule {
             @Override
             public Observable<List<ItemWarningInfo>> getItemWarningDatas() {
                 List<ItemWarningInfo> datas = new ArrayList<>();
+
                 datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
                 datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
                 datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<ItemBreakDown>> getItemBreakDownDatas() {
+                 List<ItemBreakDown> datas=new ArrayList<>();
+
+                datas.add(new ItemBreakDown("贴片机-卡料故障","产线：H13","制程：叠送一体机","料站：06T022","故障信息：卡料故障"));
+                datas.add(new ItemBreakDown("贴片机-卷带故障","产线：H13","制程：贴片机","料站：06T022","故障信息：卷带故障"));
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<ItemInfo>> getItemInfoDatas() {
+                List<ItemInfo> datas=new ArrayList<>();
+
+                datas.add(new ItemInfo("锡膏配送中","产线：H13","消息：锡膏即将配送到产线，请确认"));
+                datas.add(new ItemInfo("替换钢网配送中","产线：H13","消息：替换钢网配送产线，请确认"));
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<ItemHandAdd>> getItemHandAddDatas() {
+                List<ItemHandAdd> datas=new ArrayList<>();
+                datas.add(new ItemHandAdd("料站Pass预警","产线：H13","模组料站：06T021","预计Pass数量：2","预警信息：IC201位置需要手补件"));
+                datas.add(new ItemHandAdd("料站Pass预警","产线：H14","模组料站：06T022","预计Pass数量：4","预警信息：IC201位置需要手补件"));
 
                 return Observable.just(datas);
             }

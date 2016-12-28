@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederwarning.feederCheckIn.mvp;
+package com.delta.smt.ui.feeder.feederWarning.feederCheckIn.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;

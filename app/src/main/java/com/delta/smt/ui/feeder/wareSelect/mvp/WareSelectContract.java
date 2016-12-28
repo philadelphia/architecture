@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederCacheRegion.mvp;
+package com.delta.smt.ui.feeder.wareSelect.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
@@ -13,7 +13,7 @@ import rx.Observable;
  * Created by Tao.ZT.Zhang on 2016/12/21.
  */
 
-public interface FeederCacheRegionContract {
+public interface WareSelectContract {
     interface View extends IView{
         void onSucess(List<WareHouse> wareHouses);
         void onFailed();

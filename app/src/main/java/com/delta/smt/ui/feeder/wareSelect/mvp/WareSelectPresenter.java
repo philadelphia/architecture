@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederCacheRegion.mvp;
+package com.delta.smt.ui.feeder.wareSelect.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.WareHouse;
@@ -13,9 +13,9 @@ import rx.functions.Action1;
  * Created by Tao.ZT.Zhang on 2016/12/21.
  */
 
-public class FeederCacheRegionPresenter extends BasePresenter<FeederCacheRegionContract.Model, FeederCacheRegionContract.View> {
+public class WareSelectPresenter extends BasePresenter<WareSelectContract.Model, WareSelectContract.View> {
     @Inject
-    public FeederCacheRegionPresenter(FeederCacheRegionContract.Model model, FeederCacheRegionContract.View mView) {
+    public WareSelectPresenter(WareSelectContract.Model model, WareSelectContract.View mView) {
         super(model, mView);
 
     }

@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederwarning;
+package com.delta.smt.ui.feeder.feederWorkItemHandle.feederCheckIn;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

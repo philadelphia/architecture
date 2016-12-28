@@ -1,4 +1,4 @@
-package com.delta.smt.ui.feeder.feederwarning;
+package com.delta.smt.ui.feeder.feederWarning;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -6,16 +6,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyWorkItem;
-import com.delta.smt.ui.feeder.feederwarning.feederCheckIn.di.DaggerFeederCheckInComponent;
-import com.delta.smt.ui.feeder.feederwarning.feederCheckIn.di.FeederCheckInModule;
-import com.delta.smt.ui.feeder.feederwarning.feederCheckIn.mvp.FeederCheckInContract;
-import com.delta.smt.ui.feeder.feederwarning.feederCheckIn.mvp.FeederCheckInPresenter;
+import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.di.DaggerFeederCheckInComponent;
+import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.di.FeederCheckInModule;
+import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.mvp.FeederCheckInContract;
+import com.delta.smt.ui.feeder.feederWarning.feederCheckIn.mvp.FeederCheckInPresenter;
+import com.delta.smt.Constant;
+import com.delta.smt.ui.feeder.feederWorkItemHandle.feederCheckIn.FeederCheckInActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +38,10 @@ public class CheckinFragment extends BaseFragment<FeederCheckInPresenter> implem
         adapter = new CommonBaseAdapter<FeederSupplyWorkItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyWorkItem item, int position) {
-                holder.setText(R.id.info_text, "线别: " + String.valueOf(item.getLineNumber()));
-                holder.setText(R.id.info_text_2, "工单号: " + item.getWorkItemID());
-                holder.setText(R.id.info_text_3, "面别: " + item.getFaceID());
-                holder.setText(R.id.info_text_4, "状态: " + item.getStatus());
+                holder.setText(R.id.tv_title, "线别: " + String.valueOf(item.getLineNumber()));
+                holder.setText(R.id.tv_line, "工单号: " + item.getWorkItemID());
+                holder.setText(R.id.tv_material_station, "面别: " + item.getFaceID());
+                holder.setText(R.id.tv_add_count, "状态: " + item.getStatus());
             }
 
             @Override
@@ -82,6 +85,10 @@ public class CheckinFragment extends BaseFragment<FeederCheckInPresenter> implem
 
     @Override
     public void onItemClick(View view, FeederSupplyWorkItem item, int position) {
-
+        Log.i(TAG, "onItemClick: ");
+        Log.i(TAG, "onItemClick: " + view.getClass().getSimpleName() + position);
+        String workItemID = item.getWorkItemID();
+//        Bundle bundle = new Bundle();
+        IntentUtils.showIntent(getmActivity(), FeederCheckInActivity.class,new String[]{Constant.WORK_ITEM_ID},new String[]{workItemID});
     }
 }
