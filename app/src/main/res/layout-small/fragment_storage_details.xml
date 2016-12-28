@@ -3,8 +3,22 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <TextView
-        android:text="退料22222222"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <HorizontalScrollView
+        android:id="@+id/hr_scrow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recy_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recy_contetn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+    </HorizontalScrollView>
 </LinearLayout>

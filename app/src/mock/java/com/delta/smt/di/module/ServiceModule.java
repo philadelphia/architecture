@@ -3,6 +3,7 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.entity.FeederSupplyWorkItem;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
+import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
@@ -81,6 +82,24 @@ public class ServiceModule {
                 datas.add(new MantissaWarehouseReady("H12","A","等待仓库A备货","2016121200000012","06:00:00"));
                 datas.add(new MantissaWarehouseReady("H13","A","等待仓库A备货","2016121200000012","06:00:00"));
                 datas.add(new MantissaWarehouseReady("H14","A","等待仓库A备货","2016121200000012","06:00:00"));
+
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<StorageDetails>> getStorageDetails() {
+                List<StorageDetails> datas = new ArrayList<>();
+                datas.add(new StorageDetails("0351234701","D33E02-02","20000","10000","发料中"));
+                datas.add(new StorageDetails("0351234702","D33E02-03","30000","60000","未开始"));
+                datas.add(new StorageDetails("0351234703","D33E02-04","40000","70000","未开始"));
+                datas.add(new StorageDetails("0351234704","D33E02-05","50000","70000","完成"));
+                datas.add(new StorageDetails("0351234705","D33E02-06","60000","70000","完成"));
+                datas.add(new StorageDetails("0351234706","D33E02-07","70000","70000","完成"));
+                datas.add(new StorageDetails("0351234706","D33E02-07","70000","70000","完成"));
+                datas.add(new StorageDetails("0351234706","D33E02-07","70000","70000","完成"));
+                datas.add(new StorageDetails("0351234706","D33E02-07","70000","70000","完成"));
+                datas.add(new StorageDetails("0351234706","D33E02-07","70000","70000","完成"));
+                datas.add(new StorageDetails("0351234706","D33E02-07","70000","70000","完成"));
 
                 return Observable.just(datas);
             }

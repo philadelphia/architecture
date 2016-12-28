@@ -20,6 +20,6 @@ public class StorageDetailsModel extends BaseModel<ApiService> implements Storag
 
     @Override
     public Observable<List<StorageDetails>> getStorageDetails() {
-        return null;
+        return getService().getStorageDetails();
     }
 }
