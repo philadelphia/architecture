@@ -2,6 +2,7 @@ package com.delta.smt.di.module;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.entity.FeederSupplyWorkItem;
 import com.delta.smt.entity.LoginResult;
+import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
@@ -72,6 +73,17 @@ public class ServiceModule {
             }
 
 
+
+            @Override
+            public Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates() {
+                List<MantissaWarehouseReady> datas = new ArrayList<>();
+                datas.add(new MantissaWarehouseReady("H11","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new MantissaWarehouseReady("H12","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new MantissaWarehouseReady("H13","A","等待仓库A备货","2016121200000012","06:00:00"));
+                datas.add(new MantissaWarehouseReady("H14","A","等待仓库A备货","2016121200000012","06:00:00"));
+
+                return Observable.just(datas);
+            }
 
             @Override
             public Observable<List<FeederSupplyWorkItem>> getAllCheckedInFeeders() {

@@ -20,6 +20,6 @@ public class MantissaWarehouseReadyModel extends BaseModel<ApiService> implement
 
     @Override
     public Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadies() {
-        return null;
+        return getService().getMantissaWarehouseReadyDates();
     }
 }

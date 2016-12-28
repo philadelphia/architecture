@@ -3,6 +3,7 @@ package com.delta.smt.api;
 
 import com.delta.smt.entity.FeederSupplyWorkItem;
 import com.delta.smt.entity.LoginResult;
+import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
@@ -51,5 +52,7 @@ public interface  ApiService {
     Observable<List<StorageReady>> getStorageReadyDates();
 
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
+
+    Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
 }
