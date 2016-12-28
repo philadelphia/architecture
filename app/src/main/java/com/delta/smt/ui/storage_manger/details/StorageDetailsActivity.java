@@ -86,7 +86,7 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
         mRecyTitle.setAdapter(adapter);
 
 
-        adapter2 = new CommonBaseAdapter<StorageDetails>(getContext(), dataList2) {
+               adapter2 = new CommonBaseAdapter<StorageDetails>(getContext(), dataList2) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.setText(R.id.tv_number, item.getNumber());

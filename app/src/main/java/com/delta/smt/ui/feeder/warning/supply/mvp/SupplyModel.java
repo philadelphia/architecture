@@ -3,7 +3,7 @@ package com.delta.smt.ui.feeder.warning.supply.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.FeederSupplyWorkItem;
+import com.delta.smt.entity.FeederSupplyWarningItem;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class SupplyModel extends BaseModel<ApiService> implements SupplyContract
     }
 
     @Override
-    public Observable<List<FeederSupplyWorkItem>> getAllSupplyWorkItems() {
-        return getService().getAllSupplyWorkItems().compose(RxsRxSchedulers.<List<FeederSupplyWorkItem>>io_main());
+    public Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems() {
+        return getService().getAllSupplyWorkItems().compose(RxsRxSchedulers.<List<FeederSupplyWarningItem>>io_main());
     }
 }

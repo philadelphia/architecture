@@ -2,7 +2,7 @@ package com.delta.smt.ui.feeder.warning.supply.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
-import com.delta.smt.entity.FeederSupplyWorkItem;
+import com.delta.smt.entity.FeederSupplyWarningItem;
 
 import java.util.List;
 
@@ -22,9 +22,9 @@ public class SupplyPresenter extends BasePresenter<SupplyContract.Model, SupplyC
     }
 
     public void getAllSupplyWorkItems(){
-        getModel().getAllSupplyWorkItems().subscribe(new Action1<List<FeederSupplyWorkItem>>() {
+        getModel().getAllSupplyWorkItems().subscribe(new Action1<List<FeederSupplyWarningItem>>() {
             @Override
-            public void call(List<FeederSupplyWorkItem> feederSupplyWorkItems) {
+            public void call(List<FeederSupplyWarningItem> feederSupplyWorkItems) {
                 getView().onSuccess(feederSupplyWorkItems);
             }
         }, new Action1<Throwable>() {

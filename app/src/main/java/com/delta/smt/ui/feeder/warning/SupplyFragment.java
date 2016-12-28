@@ -14,7 +14,7 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.FeederSupplyWorkItem;
+import com.delta.smt.entity.FeederSupplyWarningItem;
 
 import com.delta.smt.ui.feeder.warning.supply.di.DaggerSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.FeederSupplyActivity;
@@ -28,19 +28,19 @@ import java.util.List;
 import butterknife.BindView;
 
 
-public class SupplyFragment extends BaseFragment<SupplyPresenter> implements SupplyContract.View , CommonBaseAdapter.OnItemClickListener<FeederSupplyWorkItem>{
+public class SupplyFragment extends BaseFragment<SupplyPresenter> implements SupplyContract.View , CommonBaseAdapter.OnItemClickListener<FeederSupplyWarningItem>{
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
-    private List<FeederSupplyWorkItem> dataList = new ArrayList<>();
-    private CommonBaseAdapter<FeederSupplyWorkItem> adapter;
+    private List<FeederSupplyWarningItem> dataList = new ArrayList<>();
+    private CommonBaseAdapter<FeederSupplyWarningItem> adapter;
     private static final String TAG = "SupplyFragment";
 
 
     @Override
     protected void initView() {
-        adapter = new CommonBaseAdapter<FeederSupplyWorkItem>(getContext(), dataList) {
+        adapter = new CommonBaseAdapter<FeederSupplyWarningItem>(getContext(), dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, FeederSupplyWorkItem item, int position) {
+            protected void convert(CommonViewHolder holder, FeederSupplyWarningItem item, int position) {
                     holder.setText(R.id.tv_title, "线别: " + String.valueOf(item.getLineNumber()));
                     holder.setText(R.id.tv_line, "工单号: " + item.getWorkItemID());
                     holder.setText(R.id.tv_material_station, "面别: " + item.getFaceID());
@@ -48,7 +48,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, FeederSupplyWorkItem item) {
+            protected int getItemViewLayoutId(int position, FeederSupplyWarningItem item) {
                 return R.layout.feeder_supply_list_item;
             }
         };
@@ -75,7 +75,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
     }
 
     @Override
-    public void onSuccess(List<FeederSupplyWorkItem> data) {
+    public void onSuccess(List<FeederSupplyWarningItem> data) {
         Log.i(TAG, "onSuccess: ");
         dataList.clear();
         dataList.addAll(data);
@@ -90,7 +90,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
     }
 
     @Override
-    public void onItemClick(View view, FeederSupplyWorkItem item, int position) {
+    public void onItemClick(View view, FeederSupplyWarningItem item, int position) {
         Log.i(TAG, "onItemClick: ");
         Log.i(TAG, "onItemClick: " + view.getClass().getSimpleName() + position);
         String workItemID = item.getWorkItemID();

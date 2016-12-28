@@ -1,7 +1,8 @@
 package com.delta.smt.api;
 
 
-import com.delta.smt.entity.FeederSupplyWorkItem;
+import com.delta.smt.entity.FeederSupplyItem;
+import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.StorageDetails;
@@ -33,11 +34,16 @@ public interface  ApiService {
     Observable<List<WareHouse>> getAllWareHouse();
 
     @POST
-    Observable<List<FeederSupplyWorkItem>> getAllCheckedInFeeders();
+    Observable<List<FeederSupplyWarningItem>> getAllCheckedInFeeders();
 
     @POST
-    Observable<List<FeederSupplyWorkItem>> getAllSupplyWorkItems();
+    Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
 
+    @POST
+    Observable<List<FeederSupplyItem>> getAllToBeSuppliedFeeders();
+
+    @POST
+    Observable<List<FeederSupplyItem>> getAllToBeCheckedInFeeders();
 
     /*预警模块的模拟接口*/
     Observable<List<ItemProduceLine>> getLineDatas();
