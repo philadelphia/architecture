@@ -52,6 +52,8 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> im
             }
         };
 
+
+
         adapter.setOnItemClickListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mRecyclerView.setAdapter(adapter);
