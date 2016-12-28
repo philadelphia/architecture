@@ -61,7 +61,7 @@ public class StorageWarningActivity extends BaseActiviy<StorageReadyPresenter> i
     protected void initData() {
 
         //此处的Title应该是 从网络获取的数量
-        titles = new String[]{"备料(3)", "退料"};
+        titles = new String[]{"备料(3)"};
     }
 
 
@@ -90,14 +90,14 @@ public class StorageWarningActivity extends BaseActiviy<StorageReadyPresenter> i
                 currentFragment = mStorageReadyFragment;
 
                 break;
-            case 1:
-                if (mStorageReturnFragment == null) {
-                    mStorageReturnFragment = new StorageReturnFragment();
-                    mFragmentTransaction.add(R.id.fl_container, mStorageReturnFragment, "入库");
-                }
-                mFragmentTransaction.show(mStorageReturnFragment).hide(currentFragment).commit();
-                currentFragment = mStorageReturnFragment;
-                break;
+//            case 1:
+//                if (mStorageReturnFragment == null) {
+//                    mStorageReturnFragment = new StorageReturnFragment();
+//                    mFragmentTransaction.add(R.id.fl_container, mStorageReturnFragment, "入库");
+//                }
+//                mFragmentTransaction.show(mStorageReturnFragment).hide(currentFragment).commit();
+//                currentFragment = mStorageReturnFragment;
+//                break;
             default:
                 break;
         }

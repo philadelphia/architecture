@@ -27,6 +27,6 @@ public class StorageReturnFragment extends BaseFragment<LoginPresenter> {
 
     @Override
     protected int getContentViewId() {
-        return R.layout.fragment_storage_return;
+        return R.layout.fragment_storage_details;
     }
 }

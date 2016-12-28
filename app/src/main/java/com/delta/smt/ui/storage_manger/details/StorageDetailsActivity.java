@@ -33,7 +33,7 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
 
     @Override
     protected int getContentViewId() {
-        return R.layout.fragment_storage_return;
+        return R.layout.fragment_storage_details;
     }
 
     @Override
