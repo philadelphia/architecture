@@ -1,4 +1,4 @@
-package com.delta.smt.ui.mantissa_warehouse.backDetail.di;
+package com.delta.smt.ui.mantissa_warehouse.detail.di;
 
 import dagger.Module;
 

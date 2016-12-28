@@ -26,29 +26,13 @@
             style="@style/waring_editext"
             />
         <TextView
-            android:id="@+id/tv_machine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/waring_text"
-            android:text="@string/tv_machine"
-            android:layout_below="@id/tv_work"
-            />
-        <TextView
-            android:id="@+id/ed_machine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/waring_editext"
-            android:layout_below="@id/tv_work"
-            android:layout_toRightOf="@id/tv_machine"
-            />
-        <TextView
             android:id="@+id/tv_pcb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/waring_text"
             android:text="@string/tv_pcb"
-            android:layout_toRightOf="@id/ed_work"
-            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_below="@id/ed_work"
+
             />
         <TextView
             android:id="@+id/ed_pcb"
@@ -57,8 +41,25 @@
             style="@style/waring_editext"
             android:layout_toRightOf="@id/tv_pcb"
             />
+        <TextView
+            android:id="@+id/tv_machine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/waring_text"
+            android:text="@string/tv_machine"
+            android:layout_below="@id/tv_pcb"
+            />
+        <TextView
+            android:id="@+id/ed_machine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/waring_editext"
+            android:layout_below="@id/tv_pcb"
+            android:layout_toRightOf="@id/tv_machine"
+            />
+
     </RelativeLayout>
-    <include layout="@layout/main_list"
+    <include layout="@layout/main_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

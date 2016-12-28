@@ -2,8 +2,9 @@ package com.delta.smt.ui.feeder.handle.feederSupply.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
-import com.delta.smt.entity.FeederSupplyWorkItem;
-import com.delta.smt.ui.feeder.warning.supply.mvp.SupplyContract;
+import com.delta.smt.entity.FeederSupplyItem;
+import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
 
 import java.util.List;
 
@@ -16,17 +17,17 @@ import rx.functions.Action1;
  */
 
 @FragmentScope
-public class FeederSupplyPresenter extends BasePresenter<SupplyContract.Model, SupplyContract.View>{
+public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Model, FeederSupplyContract.View>{
     @Inject
-    public FeederSupplyPresenter(SupplyContract.Model model, SupplyContract.View mView) {
+    public FeederSupplyPresenter(FeederSupplyContract.Model model, FeederSupplyContract.View mView) {
         super(model, mView);
     }
 
-    public void getAllSupplyWorkItems(){
-        getModel().getAllSupplyWorkItems().subscribe(new Action1<List<FeederSupplyWorkItem>>() {
+    public void getAllToBeSuppliedFeeders(){
+        getModel().getAllToBeSuppliedFeeders().subscribe(new Action1<List<FeederSupplyItem>>() {
             @Override
-            public void call(List<FeederSupplyWorkItem> feederSupplyWorkItems) {
-                getView().onSuccess(feederSupplyWorkItems);
+            public void call(List<FeederSupplyItem> feederSupplyItems) {
+                getView().onSuccess(feederSupplyItems);
             }
         }, new Action1<Throwable>() {
             @Override

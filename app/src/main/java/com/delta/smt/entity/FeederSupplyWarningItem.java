@@ -4,13 +4,13 @@ package com.delta.smt.entity;
  * Created by Tao.ZT.Zhang on 2016/12/26.
  */
 
-public class FeederSupplyWorkItem {
+public class FeederSupplyWarningItem {
     private int lineNumber;
     private String workItemID;
     private String faceID;
     private String status;
 
-    public FeederSupplyWorkItem(int lineNumber, String workItemID, String faceID, String status) {
+    public FeederSupplyWarningItem(int lineNumber, String workItemID, String faceID, String status) {
         this.lineNumber = lineNumber;
         this.workItemID = workItemID;
         this.faceID = faceID;
@@ -52,7 +52,7 @@ public class FeederSupplyWorkItem {
 
     @Override
     public String toString() {
-        return "FeederSupplyWorkItem{" +
+        return "FeederSupplyWarningItem{" +
                 "faceID='" + faceID + '\'' +
                 ", lineNumber=" + lineNumber +
                 ", workItemID='" + workItemID + '\'' +

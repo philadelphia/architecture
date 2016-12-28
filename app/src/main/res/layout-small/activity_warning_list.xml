@@ -8,8 +8,8 @@
         />
     <include layout="@layout/main_option"
         />
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <FrameLayout
+        android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

@@ -1,6 +1,7 @@
 package com.delta.smt.di.module;
 import com.delta.smt.api.ApiService;
-import com.delta.smt.entity.FeederSupplyWorkItem;
+import com.delta.smt.entity.FeederSupplyItem;
+import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.StorageDetails;
@@ -105,30 +106,89 @@ public class ServiceModule {
             }
 
             @Override
-            public Observable<List<FeederSupplyWorkItem>> getAllCheckedInFeeders() {
-                List<FeederSupplyWorkItem> dataList = new ArrayList<>();
-                dataList.add(new FeederSupplyWorkItem(1,"342","A","dsajg"));
-                dataList.add(new FeederSupplyWorkItem(2,"342","B","dsajg"));
-                dataList.add(new FeederSupplyWorkItem(3,"342","C","dsajg"));
-                dataList.add(new FeederSupplyWorkItem(4,"342","D","dsajg"));
-                dataList.add(new FeederSupplyWorkItem(5,"342","E","dsajg"));
-                dataList.add(new FeederSupplyWorkItem(6,"342","F","dsajg"));
+            public Observable<List<FeederSupplyWarningItem>> getAllCheckedInFeeders() {
+                List<FeederSupplyWarningItem> dataList = new ArrayList<>();
+                dataList.add(new FeederSupplyWarningItem(1,"342","A","dsajg"));
+                dataList.add(new FeederSupplyWarningItem(2,"342","B","dsajg"));
+                dataList.add(new FeederSupplyWarningItem(3,"342","C","dsajg"));
+                dataList.add(new FeederSupplyWarningItem(4,"342","D","dsajg"));
+                dataList.add(new FeederSupplyWarningItem(5,"342","E","dsajg"));
+                dataList.add(new FeederSupplyWarningItem(6,"342","F","dsajg"));
 
                 return  Observable.just(dataList);
 
             }
 
             @Override
-            public Observable<List<FeederSupplyWorkItem>> getAllSupplyWorkItems() {
-                List<FeederSupplyWorkItem> dataList = new ArrayList<>();
-                dataList.add(new FeederSupplyWorkItem(1,"342","A","dsajg"));
-                dataList.add(new FeederSupplyWorkItem(2,"342","B","dsajg"));
-                dataList.add(new FeederSupplyWorkItem(3,"342","C","dsajg"));
-                dataList.add(new FeederSupplyWorkItem(4,"342","D","dsajg"));
-                dataList.add(new FeederSupplyWorkItem(5,"342","E","dsajg"));
-                dataList.add(new FeederSupplyWorkItem(6,"342","F","dsajg"));
+            public Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems() {
+                List<FeederSupplyWarningItem> dataList = new ArrayList<>();
+                dataList.add(new FeederSupplyWarningItem(1,"342","A","dsajg"));
+                dataList.add(new FeederSupplyWarningItem(2,"342","B","dsajg"));
+                dataList.add(new FeederSupplyWarningItem(3,"342","C","dsajg"));
+                dataList.add(new FeederSupplyWarningItem(4,"342","D","dsajg"));
+                dataList.add(new FeederSupplyWarningItem(5,"342","E","dsajg"));
+                dataList.add(new FeederSupplyWarningItem(6,"342","F","dsajg"));
 
                 return  Observable.just(dataList);
+            }
+
+            @Override
+            public Observable<List<FeederSupplyItem>> getAllToBeSuppliedFeeders() {
+                List<FeederSupplyItem> list = new ArrayList<>();
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                return Observable.just(list);
+            }
+
+            @Override
+            public Observable<List<FeederSupplyItem>> getAllToBeCheckedInFeeders() {
+                List<FeederSupplyItem> list = new ArrayList<>();
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","j9djga","adkjg","","等待上模组"));
+                return Observable.just(list);
             }
 
             /*预警模块的模拟service接口*/

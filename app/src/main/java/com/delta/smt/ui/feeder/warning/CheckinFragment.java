@@ -12,7 +12,7 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.FeederSupplyWorkItem;
+import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.Constant;
 import com.delta.smt.ui.feeder.handle.feederCheckIn.FeederCheckInActivity;
 import com.delta.smt.ui.feeder.warning.checkin.di.CheckInModule;
@@ -25,19 +25,19 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class CheckinFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View ,CommonBaseAdapter.OnItemClickListener<FeederSupplyWorkItem> {
+public class CheckinFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View ,CommonBaseAdapter.OnItemClickListener<FeederSupplyWarningItem> {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
     private static final String TAG = "CheckinFragment";
-    private List<FeederSupplyWorkItem> dataList = new ArrayList();
-    private CommonBaseAdapter<FeederSupplyWorkItem> adapter;
+    private List<FeederSupplyWarningItem> dataList = new ArrayList();
+    private CommonBaseAdapter<FeederSupplyWarningItem> adapter;
     @Override
     protected void initView() {
-        adapter = new CommonBaseAdapter<FeederSupplyWorkItem>(getContext(), dataList) {
+        adapter = new CommonBaseAdapter<FeederSupplyWarningItem>(getContext(), dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, FeederSupplyWorkItem item, int position) {
+            protected void convert(CommonViewHolder holder, FeederSupplyWarningItem item, int position) {
                 holder.setText(R.id.tv_title, "线别: " + String.valueOf(item.getLineNumber()));
                 holder.setText(R.id.tv_line, "工单号: " + item.getWorkItemID());
                 holder.setText(R.id.tv_material_station, "面别: " + item.getFaceID());
@@ -45,7 +45,7 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, FeederSupplyWorkItem item) {
+            protected int getItemViewLayoutId(int position, FeederSupplyWarningItem item) {
                 return R.layout.feeder_supply_list_item;
             }
         };
@@ -72,7 +72,7 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
     }
 
     @Override
-    public void onSuccess(List<FeederSupplyWorkItem> datas) {
+    public void onSuccess(List<FeederSupplyWarningItem> datas) {
         dataList.clear();
         dataList.addAll(datas);
         adapter.notifyDataSetChanged();
@@ -84,7 +84,7 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
     }
 
     @Override
-    public void onItemClick(View view, FeederSupplyWorkItem item, int position) {
+    public void onItemClick(View view, FeederSupplyWarningItem item, int position) {
         Log.i(TAG, "onItemClick: ");
         Log.i(TAG, "onItemClick: " + view.getClass().getSimpleName() + position);
         String workItemID = item.getWorkItemID();
