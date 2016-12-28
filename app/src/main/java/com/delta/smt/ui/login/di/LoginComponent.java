@@ -4,6 +4,7 @@ package com.delta.smt.ui.login.di;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.login.LoginActivity;
+import com.delta.smt.ui.warningSample.WarningSampleActivity;
 
 import dagger.Component;
 
@@ -14,4 +15,6 @@ import dagger.Component;
 @Component(modules = LoginModule.class, dependencies = AppComponent.class)
 public interface LoginComponent {
     void inject(LoginActivity activity);
+
+    void inject(WarningSampleActivity activity);
 }

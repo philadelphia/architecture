@@ -1,5 +1,6 @@
 package com.delta.smt;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,15 +14,16 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.service.WarningService;
 import com.delta.smt.ui.checkstock.CheckStockActivity;
 import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
-import com.delta.smt.ui.hand_add.mvp.HandAddContract;
 import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
 import com.delta.smt.ui.storeroom.StoreRoomActivity;
+import com.delta.smt.ui.warningSample.WarningSampleActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +71,8 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
 
     @Override
     protected void initData() {
+        Intent intent = new Intent(this, WarningService.class);
+        startService(intent);
         fuctionString = new ArrayList<>();
         fuctionString.add("Feeder缓冲区");
         fuctionString.add("仓库房");
@@ -76,9 +80,11 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         fuctionString.add("PCB库房3");
         fuctionString.add("PCB库房4");
         fuctionString.add("sample");
+        fuctionString.add("warningSample");
         fuctionString.add("手补件通知");
         fuctionString.add("尾数仓入库及退料");
     }
+
 
     @Override
     protected int getContentViewId() {
@@ -90,6 +96,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
     public void onItemClick(View view, String item, int position) {
         Log.e(TAG, "onItemClick: " + item + position);
         ToastUtils.showMessage(this, item);
+
         switch (item) {
             case "Feeder缓冲区":
                 IntentUtils.showIntent(this, com.delta.smt.ui.feeder.wareSelect.WareSelectActivity.class);
@@ -115,6 +122,8 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "尾数仓入库及退料":
                 IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class);
                 break;
+            case "warningSample":
+                IntentUtils.showIntent(this, WarningSampleActivity.class);
             default:
                 break;
         }

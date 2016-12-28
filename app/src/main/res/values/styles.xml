@@ -29,7 +29,14 @@
         <item name="android:background">@drawable/btn_selector</item>
 
     </style>
-
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">false</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
+        <item name="android:backgroundDimEnabled">false</item><!--模糊-->
+    </style>
     <style name="pcb_button">
         <item name="android:textSize">@dimen/sp_12</item>
         <item name="android:textColor">@color/textcolor</item>
