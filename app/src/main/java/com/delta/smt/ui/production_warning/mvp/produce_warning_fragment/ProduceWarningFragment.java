@@ -1,6 +1,8 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning_fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
+import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.DaggerProduceWarningFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWarningFragmentModule;
@@ -26,7 +29,8 @@ import butterknife.ButterKnife;
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
-public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentPresenter> implements ProduceWarningFragmentContract.View{
+public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentPresenter>
+        implements ProduceWarningFragmentContract.View, CommonBaseAdapter.OnItemClickListener<ItemWarningInfo> {
 
 
     @BindView(R.id.ryv_produce_warning)
@@ -35,6 +39,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     private CommonBaseAdapter<ItemWarningInfo> mAdapter;
     private  List<ItemWarningInfo> datas=new ArrayList<>();
 
+    DialogRelativelayout mDialogRelativelayout;
     @Override
     protected void initView() {
         mAdapter=new CommonBaseAdapter<ItemWarningInfo>(getContext(),datas) {
@@ -53,6 +58,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         };
         mRyvProduceWarning.setLayoutManager(new LinearLayoutManager(getContext()));
         mRyvProduceWarning.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -91,5 +97,33 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void getItemWarningDatasFailed() {
 
+    }
+
+
+    @Override
+    public void onItemClick(View view, ItemWarningInfo item, int position) {
+        mDialogRelativelayout=new DialogRelativelayout(getContext());
+        final ArrayList<String> datas = new ArrayList<>();
+        if (item.getTitle().equals("接料预警")){
+            mDialogRelativelayout.setStrSecondTitle("请进行接料");
+            datas.add("从备料车亮灯位置取出接料盘进行接料");
+            mDialogRelativelayout.setStrContent(datas);
+            new AlertDialog.Builder(getContext()).setView(mDialogRelativelayout)
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+
+                        }
+                    })
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }).show();
+        }else {
+
+        }
     }
 }

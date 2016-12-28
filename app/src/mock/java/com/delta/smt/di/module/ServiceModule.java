@@ -155,7 +155,7 @@ public class ServiceModule {
 
                 datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
                 datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
-                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
+                datas.add(new ItemWarningInfo("接料预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
                 return Observable.just(datas);
             }
 

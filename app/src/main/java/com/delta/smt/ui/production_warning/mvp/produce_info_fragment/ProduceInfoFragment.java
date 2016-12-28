@@ -115,7 +115,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
     @Override
     public void onItemClick(View view, final ItemInfo item, int position) {
-        final AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
+        AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
         mDialogRelativelayout=new DialogRelativelayout(getContext());
         mDialogRelativelayout.setStrSecondTitle("请求确认");
         final ArrayList<String> datas = new ArrayList<>();
