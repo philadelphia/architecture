@@ -1,5 +1,6 @@
 package com.delta.smt.ui.storage_manger.ready;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.StorageReady;
+import com.delta.smt.ui.storage_manger.details.StorageDetailsActivity;
 import com.delta.smt.ui.storage_manger.ready.di.DaggerStorageReadyComponent;
 import com.delta.smt.ui.storage_manger.ready.di.StorageReadyModule;
 import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyContract;
@@ -96,7 +98,9 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> im
     @Override
     public void onItemClick(View view, StorageReady item, int position) {
 
+        Intent intent = new Intent(getActivity(), StorageDetailsActivity.class);
 
+        startActivity(intent);
 
     }
 }

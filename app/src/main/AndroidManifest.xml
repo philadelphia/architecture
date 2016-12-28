@@ -40,6 +40,10 @@
             android:name=".ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.storage_manger.details.StorageDetailsActivity"
+            android:screenOrientation="portrait" />
+
         <!--production warning activity-->
         <activity
             android:name=".ui.production_warning.mvp.produce_line.ProduceLineActivity"
