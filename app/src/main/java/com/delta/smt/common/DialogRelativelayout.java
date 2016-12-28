@@ -23,6 +23,8 @@ import java.util.ArrayList;
 public class DialogRelativelayout extends LinearLayout {
 
     private Context context;
+    private ArrayAdapter<String> mStringArrayAdapter;
+    private ArrayList<String> datas = new ArrayList<>();
 
     public DialogRelativelayout(Context context) {
         super(context);
@@ -42,6 +44,12 @@ public class DialogRelativelayout extends LinearLayout {
     }
 
 
+    public void setDatas(ArrayList<String> mdatas) {
+        datas.clear();
+        datas.addAll(mdatas);
+        mStringArrayAdapter.notifyDataSetChanged();
+
+    }
 
     /**
      * 传入的是一级标题，红色的
@@ -91,11 +99,22 @@ public class DialogRelativelayout extends LinearLayout {
 
     public void setStrContent(final ArrayList<String> arrayListContent) {
 
-        ListView listView = new ListView(context);
+        datas.clear();
+        datas.addAll(arrayListContent);
+        ListView listView =  new ListView(context);
         listView.setDivider(null);
-        listView.setAdapter(new ArrayAdapter<String>(context, R.layout.warn_dialog_item,arrayListContent));
+        mStringArrayAdapter = new ArrayAdapter<>(context, R.layout.warn_dialog_item, datas);
+        listView.setAdapter(mStringArrayAdapter);
         this.addView(listView);
 
+    }
+
+    public ArrayList<String> getDatas() {
+        return datas;
+    }
+
+    public ArrayAdapter<String> getStringArrayAdapter() {
+        return mStringArrayAdapter;
     }
 
     /**
