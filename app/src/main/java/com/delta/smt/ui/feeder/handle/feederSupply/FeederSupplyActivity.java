@@ -2,10 +2,8 @@ package com.delta.smt.ui.feeder.handle.feederSupply;
 
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
@@ -27,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
@@ -111,12 +108,15 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
     }
 
 
-    @OnClick({R.id.header_back, R.id.header_setting})
+    @OnClick({R.id.header_back, R.id.header_setting, R.id.btn_upload})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.header_back:
                 break;
             case R.id.header_setting:
+
+                break;
+            case R.id.btn_upload:
                 break;
         }
     }
@@ -134,8 +134,5 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
 
     }
 
-    @OnClick(R.id.btn_upload)
-    public void onClick() {
-        Log.i(TAG, "onClick: ");
-    }
+
 }
