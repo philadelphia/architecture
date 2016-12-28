@@ -48,7 +48,7 @@
         <Button
             android:id="@+id/cargon_affirm"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_30"
+            android:layout_height="@dimen/dp_16"
             android:text="@string/cargon_affirm"
            android:layout_marginRight="@dimen/dp_16"
             android:layout_alignParentRight="true"

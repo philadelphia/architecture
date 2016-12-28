@@ -78,5 +78,12 @@
         <item name="android:textSize">@dimen/sp_12</item>
         <item name="android:textColor">@color/waring_editext</item>
         <item name="android:layout_marginTop">@dimen/dp_6</item>
+    </style>
+
+    <style name="item_textstyle">
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textColor">@color/waring_text</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/option_frame</item>
     </style>>
 </resources>

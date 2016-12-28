@@ -18,6 +18,8 @@
     <dimen name="px_0">0px</dimen>
     <dimen name="dp_120">120dp</dimen>
     <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_60">60dp</dimen>
+    <dimen name="dp_80">80dp</dimen>
 
 
 </resources>

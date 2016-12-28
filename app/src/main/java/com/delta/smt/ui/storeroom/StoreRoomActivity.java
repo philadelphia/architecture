@@ -3,6 +3,7 @@ package com.delta.smt.ui.storeroom;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -21,7 +22,8 @@ import butterknife.BindView;
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter>implements BarCodeIpml.OnScanSuccessListener {
+public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implements BarCodeIpml.OnScanSuccessListener {
+
     @BindView(R.id.storage_pcbed)
     EditText storagePcbed;
     @BindView(R.id.storage_vendored)
@@ -32,9 +34,11 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter>implements
     EditText storageLabeled;
     @BindView(R.id.storage_ided)
     EditText storageIded;
+    @BindView(R.id.header_title)
+    TextView headerTitle;
 
 
-    private BarCodeIpml barCodeIpml=new BarCodeIpml();
+    private BarCodeIpml barCodeIpml = new BarCodeIpml();
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -48,6 +52,7 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter>implements
 
     @Override
     protected void initView() {
+        headerTitle.setText(getResources().getString(R.string.pcbku));
         barCodeIpml.setOnGunKeyPressListener(this);
     }
 
@@ -59,11 +64,11 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter>implements
 
     @Override
     public void onScanSuccess(String barcode) {
-       BarCodeParseIpml barCodeParseIpml=new BarCodeParseIpml();
+        BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
             //TODO  这里负责解析二维码，下面的代码不一定能用
-            Feeder materialBlockBarCode= (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
-            Log.e("barcode",materialBlockBarCode.getNumber());
+            Feeder materialBlockBarCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
+            Log.e("barcode", materialBlockBarCode.getNumber());
         } catch (EntityNotFountException e) {
 
             e.printStackTrace();
@@ -71,6 +76,7 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter>implements
 
 
     }
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
 
@@ -90,10 +96,12 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter>implements
             e.printStackTrace();
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         barCodeIpml.onComplete();
     }
+
 
 }

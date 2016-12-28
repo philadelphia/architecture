@@ -32,6 +32,10 @@ public class ItemTimeAdapter extends RecyclerView.Adapter<ItemTimeViewHolder> {
     private Timer mTimer;
     private boolean isCancel = true;
 
+    private ItemOnclick itemTimeOnclck;
+    public void setOnItemTimeOnclck(ItemOnclick itemTimeOnclck){
+        this.itemTimeOnclck=itemTimeOnclck;
+    }
 
     public ItemTimeAdapter(Context context, List<ItemInfo> list){
         this.mList=list;
@@ -74,7 +78,7 @@ public class ItemTimeAdapter extends RecyclerView.Adapter<ItemTimeViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ItemTimeViewHolder holder, int position) {
+    public void onBindViewHolder(final ItemTimeViewHolder holder, final int position) {
         ItemInfo curItemInfo = mList.get(position);
         holder.bindData(curItemInfo);
 
@@ -84,6 +88,15 @@ public class ItemTimeAdapter extends RecyclerView.Adapter<ItemTimeViewHolder> {
                 mCountdownVHList.put(curItemInfo.getId(), holder);
             }
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemTimeOnclck!=null){
+                    itemTimeOnclck.onItemClick(holder.itemView,position);
+                }
+            }
+        });
+
     }
 
     @Override

@@ -60,7 +60,7 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
         fragmentTransaction.add(R.id.fragment, mWarringFragment, "预警");
         fragmentTransaction.show(mWarringFragment).commit();
         currentFragment = mWarringFragment;
-//        headerTitle.setText(this.getResources().getString(R.string.storetitle));
+        headerTitle.setText(this.getResources().getString(R.string.storetitle));
 
 
     }

@@ -39,4 +39,17 @@
     <string name="setting">设置</string>
     <string name="storetitle">PCB库房发料</string>
     <string name="timetext">剩余发料时间：</string>
+    <string name="warning_pcbnumber">PCB料号</string>
+    <string name="warning_pcbid">PCB流水号</string>
+    <string name="pcb_number">PCB料号</string>
+    <string name="pcb_price">架位</string>
+    <string name="pcb_thenumber">当前发料量</string>
+    <string name="pcb_demand">需求量</string>
+    <string name="pcb_code">PCBCode</string>
+    <string name="pcb_time">D/C</string>
+    <string name="statistics_id">PCB流水号</string>
+    <string name="statistics_pcbnumber">在库数量</string>
+    <string name="statistics_number">盘点数量</string>
+    <string name="statistics_storenumber">盘点状态</string>
+    <string name="pcbku">PCB库房入库</string>
 </resources>
