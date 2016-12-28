@@ -1,6 +1,5 @@
 package com.delta.smt.ui.feeder.feederWarning;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,10 +38,10 @@ public class CheckinFragment extends BaseFragment<FeederCheckInPresenter> implem
         adapter = new CommonBaseAdapter<FeederSupplyWorkItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyWorkItem item, int position) {
-                holder.setText(R.id.info_text, "线别: " + String.valueOf(item.getLineNumber()));
-                holder.setText(R.id.info_text_2, "工单号: " + item.getWorkItemID());
-                holder.setText(R.id.info_text_3, "面别: " + item.getFaceID());
-                holder.setText(R.id.info_text_4, "状态: " + item.getStatus());
+                holder.setText(R.id.tv_title, "线别: " + String.valueOf(item.getLineNumber()));
+                holder.setText(R.id.tv_line, "工单号: " + item.getWorkItemID());
+                holder.setText(R.id.tv_material_station, "面别: " + item.getFaceID());
+                holder.setText(R.id.tv_add_count, "状态: " + item.getStatus());
             }
 
             @Override

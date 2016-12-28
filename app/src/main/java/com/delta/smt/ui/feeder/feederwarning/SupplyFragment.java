@@ -19,7 +19,6 @@ import com.delta.smt.ui.feeder.feederWarning.FeederSupply.di.DaggerFeederSupplyC
 import com.delta.smt.ui.feeder.feederWarning.FeederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.feederWarning.FeederSupply.mvp.FeederSupplyContract;
 import com.delta.smt.ui.feeder.feederWarning.FeederSupply.mvp.FeederSupplyPresenter;
-import com.delta.smt.ui.feeder.feederWorkItemHandle.feederCheckIn.FeederCheckInActivity;
 import com.delta.smt.ui.feeder.feederWorkItemHandle.feederSupply.FeederSupplyActivity;
 
 import java.util.ArrayList;
@@ -41,10 +40,10 @@ public class SupplyFragment extends BaseFragment<FeederSupplyPresenter> implemen
         adapter = new CommonBaseAdapter<FeederSupplyWorkItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyWorkItem item, int position) {
-                    holder.setText(R.id.info_text, "线别: " + String.valueOf(item.getLineNumber()));
-                    holder.setText(R.id.info_text_2, "工单号: " + item.getWorkItemID());
-                    holder.setText(R.id.info_text_3, "面别: " + item.getFaceID());
-                    holder.setText(R.id.info_text_4, "状态: " + item.getStatus());
+                    holder.setText(R.id.tv_title, "线别: " + String.valueOf(item.getLineNumber()));
+                    holder.setText(R.id.tv_line, "工单号: " + item.getWorkItemID());
+                    holder.setText(R.id.tv_material_station, "面别: " + item.getFaceID());
+                    holder.setText(R.id.tv_add_count, "状态: " + item.getStatus());
             }
 
             @Override

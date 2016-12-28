@@ -7,6 +7,7 @@ import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
+import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
@@ -49,6 +50,8 @@ public interface  ApiService {
     Observable<List<ItemInfo>> getItemInfoDatas();
 
     Observable<List<StorageReady>> getStorageReadyDates();
+
+    Observable<List<ItemHandAdd>> getItemHandAddDatas();
 
     Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 

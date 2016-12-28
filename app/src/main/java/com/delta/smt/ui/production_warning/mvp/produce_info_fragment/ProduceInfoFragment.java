@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  */
 
 public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresenter>
-    implements ProduceInfoFragmentContract.View{
+    implements ProduceInfoFragmentContract.View, CommonBaseAdapter.OnItemClickListener<ItemInfo> {
 
 
     @BindView(R.id.ryv_produce_info)
@@ -58,6 +58,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         };
         mRyvProduceInfo.setLayoutManager(new LinearLayoutManager(getContext()));
         mRyvProduceInfo.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(this);
 
     }
 
@@ -94,5 +95,12 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     @Override
     public void getItemInfoDatasFailed() {
 
+    }
+
+
+    @Override
+    public void onItemClick(View view, ItemInfo item, int position) {
+        item.setInfo("dfsafa");
+        mAdapter.notifyDataSetChanged();
     }
 }
