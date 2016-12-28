@@ -126,6 +126,7 @@ public abstract class BaseCommonActivity extends AppCompatActivity {
         }
     }
 
+
     /**
      * 用于处理当前activity需要
      */
@@ -159,8 +160,9 @@ public abstract class BaseCommonActivity extends AppCompatActivity {
         }
     }
 
+
     //判断Activity是否在栈顶
-    private boolean isTaskTop(Context context, String currentActivityName) {
+    public boolean isTaskTop(Context context, String currentActivityName) {
         ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> runningTaskInfoList = am.getRunningTasks(1);
         String topActivityName = null;

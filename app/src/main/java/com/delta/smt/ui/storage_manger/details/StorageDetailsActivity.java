@@ -1,7 +1,6 @@
 package com.delta.smt.ui.storage_manger.details;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -74,7 +73,7 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
         adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
-                holder.itemView.setBackgroundColor(Color.GRAY);
+                holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
             }
 
             @Override

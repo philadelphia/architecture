@@ -30,6 +30,7 @@ public class DialogRelativelayout extends LinearLayout {
         super(context);
         this.context = context;
         this.setOrientation(VERTICAL);
+        this.setBackgroundColor(Color.WHITE);
         this.setPadding(dip2px(context,16),dip2px(context,8),10,0);
     }
 
