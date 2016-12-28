@@ -10,9 +10,10 @@
         <TextView
             android:id="@+id/tv_number"
             android:layout_width="90dp"
-            android:textColor="#000000"
+            android:textColor="#333333"
             android:gravity="center"
             android:text="料号"
+            android:textSize="12dp"
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
         <TextView
@@ -20,7 +21,8 @@
             android:layout_width="90dp"
             android:gravity="center"
             android:text="物料架位"
-            android:textColor="#000000"
+            android:textColor="#333333"
+            android:textSize="12dp"
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
         <TextView
@@ -28,7 +30,8 @@
             android:layout_width="70dp"
             android:gravity="center"
             android:text="需求量"
-            android:textColor="#000000"
+            android:textColor="#333333"
+            android:textSize="12dp"
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
         <TextView
@@ -36,7 +39,8 @@
             android:layout_width="70dp"
             android:gravity="center"
             android:text="发料量"
-            android:textColor="#000000"
+            android:textColor="#333333"
+            android:textSize="12dp"
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
         <TextView
@@ -44,7 +48,8 @@
             android:layout_width="70dp"
             android:gravity="center"
             android:text="状态"
-            android:textColor="#000000"
+            android:textColor="#333333"
+            android:textSize="12dp"
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
 

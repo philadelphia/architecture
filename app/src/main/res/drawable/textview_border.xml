@@ -5,6 +5,6 @@
     <!-- 边框 -->
     <stroke
         android:width="0.1dp"
-        android:color="@android:color/black" />
+        android:color="#cccccc" />
 
 </shape>

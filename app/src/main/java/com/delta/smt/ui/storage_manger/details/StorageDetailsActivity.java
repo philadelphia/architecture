@@ -1,12 +1,15 @@
 package com.delta.smt.ui.storage_manger.details;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -37,6 +41,12 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
     RecyclerView mRecyContetn;
     @BindView(R.id.hr_scrow)
     HorizontalScrollView mHrScrow;
+    @BindView(R.id.header_back)
+    TextView mHeaderBack;
+    @BindView(R.id.header_title)
+    TextView mHeaderTitle;
+    @BindView(R.id.header_setting)
+    TextView mHeaderSetting;
     private List<StorageDetails> dataList = new ArrayList();
     private List<StorageDetails> dataList2 = new ArrayList();
     private CommonBaseAdapter<StorageDetails> adapter;
@@ -46,7 +56,7 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
     @Override
     protected void componentInject(AppComponent appComponent) {
 
-        DaggerStorageDetailsComponent.builder().appComponent(appComponent).storageDetailsModule( new StorageDetailsModule(this)).build().inject(this);
+        DaggerStorageDetailsComponent.builder().appComponent(appComponent).storageDetailsModule(new StorageDetailsModule(this)).build().inject(this);
 
     }
 
@@ -59,12 +69,14 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
 
     @Override
     protected void initView() {
-        dataList.add(new StorageDetails("","","","","") );
+        mHeaderTitle.setText("仓库A备料");
+        dataList.add(new StorageDetails("", "", "", "", ""));
         adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.itemView.setBackgroundColor(Color.GRAY);
             }
+
             @Override
             protected int getItemViewLayoutId(int position, StorageDetails item) {
                 return R.layout.details_item;
@@ -74,13 +86,12 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
         mRecyTitle.setAdapter(adapter);
 
 
-
         adapter2 = new CommonBaseAdapter<StorageDetails>(getContext(), dataList2) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.setText(R.id.tv_number, item.getNumber());
-                holder.setText(R.id.tv_location,  item.getLocation());
-                holder.setText(R.id.tv_needNumber,  item.getNeedNumber());
+                holder.setText(R.id.tv_location, item.getLocation());
+                holder.setText(R.id.tv_needNumber, item.getNeedNumber());
                 holder.setText(R.id.tv_shipments, item.getShipments());
                 holder.setText(R.id.tv_type, item.getType());
             }
@@ -113,4 +124,16 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
 
     }
 
+
+
+    @OnClick({R.id.header_back, R.id.header_setting})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.header_back:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+            case R.id.header_setting:
+                break;
+        }
+    }
 }
