@@ -70,13 +70,13 @@
             android:label="@string/title_activity_feeder_cache_region"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.feeder.feederWarning.FeederWorkItemActivity">
+            android:name=".ui.feeder.warning.FeederWorkItemActivity">
         </activity>
 
-        <activity android:name=".ui.feeder.feederWorkItemHandle.feederCheckIn.FeederCheckInActivity"
+        <activity android:name=".ui.feeder.handle.feederCheckIn.FeederCheckInActivity"
                     android:label="FeederCheckInActivity"/>
 
-        <activity android:name=".ui.feeder.feederWorkItemHandle.feederSupply.FeederSupplyActivity"
+        <activity android:name=".ui.feeder.handle.feederSupply.FeederSupplyActivity"
                   android:label="feederSupplyActivity"/>
     </application>
 
