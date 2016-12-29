@@ -52,6 +52,9 @@
             android:name=".ui.mantissa_warehouse.detail.MantissaWarehouseDetailsActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorage"
+            android:screenOrientation="portrait" />
 
 
         <!--production warning activity-->
