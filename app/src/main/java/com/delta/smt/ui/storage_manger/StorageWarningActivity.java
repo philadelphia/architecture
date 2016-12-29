@@ -11,8 +11,8 @@ import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.ui.storage_manger.ready.StorageReturnFragment;
 import com.delta.smt.ui.storage_manger.ready.StorageReadyFragment;
+import com.delta.smt.ui.storage_manger.ready.StorageReturnFragment;
 import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyPresenter;
 import com.delta.smt.utils.ViewUtils;
 
