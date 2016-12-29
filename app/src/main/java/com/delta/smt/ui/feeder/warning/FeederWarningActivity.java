@@ -1,5 +1,4 @@
 package com.delta.smt.ui.feeder.warning;
-
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,17 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.di.component.AppComponent;
-
 import com.delta.smt.utils.ViewUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class FeederWorkItemActivity extends BaseActiviy implements TabLayout.OnTabSelectedListener {
+public class FeederWarningActivity extends BaseActiviy implements TabLayout.OnTabSelectedListener {
     @BindView(R.id.header_back)
     TextView headerBack;
     @BindView(R.id.header_title)

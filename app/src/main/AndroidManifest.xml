@@ -41,12 +41,21 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity"
+            android:name=".ui.storage_manger.details.StorageDetailsActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.storage_manger.details.StorageDetailsActivity"
+        android:name=".ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity"
+        android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.mantissa_warehouse.detail.MantissaWarehouseDetailsActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorage"
+            android:screenOrientation="portrait" />
+
 
         <!--production warning activity-->
         <activity
@@ -85,7 +94,7 @@
 
         <service android:name=".service.WarningService" />
         <activity
-            android:name=".ui.feeder.warning.FeederWorkItemActivity">
+            android:name=".ui.feeder.warning.FeederWarningActivity">
         </activity>
 
         <activity android:name=".ui.feeder.handle.feederCheckIn.FeederCheckInActivity"

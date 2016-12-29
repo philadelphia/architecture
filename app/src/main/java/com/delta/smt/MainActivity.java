@@ -19,6 +19,7 @@ import com.delta.smt.ui.checkstock.CheckStockActivity;
 import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
+import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorage;
 import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
@@ -82,7 +83,8 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         fuctionString.add("sample");
         fuctionString.add("warningSample");
         fuctionString.add("手补件通知");
-        fuctionString.add("尾数仓入库及退料");
+        fuctionString.add("尾数仓备料");
+        fuctionString.add("尾数仓退料及入库");
     }
 
 
@@ -119,8 +121,11 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "手补件通知":
                 IntentUtils.showIntent(this, HandAddActivity.class);
                 break;
-            case "尾数仓入库及退料":
+            case "尾数仓备料":
                 IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class);
+                break;
+            case "尾数仓退料及入库":
+                IntentUtils.showIntent(this, MantissaWarehouseReturnAndPutStorage.class);
                 break;
             case "warningSample":
                 IntentUtils.showIntent(this, WarningSampleActivity.class);

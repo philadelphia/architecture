@@ -78,7 +78,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> im
 
     @Override
     protected int getContentViewId() {
-        return R.layout.fragment_checkin;
+        return R.layout.fragment_storage_ready_rec;
     }
 
 

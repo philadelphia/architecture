@@ -2,10 +2,8 @@ package com.delta.smt.ui.feeder.handle.feederSupply;
 
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
@@ -18,6 +16,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyItem;
+import com.delta.smt.entity.Result;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
@@ -27,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
@@ -72,6 +70,7 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
 
     @Override
     protected void initView() {
+        headerTitle.setText("备料");
         dataList.add(new FeederSupplyItem("", "", "", "", ""));
         adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
@@ -111,12 +110,17 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
     }
 
 
-    @OnClick({R.id.header_back, R.id.header_setting})
+    @OnClick({R.id.header_back, R.id.header_setting, R.id.btn_upload})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.header_back:
+                onBackPressed();
                 break;
             case R.id.header_setting:
+
+                break;
+            case R.id.btn_upload:
+                getPresenter().upLoadFeederSupplyResult();
                 break;
         }
     }
@@ -130,12 +134,14 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
     }
 
     @Override
+    public void onUpLoadSuccess(Result result) {
+        onBackPressed();
+    }
+
+    @Override
     public void onFalied() {
 
     }
 
-    @OnClick(R.id.btn_upload)
-    public void onClick() {
-        Log.i(TAG, "onClick: ");
-    }
+
 }

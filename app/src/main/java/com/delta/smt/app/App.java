@@ -4,7 +4,6 @@ package com.delta.smt.app;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,7 +14,6 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.di.component.DaggerAppComponent;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.ActivityState;
-import com.delta.smt.service.WarningService;
 
 
 /**

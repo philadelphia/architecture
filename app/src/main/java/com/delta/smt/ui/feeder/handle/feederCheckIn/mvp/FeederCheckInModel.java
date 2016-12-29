@@ -3,6 +3,7 @@ package com.delta.smt.ui.feeder.handle.feederCheckIn.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class FeederCheckInModel extends BaseModel<ApiService> implements FeederC
     }
 
     @Override
-    public Observable<List<FeederSupplyWarningItem>> getAllCheckedInFeeders() {
-        return getService().getAllCheckedInFeeders().compose(RxsRxSchedulers.<List<FeederSupplyWarningItem>>io_main());
+    public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {
+        return getService().getAllCheckedInFeeders().compose(RxsRxSchedulers.<List<FeederCheckInItem>>io_main());
     }
 }

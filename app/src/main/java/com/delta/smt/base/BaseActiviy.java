@@ -1,5 +1,7 @@
 package com.delta.smt.base;
 
+import android.view.KeyEvent;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.di.component.AppComponent;
 
@@ -14,6 +16,12 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
     public final String TAG = getClass().getSimpleName();
     @Inject
     protected p mPresenter;
+
+    private OnDispathchKeyEvent dispathchKeyEvent;
+
+    public void setDispathchKeyEvent(OnDispathchKeyEvent dispathchKeyEvent) {
+        this.dispathchKeyEvent = dispathchKeyEvent;
+    }
 
     @Override
     protected void initCView() {
@@ -34,6 +42,16 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
     protected abstract void initView();
 
 
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (dispathchKeyEvent != null) {
+            if (dispathchKeyEvent.dispatchKeyEvent(event)) {
+                return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
     public p getPresenter() {
         return mPresenter;
     }
@@ -44,5 +62,9 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
             mPresenter.ondestory();
         }
         super.onDestroy();
+    }
+
+    public interface OnDispathchKeyEvent {
+        boolean dispatchKeyEvent(KeyEvent event);
     }
 }

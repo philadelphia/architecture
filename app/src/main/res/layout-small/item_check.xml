@@ -8,7 +8,7 @@
     >
     <TextView
         android:id="@+id/statistics"
-        android:layout_width="@dimen/dp_66"
+        android:layout_width="@dimen/dp_120"
         android:layout_height="wrap_content"
         android:text="@string/warning_pcbnumber"
         style="@style/item_textstyle"

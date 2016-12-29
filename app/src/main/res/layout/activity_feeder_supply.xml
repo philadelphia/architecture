@@ -3,6 +3,11 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
+    <include layout="@layout/main_header"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -11,13 +16,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="上传到MES"
-           android:layout_alignParentRight="true"
+            android:layout_alignParentRight="true"
             android:gravity="center"/>
     </RelativeLayout>
 
-    <include layout="@layout/main_header"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"/>
     <HorizontalScrollView
         android:id="@+id/hr_scrow"
         android:layout_width="match_parent"
