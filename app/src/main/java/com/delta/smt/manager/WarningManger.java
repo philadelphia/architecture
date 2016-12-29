@@ -27,11 +27,11 @@ public class WarningManger {
     private boolean isRecieve = true;
     private OnWarning onWarning;
 
+    private WarningBroadcastReciever mBroadcastReceiver;
+
     public void setOnWarning(OnWarning onWarning) {
         this.onWarning = onWarning;
     }
-
-    private WarningBroadcastReciever mBroadcastReceiver;
 
     public void setRecieve(boolean recieve) {
         isRecieve = recieve;

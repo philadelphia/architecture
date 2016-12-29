@@ -3,10 +3,12 @@ package com.delta.smt.ui.storage_manger.ready;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.delta.smt.R;
+import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
@@ -29,7 +31,7 @@ import static com.delta.smt.R.id.recyclerView;
  * Created by Zhenyu.Liu on 2016/12/21.
  */
 
-public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> implements StorageReadyContract.View,CommonBaseAdapter.OnItemClickListener<StorageReady> {
+public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> implements StorageReadyContract.View,CommonBaseAdapter.OnItemClickListener<StorageReady>,BaseActiviy.OnDispathchKeyEvent {
     @BindView(recyclerView)
     RecyclerView mRecyclerView;
 
@@ -102,5 +104,10 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> im
 
         startActivity(intent);
 
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        return false;
     }
 }

@@ -23,6 +23,12 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
         this.dispathchKeyEvent = dispathchKeyEvent;
     }
 
+    public void removeDispathchKeyEvent() {
+        if (dispathchKeyEvent != null) {
+            dispathchKeyEvent = null;
+        }
+    }
+
     @Override
     protected void initCView() {
         initView();
