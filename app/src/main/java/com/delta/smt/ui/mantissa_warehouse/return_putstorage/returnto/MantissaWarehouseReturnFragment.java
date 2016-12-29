@@ -2,12 +2,14 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.smt.R;
+import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
@@ -28,7 +30,7 @@ import butterknife.OnClick;
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter> implements MantissaWarehouseReturnContract.View {
+public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter> implements MantissaWarehouseReturnContract.View, BaseActiviy.OnDispathchKeyEvent {
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
@@ -115,4 +117,8 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     }
 
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        return false;
+    }
 }

@@ -53,6 +53,7 @@ public class MantissaWarehouseReturnAndPutStorage extends BaseActiviy<StorageRea
         mMantissaWarehouseReturnFragment = new MantissaWarehouseReturnFragment();
         mFragmentTransaction.add(R.id.fl_container, mMantissaWarehouseReturnFragment, "入库");
         mFragmentTransaction.show(mMantissaWarehouseReturnFragment).commit();
+        setDispathchKeyEvent(mMantissaWarehouseReturnFragment);
         currentFragment = mMantissaWarehouseReturnFragment;
     }
 
@@ -65,7 +66,7 @@ public class MantissaWarehouseReturnAndPutStorage extends BaseActiviy<StorageRea
                     mMantissaWarehouseReturnFragment = new MantissaWarehouseReturnFragment();
                     mFragmentTransaction.add(R.id.fl_container, mMantissaWarehouseReturnFragment, "入库");
                 }
-
+                setDispathchKeyEvent(mMantissaWarehouseReturnFragment);
                 mFragmentTransaction.show(mMantissaWarehouseReturnFragment).hide(currentFragment).commit();
                 currentFragment = mMantissaWarehouseReturnFragment;
 
@@ -75,6 +76,7 @@ public class MantissaWarehouseReturnAndPutStorage extends BaseActiviy<StorageRea
                     mMantissaWarehousePutstorageFragment = new MantissaWarehousePutstorageFragment();
                     mFragmentTransaction.add(R.id.fl_container, mMantissaWarehousePutstorageFragment, "退入主仓库");
                 }
+                setDispathchKeyEvent(mMantissaWarehousePutstorageFragment);
                 mFragmentTransaction.show(mMantissaWarehousePutstorageFragment).hide(currentFragment).commit();
                 currentFragment = mMantissaWarehousePutstorageFragment;
                 break;
