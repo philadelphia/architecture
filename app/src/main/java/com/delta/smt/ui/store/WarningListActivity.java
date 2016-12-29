@@ -2,7 +2,6 @@ package com.delta.smt.ui.store;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.delta.smt.R;
@@ -11,6 +10,9 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ListWarning;
+import com.delta.smt.ui.store.di.DaggerWarningListComponent;
+import com.delta.smt.ui.store.di.WarningListModule;
+import com.delta.smt.ui.store.mvp.WarningListContract;
 import com.delta.smt.ui.store.mvp.WarningListPresenter;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import butterknife.BindView;
  * Created by Lin.Hou on 2016-12-27.
  */
 
-public class WarningListActivity extends BaseActiviy<WarningListPresenter> {
+public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View{
     @BindView(R.id.header_back)
     TextView headerBack;
     @BindView(R.id.header_title)
@@ -39,30 +41,19 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> {
     RecyclerView recyTitle;
     @BindView(R.id.recy_contetn)
     RecyclerView recyContetn;
-    @BindView(R.id.button)
-    Button button;
 
-    List<ListWarning> mList;
+
+    List<ListWarning> mList=new ArrayList<>();
     private CommonBaseAdapter<ListWarning> mAdapter;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-
+        DaggerWarningListComponent.builder().appComponent(appComponent).warningListModule(new WarningListModule(this)).build().inject(this);
     }
 
     @Override
     protected void initData() {
-        mList=new ArrayList<>();
-        for (int i=0;i<10;i++){
-            ListWarning l=new ListWarning();
-            l.setPcb("0343352030"+i);
-            l.setJia("J21-3"+i);
-            l.setDangqaian("5"+i);
-            l.setXuqiu("100");
-            l.setPcbCode("0"+i);
-            l.setDc("1637");
-            mList.add(l);
-        }
+    getPresenter().fatchListWarning();
     }
 
     @Override
@@ -113,4 +104,15 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> {
     }
 
 
+    @Override
+    public void onSucess(List<ListWarning> wareHouses) {
+        mList.clear();
+        mList.addAll(wareHouses);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFailed() {
+
+    }
 }

@@ -1,5 +1,8 @@
 package com.delta.smt.di.module;
 import com.delta.smt.api.ApiService;
+import com.delta.smt.entity.CheckStock;
+
+import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
@@ -107,6 +110,37 @@ public class ServiceModule {
                 datas.add(new StorageDetails("0351234706","D33E02-07","70000","70000","完成"));
 
                 return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<com.delta.smt.entity.ItemInfo>> getWarning() {
+                List<com.delta.smt.entity.ItemInfo>list=new ArrayList<>();
+                for (int i=0;i<10;i++){
+                    com.delta.smt.entity.ItemInfo item=new com.delta.smt.entity.ItemInfo();
+                    //TODO  控件有问题
+                    item.setText("产线:H"+i+"\n"+"工单号:24561215"+i+"\n"+"PCB料号：457485645"+i+"\n"+"机种：H123-"+i+"需求量："+50+"\n"+"状态:"+"备料");
+                    item.setCountdown(9000);
+                    long current = System.currentTimeMillis();
+                    item.setEndTime(current+9000);
+                    list.add(item);
+                }
+                return Observable.just(list);
+            }
+
+            @Override
+            public Observable<List<ListWarning>> getListWarning() {
+                List<ListWarning>  mList=new ArrayList<>();
+                for (int i=0;i<10;i++){
+                    ListWarning l=new ListWarning();
+                    l.setPcb("0343352030"+i);
+                    l.setJia("J21-3"+i);
+                    l.setDangqaian("5"+i);
+                    l.setXuqiu("100");
+                    l.setPcbCode("0"+i);
+                    l.setDc("1637");
+                    mList.add(l);
+                }
+                return Observable.just(mList);
             }
 
             @Override
@@ -334,6 +368,30 @@ public class ServiceModule {
 
                 return Observable.just(datas);
             }
+
+            //LIN
+            public Observable<List<CheckStock>>getCheckStock(){
+                List<CheckStock> data=new ArrayList<>();
+                for (int i=0;i<20;i++){
+                    CheckStock checkStock=new CheckStock();
+                    checkStock.setPcb("034335230"+i);
+                    checkStock.setLiu("2016876500"+i);
+                    checkStock.setNumber("200");
+                    checkStock.setCheck("200");
+                    if (i==6||i==3||i==3){
+                        checkStock.setZhuangtai("未开始");
+                    }else if (i==0){
+                        checkStock.setZhuangtai("开始盘点");
+                    }else {
+                    checkStock.setZhuangtai("盘点完成");
+                    }
+                    data.add(checkStock);
+
+
+                }
+                return Observable.just(data);
+            }
+
         };
     }
 

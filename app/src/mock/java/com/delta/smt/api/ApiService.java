@@ -1,9 +1,11 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetails;
 import com.delta.smt.entity.MantissaWarehouseReady;
@@ -70,6 +72,13 @@ public interface  ApiService {
     Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
+
+
+    //接口PCB库房发料
+
+    Observable<List<com.delta.smt.entity.ItemInfo>> getWarning();//获取所有预警信息
+    Observable<List<ListWarning>> getListWarning();//获取发料列表
+    Observable<List<CheckStock>> getCheckStock();//获取盘点列表
 
     Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
 

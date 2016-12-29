@@ -20,10 +20,12 @@ public class CheckStockModule {
     }
     @ActivityScope
     @Provides
-    CheckStockContract.View provides(){
+    CheckStockContract.View providesview(){
         return view;
     }
-    CheckStockContract.Model provides(ApiService service){
+    @ActivityScope
+    @Provides
+    CheckStockContract.Model providesModel(ApiService service){
         return new CheckStockModel(service);
     }
 }
