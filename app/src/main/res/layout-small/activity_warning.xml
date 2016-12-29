@@ -60,16 +60,9 @@
 
     </RelativeLayout>
     <include layout="@layout/main_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/waring_buttom"
-        style="@style/pcb_button"
-        android:layout_marginBottom="@dimen/dp_6"
-        android:id="@+id/button" />
+
 
 </LinearLayout>

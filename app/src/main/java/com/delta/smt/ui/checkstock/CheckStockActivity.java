@@ -13,6 +13,9 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.CheckStock;
+import com.delta.smt.ui.checkstock.di.CheckStockModule;
+import com.delta.smt.ui.checkstock.di.DaggerCheckStockComponent;
+import com.delta.smt.ui.checkstock.mvp.CheckStockContract;
 import com.delta.smt.ui.checkstock.mvp.CheckStockPresenter;
 
 import java.util.ArrayList;
@@ -27,7 +30,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> {
+public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> implements CheckStockContract.View {
     @BindView(R.id.header_back)
     TextView headerBack;
     @BindView(R.id.header_title)
@@ -47,27 +50,13 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> {
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-
+        DaggerCheckStockComponent.builder().appComponent(appComponent).checkStockModule(new CheckStockModule(this)) .build().inject(this);
     }
 
     @Override
     protected void initData() {
+    getPresenter().fatchCheckStock();
 
-        for (int i=0;i<10;i++){
-            CheckStock checkStock=new CheckStock();
-            checkStock.setPcb("034335230"+i);
-            checkStock.setLiu("2016876500"+i);
-            checkStock.setNumber("200");
-            if (i==6||i==3||i==3){
-                checkStock.setPcb("未开始");
-            }else if (i==0){
-                checkStock.setPcb("开始盘点");
-            }
-            checkStock.setPcb("盘点完成");
-            dataList.add(checkStock);
-
-
-        }
 
     }
 
@@ -119,6 +108,19 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> {
     protected int getContentViewId() {
         return R.layout.activity_check;
     }
+
+    @Override
+    public void onSucess(List<CheckStock> wareHouses) {
+        dataList.clear();
+        dataList.addAll(wareHouses);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFailed() {
+
+    }
+
 
 
 }

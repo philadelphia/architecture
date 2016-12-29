@@ -20,6 +20,7 @@
     <dimen name="dp_40">40dp</dimen>
     <dimen name="dp_60">60dp</dimen>
     <dimen name="dp_80">80dp</dimen>
+    <dimen name="dp_12">12dp</dimen>
 
 
 </resources>

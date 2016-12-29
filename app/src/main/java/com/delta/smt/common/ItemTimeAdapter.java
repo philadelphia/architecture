@@ -101,7 +101,7 @@ public class ItemTimeAdapter extends RecyclerView.Adapter<ItemTimeViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return mList==null?0:mList.size();
     }
     @Override
     public void onViewRecycled(ItemTimeViewHolder holder) {
