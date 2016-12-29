@@ -3,10 +3,12 @@ package com.delta.smt.ui.warningSample;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
+import com.delta.smt.Constant;
 import com.delta.smt.R;
-import com.delta.smt.base.WarningBaseActivity;
+import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.login.di.DaggerLoginComponent;
 import com.delta.smt.ui.login.di.LoginModule;
 import com.delta.smt.ui.login.mvp.LoginContract;
@@ -21,12 +23,11 @@ import java.util.ArrayList;
  */
 
 
-public class WarningSampleActivity extends WarningBaseActivity<LoginPresenter> implements LoginContract.View {
+public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implements LoginContract.View, WarningManger.OnWarning {
 
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-
 
         DaggerLoginComponent.builder().appComponent(appComponent).loginModule(new LoginModule(this)).build().inject(this);
     }
@@ -34,7 +35,10 @@ public class WarningSampleActivity extends WarningBaseActivity<LoginPresenter> i
     @Override
     protected void initData() {
 
-        getPresenter().login("sdf","sdf");
+        WarningManger.getInstance().addWarning(Constant.SAMPLEWARING, getClass());
+        WarningManger.getInstance().setRecieve(true);
+        WarningManger.getInstance().setOnWarning(this);
+        getPresenter().login("sdf", "sdf");
     }
 
     @Override
@@ -47,15 +51,30 @@ public class WarningSampleActivity extends WarningBaseActivity<LoginPresenter> i
         return R.layout.fragment_diseasereport;
     }
 
-
-//    @Override
-//    protected boolean warningTime() {
-//        return true;
-//    }
+    @Override
+    protected void onResume() {
+        WarningManger.getInstance().registWReceiver(this);
+        super.onResume();
+    }
 
     @Override
-    protected void warningComming() {
-        //1.创建这个DialogRelativelayout
+    protected void onStop() {
+        WarningManger.getInstance().unregistWReceriver(this);
+        super.onStop();
+    }
+
+    @Override
+    public void loginSucess() {
+
+    }
+
+    @Override
+    public void loginFailed() {
+
+    }
+
+    @Override
+    public void warningComming() {
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
         dialogRelativelayout.setStrTitle("测试标题");
@@ -74,15 +93,5 @@ public class WarningSampleActivity extends WarningBaseActivity<LoginPresenter> i
 
             }
         }).show();
-    }
-
-    @Override
-    public void loginSucess() {
-
-    }
-
-    @Override
-    public void loginFailed() {
-
     }
 }

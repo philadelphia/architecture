@@ -59,7 +59,6 @@ android {
         androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
             exclude group: 'com.android.support', module: 'support-annotations'
         })
-
         testCompile rootProject.ext.dependencies["junit"]
         apt rootProject.ext.dependencies["dagger2-apt-compiler"]
         provided rootProject.ext.dependencies["javax.annotation"]
@@ -68,14 +67,8 @@ android {
         debugCompile rootProject.ext.dependencies["canary-debug"]
         releaseCompile rootProject.ext.dependencies["canary-release"]
         testCompile rootProject.ext.dependencies["canary-release"]
-        compile 'com.supercwn.superrecycleview:superlibrary:1.2.0'
-
+        compile rootProject.ext.dependencies["design"]
         compile rootProject.ext.dependencies["countdownview"]
-        compile rootProject.ext.dependencies["tableLayout"]
-        compile 'com.android.support:recyclerview-v7:24.1.1'
-        compile 'com.google.android.gms:play-services-appindexing:8.4.0'
-
-
         compile rootProject.ext.dependencies["barcodecollector"]
 
     }

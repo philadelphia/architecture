@@ -62,12 +62,14 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
                     Intent intent = new Intent();
                     intent.setAction(Constant.WARNINGRECIEVE);
                     intent.putExtra(Constant.WARNINGTYPE, randomInt);
-                    if (foreground) {
-                        sendBroadcast(intent);
-                    } else {
-                        topActivity = ActivityMonitor.getInstance().getTopActivity();
-                        if (topActivity != null) {
-                            if (topActivity.getClass().equals(WarningManger.getInstance().getWaringCalss(randomInt))) {
+                    //1.首先判断栈顶是不是有我们的预警页面
+                    //2.其次判断是否是在前台如果是前台就发送广播如果是后台就弹出dialog
+                    topActivity = ActivityMonitor.getInstance().getTopActivity();
+                    if (topActivity != null) {
+                        if (topActivity.getClass().equals(WarningManger.getInstance().getWaringCalss(randomInt))) {
+                            if (foreground) {
+                                sendBroadcast(intent);
+                            } else {
                                 App.getMainHander().post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -77,6 +79,21 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
                             }
                         }
                     }
+//                    if (foreground) {
+//                        sendBroadcast(intent);
+//                    } else {
+//                        topActivity = ActivityMonitor.getInstance().getTopActivity();
+//                        if (topActivity != null) {
+//                            if (topActivity.getClass().equals(WarningManger.getInstance().getWaringCalss(randomInt))) {
+//                                App.getMainHander().post(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        dialog.show();
+//                                    }
+//                                });
+//                            }
+//                        }
+//                    }
                     Log.e("---", "run: " + randomInt);
                     try {
                         Thread.sleep(5000);
@@ -85,10 +102,16 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
                     }
                 }
             }
-        }).start();
+        }
+
+        ).
+
+                start();
 
 
-        return super.onStartCommand(intent, flags, startId);
+        return super.
+
+                onStartCommand(intent, flags, startId);
     }
 
     @NonNull
@@ -110,7 +133,7 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.AlertDialogCustom).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(WarningService.this,topActivity.getClass());
+                Intent intent = new Intent(WarningService.this, topActivity.getClass());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
