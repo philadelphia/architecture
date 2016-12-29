@@ -82,7 +82,8 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         fuctionString.add("sample");
         fuctionString.add("warningSample");
         fuctionString.add("手补件通知");
-        fuctionString.add("尾数仓入库及退料");
+        fuctionString.add("尾数仓备料");
+        fuctionString.add("尾数仓退料及入库");
     }
 
 
@@ -119,7 +120,10 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "手补件通知":
                 IntentUtils.showIntent(this, HandAddActivity.class);
                 break;
-            case "尾数仓入库及退料":
+            case "尾数仓备料":
+                IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class);
+                break;
+            case "尾数仓退料及入库":
                 IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class);
                 break;
             case "warningSample":

@@ -21,6 +21,6 @@ public class MantissaWarehouseDetailsModel extends BaseModel<ApiService> impleme
 
     @Override
     public Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails() {
-        return null;
+        return getService().getMantissaWarehouseDetails();
     }
 }

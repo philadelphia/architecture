@@ -3,6 +3,7 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.LoginResult;
+import com.delta.smt.entity.MantissaWarehouseDetails;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -101,6 +102,24 @@ public class ServiceModule {
                 datas.add(new StorageDetails("0351234706","D33E02-07","70000","70000","完成"));
                 datas.add(new StorageDetails("0351234706","D33E02-07","70000","70000","完成"));
                 datas.add(new StorageDetails("0351234706","D33E02-07","70000","70000","完成"));
+
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails() {
+                List<MantissaWarehouseDetails> datas = new ArrayList<>();
+                datas.add(new MantissaWarehouseDetails("0351234701","D33E02-02","20000","10000","发料中"));
+                datas.add(new MantissaWarehouseDetails("0351234702","D33E02-03","30000","60000","未开始"));
+                datas.add(new MantissaWarehouseDetails("0351234703","D33E02-04","40000","70000","未开始"));
+                datas.add(new MantissaWarehouseDetails("0351234704","D33E02-05","50000","70000","完成"));
+                datas.add(new MantissaWarehouseDetails("0351234705","D33E02-06","60000","70000","完成"));
+                datas.add(new MantissaWarehouseDetails("0351234706","D33E02-07","70000","70000","完成"));
+                datas.add(new MantissaWarehouseDetails("0351234706","D33E02-07","70000","70000","完成"));
+                datas.add(new MantissaWarehouseDetails("0351234706","D33E02-07","70000","70000","完成"));
+                datas.add(new MantissaWarehouseDetails("0351234706","D33E02-07","70000","70000","完成"));
+                datas.add(new MantissaWarehouseDetails("0351234706","D33E02-07","70000","70000","完成"));
+                datas.add(new MantissaWarehouseDetails("0351234706","D33E02-07","70000","70000","完成"));
 
                 return Observable.just(datas);
             }
