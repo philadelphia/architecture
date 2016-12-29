@@ -1,20 +1,19 @@
 package com.delta.smt.ui.feeder.warning;
 
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
-import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.FeederSupplyWarningItem;
-import com.delta.smt.Constant;
-import com.delta.smt.ui.feeder.handle.feederCheckIn.FeederCheckInActivity;
+import com.delta.smt.entity.FeederCheckInItem;
+import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.ui.feeder.warning.checkin.di.CheckInModule;
 import com.delta.smt.ui.feeder.warning.checkin.di.DaggerCheckInComponent;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInContract;
@@ -25,34 +24,68 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class CheckinFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View ,CommonBaseAdapter.OnItemClickListener<FeederSupplyWarningItem> {
 
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+public class CheckinFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View {
 
     private static final String TAG = "CheckinFragment";
-    private List<FeederSupplyWarningItem> dataList = new ArrayList();
-    private CommonBaseAdapter<FeederSupplyWarningItem> adapter;
+    @BindView(R.id.recy_title)
+    RecyclerView recyTitle;
+    @BindView(R.id.recy_contetn)
+    RecyclerView recyContetn;
+    @BindView(R.id.hr_scrow)
+    HorizontalScrollView hrScrow;
+
+    private CommonBaseAdapter<FeederCheckInItem> adapterTitle;
+    private CommonBaseAdapter<FeederCheckInItem> adapter;
+    private List<FeederCheckInItem> dataList = new ArrayList<>();
+    private List<FeederCheckInItem> dataSource = new ArrayList<>();
+
     @Override
     protected void initView() {
-        adapter = new CommonBaseAdapter<FeederSupplyWarningItem>(getContext(), dataList) {
+        dataList.add(new FeederCheckInItem("", "", "", "", ""));
+        adapterTitle = new CommonBaseAdapter<FeederCheckInItem>(getContext(), dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, FeederSupplyWarningItem item, int position) {
-                holder.setText(R.id.tv_title, "线别: " + String.valueOf(item.getLineNumber()));
-                holder.setText(R.id.tv_line, "工单号: " + item.getWorkItemID());
-                holder.setText(R.id.tv_material_station, "面别: " + item.getFaceID());
-                holder.setText(R.id.tv_add_count, "状态: " + item.getStatus());
+            protected void convert(CommonViewHolder holder, FeederCheckInItem item, int position) {
+//                holder.setText(R.id.tv_workItemID, "工单ID: " + item.getWorkItemID());
+//                holder.setText(R.id.tv_feederID, "FeederID: " + item.getFeederID());
+//                holder.setText(R.id.tv_materialID, "料号: " + item.getMaterialID());
+//                holder.setText(R.id.tv_location, "架位: " + item.getLocation());
+//                holder.setText(R.id.tv_chkinTimestamp, "入库时间: " + item.getCheckInTimeStamp());
+//                holder.setText(R.id.tv_status, "状态: " + item.getStatus());
+                holder.itemView.setBackgroundColor(Color.GRAY);
+
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, FeederSupplyWarningItem item) {
-                return R.layout.feeder_supply_list_item;
+            protected int getItemViewLayoutId(int position, FeederCheckInItem item) {
+                return R.layout.feeder_checkin_item;
             }
         };
 
-        adapter.setOnItemClickListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        recyclerView.setAdapter(adapter);
+        recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
+        recyTitle.setAdapter(adapterTitle);
+
+
+        adapter = new CommonBaseAdapter<FeederCheckInItem>(getContext(), dataSource) {
+            @Override
+            protected void convert(CommonViewHolder holder, FeederCheckInItem item, int position) {
+                holder.setText(R.id.tv_workItemID,  item.getWorkItemID());
+                holder.setText(R.id.tv_feederID,  item.getFeederID());
+                holder.setText(R.id.tv_materialID, item.getMaterialID());
+                holder.setText(R.id.tv_location,  item.getLocation());
+                holder.setText(R.id.tv_chkinTimestamp, item.getCheckInTimeStamp());
+                holder.setText(R.id.tv_status,  item.getStatus());
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, FeederCheckInItem item) {
+                return R.layout.feeder_checkin_item;
+            }
+
+        };
+        recyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        recyContetn.setAdapter(adapter);
+
     }
 
     @Override
@@ -72,9 +105,9 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
     }
 
     @Override
-    public void onSuccess(List<FeederSupplyWarningItem> datas) {
-        dataList.clear();
-        dataList.addAll(datas);
+    public void onSuccess(List<FeederCheckInItem> datas) {
+        dataSource.clear();
+        dataSource.addAll(datas);
         adapter.notifyDataSetChanged();
     }
 
@@ -83,12 +116,5 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
 
     }
 
-    @Override
-    public void onItemClick(View view, FeederSupplyWarningItem item, int position) {
-        Log.i(TAG, "onItemClick: ");
-        Log.i(TAG, "onItemClick: " + view.getClass().getSimpleName() + position);
-        String workItemID = item.getWorkItemID();
-//        Bundle bundle = new Bundle();
-        IntentUtils.showIntent(getmActivity(), FeederCheckInActivity.class,new String[]{Constant.WORK_ITEM_ID},new String[]{workItemID});
-    }
+
 }

@@ -18,7 +18,7 @@ import com.delta.smt.utils.ViewUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class FeederWorkItemActivity extends BaseActiviy implements TabLayout.OnTabSelectedListener {
+public class FeederWarningActivity extends BaseActiviy implements TabLayout.OnTabSelectedListener {
     @BindView(R.id.header_back)
     TextView headerBack;
     @BindView(R.id.header_title)

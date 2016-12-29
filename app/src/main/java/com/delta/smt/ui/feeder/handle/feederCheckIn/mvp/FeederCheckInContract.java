@@ -2,6 +2,7 @@ package com.delta.smt.ui.feeder.handle.feederCheckIn.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 
 import java.util.List;
@@ -19,6 +20,6 @@ public interface FeederCheckInContract {
     }
 
     interface  Model extends IModel{
-        public Observable<List<FeederSupplyWarningItem>> getAllCheckedInFeeders();
+        public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders();
     }
 }

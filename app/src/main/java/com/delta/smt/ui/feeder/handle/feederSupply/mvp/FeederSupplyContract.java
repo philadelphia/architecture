@@ -4,9 +4,11 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.Result;
 
 import java.util.List;
 
+import retrofit2.Response;
 import rx.Observable;
 
 /**
@@ -16,10 +18,13 @@ import rx.Observable;
 public interface FeederSupplyContract {
     interface View extends IView{
         public void onSuccess(List<FeederSupplyItem> data);
+        public void onUpLoadSuccess(Result result);
         public void onFalied();
     }
 
     interface Model extends IModel{
         public Observable<List<FeederSupplyItem>> getAllToBeSuppliedFeeders();
+
+        public Observable<Result> upLoadFeederSupplyResult();
     }
 }

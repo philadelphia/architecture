@@ -4,6 +4,7 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.Result;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
 
 import java.util.List;
@@ -28,6 +29,21 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             @Override
             public void call(List<FeederSupplyItem> feederSupplyItems) {
                 getView().onSuccess(feederSupplyItems);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+    }
+
+
+    public void upLoadFeederSupplyResult(){
+        getModel().upLoadFeederSupplyResult().subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                getView().onUpLoadSuccess(result);
             }
         }, new Action1<Throwable>() {
             @Override

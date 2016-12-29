@@ -85,7 +85,7 @@
 
         <service android:name=".service.WarningService" />
         <activity
-            android:name=".ui.feeder.warning.FeederWorkItemActivity">
+            android:name=".ui.feeder.warning.FeederWarningActivity">
         </activity>
 
         <activity android:name=".ui.feeder.handle.feederCheckIn.FeederCheckInActivity"

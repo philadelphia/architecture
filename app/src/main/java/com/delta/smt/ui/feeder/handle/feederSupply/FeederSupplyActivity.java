@@ -16,6 +16,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyItem;
+import com.delta.smt.entity.Result;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
@@ -69,6 +70,7 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
 
     @Override
     protected void initView() {
+        headerTitle.setText("备料");
         dataList.add(new FeederSupplyItem("", "", "", "", ""));
         adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
@@ -112,11 +114,13 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.header_back:
+                onBackPressed();
                 break;
             case R.id.header_setting:
 
                 break;
             case R.id.btn_upload:
+                getPresenter().upLoadFeederSupplyResult();
                 break;
         }
     }
@@ -127,6 +131,11 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void onUpLoadSuccess(Result result) {
+        onBackPressed();
     }
 
     @Override
