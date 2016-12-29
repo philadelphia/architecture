@@ -41,12 +41,18 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity"
+            android:name=".ui.storage_manger.details.StorageDetailsActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.storage_manger.details.StorageDetailsActivity"
+        android:name=".ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity"
+        android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.mantissa_warehouse.detail.MantissaWarehouseDetailsActivity"
             android:screenOrientation="portrait" />
+
+
 
         <!--production warning activity-->
         <activity

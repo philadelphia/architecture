@@ -14,6 +14,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaWarehouseReady;
+import com.delta.smt.ui.mantissa_warehouse.detail.MantissaWarehouseDetailsActivity;
 import com.delta.smt.ui.mantissa_warehouse.ready.di.DaggerMantissaWarehouseReadyComponent;
 import com.delta.smt.ui.mantissa_warehouse.ready.di.MantissaWarehouseReadyModule;
 import com.delta.smt.ui.mantissa_warehouse.ready.mvp.MantissaWarehouseReadyContract;
@@ -92,7 +93,9 @@ public class MantissaWarehouseReadyActivity extends BaseActiviy<MantissaWarehous
 
     @Override
     public void onItemClick(View view, MantissaWarehouseReady item, int position) {
+        Intent intent = new Intent(this, MantissaWarehouseDetailsActivity.class);
 
+        startActivity(intent);
     }
 
     @Override
