@@ -8,6 +8,7 @@ import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetails;
+import com.delta.smt.entity.MantissaWarehousePutstorage;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
 import com.delta.smt.entity.Result;
@@ -169,6 +170,17 @@ public class ServiceModule {
                 datas.add(new MantissaWarehouseReturn("201512121234","0351234701","1234567890","-","等待入库"));
                 datas.add(new MantissaWarehouseReturn("201512121235","0351234702","1234567890","D33E02-08","完成"));
                 datas.add(new MantissaWarehouseReturn("201512121236","0351234703","1234567890","D33E02-09","完成"));
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage() {
+                List<MantissaWarehousePutstorage> datas = new ArrayList<>();
+                datas.add(new MantissaWarehousePutstorage("201512121234","0351234701","D33E02-02","-","等待退入"));
+                datas.add(new MantissaWarehousePutstorage("201512121234","0351234701","D33E02-02","-","等待退入"));
+                datas.add(new MantissaWarehousePutstorage("201512121234","0351234701","D33E02-02","-","等待退入"));
+                datas.add(new MantissaWarehousePutstorage("201512121235","0351234702","D33E02-02","","等待退入"));
+                datas.add(new MantissaWarehousePutstorage("201512121236","0351234703","D33E02-02","","等待退入"));
                 return Observable.just(datas);
             }
 

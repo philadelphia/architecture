@@ -8,6 +8,7 @@ import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetails;
+import com.delta.smt.entity.MantissaWarehousePutstorage;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
 import com.delta.smt.entity.Result;
@@ -83,5 +84,7 @@ public interface  ApiService {
     Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
 
     Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn();
+
+    Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage();
 
 }
