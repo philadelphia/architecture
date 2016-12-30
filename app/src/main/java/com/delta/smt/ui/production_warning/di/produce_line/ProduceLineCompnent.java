@@ -10,7 +10,9 @@ import dagger.Component;
  * Created by Fuxiang.Zhang on 2016/12/23.
  */
 @ActivityScope
-@Component(modules=ProduceLineModule.class,dependencies = AppComponent.class)
+@Component(modules = ProduceLineModule.class, dependencies = AppComponent.class)
 public interface ProduceLineCompnent {
     void inject(ProduceLineActivity produceLineActivity);
+
+    void inject(com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity activity);
 }
