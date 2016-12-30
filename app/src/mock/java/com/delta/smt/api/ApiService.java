@@ -1,6 +1,7 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.entity.BeginPut;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
@@ -86,5 +87,7 @@ public interface  ApiService {
     Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn();
 
     Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage();
+
+    Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
 }

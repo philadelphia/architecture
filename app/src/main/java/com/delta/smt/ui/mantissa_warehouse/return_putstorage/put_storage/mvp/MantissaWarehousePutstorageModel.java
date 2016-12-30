@@ -3,7 +3,6 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.MantissaWarehousePutstorage;
-import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp.MantissaWarehousePutstorageContract;
 
 import java.util.List;
 
@@ -23,5 +22,10 @@ public class MantissaWarehousePutstorageModel extends BaseModel<ApiService> impl
     @Override
     public Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage() {
         return getService().getMantissaWarehousePutstorage();
+    }
+
+    @Override
+    public Observable<List<MantissaWarehousePutstorage>> getbeginput() {
+        return getService().getBeginput();
     }
 }

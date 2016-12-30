@@ -1,12 +1,9 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -27,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -120,9 +116,24 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     }
 
     @Override
+    public void getBeginSucess(List<MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
+
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehousePutstorages);
+        adapter2.notifyDataSetChanged();
+    }
+
+
+    @Override
     public void getFailed() {
 
     }
+
+    @Override
+    public void getBeginFailed() {
+
+    }
+
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -136,6 +147,10 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
             case R.id.clean:
                 break;
             case R.id.deduct:
+                getPresenter().getBeginPut();
+                mBound.setEnabled(false);
+                mClean.setEnabled(false);
+                mDeduct.setEnabled(false);
                 break;
             case R.id.bound:
                 break;

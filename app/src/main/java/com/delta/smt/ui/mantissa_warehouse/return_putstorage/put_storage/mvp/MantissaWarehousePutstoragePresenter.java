@@ -3,6 +3,7 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.MantissaWarehousePutstorage;
+import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp.MantissaWarehousePutstorageContract;
 
 import java.util.List;
 
@@ -40,6 +41,20 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             }
         });
 
+    }
+
+    public void getBeginPut(){
+        getModel().getbeginput().subscribe(new Action1<List<MantissaWarehousePutstorage>>() {
+            @Override
+            public void call(List<MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
+                getView().getBeginSucess(mantissaWarehousePutstorages);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().getFailed();
+            }
+        });
     }
 
 }
