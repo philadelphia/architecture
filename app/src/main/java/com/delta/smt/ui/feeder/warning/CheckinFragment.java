@@ -15,7 +15,6 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederCheckInItem;
-import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.ui.feeder.warning.checkin.di.CheckInModule;
 import com.delta.smt.ui.feeder.warning.checkin.di.DaggerCheckInComponent;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInContract;
@@ -143,6 +142,7 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
 
     @Override
     public void onScanSucess(String barcode) {
-
+        Log.i(TAG, "onScanSuccess: ");
+        Log.i(TAG, "barcode == " + barcode);
     }
 }
