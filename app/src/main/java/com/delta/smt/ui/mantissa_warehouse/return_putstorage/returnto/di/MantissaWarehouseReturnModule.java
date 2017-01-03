@@ -11,6 +11,7 @@ import dagger.Provides;
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
  */
+
 @Module
 public class MantissaWarehouseReturnModule {
 

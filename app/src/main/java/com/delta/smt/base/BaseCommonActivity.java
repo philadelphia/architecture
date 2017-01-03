@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -20,6 +19,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportActivity;
 
 /**
  * @description :不带Presenter的Activity
@@ -28,7 +28,7 @@ import butterknife.Unbinder;
  */
 
 
-public abstract class BaseCommonActivity extends AppCompatActivity {
+public abstract class BaseCommonActivity extends SupportActivity {
     public static final String ACTION_RECEIVER_ACTIVITY = "com.delta.smt";
     public static final String IS_NOT_ADD_ACTIVITY_LIST = "is_add_activity_list";//是否加入到activity的list，管理
     private String TAG = getClass().getSimpleName();
