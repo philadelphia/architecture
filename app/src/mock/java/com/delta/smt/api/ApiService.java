@@ -81,6 +81,11 @@ public interface  ApiService {
     Observable<List<com.delta.smt.entity.ItemInfo>> getWarning();//获取所有预警信息
     Observable<List<ListWarning>> getListWarning();//获取发料列表
     Observable<List<CheckStock>> getCheckStock();//获取盘点列表
+    Observable<String> getSuccessState();//是否成功?
+    Observable<String> getStoreRoomSuccess();//是否成功?
+    Observable<String> getCheckStockSuccess();//是否成功?
+
+
 
     Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
 

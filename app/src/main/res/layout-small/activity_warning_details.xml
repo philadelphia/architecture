@@ -68,31 +68,14 @@
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_alignBottom="@id/storage_datacodetv"
             />
-        <TextView
-            android:id="@+id/storage_labeltv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/style_storagetv"
-            android:text="@string/storage_labeltv"
-            android:layout_below="@id/storage_datacodetv"
-            android:layout_alignLeft="@id/storage_pcbtv"
-            />
-        <EditText
-            android:id="@+id/storage_labeled"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_16"
-            style="@style/style_storageedi"
-            android:layout_toRightOf="@id/storage_labeltv"
-            android:layout_alignLeft="@id/storage_pcbed"
-            android:layout_alignBottom="@id/storage_labeltv"
-            />
+
         <TextView
             android:id="@+id/storage_idtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/style_storagetv"
             android:text="@string/storage_idtv"
-            android:layout_below="@id/storage_labeltv"
+            android:layout_below="@id/storage_datacodeed"
             android:layout_alignLeft="@id/storage_pcbtv"
             />
         <EditText

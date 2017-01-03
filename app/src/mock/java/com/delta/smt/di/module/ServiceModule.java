@@ -119,14 +119,19 @@ public class ServiceModule {
                 for (int i=0;i<10;i++){
                     com.delta.smt.entity.ItemInfo item=new com.delta.smt.entity.ItemInfo();
                     //TODO  控件有问题
-                    item.setText("产线:H"+i+"\n"+"工单号:24561215"+i+"\n"+"PCB料号：457485645"+i+"\n"+"机种：H123-"+i+"需求量："+50+"\n"+"状态:"+"备料");
+                    item.setText("产线:H"+i+"\n"+"工单号:24561215"+i+"\n"+"PCB料号：457485645"+i+"\n"+"机种：H123-"+i+"\n"+"需求量："+50+"\n"+"状态:"+"备料");
                     item.setCountdown(9000);
                     long current = System.currentTimeMillis();
                     item.setEndTime(current+9000);
+                    item.setWorkNumber("245612152");
+                    item.setMachine("H1231");
+                    item.setMaterialNumber("4574856451");
                     list.add(item);
                 }
                 return Observable.just(list);
             }
+
+
 
             @Override
             public Observable<List<ListWarning>> getListWarning() {
@@ -407,6 +412,21 @@ public class ServiceModule {
 
                 }
                 return Observable.just(data);
+            }
+
+            @Override
+            public Observable<String> getSuccessState() {
+                return Observable.just("成功");
+            }
+
+            @Override
+            public Observable<String> getStoreRoomSuccess() {
+                return Observable.just("成功");
+            }
+
+            @Override
+            public Observable<String> getCheckStockSuccess() {
+                return Observable.just("成功");
             }
 
         };
