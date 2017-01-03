@@ -53,7 +53,7 @@ public class StorageWarningActivity extends BaseActiviy<StorageReadyPresenter> i
         mStorageReadyFragment = new StorageReadyFragment();
         mFragmentTransaction.add(R.id.fl_container, mStorageReadyFragment, "备料");
         mFragmentTransaction.show(mStorageReadyFragment).commit();
-        setDispathchKeyEvent(mStorageReadyFragment);
+       // setDispathchKeyEvent(mStorageReadyFragment);
         currentFragment = mStorageReadyFragment;
 
     }

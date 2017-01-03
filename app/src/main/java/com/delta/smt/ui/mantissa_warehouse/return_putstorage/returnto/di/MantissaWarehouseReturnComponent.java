@@ -1,6 +1,5 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di;
 
-import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.MantissaWarehouseReturnFragment;

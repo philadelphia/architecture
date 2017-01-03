@@ -67,8 +67,9 @@ android {
         debugCompile rootProject.ext.dependencies["canary-debug"]
         releaseCompile rootProject.ext.dependencies["canary-release"]
         testCompile rootProject.ext.dependencies["canary-release"]
-        compile rootProject.ext.dependencies["design"]
+        provided rootProject.ext.dependencies["design"]
         compile rootProject.ext.dependencies["countdownview"]
         compile rootProject.ext.dependencies["barcodecollector"]
+        compile rootProject.ext.dependencies["fragmentation"]
 
     }
