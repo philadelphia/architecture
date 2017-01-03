@@ -124,7 +124,7 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
                 if (mMaterbarCode!=null){
                     if (item.getPcb().equals(mMaterbarCode.getDeltaMaterialNumber())){
                         holder.setText(R.id.pcb_thenumber,mMaterbarCode.getCount());
-                        if (item.getJia().equals(mFramebarCode.getNumberLeft()+mFramebarCode.getBase()+mFramebarCode.getNumberRight())){
+                        if (item.getJia().equals(mFramebarCode.getSource())){
                             getPresenter().fathcSuccessState();
                         }
                     }

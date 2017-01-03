@@ -30,7 +30,7 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implements StoreRoomContract.View,BarCodeIpml.OnScanSuccessListener {
+public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implements StoreRoomContract.View{
 
     @BindView(R.id.storage_pcbed)
     EditText storagePcbed;
@@ -83,7 +83,7 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implement
                     break;
                 case FRAME_LOCATION:
                     FrameLocation frameCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
-                    storageIded.setText(frameCode.getNumberLeft()+frameCode.getBase()+frameCode.getNumberRight());
+                    storageIded.setText(frameCode.getSource());
                     break;
             }
 
@@ -124,7 +124,10 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implement
 
     @Override
     public void storeSuccess(String s) {
-
+        storagePcbed.setText(null);
+        storageVendored.setText(null);
+        storageDatacodeed.setText(null);
+        storageIded.setText(null);
     }
 
     @Override
