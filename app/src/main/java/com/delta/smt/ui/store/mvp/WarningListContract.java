@@ -16,8 +16,11 @@ public class WarningListContract {
     public interface View extends IView{
         void onSucess(List<ListWarning> wareHouses);
         void onFailed();
+        void onSucessState(String s);
+        void onFailedState(String s);
     }
     public interface Model extends IModel{
         Observable<List<ListWarning>>getListWarning();
+        Observable<String>getSuccessfulState ();
     }
 }

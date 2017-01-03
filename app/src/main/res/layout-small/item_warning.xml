@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:id="@+id/linean"
     >
+
     <TextView
         android:id="@+id/pcb_number"
         android:layout_width="@dimen/dp_120"
@@ -13,6 +15,7 @@
         style="@style/item_textstyle"
 
         />
+
     <TextView
         android:id="@+id/pcb_price"
         android:layout_width="@dimen/dp_60"

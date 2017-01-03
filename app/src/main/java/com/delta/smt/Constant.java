@@ -23,4 +23,12 @@ public class Constant {
 
 
     public static final String WORK_ITEM_ID = "WorkItemID";
+
+    //更新配置文件update.json url
+    public static final String bundleJsonUrl = "http://172.22.35.177:8081/update.json";
+
+    //更新状态
+    public static final String MESSAGE_PROGRESS = "message_progress";
+    public static final String MESSAGE_DIALOG_DISMISS = "message_dialog_dismiss";
+    public static final String MESSAGE_FAILED = "message_failed";
 }
