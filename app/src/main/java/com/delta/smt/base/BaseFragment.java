@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * @description :
@@ -24,18 +24,19 @@ import butterknife.Unbinder;
  * @date : 2016/12/12 15:30
  */
 
-public abstract class BaseFragment<p extends BasePresenter> extends Fragment {
+public abstract class BaseFragment<p extends BasePresenter> extends SupportFragment {
     @Inject
     protected p mPresenter;
     private App application;
     private View rootView;
     private Activity mainActivity;
     private Unbinder bind;
+    public String TAG = getClass().getSimpleName();
 
     @Override
     public void onAttach(Context context) {
         if (context instanceof Activity) {
-            mainActivity =  getActivity();
+            mainActivity = getActivity();
         } else {
             throw new ClassCastException("Activity can't cast to MainActivity");
         }

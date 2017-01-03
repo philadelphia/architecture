@@ -2,7 +2,6 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
@@ -18,12 +17,13 @@ import com.delta.smt.utils.ViewUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehouseReturnAndPutStorage extends BaseActiviy<StorageReadyPresenter> implements TabLayout.OnTabSelectedListener {
+public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActiviy<StorageReadyPresenter> implements TabLayout.OnTabSelectedListener {
 
     @BindView(R.id.tl_title)
     TabLayout mTlTitle;
@@ -37,9 +37,8 @@ public class MantissaWarehouseReturnAndPutStorage extends BaseActiviy<StorageRea
     private MantissaWarehouseReturnFragment mMantissaWarehouseReturnFragment ;
     private MantissaWarehousePutstorageFragment mMantissaWarehousePutstorageFragment ;
 
-    private Fragment currentFragment;
+    private SupportFragment currentFragment;
     private String[] titles;
-
 
     @Override
     protected void initView() {
@@ -49,11 +48,9 @@ public class MantissaWarehouseReturnAndPutStorage extends BaseActiviy<StorageRea
         }
         ViewUtils.setTabTitle(mTlTitle, titles);
         mTlTitle.addOnTabSelectedListener(this);
-        mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+        mMantissaWarehousePutstorageFragment = new MantissaWarehousePutstorageFragment();
         mMantissaWarehouseReturnFragment = new MantissaWarehouseReturnFragment();
-        mFragmentTransaction.add(R.id.fl_container, mMantissaWarehouseReturnFragment, "入库");
-        mFragmentTransaction.show(mMantissaWarehouseReturnFragment).commit();
-        setDispathchKeyEvent(mMantissaWarehouseReturnFragment);
+        loadMultipleRootFragment(R.id.fl_container,0,mMantissaWarehouseReturnFragment,mMantissaWarehousePutstorageFragment);
         currentFragment = mMantissaWarehouseReturnFragment;
     }
 
@@ -62,22 +59,11 @@ public class MantissaWarehouseReturnAndPutStorage extends BaseActiviy<StorageRea
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
-                if (mMantissaWarehouseReturnFragment == null) {
-                    mMantissaWarehouseReturnFragment = new MantissaWarehouseReturnFragment();
-                    mFragmentTransaction.add(R.id.fl_container, mMantissaWarehouseReturnFragment, "入库");
-                }
-                setDispathchKeyEvent(mMantissaWarehouseReturnFragment);
-                mFragmentTransaction.show(mMantissaWarehouseReturnFragment).hide(currentFragment).commit();
+                showHideFragment(mMantissaWarehouseReturnFragment,currentFragment);
                 currentFragment = mMantissaWarehouseReturnFragment;
-
                 break;
             case 1:
-                if (mMantissaWarehousePutstorageFragment == null) {
-                    mMantissaWarehousePutstorageFragment = new MantissaWarehousePutstorageFragment();
-                    mFragmentTransaction.add(R.id.fl_container, mMantissaWarehousePutstorageFragment, "退入主仓库");
-                }
-                setDispathchKeyEvent(mMantissaWarehousePutstorageFragment);
-                mFragmentTransaction.show(mMantissaWarehousePutstorageFragment).hide(currentFragment).commit();
+                showHideFragment(mMantissaWarehousePutstorageFragment, currentFragment);
                 currentFragment = mMantissaWarehousePutstorageFragment;
                 break;
             default:

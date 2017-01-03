@@ -1,13 +1,15 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage;
 
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.base.BaseFragment;
@@ -30,7 +32,7 @@ import butterknife.OnClick;
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWarehousePutstoragePresenter> implements MantissaWarehousePutstorageContract.View, BaseActiviy.OnDispathchKeyEvent {
+public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWarehousePutstoragePresenter> implements MantissaWarehousePutstorageContract.View, BaseActiviy.OnBarCodeSucess {
 
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
@@ -49,6 +51,18 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     private CommonBaseAdapter<MantissaWarehousePutstorage> adapter;
     private CommonBaseAdapter<MantissaWarehousePutstorage> adapter2;
     private View mInflate;
+    private BaseActiviy baseActiviy;
+    private BarCodeIpml barCodeIpml;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof BaseActiviy) {
+            this.baseActiviy = ((BaseActiviy) context);
+            baseActiviy.addOnBarCodeSucess(this);
+
+        }
+    }
 
     @Override
     protected void initView() {
@@ -97,6 +111,7 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
 
     @Override
     protected void initData() {
+
         getPresenter().getMantissaWarehousePutstorage();
     }
 
@@ -135,12 +150,6 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     }
 
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        return false;
-    }
-
-
     @OnClick({R.id.clean, R.id.deduct, R.id.bound})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -155,5 +164,21 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
             case R.id.bound:
                 break;
         }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e(TAG, "onHiddenChanged: " + hidden);
+        if (hidden) {
+            baseActiviy.removeOnBarCodeSuecss(this);
+        } else {
+            baseActiviy.addOnBarCodeSucess(this);
+        }
+    }
+
+    @Override
+    public void onScanSucess(String barcode) {
+        Log.e(TAG, "onScanSucess: " + barcode);
     }
 }

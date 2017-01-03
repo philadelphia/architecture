@@ -1,12 +1,12 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto;
 
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
@@ -24,13 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter> implements MantissaWarehouseReturnContract.View, BaseActiviy.OnDispathchKeyEvent {
+public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter> implements MantissaWarehouseReturnContract.View, BaseActiviy.OnBarCodeSucess {
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
@@ -42,7 +41,17 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     private CommonBaseAdapter<MantissaWarehouseReturn> adapter;
     private CommonBaseAdapter<MantissaWarehouseReturn> adapter2;
     private View mInflate;
+    private BaseActiviy baseActiviy;
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof BaseActiviy) {
+            this.baseActiviy = ((BaseActiviy) context);
+            baseActiviy.addOnBarCodeSucess(this);
+        }
+    }
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -117,8 +126,30 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     }
 
+
     @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        return false;
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e(TAG, "onHiddenChanged: "+hidden);
+        if (hidden) {
+             baseActiviy.removeOnBarCodeSuecss(this);
+        }else {
+            baseActiviy.addOnBarCodeSucess(this);
+        }
+    }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
+
+    }
+
+
+
+    @Override
+    public void onScanSucess(String barcode) {
+
+        Log.e(TAG, "onScanSucess: "+barcode);
     }
 }
