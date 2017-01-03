@@ -1,5 +1,6 @@
 package com.delta.smt.ui.store.mvp;
 
+import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ListWarning;
@@ -20,6 +21,11 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
 
     @Override
     public Observable<List<ListWarning>> getListWarning() {
-        return getService().getListWarning();
+        return getService().getListWarning().compose(RxsRxSchedulers.<List<ListWarning>>io_main());
+    }
+
+    @Override
+    public Observable<String> getSuccessfulState() {
+        return getService().getSuccessState().compose(RxsRxSchedulers.<String>io_main());
     }
 }

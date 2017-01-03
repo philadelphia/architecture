@@ -1,5 +1,6 @@
 package com.delta.smt.ui.checkstock;
 
+import android.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -30,7 +31,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> implements CheckStockContract.View {
+public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> implements CheckStockContract.View, View.OnClickListener {
     @BindView(R.id.header_back)
     TextView headerBack;
     @BindView(R.id.header_title)
@@ -47,7 +48,11 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
     RecyclerView recyContetn;
     private List<CheckStock> dataList= new ArrayList<>();
     private CommonBaseAdapter<CheckStock> mAdapter;
-
+    private TextView mErrorContent;
+    private AlertDialog.Builder builder=new AlertDialog.Builder(this);
+    private AlertDialog mErrorDialog;
+    private AlertDialog mResultDialog;
+    private TextView mResultContent;
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerCheckStockComponent.builder().appComponent(appComponent).checkStockModule(new CheckStockModule(this)) .build().inject(this);
@@ -86,6 +91,7 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
                 holder.setText(R.id.statistics_pcbnumber,item.getNumber());
                 holder.setText(R.id.statistics_number,item.getCheck());
                 holder.setText(R.id.statistics_storenumber,item.getZhuangtai());
+
             }
 
             @Override
@@ -121,6 +127,44 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
 
     }
 
+    @Override
+    public void onCheckStockSucess(String wareHouses) {
+        mErrorDialog= builder.create();
+        mErrorDialog.setContentView(R.layout.dialog_error);
+        mErrorContent= (TextView) mErrorDialog.findViewById(R.id.error_content);
+        mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(this);
+        mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(this);
+        mErrorDialog.show();
+    }
 
+    @Override
+    public void onCheckStockFailed() {
+
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.error_cancel:
+                if (mErrorDialog.isShowing()){
+                    mErrorDialog.dismiss();}
+                break;
+            case R.id.error_alteration:
+                mResultDialog= builder.create();
+                mResultDialog.setContentView(R.layout.dialog_result);
+                mResultContent= (TextView) mResultDialog.findViewById(R.id.result_content);
+                mResultDialog.findViewById(R.id.result_cancel).setOnClickListener(this);
+                mResultDialog.findViewById(R.id.result_alteration).setOnClickListener(this);
+                mResultDialog.show();
+                break;
+            case R.id.result_cancel:
+
+                break;
+            case R.id.result_alteration:
+                if (mResultDialog.isShowing()){
+                    mResultDialog.dismiss();
+                }
+                break;
+        }
+    }
 
 }

@@ -32,4 +32,17 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             }
         });
     }
+    public void fathcCheckStockSuccess(){
+        getModel().getCheckStockSuccess().subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                getView().onCheckStockSucess(s);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onCheckStockFailed();
+            }
+        });
+    }
 }

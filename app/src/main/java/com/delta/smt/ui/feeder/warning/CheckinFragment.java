@@ -1,5 +1,6 @@
 package com.delta.smt.ui.feeder.warning;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,12 +9,12 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.delta.smt.R;
+import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederCheckInItem;
-import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.ui.feeder.warning.checkin.di.CheckInModule;
 import com.delta.smt.ui.feeder.warning.checkin.di.DaggerCheckInComponent;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInContract;
@@ -25,9 +26,10 @@ import java.util.List;
 import butterknife.BindView;
 
 
-public class CheckinFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View {
+public class CheckinFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View, BaseActiviy.OnBarCodeSucess {
 
     private static final String TAG = "CheckinFragment";
+    private BaseActiviy baseActiviy;
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
     @BindView(R.id.recy_contetn)
@@ -39,6 +41,16 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
     private CommonBaseAdapter<FeederCheckInItem> adapter;
     private List<FeederCheckInItem> dataList = new ArrayList<>();
     private List<FeederCheckInItem> dataSource = new ArrayList<>();
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof BaseActiviy) {
+            this.baseActiviy = (BaseActiviy) context;
+            baseActiviy.addOnBarCodeSucess(this);
+        }
+
+    }
 
     @Override
     protected void initView() {
@@ -69,12 +81,12 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
         adapter = new CommonBaseAdapter<FeederCheckInItem>(getContext(), dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, FeederCheckInItem item, int position) {
-                holder.setText(R.id.tv_workItemID,  item.getWorkItemID());
-                holder.setText(R.id.tv_feederID,  item.getFeederID());
+                holder.setText(R.id.tv_workItemID, item.getWorkItemID());
+                holder.setText(R.id.tv_feederID, item.getFeederID());
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
-                holder.setText(R.id.tv_location,  item.getLocation());
+                holder.setText(R.id.tv_location, item.getLocation());
                 holder.setText(R.id.tv_chkinTimestamp, item.getCheckInTimeStamp());
-                holder.setText(R.id.tv_status,  item.getStatus());
+                holder.setText(R.id.tv_status, item.getStatus());
             }
 
             @Override
@@ -117,4 +129,20 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
     }
 
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            baseActiviy.removeOnBarCodeSuecss(this);
+        } else {
+            baseActiviy.addOnBarCodeSucess(this);
+        }
+
+    }
+
+    @Override
+    public void onScanSucess(String barcode) {
+        Log.i(TAG, "onScanSuccess: ");
+        Log.i(TAG, "barcode == " + barcode);
+    }
 }

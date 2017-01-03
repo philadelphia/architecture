@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -40,13 +39,13 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     private List<MantissaWarehouseReturn> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseReturn> adapter;
     private CommonBaseAdapter<MantissaWarehouseReturn> adapter2;
-    private View mInflate;
     private BaseActiviy baseActiviy;
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.e(TAG, "onAttach: " + context.getClass().getName());
         if (context instanceof BaseActiviy) {
             this.baseActiviy = ((BaseActiviy) context);
             baseActiviy.addOnBarCodeSucess(this);
@@ -126,15 +125,16 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     }
 
-
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.e(TAG, "onHiddenChanged: "+hidden);
-        if (hidden) {
-             baseActiviy.removeOnBarCodeSuecss(this);
-        }else {
-            baseActiviy.addOnBarCodeSucess(this);
+        Log.e(TAG, "onHiddenChanged: " + hidden);
+        if (baseActiviy != null) {
+            if (hidden) {
+                baseActiviy.removeOnBarCodeSuecss(this);
+            } else {
+                baseActiviy.addOnBarCodeSucess(this);
+            }
         }
     }
 
@@ -146,10 +146,9 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     }
 
 
-
     @Override
     public void onScanSucess(String barcode) {
 
-        Log.e(TAG, "onScanSucess: "+barcode);
+        Log.e(TAG, "onScanSucess: " + barcode);
     }
 }

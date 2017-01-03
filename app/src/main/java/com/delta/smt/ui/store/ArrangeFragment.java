@@ -1,7 +1,9 @@
 package com.delta.smt.ui.store;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -39,8 +41,19 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
         mAdapter.setOnItemTimeOnclck(new ItemOnclick() {
             @Override
             public void onItemClick(View item, int position) {
+                if (mList.size()==0){
+
+                }else {
+                ItemInfo itemInfo=mList.get(position);
+                Bundle bundle=new Bundle();
+                bundle.putString("workNumber",itemInfo.getWorkNumber() );
+                bundle.putString("machine",itemInfo.getMachine() );
+                bundle.putString("materialNumber",itemInfo.getMaterialNumber() );
+                 Log.i("info ----",itemInfo.getWorkNumber());
+                 Log.i("info ----",itemInfo.getMachine());
+                 Log.i("info ----",itemInfo.getMaterialNumber());
                 Toast.makeText(getActivity(),""+position,Toast.LENGTH_SHORT).show();
-                IntentUtils.showIntent(getActivity(),WarningListActivity.class);
+                IntentUtils.showIntent(getActivity(),WarningListActivity.class,bundle);}
             }
         });
     }
