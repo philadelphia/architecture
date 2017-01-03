@@ -11,8 +11,7 @@ public class FeederCheckInItem {
     private String location;
     private String checkInTimeStamp;
     private String status;
-    private boolean isMaterailIDScanned;
-    private boolean isLocationIDScanned;
+
 
     public FeederCheckInItem(String workItemID,String feederID,  String materialID, String location, String status) {
         this.feederID = feederID;
@@ -31,16 +30,6 @@ public class FeederCheckInItem {
         this.workItemID = workItemID;
     }
 
-    public FeederCheckInItem(String checkInTimeStamp, String feederID, boolean isLocationIDScanned, boolean isMaterailIDScanned, String location, String materialID, String status, String workItemID) {
-        this.checkInTimeStamp = checkInTimeStamp;
-        this.feederID = feederID;
-        this.isLocationIDScanned = isLocationIDScanned;
-        this.isMaterailIDScanned = isMaterailIDScanned;
-        this.location = location;
-        this.materialID = materialID;
-        this.status = status;
-        this.workItemID = workItemID;
-    }
 
     public String getCheckInTimeStamp() {
         return checkInTimeStamp;
@@ -88,22 +77,6 @@ public class FeederCheckInItem {
 
     public void setWorkItemID(String workItemID) {
         this.workItemID = workItemID;
-    }
-
-    public boolean isLocationIDScanned() {
-        return isLocationIDScanned;
-    }
-
-    public void setLocationIDScanned(boolean locationIDScanned) {
-        isLocationIDScanned = locationIDScanned;
-    }
-
-    public boolean isMaterailIDScanned() {
-        return isMaterailIDScanned;
-    }
-
-    public void setMaterailIDScanned(boolean materailIDScanned) {
-        isMaterailIDScanned = materailIDScanned;
     }
 
     @Override
