@@ -2,13 +2,9 @@ package com.delta.smt.ui.feeder.handle.feederSupply;
 
 
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -30,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
@@ -46,8 +41,8 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
     TextView headerSetting;
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
-    @BindView(R.id.recy_contetn)
-    RecyclerView recyContetn;
+    @BindView(R.id.recy_content)
+    RecyclerView recyContent;
     @BindView(R.id.hr_scrow)
     HorizontalScrollView hrScrow;
     @BindView(R.id.btn_upload)
@@ -112,8 +107,8 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
             }
 
         };
-        recyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        recyContetn.setAdapter(adapter);
+        recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        recyContent.setAdapter(adapter);
 
 
     }
@@ -140,21 +135,6 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
         tvModuleID.setText("模组料站: " + dataSource.get(0).getModuleID());
-//        Snackbar snackbar = Snackbar.make(recyContetn, "模组料站 ：" + dataSource.get(0).getModuleID(), Snackbar.LENGTH_INDEFINITE);
-//        ViewGroup view = (ViewGroup) snackbar.getView();
-//        TextView textView = (TextView) view.findViewById(R.id.snackbar_text);
-////        Button button = (Button) view.findViewById(R.id.snackbar_action);
-////        button.setVisibility(View.GONE);
-//
-////        view.removeAllViews();
-//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-////        view.addView(textView,layoutParams);
-//        textView.setLayoutParams(layoutParams);
-//        textView.setGravity(Gravity.RIGHT);
-//        textView.postInvalidate();
-//
-//        snackbar.show();
-
     }
 
     @Override
@@ -167,4 +147,8 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
 
     }
 
+    @Override
+    public void addOnBarCodeSucess(OnBarCodeSucess onBarCodeSucess) {
+        super.addOnBarCodeSucess(onBarCodeSucess);
+    }
 }
