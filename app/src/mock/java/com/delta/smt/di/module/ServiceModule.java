@@ -265,10 +265,6 @@ public class ServiceModule {
                 list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
                 list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
                 list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
-                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
-                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
-                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
-                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
                 return Observable.just(list);
             }
 
