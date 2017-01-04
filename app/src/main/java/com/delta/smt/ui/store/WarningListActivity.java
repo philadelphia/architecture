@@ -3,10 +3,13 @@ package com.delta.smt.ui.store;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
@@ -32,14 +35,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-
+import butterknife.ButterKnife;
 
 
 /**
  * Created by Lin.Hou on 2016-12-27.
  */
 
-public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View,BarCodeIpml.OnScanSuccessListener{
+public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View, BarCodeIpml.OnScanSuccessListener {
     @BindView(R.id.header_back)
     TextView headerBack;
     @BindView(R.id.header_title)
@@ -56,12 +59,14 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     RecyclerView recyTitle;
     @BindView(R.id.recy_contetn)
     RecyclerView recyContetn;
+    @BindView(R.id.activity_mianview)
+    LinearLayout activityMianview;
 
-    private BarCodeIpml barCodeIpml=new BarCodeIpml();
+    private BarCodeIpml barCodeIpml = new BarCodeIpml();
 
-    List<ListWarning> mList=new ArrayList<>();
+    List<ListWarning> mList = new ArrayList<>();
     private CommonBaseAdapter<ListWarning> mAdapter;
-    private int position=0;
+    private int position = 0;
     private String mWorkNumberString;
     private String mMachineString;
     private String mMaterialNumberString;
@@ -76,16 +81,16 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
 
     @Override
     protected void initData() {
-    getPresenter().fatchListWarning();
-    Bundle bundle=getIntent().getExtras();
-     if (bundle!=null){
-    mWorkNumberString=bundle.getString("workNumber");
-    mMachineString=bundle.getString("machine");
-    mMaterialNumberString=bundle.getString("materialNumber");
-         Log.i("info-->",mWorkNumberString);
-         Log.i("info-->",mMachineString);
-         Log.i("info-->",mMaterialNumberString);
-     }
+        getPresenter().fetchListWarning();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mWorkNumberString = bundle.getString("workNumber");
+            mMachineString = bundle.getString("machine");
+            mMaterialNumberString = bundle.getString("materialNumber");
+            Log.i("info-->", mWorkNumberString);
+            Log.i("info-->", mMachineString);
+            Log.i("info-->", mMaterialNumberString);
+        }
     }
 
     @Override
@@ -95,10 +100,10 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
         edWork.setText(mWorkNumberString);
         edPcb.setText(mMachineString);
         edMachine.setText(mMaterialNumberString);
-        List<ListWarning>list=new ArrayList<>();
-        list.add(new ListWarning("","","","","",""));
+        List<ListWarning> list = new ArrayList<>();
+        list.add(new ListWarning("", "", "", "", "", ""));
 
-        CommonBaseAdapter<ListWarning> AdapterTitle = new CommonBaseAdapter<ListWarning>(this,list) {
+        CommonBaseAdapter<ListWarning> AdapterTitle = new CommonBaseAdapter<ListWarning>(this, list) {
             @Override
             protected void convert(CommonViewHolder holder, ListWarning item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.waring_editext));
@@ -109,26 +114,33 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
                 return R.layout.item_warning;
             }
         };
-        recyTitle.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        recyTitle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyTitle.setAdapter(AdapterTitle);
 
-        mAdapter= new CommonBaseAdapter<ListWarning>(this,mList) {
+        mAdapter = new CommonBaseAdapter<ListWarning>(this, mList) {
             @Override
             protected void convert(CommonViewHolder holder, ListWarning item, int position) {
-                holder.setText(R.id.pcb_number,item.getPcb());
-                holder.setText(R.id.pcb_price,item.getJia());
 
-                holder.setText(R.id.pcb_demand,item.getXuqiu());
-                holder.setText(R.id.pcb_code,item.getPcbCode());
-                holder.setText(R.id.pcb_time,item.getPcbCode());
-                if (mMaterbarCode!=null){
-                    if (item.getPcb().equals(mMaterbarCode.getDeltaMaterialNumber())){
-                        holder.setText(R.id.pcb_thenumber,mMaterbarCode.getCount());
-                        if (item.getJia().equals(mFramebarCode.getNumberLeft()+mFramebarCode.getBase()+mFramebarCode.getNumberRight())){
-                            getPresenter().fathcSuccessState();
-                        }
+                holder.setText(R.id.pcb_number, item.getPcb());
+                holder.setText(R.id.pcb_price, item.getJia());
+                if (TextUtils.isEmpty(item.getDangqaian())) {
+                    holder.setText(R.id.pcb_thenumber, "");
+                }
+                holder.setText(R.id.pcb_demand, item.getXuqiu());
+                holder.setText(R.id.pcb_code, item.getPcbCode());
+                holder.setText(R.id.pcb_time, item.getPcbCode());
+                if (mMaterbarCode != null) {
+                    if (mList.get(0).getPcb().equals(mMaterbarCode.getDeltaMaterialNumber())) {
+                        getPresenter().fetchWarningNumber();
                     }
 
+                }
+                if (item.getDangqaian() != null) {
+                    if (mFramebarCode != null) {
+                        if (mFramebarCode.getSource().equals(mList.get(0).getJia())) {
+                            getPresenter().fetchSuccessState();
+                        }
+                    }
                 }
                 if (item.isColor()) {
                     holder.setBackgroundColor(R.id.pcb_number, Color.YELLOW);
@@ -146,7 +158,7 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
                 return R.layout.item_warning;
             }
         };
-        recyContetn.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        recyContetn.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyContetn.setAdapter(mAdapter);
 
 
@@ -162,6 +174,7 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     public void onSucess(List<ListWarning> wareHouses) {
         mList.clear();
         mList.addAll(wareHouses);
+        mList.get(0).setColor(true);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -171,9 +184,23 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     }
 
     @Override
+    public void onWarningNumberSucess(List<ListWarning> wareHouses) {
+        mList.clear();
+        mList.addAll(wareHouses);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onWarningNumberFailed() {
+
+    }
+
+    @Override
     public void onSucessState(String s) {
-        recyContetn.scrollToPosition(position+1);//请求+1
-        mList.get(position+1).setColor(true);
+        Snackbar.make(activityMianview,"发料成功",Snackbar.LENGTH_INDEFINITE).show();
+        recyContetn.scrollToPosition(position + 1);//请求+1
+        mList.get(position).setColor(false);
+        mList.get(position + 1).setColor(true);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -186,13 +213,13 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     public void onScanSuccess(String barcode) {
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
-            if (BarCodeUtils.barCodeType(barcode)!=null) {
+            if (BarCodeUtils.barCodeType(barcode) != null) {
                 switch (BarCodeUtils.barCodeType(barcode)) {
                     case MATERIAL_BLOCK_BARCODE:
                         mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                         break;
                     case FRAME_LOCATION:
-                        mFramebarCode = (FrameLocation)barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                        mFramebarCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
                         break;
                 }
 
@@ -224,10 +251,12 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
             e.printStackTrace();
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         barCodeIpml.onComplete();
     }
+
 
 }

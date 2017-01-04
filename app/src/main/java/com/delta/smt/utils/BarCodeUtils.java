@@ -1,5 +1,6 @@
 package com.delta.smt.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -29,6 +30,7 @@ public class BarCodeUtils {
 
 
     public static    BarCodeType barCodeType(String s){
+        if (TextUtils.isEmpty(s)){
         if ( Pattern.compile(BACKUPMATERIIALCAR).matcher(s).matches()){
             Log.i("barcodeUtils",""+Pattern.compile(BACKUPMATERIIALCAR).matcher(s).matches());
             return BarCodeType.BACKUP_MATERIAL_CAR;
@@ -54,6 +56,7 @@ public class BarCodeUtils {
             Log.i("barcodeUtils",""+Pattern.compile(RBOX).matcher(s).matches());
             return BarCodeType.RBOX;
         }
+         }
         return  null;
     }
 }

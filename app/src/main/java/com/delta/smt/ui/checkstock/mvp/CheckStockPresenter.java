@@ -19,7 +19,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
     public CheckStockPresenter(CheckStockContract.Model model, CheckStockContract.View mView) {
         super(model, mView);
     }
-    public void fatchCheckStock(){
+    public void fetchCheckStock(){
         getModel().getCheckStock().subscribe(new Action1<List<CheckStock>>() {
             @Override
             public void call(List<CheckStock> checkStocks) {
@@ -32,7 +32,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             }
         });
     }
-    public void fathcCheckStockSuccess(){
+    public void fetchCheckStockSuccess(){
         getModel().getCheckStockSuccess().subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
@@ -42,6 +42,19 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(Throwable throwable) {
                 getView().onCheckStockFailed();
+            }
+        });
+    }
+    public void fetchCheckStockSuccessNumber(){
+        getModel().getCheckStockNumber().subscribe(new Action1<List<CheckStock>>() {
+            @Override
+            public void call(List<CheckStock> checkStocks) {
+                getView().onCheckStockNumberSucess(checkStocks);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onCheckStockNumberFailed();
             }
         });
     }
