@@ -11,6 +11,8 @@ import com.delta.smt.Constant;
 import java.util.HashMap;
 import java.util.Map;
 
+import dagger.Module;
+
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 /**
@@ -19,7 +21,7 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
  * @date : 2016/12/27 15:00
  */
 
-
+@Module
 public class WarningManger {
 
 
@@ -82,7 +84,7 @@ public class WarningManger {
                 Log.e(TAG, "onReceive: " + "-----------------------------" + waringCalss);
                 if (WarningManger.getInstance().isRecieve()) {
                     if (onWarning != null) {
-                        onWarning.warningComming();
+                        onWarning.warningComming("测试");
                     }
 
                 }
@@ -124,6 +126,6 @@ public class WarningManger {
     }
 
     public interface OnWarning {
-        void warningComming();
+        void warningComming(String warningMessage);
     }
 }

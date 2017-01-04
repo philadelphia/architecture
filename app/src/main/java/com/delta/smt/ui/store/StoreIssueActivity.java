@@ -20,6 +20,8 @@ import com.delta.smt.utils.ViewUtils;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 
 /**
@@ -34,6 +36,8 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
     @BindView(R.id.main_title)
     TabLayout tlTitle;
 
+    @Inject
+    WarningManger warningManger;
 
 
     private String[] mTitles;
@@ -51,9 +55,9 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
     @Override
     protected void initData() {
         mTitles = new String[]{"预警", "排程"};
-        WarningManger.getInstance().addWarning(Constant.SAMPLEWARING, getClass());
-        WarningManger.getInstance().setRecieve(true);
-        WarningManger.getInstance().setOnWarning(this);
+        warningManger.addWarning(Constant.SAMPLEWARING, getClass());
+        warningManger.setRecieve(true);
+        warningManger.getInstance().setOnWarning(this);
     }
 
     @Override
@@ -119,7 +123,7 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
 
 
     @Override
-    public void warningComming() {
+    public void warningComming(String message) {
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
         dialogRelativelayout.setStrTitle("测试标题");
@@ -141,13 +145,13 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
     }
     @Override
     protected void onResume() {
-        WarningManger.getInstance().registWReceiver(this);
+        warningManger.registWReceiver(this);
         super.onResume();
     }
 
     @Override
     protected void onStop() {
-        WarningManger.getInstance().unregistWReceriver(this);
+        warningManger.unregistWReceriver(this);
         super.onStop();
     }
 }

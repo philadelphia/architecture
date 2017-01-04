@@ -56,6 +56,7 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.e(TAG, "onAttach: "+context.getClass().getName());
         if (context instanceof BaseActiviy) {
             this.baseActiviy = ((BaseActiviy) context);
             baseActiviy.addOnBarCodeSucess(this);

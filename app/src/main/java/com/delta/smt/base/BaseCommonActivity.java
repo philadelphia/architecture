@@ -10,9 +10,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.View;
 
 import com.delta.smt.app.App;
+import com.zhy.autolayout.AutoFrameLayout;
+import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,10 +35,34 @@ import me.yokeyword.fragmentation.SupportActivity;
 public abstract class BaseCommonActivity extends SupportActivity {
     public static final String ACTION_RECEIVER_ACTIVITY = "com.delta.smt";
     public static final String IS_NOT_ADD_ACTIVITY_LIST = "is_add_activity_list";//是否加入到activity的list，管理
+    private static final String LAYOUT_LINEARLAYOUT = "LinearLayout";
+    private static final String LAYOUT_FRAMELAYOUT = "FrameLayout";
+    private static final String LAYOUT_RELATIVELAYOUT = "RelativeLayout";
+
     private String TAG = getClass().getSimpleName();
     private BroadcastReceiver mBroadcastReceiver;
     private App application;
     private Unbinder bind;
+
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        View view = null;
+        if (name.equals(LAYOUT_FRAMELAYOUT)) {
+            view = new AutoFrameLayout(context, attrs);
+        }
+
+        if (name.equals(LAYOUT_LINEARLAYOUT)) {
+            view = new AutoLinearLayout(context, attrs);
+        }
+
+        if (name.equals(LAYOUT_RELATIVELAYOUT)) {
+            view = new AutoRelativeLayout(context, attrs);
+        }
+
+        if (view != null) return view;
+
+        return super.onCreateView(name, context, attrs);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -41,6 +41,7 @@ import rx.Observable;
 @Module
 public class ServiceModule {
 
+
     @Singleton
     @Provides
     ApiService provideCommonService(Retrofit retrofit) {
@@ -499,5 +500,6 @@ public class ServiceModule {
 
         };
     }
+
 
 }

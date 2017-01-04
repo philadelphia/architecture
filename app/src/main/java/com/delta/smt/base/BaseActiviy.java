@@ -29,11 +29,17 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
     private List<OnBarCodeSucess> events = new ArrayList<>();
 
     public void addOnBarCodeSucess(OnBarCodeSucess onBarCodeSucess) {
-        events.add(onBarCodeSucess);
+        if (onBarCodeSucess != null) {
+
+            events.add(onBarCodeSucess);
+        }
     }
 
     public void removeOnBarCodeSuecss(OnBarCodeSucess onBarCodeSucess) {
-        events.remove(onBarCodeSucess);
+        if (onBarCodeSucess != null) {
+
+            events.remove(onBarCodeSucess);
+        }
     }
 
     @Override
