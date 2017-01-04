@@ -4,10 +4,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.demacia.barcode.Barcode;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.base.BaseFragment;
@@ -15,10 +18,12 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederCheckInItem;
+import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.ui.feeder.warning.checkin.di.CheckInModule;
 import com.delta.smt.ui.feeder.warning.checkin.di.DaggerCheckInComponent;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInContract;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInPresenter;
+import com.delta.smt.utils.BarCodeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,5 +149,32 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
     public void onScanSucess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
         Log.i(TAG, "barcode == " + barcode);
+        BarCodeType codeType = BarCodeUtils.barCodeType(barcode);
+
+        if (!TextUtils.isEmpty(barcode)) {
+            switch (codeType) {
+                case MATERIAL_BLOCK_BARCODE: //料号
+                    for (FeederCheckInItem feederCheckInItem : dataSource) {
+                        if (barcode.trim().equalsIgnoreCase(feederCheckInItem.getMaterialID())) {
+                            dataSource.set(0, feederCheckInItem);
+                        }
+                    }
+
+                    break;
+                case FRAME_LOCATION: //架位ID
+                        if (dataSource.get(0).getLocation().equalsIgnoreCase(barcode)) {
+                        //上传到后台
+                        }else {
+
+                        }
+                        break;
+
+                        default:
+                            break;
+
+                    }
+            }
+
+        }
+
     }
-}

@@ -14,6 +14,7 @@ import com.delta.smt.entity.MantissaWarehouseReturn;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
+import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
@@ -30,8 +31,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
+import retrofit2.http.Url;
 import rx.Observable;
 
 
@@ -197,6 +200,32 @@ public class ServiceModule {
                 datas.add(new MantissaWarehousePutstorage("201512121234","0351234701","D33E02-02","T-001","开始退库"));
                 return Observable.just(datas);
             }
+
+            @Override
+            public Observable<Update> getUpdate() {
+                //测试数据
+                Update update = new Update();
+                update.setVersion("1.0");
+                update.setVersionCode("1");
+                update.setDescription("无更新");
+                update.setUrl("http://172.22.35.177:8081/app-debug.apk");
+                return Observable.just(update);
+            }
+
+            @Override
+            public Observable<ResponseBody> download(@Url String url) {
+                return null;
+            }
+
+            /*@Override
+            public Observable<Update> getUpdate() {
+                return null;
+            }
+
+            @Override
+            public Observable<ResponseBody> download(@Url String url) {
+                return null;
+            }*/
 
             @Override
             public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {
