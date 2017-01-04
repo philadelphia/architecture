@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zhy.autolayout.utils.AutoUtils;
+
 
 /**
  * @description :
@@ -23,6 +25,7 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
 
     public CommonViewHolder(View itemView, Context context) {
         super(itemView);
+        AutoUtils.autoSize(itemView);
         mViews = new SparseArray<>();
         mContext = context;
     }
