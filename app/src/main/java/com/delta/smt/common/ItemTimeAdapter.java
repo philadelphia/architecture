@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.delta.smt.R;
 import com.delta.smt.entity.ItemInfo;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.List;
 import java.util.Timer;
@@ -147,6 +148,7 @@ class ItemTimeViewHolder extends RecyclerView.ViewHolder{
     private ItemInfo mItemInfo;
     public ItemTimeViewHolder(View itemView) {
         super(itemView);
+        AutoUtils.autoSize(itemView);
         mTextContent= (TextView) itemView.findViewById(R.id.content_text);
         mCountdownViewTest= (CountdownView) itemView.findViewById(R.id.countdownViewTest);
     }

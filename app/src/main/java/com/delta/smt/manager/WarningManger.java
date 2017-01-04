@@ -11,8 +11,6 @@ import com.delta.smt.Constant;
 import java.util.HashMap;
 import java.util.Map;
 
-import dagger.Module;
-
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 /**
@@ -21,7 +19,7 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
  * @date : 2016/12/27 15:00
  */
 
-@Module
+
 public class WarningManger {
 
 

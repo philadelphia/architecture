@@ -8,6 +8,7 @@ import com.delta.commonlibs.di.module.AppModule;
 import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.http.GlobeHttpHandler;
 import com.delta.smt.di.module.ServiceModule;
+import com.zhy.autolayout.config.AutoLayoutConifg;
 
 import java.util.LinkedList;
 
@@ -35,6 +36,7 @@ public abstract class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        AutoLayoutConifg.getInstance().useDeviceSize();
         mApplication = this;
         this.mClientModule = ClientModule//用于提供okhttp和retrofit的单列
                 .buidler()
