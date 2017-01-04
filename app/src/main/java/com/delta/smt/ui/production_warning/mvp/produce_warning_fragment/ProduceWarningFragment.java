@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.util.LogTime;
 import com.delta.smt.R;
+import com.delta.smt.app.App;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -37,6 +39,9 @@ import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningAct
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Handler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +72,19 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     private int tag=0;
     private static final String TAG = "ProduceWarningFragment";
 
+    private android.os.Handler hanlder = new android.os.Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what==1) {
+                if(mPopupWindow!=null&&mPopupWindow.isShowing()){
+                    mPopupWindow.dismiss();
+                    tag=0;
+                }
+            }
+
+        }
+    };
     @Override
     protected void initView() {
         Log.i(TAG, "initView: ");
@@ -103,7 +121,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     public void onHiddenChanged(boolean hidden) {
         Log.i(TAG, "onHiddenChanged: ");
         super.onHiddenChanged(hidden);
-        if(mPopupWindow.isShowing()&&mPopupWindow!=null){
+        if(mPopupWindow!=null&&mPopupWindow.isShowing()){
             mPopupWindow.dismiss();
         }
         tag=0;
@@ -224,14 +242,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             tag++;
         }
         if (tag==3){
-            try {
-                Thread.currentThread().sleep(3000);
-                mPopupWindow.dismiss();
-                tag=0;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            hanlder.sendEmptyMessageDelayed(1, 1000);
         }
 
 

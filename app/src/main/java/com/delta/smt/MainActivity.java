@@ -113,7 +113,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         fuctionString.add("PCB库房2");
         fuctionString.add("PCB库房3");
         fuctionString.add("PCB库房4");
-        fuctionString.add("sample");
+        fuctionString.add("生产中预警");
         fuctionString.add("warningSample");
         fuctionString.add("手补件通知");
         fuctionString.add("尾数仓备料");
@@ -148,7 +148,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "PCB库房4":
                 IntentUtils.showIntent(this, CheckStockActivity.class);
                 break;
-            case "sample":
+            case "生产中预警":
                 IntentUtils.showIntent(this, ProduceLineActivity.class);
                 break;
             case "手补件通知":
