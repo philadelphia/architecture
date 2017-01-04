@@ -6,7 +6,7 @@
               android:background="@color/c_cfcfcf"
               android:orientation="horizontal">
 
-        <android.support.design.widget.TabLayout
+        <com.delta.commonlibs.widget.autolayout.AutoTabLayout
             android:id="@+id/tl_title"
             app:tabSelectedTextColor="@color/c_ffffff"
             android:background="@color/c_cfcfcf"
@@ -14,6 +14,8 @@
             app:tabTextColor="@color/c_000000"
             android:layout_width="wrap_content"
             style="@style/abLayout"
-            android:layout_height="32dp"></android.support.design.widget.TabLayout>
+            android:layout_height="32dp">
+
+        </com.delta.commonlibs.widget.autolayout.AutoTabLayout>
     </LinearLayout>
 
