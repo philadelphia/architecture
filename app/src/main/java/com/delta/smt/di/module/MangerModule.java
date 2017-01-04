@@ -20,7 +20,6 @@ public class MangerModule {
     @Singleton
     @Provides
     WarningManger providerWarningManger() {
-
-        return  new WarningManger();
+        return  WarningManger.getInstance();
     }
 }
