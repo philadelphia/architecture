@@ -54,23 +54,23 @@ android {
         }
     }
 
-    dependencies {
-        compile fileTree(dir: 'libs', include: ['*.jar'])
-        androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-            exclude group: 'com.android.support', module: 'support-annotations'
-        })
-        testCompile rootProject.ext.dependencies["junit"]
-        apt rootProject.ext.dependencies["dagger2-apt-compiler"]
-        provided rootProject.ext.dependencies["javax.annotation"]
-        apt rootProject.ext.dependencies["butterknife-apt"]
-        compile project(':commonlibs')
-        debugCompile rootProject.ext.dependencies["canary-debug"]
-        releaseCompile rootProject.ext.dependencies["canary-release"]
-        testCompile rootProject.ext.dependencies["canary-release"]
-        provided rootProject.ext.dependencies["design"]
-        compile rootProject.ext.dependencies["countdownview"]
-        compile rootProject.ext.dependencies["barcodecollector"]
-        compile rootProject.ext.dependencies["fragmentation"]
-        compile rootProject.ext.dependencies["familiarrecycler"]
-
-    }
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile rootProject.ext.dependencies["junit"]
+    apt rootProject.ext.dependencies["dagger2-apt-compiler"]
+    provided rootProject.ext.dependencies["javax.annotation"]
+    apt rootProject.ext.dependencies["butterknife-apt"]
+    compile project(':commonlibs')
+    debugCompile rootProject.ext.dependencies["canary-debug"]
+    releaseCompile rootProject.ext.dependencies["canary-release"]
+    testCompile rootProject.ext.dependencies["canary-release"]
+    provided rootProject.ext.dependencies["design"]
+    compile rootProject.ext.dependencies["countdownview"]
+    compile rootProject.ext.dependencies["barcodecollector"]
+    compile rootProject.ext.dependencies["fragmentation"]
+    compile rootProject.ext.dependencies["familiarrecycler"]
+    compile 'com.android.support:support-v13:25.1.0'
+}
