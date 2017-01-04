@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.delta.smt.utils.ViewUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/22.
@@ -42,10 +45,10 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
     private ProduceWarningFragment mProduceWarningFragment;
     private ProduceBreakdownFragment mProduceBreakdownFragment;
     private ProduceInfoFragment mProduceInfoFragment;
-
     private FragmentTransaction mFragmentTransaction;
-    private Fragment currentFragment;
+    private SupportFragment currentFragment;
     private String[] titles;
+
 
 
     @Override
@@ -56,7 +59,6 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
 
     @Override
     protected void initData() {
-//        titles = new String[]{"预警(" + warning_number + ")", "故障(" + breakdown_number + ")", "消息(" + info_number + ")"};
         getPresenter().getTitileNumber();
     }
 
@@ -68,10 +70,10 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
         }
         ViewUtils.setTabTitle(tlTitle, titles);
         tlTitle.addOnTabSelectedListener(this);
-        mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+        mProduceBreakdownFragment=new ProduceBreakdownFragment();
+        mProduceInfoFragment=new ProduceInfoFragment();
         mProduceWarningFragment = new ProduceWarningFragment();
-        mFragmentTransaction.add(R.id.fl_container, mProduceWarningFragment);
-        mFragmentTransaction.show(mProduceWarningFragment).commit();
+        loadMultipleRootFragment(R.id.fl_container,0,mProduceWarningFragment,mProduceBreakdownFragment,mProduceInfoFragment);
         currentFragment = mProduceWarningFragment;
 
 
@@ -89,31 +91,20 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
-                if (mProduceWarningFragment == null) {
-                    mProduceWarningFragment = new ProduceWarningFragment();
-                    mFragmentTransaction.add(R.id.fl_container, mProduceWarningFragment);
-                }
-
-                mFragmentTransaction.show(mProduceWarningFragment).hide(currentFragment).commit();
-                currentFragment = mProduceWarningFragment;
-
+                showHideFragment(mProduceWarningFragment,currentFragment);
+                currentFragment=mProduceWarningFragment;
                 break;
             case 1:
-                if (mProduceBreakdownFragment == null) {
-                    mProduceBreakdownFragment = new ProduceBreakdownFragment();
-                    mFragmentTransaction.add(R.id.fl_container, mProduceBreakdownFragment);
-                }
-                mFragmentTransaction.show(mProduceBreakdownFragment).hide(currentFragment).commit();
-                currentFragment = mProduceBreakdownFragment;
+                showHideFragment(mProduceBreakdownFragment,currentFragment);
+                currentFragment=mProduceBreakdownFragment;
                 break;
             case 2:
-                if (mProduceInfoFragment == null) {
-                    mProduceInfoFragment = new ProduceInfoFragment();
-                    mFragmentTransaction.add(R.id.fl_container, mProduceInfoFragment);
-                }
-                mFragmentTransaction.show(mProduceInfoFragment).hide(currentFragment).commit();
-                currentFragment = mProduceInfoFragment;
+                showHideFragment(mProduceInfoFragment,currentFragment);
+                currentFragment=mProduceInfoFragment;
                 break;
+            default:
+                break;
+
         }
     }
 
@@ -121,6 +112,10 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
     public void onTabUnselected(TabLayout.Tab tab) {
 
     }
+
+
+
+
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
@@ -152,4 +147,6 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
     public void getTitleDatasFailed() {
         titles = new String[]{"预警", "故障", "消息"};
     }
+
+
 }
