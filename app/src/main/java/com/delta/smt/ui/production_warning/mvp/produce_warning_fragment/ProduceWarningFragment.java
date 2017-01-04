@@ -202,7 +202,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mPopupWindow.setOutsideTouchable(false);
 
         mDialogRelativelayout.setStrSecondTitle("请进行接料");
-        barcodedatas.add("从备料车亮灯位置取出接料盘进行接料");
+        barcodedatas.add("从备料车亮灯位置取出接料盘进行接料，" +
+                "接料完成后请扫描新料盘/FeederID/料站 完成接料操作");
         mDialogRelativelayout.setStrContent(barcodedatas);
 
         //动态生成布局

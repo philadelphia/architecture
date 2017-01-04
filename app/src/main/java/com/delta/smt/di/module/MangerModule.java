@@ -21,6 +21,6 @@ public class MangerModule {
     @Provides
     WarningManger providerWarningManger() {
 
-        return  new WarningManger();
+        return  WarningManger.getInstance();
     }
 }

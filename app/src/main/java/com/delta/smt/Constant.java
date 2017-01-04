@@ -20,10 +20,10 @@ public class Constant {
     public static final int GENERATEDWARNING = 2;
     public static final int HANDPARHTSWARNING = 3;
     public static final int SAMPLEWARING = 4;
+    public static final int PRODUCE_WARNING=5;
 
 
     public static final String WORK_ITEM_ID = "WorkItemID";
-
     //更新配置文件update.json url
     public static final String bundleJsonUrl = "http://172.22.35.177:8081/update.json";
 

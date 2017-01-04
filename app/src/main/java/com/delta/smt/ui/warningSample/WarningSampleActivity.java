@@ -45,6 +45,7 @@ public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implement
         warningManger.addWarning(Constant.SAMPLEWARING, getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
+
         getPresenter().login("sdf", "sdf");
     }
 

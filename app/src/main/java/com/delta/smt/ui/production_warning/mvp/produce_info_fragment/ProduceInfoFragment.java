@@ -113,7 +113,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         mDialogRelativelayout=new DialogRelativelayout(getContext());
         mDialogRelativelayout.setStrSecondTitle("请求确认");
         final ArrayList<String> datas = new ArrayList<>();
-        datas.add("dsf");
+
         mDialogRelativelayout.setStrContent(datas);
         dialog.setView(mDialogRelativelayout)
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -132,28 +132,6 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
                 }).show();
 
 
-         new Thread(new Runnable() {
-             @Override
-             public void run() {
-                 for (int mI = 0; mI < 3; mI++) {
-
-                     datas.add("rere"+mI);
-
-                     getActivity().runOnUiThread(new Runnable() {
-                         @Override
-                         public void run() {
-                             mDialogRelativelayout.setDatas(datas);
-                         }
-                     });
-                     try {
-                         Thread.sleep(3000);
-                     } catch (InterruptedException e) {
-                         e.printStackTrace();
-                     }
-                 }
-
-             }
-         }).start();
 
     }
 }
