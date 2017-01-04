@@ -5,6 +5,8 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
+import rx.functions.Action1;
+
 /**
  * Created by Lin.Hou on 2016-12-26.
  */
@@ -13,5 +15,18 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
     @Inject
     public StoreRoomPresenter(StoreRoomContract.Model model, StoreRoomContract.View mView) {
         super(model, mView);
+    }
+    public void fatchStoreRoomSuccess(){
+        getModel().getStoreRoomSuccess().subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                getView().storeSuccess(s);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().storeFaild(throwable.getMessage().toString());
+            }
+        });
     }
 }

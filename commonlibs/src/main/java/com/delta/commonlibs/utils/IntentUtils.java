@@ -60,6 +60,12 @@ public class IntentUtils {
         showIntent(context, clzz, null, null);
     }
 
+    public static void showIntent(Activity context, Class<?> clzz, Bundle bundle) {
+        Intent intent = new Intent(context, clzz);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
     /**
      * 打电话
      *

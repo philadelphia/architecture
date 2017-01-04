@@ -14,6 +14,7 @@ import com.delta.smt.entity.MantissaWarehouseReturn;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
+import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
@@ -30,13 +31,16 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
+import retrofit2.http.Url;
 import rx.Observable;
 
 
 @Module
 public class ServiceModule {
+
 
     @Singleton
     @Provides
@@ -119,14 +123,19 @@ public class ServiceModule {
                 for (int i=0;i<10;i++){
                     com.delta.smt.entity.ItemInfo item=new com.delta.smt.entity.ItemInfo();
                     //TODO  控件有问题
-                    item.setText("产线:H"+i+"\n"+"工单号:24561215"+i+"\n"+"PCB料号：457485645"+i+"\n"+"机种：H123-"+i+"需求量："+50+"\n"+"状态:"+"备料");
+                    item.setText("产线:H"+i+"\n"+"工单号:24561215"+i+"\n"+"PCB料号：457485645"+i+"\n"+"机种：H123-"+i+"\n"+"需求量："+50+"\n"+"状态:"+"备料");
                     item.setCountdown(9000);
                     long current = System.currentTimeMillis();
                     item.setEndTime(current+9000);
+                    item.setWorkNumber("245612152");
+                    item.setMachine("H1231");
+                    item.setMaterialNumber("4574856451");
                     list.add(item);
                 }
                 return Observable.just(list);
             }
+
+
 
             @Override
             public Observable<List<ListWarning>> getListWarning() {
@@ -135,7 +144,7 @@ public class ServiceModule {
                     ListWarning l=new ListWarning();
                     l.setPcb("0343352030"+i);
                     l.setJia("J21-3"+i);
-                    l.setDangqaian("5"+i);
+                    l.setDangqaian("");
                     l.setXuqiu("100");
                     l.setPcbCode("0"+i);
                     l.setDc("1637");
@@ -192,6 +201,32 @@ public class ServiceModule {
                 datas.add(new MantissaWarehousePutstorage("201512121234","0351234701","D33E02-02","T-001","开始退库"));
                 return Observable.just(datas);
             }
+
+            @Override
+            public Observable<Update> getUpdate() {
+                //测试数据
+                Update update = new Update();
+                update.setVersion("1.0");
+                update.setVersionCode("1");
+                update.setDescription("无更新");
+                update.setUrl("http://172.22.35.177:8081/app-debug.apk");
+                return Observable.just(update);
+            }
+
+            @Override
+            public Observable<ResponseBody> download(@Url String url) {
+                return null;
+            }
+
+            /*@Override
+            public Observable<Update> getUpdate() {
+                return null;
+            }
+
+            @Override
+            public Observable<ResponseBody> download(@Url String url) {
+                return null;
+            }*/
 
             @Override
             public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {
@@ -355,7 +390,7 @@ public class ServiceModule {
 
                 datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
                 datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
-                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
+                datas.add(new ItemWarningInfo("接料预警","产线：H13","制程：叠送一体机","预警信息：锡膏机需要换瓶"));
                 return Observable.just(datas);
             }
 
@@ -393,7 +428,7 @@ public class ServiceModule {
                     CheckStock checkStock=new CheckStock();
                     checkStock.setPcb("034335230"+i);
                     checkStock.setLiu("2016876500"+i);
-                    checkStock.setNumber("200");
+                    checkStock.setNumber("");
                     checkStock.setCheck("200");
                     if (i==6||i==3||i==3){
                         checkStock.setZhuangtai("未开始");
@@ -409,7 +444,62 @@ public class ServiceModule {
                 return Observable.just(data);
             }
 
+            @Override
+            public Observable<String> getSuccessState() {
+                return Observable.just("成功");
+            }
+
+            @Override
+            public Observable<String> getStoreRoomSuccess() {
+                return Observable.just("成功");
+            }
+
+            @Override
+            public Observable<String> getCheckStockSuccess() {
+                return Observable.just("成功");
+            }
+
+            @Override
+            public Observable<List<ListWarning>> getWarningNumberSuccess() {
+                List<ListWarning>  mList=new ArrayList<>();
+                for (int i=0;i<10;i++){
+                    ListWarning l=new ListWarning();
+                    l.setPcb("0343352030"+i);
+                    l.setJia("J21-3"+i);
+                    l.setDangqaian("5"+i);
+                    l.setXuqiu("100");
+                    l.setPcbCode("0"+i);
+                    l.setDc("1637");
+                    mList.add(l);
+                }
+                return Observable.just(mList);
+            }
+
+            @Override
+            public Observable<List<CheckStock>> getCheckNumber() {
+                List<CheckStock> data=new ArrayList<>();
+                for (int i=0;i<20;i++){
+                    CheckStock checkStock=new CheckStock();
+                    checkStock.setPcb("034335230"+i);
+                    checkStock.setLiu("2016876500"+i);
+                    checkStock.setNumber("200");
+                    checkStock.setCheck("200");
+                    if (i==6||i==3||i==3){
+                        checkStock.setZhuangtai("未开始");
+                    }else if (i==0){
+                        checkStock.setZhuangtai("开始盘点");
+                    }else {
+                        checkStock.setZhuangtai("盘点完成");
+                    }
+                    data.add(checkStock);
+
+
+                }
+                return Observable.just(data);
+            }
+
         };
     }
+
 
 }

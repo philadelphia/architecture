@@ -23,4 +23,14 @@ public class CheckStockModel extends BaseModel<ApiService> implements CheckStock
     public Observable<List<CheckStock>> getCheckStock() {
         return getService().getCheckStock().compose(RxsRxSchedulers.<List<CheckStock>>io_main());
     }
+
+    @Override
+    public Observable<List<CheckStock>> getCheckStockNumber() {
+        return getService().getCheckNumber().compose(RxsRxSchedulers.<List<CheckStock>>io_main());
+    }
+
+    @Override
+    public Observable<String> getCheckStockSuccess() {
+        return getService().getCheckStockSuccess().compose(RxsRxSchedulers.<String>io_main());
+    }
 }

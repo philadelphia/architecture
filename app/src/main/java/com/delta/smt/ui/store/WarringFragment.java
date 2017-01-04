@@ -1,7 +1,6 @@
 package com.delta.smt.ui.store;
 
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -22,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
+
+import static com.delta.smt.R.id.recyclerview;
 
 /**
  * Created by Lin.Hou on 2016-12-26.
@@ -29,22 +32,22 @@ import butterknife.BindView;
 
 public class WarringFragment extends BaseFragment<WarningPresenter> implements WarningContract.View {
 
-    @BindView(R.id.recyclerview)
-    RecyclerView recyclerview;
+
+    @BindView(R.id.time_recycler)
+    FamiliarRecyclerView timeRecycler;
     private ItemTimeAdapter mAdapter;
 
-    private List<ItemInfo> mList=new ArrayList<>();
+    private List<ItemInfo> mList = new ArrayList<>();
 
     @Override
     protected void initView() {
-        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        mAdapter=new ItemTimeAdapter(getActivity(),mList);
-        recyclerview.setAdapter(mAdapter);
+        mAdapter = new ItemTimeAdapter(getActivity(), mList);
+        timeRecycler.setAdapter(mAdapter);
         mAdapter.setOnItemTimeOnclck(new ItemOnclick() {
             @Override
             public void onItemClick(View item, int position) {
-                Toast.makeText(getActivity(),""+position,Toast.LENGTH_SHORT).show();
-                IntentUtils.showIntent(getActivity(),WarningListActivity.class);
+                Toast.makeText(getActivity(), "" + position, Toast.LENGTH_SHORT).show();
+                IntentUtils.showIntent(getActivity(), WarningListActivity.class);
             }
         });
     }
@@ -70,12 +73,12 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
 
     @Override
     protected int getContentViewId() {
-        return R.layout.main_list;
+        return R.layout.time_recyclerview;
     }
 
     @Override
     public void onSucess(List<ItemInfo> wareHouses) {
-        Log.i("info",""+wareHouses.size());
+        Log.i("info", "" + wareHouses.size());
         mList.clear();
         mList.addAll(wareHouses);
         mAdapter.notifyDataSetChanged();
@@ -85,4 +88,6 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
     public void onFailed() {
 
     }
+
+
 }

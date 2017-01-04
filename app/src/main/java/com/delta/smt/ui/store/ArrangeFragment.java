@@ -1,7 +1,8 @@
 package com.delta.smt.ui.store;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,26 +22,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 
 /**
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements ArrangeContract.View{
-    @BindView(R.id.recyclerview)
-    RecyclerView recyclerview;
+public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements ArrangeContract.View {
+
+    @BindView(R.id.time_recycler)
+    FamiliarRecyclerView timeRecycler;
+
     private ItemTimeAdapter mAdapter;
-    private List<ItemInfo>mList=new ArrayList<>();
+    private List<ItemInfo> mList = new ArrayList<>();
+
     @Override
     protected void initView() {
-        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        mAdapter=new ItemTimeAdapter(getActivity(),mList);
-        recyclerview.setAdapter(mAdapter);
+        mAdapter = new ItemTimeAdapter(getActivity(), mList);
+        timeRecycler.setAdapter(mAdapter);
         mAdapter.setOnItemTimeOnclck(new ItemOnclick() {
             @Override
             public void onItemClick(View item, int position) {
-                Toast.makeText(getActivity(),""+position,Toast.LENGTH_SHORT).show();
-                IntentUtils.showIntent(getActivity(),WarningListActivity.class);
+                if (mList.size() == 0) {
+
+                } else {
+                    ItemInfo itemInfo = mList.get(position);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("workNumber", itemInfo.getWorkNumber());
+                    bundle.putString("machine", itemInfo.getMachine());
+                    bundle.putString("materialNumber", itemInfo.getMaterialNumber());
+                    Log.i("info ----", itemInfo.getWorkNumber());
+                    Log.i("info ----", itemInfo.getMachine());
+                    Log.i("info ----", itemInfo.getMaterialNumber());
+                    Toast.makeText(getActivity(), "" + position, Toast.LENGTH_SHORT).show();
+                    IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
+                }
             }
         });
     }
@@ -52,13 +68,13 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
     @Override
     protected void initData() {
-    getPresenter().fatchArrange();
+        getPresenter().fatchArrange();
 
     }
 
     @Override
     protected int getContentViewId() {
-        return R.layout.main_list;
+        return R.layout.time_recyclerview;
     }
 
 
@@ -73,4 +89,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
     public void onFailed() {
 
     }
+
+
+
 }

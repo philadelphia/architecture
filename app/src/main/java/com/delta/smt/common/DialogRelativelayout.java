@@ -72,7 +72,22 @@ public class DialogRelativelayout extends LinearLayout {
         this.addView(tvTitle);
 
     }
+    public void setBlackTitle(String strTitle) {
 
+        TextView tvTitle = new TextView(context);
+        tvTitle.setTextColor(Color.BLACK);
+        tvTitle.setText(strTitle);
+        tvTitle.setTextSize(px2sp(context,16));
+
+        LayoutParams param=new LayoutParams(
+                ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        param.setMargins(0,0,0,0);
+        tvTitle.setLayoutParams(param);
+
+        this.addView(tvTitle);
+
+    }
     /**
      * 传入的是二级标题，黑色
      * @param strSecondTitle

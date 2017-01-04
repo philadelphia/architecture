@@ -16,6 +16,8 @@ import com.delta.smt.ui.login.mvp.LoginPresenter;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -26,6 +28,11 @@ import java.util.ArrayList;
 public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implements LoginContract.View, WarningManger.OnWarning {
 
 
+    private AlertDialog alertDialog;
+
+    @Inject
+    WarningManger warningManger;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
 
@@ -35,9 +42,9 @@ public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implement
     @Override
     protected void initData() {
 
-        WarningManger.getInstance().addWarning(Constant.SAMPLEWARING, getClass());
-        WarningManger.getInstance().setRecieve(true);
-        WarningManger.getInstance().setOnWarning(this);
+        warningManger.addWarning(Constant.SAMPLEWARING, getClass());
+        warningManger.setRecieve(true);
+        warningManger.setOnWarning(this);
         getPresenter().login("sdf", "sdf");
     }
 
@@ -53,13 +60,13 @@ public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implement
 
     @Override
     protected void onResume() {
-        WarningManger.getInstance().registWReceiver(this);
+        warningManger.registWReceiver(this);
         super.onResume();
     }
 
     @Override
     protected void onStop() {
-        WarningManger.getInstance().unregistWReceriver(this);
+        warningManger.unregistWReceriver(this);
         super.onStop();
     }
 
@@ -74,7 +81,15 @@ public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implement
     }
 
     @Override
-    public void warningComming() {
+    public void warningComming(String message) {
+        if (alertDialog != null) {
+            alertDialog.show();
+        } else {
+            alertDialog = createDialog(message);
+        }
+    }
+
+    public AlertDialog createDialog(String message) {
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
         dialogRelativelayout.setStrTitle("测试标题");
@@ -86,8 +101,14 @@ public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implement
         datas.add("sdfsdf1");
         datas.add("dsfsdf2");
         dialogRelativelayout.setStrContent(datas);
+        dialogRelativelayout.setStrSecondTitle("预警异常2");
+        ArrayList<String> datass = new ArrayList<>();
+        datass.add("dsfdsf");
+        datass.add("sdfsdf1");
+        datass.add("dsfsdf2");
+        dialogRelativelayout.setStrContent(datass);
         //5.构建Dialog，setView的时候把这个View set进去。
-        new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        return new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

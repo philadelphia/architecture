@@ -58,7 +58,7 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
             public void run() {
                 while (true) {
                     //模拟预警
-                    int randomInt = (int) (Math.random() * 5);
+                    int randomInt = (int) (Math.random() * 10);
                     Intent intent = new Intent();
                     intent.setAction(Constant.WARNINGRECIEVE);
                     intent.putExtra(Constant.WARNINGTYPE, randomInt);
@@ -79,21 +79,6 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
                             }
                         }
                     }
-//                    if (foreground) {
-//                        sendBroadcast(intent);
-//                    } else {
-//                        topActivity = ActivityMonitor.getInstance().getTopActivity();
-//                        if (topActivity != null) {
-//                            if (topActivity.getClass().equals(WarningManger.getInstance().getWaringCalss(randomInt))) {
-//                                App.getMainHander().post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        dialog.show();
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    }
                     Log.e("---", "run: " + randomInt);
                     try {
                         Thread.sleep(5000);
@@ -160,6 +145,5 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
         Activity topActivity = ActivityMonitor.getInstance().getTopActivity();
         Log.e("-----", "onAppStateChange: " + foreground + topActivity.getClass().getName());
         this.foreground = foreground;
-        //  this.topActivity = ActivityMonitor.getInstance().getTopActivity();
     }
 }

@@ -16,8 +16,14 @@ public class CheckStockContract {
     public interface View extends IView{
         void onSucess(List<CheckStock> wareHouses);
         void onFailed();
+        void onCheckStockNumberSucess(List<CheckStock> wareHouses);
+        void onCheckStockNumberFailed();
+        void onCheckStockSucess(String wareHouses);
+        void onCheckStockFailed();
     }
     public interface Model extends IModel{
         Observable<List<CheckStock>>getCheckStock();
+        Observable<List<CheckStock>>getCheckStockNumber();
+        Observable<String>getCheckStockSuccess();
     }
 }

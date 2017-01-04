@@ -82,7 +82,7 @@ public class WarningManger {
                 Log.e(TAG, "onReceive: " + "-----------------------------" + waringCalss);
                 if (WarningManger.getInstance().isRecieve()) {
                     if (onWarning != null) {
-                        onWarning.warningComming();
+                        onWarning.warningComming("测试");
                     }
 
                 }
@@ -124,6 +124,6 @@ public class WarningManger {
     }
 
     public interface OnWarning {
-        void warningComming();
+        void warningComming(String warningMessage);
     }
 }

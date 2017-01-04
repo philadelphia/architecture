@@ -8,6 +8,33 @@ public class ItemInfo {
     private String text;
     private  long countdown;
     private long endTime;
+    private String workNumber;
+    private String machine;
+    private String materialNumber;
+
+    public String getMaterialNumber() {
+        return materialNumber;
+    }
+
+    public void setMaterialNumber(String materialNumber) {
+        this.materialNumber = materialNumber;
+    }
+
+    public String getMachine() {
+        return machine;
+    }
+
+    public void setMachine(String machine) {
+        this.machine = machine;
+    }
+
+    public String getWorkNumber() {
+        return workNumber;
+    }
+
+    public void setWorkNumber(String workNumber) {
+        this.workNumber = workNumber;
+    }
 
     public long getEndTime() {
         return endTime;

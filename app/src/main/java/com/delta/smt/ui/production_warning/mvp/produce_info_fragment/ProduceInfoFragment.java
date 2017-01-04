@@ -91,13 +91,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         return R.layout.fragment_produce_info;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
+
 
     @Override
     public void getItemInfoDatas(List<ItemInfo> itemInfos) {
@@ -115,7 +109,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
     @Override
     public void onItemClick(View view, final ItemInfo item, int position) {
-        final AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
+        AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
         mDialogRelativelayout=new DialogRelativelayout(getContext());
         mDialogRelativelayout.setStrSecondTitle("请求确认");
         final ArrayList<String> datas = new ArrayList<>();

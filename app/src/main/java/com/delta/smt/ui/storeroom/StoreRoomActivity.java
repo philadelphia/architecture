@@ -1,28 +1,36 @@
 package com.delta.smt.ui.storeroom;
 
+import android.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.Feeder;
+import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
+import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.ui.storeroom.mvp.StoreRoomContract;
 import com.delta.smt.ui.storeroom.mvp.StoreRoomPresenter;
+import com.delta.smt.utils.BarCodeUtils;
 
 import butterknife.BindView;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implements BarCodeIpml.OnScanSuccessListener {
+public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implements StoreRoomContract.View{
 
     @BindView(R.id.storage_pcbed)
     EditText storagePcbed;
@@ -30,8 +38,6 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implement
     EditText storageVendored;
     @BindView(R.id.storage_datacodeed)
     EditText storageDatacodeed;
-    @BindView(R.id.storage_labeled)
-    EditText storageLabeled;
     @BindView(R.id.storage_ided)
     EditText storageIded;
     @BindView(R.id.header_title)
@@ -39,6 +45,7 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implement
 
 
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -66,9 +73,20 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implement
     public void onScanSuccess(String barcode) {
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
-            //TODO  这里负责解析二维码，下面的代码不一定能用
-            Feeder materialBlockBarCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
-            Log.e("barcode", materialBlockBarCode.getNumber());
+            switch (BarCodeUtils.barCodeType(barcode)){
+                case MATERIAL_BLOCK_BARCODE:
+                MaterialBlockBarCode barCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                Log.e("barcode", barCode.getDeltaMaterialNumber());
+                storagePcbed.setText(barCode.getDeltaMaterialNumber());
+                storageVendored.setText(barCode.getBusinessCode());
+                storageDatacodeed.setText(barCode.getDC());
+                    break;
+                case FRAME_LOCATION:
+                    FrameLocation frameCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                    storageIded.setText(frameCode.getSource());
+                    break;
+            }
+
         } catch (EntityNotFountException e) {
 
             e.printStackTrace();
@@ -101,6 +119,20 @@ public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implement
     protected void onDestroy() {
         super.onDestroy();
         barCodeIpml.onComplete();
+    }
+
+
+    @Override
+    public void storeSuccess(String s) {
+        storagePcbed.setText(null);
+        storageVendored.setText(null);
+        storageDatacodeed.setText(null);
+        storageIded.setText(null);
+    }
+
+    @Override
+    public void storeFaild(String s) {
+
     }
 
 

@@ -12,6 +12,15 @@ public class ListWarning {
     String pcbCode;
     String dc;
 
+    public boolean isColor() {
+        return isColor;
+    }
+
+    public void setColor(boolean color) {
+        isColor = color;
+    }
+
+    boolean isColor;
     public ListWarning() {
     }
 
