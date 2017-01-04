@@ -140,7 +140,7 @@ public class ServiceModule {
                     ListWarning l=new ListWarning();
                     l.setPcb("0343352030"+i);
                     l.setJia("J21-3"+i);
-                    l.setDangqaian("5"+i);
+                    l.setDangqaian("");
                     l.setXuqiu("100");
                     l.setPcbCode("0"+i);
                     l.setDc("1637");
@@ -398,7 +398,7 @@ public class ServiceModule {
                     CheckStock checkStock=new CheckStock();
                     checkStock.setPcb("034335230"+i);
                     checkStock.setLiu("2016876500"+i);
-                    checkStock.setNumber("200");
+                    checkStock.setNumber("");
                     checkStock.setCheck("200");
                     if (i==6||i==3||i==3){
                         checkStock.setZhuangtai("未开始");
@@ -427,6 +427,45 @@ public class ServiceModule {
             @Override
             public Observable<String> getCheckStockSuccess() {
                 return Observable.just("成功");
+            }
+
+            @Override
+            public Observable<List<ListWarning>> getWarningNumberSuccess() {
+                List<ListWarning>  mList=new ArrayList<>();
+                for (int i=0;i<10;i++){
+                    ListWarning l=new ListWarning();
+                    l.setPcb("0343352030"+i);
+                    l.setJia("J21-3"+i);
+                    l.setDangqaian("5"+i);
+                    l.setXuqiu("100");
+                    l.setPcbCode("0"+i);
+                    l.setDc("1637");
+                    mList.add(l);
+                }
+                return Observable.just(mList);
+            }
+
+            @Override
+            public Observable<List<CheckStock>> getCheckNumber() {
+                List<CheckStock> data=new ArrayList<>();
+                for (int i=0;i<20;i++){
+                    CheckStock checkStock=new CheckStock();
+                    checkStock.setPcb("034335230"+i);
+                    checkStock.setLiu("2016876500"+i);
+                    checkStock.setNumber("200");
+                    checkStock.setCheck("200");
+                    if (i==6||i==3||i==3){
+                        checkStock.setZhuangtai("未开始");
+                    }else if (i==0){
+                        checkStock.setZhuangtai("开始盘点");
+                    }else {
+                        checkStock.setZhuangtai("盘点完成");
+                    }
+                    data.add(checkStock);
+
+
+                }
+                return Observable.just(data);
             }
 
         };

@@ -19,7 +19,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
     public WarningListPresenter(WarningListContract.Model model, WarningListContract.View mView) {
         super(model, mView);
     }
-    public void fatchListWarning(){
+    public void fetchListWarning(){
         getModel().getListWarning().subscribe(new Action1<List<ListWarning>>() {
             @Override
             public void call(List<ListWarning> listWarnings) {
@@ -33,16 +33,30 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
 
-    public void fathcSuccessState(){
+    public void fetchSuccessState(){
         getModel().getSuccessfulState().subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-                getView().onFailedState(s);
+                getView().onSucessState(s);
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 getView().onFailedState(throwable.getMessage().toString());
+            }
+        });
+    }
+
+    public void fetchWarningNumber(){
+        getModel().getWarningNumber().subscribe(new Action1<List<ListWarning>>() {
+            @Override
+            public void call(List<ListWarning> listWarnings) {
+                getView().onWarningNumberSucess(listWarnings);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onWarningNumberFailed();
             }
         });
     }

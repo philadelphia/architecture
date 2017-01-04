@@ -1,7 +1,6 @@
 package com.delta.smt.api;
 
 
-import com.delta.smt.entity.BeginPut;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
@@ -84,6 +83,8 @@ public interface  ApiService {
     Observable<String> getSuccessState();//是否成功?
     Observable<String> getStoreRoomSuccess();//是否成功?
     Observable<String> getCheckStockSuccess();//是否成功?
+    Observable<List<ListWarning>> getWarningNumberSuccess();//获取Warning列表的数量
+    Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
 
 
 
