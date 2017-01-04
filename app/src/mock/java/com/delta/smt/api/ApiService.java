@@ -1,6 +1,7 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.Constant;
 import com.delta.smt.entity.BeginPut;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.FeederCheckInItem;
@@ -15,6 +16,7 @@ import com.delta.smt.entity.MantissaWarehouseReturn;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
+import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
@@ -26,8 +28,12 @@ import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 import rx.Observable;
 
 
@@ -81,6 +87,11 @@ public interface  ApiService {
     Observable<List<com.delta.smt.entity.ItemInfo>> getWarning();//获取所有预警信息
     Observable<List<ListWarning>> getListWarning();//获取发料列表
     Observable<List<CheckStock>> getCheckStock();//获取盘点列表
+    Observable<String> getSuccessState();//是否成功?
+    Observable<String> getStoreRoomSuccess();//是否成功?
+    Observable<String> getCheckStockSuccess();//是否成功?
+
+
 
     Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
 
@@ -89,5 +100,14 @@ public interface  ApiService {
     Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage();
 
     Observable<List<MantissaWarehousePutstorage>> getBeginput();
+
+    //更新
+    @GET(Constant.bundleJsonUrl)
+    Observable<Update> getUpdate();
+
+    //下载更新
+    @Streaming
+    @GET
+    Observable<ResponseBody> download(@Url String url);
 
 }

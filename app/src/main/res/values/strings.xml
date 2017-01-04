@@ -26,7 +26,7 @@
     <string name="storage_vendortv">Vendor:</string>
     <string name="storage_datacodetv">Data Code:</string>
     <string name="storage_labeltv">标签编号：</string>
-    <string name="storage_idtv">对应架位ID：</string>
+    <string name="storage_idtv">对应架位：</string>
     <string name="storage_numbertv">入库数量：</string>
     <string name="storage_factorytv">厂别：</string>
     <string name="storage_pcbcodetv">PCBCode:</string>
@@ -52,4 +52,10 @@
     <string name="statistics_number">盘点数量</string>
     <string name="statistics_storenumber">盘点状态</string>
     <string name="pcbku">PCB库房入库</string>
+    <string name="dialogerrortitle">盘点异常</string>
+    <string name="error_alteration">变更架位</string>
+    <string name="error_cancel">取消</string>
+    <string name="dialogresulttitle">盘点结果</string>
+    <string name="result_cancel">继续盘点本架位</string>
+    <string name="result_alteration">完成盘点</string>
 </resources>

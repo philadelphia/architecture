@@ -14,6 +14,7 @@ import com.delta.smt.entity.MantissaWarehouseReturn;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
+import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
@@ -30,8 +31,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
+import retrofit2.http.Url;
 import rx.Observable;
 
 
@@ -119,14 +122,19 @@ public class ServiceModule {
                 for (int i=0;i<10;i++){
                     com.delta.smt.entity.ItemInfo item=new com.delta.smt.entity.ItemInfo();
                     //TODO  控件有问题
-                    item.setText("产线:H"+i+"\n"+"工单号:24561215"+i+"\n"+"PCB料号：457485645"+i+"\n"+"机种：H123-"+i+"需求量："+50+"\n"+"状态:"+"备料");
+                    item.setText("产线:H"+i+"\n"+"工单号:24561215"+i+"\n"+"PCB料号：457485645"+i+"\n"+"机种：H123-"+i+"\n"+"需求量："+50+"\n"+"状态:"+"备料");
                     item.setCountdown(9000);
                     long current = System.currentTimeMillis();
                     item.setEndTime(current+9000);
+                    item.setWorkNumber("245612152");
+                    item.setMachine("H1231");
+                    item.setMaterialNumber("4574856451");
                     list.add(item);
                 }
                 return Observable.just(list);
             }
+
+
 
             @Override
             public Observable<List<ListWarning>> getListWarning() {
@@ -192,6 +200,32 @@ public class ServiceModule {
                 datas.add(new MantissaWarehousePutstorage("201512121234","0351234701","D33E02-02","T-001","开始退库"));
                 return Observable.just(datas);
             }
+
+            @Override
+            public Observable<Update> getUpdate() {
+                //测试数据
+                Update update = new Update();
+                update.setVersion("1.0");
+                update.setVersionCode("1");
+                update.setDescription("无更新");
+                update.setUrl("http://172.22.35.177:8081/app-debug.apk");
+                return Observable.just(update);
+            }
+
+            @Override
+            public Observable<ResponseBody> download(@Url String url) {
+                return null;
+            }
+
+            /*@Override
+            public Observable<Update> getUpdate() {
+                return null;
+            }
+
+            @Override
+            public Observable<ResponseBody> download(@Url String url) {
+                return null;
+            }*/
 
             @Override
             public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {
@@ -260,10 +294,6 @@ public class ServiceModule {
             @Override
             public Observable<List<FeederSupplyItem>> getAllToBeSuppliedFeeders() {
                 List<FeederSupplyItem> list = new ArrayList<>();
-                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
-                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
-                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
-                list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
                 list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
                 list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
                 list.add(new FeederSupplyItem("001-02023","KT8FL 139060","0351234707","05T021","","等待上模组"));
@@ -411,6 +441,21 @@ public class ServiceModule {
 
                 }
                 return Observable.just(data);
+            }
+
+            @Override
+            public Observable<String> getSuccessState() {
+                return Observable.just("成功");
+            }
+
+            @Override
+            public Observable<String> getStoreRoomSuccess() {
+                return Observable.just("成功");
+            }
+
+            @Override
+            public Observable<String> getCheckStockSuccess() {
+                return Observable.just("成功");
             }
 
         };

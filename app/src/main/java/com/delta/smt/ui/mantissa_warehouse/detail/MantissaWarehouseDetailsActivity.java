@@ -138,4 +138,10 @@ public class MantissaWarehouseDetailsActivity extends BaseActiviy<MantissaWareho
         }
     }
 
+
+    @Override
+    public void onScanSuccess(String barcode) {
+        super.onScanSuccess(barcode);
+
+    }
 }

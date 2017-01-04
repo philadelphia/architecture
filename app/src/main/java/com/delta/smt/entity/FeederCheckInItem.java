@@ -12,6 +12,7 @@ public class FeederCheckInItem {
     private String checkInTimeStamp;
     private String status;
 
+
     public FeederCheckInItem(String workItemID,String feederID,  String materialID, String location, String status) {
         this.feederID = feederID;
         this.location = location;
@@ -28,6 +29,7 @@ public class FeederCheckInItem {
         this.status = status;
         this.workItemID = workItemID;
     }
+
 
     public String getCheckInTimeStamp() {
         return checkInTimeStamp;

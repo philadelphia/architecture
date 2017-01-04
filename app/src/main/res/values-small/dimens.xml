@@ -21,6 +21,7 @@
     <dimen name="dp_60">60dp</dimen>
     <dimen name="dp_80">80dp</dimen>
     <dimen name="dp_12">12dp</dimen>
+    <dimen name="dp_5">5dp</dimen>
 
 
 </resources>

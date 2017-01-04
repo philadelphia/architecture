@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
-import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.base.BaseFragment;
@@ -52,7 +51,7 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     private CommonBaseAdapter<MantissaWarehousePutstorage> adapter2;
     private View mInflate;
     private BaseActiviy baseActiviy;
-    private BarCodeIpml barCodeIpml;
+
 
     @Override
     public void onAttach(Context context) {
@@ -170,10 +169,12 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         Log.e(TAG, "onHiddenChanged: " + hidden);
-        if (hidden) {
-            baseActiviy.removeOnBarCodeSuecss(this);
-        } else {
-            baseActiviy.addOnBarCodeSucess(this);
+        if (baseActiviy != null) {
+            if (hidden) {
+                baseActiviy.removeOnBarCodeSuecss(this);
+            } else {
+                baseActiviy.addOnBarCodeSucess(this);
+            }
         }
     }
 

@@ -32,7 +32,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Zhenyu.Liu on 2016/12/28.
  */
 
-public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter> implements StorageDetailsContract.View {
+public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter> implements StorageDetailsContract.View{
 
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
@@ -51,6 +51,7 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
     private CommonBaseAdapter<StorageDetails> adapter;
     private CommonBaseAdapter<StorageDetails> adapter2;
     private View mInflate;
+    private BaseActiviy baseActiviy;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -134,5 +135,12 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
             case R.id.header_setting:
                 break;
         }
+    }
+
+
+    @Override
+    public void onScanSuccess(String barcode) {
+        super.onScanSuccess(barcode);
+
     }
 }

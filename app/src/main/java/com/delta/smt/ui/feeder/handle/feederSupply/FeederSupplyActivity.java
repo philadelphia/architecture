@@ -4,6 +4,8 @@ package com.delta.smt.ui.feeder.handle.feederSupply;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
@@ -16,7 +18,6 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyItem;
-import com.delta.smt.entity.Result;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
@@ -31,8 +32,6 @@ import butterknife.OnClick;
 import static com.delta.smt.base.BaseApplication.getContext;
 
 public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> implements FeederSupplyContract.View {
-
-
     @BindView(R.id.header_back)
     TextView headerBack;
     @BindView(R.id.header_title)
@@ -41,18 +40,22 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
     TextView headerSetting;
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
-    @BindView(R.id.recy_contetn)
-    RecyclerView recyContetn;
+    @BindView(R.id.recy_content)
+    RecyclerView recyContent;
     @BindView(R.id.hr_scrow)
     HorizontalScrollView hrScrow;
     @BindView(R.id.btn_upload)
     Button btnUpload;
+    @BindView(R.id.tv_moduleID)
+    TextView tvModuleID;
 
     private CommonBaseAdapter<FeederSupplyItem> adapterTitle;
     private CommonBaseAdapter<FeederSupplyItem> adapter;
     private List<FeederSupplyItem> dataList = new ArrayList<>();
     private List<FeederSupplyItem> dataSource = new ArrayList<>();
     private static final String TAG = "FeederSupplyActivity";
+    private boolean isHandleOVer = false;
+
     @Override
     protected int getContentViewId() {
         return R.layout.activity_feeder_supply;
@@ -65,6 +68,7 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
 
     @Override
     protected void initData() {
+        Log.i(TAG, "initData: ");
         getPresenter().getAllToBeSuppliedFeeders();
     }
 
@@ -104,8 +108,9 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
             }
 
         };
-        recyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        recyContetn.setAdapter(adapter);
+        recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        recyContent.setAdapter(adapter);
+
 
     }
 
@@ -120,7 +125,7 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
 
                 break;
             case R.id.btn_upload:
-                getPresenter().upLoadFeederSupplyResult();
+                getPresenter().upLoadToMES();
                 break;
         }
     }
@@ -130,18 +135,42 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
+        for (FeederSupplyItem item : dataSource) {
+            if (item.getStatus().equalsIgnoreCase("等待上模组")){
+                isHandleOVer = false;
+                break;
+            }else {
+                isHandleOVer = true;
+            }
+        }
 
+        if (isHandleOVer){
+            getPresenter().upLoadToMES();
+        }
     }
 
-    @Override
-    public void onUpLoadSuccess(Result result) {
-        onBackPressed();
-    }
 
     @Override
     public void onFalied() {
 
     }
 
+
+    @Override
+    public void onScanSuccess(String barcode) {
+        Log.i(TAG, "onScanSuccess: ");
+        super.onScanSuccess(barcode);
+        Log.i(TAG, "barcode == " + barcode);
+        for (FeederSupplyItem feederSupplyItem: dataSource) {
+            if(!TextUtils.isEmpty(barcode)){
+                if (barcode.trim().equalsIgnoreCase(feederSupplyItem.getMaterialID())){
+                    tvModuleID.setText("模组料站: " + feederSupplyItem.getModuleID());
+                    getPresenter().upLoadFeederSupplyResult();
+                }
+            }
+        }
+
+
+    }
 
 }
