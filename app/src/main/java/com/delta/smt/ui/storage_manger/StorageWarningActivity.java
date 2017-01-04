@@ -1,20 +1,26 @@
 package com.delta.smt.ui.storage_manger;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
 
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.storage_manger.ready.StorageReadyFragment;
 import com.delta.smt.ui.storage_manger.ready.StorageReturnFragment;
 import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyPresenter;
 import com.delta.smt.utils.ViewUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -23,7 +29,7 @@ import butterknife.OnClick;
  * Created by Zhenyu.Liu on 2016/12/21.
  */
 
-public class StorageWarningActivity extends BaseActiviy<StorageReadyPresenter> implements TabLayout.OnTabSelectedListener {
+public class StorageWarningActivity extends BaseActiviy<StorageReadyPresenter> implements TabLayout.OnTabSelectedListener , WarningManger.OnWarning {
 
 
     @BindView(R.id.tl_title)
@@ -124,5 +130,27 @@ public class StorageWarningActivity extends BaseActiviy<StorageReadyPresenter> i
             case R.id.header_setting:
                 break;
         }
+    }
+
+    @Override
+    public void warningComming(String warningMessage) {
+         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
+        //2.传入的是红色字体的标题
+        dialogRelativelayout.setStrTitle("测试标题");
+        //3.传入的是黑色字体的二级标题
+        dialogRelativelayout.setStrSecondTitle("预警异常");
+        //4.传入的是一个ArrayList<String>
+        ArrayList<String> datas = new ArrayList<>();
+        datas.add("dsfdsf");
+        datas.add("sdfsdf1");
+        datas.add("dsfsdf2");
+        dialogRelativelayout.setStrContent(datas);
+        //5.构建Dialog，setView的时候把这个View set进去。
+        new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).show();
     }
 }
