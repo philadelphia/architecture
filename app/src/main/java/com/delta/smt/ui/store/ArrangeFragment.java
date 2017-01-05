@@ -13,6 +13,7 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.ItemTimeAdapter;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.ArrangeInt;
 import com.delta.smt.entity.StoreEmptyMessage;
 import com.delta.smt.entity.ItemInfo;
 import com.delta.smt.ui.store.di.ArrangeModule;
@@ -20,6 +21,7 @@ import com.delta.smt.ui.store.di.DaggerArrangeComponent;
 import com.delta.smt.ui.store.mvp.ArrangeContract;
 import com.delta.smt.ui.store.mvp.ArrangePresenter;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -85,6 +87,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
     public void onSucess(List<ItemInfo> wareHouses) {
         mList.clear();
         mList.addAll(wareHouses);
+        EventBus.getDefault().post(new ArrangeInt(wareHouses.size()));
         mAdapter.notifyDataSetChanged();
     }
 

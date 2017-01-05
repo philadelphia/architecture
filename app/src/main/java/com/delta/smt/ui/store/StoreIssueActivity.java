@@ -12,7 +12,9 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.ArrangeInt;
 import com.delta.smt.entity.StoreEmptyMessage;
+import com.delta.smt.entity.WarningInt;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.store.di.DaggerStoreComponent;
 import com.delta.smt.ui.store.di.StoreModule;
@@ -21,6 +23,7 @@ import com.delta.smt.ui.store.mvp.StorePresenter;
 import com.delta.smt.utils.ViewUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -45,6 +48,8 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
     private ArrangeFragment mArrangeFragment;
     private SupportFragment currentFragment;
     private FragmentManager fragmentManager;
+    private  int arrayint;
+    private int warnInt;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -53,7 +58,11 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
 
     @Override
     protected void initData() {
+        if (arrayint==0&&warnInt==0){
         mTitles = new String[]{"预警", "排程"};
+        }else {
+            mTitles = new String[]{"预警"+arrayint, "排程"+warnInt};
+        }
         warningManger.addWarning(Constant.SAMPLEWARING, getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
@@ -148,5 +157,13 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
     protected void onStop() {
         warningManger.unregistWReceriver(this);
         super.onStop();
+    }
+    @Subscribe
+    public void event(ArrangeInt message) {
+        this.arrayint=message.getAnInt();
+    }
+    @Subscribe
+    public void event(WarningInt message) {
+        this.warnInt=message.getWarnInt();
     }
 }
