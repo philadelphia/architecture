@@ -2,8 +2,8 @@ package com.delta.smt.api;
 
 
 import com.delta.smt.Constant;
-import com.delta.smt.entity.BeginPut;
 import com.delta.smt.entity.CheckStock;
+import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
@@ -103,6 +103,8 @@ public interface  ApiService {
 
     Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
+    //生产中预警
+    Observable<List<FalutMesage>> getFalutMessages();
     //更新
     @GET(Constant.bundleJsonUrl)
     Observable<Update> getUpdate();

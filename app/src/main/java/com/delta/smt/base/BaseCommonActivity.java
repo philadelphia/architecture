@@ -14,9 +14,13 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.delta.smt.app.App;
+import com.delta.smt.entity.EventNothing;
 import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +47,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
     private BroadcastReceiver mBroadcastReceiver;
     private App application;
     private Unbinder bind;
+
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
@@ -73,11 +78,30 @@ public abstract class BaseCommonActivity extends SupportActivity {
             if (!isNotAdd)
                 application.getActivityList().add(this);
         }
+        if (UseEventBus()) {
+            EventBus.getDefault().register(this);
+        }
+
         setContentView(getContentViewId());
         bind = ButterKnife.bind(this);
 
         initCData();
         initCView();
+    }
+
+    public boolean UseEventBus() {
+        return false;
+    }
+
+    /**
+     * 不添加在注册过的时候发送事件回报its super classes have no public methods with the @Subscribe annotation
+     *
+     * @param event
+     */
+    @Subscribe
+    public void recieve(EventNothing event) {
+
+
     }
 
     protected abstract void initCView();
@@ -109,6 +133,9 @@ public abstract class BaseCommonActivity extends SupportActivity {
         }
         if (bind != Unbinder.EMPTY) {
             bind.unbind();
+        }
+        if (UseEventBus()) {
+            EventBus.getDefault().unregister(this);
         }
         super.onDestroy();
     }
