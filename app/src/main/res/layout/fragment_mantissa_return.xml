@@ -3,7 +3,6 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <include layout="@layout/main_header"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,14 +19,6 @@
             android:textSize="10dp"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="备料车号：SMT-D46"
-            android:id="@+id/textView2"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
     </RelativeLayout>
     <HorizontalScrollView
         android:id="@+id/hr_scrow"
