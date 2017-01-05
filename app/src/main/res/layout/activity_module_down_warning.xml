@@ -10,9 +10,7 @@
     tools:context=".ui.smt_module.module_down.ModuleDownActivity">
 
     <include
-        layout="@layout/main_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        layout="@layout/main_header"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
