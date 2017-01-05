@@ -13,19 +13,6 @@
         <include
             layout="@layout/main_header"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_feederMaintain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:text="Feeder保养"/>
-        </RelativeLayout>
-
         <HorizontalScrollView
             android:id="@+id/hr_scrow"
             android:layout_width="match_parent"
@@ -47,6 +34,20 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
         </HorizontalScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_virtualLineBindingFinish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="虚拟线体绑定完成"/>
+        </RelativeLayout>
 
     </LinearLayout>
 </RelativeLayout>

@@ -7,20 +7,22 @@ package com.delta.smt.entity;
  */
 
 
-public class FalutMesage {
+public class FalutMesage extends CountDownEntity {
+
 
     private String produceline;
     private String processing;
     private String faultMessage;
     private String faultCode;
-    private String remainingTime;
 
-    public FalutMesage(String produceline, String processing, String faultMessage, String faultCode, String remainingTime) {
+
+    public FalutMesage(String produceline, String processing, String faultMessage, String faultCode, Long countdown) {
         this.produceline = produceline;
         this.processing = processing;
         this.faultMessage = faultMessage;
         this.faultCode = faultCode;
-        this.remainingTime = remainingTime;
+        this.countdown = countdown;
+
     }
 
     public String getProduceline() {
@@ -55,11 +57,5 @@ public class FalutMesage {
         this.faultCode = faultCode;
     }
 
-    public String getRemainingTime() {
-        return remainingTime;
-    }
 
-    public void setRemainingTime(String remainingTime) {
-        this.remainingTime = remainingTime;
-    }
 }

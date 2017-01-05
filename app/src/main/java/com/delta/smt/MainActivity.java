@@ -122,6 +122,8 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         fuctionString.add("上模组");
         fuctionString.add("下模组");
         fuctionString.add("about");
+        fuctionString.add("故障处理预警");
+
     }
 
 
@@ -153,7 +155,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 IntentUtils.showIntent(this, CheckStockActivity.class);
                 break;
             case "生产中预警":
-                IntentUtils.showIntent(this, com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity.class);
+                IntentUtils.showIntent(this, ProduceLineActivity.class);
                 break;
             case "手补件通知":
                 IntentUtils.showIntent(this, HandAddActivity.class);
@@ -173,6 +175,9 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 IntentUtils.showIntent(this, ModuleDownActivity.class);
                 break;
             case "about模组":
+                break;
+            case "故障处理预警":
+                IntentUtils.showIntent(this, com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity.class);
                 break;
             default:
                 break;

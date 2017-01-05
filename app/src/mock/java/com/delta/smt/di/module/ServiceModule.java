@@ -206,14 +206,17 @@ public class ServiceModule {
                 return Observable.just(datas);
             }
 
-            //生产中预警
+            //故障预警
             @Override
             public Observable<List<FalutMesage>> getFalutMessages() {
                 List<FalutMesage> datas = new ArrayList<>();
-                datas.add(new FalutMesage("H13", "回焊炉", "炉温过低", "H-00001", "20"));
-                datas.add(new FalutMesage("H13", "回焊炉", "炉温过低", "H-00001", "20"));
-                datas.add(new FalutMesage("H13", "回焊炉", "炉温过低", "H-00001", "20"));
-                datas.add(new FalutMesage("H13", "回焊炉", "炉温过低", "H-00001", "20"));
+                for (int i = 0; i < 5; i++) {
+                    FalutMesage falutMesage = new FalutMesage("H13", "回焊炉", "炉温过低", "H-00001", 50000l);
+                    falutMesage.setEndTime(System.currentTimeMillis()+falutMesage.getCountdown());
+                    falutMesage.setId(i);
+                    datas.add(falutMesage);
+                }
+
                 return Observable.just(datas);
             }
 

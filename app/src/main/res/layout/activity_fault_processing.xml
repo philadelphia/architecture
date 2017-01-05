@@ -14,8 +14,8 @@
             android:layout_height="wrap_content" />
     </com.delta.commonlibs.widget.autolayout.AutoToolbar>
 
-    <android.support.v7.widget.RecyclerView
+    <cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
         android:id="@+id/rv_faultProcessing"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"></cn.iwgang.familiarrecyclerview.FamiliarRecyclerView>
 </LinearLayout>

@@ -5,11 +5,15 @@ import android.graphics.Color;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.demacia.barcode.BarCodeIpml;
+import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -34,7 +38,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class VirtualLineBindingActivity extends BaseActiviy<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View{
+public class VirtualLineBindingActivity extends BaseActiviy<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View, BarCodeIpml.OnScanSuccessListener{
 
     @BindView(R.id.header_back)
     TextView headerBack;
@@ -54,6 +58,9 @@ public class VirtualLineBindingActivity extends BaseActiviy<VirtualLineBindingPr
     private List<VirtualLineBindingItem> dataList = new ArrayList<VirtualLineBindingItem>();
     private List<VirtualLineBindingItem> dataSource = new ArrayList<VirtualLineBindingItem>();
 
+    //二维码
+    private BarCodeIpml barCodeIpml = new BarCodeIpml();
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerVirtualLineBindingComponent.builder().appComponent(appComponent).virtualLineBindingModule(new VirtualLineBindingModule(this)).build().inject(this);
@@ -62,6 +69,7 @@ public class VirtualLineBindingActivity extends BaseActiviy<VirtualLineBindingPr
     @Override
     protected void initData() {
         getPresenter().getAllVirtualLineBindingItems();
+        barCodeIpml.setOnGunKeyPressListener(this);
     }
 
     @Override
@@ -133,5 +141,36 @@ public class VirtualLineBindingActivity extends BaseActiviy<VirtualLineBindingPr
                 IntentUtils.showIntent(this, ModuleDownDetailsActivity.class);
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            barCodeIpml.hasConnectBarcode();
+        } catch (DevicePairedNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        barCodeIpml.onComplete();
+    }
+
+    @Override
+    public void onScanSuccess(String barcode) {
+        Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (barCodeIpml.isEventFromBarCode(event)) {
+            barCodeIpml.analysisKeyEvent(event);
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 }

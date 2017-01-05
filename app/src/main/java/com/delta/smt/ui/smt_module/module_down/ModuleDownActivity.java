@@ -14,6 +14,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.smt_module.module_down.di.DaggerModuleDownComponent;
@@ -36,7 +37,7 @@ import butterknife.OnClick;
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> implements ModuleDownContract.View,CommonBaseAdapter.OnItemClickListener<ModuleDownWarningItem>{
+public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> implements ModuleDownContract.View,CommonBaseAdapter.OnItemClickListener<ModuleDownWarningItem>, WarningManger.OnWarning{
 
     @BindView(R.id.header_back)
     TextView headerBack;
@@ -117,5 +118,10 @@ public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> impleme
     @Override
     public void onItemClick(View view, ModuleDownWarningItem item, int position) {
         IntentUtils.showIntent(this, VirtualLineBindingActivity.class);
+    }
+
+    @Override
+    public void warningComming(String warningMessage) {
+
     }
 }
