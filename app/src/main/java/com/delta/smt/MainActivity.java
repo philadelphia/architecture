@@ -37,6 +37,7 @@ import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
+import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
 import com.delta.smt.ui.storeroom.StoreRoomActivity;
@@ -147,7 +148,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 IntentUtils.showIntent(this, CheckStockActivity.class);
                 break;
             case "生产中预警":
-                IntentUtils.showIntent(this, com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity.class);
+                IntentUtils.showIntent(this, ProduceLineActivity.class);
                 break;
             case "手补件通知":
                 IntentUtils.showIntent(this, HandAddActivity.class);
