@@ -8,4 +8,5 @@ package com.delta.smt.entity;
 
 
 public class StoreEmptyMessage {
+
 }

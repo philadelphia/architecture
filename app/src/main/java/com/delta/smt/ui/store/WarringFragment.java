@@ -14,11 +14,13 @@ import com.delta.smt.common.ItemTimeAdapter;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.StoreEmptyMessage;
 import com.delta.smt.entity.ItemInfo;
+import com.delta.smt.entity.WarningInt;
 import com.delta.smt.ui.store.di.DaggerWarningComponent;
 import com.delta.smt.ui.store.di.WarningModule;
 import com.delta.smt.ui.store.mvp.WarningContract;
 import com.delta.smt.ui.store.mvp.WarningPresenter;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -99,6 +101,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
         Log.i("info", "" + wareHouses.size());
         mList.clear();
         mList.addAll(wareHouses);
+        EventBus.getDefault().post(new WarningInt(wareHouses.size()));
         mAdapter.notifyDataSetChanged();
     }
 
