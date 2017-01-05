@@ -23,4 +23,8 @@
     <dimen name="px_30">30px</dimen>
     <dimen name="px_166">166px</dimen>
     <dimen name="ProtectToolsTextSize">40px</dimen>
+    <dimen name="px_50">50px</dimen>
+    <dimen name="px_1">1px</dimen>
+    <dimen name="px_2">2px</dimen>
+    <dimen name="px_310">310px</dimen>
 </resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/main_header"/>
+    <TextView
+        android:id="@+id/setting_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px_50"
+        android:textSize="@dimen/px_40"
+        android:paddingLeft="@dimen/px_70"
+        android:paddingRight="@dimen/px_70"
+        android:gravity="center_vertical"
+        android:text="检查更新(1.10)"
+        android:textColor="@color/waring_editext"
+        android:drawableRight="@drawable/ic_settingback"
+        android:lineSpacingMultiplier="1.2"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_1"
+        android:background="@color/waring_editext"/>
+    <TextView
+        android:id="@+id/setting_cache"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/px_40"
+        android:paddingLeft="@dimen/px_70"
+        android:paddingRight="@dimen/px_70"
+        android:gravity="center_vertical"
+        android:text="清除缓存"
+        android:textColor="@color/waring_editext"
+        android:drawableRight="@drawable/ic_settingback"
+        android:lineSpacingMultiplier="1.2"
+        />
+
+
+</LinearLayout>
