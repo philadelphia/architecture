@@ -13,6 +13,7 @@
        android:textSize="12sp"
        android:layout_marginBottom="20px"
        android:layout_marginLeft="18px"
+       android:drawablePadding="15dp"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"/>
 </LinearLayout>
