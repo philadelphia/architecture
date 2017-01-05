@@ -58,8 +58,8 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
             public void run() {
                 while (true) {
                     //模拟预警
-//                    int randomInt = (int) (Math.random() * 10);
-                    int randomInt = 4;
+                   int randomInt = (int) (Math.random() * 10);
+                 //   int randomInt = 4;
                     Intent intent = new Intent();
                     intent.setAction(Constant.WARNINGRECIEVE);
                     intent.putExtra(Constant.WARNINGTYPE, randomInt);
