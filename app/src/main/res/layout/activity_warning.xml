@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     >
     <include layout="@layout/main_header"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/px_20"/>
+       />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,10 +60,10 @@
             />
 
     </RelativeLayout>
+
     <include layout="@layout/main_recyclerview"
 
         />
-
 
 
 </LinearLayout>
