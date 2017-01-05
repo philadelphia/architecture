@@ -33,6 +33,11 @@ public class ItemProduceLine {
         this.linename = linename;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "ItemProduceLine{" +
+                "linename='" + linename + '\'' +
+                ", checked=" + checked +
+                '}';
+    }
 }

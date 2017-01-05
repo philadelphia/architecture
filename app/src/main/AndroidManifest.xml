@@ -49,6 +49,13 @@
             android:name=".StartActivity"
             android:screenOrientation="portrait" />
 
+        <!-- 生产中预警-->
+        <activity
+            android:name=".ui.fault_processing.produce_line.ProduceLineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.fault_processing.processing.FalutProcessingActivity"
+            android:screenOrientation="portrait" />
         <!--StorageWarningActivity  -->
         <activity
             android:name=".ui.storage_manger.StorageWarningActivity"
@@ -120,7 +127,7 @@
             android:name=".ui.feeder.handle.feederSupply.FeederSupplyActivity"
             android:label="feederSupplyActivity" />
 
-        !--shufeng.wu downloadservice-->
+        <!--shufeng.wu downloadservice-->
         <service android:name=".ui.main.update.DownloadService" />
 
         <!--shufen.wu FileProvider-->

@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -168,6 +167,7 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     protected int getContentViewId() {
         return R.layout.activity_warning;
     }
+
 
 
     @Override

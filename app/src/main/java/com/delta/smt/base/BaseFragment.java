@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.app.App;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.EventNothing;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -38,7 +42,7 @@ public abstract class BaseFragment<p extends BasePresenter> extends SupportFragm
         if (context instanceof Activity) {
             mainActivity = getActivity();
         } else {
-            throw new ClassCastException("Activity can't cast to MainActivity");
+            throw new ClassCastException("context can't cast to activity");
         }
         super.onAttach(context);
 
@@ -55,6 +59,24 @@ public abstract class BaseFragment<p extends BasePresenter> extends SupportFragm
         initData();
         initView();
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        if (UseEventBus()) {
+            EventBus.getDefault().register(this);
+        }
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    //默认不使用
+    protected boolean UseEventBus() {
+        return false;
+    }
+
+    @Subscribe
+    public void recieve(EventNothing event) {
+
     }
 
     protected abstract void initView();
@@ -79,6 +101,9 @@ public abstract class BaseFragment<p extends BasePresenter> extends SupportFragm
         if (bind != Unbinder.EMPTY) {
             bind.unbind();
 
+        }
+        if (UseEventBus()) {
+            EventBus.getDefault().unregister(this);
         }
         super.onDestroy();
     }

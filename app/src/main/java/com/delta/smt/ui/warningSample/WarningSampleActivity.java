@@ -42,8 +42,11 @@ public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implement
     @Override
     protected void initData() {
 
+        //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.SAMPLEWARING, getClass());
+        //是否接收预警 可以控制预警时机
         warningManger.setRecieve(true);
+        //关键 初始化预警接口
         warningManger.setOnWarning(this);
 
         getPresenter().login("sdf", "sdf");

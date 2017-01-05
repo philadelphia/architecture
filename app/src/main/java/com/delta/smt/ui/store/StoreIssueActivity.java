@@ -2,9 +2,7 @@ package com.delta.smt.ui.store;
 
 import android.content.DialogInterface;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.TextView;
@@ -14,10 +12,15 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.StoreEmptyMessage;
 import com.delta.smt.manager.WarningManger;
-import com.delta.smt.ui.feeder.warning.SupplyFragment;
+import com.delta.smt.ui.store.di.DaggerStoreComponent;
+import com.delta.smt.ui.store.di.StoreModule;
+import com.delta.smt.ui.store.mvp.StoreContract;
 import com.delta.smt.ui.store.mvp.StorePresenter;
 import com.delta.smt.utils.ViewUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -30,20 +33,14 @@ import me.yokeyword.fragmentation.SupportFragment;
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements TabLayout.OnTabSelectedListener, WarningManger.OnWarning {
-
-
+public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements TabLayout.OnTabSelectedListener, WarningManger.OnWarning, StoreContract.View {
     @BindView(R.id.header_title)
     TextView headerTitle;
     @BindView(R.id.main_title)
     TabLayout tlTitle;
-
     @Inject
     WarningManger warningManger;
-
-
     private String[] mTitles;
-    private FragmentTransaction fragmentTransaction;
     private WarringFragment mWarringFragment;
     private ArrangeFragment mArrangeFragment;
     private SupportFragment currentFragment;
@@ -51,7 +48,7 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-
+        DaggerStoreComponent.builder().appComponent(appComponent).storeModule(new StoreModule(this)).build().inject(this);
     }
 
     @Override
@@ -59,7 +56,7 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
         mTitles = new String[]{"预警", "排程"};
         warningManger.addWarning(Constant.SAMPLEWARING, getClass());
         warningManger.setRecieve(true);
-        warningManger.getInstance().setOnWarning(this);
+        warningManger.setOnWarning(this);
     }
 
     @Override
@@ -70,16 +67,12 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
         ViewUtils.setTabTitle(tlTitle, mTitles);
         tlTitle.addOnTabSelectedListener(this);
         fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+
         mWarringFragment = new WarringFragment();
         mArrangeFragment = new ArrangeFragment();
-        loadMultipleRootFragment(R.id.fragment,0,mWarringFragment,mArrangeFragment);
+        loadMultipleRootFragment(R.id.fragment, 0, mWarringFragment, mArrangeFragment);
         currentFragment = mWarringFragment;
         headerTitle.setText(this.getResources().getString(R.string.storetitle));
-
-
-
-
     }
 
     @Override
@@ -89,17 +82,16 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
                 Log.i(TAG, "onTabSelected: 0");
 
-                showHideFragment(mWarringFragment,currentFragment);
+                showHideFragment(mWarringFragment, currentFragment);
                 currentFragment = mWarringFragment;
                 break;
             case 1:
                 Log.i(TAG, "onTabSelected: 1");
-                showHideFragment(mArrangeFragment,currentFragment);
+                showHideFragment(mArrangeFragment, currentFragment);
                 currentFragment = mArrangeFragment;
                 break;
             default:
@@ -136,9 +128,16 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                EventBus.getDefault().post(new StoreEmptyMessage());
             }
         }).show();
     }
+
+    @Override
+    public boolean UseEventBus() {
+        return true;
+    }
+
     @Override
     protected void onResume() {
         warningManger.registWReceiver(this);

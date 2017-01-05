@@ -2,6 +2,7 @@ package com.delta.smt.ui.store;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -12,34 +13,35 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.ItemTimeAdapter;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.StoreEmptyMessage;
 import com.delta.smt.entity.ItemInfo;
 import com.delta.smt.ui.store.di.ArrangeModule;
 import com.delta.smt.ui.store.di.DaggerArrangeComponent;
 import com.delta.smt.ui.store.mvp.ArrangeContract;
 import com.delta.smt.ui.store.mvp.ArrangePresenter;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 
 /**
  * Created by Lin.Hou on 2016-12-26.
  */
 
 public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements ArrangeContract.View {
-
-    @BindView(R.id.time_recycler)
-    FamiliarRecyclerView timeRecycler;
-
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerview;
     private ItemTimeAdapter mAdapter;
     private List<ItemInfo> mList = new ArrayList<>();
 
     @Override
     protected void initView() {
+        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new ItemTimeAdapter(getActivity(), mList);
-        timeRecycler.setAdapter(mAdapter);
+        recyclerview.setAdapter(mAdapter);
         mAdapter.setOnItemTimeOnclck(new ItemOnclick() {
             @Override
             public void onItemClick(View item, int position) {
@@ -63,6 +65,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
     @Override
     protected void componentInject(AppComponent appComponent) {
+
         DaggerArrangeComponent.builder().appComponent(appComponent).arrangeModule(new ArrangeModule(this)).build().inject(this);
     }
 
@@ -74,7 +77,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
     @Override
     protected int getContentViewId() {
-        return R.layout.time_recyclerview;
+        return R.layout.main_list;
     }
 
 
@@ -85,11 +88,19 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
         mAdapter.notifyDataSetChanged();
     }
 
+    @Subscribe
+    public void event(StoreEmptyMessage message) {
+        getPresenter().fatchArrange();
+        Log.e(TAG, "event: ");
+    }
+
+    @Override
+    protected boolean UseEventBus() {
+        return true;
+    }
+
     @Override
     public void onFailed() {
 
     }
-
-
-
 }

@@ -1,6 +1,7 @@
 package com.delta.smt.ui.store;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -11,20 +12,19 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.ItemTimeAdapter;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.StoreEmptyMessage;
 import com.delta.smt.entity.ItemInfo;
 import com.delta.smt.ui.store.di.DaggerWarningComponent;
 import com.delta.smt.ui.store.di.WarningModule;
 import com.delta.smt.ui.store.mvp.WarningContract;
 import com.delta.smt.ui.store.mvp.WarningPresenter;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
-
-import static com.delta.smt.R.id.recyclerview;
 
 /**
  * Created by Lin.Hou on 2016-12-26.
@@ -32,17 +32,17 @@ import static com.delta.smt.R.id.recyclerview;
 
 public class WarringFragment extends BaseFragment<WarningPresenter> implements WarningContract.View {
 
-
-    @BindView(R.id.time_recycler)
-    FamiliarRecyclerView timeRecycler;
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerview;
     private ItemTimeAdapter mAdapter;
 
     private List<ItemInfo> mList = new ArrayList<>();
 
     @Override
     protected void initView() {
+        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new ItemTimeAdapter(getActivity(), mList);
-        timeRecycler.setAdapter(mAdapter);
+        recyclerview.setAdapter(mAdapter);
         mAdapter.setOnItemTimeOnclck(new ItemOnclick() {
             @Override
             public void onItemClick(View item, int position) {
@@ -54,7 +54,25 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
 
     @Override
     protected void componentInject(AppComponent appComponent) {
+
         DaggerWarningComponent.builder().appComponent(appComponent).warningModule(new WarningModule(this)).build().inject(this);
+    }
+
+    @Subscribe
+    public void event(StoreEmptyMessage message) {
+        Log.e(TAG, "event: ");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+
+    @Override
+    protected boolean UseEventBus() {
+        return true;
     }
 
     @Override
@@ -73,7 +91,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
 
     @Override
     protected int getContentViewId() {
-        return R.layout.time_recyclerview;
+        return R.layout.main_list;
     }
 
     @Override
@@ -88,6 +106,4 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
     public void onFailed() {
 
     }
-
-
 }

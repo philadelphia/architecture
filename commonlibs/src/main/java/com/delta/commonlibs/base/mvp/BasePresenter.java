@@ -11,6 +11,8 @@ public class BasePresenter<M extends IModel, V extends IView> implements Ipresen
     protected V mView;
     WeakReference<IView> IviewWeakReference = new WeakReference<IView>(mView);
 
+    WeakReference<IModel> iModelWeakReference = new WeakReference<IModel>(mModel);
+
     public BasePresenter(M model, V mView) {
         this.mModel = model;
         this.mView = mView;
@@ -38,6 +40,7 @@ public class BasePresenter<M extends IModel, V extends IView> implements Ipresen
 
     public void ondestory() {
         IviewWeakReference.clear();
+        iModelWeakReference.clear();
     }
 
 }
