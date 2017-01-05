@@ -12,11 +12,16 @@ import com.delta.smt.entity.MantissaWarehouseDetails;
 import com.delta.smt.entity.MantissaWarehousePutstorage;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
+import com.delta.smt.entity.ModuleDownDetailsItem;
+import com.delta.smt.entity.ModuleDownWarningItem;
+import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
+import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
@@ -201,14 +206,17 @@ public class ServiceModule {
                 return Observable.just(datas);
             }
 
-            //生产中预警
+            //故障预警
             @Override
             public Observable<List<FalutMesage>> getFalutMessages() {
                 List<FalutMesage> datas = new ArrayList<>();
-                datas.add(new FalutMesage("H13", "回焊炉", "炉温过低", "H-00001", "20"));
-                datas.add(new FalutMesage("H13", "回焊炉", "炉温过低", "H-00001", "20"));
-                datas.add(new FalutMesage("H13", "回焊炉", "炉温过低", "H-00001", "20"));
-                datas.add(new FalutMesage("H13", "回焊炉", "炉温过低", "H-00001", "20"));
+                for (int i = 0; i < 5; i++) {
+                    FalutMesage falutMesage = new FalutMesage("H13", "回焊炉", "炉温过低", "H-00001", 50000l);
+                    falutMesage.setEndTime(System.currentTimeMillis()+falutMesage.getCountdown());
+                    falutMesage.setId(i);
+                    datas.add(falutMesage);
+                }
+
                 return Observable.just(datas);
             }
 
@@ -228,15 +236,87 @@ public class ServiceModule {
                 return null;
             }
 
-            /*@Override
-            public Observable<Update> getUpdate() {
-                return null;
+            @Override
+            public Observable<List<ModuleUpWarningItem>> getModuleUpWarningItems() {
+                List<ModuleUpWarningItem> dataList = new ArrayList<ModuleUpWarningItem>();
+                dataList.add(new ModuleUpWarningItem("A","H13","01:00","仓库物料正在上模组","2016121010000001"));
+                dataList.add(new ModuleUpWarningItem("A","H14","00:20","仓库物料正在上模组","2016121010000002"));
+                dataList.add(new ModuleUpWarningItem("A","H15","00:30","仓库物料正在上模组","2016121010000003"));
+                dataList.add(new ModuleUpWarningItem("A","H16","01:00","仓库物料正在上模组","2016121010000004"));
+                dataList.add(new ModuleUpWarningItem("A","H17","00:20","仓库物料正在上模组","2016121010000005"));
+                dataList.add(new ModuleUpWarningItem("A","H18","00:30","仓库物料正在上模组","2016121010000006"));
+                dataList.add(new ModuleUpWarningItem("A","H19","01:00","仓库物料正在上模组","2016121010000007"));
+                dataList.add(new ModuleUpWarningItem("A","H20","00:20","仓库物料正在上模组","2016121010000008"));
+                dataList.add(new ModuleUpWarningItem("A","H21","00:30","仓库物料正在上模组","2016121010000009"));
+                return Observable.just(dataList);
             }
 
             @Override
-            public Observable<ResponseBody> download(@Url String url) {
-                return null;
-            }*/
+            public Observable<List<ModuleDownWarningItem>> getModuleDownWarningItems() {
+                List<ModuleDownWarningItem> dataList = new ArrayList<ModuleDownWarningItem>();
+                dataList.add(new ModuleDownWarningItem("A","H13","01:00","等待下模组","2016121010000001"));
+                dataList.add(new ModuleDownWarningItem("A","H14","00:20","等待下模组","2016121010000002"));
+                dataList.add(new ModuleDownWarningItem("A","H15","00:30","等待下模组","2016121010000003"));
+                dataList.add(new ModuleDownWarningItem("A","H16","01:00","等待下模组","2016121010000004"));
+                dataList.add(new ModuleDownWarningItem("A","H17","00:20","等待下模组","2016121010000005"));
+                dataList.add(new ModuleDownWarningItem("A","H18","00:30","等待下模组","2016121010000006"));
+                dataList.add(new ModuleDownWarningItem("A","H19","01:00","等待下模组","2016121010000007"));
+                dataList.add(new ModuleDownWarningItem("A","H20","00:20","等待下模组","2016121010000008"));
+                dataList.add(new ModuleDownWarningItem("A","H21","00:30","等待下模组","2016121010000009"));
+                return Observable.just(dataList);
+            }
+
+            @Override
+            public Observable<List<ModuleUpBindingItem>> getModuleUpBindingItems() {
+                List<ModuleUpBindingItem> dataList = new ArrayList<ModuleUpBindingItem>();
+                dataList.add(new ModuleUpBindingItem("-","0351234700","03T021","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234701","03T022","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234702","03T023","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234703","03T024","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234704","03T025","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234705","03T026","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234706","03T027","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234707","03T028","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234708","03T029","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234709","03T030","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234710","03T031","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234711","03T032","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234712","03T033","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234713","03T034","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234714","03T035","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234715","03T036","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234716","03T037","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234717","03T038","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234718","03T039","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0351234719","03T040","-","2016082500"));
+                return Observable.just(dataList);
+            }
+
+            @Override
+            public Observable<List<VirtualLineBindingItem>> getVirtualLineBindingItems() {
+                List<VirtualLineBindingItem> dataList = new ArrayList<VirtualLineBindingItem>();
+                dataList.add(new VirtualLineBindingItem("1","-"));
+                dataList.add(new VirtualLineBindingItem("2","-"));
+                dataList.add(new VirtualLineBindingItem("3","-"));
+                dataList.add(new VirtualLineBindingItem("4","-"));
+                dataList.add(new VirtualLineBindingItem("5","-"));
+                dataList.add(new VirtualLineBindingItem("6","-"));
+                return Observable.just(dataList);
+            }
+
+            @Override
+            public Observable<List<ModuleDownDetailsItem>> getModuleDownDetailsItems() {
+                List<ModuleDownDetailsItem> dataList = new ArrayList<ModuleDownDetailsItem>();
+                dataList.add(new ModuleDownDetailsItem("KT8FL 139053","0351234700","-","03T021","Feeder缓存区","2016082500"));
+                dataList.add(new ModuleDownDetailsItem("KT8FL 139054","0351234701","-","03T022","Feeder缓存区","2016082500"));
+                dataList.add(new ModuleDownDetailsItem("KT8FL 139055","0351234702","-","03T023","Feeder缓存区","2016082500"));
+                dataList.add(new ModuleDownDetailsItem("KT8FL 139056","0351234703","-","03T024","Feeder维护区","2016082500"));
+                dataList.add(new ModuleDownDetailsItem("KT8FL 139057","0351234704","-","03T025","Feeder维护区","2016082500"));
+                dataList.add(new ModuleDownDetailsItem("KT8FL 139058","0351234705","-","03T026","尾数仓","2016082500"));
+                dataList.add(new ModuleDownDetailsItem("KT8FL 139059","0351234706","-","03T027","尾数仓","2016082500"));
+                dataList.add(new ModuleDownDetailsItem("KT8FL 1390510","0351234707","-","03T028","尾数仓","2016082500"));
+                return Observable.just(dataList);
+            }
 
             @Override
             public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {

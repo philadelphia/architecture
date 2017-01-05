@@ -13,11 +13,16 @@ import com.delta.smt.entity.MantissaWarehouseDetails;
 import com.delta.smt.entity.MantissaWarehousePutstorage;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
+import com.delta.smt.entity.ModuleDownDetailsItem;
+import com.delta.smt.entity.ModuleDownWarningItem;
+import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
+import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
@@ -103,15 +108,25 @@ public interface  ApiService {
 
     Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
-    //生产中预警
+    //故障处理预警
     Observable<List<FalutMesage>> getFalutMessages();
     //更新
-    @GET(Constant.bundleJsonUrl)
+    @GET(API.bundleJsonUrl)
     Observable<Update> getUpdate();
 
     //下载更新
     @Streaming
     @GET
     Observable<ResponseBody> download(@Url String url);
+
+    Observable <List<ModuleUpWarningItem>> getModuleUpWarningItems();
+
+    Observable <List<ModuleDownWarningItem>> getModuleDownWarningItems();
+
+    Observable <List<ModuleUpBindingItem>> getModuleUpBindingItems();
+    Observable <List<VirtualLineBindingItem>> getVirtualLineBindingItems();
+    Observable <List<ModuleDownDetailsItem>> getModuleDownDetailsItems();
+
+
 
 }

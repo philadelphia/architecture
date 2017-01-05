@@ -37,7 +37,8 @@ import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
-import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
+import com.delta.smt.ui.smt_module.module_down.ModuleDownActivity;
+import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
 import com.delta.smt.ui.storeroom.StoreRoomActivity;
@@ -117,6 +118,11 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         fuctionString.add("手补件通知");
         fuctionString.add("尾数仓备料");
         fuctionString.add("尾数仓退料及入库");
+        fuctionString.add("上模组");
+        fuctionString.add("下模组");
+        fuctionString.add("about");
+        fuctionString.add("故障处理预警");
+
     }
 
 
@@ -161,6 +167,17 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 break;
             case "warningSample":
                 IntentUtils.showIntent(this, WarningSampleActivity.class);
+            case "上模组":
+                IntentUtils.showIntent(this, ModuleUpActivity.class);
+                break;
+            case "下模组":
+                IntentUtils.showIntent(this, ModuleDownActivity.class);
+                break;
+            case "about模组":
+                break;
+            case "故障处理预警":
+                IntentUtils.showIntent(this, com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity.class);
+                break;
             default:
                 break;
         }
