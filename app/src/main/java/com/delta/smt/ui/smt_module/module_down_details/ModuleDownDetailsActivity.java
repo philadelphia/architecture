@@ -4,18 +4,20 @@ import android.graphics.Color;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.delta.demacia.barcode.BarCodeIpml;
+import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownDetailsItem;
-import com.delta.smt.entity.ModuleUpBindingItem;
-import com.delta.smt.ui.smt_module.module_down.di.DaggerModuleDownComponent;
 import com.delta.smt.ui.smt_module.module_down_details.di.DaggerModuleDownDetailsComponent;
 import com.delta.smt.ui.smt_module.module_down_details.di.ModuleDownDetailsModule;
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsContract;
@@ -33,7 +35,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/5.
  */
 
-public class ModuleDownDetailsActivity extends BaseActiviy<ModuleDownDetailsPresenter> implements ModuleDownDetailsContract.View{
+public class ModuleDownDetailsActivity extends BaseActiviy<ModuleDownDetailsPresenter> implements ModuleDownDetailsContract.View, BarCodeIpml.OnScanSuccessListener{
 
     @BindView(R.id.header_back)
     TextView headerBack;
@@ -50,8 +52,11 @@ public class ModuleDownDetailsActivity extends BaseActiviy<ModuleDownDetailsPres
 
     private CommonBaseAdapter<ModuleDownDetailsItem> adapterTitle;
     private CommonBaseAdapter<ModuleDownDetailsItem> adapter;
-    private List<ModuleDownDetailsItem> dataList = new ArrayList<ModuleDownDetailsItem>();
-    private List<ModuleDownDetailsItem> dataSource = new ArrayList<ModuleDownDetailsItem>();
+    private List<ModuleDownDetailsItem> dataList = new ArrayList<>();
+    private List<ModuleDownDetailsItem> dataSource = new ArrayList<>();
+
+    //二维码
+    private BarCodeIpml barCodeIpml = new BarCodeIpml();
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -61,6 +66,7 @@ public class ModuleDownDetailsActivity extends BaseActiviy<ModuleDownDetailsPres
     @Override
     protected void initData() {
         getPresenter().getAllModuleDownDetailsItems();
+        barCodeIpml.setOnGunKeyPressListener(this);
     }
 
     @Override
@@ -139,5 +145,36 @@ public class ModuleDownDetailsActivity extends BaseActiviy<ModuleDownDetailsPres
                 //getPresenter().upLoadToMES();
                 break;*/
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            barCodeIpml.hasConnectBarcode();
+        } catch (DevicePairedNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        barCodeIpml.onComplete();
+    }
+
+    @Override
+    public void onScanSuccess(String barcode) {
+        Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (barCodeIpml.isEventFromBarCode(event)) {
+            barCodeIpml.analysisKeyEvent(event);
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 }
