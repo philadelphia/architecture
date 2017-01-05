@@ -37,6 +37,7 @@ import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
+import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
 import com.delta.smt.ui.smt_module.module_down.ModuleDownActivity;
 import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
