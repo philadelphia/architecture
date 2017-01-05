@@ -1,8 +1,6 @@
 package com.delta.smt.api;
 
 
-import com.delta.smt.Constant;
-import com.delta.smt.entity.BeginPut;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
@@ -97,7 +95,7 @@ public interface  ApiService {
     Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
     //更新
-    @GET(Constant.bundleJsonUrl)
+    @GET(API.bundleJsonUrl)
     Observable<Update> getUpdate();
 
     //下载更新
