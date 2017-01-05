@@ -59,4 +59,5 @@
     <string name="result_cancel">继续盘点本架位</string>
     <string name="result_alteration">完成盘点</string>
     <string name="ToolsFeedBack">治具入架位</string>
+    <string name="pcbcheck">PCB库房盘点</string>
 </resources>
