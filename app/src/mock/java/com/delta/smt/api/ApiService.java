@@ -108,7 +108,7 @@ public interface  ApiService {
 
     Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
-    //生产中预警
+    //故障处理预警
     Observable<List<FalutMesage>> getFalutMessages();
     //更新
     @GET(API.bundleJsonUrl)
