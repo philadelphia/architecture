@@ -141,8 +141,10 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
 
     @Override
     public void onScanSuccess(String barcode) {
+
         super.onScanSuccess(barcode);
         //Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
+
 
     }
 }

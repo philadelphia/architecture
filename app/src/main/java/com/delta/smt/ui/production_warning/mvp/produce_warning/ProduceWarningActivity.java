@@ -177,8 +177,9 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
 
     @Override
     public void warningComming(String warningMessage) {
-        if (alertDialog != null) {
-            alertDialog.show();
+        if (alertDialog!=null&&alertDialog.isShowing()) {
+            alertDialog.dismiss();
+            alertDialog = createDialog(warningMessage);
         } else {
             alertDialog = createDialog(warningMessage);
         }
@@ -194,8 +195,7 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
         datas.add("sdfsdf1");
         datas.add("dsfsdf2");
         dialogRelativelayout.setStrContent(datas);
-
-        return new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
