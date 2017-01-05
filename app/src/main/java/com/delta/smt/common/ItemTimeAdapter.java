@@ -36,6 +36,7 @@ public class ItemTimeAdapter extends RecyclerView.Adapter<ItemTimeViewHolder> {
     private ItemOnclick itemTimeOnclck;
     public void setOnItemTimeOnclck(ItemOnclick itemTimeOnclck){
         this.itemTimeOnclck=itemTimeOnclck;
+
     }
 
     public ItemTimeAdapter(Context context, List<ItemInfo> list){
