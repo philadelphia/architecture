@@ -18,4 +18,5 @@
     <dimen name="px_5">5px</dimen>
     <dimen name="px_120">120px</dimen>
     <dimen name="px_40">40px</dimen>
+    <dimen name="ProtectToolsTextSize">40px</dimen>
 </resources>
