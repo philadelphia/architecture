@@ -1,28 +1,24 @@
 package com.delta.smt.ui.smt_module.module_up;
 
 import android.content.DialogInterface;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
-import com.delta.demacia.barcode.BarCodeIpml;
-import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
-import com.delta.smt.base.BaseCommonActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.smt_module.module_up.di.DaggerModuleUpComponent;
@@ -46,7 +42,7 @@ import butterknife.OnClick;
 public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements ModuleUpContract.View, CommonBaseAdapter.OnItemClickListener<ModuleUpWarningItem> , WarningManger.OnWarning{
 
     @BindView(R.id.header_back)
-    TextView headerBack;
+    RelativeLayout headerBack;
     @BindView(R.id.header_title)
     TextView headerTitle;
     @BindView(R.id.header_setting)
@@ -58,6 +54,7 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
     RecyclerView recyclerview;
     private List<ModuleUpWarningItem> dataList = new ArrayList<>();
     private CommonBaseAdapter<ModuleUpWarningItem> adapter;
+    //private ItemCountdownViewAdapter <ModuleUpWarningItem> myAdapter;
 
     @Inject
     WarningManger warningManger;
@@ -76,13 +73,32 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
         warningManger.setRecieve(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        getPresenter().getAllModuleUpWarningItems();
+        //getPresenter().getAllModuleUpWarningItems();
 
     }
 
     @Override
     protected void initView() {
         headerTitle.setText("上模组");
+        /*mMyAdapter = new ItemCountdownViewAdapter<FalutMesage>(this, datas) {
+            @Override
+            protected int getLayoutId() {
+                return R.layout.item_processing;
+            }
+
+            @Override
+            protected void convert(ItemTimeViewHolder holder, FalutMesage falutMesage, int position) {
+
+                holder.setText(R.id.tv_line, "产线："+falutMesage.getProduceline());
+                holder.setText(R.id.tv_name, falutMesage.getProcessing() + "-" + falutMesage.getFaultMessage());
+                holder.setText(R.id.tv_processing, "制程：" + falutMesage.getProcessing());
+                holder.setText(R.id.tv_faultMessage, "故障信息：" + falutMesage.getFaultMessage());
+                holder.setText(R.id.tv_code, "故障代码：" + falutMesage.getFaultCode());
+
+            }
+        };
+        rvFaultProcessing.setLayoutManager(new LinearLayoutManager(this));
+        rvFaultProcessing.setAdapter(mMyAdapter);*/
         adapter = new CommonBaseAdapter<ModuleUpWarningItem>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpWarningItem item, int position) {
@@ -94,7 +110,7 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
 
             @Override
             protected int getItemViewLayoutId(int position, ModuleUpWarningItem item) {
-                return R.layout.module_down_warning_list_item;
+                return R.layout.item_module_down_warning_list;
             }
         };
 
@@ -113,6 +129,7 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
         dataList.clear();
         dataList.addAll(data);
         adapter.notifyDataSetChanged();
+        Toast.makeText(this,"onSuccess",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -161,18 +178,21 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
         //1.创建这个DialogRelativelayout
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
-        dialogRelativelayout.setStrTitle("新工单");
+        dialogRelativelayout.setStrTitle("");
         //3.传入的是黑色字体的二级标题
-        dialogRelativelayout.setStrSecondTitle("");
+        dialogRelativelayout.setStrSecondTitle("新工单");
         //4.传入的是一个ArrayList<String>
         ArrayList<String> titleList = new ArrayList<>();
         titleList.add(message);
         dialogRelativelayout.setStrContent(titleList);
         //5.构建Dialog，setView的时候把这个View set进去。
-        new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setView(dialogRelativelayout)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                getPresenter().getAllModuleUpWarningItems();
             }
         }).show();
     }

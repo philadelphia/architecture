@@ -107,5 +107,4 @@ public abstract class BaseFragment<p extends BasePresenter> extends SupportFragm
         }
         super.onDestroy();
     }
-
 }

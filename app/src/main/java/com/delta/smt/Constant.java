@@ -21,7 +21,6 @@ public class Constant {
     public static final int HANDPARHTSWARNING = 3;
     public static final int SAMPLEWARING = 4;
     public static final int PRODUCE_WARNING=5;
-    public static final int HAND_ADD=6;
     public static final int MODULE_UP_WARNING = 10;
     public static final int MODULE_DOWN_WARNING = 11;
 
