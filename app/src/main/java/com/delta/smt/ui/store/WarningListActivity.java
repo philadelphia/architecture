@@ -228,6 +228,7 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
 
             e.printStackTrace();
         }
+
     }
 
 
