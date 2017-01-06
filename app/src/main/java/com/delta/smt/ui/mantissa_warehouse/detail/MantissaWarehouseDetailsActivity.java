@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.smt.MainActivity;
@@ -41,7 +42,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActiviy<MantissaWareho
     @BindView(R.id.hr_scrow)
     HorizontalScrollView mHrScrow;
     @BindView(R.id.header_back)
-    TextView mHeaderBack;
+    RelativeLayout mHeaderBack;
     @BindView(R.id.header_title)
     TextView mHeaderTitle;
     @BindView(R.id.header_setting)

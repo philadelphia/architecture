@@ -8,10 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -19,8 +18,6 @@ import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
-import com.delta.demacia.barcode.BarCodeIpml;
-import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -45,7 +42,7 @@ import butterknife.BindView;
 
 public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View {
     @BindView(R.id.header_back)
-    TextView headerBack;
+    RelativeLayout headerBack;
     @BindView(R.id.header_title)
     TextView headerTitle;
     @BindView(R.id.header_setting)
@@ -231,6 +228,7 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
 
             e.printStackTrace();
         }
+
     }
 
 

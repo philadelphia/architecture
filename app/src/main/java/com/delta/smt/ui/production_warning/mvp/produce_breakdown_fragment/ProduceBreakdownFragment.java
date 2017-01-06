@@ -3,7 +3,6 @@ package com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,12 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.login.mvp.LoginPresenter;
 import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.DaggerProduceBreakdownFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.ProduceBreakdownFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.mvp.produce_warning_fragment.ProduceWarningFragmentPresenter;
-
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +77,13 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
         return R.layout.fragment_produce_breakdown;
     }
 
-
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
 
     @Override
     public void getItemBreakdownDatas(List<ItemBreakDown> itemBreakDown) {
@@ -94,18 +96,5 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
     @Override
     public void getItemBreakdownDatasFailed() {
 
-    }
-
-    //Activity预警广播触发事件
-    @Override
-    protected boolean UseEventBus() {
-        return true;
-    }
-
-    //Activity预警广播触发事件处理
-    @Subscribe
-    public void event(ProduceWarningMessage produceWarningMessage){
-        getPresenter().getItemBreakdownDatas();
-        Log.e(TAG, "event2: ");
     }
 }

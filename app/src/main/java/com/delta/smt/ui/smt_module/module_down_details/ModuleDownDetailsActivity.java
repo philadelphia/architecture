@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +39,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
 public class ModuleDownDetailsActivity extends BaseActiviy<ModuleDownDetailsPresenter> implements ModuleDownDetailsContract.View, BarCodeIpml.OnScanSuccessListener{
 
     @BindView(R.id.header_back)
-    TextView headerBack;
+    RelativeLayout headerBack;
     @BindView(R.id.header_title)
     TextView headerTitle;
     @BindView(R.id.header_setting)
@@ -88,7 +89,7 @@ public class ModuleDownDetailsActivity extends BaseActiviy<ModuleDownDetailsPres
 
             @Override
             protected int getItemViewLayoutId(int position, ModuleDownDetailsItem item) {
-                return R.layout.module_down_details_item;
+                return R.layout.item_module_down_details;
             }
         };
         recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -107,7 +108,7 @@ public class ModuleDownDetailsActivity extends BaseActiviy<ModuleDownDetailsPres
 
             @Override
             protected int getItemViewLayoutId(int position, ModuleDownDetailsItem item) {
-                return R.layout.module_down_details_item;
+                return R.layout.item_module_down_details;
             }
 
         };

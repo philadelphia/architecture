@@ -51,7 +51,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
             @Override
             protected void convert(ItemTimeViewHolder holder, ItemInfo itemInfo, int position) {
-            holder.setText(R.id.content_text,itemInfo.getText());
+                holder.setText(R.id.content_text,itemInfo.getText());
             }
         };
         timeRecycler.setAdapter(mAdapter);

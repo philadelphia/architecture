@@ -2,14 +2,13 @@ package com.delta.smt.ui.checkstock;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,13 +29,11 @@ import com.delta.smt.ui.checkstock.mvp.CheckStockPresenter;
 import com.delta.smt.utils.BarCodeUtils;
 
 import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static android.widget.Toast.makeText;
 import static com.delta.smt.R.id.recy_contetn;
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -46,7 +43,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> implements CheckStockContract.View, View.OnClickListener {
     @BindView(R.id.header_back)
-    TextView headerBack;
+    RelativeLayout headerBack;
     @BindView(R.id.header_title)
     TextView headerTitle;
     @BindView(R.id.header_setting)
@@ -62,7 +59,7 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
     private List<CheckStock> dataList= new ArrayList<>();
     private CommonBaseAdapter<CheckStock> mAdapter;
     private TextView mErrorContent;
-    private AlertDialog.Builder builder;
+    private AlertDialog.Builder builder=new AlertDialog.Builder(this);
     private AlertDialog mErrorDialog;
     private AlertDialog mResultDialog;
     private TextView mResultContent;
@@ -82,8 +79,6 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
 
     @Override
     protected void initView() {
-        builder =new AlertDialog.Builder(this);
-        headerTitle.setText(getResources().getString(R.string.pcbcheck));
         List<CheckStock>list=new ArrayList<>();
         list.add(new CheckStock("","","","",""));
         CommonBaseAdapter<CheckStock> mAdapterTitle = new CommonBaseAdapter<CheckStock>(getContext(), list) {
@@ -136,15 +131,12 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
         super.onScanSuccess(barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
-
         switch (BarCodeUtils.barCodeType(barcode)){
             case MATERIAL_BLOCK_BARCODE:
               mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);  }
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                }catch (NullPointerException e){
-
-        }
+                }
 
     }
 
@@ -156,7 +148,7 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
     @OnClick(R.id.cargon_affirm)
     public void onClick(){
         if (mMaterbarCode!=null){
-            if (!TextUtils.isEmpty(cargoned.getText())){
+            if (TextUtils.isEmpty(cargoned.getText())){
                 getPresenter().fetchCheckStockSuccessNumber();
             }else {
                 Toast toast=Toast.makeText(this,"请输入数量",Toast.LENGTH_SHORT);

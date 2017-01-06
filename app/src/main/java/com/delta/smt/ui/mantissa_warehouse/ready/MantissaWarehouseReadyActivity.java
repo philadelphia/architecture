@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.smt.MainActivity;
@@ -39,7 +40,7 @@ public class MantissaWarehouseReadyActivity extends BaseActiviy<MantissaWarehous
     @BindView(recyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.header_back)
-    TextView mHeaderBack;
+    RelativeLayout mHeaderBack;
     @BindView(R.id.header_title)
     TextView mHeaderTitle;
     @BindView(R.id.header_setting)
