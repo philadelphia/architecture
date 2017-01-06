@@ -8,64 +8,48 @@
         android:layout_width="match_parent"
         android:layout_height="85px">
         <TextView
-            android:id="@+id/tv_location"
-            android:layout_width="250px"
+            android:id="@+id/tv_number"
+            android:layout_width="300px"
             android:textColor="#333333"
-            android:gravity="center"
-            android:text="架位"
-            android:textSize="40px"
-            android:padding="20px"
-            android:background="@drawable/textview_border"
-            android:layout_height="match_parent"/>
-        <TextView
-            android:id="@+id/tv_feederID"
-            android:layout_width="250px"
-            android:gravity="center"
-            android:text="FeederID"
-            android:textColor="#333333"
-            android:textSize="40px"
-            android:padding="20px"
-            android:background="@drawable/textview_border"
-            android:layout_height="match_parent"/>
-        <TextView
-            android:id="@+id/tv_materialID"
-            android:layout_width="250px"
             android:gravity="center"
             android:text="料号"
-            android:textColor="#333333"
             android:textSize="40px"
-            android:padding="20px"
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
         <TextView
-            android:id="@+id/tv_module"
-            android:layout_width="250px"
+            android:id="@+id/tv_location"
+            android:layout_width="300px"
             android:gravity="center"
-            android:text="模组"
+            android:text="物料架位"
             android:textColor="#333333"
             android:textSize="40px"
-            android:padding="20px"
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
         <TextView
-            android:id="@+id/tv_timestamp"
-            android:layout_width="250px"
+            android:id="@+id/tv_needNumber"
+            android:layout_width="300px"
             android:gravity="center"
-            android:text="上模组时间"
+            android:text="需求量"
             android:textColor="#333333"
             android:textSize="40px"
-            android:padding="20px"
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
-
         <TextView
-            android:id="@+id/tv_status"
-            android:layout_width="250px"
+            android:id="@+id/tv_shipments"
+            android:layout_width="300px"
+            android:gravity="center"
+            android:text="发料量"
+            android:textColor="#333333"
+            android:textSize="40px"
+            android:background="@drawable/textview_border"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="300px"
             android:gravity="center"
             android:text="状态"
             android:textColor="#333333"
             android:textSize="40px"
-            android:padding="20px"
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
 

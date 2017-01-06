@@ -1,5 +1,6 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning_fragment;
 
+import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -32,10 +33,16 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.BroadcastBegin;
+import com.delta.smt.entity.BroadcastCancel;
+import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.DaggerProduceWarningFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWarningFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,19 +79,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     private int tag=0;
     private static final String TAG = "ProduceWarningFragment";
 
-    private android.os.Handler hanlder = new android.os.Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what==1) {
-                if(mPopupWindow!=null&&mPopupWindow.isShowing()){
-                    mPopupWindow.dismiss();
-                    tag=0;
-                }
-            }
 
-        }
-    };
     @Override
     protected void initView() {
         Log.i(TAG, "initView: ");
@@ -106,6 +101,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mRyvProduceWarning.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -133,7 +129,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         }
     }
 
-
+    //注入初始化
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerProduceWarningFragmentCompnent.builder().appComponent(appComponent).
@@ -167,7 +163,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     @Override
     public void onItemClick(View view, ItemWarningInfo item, int position) {
-
+        EventBus.getDefault().post(new BroadcastCancel());
         mDialogRelativelayout = new DialogRelativelayout(getContext());
         barcodedatas.clear();
 
@@ -246,14 +242,42 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             hanlder.sendEmptyMessageDelayed(1, 1000);
         }
 
-
     }
+
+    private android.os.Handler hanlder = new android.os.Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what==1) {
+                if(mPopupWindow!=null&&mPopupWindow.isShowing()){
+                    mPopupWindow.dismiss();
+                    EventBus.getDefault().post(new BroadcastBegin());
+                    tag=0;
+                }
+            }
+
+        }
+    };
 
     //popupwindow点击事件
     @Override
     public void onClick(View v) {
         mPopupWindow.dismiss();
+        EventBus.getDefault().post(new BroadcastBegin());
         tag=0;
+    }
+
+    //Activity预警广播触发事件
+    @Override
+    protected boolean UseEventBus() {
+        return true;
+    }
+
+    //Activity预警广播触发事件处理
+    @Subscribe
+    public void event(ProduceWarningMessage produceWarningMessage){
+        getPresenter().getItemWarningDatas();
+        Log.e(TAG, "event1: ");
     }
 
 

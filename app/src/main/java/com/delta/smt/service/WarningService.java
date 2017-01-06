@@ -54,12 +54,13 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
         final android.app.AlertDialog dialog = getAlertDialog();
         Log.e("dsfsf", "onStartCommand: ");
         new Thread(new Runnable() {
-            int randomInt=4;
+//            int randomInt=4;
             @Override
             public void run() {
+//                int randomInt=4;
                 while (true) {
                     //模拟预警
-                   int randomInt = (int) (Math.random() * 7);
+                   int randomInt = (int) (Math.random() * 10);
 /*                    randomInt++;
                     if (randomInt==7){
                         randomInt=4;
