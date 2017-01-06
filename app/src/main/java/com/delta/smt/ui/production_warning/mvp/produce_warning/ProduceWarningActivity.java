@@ -1,5 +1,6 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
@@ -18,14 +19,21 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.BroadcastBegin;
+import com.delta.smt.entity.BroadcastCancel;
+import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.production_warning.di.produce_warning.DaggerTitleNumberCompent;
 import com.delta.smt.ui.production_warning.di.produce_warning.TitleNumberModule;
+import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.ProduceBreakdownFragment;
 import com.delta.smt.ui.production_warning.mvp.produce_info_fragment.ProduceInfoFragment;
 import com.delta.smt.ui.production_warning.mvp.produce_warning_fragment.ProduceWarningFragment;
 import com.delta.smt.utils.ViewUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -58,12 +66,14 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
     private FragmentTransaction mFragmentTransaction;
     private SupportFragment currentFragment;
     private String[] titles;
-    private boolean tag=false;
+
 
 
     @Inject
     WarningManger warningManger;
     private AlertDialog alertDialog;
+    private boolean item_run_tag=false;
+    private String lastWarningMessage;
 
 
     @Override
@@ -71,6 +81,10 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
         DaggerTitleNumberCompent.builder().appComponent(appComponent).titleNumberModule(new TitleNumberModule(this)).build().inject(this);
     }
 
+    @Override
+    public boolean UseEventBus() {
+        return true;
+    }
 
     @Override
     protected void initData() {
@@ -174,10 +188,12 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
         titles = new String[]{"预警", "故障", "消息"};
     }
 
-
+    //就收到预警广播触发的方法
     @Override
     public void warningComming(String warningMessage) {
-        if (alertDialog!=null&&alertDialog.isShowing()) {
+        if(item_run_tag){
+            lastWarningMessage=warningMessage;
+        } else if (alertDialog!=null&&alertDialog.isShowing()) {
             alertDialog.dismiss();
             alertDialog = createDialog(warningMessage);
         } else {
@@ -185,7 +201,7 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
         }
     }
 
-    private AlertDialog createDialog(String warningMessage) {
+    private AlertDialog createDialog(final String warningMessage) {
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //3.传入的是黑色字体的二级标题
         dialogRelativelayout.setStrSecondTitle("预警异常");
@@ -198,8 +214,29 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
         return new AlertDialog.Builder(this).setCancelable(false).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                EventBus.getDefault().post(new ProduceWarningMessage(warningMessage));
                 dialog.dismiss();
             }
         }).show();
     }
+
+    //Fragment点击item触发事件处理
+    @Subscribe
+    public void event(BroadcastCancel broadcastCancel){
+        item_run_tag=true;
+        Log.e(TAG, "event4: ");
+    }
+
+    //Fragment中item处理完触发事件处理
+    @Subscribe
+    public void event(BroadcastBegin broadcastbegin){
+        item_run_tag=false;
+        if (lastWarningMessage!=null){
+            alertDialog = createDialog(lastWarningMessage);
+            lastWarningMessage=null;
+        }
+        Log.e(TAG, "event5: ");
+    }
+
 }

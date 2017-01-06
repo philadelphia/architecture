@@ -18,10 +18,16 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.BroadcastBegin;
+import com.delta.smt.entity.BroadcastCancel;
+import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.DaggerProduceInfoFragmentCompent;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.ProduceInfoFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,17 +115,19 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
     @Override
     public void onItemClick(View view, final ItemInfo item, int position) {
+        EventBus.getDefault().post(new BroadcastCancel());
         AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
         mDialogRelativelayout=new DialogRelativelayout(getContext());
         mDialogRelativelayout.setStrSecondTitle("请求确认");
         final ArrayList<String> datas = new ArrayList<>();
 
         mDialogRelativelayout.setStrContent(datas);
-        dialog.setView(mDialogRelativelayout)
+        dialog.setCancelable(false).setView(mDialogRelativelayout)
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        EventBus.getDefault().post(new BroadcastBegin());
 
                     }
                 })
@@ -128,10 +136,22 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
                     public void onClick(DialogInterface dialog, int which) {
                         item.setInfo("dfsafa");
                         mAdapter.notifyDataSetChanged();
+                        EventBus.getDefault().post(new BroadcastBegin());
                     }
                 }).show();
 
+    }
 
+    //Activity预警广播触发事件
+    @Override
+    protected boolean UseEventBus() {
+        return true;
+    }
 
+    //Activity预警广播触发事件处理
+    @Subscribe
+    public void event(ProduceWarningMessage produceWarningMessage){
+        getPresenter().getItemInfoDatas();
+        Log.e(TAG, "event3: ");
     }
 }
