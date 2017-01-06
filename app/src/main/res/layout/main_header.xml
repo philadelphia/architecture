@@ -6,11 +6,11 @@
     android:background="@color/background">
 
     <RelativeLayout
+        android:id="@+id/header_back"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content">
     <TextView
-        android:id="@+id/header_back"
         android:layout_marginTop="40px"
         android:layout_marginLeft="40px"
         android:layout_width="35px"
