@@ -3,8 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 <include layout="@layout/main_header"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     />
 
     <RelativeLayout
@@ -33,25 +31,25 @@
             android:layout_height="wrap_content"
             android:text="@string/cargonumber"
             android:layout_below="@id/cargon_text"
-            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginTop="@dimen/px_16"
             style="@style/waring_text"
             />
         <EditText
             android:id="@+id/cargoned"
-            android:layout_width="@dimen/dp_66"
-            android:layout_height="@dimen/dp_30"
+            android:layout_width="@dimen/px_166"
+            android:layout_height="@dimen/px_30"
             android:background="@drawable/ed_frame"
             android:layout_toRightOf="@id/cargontv"
             android:layout_alignBottom="@id/cargontv"
             android:layout_alignTop="@id/cargontv"
-            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginLeft="@dimen/px_16"
             />
         <Button
             android:id="@+id/cargon_affirm"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_16"
+            android:layout_height="@dimen/px_16"
             android:text="@string/cargon_affirm"
-           android:layout_marginRight="@dimen/dp_16"
+           android:layout_marginRight="@dimen/px_16"
             android:layout_alignParentRight="true"
             style="@style/pcb_button"
             android:layout_alignBottom="@id/cargontv"

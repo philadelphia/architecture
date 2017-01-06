@@ -77,7 +77,7 @@ public class DialogRelativelayout extends LinearLayout {
         TextView tvTitle = new TextView(context);
         tvTitle.setTextColor(Color.BLACK);
         tvTitle.setText(strTitle);
-        tvTitle.setTextSize(px2sp(context,16));
+        tvTitle.setTextSize(px2sp(context,70));
 
         LayoutParams param=new LayoutParams(
                 ViewGroup.LayoutParams.FILL_PARENT,
@@ -96,7 +96,7 @@ public class DialogRelativelayout extends LinearLayout {
 
         TextView tvSecondTitle = new TextView(context);
         tvSecondTitle.setText(strSecondTitle);
-        tvSecondTitle.setTextSize(px2sp(context,14));
+        tvSecondTitle.setTextSize(px2sp(context,60));
         tvSecondTitle.setTextColor(Color.parseColor("#333333"));
 
         LayoutParams param=new LayoutParams(

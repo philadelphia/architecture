@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
@@ -141,8 +140,10 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
 
     @Override
     public void onScanSuccess(String barcode) {
+
         super.onScanSuccess(barcode);
         //Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
+
 
     }
 }

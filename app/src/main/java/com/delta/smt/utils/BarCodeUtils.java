@@ -4,13 +4,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 
-import java.util.IdentityHashMap;
-import java.util.IllegalFormatCodePointException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.delta.buletoothio.barcode.parse.BarCodeType.FRAME_LOCATION;
 
 
 /**
@@ -29,34 +25,43 @@ public class BarCodeUtils {
 
 
 
-    public static    BarCodeType barCodeType(String s){
-        if (TextUtils.isEmpty(s)){
+    public static    BarCodeType barCodeType(String s)throws NullPointerException {
+        if (!TextUtils.isEmpty(s)){
         if ( Pattern.compile(BACKUPMATERIIALCAR).matcher(s).matches()){
             Log.i("barcodeUtils",""+Pattern.compile(BACKUPMATERIIALCAR).matcher(s).matches());
             return BarCodeType.BACKUP_MATERIAL_CAR;
-        }else if (Pattern.compile(FBOX).matcher(s).matches()){
+        }
+        if (Pattern.compile(FBOX).matcher(s).matches()){
             Log.i("barcodeUtils",""+Pattern.compile(FBOX).matcher(s).matches());
             return BarCodeType.FBOX;
-        }else if (Pattern.compile(FEEDER).matcher(s).matches()){
+        }
+        if (Pattern.compile(FEEDER).matcher(s).matches()){
             Log.i("barcodeUtils",""+Pattern.compile(FEEDER).matcher(s).matches());
                 return BarCodeType.FEEDER;
-        }else if (Pattern.compile(FEEDERCAR).matcher(s).matches()){
+        }
+        if (Pattern.compile(FEEDERCAR).matcher(s).matches()){
             Log.i("barcodeUtils",""+Pattern.compile(FEEDERCAR).matcher(s).matches());
                 return BarCodeType.FEEDER_CAR;
-        }else if (Pattern.compile(FRAMELOCATION).matcher(s).matches()){
+        }
+        if (Pattern.compile(FRAMELOCATION).matcher(s).matches()){
             Log.i("barcodeUtils",""+Pattern.compile(FRAMELOCATION).matcher(s).matches());
             return BarCodeType.FRAME_LOCATION;
-        }else if (Pattern.compile(MATERIALBLOCKBARCODE).matcher(s).matches()){
+        }
+        if (Pattern.compile(MATERIALBLOCKBARCODE).matcher(s).matches()){
             Log.i("barcodeUtils",""+Pattern.compile(MATERIALBLOCKBARCODE).matcher(s).matches());
             return BarCodeType.MATERIAL_BLOCK_BARCODE;
-        }else if (Pattern.compile(MATERIALSTATION).matcher(s).matches()){
+        }
+        if (Pattern.compile(MATERIALSTATION).matcher(s).matches()){
             Log.i("barcodeUtils",""+Pattern.compile(MATERIALSTATION).matcher(s).matches());
             return BarCodeType.MATERIAL_STATION;
-        }else if (Pattern.compile(RBOX).matcher(s).matches()){
+        }
+        if (Pattern.compile(RBOX).matcher(s).matches()){
             Log.i("barcodeUtils",""+Pattern.compile(RBOX).matcher(s).matches());
             return BarCodeType.RBOX;
         }
+
          }
         return  null;
+
     }
 }

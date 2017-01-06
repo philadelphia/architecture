@@ -59,7 +59,25 @@
     <string name="result_cancel">继续盘点本架位</string>
     <string name="result_alteration">完成盘点</string>
     <string name="ToolsFeedBack">治具入架位</string>
-    <string name="ProductToolsBarCode">治具二维码:</string>
+    <string name="pcbcheck">PCB库房盘点</string>
+    <string name="ProductToolsBarCodePlus">治具二维码:</string>
     <string name="LocationBarCode">价位二维码:</string>
     <string name="Back">返回</string>
+    <string name="WordNumber">工单号</string>
+    <string name="WordType">工单类型</string>
+    <string name="MachineType">机种</string>
+    <string name="PCB_Code">PCB Code</string>
+    <string name="FormMaterialNumber">组合料号</string>
+    <string name="Line">线别</string>
+    <string name="PWB_MaterialNumber">PWB料号</string>
+    <string name="Cover">面别</string>
+    <string name="PlanOnLineTime">计划上线时间</string>
+    <string name="ProductToolsStatus">治具状态</string>
+    <string name="WorkNumberPlus">工单号:</string>
+    <string name="ProductToolsBarCode">治具二维码</string>
+    <string name="ProductToolsType">治具类型</string>
+    <string name="ProductToolsLocation">所在架位</string>
+    <string name="ReSelect">重新选择</string>
+    <string name="Status">状态</string>
+    <string name="TurnNumber">序号</string>
 </resources>

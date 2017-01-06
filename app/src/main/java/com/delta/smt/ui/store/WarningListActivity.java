@@ -11,12 +11,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.R;
@@ -41,7 +43,7 @@ import butterknife.BindView;
  * Created by Lin.Hou on 2016-12-27.
  */
 
-public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View, BarCodeIpml.OnScanSuccessListener {
+public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View {
     @BindView(R.id.header_back)
     TextView headerBack;
     @BindView(R.id.header_title)
@@ -61,7 +63,6 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     @BindView(R.id.activity_mianview)
     LinearLayout activityMianview;
 
-    private BarCodeIpml barCodeIpml = new BarCodeIpml();
 
     List<ListWarning> mList = new ArrayList<>();
     private CommonBaseAdapter<ListWarning> mAdapter;
@@ -95,7 +96,6 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     @Override
     protected void initView() {
         headerTitle.setText(this.getResources().getString(R.string.storetitle));
-        barCodeIpml.setOnGunKeyPressListener(this);
         edWork.setText(mWorkNumberString);
         edPcb.setText(mMachineString);
         edMachine.setText(mMaterialNumberString);
@@ -211,6 +211,8 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
 
     @Override
     public void onScanSuccess(String barcode) {
+        ToastUtils.showMessage(this,"--->"+barcode);
+        Log.i("BARCODE","---->"+barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
             if (BarCodeUtils.barCodeType(barcode) != null) {
@@ -229,34 +231,8 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
 
             e.printStackTrace();
         }
-
     }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-
-        if (barCodeIpml.isEventFromBarCode(event)) {
-            barCodeIpml.analysisKeyEvent(event);
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
-            barCodeIpml.hasConnectBarcode();
-        } catch (DevicePairedNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        barCodeIpml.onComplete();
-    }
 
 
 }
