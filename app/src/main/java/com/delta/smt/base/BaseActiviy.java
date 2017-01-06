@@ -3,7 +3,6 @@ package com.delta.smt.base;
 import android.view.KeyEvent;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
-import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.di.component.AppComponent;
@@ -69,12 +68,6 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
         if (barCodeIpml.isEventFromBarCode(event)) {
             barCodeIpml.analysisKeyEvent(event);
             return true;
-        }
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
-                && event.getAction() == KeyEvent.ACTION_DOWN
-                && event.getRepeatCount() == 0) {
-            //具体的操作代码
-            ToastUtils.showMessage(this,"返回按钮");
         }
         return super.dispatchKeyEvent(event);
     }

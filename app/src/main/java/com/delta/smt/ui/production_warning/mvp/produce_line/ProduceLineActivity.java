@@ -3,7 +3,9 @@ package com.delta.smt.ui.production_warning.mvp.produce_line;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
@@ -25,7 +27,8 @@ import butterknife.OnClick;
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
-public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> implements ProduceLineContract.View{
+public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter>
+        implements ProduceLineContract.View,CommonBaseAdapter.OnItemClickListener<ItemProduceLine>{
 
     @BindView(R.id.ryv_production_line)
     RecyclerView ryvProductionLine;
@@ -48,6 +51,8 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
             @Override
             protected void convert(CommonViewHolder holder, ItemProduceLine item, int position) {
                 holder.setText(R.id.cb_production_line,item.getLinename());
+                CheckBox checkBox = holder.getView(R.id.cb_production_line);
+                checkBox.setChecked(item.isChecked());
             }
 
             @Override
@@ -57,7 +62,7 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
         };
         ryvProductionLine.setLayoutManager(new GridLayoutManager(this,3));
         ryvProductionLine.setAdapter(mAdapter);
-
+        mAdapter.setOnItemClickListener(this);
 
     }
 
@@ -88,9 +93,22 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
                 break;
             case R.id.btn_all_select:
 
+                if (datas.size() != 0) {
+                    for (ItemProduceLine data : datas) {
+                        data.setChecked(true);
+                    }
+                }
+                Log.e(TAG, "onClick: "+datas.toString());
+                mAdapter.notifyDataSetChanged();
                 break;
             case R.id.btn_all_cancel:
-
+                if (datas.size() != 0) {
+                    for (ItemProduceLine data : datas) {
+                        data.setChecked(false);
+                    }
+                }
+                Log.e(TAG, "onClick: "+datas.toString());
+                mAdapter.notifyDataSetChanged();
                 break;
         }
     }
@@ -106,5 +124,12 @@ public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> imple
     @Override
     public void getFailed() {
 
+    }
+
+    @Override
+    public void onItemClick(View view, ItemProduceLine item, int position) {
+        CheckBox cb = (CheckBox) view.findViewById(R.id.cb_production_line);
+        item.setChecked(!item.isChecked());
+        cb.setChecked(item.isChecked());
     }
 }

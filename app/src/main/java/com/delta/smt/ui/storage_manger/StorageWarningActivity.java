@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.smt.MainActivity;
@@ -37,7 +38,7 @@ public class StorageWarningActivity extends BaseActiviy<StorageReadyPresenter> i
     @BindView(R.id.header_title)
     TextView mHeaderTitle;
     @BindView(R.id.header_back)
-    TextView mHeaderBack;
+    RelativeLayout mHeaderBack;
     @BindView(R.id.header_setting)
     TextView mHeaderSetting;
     private FragmentTransaction mFragmentTransaction;

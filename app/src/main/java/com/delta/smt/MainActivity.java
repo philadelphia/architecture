@@ -57,7 +57,7 @@ import java.util.List;
 import butterknife.BindView;
 
 
-public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<String>,MainContract.View {
+public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<String>, MainContract.View {
 
 
     @BindView(R.id.toolbar)
@@ -81,7 +81,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         CommonBaseAdapter<String> adapter = new CommonBaseAdapter<String>(this, fuctionString) {
             @Override
             protected void convert(CommonViewHolder holder, String item, int position) {
-                holder.setImageResource(R.id.iv_function,R.drawable.title);
+                holder.setImageResource(R.id.iv_function, R.drawable.title);
                 Log.e(TAG, "convert: " + item);
                 holder.setText(R.id.tv_function, item);
             }
@@ -161,7 +161,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 IntentUtils.showIntent(this, CheckStockActivity.class);
                 break;
             case "生产中预警":
-                IntentUtils.showIntent(this, ProduceLineActivity.class);
+                IntentUtils.showIntent(this, com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity.class);
                 break;
             case "手补件通知":
                 IntentUtils.showIntent(this, HandAddActivity.class);
