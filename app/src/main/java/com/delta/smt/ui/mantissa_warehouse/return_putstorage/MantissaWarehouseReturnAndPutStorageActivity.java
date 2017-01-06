@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.smt.MainActivity;
@@ -30,7 +31,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActiviy<St
     @BindView(R.id.header_title)
     TextView mHeaderTitle;
     @BindView(R.id.header_back)
-    TextView mHeaderBack;
+    RelativeLayout mHeaderBack;
     @BindView(R.id.header_setting)
     TextView mHeaderSetting;
     private FragmentTransaction mFragmentTransaction;
