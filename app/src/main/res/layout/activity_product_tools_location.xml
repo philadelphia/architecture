@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:textSize="@dimen/ProtectToolsTextSize"
         android:textColor="#333333"
-        android:text="@string/ProductToolsBarCode"/>
+        android:text="@string/ProductToolsBarCodePlus"/>
 
     <EditText
         android:layout_height="84px"

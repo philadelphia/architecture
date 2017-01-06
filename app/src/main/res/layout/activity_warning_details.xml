@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/style_storagetv"
+            android:layout_marginTop="@dimen/px_16"
             android:text="@string/storage_pcbtv"
             />
         <EditText
@@ -37,6 +38,7 @@
             android:layout_height="wrap_content"
             style="@style/style_storagetv"
             android:text="@string/storage_vendortv"
+            android:layout_marginTop="@dimen/px_16"
             android:layout_below="@id/storage_pcbtv"
             android:layout_alignLeft="@id/storage_pcbtv"
             />
@@ -56,6 +58,7 @@
             android:layout_height="wrap_content"
             style="@style/style_storagetv"
             android:text="@string/storage_datacodetv"
+            android:layout_marginTop="@dimen/px_16"
             android:layout_below="@id/storage_vendortv"
             android:layout_alignLeft="@id/storage_pcbtv"
             />
@@ -75,6 +78,7 @@
             android:layout_height="wrap_content"
             style="@style/style_storagetv"
             android:text="@string/storage_idtv"
+            android:layout_marginTop="@dimen/px_16"
             android:layout_below="@id/storage_datacodeed"
             android:layout_alignLeft="@id/storage_pcbtv"
             />

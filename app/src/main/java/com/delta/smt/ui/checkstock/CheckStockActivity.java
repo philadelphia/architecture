@@ -62,7 +62,7 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
     private List<CheckStock> dataList= new ArrayList<>();
     private CommonBaseAdapter<CheckStock> mAdapter;
     private TextView mErrorContent;
-    private AlertDialog.Builder builder=new AlertDialog.Builder(this);
+    private AlertDialog.Builder builder;
     private AlertDialog mErrorDialog;
     private AlertDialog mResultDialog;
     private TextView mResultContent;
@@ -82,6 +82,8 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
 
     @Override
     protected void initView() {
+        builder =new AlertDialog.Builder(this);
+        headerTitle.setText(getResources().getString(R.string.pcbcheck));
         List<CheckStock>list=new ArrayList<>();
         list.add(new CheckStock("","","","",""));
         CommonBaseAdapter<CheckStock> mAdapterTitle = new CommonBaseAdapter<CheckStock>(getContext(), list) {
@@ -134,12 +136,15 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
         super.onScanSuccess(barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
+
         switch (BarCodeUtils.barCodeType(barcode)){
             case MATERIAL_BLOCK_BARCODE:
               mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);  }
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                }
+                }catch (NullPointerException e){
+
+        }
 
     }
 
@@ -151,7 +156,7 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
     @OnClick(R.id.cargon_affirm)
     public void onClick(){
         if (mMaterbarCode!=null){
-            if (TextUtils.isEmpty(cargoned.getText())){
+            if (!TextUtils.isEmpty(cargoned.getText())){
                 getPresenter().fetchCheckStockSuccessNumber();
             }else {
                 Toast toast=Toast.makeText(this,"请输入数量",Toast.LENGTH_SHORT);
