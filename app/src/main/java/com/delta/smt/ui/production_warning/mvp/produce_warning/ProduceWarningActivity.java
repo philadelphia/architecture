@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.smt.Constant;
@@ -55,7 +56,7 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
     @BindView(R.id.fl_container)
     FrameLayout flContainer;
     @BindView(R.id.header_back)
-    TextView mHeaderBack;
+    RelativeLayout mHeaderBack;
     @BindView(R.id.header_title)
     TextView mHeaderTitle;
     @BindView(R.id.header_setting)
