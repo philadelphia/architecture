@@ -3,7 +3,7 @@ package com.delta.smt.entity;
 /**
  * Created by Lin.Hou on 2016-12-27.
  */
-public class ItemInfo {
+public class ItemInfo extends CountDownEntity {
     private int id;
     private String text;
     private  long countdown;
