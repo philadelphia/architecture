@@ -10,20 +10,22 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
+        android:layout_marginTop="40px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-</android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.RecyclerView>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_selectWareHouse"
-        android:text="@string/confirm"
-        android:layout_width="300px"
-        android:layout_height="80px"
-        android:layout_marginTop="32px"
-        android:textColor="@android:color/white"
+        android:layout_width="250px"
+        android:layout_height="96px"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="130px"
+        android:layout_marginTop="853px"
         android:background="@drawable/btn_selector"
         android:gravity="center"
-        android:textSize="12sp"
-        android:layout_gravity="bottom|center_horizontal"/>
+        android:text="@string/confirm"
+        android:textColor="@android:color/white"
+        android:textSize="40px"/>
 
 </LinearLayout>

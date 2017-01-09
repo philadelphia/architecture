@@ -1,5 +1,8 @@
 package com.delta.smt.ui.smt_module.module_up_binding.mvp;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.ModuleUpBindingItem;
 
@@ -31,5 +34,9 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
                 getView().onFalied();
             }
         });
+    }
+
+    public void upLoadToMES(){
+        Toast.makeText((Context) getView(),"上传到MES",Toast.LENGTH_SHORT).show();
     }
 }

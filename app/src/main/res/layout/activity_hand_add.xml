@@ -4,9 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <include layout="@layout/main_header"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"/>
+    <include layout="@layout/main_header"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ryv_hand_add"

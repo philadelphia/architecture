@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.smt.R;
@@ -33,7 +34,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> implements FeederSupplyContract.View {
     @BindView(R.id.header_back)
-    TextView headerBack;
+    RelativeLayout headerBack;
     @BindView(R.id.header_title)
     TextView headerTitle;
     @BindView(R.id.header_setting)

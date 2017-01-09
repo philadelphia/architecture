@@ -26,6 +26,9 @@ public class Constant {
     public static final int MODULE_DOWN_WARNING = 11;
 
 
+    public static final int STORAGEREAD = 4;
+
+
     public static final String WORK_ITEM_ID = "WorkItemID";
 
 
