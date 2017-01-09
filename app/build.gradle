@@ -72,4 +72,5 @@ dependencies {
     compile rootProject.ext.dependencies["barcodecollector"]
     compile rootProject.ext.dependencies["fragmentation"]
     compile rootProject.ext.dependencies["familiarrecycler"]
+    compile rootProject.ext.dependencies["lombok"]
 }
