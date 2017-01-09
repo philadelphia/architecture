@@ -77,7 +77,7 @@ public class VirtualLineBindingActivity extends BaseActiviy<VirtualLineBindingPr
         adapterTitle = new CommonBaseAdapter<VirtualLineBindingItem>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, VirtualLineBindingItem item, int position) {
-                holder.itemView.setBackgroundColor(Color.GRAY);
+                holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
                 holder.setText(R.id.tv_moduleID, item.getModuleID());
                 holder.setText(R.id.tv_virtualModuleID, item.getVirtualModuleID());
             }

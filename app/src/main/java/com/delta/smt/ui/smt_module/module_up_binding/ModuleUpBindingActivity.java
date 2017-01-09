@@ -84,7 +84,7 @@ public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresente
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem item, int position) {
-                holder.itemView.setBackgroundColor(Color.GRAY);
+                holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_serialID, item.getSerialID());
                 holder.setText(R.id.tv_feederID, item.getFeederID());
