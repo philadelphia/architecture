@@ -17,7 +17,9 @@ import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
+import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.manager.WarningManger;
@@ -39,7 +41,7 @@ import butterknife.OnClick;
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements ModuleUpContract.View, CommonBaseAdapter.OnItemClickListener<ModuleUpWarningItem> , WarningManger.OnWarning{
+public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements ModuleUpContract.View, ItemOnclick, WarningManger.OnWarning{
 
     @BindView(R.id.header_back)
     RelativeLayout headerBack;
@@ -53,8 +55,7 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     private List<ModuleUpWarningItem> dataList = new ArrayList<>();
-    private CommonBaseAdapter<ModuleUpWarningItem> adapter;
-    //private ItemCountdownViewAdapter <ModuleUpWarningItem> myAdapter;
+    private ItemCountdownViewAdapter <ModuleUpWarningItem> myAdapter;
 
     @Inject
     WarningManger warningManger;
@@ -73,50 +74,33 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
         warningManger.setRecieve(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        //getPresenter().getAllModuleUpWarningItems();
+        getPresenter().getAllModuleUpWarningItems();
 
     }
 
     @Override
     protected void initView() {
         headerTitle.setText("上模组");
-        /*mMyAdapter = new ItemCountdownViewAdapter<FalutMesage>(this, datas) {
+
+        myAdapter = new ItemCountdownViewAdapter<ModuleUpWarningItem>(this, dataList) {
             @Override
             protected int getLayoutId() {
-                return R.layout.item_processing;
+                return R.layout.item_module_up_warning_list;
             }
 
             @Override
-            protected void convert(ItemTimeViewHolder holder, FalutMesage falutMesage, int position) {
+            protected void convert(ItemTimeViewHolder holder, ModuleUpWarningItem moduleUpWarningItem, int position) {
 
-                holder.setText(R.id.tv_line, "产线："+falutMesage.getProduceline());
-                holder.setText(R.id.tv_name, falutMesage.getProcessing() + "-" + falutMesage.getFaultMessage());
-                holder.setText(R.id.tv_processing, "制程：" + falutMesage.getProcessing());
-                holder.setText(R.id.tv_faultMessage, "故障信息：" + falutMesage.getFaultMessage());
-                holder.setText(R.id.tv_code, "故障代码：" + falutMesage.getFaultCode());
+                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLineNumber());
+                holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWorkItemID());
+                holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFaceID());
+                holder.setText(R.id.tv_status, "状态: " + moduleUpWarningItem.getStatus());
 
             }
         };
-        rvFaultProcessing.setLayoutManager(new LinearLayoutManager(this));
-        rvFaultProcessing.setAdapter(mMyAdapter);*/
-        adapter = new CommonBaseAdapter<ModuleUpWarningItem>(this, dataList) {
-            @Override
-            protected void convert(CommonViewHolder holder, ModuleUpWarningItem item, int position) {
-                holder.setText(R.id.tv_title, "线别: " + item.getLineNumber());
-                holder.setText(R.id.tv_line, "工单号: " + item.getWorkItemID());
-                holder.setText(R.id.tv_material_station, "面别: " + item.getFaceID());
-                holder.setText(R.id.tv_add_count, "状态: " + item.getStatus());
-            }
-
-            @Override
-            protected int getItemViewLayoutId(int position, ModuleUpWarningItem item) {
-                return R.layout.item_module_down_warning_list;
-            }
-        };
-
-        recyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
-        recyclerview.setAdapter(adapter);
-        adapter.setOnItemClickListener(this);
+        myAdapter.setOnItemTimeOnclck(this);
+        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        recyclerview.setAdapter(myAdapter);
     }
 
     @Override
@@ -128,8 +112,7 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
     public void onSuccess(List<ModuleUpWarningItem> data) {
         dataList.clear();
         dataList.addAll(data);
-        adapter.notifyDataSetChanged();
-        Toast.makeText(this,"onSuccess",Toast.LENGTH_SHORT).show();
+        myAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -150,11 +133,6 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
         }
     }
 
-    @Override
-    public void onItemClick(View view, ModuleUpWarningItem item, int position) {
-        IntentUtils.showIntent(this, ModuleUpBindingActivity.class);
-    }
-
 
     @Override
     protected void onStop() {
@@ -165,6 +143,9 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
     @Override
     protected void onResume() {
         warningManger.registWReceiver(this);
+        if (null != myAdapter) {
+            myAdapter.startRefreshTime();
+        }
         super.onResume();
     }
 
@@ -195,5 +176,26 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
                 getPresenter().getAllModuleUpWarningItems();
             }
         }).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (null != myAdapter) {
+            myAdapter.cancelRefreshTime();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null != myAdapter) {
+            myAdapter.cancelRefreshTime();
+        }
+    }
+
+    @Override
+    public void onItemClick(View item, int position) {
+        IntentUtils.showIntent(this, ModuleUpBindingActivity.class);
     }
 }

@@ -30,7 +30,7 @@
             android:layout_marginTop="@dimen/px_6"
             />
         <cn.iwgang.countdownview.CountdownView
-            android:id="@+id/countdownViewTest"
+            android:id="@+id/cv_countdownViewTest"
             android:layout_width="@dimen/px_120"
             android:layout_height="@dimen/px_40"
             android:layout_gravity="center_horizontal"

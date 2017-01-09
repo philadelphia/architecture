@@ -22,7 +22,7 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 public class WarningManger {
 
-
+    private static final String TAG = "WarningManger";
     private Map<Integer, Class> maps = new HashMap<>();
     private boolean isRecieve = true;
     private OnWarning onWarning;
@@ -74,7 +74,7 @@ public class WarningManger {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-
+            Log.i(TAG, "onReceive: ");
             int intExtra = intent.getIntExtra(Constant.WARNINGTYPE, -1);
             Class waringCalss = WarningManger.getInstance().getWaringCalss(intExtra);
             if (waringCalss != null) {

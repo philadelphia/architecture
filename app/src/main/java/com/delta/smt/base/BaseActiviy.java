@@ -3,6 +3,7 @@ package com.delta.smt.base;
 import android.view.KeyEvent;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.di.component.AppComponent;
@@ -69,6 +70,7 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
             barCodeIpml.analysisKeyEvent(event);
             return true;
         }
+
         return super.dispatchKeyEvent(event);
     }
 
@@ -112,4 +114,5 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
     public interface OnBarCodeSucess {
         void onScanSucess(String barcode);
     }
+
 }

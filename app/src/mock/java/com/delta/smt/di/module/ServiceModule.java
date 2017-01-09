@@ -239,30 +239,40 @@ public class ServiceModule {
             @Override
             public Observable<List<ModuleUpWarningItem>> getModuleUpWarningItems() {
                 List<ModuleUpWarningItem> dataList = new ArrayList<ModuleUpWarningItem>();
-                dataList.add(new ModuleUpWarningItem("A","H13","01:00","仓库物料正在上模组","2016121010000001"));
-                dataList.add(new ModuleUpWarningItem("A","H14","00:20","仓库物料正在上模组","2016121010000002"));
-                dataList.add(new ModuleUpWarningItem("A","H15","00:30","仓库物料正在上模组","2016121010000003"));
-                dataList.add(new ModuleUpWarningItem("A","H16","01:00","仓库物料正在上模组","2016121010000004"));
-                dataList.add(new ModuleUpWarningItem("A","H17","00:20","仓库物料正在上模组","2016121010000005"));
-                dataList.add(new ModuleUpWarningItem("A","H18","00:30","仓库物料正在上模组","2016121010000006"));
-                dataList.add(new ModuleUpWarningItem("A","H19","01:00","仓库物料正在上模组","2016121010000007"));
-                dataList.add(new ModuleUpWarningItem("A","H20","00:20","仓库物料正在上模组","2016121010000008"));
-                dataList.add(new ModuleUpWarningItem("A","H21","00:30","仓库物料正在上模组","2016121010000009"));
+                /*dataList.add(new ModuleUpWarningItem("A","H13","01:00","仓库物料正在上模组","2016121010000001",3600L));
+                falutMesage.setEndTime(System.currentTimeMillis()+falutMesage.getCountdown());
+                falutMesage.setId(i);*/
+                dataList.add(new ModuleUpWarningItem("A","H14","仓库物料正在上模组","2016121010000002",360000L));
+                dataList.add(new ModuleUpWarningItem("A","H15","仓库物料正在上模组","2016121010000003",360000L));
+                dataList.add(new ModuleUpWarningItem("A","H16","仓库物料正在上模组","2016121010000004",360000L));
+                dataList.add(new ModuleUpWarningItem("A","H17","仓库物料正在上模组","2016121010000005",360000L));
+                dataList.add(new ModuleUpWarningItem("A","H18","仓库物料正在上模组","2016121010000006",360000L));
+                dataList.add(new ModuleUpWarningItem("A","H19","仓库物料正在上模组","2016121010000007",360000L));
+                dataList.add(new ModuleUpWarningItem("A","H20","仓库物料正在上模组","2016121010000008",360000L));
+                dataList.add(new ModuleUpWarningItem("A","H21","仓库物料正在上模组","2016121010000009",360000L));
+                for(int i=0;i<dataList.size();i++){
+                    dataList.get(i).setEndTime(System.currentTimeMillis()+dataList.get(i).getCountdown());
+                    dataList.get(i).setId(i);
+                }
                 return Observable.just(dataList);
             }
 
             @Override
             public Observable<List<ModuleDownWarningItem>> getModuleDownWarningItems() {
                 List<ModuleDownWarningItem> dataList = new ArrayList<ModuleDownWarningItem>();
-                dataList.add(new ModuleDownWarningItem("A","H13","01:00","等待下模组","2016121010000001"));
-                dataList.add(new ModuleDownWarningItem("A","H14","00:20","等待下模组","2016121010000002"));
-                dataList.add(new ModuleDownWarningItem("A","H15","00:30","等待下模组","2016121010000003"));
-                dataList.add(new ModuleDownWarningItem("A","H16","01:00","等待下模组","2016121010000004"));
-                dataList.add(new ModuleDownWarningItem("A","H17","00:20","等待下模组","2016121010000005"));
-                dataList.add(new ModuleDownWarningItem("A","H18","00:30","等待下模组","2016121010000006"));
-                dataList.add(new ModuleDownWarningItem("A","H19","01:00","等待下模组","2016121010000007"));
-                dataList.add(new ModuleDownWarningItem("A","H20","00:20","等待下模组","2016121010000008"));
-                dataList.add(new ModuleDownWarningItem("A","H21","00:30","等待下模组","2016121010000009"));
+                dataList.add(new ModuleDownWarningItem("A","H13","等待下模组","2016121010000001",360000L));
+                dataList.add(new ModuleDownWarningItem("A","H14","等待下模组","2016121010000002",540000L));
+                dataList.add(new ModuleDownWarningItem("A","H15","等待下模组","2016121010000003",680000L));
+                dataList.add(new ModuleDownWarningItem("A","H16","等待下模组","2016121010000004",760000L));
+                dataList.add(new ModuleDownWarningItem("A","H17","等待下模组","2016121010000005",260000L));
+                dataList.add(new ModuleDownWarningItem("A","H18","等待下模组","2016121010000006",390000L));
+                dataList.add(new ModuleDownWarningItem("A","H19","等待下模组","2016121010000007",500000L));
+                dataList.add(new ModuleDownWarningItem("A","H20","等待下模组","2016121010000008",830000L));
+                dataList.add(new ModuleDownWarningItem("A","H21","等待下模组","2016121010000009",550000L));
+                for (int i=0;i<dataList.size();i++){
+                    dataList.get(i).setEndTime(System.currentTimeMillis()+dataList.get(i).getCountdown());
+                    dataList.get(i).setId(i);
+                }
                 return Observable.just(dataList);
             }
 
@@ -373,24 +383,12 @@ public class ServiceModule {
             @Override
             public Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems() {
                 List<FeederSupplyWarningItem> dataList = new ArrayList<>();
-                dataList.add(new FeederSupplyWarningItem(1, "342", "A", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(2, "342", "B", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(3, "342", "C", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(4, "342", "D", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(5, "342", "E", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
+                for (int i = 0; i < 100; i++){
+                    FeederSupplyWarningItem feederCheckInItem = new FeederSupplyWarningItem(1, "342", "A", "等待上模组",230000);
+                    feederCheckInItem.setEndTime(System.currentTimeMillis() + feederCheckInItem.getCountdown());
+                    feederCheckInItem.setId(i);
+                    dataList.add(feederCheckInItem);
+                }
 
                 return Observable.just(dataList);
             }

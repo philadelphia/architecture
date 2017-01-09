@@ -54,7 +54,7 @@
     </style>
 
     <style name="style_title">
-        <item name="android:textSize">@dimen/px_40</item>
+        <item name="android:textSize">@dimen/sp_12</item>
         <item name="android:textColor">@color/textcolor</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
@@ -82,9 +82,9 @@
         <item name="android:layout_marginRight">@dimen/dp_16</item>
     </style>
     <style name="style_storagetv" >
-        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/waring_editext</item>
-        <item name="android:layout_marginTop">@dimen/dp_6</item>
+        <item name="android:layout_marginTop">@dimen/px_40</item>
     </style>
 
     <style name="item_textstyle">

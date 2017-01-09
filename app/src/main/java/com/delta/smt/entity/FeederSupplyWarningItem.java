@@ -4,17 +4,18 @@ package com.delta.smt.entity;
  * Created by Tao.ZT.Zhang on 2016/12/26.
  */
 
-public class FeederSupplyWarningItem {
+public class FeederSupplyWarningItem extends CountDownEntity{
     private int lineNumber;
     private String workItemID;
     private String faceID;
     private String status;
 
-    public FeederSupplyWarningItem(int lineNumber, String workItemID, String faceID, String status) {
+    public FeederSupplyWarningItem(int lineNumber, String workItemID, String faceID, String status,long countDown) {
         this.lineNumber = lineNumber;
         this.workItemID = workItemID;
         this.faceID = faceID;
         this.status = status;
+        this.countdown = countDown;
 
     }
 
@@ -50,13 +51,6 @@ public class FeederSupplyWarningItem {
         this.workItemID = workItemID;
     }
 
-    @Override
-    public String toString() {
-        return "FeederSupplyWarningItem{" +
-                "faceID='" + faceID + '\'' +
-                ", lineNumber=" + lineNumber +
-                ", workItemID='" + workItemID + '\'' +
-                ", status='" + status + '\'' +
-                '}';
-    }
+
+
 }

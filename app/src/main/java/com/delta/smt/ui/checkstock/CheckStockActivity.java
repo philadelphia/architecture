@@ -16,6 +16,8 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -26,6 +28,8 @@ import com.delta.smt.ui.checkstock.di.CheckStockModule;
 import com.delta.smt.ui.checkstock.di.DaggerCheckStockComponent;
 import com.delta.smt.ui.checkstock.mvp.CheckStockContract;
 import com.delta.smt.ui.checkstock.mvp.CheckStockPresenter;
+import com.delta.smt.ui.setting.SettingActivity;
+import com.delta.smt.ui.store.StoreIssueActivity;
 import com.delta.smt.utils.BarCodeUtils;
 
 import java.util.ArrayList;
@@ -59,7 +63,7 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
     private List<CheckStock> dataList= new ArrayList<>();
     private CommonBaseAdapter<CheckStock> mAdapter;
     private TextView mErrorContent;
-    private AlertDialog.Builder builder=new AlertDialog.Builder(this);
+    private AlertDialog.Builder builder;
     private AlertDialog mErrorDialog;
     private AlertDialog mResultDialog;
     private TextView mResultContent;
@@ -79,6 +83,8 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
 
     @Override
     protected void initView() {
+        builder=new AlertDialog.Builder(this);
+        headerTitle.setText(getResources().getString(R.string.pcbcheck));
         List<CheckStock>list=new ArrayList<>();
         list.add(new CheckStock("","","","",""));
         CommonBaseAdapter<CheckStock> mAdapterTitle = new CommonBaseAdapter<CheckStock>(getContext(), list) {
@@ -223,6 +229,18 @@ public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> impleme
                 if (mResultDialog.isShowing()){
                     mResultDialog.dismiss();
                 }
+                break;
+        }
+    }
+    @OnClick({R.id.header_back,R.id.header_setting})
+    public void onHeaderClick(View v) {
+
+        switch (v.getId()){
+            case R.id.header_back:
+                IntentUtils.showIntent(this, MainActivity.class);
+                break;
+            case R.id.header_setting:
+                IntentUtils.showIntent(this, SettingActivity.class);
                 break;
         }
     }
