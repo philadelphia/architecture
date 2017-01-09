@@ -18,7 +18,7 @@
         android:layout_marginTop="30px"
         android:text="第一行数据"
         android:textSize="40px"
-        android:textColor="@color/module_up_text"/>
+        android:textColor="@color/c_333333"/>
 
     <TextView
         android:id="@+id/tv_workID"
@@ -28,7 +28,7 @@
         android:layout_marginTop="30px"
         android:text="第二行数据"
         android:textSize="40px"
-        android:textColor="@color/module_up_text"/>
+        android:textColor="@color/c_333333"/>
 
     <TextView
         android:id="@+id/tv_faceID"
@@ -39,7 +39,7 @@
         android:layout_marginTop="30px"
         android:text="第三行数据"
         android:textSize="40px"
-        android:textColor="@color/module_up_text"/>
+        android:textColor="@color/c_333333"/>
 
     <TextView
         android:id="@+id/tv_status"
@@ -50,7 +50,7 @@
         android:layout_marginBottom="50px"
         android:text="第四行数据"
         android:textSize="40px"
-        android:textColor="@color/module_up_text"/>
+        android:textColor="@color/c_333333"/>
 
 
     <!--这里右边的倒数计我是默认和左边的第三个和第四个高度保持一致的，数据少可自行更改-->
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="上线剩余时间"
-            android:textColor="@color/module_up_text"
+            android:textColor="@color/c_333333"
             android:textSize="40px" />
 
         <cn.iwgang.countdownview.CountdownView
@@ -86,7 +86,7 @@
             app:suffixGravity="center"
             app:suffixTextColor="#000000"
             app:suffixTextSize="40px"
-            app:timeTextColor="@color/module_up_text"
+            app:timeTextColor="@color/c_333333"
             app:timeTextSize="40px" />
     </LinearLayout>
 </RelativeLayout>

@@ -152,7 +152,7 @@ public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresente
 
                 break;
             case R.id.btn_upload:
-                //getPresenter().upLoadToMES();
+                getPresenter().upLoadToMES();
                 break;
         }
     }
