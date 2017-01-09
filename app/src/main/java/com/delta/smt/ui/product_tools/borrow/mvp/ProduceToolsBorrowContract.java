@@ -14,13 +14,13 @@ public interface ProduceToolsBorrowContract {
 
     interface Model extends IModel{
 
-        public List<ProductWorkItem> getProductWorkItem();
+        List<ProductWorkItem> getProductWorkItem();
 
     }
 
     interface View extends IView{
 
-        public void getFormData(List<ProductWorkItem> ProductWorkItem);
+        void getFormData(List<ProductWorkItem> ProductWorkItem);
 
     }
     

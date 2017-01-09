@@ -29,7 +29,7 @@ public class ProduceToolsBorrowModule {
 
     @ActivityScope
     @Provides
-    ProduceToolsBorrowModel getProduceToolsBorrowModel(ApiService service){
+    ProduceToolsBorrowContract.Model getProduceToolsBorrowModel(ApiService service){
         return new ProduceToolsBorrowModel(service);
     }
 
