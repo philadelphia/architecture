@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,7 +18,9 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -40,7 +43,7 @@ import butterknife.BindView;
  * Created by Lin.Hou on 2016-12-27.
  */
 
-public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View {
+public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View, View.OnClickListener {
     @BindView(R.id.header_back)
     RelativeLayout headerBack;
     @BindView(R.id.header_title)
@@ -93,6 +96,7 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     @Override
     protected void initView() {
         headerTitle.setText(this.getResources().getString(R.string.storetitle));
+        headerBack.setOnClickListener(this);
         edWork.setText(mWorkNumberString);
         edPcb.setText(mMachineString);
         edMachine.setText(mMaterialNumberString);
@@ -232,5 +236,16 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     }
 
 
+    @Override
+    public void onClick(View v) {
 
+        switch (v.getId()){
+            case R.id.header_back:
+                IntentUtils.showIntent(this, MainActivity.class);
+                break;
+            case R.id.header_setting:
+
+                break;
+        }
+    }
 }

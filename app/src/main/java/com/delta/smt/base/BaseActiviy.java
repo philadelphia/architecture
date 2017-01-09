@@ -112,4 +112,14 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
     public interface OnBarCodeSucess {
         void onScanSucess(String barcode);
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN
+                    && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+                return true;//消费掉后退键
+            }
+            return super.onKeyDown(keyCode, event);
+
+    }
 }
