@@ -128,7 +128,6 @@ public class ServiceModule {
                 for (int i = 0; i < 10; i++) {
                     com.delta.smt.entity.ItemInfo item = new com.delta.smt.entity.ItemInfo();
                     //TODO  控件有问题
-                    item.setId(i);
                     item.setText("产线:H" + i + "\n" + "工单号:24561215" + i + "\n" + "PCB料号：457485645" + i + "\n" + "机种：H123-" + i + "\n" + "需求量：" + 50 + "\n" + "状态:" + "备料");
                     item.setCountdown(9000);
                     long current = System.currentTimeMillis();
@@ -302,6 +301,19 @@ public class ServiceModule {
                 dataList.add(new VirtualLineBindingItem("4","-"));
                 dataList.add(new VirtualLineBindingItem("5","-"));
                 dataList.add(new VirtualLineBindingItem("6","-"));
+                dataList.add(new VirtualLineBindingItem("7","-"));
+                dataList.add(new VirtualLineBindingItem("8","-"));
+                dataList.add(new VirtualLineBindingItem("9","-"));
+                dataList.add(new VirtualLineBindingItem("10","-"));
+                dataList.add(new VirtualLineBindingItem("11","-"));
+                dataList.add(new VirtualLineBindingItem("12","-"));
+                dataList.add(new VirtualLineBindingItem("13","-"));
+                dataList.add(new VirtualLineBindingItem("14","-"));
+                dataList.add(new VirtualLineBindingItem("15","-"));
+                dataList.add(new VirtualLineBindingItem("16","-"));
+                dataList.add(new VirtualLineBindingItem("17","-"));
+                dataList.add(new VirtualLineBindingItem("18","-"));
+                dataList.add(new VirtualLineBindingItem("19","-"));
                 return Observable.just(dataList);
             }
 

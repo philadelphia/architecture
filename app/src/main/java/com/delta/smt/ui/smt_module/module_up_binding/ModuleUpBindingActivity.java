@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.ui.smt_module.module_up_binding.di.DaggerModuleUpBindingComponent;
 import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
@@ -35,10 +37,10 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener{
+public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener,CommonBaseAdapter.OnItemClickListener<ModuleUpBindingItem>{
 
     @BindView(R.id.header_back)
-    TextView headerBack;
+    RelativeLayout headerBack;
     @BindView(R.id.header_title)
     TextView headerTitle;
     @BindView(R.id.header_setting)
@@ -60,6 +62,8 @@ public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresente
     //二维码
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
 
+    private int click_position = -1;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerModuleUpBindingComponent.builder().appComponent(appComponent).moduleUpBindingModule(new ModuleUpBindingModule(this)).build().inject(this);
@@ -74,6 +78,8 @@ public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresente
     @Override
     protected void initView() {
         headerTitle.setText("上模组");
+        recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         dataList.add(new ModuleUpBindingItem("Feeder号", "料号", "模组料站", "上模组时间", "流水码"));
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataList) {
             @Override
@@ -88,15 +94,19 @@ public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresente
 
             @Override
             protected int getItemViewLayoutId(int position, ModuleUpBindingItem item) {
-                return R.layout.module_up_binding_item;
+                return R.layout.item_module_up_binding;
             }
         };
-        recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
         recyTitle.setAdapter(adapterTitle);
         adapter = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem item, int position) {
-                holder.itemView.setBackgroundColor(Color.WHITE);
+                if (click_position==-1){
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                } else if (click_position==position){
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                }
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_serialID, item.getSerialID());
                 holder.setText(R.id.tv_feederID, item.getFeederID());
@@ -106,12 +116,13 @@ public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresente
 
             @Override
             protected int getItemViewLayoutId(int position, ModuleUpBindingItem item) {
-                return R.layout.module_up_binding_item;
+                return R.layout.item_module_up_binding;
             }
 
         };
-        recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+
         recyContent.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -175,5 +186,31 @@ public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresente
             return true;
         }
         return super.dispatchKeyEvent(event);
+    }
+
+
+    public void setItemHighLightBasedOnMID(String materialID){
+        for (int i=0;i<dataSource.size();i++){
+            if (dataSource.get(i).getMaterialID().equals(materialID)){
+                click_position = i;
+                break;
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void setItemHighLightBasedOnMMSID(String moduleMaterialStationID){
+        for (int i=0;i<dataSource.size();i++){
+            if (dataSource.get(i).getModuleMaterialStationID().equals(moduleMaterialStationID)){
+                click_position = i;
+                break;
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(View view, ModuleUpBindingItem item, final int item_position) {
+
     }
 }

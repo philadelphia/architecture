@@ -51,7 +51,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
 
             @Override
             protected void convert(ItemTimeViewHolder holder, ItemInfo itemInfo, int position) {
-            holder.setText(R.id.content_text,itemInfo.getText());
+                holder.setText(R.id.content_text,itemInfo.getText());
             }
         };
         timeRecycler.setAdapter(mAdapter);

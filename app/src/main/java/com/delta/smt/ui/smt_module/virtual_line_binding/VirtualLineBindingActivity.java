@@ -1,6 +1,5 @@
 package com.delta.smt.ui.smt_module.virtual_line_binding;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +32,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.delta.smt.base.BaseApplication.getContext;
-
 /**
  * Created by Shufeng.Wu on 2017/1/4.
  */
@@ -41,7 +39,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
 public class VirtualLineBindingActivity extends BaseActiviy<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View, BarCodeIpml.OnScanSuccessListener{
 
     @BindView(R.id.header_back)
-    TextView headerBack;
+    RelativeLayout headerBack;
     @BindView(R.id.header_title)
     TextView headerTitle;
     @BindView(R.id.header_setting)
@@ -86,7 +84,7 @@ public class VirtualLineBindingActivity extends BaseActiviy<VirtualLineBindingPr
 
             @Override
             protected int getItemViewLayoutId(int position, VirtualLineBindingItem item) {
-                return R.layout.virtual_line_binding_item;
+                return R.layout.item_virtual_line_binding;
             }
         };
         recyTitle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -101,7 +99,7 @@ public class VirtualLineBindingActivity extends BaseActiviy<VirtualLineBindingPr
 
             @Override
             protected int getItemViewLayoutId(int position, VirtualLineBindingItem item) {
-                return R.layout.virtual_line_binding_item;
+                return R.layout.item_virtual_line_binding;
             }
 
         };

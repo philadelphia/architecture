@@ -10,7 +10,6 @@
     <dimen name="px_60">60px</dimen>
     <dimen name="px_70">70px</dimen>
     <dimen name="px_110">110px</dimen>
-    <dimen name="px_100">100px</dimen>
     <dimen name="px_16">16px</dimen>
     <dimen name="px_20">20px</dimen>
     <dimen name="px_10">10px</dimen>
@@ -19,12 +18,6 @@
     <dimen name="px_5">5px</dimen>
     <dimen name="px_120">120px</dimen>
     <dimen name="px_40">40px</dimen>
-    <dimen name="px_66">66px</dimen>
-    <dimen name="px_30">30px</dimen>
-    <dimen name="px_166">166px</dimen>
     <dimen name="ProtectToolsTextSize">40px</dimen>
-    <dimen name="px_50">50px</dimen>
-    <dimen name="px_1">1px</dimen>
-    <dimen name="px_2">2px</dimen>
     <dimen name="px_310">310px</dimen>
 </resources>

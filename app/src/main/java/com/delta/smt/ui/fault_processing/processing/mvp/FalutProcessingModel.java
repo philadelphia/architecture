@@ -17,6 +17,7 @@ import rx.Observable;
 
 
 public class FalutProcessingModel extends BaseModel<ApiService> implements FalutProcessingContract.Model {
+
     public FalutProcessingModel(ApiService apiService) {
         super(apiService);
     }
