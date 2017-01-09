@@ -219,20 +219,41 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
         }
     }*/
-
+    //item点击事件处理
     @Override
     public void onItemClick(View item, int position) {
         EventBus.getDefault().post(new BroadcastCancel());
         mDialogRelativelayout = new DialogRelativelayout(getContext());
         barcodedatas.clear();
-        ItemWarningInfo mItemWarningInfo=datas.get(position);
+        final ItemWarningInfo mItemWarningInfo=datas.get(position);
         if (mItemWarningInfo.getTitle().equals("接料预警")) {
 
             makePopupWindow();
-        } else {
 
+        } else {
+            final ArrayList<String> dialogDatas = new ArrayList<>();
+            mDialogRelativelayout.setStrSecondTitle("请求确认");
+            dialogDatas.add("是否已经完成？");
+            mDialogRelativelayout.setStrContent(dialogDatas);
+            new AlertDialog.Builder(getContext()).setCancelable(false).setView(mDialogRelativelayout)
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            EventBus.getDefault().post(new BroadcastBegin());
+                        }
+                    })
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mItemWarningInfo.setWarninginfo("预警信息：操作完成");
+                            mAdapter.notifyDataSetChanged();
+                            EventBus.getDefault().post(new BroadcastBegin());
+                        }
+                    }).show();
         }
     }
+
 
     private void makePopupWindow() {
         mPopupWindow=new PopupWindow(mDialogRelativelayout, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);

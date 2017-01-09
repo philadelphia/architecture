@@ -32,7 +32,8 @@
         <!-- welcome activity -->
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -56,6 +57,7 @@
         <activity
             android:name=".ui.fault_processing.processing.FalutProcessingActivity"
             android:screenOrientation="portrait" />
+
         <!--StorageWarningActivity  -->
         <activity
             android:name=".ui.storage_manger.StorageWarningActivity"
@@ -81,8 +83,9 @@
         <!--production warning activity-->
         <activity
             android:name=".ui.production_warning.mvp.produce_line.ProduceLineActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.production_warning.mvp.produce_warning.ProduceWarningActivity"
             android:screenOrientation="portrait" />
@@ -90,18 +93,24 @@
         <activity
             android:name=".ui.hand_add.mvp.HandAddActivity"
             android:screenOrientation="portrait" />
+
+
         <!--lin-->
         <activity
             android:name=".ui.store.StoreIssueActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.storeroom.StoreRoomActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.checkstock.CheckStockActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.store.WarningListActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity

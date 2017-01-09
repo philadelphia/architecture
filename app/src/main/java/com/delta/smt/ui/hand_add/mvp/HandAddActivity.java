@@ -221,8 +221,6 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
                             createDialog(dialogwarningMessage);
                             tag=false;
                         }
-
-
                     }
                 })
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
