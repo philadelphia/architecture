@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
@@ -36,7 +37,7 @@ public class WareSelectActivity extends BaseActiviy<WareSelectPresenter> impleme
     @BindView(R.id.btn_selectWareHouse)
     AppCompatButton btnSelectWareHouse;
     @BindView(R.id.header_back)
-    TextView headerBack;
+    RelativeLayout headerBack;
     @BindView(R.id.header_title)
     TextView headerTitle;
     @BindView(R.id.header_setting)
