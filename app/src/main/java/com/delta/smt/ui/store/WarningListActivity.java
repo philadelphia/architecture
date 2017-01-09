@@ -27,6 +27,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ListWarning;
+import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.store.di.DaggerWarningListComponent;
 import com.delta.smt.ui.store.di.WarningListModule;
 import com.delta.smt.ui.store.mvp.WarningListContract;
@@ -37,13 +38,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 /**
  * Created by Lin.Hou on 2016-12-27.
  */
 
-public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View, View.OnClickListener {
+public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View {
     @BindView(R.id.header_back)
     RelativeLayout headerBack;
     @BindView(R.id.header_title)
@@ -96,7 +98,6 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     @Override
     protected void initView() {
         headerTitle.setText(this.getResources().getString(R.string.storetitle));
-        headerBack.setOnClickListener(this);
         edWork.setText(mWorkNumberString);
         edPcb.setText(mMachineString);
         edMachine.setText(mMaterialNumberString);
@@ -236,15 +237,15 @@ public class WarningListActivity extends BaseActiviy<WarningListPresenter> imple
     }
 
 
-    @Override
-    public void onClick(View v) {
+    @OnClick({R.id.header_back,R.id.header_setting})
+    public void onHeaderClick(View v) {
 
         switch (v.getId()){
             case R.id.header_back:
-                IntentUtils.showIntent(this, MainActivity.class);
+                IntentUtils.showIntent(this, StoreIssueActivity.class);
                 break;
             case R.id.header_setting:
-
+                IntentUtils.showIntent(this, SettingActivity.class);
                 break;
         }
     }

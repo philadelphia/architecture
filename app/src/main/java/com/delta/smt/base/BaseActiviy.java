@@ -3,6 +3,7 @@ package com.delta.smt.base;
 import android.view.KeyEvent;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.di.component.AppComponent;
@@ -69,6 +70,7 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
             barCodeIpml.analysisKeyEvent(event);
             return true;
         }
+
         return super.dispatchKeyEvent(event);
     }
 
@@ -113,13 +115,4 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
         void onScanSucess(String barcode);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN
-                    && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-                return true;//消费掉后退键
-            }
-            return super.onKeyDown(keyCode, event);
-
-    }
 }

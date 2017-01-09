@@ -93,15 +93,19 @@
         <!--lin-->
         <activity
             android:name=".ui.store.StoreIssueActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.storeroom.StoreRoomActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.checkstock.CheckStockActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.store.WarningListActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity

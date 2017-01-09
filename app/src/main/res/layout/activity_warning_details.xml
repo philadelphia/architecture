@@ -9,11 +9,12 @@
         android:text="@string/storage_text"
         style="@style/style_storagetv"
         />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/px_10"
-        android:layout_marginTop="@dimen/px_6"
+        android:layout_marginLeft="@dimen/px_20"
+        android:layout_marginTop="@dimen/px_20"
         >
         <TextView
             android:id="@+id/storage_pcbtv"
@@ -25,7 +26,7 @@
         <EditText
             android:id="@+id/storage_pcbed"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/px_16"
+            android:layout_height="wrap_content"
             style="@style/style_storageedi"
             android:layout_marginLeft="@dimen/px_16"
             android:layout_toRightOf="@id/storage_pcbtv"
@@ -43,7 +44,7 @@
         <EditText
             android:id="@+id/storage_vendored"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/px_16"
+            android:layout_height="wrap_content"
             style="@style/style_storageedi"
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_toRightOf="@id/storage_vendortv"
@@ -62,7 +63,7 @@
         <EditText
             android:id="@+id/storage_datacodeed"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/px_16"
+            android:layout_height="wrap_content"
             style="@style/style_storageedi"
             android:layout_toRightOf="@id/storage_datacodetv"
             android:layout_alignLeft="@id/storage_pcbed"
@@ -81,7 +82,7 @@
         <EditText
             android:id="@+id/storage_ided"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/px_16"
+            android:layout_height="wrap_content"
             style="@style/style_storageedi"
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_toRightOf="@id/storage_idtv"
