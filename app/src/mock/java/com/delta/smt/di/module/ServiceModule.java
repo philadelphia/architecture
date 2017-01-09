@@ -374,7 +374,7 @@ public class ServiceModule {
             public Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems() {
                 List<FeederSupplyWarningItem> dataList = new ArrayList<>();
                 for (int i = 0; i < 100; i++){
-                    FeederSupplyWarningItem feederCheckInItem = new FeederSupplyWarningItem(1, "342", "A", "dsajg",2300);
+                    FeederSupplyWarningItem feederCheckInItem = new FeederSupplyWarningItem(1, "342", "A", "等待上模组",230000);
                     feederCheckInItem.setEndTime(System.currentTimeMillis() + feederCheckInItem.getCountdown());
                     feederCheckInItem.setId(i);
                     dataList.add(feederCheckInItem);
