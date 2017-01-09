@@ -5,9 +5,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.Constant;
+import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.DialogRelativelayout;
@@ -16,6 +21,7 @@ import com.delta.smt.entity.ArrangeInt;
 import com.delta.smt.entity.StoreEmptyMessage;
 import com.delta.smt.entity.WarningInt;
 import com.delta.smt.manager.WarningManger;
+import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.store.di.DaggerStoreComponent;
 import com.delta.smt.ui.store.di.StoreModule;
 import com.delta.smt.ui.store.mvp.StoreContract;
@@ -30,6 +36,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
@@ -43,12 +50,16 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
     TabLayout tlTitle;
     @Inject
     WarningManger warningManger;
+    @BindView(R.id.header_back)
+    RelativeLayout headerBack;
+    @BindView(R.id.header_setting)
+    TextView headerSetting;
     private String[] mTitles;
     private WarringFragment mWarringFragment;
     private ArrangeFragment mArrangeFragment;
     private SupportFragment currentFragment;
     private FragmentManager fragmentManager;
-    private  int arrayint;
+    private int arrayint;
     private int warnInt;
 
     @Override
@@ -58,10 +69,10 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
 
     @Override
     protected void initData() {
-        if (arrayint==0&&warnInt==0){
-        mTitles = new String[]{"预警", "排程"};
-        }else {
-            mTitles = new String[]{"预警"+arrayint, "排程"+warnInt};
+        if (arrayint == 0 && warnInt == 0) {
+            mTitles = new String[]{"预警", "排程"};
+        } else {
+            mTitles = new String[]{"预警" + arrayint, "排程" + warnInt};
         }
         warningManger.addWarning(Constant.SAMPLEWARING, getClass());
         warningManger.setRecieve(true);
@@ -82,6 +93,7 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
         loadMultipleRootFragment(R.id.fragment, 0, mWarringFragment, mArrangeFragment);
         currentFragment = mWarringFragment;
         headerTitle.setText(this.getResources().getString(R.string.storetitle));
+
     }
 
     @Override
@@ -94,7 +106,6 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
         switch (tab.getPosition()) {
             case 0:
                 Log.i(TAG, "onTabSelected: 0");
-
                 showHideFragment(mWarringFragment, currentFragment);
                 currentFragment = mWarringFragment;
                 break;
@@ -123,14 +134,15 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
     public void warningComming(String message) {
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
-        dialogRelativelayout.setStrTitle("测试标题");
+        dialogRelativelayout.setStrTitle("预警信息");
         //3.传入的是黑色字体的二级标题
-        dialogRelativelayout.setStrSecondTitle("预警异常");
+        //dialogRelativelayout.setStrSecondTitle("新发料预警");
         //4.传入的是一个ArrayList<String>
         ArrayList<String> datas = new ArrayList<>();
-        datas.add("dsfdsf");
-        datas.add("sdfsdf1");
-        datas.add("dsfsdf2");
+        datas.add("新发料预警");
+        datas.add("H13-00:10:00");
+        datas.add("H14-00:10:00");
+        datas.add("AI镭雕-00：30：00");
         dialogRelativelayout.setStrContent(datas);
         //5.构建Dialog，setView的时候把这个View set进去。
         new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -158,12 +170,45 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
         warningManger.unregistWReceriver(this);
         super.onStop();
     }
+
     @Subscribe
     public void event(ArrangeInt message) {
-        this.arrayint=message.getAnInt();
+        this.arrayint = message.getAnInt();
+        if (arrayint == 0 && warnInt == 0) {
+            mTitles=null;
+            mTitles = new String[]{"预警", "排程"};
+        } else if (arrayint!=0&&warnInt==0){
+            mTitles=null;
+            mTitles = new String[]{"预警(" + arrayint+")", "排程"};
+        }else if (arrayint==0&&warnInt!=0){
+            mTitles = new String[]{"预警", "排程("+warnInt+")"};
+        }else if (arrayint!=0&&warnInt!=0){
+            mTitles = new String[]{"预警(" + arrayint+")", "排程("+warnInt+")"};
+        }
+        for (int i = 0; i < mTitles.length; i++) {
+            tlTitle.addTab(tlTitle.newTab());
+        }
+        ViewUtils.setTabTitle(tlTitle, mTitles);
+        tlTitle.addOnTabSelectedListener(this);
     }
+
     @Subscribe
     public void event(WarningInt message) {
-        this.warnInt=message.getWarnInt();
+        this.warnInt = message.getWarnInt();
     }
+
+    @OnClick({R.id.header_back,R.id.header_setting})
+    public void onHeaderClick(View v) {
+
+        switch (v.getId()){
+            case R.id.header_back:
+                IntentUtils.showIntent(this, MainActivity.class);
+                break;
+            case R.id.header_setting:
+                IntentUtils.showIntent(this, SettingActivity.class);
+                break;
+        }
+    }
+
+
 }

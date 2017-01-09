@@ -10,15 +10,14 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseCommonActivity;
 import com.delta.smt.common.DialogRelativelayout;
-import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.storage_manger.ready.StorageReadyFragment;
 import com.delta.smt.ui.storage_manger.ready.StorageReturnFragment;
-import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyPresenter;
 import com.delta.smt.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ import butterknife.OnClick;
  * Created by Zhenyu.Liu on 2016/12/21.
  */
 
-public class StorageWarningActivity extends BaseActiviy<StorageReadyPresenter> implements TabLayout.OnTabSelectedListener , WarningManger.OnWarning {
+public class StorageWarningActivity extends BaseCommonActivity implements TabLayout.OnTabSelectedListener , WarningManger.OnWarning {
 
 
     @BindView(R.id.tl_title)
@@ -41,42 +40,14 @@ public class StorageWarningActivity extends BaseActiviy<StorageReadyPresenter> i
     RelativeLayout mHeaderBack;
     @BindView(R.id.header_setting)
     TextView mHeaderSetting;
+
+
     private FragmentTransaction mFragmentTransaction;
     private StorageReadyFragment mStorageReadyFragment;
     private StorageReturnFragment mStorageReturnFragment;
 
     private Fragment currentFragment;
     private String[] titles;
-
-    @Override
-    protected void initView() {
-        mHeaderTitle.setText("仓库A备料");
-        for (int i = 0; i < titles.length; i++) {
-            mTlTitle.addTab(mTlTitle.newTab());
-        }
-        ViewUtils.setTabTitle(mTlTitle, titles);
-        mTlTitle.addOnTabSelectedListener(this);
-        mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        mStorageReadyFragment = new StorageReadyFragment();
-        mFragmentTransaction.add(R.id.fl_container, mStorageReadyFragment, "备料");
-        mFragmentTransaction.show(mStorageReadyFragment).commit();
-       // setDispathchKeyEvent(mStorageReadyFragment);
-        currentFragment = mStorageReadyFragment;
-
-    }
-
-    @Override
-    protected void initData() {
-
-        //此处的Title应该是 从网络获取的数量
-        titles = new String[]{"备料(3)"};
-    }
-
-
-    @Override
-    protected void componentInject(AppComponent appComponent) {
-
-    }
 
     @Override
     protected int getContentViewId() {
@@ -131,6 +102,47 @@ public class StorageWarningActivity extends BaseActiviy<StorageReadyPresenter> i
             case R.id.header_setting:
                 break;
         }
+    }
+
+    @Override
+    protected void initCView() {
+        mHeaderTitle.setText("仓库A备料");
+        for (int i = 0; i < titles.length; i++) {
+            mTlTitle.addTab(mTlTitle.newTab());
+        }
+        ViewUtils.setTabTitle(mTlTitle, titles);
+        mTlTitle.addOnTabSelectedListener(this);
+        mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+        mStorageReadyFragment = new StorageReadyFragment();
+        mFragmentTransaction.add(R.id.fl_container, mStorageReadyFragment, "备料");
+        mFragmentTransaction.show(mStorageReadyFragment).commit();
+        // setDispathchKeyEvent(mStorageReadyFragment);
+        currentFragment = mStorageReadyFragment;
+    }
+
+    @Override
+    protected void initCData() {
+//此处的Title应该是 从网络获取的数量
+        titles = new String[]{"备料(3)"};
+
+        //接收那种预警，没有的话自己定义常量
+        WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
+        //是否接收预警 可以控制预警时机
+        WarningManger.getInstance().setRecieve(true);
+        //关键 初始化预警接口
+        WarningManger.getInstance().setOnWarning(this);
+    }
+
+    @Override
+    protected void onResume() {
+        WarningManger.getInstance().registWReceiver(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        WarningManger.getInstance().unregistWReceriver(this);
+        super.onStop();
     }
 
     @Override

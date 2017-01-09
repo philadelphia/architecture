@@ -4,19 +4,20 @@ package com.delta.smt.entity;
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleDownWarningItem {
+public class ModuleDownWarningItem extends CountDownEntity{
     private String lineNumber;
     private String workItemID;
     private String faceID;
     private String status;
-    private String rest_time;
+    //private String rest_time;
 
-    public ModuleDownWarningItem(String faceID, String lineNumber, String rest_time, String status, String workItemID) {
+    public ModuleDownWarningItem(String faceID, String lineNumber, /*String rest_time,*/ String status, String workItemID, Long countdown) {
         this.faceID = faceID;
         this.lineNumber = lineNumber;
-        this.rest_time = rest_time;
+        //this.rest_time = rest_time;
         this.status = status;
         this.workItemID = workItemID;
+        this.countdown = countdown;
     }
 
     public String getFaceID() {
@@ -51,22 +52,11 @@ public class ModuleDownWarningItem {
         this.workItemID = workItemID;
     }
 
-    public String getRest_time() {
+    /*public String getRest_time() {
         return rest_time;
     }
 
     public void setRest_time(String rest_time) {
         this.rest_time = rest_time;
-    }
-
-    @Override
-    public String toString() {
-        return "ModuleDownWarningItem{" +
-                "faceID='" + faceID + '\'' +
-                ", lineNumber=" + lineNumber +
-                ", workItemID='" + workItemID + '\'' +
-                ", status='" + status + '\'' +
-                ", rest_time='" + rest_time + '\'' +
-                '}';
-    }
+    }*/
 }

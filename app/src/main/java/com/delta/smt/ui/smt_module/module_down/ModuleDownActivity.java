@@ -16,8 +16,12 @@ import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.common.ItemOnclick;
+import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
+import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownWarningItem;
+import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.smt_module.module_down.di.DaggerModuleDownComponent;
 import com.delta.smt.ui.smt_module.module_down.di.ModuleDownModule;
@@ -37,7 +41,7 @@ import butterknife.OnClick;
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> implements ModuleDownContract.View,CommonBaseAdapter.OnItemClickListener<ModuleDownWarningItem>, WarningManger.OnWarning{
+public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> implements ModuleDownContract.View,WarningManger.OnWarning,ItemOnclick{
 
     @BindView(R.id.header_back)
     RelativeLayout headerBack;
@@ -50,7 +54,7 @@ public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> impleme
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     private List<ModuleDownWarningItem> dataList = new ArrayList<>();
-    private CommonBaseAdapter<ModuleDownWarningItem> adapter;
+    private ItemCountdownViewAdapter<ModuleDownWarningItem> myAdapter;
 
     @Inject
     WarningManger warningManger;
@@ -68,31 +72,33 @@ public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> impleme
         warningManger.setRecieve(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        //getPresenter().getAllModuleDownWarningItems();
+        getPresenter().getAllModuleDownWarningItems();
 
     }
 
     @Override
     protected void initView() {
         headerTitle.setText("下模组");
-        adapter = new CommonBaseAdapter<ModuleDownWarningItem>(this,dataList) {
+
+        myAdapter = new ItemCountdownViewAdapter<ModuleDownWarningItem>(this, dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, ModuleDownWarningItem item, int position) {
-                holder.setText(R.id.tv_title, "线别: " + item.getLineNumber());
-                holder.setText(R.id.tv_line, "工单号: " + item.getWorkItemID());
-                holder.setText(R.id.tv_material_station, "面别: " + item.getFaceID());
-                holder.setText(R.id.tv_add_count, "状态: " + item.getStatus());
+            protected int getLayoutId() {
+                return R.layout.item_module_down_warning_list;
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ModuleDownWarningItem item) {
-                return R.layout.item_module_up_warning_list;
+            protected void convert(ItemTimeViewHolder holder, ModuleDownWarningItem moduleUpWarningItem, int position) {
+
+                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLineNumber());
+                holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWorkItemID());
+                holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFaceID());
+                holder.setText(R.id.tv_status, "状态: " + moduleUpWarningItem.getStatus());
+
             }
         };
-
-        recyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
-        recyclerview.setAdapter(adapter);
-        adapter.setOnItemClickListener(this);
+        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        recyclerview.setAdapter(myAdapter);
+        myAdapter.setOnItemTimeOnclck(this);
     }
 
     @Override
@@ -104,7 +110,7 @@ public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> impleme
     public void onSuccess(List<ModuleDownWarningItem> data) {
         dataList.clear();
         dataList.addAll(data);
-        adapter.notifyDataSetChanged();
+        myAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -112,7 +118,7 @@ public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> impleme
 
     }
 
-    @OnClick({R.id.header_back, R.id.header_title, R.id.header_setting/*, R.id.tl_title*/})
+    @OnClick({R.id.header_back, R.id.header_title, R.id.header_setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.header_back:
@@ -126,11 +132,6 @@ public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> impleme
     }
 
     @Override
-    public void onItemClick(View view, ModuleDownWarningItem item, int position) {
-        IntentUtils.showIntent(this, VirtualLineBindingActivity.class);
-    }
-
-    @Override
     protected void onStop() {
         warningManger.unregistWReceriver(this);
         super.onStop();
@@ -138,6 +139,9 @@ public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> impleme
 
     @Override
     protected void onResume() {
+        if (null != myAdapter) {
+            myAdapter.startRefreshTime();
+        }
         warningManger.registWReceiver(this);
         super.onResume();
     }
@@ -169,5 +173,26 @@ public class ModuleDownActivity extends BaseActiviy<ModuleDownPresenter> impleme
                 getPresenter().getAllModuleDownWarningItems();
             }
         }).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (null != myAdapter) {
+            myAdapter.cancelRefreshTime();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null != myAdapter) {
+            myAdapter.cancelRefreshTime();
+        }
+    }
+
+    @Override
+    public void onItemClick(View item, int position) {
+        IntentUtils.showIntent(this, VirtualLineBindingActivity.class);
     }
 }

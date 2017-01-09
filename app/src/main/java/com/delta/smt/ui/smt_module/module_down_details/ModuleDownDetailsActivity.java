@@ -77,7 +77,7 @@ public class ModuleDownDetailsActivity extends BaseActiviy<ModuleDownDetailsPres
         adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem item, int position) {
-                holder.itemView.setBackgroundColor(Color.GRAY);
+                holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_serialID, item.getSerialID());
                 holder.setText(R.id.tv_feederID, item.getFeederID());
