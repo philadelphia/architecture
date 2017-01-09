@@ -1,10 +1,12 @@
 package com.delta.smt.ui.production_warning.item;
 
+import com.delta.smt.entity.CountDownEntity;
+
 /**
  * Created by Fuxiang.Zhang on 2016/12/23.
  */
 
-public class ItemWarningInfo {
+public class ItemWarningInfo extends CountDownEntity{
     private String title;
     private String productionline;
     private String makeprocess;
@@ -13,11 +15,16 @@ public class ItemWarningInfo {
 
     public ItemWarningInfo(){}
 
-    public ItemWarningInfo(String title,String productionline,String makeprocess,String warninginfo){
+    public ItemWarningInfo(String title,String productionline,
+                           String makeprocess,String warninginfo,
+                           Long countdown,Long endtime,int id){
         this.title=title;
         this.productionline=productionline;
         this.makeprocess=makeprocess;
         this.warninginfo=warninginfo;
+        this.countdown=countdown;
+        this.endTime=endtime;
+        this.id=id;
     }
 
 

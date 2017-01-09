@@ -42,6 +42,7 @@ import com.delta.smt.ui.product_tools.back.mvp.ProduceToolsBackContract;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;
 import com.delta.smt.ui.product_tools.location.ProduceToolsLocationActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
+import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.delta.smt.ui.smt_module.module_down.ModuleDownActivity;
 import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
@@ -161,7 +162,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 IntentUtils.showIntent(this, CheckStockActivity.class);
                 break;
             case "生产中预警":
-                IntentUtils.showIntent(this, com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity.class);
+                IntentUtils.showIntent(this, ProduceLineActivity.class);
                 break;
             case "手补件通知":
                 IntentUtils.showIntent(this, HandAddActivity.class);
