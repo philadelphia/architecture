@@ -479,9 +479,19 @@ public class ServiceModule {
             public Observable<List<ItemWarningInfo>> getItemWarningDatas() {
                 List<ItemWarningInfo> datas = new ArrayList<>();
 
-                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警", "产线：H13", "制程：叠送一体机", "预警信息：锡膏机需要换瓶"));
-                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警", "产线：H13", "制程：叠送一体机", "预警信息：锡膏机需要换瓶"));
-                datas.add(new ItemWarningInfo("接料预警", "产线：H13", "制程：叠送一体机", "预警信息：锡膏机需要换瓶"));
+                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警", "产线：H13",
+                        "制程：叠送一体机", "预警信息：锡膏机需要换瓶",
+                        50000l,System.currentTimeMillis()+50000l,1));
+
+                datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警",
+                        "产线：H13", "制程：叠送一体机", "预警信息：锡膏机需要换瓶",
+                        60000l,System.currentTimeMillis()+60000l,2));
+
+                datas.add(new ItemWarningInfo("接料预警", "产线：H13",
+                        "制程：叠送一体机", "预警信息：锡膏机需要换瓶",
+                        40000l,System.currentTimeMillis()+40000l,3));
+
+
                 return Observable.just(datas);
             }
 
@@ -506,9 +516,26 @@ public class ServiceModule {
             @Override
             public Observable<List<ItemHandAdd>> getItemHandAddDatas() {
                 List<ItemHandAdd> datas = new ArrayList<>();
-                datas.add(new ItemHandAdd("料站Pass预警", "产线：H13", "模组料站：06T021", "预计Pass数量：2", "预警信息：IC201位置需要手补件"));
-                datas.add(new ItemHandAdd("料站Pass预警", "产线：H14", "模组料站：06T022", "预计Pass数量：4", "预警信息：IC201位置需要手补件"));
 
+                for (int mI = 0; mI < 20; mI++) {
+                    ItemHandAdd mItemHandAdd=new ItemHandAdd("料站Pass预警", "产线：H13",
+                            "模组料站：06T021", "预计Pass数量：2", "预警信息：IC201位置需要手补件",
+                            40000l,System.currentTimeMillis()+40000l);
+                    mItemHandAdd.setId(mI);
+                    datas.add(mItemHandAdd);
+                    mItemHandAdd=new ItemHandAdd("料站Pass预警", "产线：H14",
+                            "模组料站：06T022", "预计Pass数量：4", "预警信息：IC201位置需要手补件",
+                            30000l,System.currentTimeMillis()+30000l);
+                    mItemHandAdd.setId(mI+20);
+                    datas.add(mItemHandAdd);
+                }
+/*                for (int i=0;i<3;i++){
+                    ItemHandAdd mItemHandAdd=new ItemHandAdd("料站Pass预警", "产线：H13",
+                            "模组料站：06T021", "预计Pass数量：2", "预警信息：IC201位置需要手补件",40000l);
+                    mItemHandAdd.setEndTime(System.currentTimeMillis()+mItemHandAdd.getCountdown());
+                    mItemHandAdd.setId(i);
+                    datas.add(mItemHandAdd);
+                }*/
                 return Observable.just(datas);
             }
 

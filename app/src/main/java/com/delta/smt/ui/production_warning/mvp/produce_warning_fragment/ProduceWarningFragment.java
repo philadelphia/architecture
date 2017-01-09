@@ -32,6 +32,9 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.common.ItemOnclick;
+import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
+import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
@@ -59,7 +62,7 @@ import butterknife.ButterKnife;
 
 public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentPresenter>
         implements ProduceWarningFragmentContract.View,
-        CommonBaseAdapter.OnItemClickListener<ItemWarningInfo>, BaseActiviy.OnBarCodeSucess, View.OnClickListener {
+        BaseActiviy.OnBarCodeSucess, View.OnClickListener, ItemOnclick {
 
 
     @BindView(R.id.ryv_produce_warning)
@@ -67,7 +70,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @BindView(R.id.tv_content)
     TextView mTvContent;
 
-    private CommonBaseAdapter<ItemWarningInfo> mAdapter;
+    private ItemCountdownViewAdapter<ItemWarningInfo> mAdapter;
     private List<ItemWarningInfo> datas = new ArrayList<>();
 
     DialogRelativelayout mDialogRelativelayout;
@@ -83,23 +86,25 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     protected void initView() {
         Log.i(TAG, "initView: ");
-        mAdapter = new CommonBaseAdapter<ItemWarningInfo>(getContext(), datas) {
+        mAdapter = new ItemCountdownViewAdapter<ItemWarningInfo>(getContext(), datas) {
             @Override
-            protected void convert(CommonViewHolder holder, ItemWarningInfo item, int position) {
-                holder.setText(R.id.tv_title, item.getTitle());
-                holder.setText(R.id.tv_produce_line, item.getProductionline());
-                holder.setText(R.id.tv_make_process, item.getMakeprocess());
-                holder.setText(R.id.tv_warning_info, item.getWarninginfo());
+            protected int getLayoutId() {
+                return R.layout.item_produce_warning;
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ItemWarningInfo item) {
-                return R.layout.item_produce_warning;
+            protected void convert(ItemTimeViewHolder holder, ItemWarningInfo itemWarningInfo, int position) {
+                holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
+                holder.setText(R.id.tv_produce_line, itemWarningInfo.getProductionline());
+                holder.setText(R.id.tv_make_process, itemWarningInfo.getMakeprocess());
+                holder.setText(R.id.tv_warning_info, itemWarningInfo.getWarninginfo());
             }
+
         };
         mRyvProduceWarning.setLayoutManager(new LinearLayoutManager(getContext()));
         mRyvProduceWarning.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(this);
+//        mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnItemTimeOnclck(this);
     }
 
 
@@ -128,7 +133,29 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             baseActiviy.addOnBarCodeSucess(this);
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (null != mAdapter) {
+            mAdapter.startRefreshTime();
+        }
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (null != mAdapter) {
+            mAdapter.cancelRefreshTime();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null != mAdapter) {
+            mAdapter.cancelRefreshTime();
+        }
+    }
     //注入初始化
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -161,7 +188,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     }
 
 
-    @Override
+/*    @Override
     public void onItemClick(View view, ItemWarningInfo item, int position) {
         EventBus.getDefault().post(new BroadcastCancel());
         mDialogRelativelayout = new DialogRelativelayout(getContext());
@@ -172,7 +199,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
             makePopupWindow();
 
-/*            mAlertDialog = new AlertDialog.Builder(getContext()).setView(mDialogRelativelayout)
+            mAlertDialog = new AlertDialog.Builder(getContext()).setView(mDialogRelativelayout)
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -184,10 +211,24 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             if (mAlertDialog.isShowing()) {
 //                barcodedatas.add(mScanSucess.getScanCode());
                 mDialogRelativelayout.setDatas(barcodedatas);
-            }*/
+            }
 
 
 
+        } else {
+
+        }
+    }*/
+
+    @Override
+    public void onItemClick(View item, int position) {
+        EventBus.getDefault().post(new BroadcastCancel());
+        mDialogRelativelayout = new DialogRelativelayout(getContext());
+        barcodedatas.clear();
+        ItemWarningInfo mItemWarningInfo=datas.get(position);
+        if (mItemWarningInfo.getTitle().equals("接料预警")) {
+
+            makePopupWindow();
         } else {
 
         }

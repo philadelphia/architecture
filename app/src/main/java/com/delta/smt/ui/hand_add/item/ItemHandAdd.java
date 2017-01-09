@@ -1,10 +1,12 @@
 package com.delta.smt.ui.hand_add.item;
 
+import com.delta.smt.entity.CountDownEntity;
+
 /**
  * Created by Fuxiang.Zhang on 2016/12/27.
  */
 
-public class ItemHandAdd {
+public class ItemHandAdd extends CountDownEntity{
     private String title;
     private String produce_line;
     private String material_station;
@@ -14,12 +16,14 @@ public class ItemHandAdd {
     public ItemHandAdd() {
     }
 
-    public ItemHandAdd(String title, String produce_line, String material_station, String add_count, String info) {
+    public ItemHandAdd(String title, String produce_line, String material_station, String add_count, String info,Long countdown,Long endTime) {
         this.title = title;
         this.produce_line = produce_line;
         this.material_station = material_station;
         this.add_count = add_count;
         this.info = info;
+        this.countdown=countdown;
+        this.endTime=endTime;
     }
 
     public String getTitle() {

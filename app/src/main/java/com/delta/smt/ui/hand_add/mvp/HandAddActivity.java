@@ -16,6 +16,9 @@ import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.common.ItemOnclick;
+import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
+import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.hand_add.di.DaggerHandAddCompent;
@@ -36,7 +39,7 @@ import butterknife.OnClick;
  */
 
 public class HandAddActivity extends BaseActiviy<HandAddPresenter>
-        implements HandAddContract.View,CommonBaseAdapter.OnItemClickListener<ItemHandAdd>,WarningManger.OnWarning {
+        implements HandAddContract.View,WarningManger.OnWarning, ItemOnclick {
 
     @BindView(R.id.header_title)
     TextView mHeaderTitle;
@@ -49,7 +52,7 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
     private AlertDialog alertDialog;
     private AlertDialog mItemDialog;
 
-    private CommonBaseAdapter<ItemHandAdd> mAdapter;
+    private ItemCountdownViewAdapter<ItemHandAdd> mAdapter;
     private List<ItemHandAdd> datas=new ArrayList<>();
 
     DialogRelativelayout mDialogRelativelayout;
@@ -78,24 +81,27 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
     @Override
     protected void initView() {
         mHeaderTitle.setText("线外人员");
-        mAdapter=new CommonBaseAdapter<ItemHandAdd>(this,datas) {
+        mAdapter=new ItemCountdownViewAdapter<ItemHandAdd>(this,datas) {
             @Override
-            protected void convert(CommonViewHolder holder, ItemHandAdd item, int position) {
-                holder.setText(R.id.tv_title,item.getTitle());
-                holder.setText(R.id.tv_line,item.getProduce_line());
-                holder.setText(R.id.tv_add_count,item.getAdd_count());
-                holder.setText(R.id.tv_material_station,item.getMaterial_station());
-                holder.setText(R.id.tv_warning_info,item.getInfo());
+            protected int getLayoutId() {
+                return R.layout.item_hand_add;
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ItemHandAdd item) {
-                return R.layout.item_hand_add;
+            protected void convert(ItemTimeViewHolder holder, ItemHandAdd itemHandAdd, int position) {
+                holder.setText(R.id.tv_title,itemHandAdd.getTitle());
+                holder.setText(R.id.tv_line,itemHandAdd.getProduce_line());
+                holder.setText(R.id.tv_add_count,itemHandAdd.getAdd_count());
+                holder.setText(R.id.tv_material_station,itemHandAdd.getMaterial_station());
+                holder.setText(R.id.tv_warning_info,itemHandAdd.getInfo());
             }
+
+
         };
         mRyvHandAdd.setLayoutManager(new LinearLayoutManager(this));
         mRyvHandAdd.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(this);
+//        mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnItemTimeOnclck(this);
 
     }
 
@@ -107,6 +113,9 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
     @Override
     protected void onResume() {
         mWarningManger.registWReceiver(this);
+        if (null != mAdapter) {
+            mAdapter.startRefreshTime();
+        }
         Log.e(TAG, "onResume: ");
         super.onResume();
     }
@@ -114,6 +123,9 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
     @Override
     protected void onPause() {
         mWarningManger.unregistWReceriver(this);
+        if (null != mAdapter) {
+            mAdapter.cancelRefreshTime();
+        }
         Log.e(TAG, "onPause: " );
         super.onPause();
     }
@@ -123,6 +135,15 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
         Log.e(TAG, "onStop: " );
         super.onStop();
     }
+
+    @Override
+    protected void onDestroy() {
+        if (null != mAdapter) {
+            mAdapter.cancelRefreshTime();
+        }
+        super.onDestroy();
+    }
+
     @OnClick({R.id.header_back, R.id.header_setting})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -147,43 +168,6 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
 
     }
 
-
-    @Override
-    public void onItemClick(View view, final ItemHandAdd item, int position) {
-
-//        AlertDialog.Builder itemdialog=new AlertDialog.Builder(this);
-        mDialogRelativelayout=new DialogRelativelayout(this);
-        mDialogRelativelayout.setStrSecondTitle("请求确认");
-        final ArrayList<String> datas = new ArrayList<>();
-        datas.add("手补件完成？");
-        mDialogRelativelayout.setStrContent(datas);
-        mItemDialog = new AlertDialog.Builder(this).setCancelable(false).setView(mDialogRelativelayout)
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if (tag) {
-                            createDialog(dialogwarningMessage);
-                            tag=false;
-                        }
-
-
-                    }
-                })
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        item.setInfo("预警信息：手补件完成，等待品管确认");
-                        mAdapter.notifyDataSetChanged();
-                        if (tag) {
-                            createDialog(dialogwarningMessage);
-                            tag=false;
-                        }
-                    }
-                }).create();
-        mItemDialog.show();
-
-    }
 
 
     @Override
@@ -218,5 +202,40 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
                 dialog.dismiss();
             }
         }).show();
+    }
+
+    @Override
+    public void onItemClick(final View item, int position) {
+        final ItemHandAdd mItemHandAdd = datas.get(position);
+        mDialogRelativelayout=new DialogRelativelayout(this);
+        mDialogRelativelayout.setStrSecondTitle("请求确认");
+        final ArrayList<String> datas = new ArrayList<>();
+        datas.add("手补件完成？");
+        mDialogRelativelayout.setStrContent(datas);
+        mItemDialog = new AlertDialog.Builder(this).setCancelable(false).setView(mDialogRelativelayout)
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (tag) {
+                            createDialog(dialogwarningMessage);
+                            tag=false;
+                        }
+
+
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mItemHandAdd.setInfo("预警信息：手补件完成，等待品管确认");
+                        mAdapter.notifyDataSetChanged();
+                        if (tag) {
+                            createDialog(dialogwarningMessage);
+                            tag=false;
+                        }
+                    }
+                }).create();
+        mItemDialog.show();
     }
 }
