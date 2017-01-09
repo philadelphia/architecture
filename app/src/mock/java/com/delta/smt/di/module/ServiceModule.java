@@ -373,24 +373,12 @@ public class ServiceModule {
             @Override
             public Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems() {
                 List<FeederSupplyWarningItem> dataList = new ArrayList<>();
-                dataList.add(new FeederSupplyWarningItem(1, "342", "A", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(2, "342", "B", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(3, "342", "C", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(4, "342", "D", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(5, "342", "E", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
+                for (int i = 0; i < 100; i++){
+                    FeederSupplyWarningItem feederCheckInItem = new FeederSupplyWarningItem(1, "342", "A", "dsajg",2300);
+                    feederCheckInItem.setEndTime(System.currentTimeMillis() + feederCheckInItem.getCountdown());
+                    feederCheckInItem.setId(i);
+                    dataList.add(feederCheckInItem);
+                }
 
                 return Observable.just(dataList);
             }
