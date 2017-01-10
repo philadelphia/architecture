@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.R;
@@ -24,6 +25,7 @@ import com.delta.smt.ui.smt_module.module_up_binding.di.DaggerModuleUpBindingCom
 import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingPresenter;
+import com.delta.smt.utils.BarCodeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -177,6 +179,38 @@ public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresente
     @Override
     public void onScanSuccess(String barcode) {
         Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
+        System.out.println(barcode +"\n"+barcode.length());
+
+        /*BarCodeParseIpml barCodeParseIpml=new BarCodeParseIpml();
+        switch (BarCodeUtils.barCodeType(barcode)){
+            case FEEDER:
+                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                break;
+            case BACKUP_MATERIAL_CAR:
+                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                break;
+            case MATERIAL_BLOCK_BARCODE:
+                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                break;
+            case MATERIAL_STATION:
+                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                break;
+            case FRAME_LOCATION:
+                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                break;
+            case RBOX:
+                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                break;
+            case FBOX:
+                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                break;
+            case FEEDER_CAR:    //OK
+                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                break;
+        }*/
     }
 
     @Override

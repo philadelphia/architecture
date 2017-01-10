@@ -80,4 +80,5 @@
     <string name="ReSelect">重新选择</string>
     <string name="Status">状态</string>
     <string name="TurnNumber">序号</string>
+    <string name="AreReady">准备就绪</string>
 </resources>

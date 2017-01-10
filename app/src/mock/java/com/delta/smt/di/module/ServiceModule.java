@@ -351,8 +351,8 @@ public class ServiceModule {
                 List<ProductWorkItem> list=new ArrayList<ProductWorkItem>();
                 list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 18:00:00","准备就绪"));
                 list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 19:00:00","等待"));
-                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 21:00:00","准备就绪"));
-                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 15:00:00","准备就绪"));
+                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 21:00:00","等待"));
+                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 15:00:00","等待"));
                 return Observable.just(list);
             }
 
