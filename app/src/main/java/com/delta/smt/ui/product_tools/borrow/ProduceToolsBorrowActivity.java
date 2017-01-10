@@ -7,6 +7,7 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ProductWorkItem;
+import com.delta.smt.ui.product_tools.borrow.di.DaggerProduceToolsBorrowComponent;
 import com.delta.smt.ui.product_tools.borrow.di.ProduceToolsBorrowComponent;
 import com.delta.smt.ui.product_tools.borrow.di.ProduceToolsBorrowModule;
 import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowContract;
@@ -35,7 +36,9 @@ public class ProduceToolsBorrowActivity extends BaseActiviy<ProduceToolsBorrowPr
     @Override
     protected void componentInject(AppComponent appComponent) {
 
-        //ProduceToolsBorrowComponent.builder().appComponent(appComponent).ProduceToolsBorrowModule(new ProduceToolsBorrowModule(this)).build().inject(this);
+        DaggerProduceToolsBorrowComponent.builder().appComponent(appComponent).produceToolsBorrowModule(new ProduceToolsBorrowModule(this)).build().Inject(this
+        );
+
 
     }
 
@@ -56,7 +59,12 @@ public class ProduceToolsBorrowActivity extends BaseActiviy<ProduceToolsBorrowPr
     }
 
     @Override
-    public void getFormData(List<ProductWorkItem> ProductWorkItem) {
+    public void getFormData(List<ProductWorkItem> ProductWorkItemList) {
+
+    }
+
+    @Override
+    public void getFail() {
 
     }
 }

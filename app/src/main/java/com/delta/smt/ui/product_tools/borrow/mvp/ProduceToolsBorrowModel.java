@@ -6,6 +6,8 @@ import com.delta.smt.entity.ProductWorkItem;
 
 import java.util.List;
 
+import rx.Observable;
+
 /**
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
@@ -18,7 +20,7 @@ public class ProduceToolsBorrowModel extends BaseModel<ApiService> implements Pr
     }
 
     @Override
-    public List<ProductWorkItem> getProductWorkItem() {
-        return null;
+    public Observable<List<ProductWorkItem>> getProductWorkItem() {
+        return getService().getProductWorkItem();
     }
 }

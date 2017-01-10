@@ -6,6 +6,8 @@ import com.delta.smt.entity.ProductWorkItem;
 
 import java.util.List;
 
+import rx.Observable;
+
 /**
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
@@ -14,7 +16,7 @@ public interface ProduceToolsBorrowContract {
 
     interface Model extends IModel{
 
-        List<ProductWorkItem> getProductWorkItem();
+        Observable<List<ProductWorkItem>> getProductWorkItem();
 
     }
 
@@ -22,6 +24,7 @@ public interface ProduceToolsBorrowContract {
 
         void getFormData(List<ProductWorkItem> ProductWorkItem);
 
+        void getFail();
     }
     
 }

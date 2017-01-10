@@ -17,6 +17,7 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -45,7 +46,7 @@ import rx.Observable;
 /**
  * Created by Administrator on 2016/3/23.
  */
-public interface  ApiService {
+public interface ApiService {
     @POST("ams/library/user/login2")
     Observable<LoginResult> login(@Body User user);
 
@@ -90,14 +91,20 @@ public interface  ApiService {
     //接口PCB库房发料
 
     Observable<List<com.delta.smt.entity.ItemInfo>> getWarning();//获取所有预警信息
-    Observable<List<ListWarning>> getListWarning();//获取发料列表
-    Observable<List<CheckStock>> getCheckStock();//获取盘点列表
-    Observable<String> getSuccessState();//是否成功?
-    Observable<String> getStoreRoomSuccess();//是否成功?
-    Observable<String> getCheckStockSuccess();//是否成功?
-    Observable<List<ListWarning>> getWarningNumberSuccess();//获取Warning列表的数量
-    Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
 
+    Observable<List<ListWarning>> getListWarning();//获取发料列表
+
+    Observable<List<CheckStock>> getCheckStock();//获取盘点列表
+
+    Observable<String> getSuccessState();//是否成功?
+
+    Observable<String> getStoreRoomSuccess();//是否成功?
+
+    Observable<String> getCheckStockSuccess();//是否成功?
+
+    Observable<List<ListWarning>> getWarningNumberSuccess();//获取Warning列表的数量
+
+    Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
 
 
     Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
@@ -110,6 +117,7 @@ public interface  ApiService {
 
     //故障处理预警
     Observable<List<FalutMesage>> getFalutMessages();
+
     //更新
     @GET(API.bundleJsonUrl)
     Observable<Update> getUpdate();
@@ -119,14 +127,16 @@ public interface  ApiService {
     @GET
     Observable<ResponseBody> download(@Url String url);
 
-    Observable <List<ModuleUpWarningItem>> getModuleUpWarningItems();
+    Observable<List<ModuleUpWarningItem>> getModuleUpWarningItems();
 
-    Observable <List<ModuleDownWarningItem>> getModuleDownWarningItems();
+    Observable<List<ModuleDownWarningItem>> getModuleDownWarningItems();
 
-    Observable <List<ModuleUpBindingItem>> getModuleUpBindingItems();
-    Observable <List<VirtualLineBindingItem>> getVirtualLineBindingItems();
-    Observable <List<ModuleDownDetailsItem>> getModuleDownDetailsItems();
+    Observable<List<ModuleUpBindingItem>> getModuleUpBindingItems();
 
+    Observable<List<VirtualLineBindingItem>> getVirtualLineBindingItems();
 
+    Observable<List<ModuleDownDetailsItem>> getModuleDownDetailsItems();
+
+    Observable<List<ProductWorkItem>> getProductWorkItem();
 
 }

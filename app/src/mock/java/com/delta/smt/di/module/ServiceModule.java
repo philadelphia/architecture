@@ -16,6 +16,7 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -339,6 +340,17 @@ public class ServiceModule {
                 dataList.add(new ModuleDownDetailsItem("KT8FL 139059","0351234706","-","03T027","尾数仓","2016082500"));
                 dataList.add(new ModuleDownDetailsItem("KT8FL 1390510","0351234707","-","03T028","尾数仓","2016082500"));
                 return Observable.just(dataList);
+            }
+
+            @Override
+            public Observable<List<ProductWorkItem>> getProductWorkItem() {
+                //TODO zsq
+                List<ProductWorkItem> list=new ArrayList<ProductWorkItem>();
+                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 18:00:00","准备就绪"));
+                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 19:00:00","等待"));
+                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 21:00:00","准备就绪"));
+                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 15:00:00","准备就绪"));
+                return Observable.just(list);
             }
 
             @Override
