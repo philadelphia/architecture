@@ -50,31 +50,37 @@
             android:name=".StartActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 生产中预警-->
+        <!-- 故障处理预警-->
         <activity
             android:name=".ui.fault_processing.produce_line.ProduceLineActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.fault_processing.processing.FalutProcessingActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.fault_processing.fault_solution.FaultSolutionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.fault_processing.fault_add.FaultProcessingAddActivity"
+            android:screenOrientation="portrait" />
 
-        <!--StorageWarningActivity  -->
+
+        <!--StorageWarningActivity  liuzhenyu -->
         <activity
             android:name=".ui.storage_manger.StorageWarningActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".ui.storage_manger.storage_select.StorageSelectActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.storage_manger.details.StorageDetailsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.mantissa_warehouse.detail.MantissaWarehouseDetailsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity"
             android:screenOrientation="portrait" />
@@ -150,31 +156,42 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".ui.smt_module.module_up.ModuleUpActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.smt_module.module_down.ModuleDownActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.smt_module.module_up.ModuleUpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.smt_module.module_down.ModuleDownActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.smt_module.module_up_binding.ModuleUpBindingActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.smt_module.virtual_line_binding.VirtualLineBindingActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.smt_module.module_down_details.ModuleDownDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.setting.SettingActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.smt_module.module_up_binding.ModuleUpBindingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.smt_module.virtual_line_binding.VirtualLineBindingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.smt_module.module_down_details.ModuleDownDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.setting.SettingActivity"
+            android:screenOrientation="portrait" />
 
         <!--治工具-->
-        <activity android:name=".ui.product_tools.borrow.ProduceToolsBorrowActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.product_tools.back.ProduceToolsBackActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.product_tools.location.ProduceToolsLocationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.product_tools.borrow.ProduceToolsInfoActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.product_tools.borrow.Produce_mToolsActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.product_tools.borrow.ProduceToolsBorrowActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.product_tools.back.ProduceToolsBackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.product_tools.location.ProduceToolsLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.product_tools.borrow.ProduceToolsInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.product_tools.borrow.Produce_mToolsActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

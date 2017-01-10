@@ -10,7 +10,7 @@
     tools:context="com.delta.smt.ui.feeder.warning.FeederWarningActivity">
 
     <include
-        layout="@layout/main_header"/>
+        layout="@layout/appbar"/>
 
     <include layout="@layout/tab_layout_title"/>
 

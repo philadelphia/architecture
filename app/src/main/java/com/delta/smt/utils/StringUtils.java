@@ -24,7 +24,7 @@ public class StringUtils {
     }
 
     //获取百分比
-    public static int getPercentProgress(int progress,int maxProgress) {
+    public static int getPercentProgress(int progress, int maxProgress) {
         int res = 0;
         String tmp = new BigDecimal((double) progress / maxProgress * 100).setScale(0, BigDecimal.ROUND_DOWN) + "";
         res = (int) Double.parseDouble(tmp);
@@ -51,5 +51,9 @@ public class StringUtils {
                 + "KB" : (var0 < 1073741824L ? var2.format((double) ((float) var0 / 1024.0F / 1024.0F))
                 + "MB" : (var0 < 0L ? var2.format((double) ((float) var0 / 1024.0F / 1024.0F / 1024.0F))
                 + "GB" : "error")));
+    }
+
+    public static String JsonToUrl(String json) {
+        return "sdf";
     }
 }

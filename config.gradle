@@ -55,6 +55,6 @@ ext {
 
             //bar
             "barcodecollector"       : "com.drc-bj:BarCodeCollector:1.0.0-SNAPSHOT",
-            "lombok"                 : "compile 'org.projectlombok:lombok:1.16.6'"
+            "lombok"                 : "org.projectlombok:lombok:1.16.6"
     ]
 }

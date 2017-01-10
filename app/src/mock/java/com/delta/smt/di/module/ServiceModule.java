@@ -16,9 +16,11 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
+import com.delta.smt.entity.StorageSelect;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineBindingItem;
@@ -99,6 +101,8 @@ public class ServiceModule {
                 datas.add(new MantissaWarehouseReady("H11", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
                 datas.add(new MantissaWarehouseReady("H12", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
                 datas.add(new MantissaWarehouseReady("H13", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
+                datas.add(new MantissaWarehouseReady("H14", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
+                datas.add(new MantissaWarehouseReady("H14", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
                 datas.add(new MantissaWarehouseReady("H14", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
 
                 return Observable.just(datas);
@@ -342,6 +346,34 @@ public class ServiceModule {
             }
 
             @Override
+            public Observable<List<ProductWorkItem>> getProductWorkItem() {
+                //TODO zsq
+                List<ProductWorkItem> list=new ArrayList<ProductWorkItem>();
+                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 18:00:00","准备就绪"));
+                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 19:00:00","等待"));
+                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 21:00:00","等待"));
+                list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 15:00:00","等待"));
+                return Observable.just(list);
+            }
+
+            @Override
+            public Observable<List<StorageSelect>> getStorageSelect() {
+                    List<StorageSelect> dataList = new ArrayList<>();
+                    dataList.add(new StorageSelect(1, "仓库A"));
+                    dataList.add(new StorageSelect(2, "仓库B"));
+                    dataList.add(new StorageSelect(3, "仓库C"));
+                    dataList.add(new StorageSelect(4, "仓库D"));
+                    dataList.add(new StorageSelect(5, "仓库E"));
+                    dataList.add(new StorageSelect(6, "仓库F"));
+                    dataList.add(new StorageSelect(7, "仓库G"));
+                    dataList.add(new StorageSelect(8, "仓库H"));
+                    dataList.add(new StorageSelect(9, "仓库I"));
+                    dataList.add(new StorageSelect(10, "尾数仓"));
+                    dataList.add(new StorageSelect(11, "Feeder缓冲区"));
+                    return Observable.just(dataList);
+            }
+
+            @Override
             public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {
                 List<FeederCheckInItem> dataList = new ArrayList<>();
                 dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
@@ -383,24 +415,12 @@ public class ServiceModule {
             @Override
             public Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems() {
                 List<FeederSupplyWarningItem> dataList = new ArrayList<>();
-                dataList.add(new FeederSupplyWarningItem(1, "342", "A", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(2, "342", "B", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(3, "342", "C", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(4, "342", "D", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(5, "342", "E", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
-                dataList.add(new FeederSupplyWarningItem(6, "342", "F", "dsajg"));
+                for (int i = 0; i < 100; i++){
+                    FeederSupplyWarningItem feederCheckInItem = new FeederSupplyWarningItem(1, "342", "A", "等待上模组",230000);
+                    feederCheckInItem.setEndTime(System.currentTimeMillis() + feederCheckInItem.getCountdown());
+                    feederCheckInItem.setId(i);
+                    dataList.add(feederCheckInItem);
+                }
 
                 return Observable.just(dataList);
             }

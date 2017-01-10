@@ -6,15 +6,16 @@
     <solid android:color="@android:color/white" />
     <!-- padding设置内容区域离边界的间距 -->
     <padding
-        android:bottom="8dp"
-        android:left="8dp"
-        android:right="8dp"
-        android:top="8dp" />
+
+        android:bottom="20px"
+        android:left="20px"
+        android:right="20px"
+        android:top="20px" />
     <!-- corners设置圆角，只适用于rectangle -->
-    <corners android:radius="5dp" />
+    <corners android:radius="10px" />
     <!-- stroke设置描边 -->
     <stroke
-        android:width="2dp"
+        android:width="4px"
         android:color="#ececec"
          />
 </shape>

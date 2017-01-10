@@ -4,15 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.delta.commonlibs.widget.autolayout.AutoToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="32px">
-        <TextView
-            android:text="sdf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.delta.commonlibs.widget.autolayout.AutoToolbar>
+    <include layout="@layout/appbar" />
 
     <cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
         android:id="@+id/rv_faultProcessing"

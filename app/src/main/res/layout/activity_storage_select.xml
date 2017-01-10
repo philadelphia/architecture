@@ -16,7 +16,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_selectWareHouse"
+        android:id="@+id/btn_storage_select"
         android:layout_width="250px"
         android:layout_height="96px"
         android:layout_gravity="bottom|center_horizontal"

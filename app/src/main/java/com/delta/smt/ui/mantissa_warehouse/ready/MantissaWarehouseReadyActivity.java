@@ -6,7 +6,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -70,8 +69,6 @@ public class MantissaWarehouseReadyActivity extends BaseActiviy<MantissaWarehous
     @Override
     protected void initData() {
 
-        getPresenter().getMantissaWarehouseReadies();
-
         //接收那种预警，没有的话自己定义常量
         WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
         //是否接收预警 可以控制预警时机
@@ -79,6 +76,7 @@ public class MantissaWarehouseReadyActivity extends BaseActiviy<MantissaWarehous
         //关键 初始化预警接口
         WarningManger.getInstance().setOnWarning(this);
 
+        getPresenter().getMantissaWarehouseReadies();
     }
 
     @Override
@@ -87,21 +85,21 @@ public class MantissaWarehouseReadyActivity extends BaseActiviy<MantissaWarehous
         adapter = new CommonBaseAdapter<MantissaWarehouseReady>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehouseReady item, int position) {
-                holder.setText(R.id.tv_title, "线别: " + item.getLine());
-                holder.setText(R.id.tv_line, "工单号: " + item.getNumber());
-                holder.setText(R.id.tv_material_station, "面别: " + item.getFace());
-                holder.setText(R.id.tv_add_count, "状态: " + item.getType());
+                holder.setText(R.id.tv_linee, "线别: " + item.getLine());
+                holder.setText(R.id.tv_number, "工单号: " + item.getNumber());
+                holder.setText(R.id.tv_face, "面别: " + item.getFace());
+                holder.setText(R.id.tv_type, "状态: " + item.getType());
             }
 
             @Override
             protected int getItemViewLayoutId(int position, MantissaWarehouseReady item) {
-                return R.layout.fragment_storage_ready;
+                return R.layout.fragment_mantissa_ready;
             }
 
         };
 
         adapter.setOnItemClickListener(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -113,7 +111,6 @@ public class MantissaWarehouseReadyActivity extends BaseActiviy<MantissaWarehous
     @Override
     public void onItemClick(View view, MantissaWarehouseReady item, int position) {
         Intent intent = new Intent(this, MantissaWarehouseDetailsActivity.class);
-
         startActivity(intent);
     }
 
