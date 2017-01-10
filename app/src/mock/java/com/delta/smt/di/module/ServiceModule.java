@@ -20,6 +20,7 @@ import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
+import com.delta.smt.entity.StorageSelect;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineBindingItem;
@@ -353,6 +354,23 @@ public class ServiceModule {
                 list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 21:00:00","准备就绪"));
                 list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 15:00:00","准备就绪"));
                 return Observable.just(list);
+            }
+
+            @Override
+            public Observable<List<StorageSelect>> getStorageSelect() {
+                    List<StorageSelect> dataList = new ArrayList<>();
+                    dataList.add(new StorageSelect(1, "仓库A"));
+                    dataList.add(new StorageSelect(2, "仓库B"));
+                    dataList.add(new StorageSelect(3, "仓库C"));
+                    dataList.add(new StorageSelect(4, "仓库D"));
+                    dataList.add(new StorageSelect(5, "仓库E"));
+                    dataList.add(new StorageSelect(6, "仓库F"));
+                    dataList.add(new StorageSelect(7, "仓库G"));
+                    dataList.add(new StorageSelect(8, "仓库H"));
+                    dataList.add(new StorageSelect(9, "仓库I"));
+                    dataList.add(new StorageSelect(10, "尾数仓"));
+                    dataList.add(new StorageSelect(11, "Feeder缓冲区"));
+                    return Observable.just(dataList);
             }
 
             @Override
