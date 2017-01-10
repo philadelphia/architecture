@@ -1,7 +1,9 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.Constant;
 import com.delta.smt.entity.CheckStock;
+import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
@@ -11,11 +13,17 @@ import com.delta.smt.entity.MantissaWarehouseDetails;
 import com.delta.smt.entity.MantissaWarehousePutstorage;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
+import com.delta.smt.entity.ModuleDownDetailsItem;
+import com.delta.smt.entity.ModuleDownWarningItem;
+import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
+import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
@@ -38,7 +46,7 @@ import rx.Observable;
 /**
  * Created by Administrator on 2016/3/23.
  */
-public interface  ApiService {
+public interface ApiService {
     @POST("ams/library/user/login2")
     Observable<LoginResult> login(@Body User user);
 
@@ -83,8 +91,21 @@ public interface  ApiService {
     //接口PCB库房发料
 
     Observable<List<com.delta.smt.entity.ItemInfo>> getWarning();//获取所有预警信息
+
     Observable<List<ListWarning>> getListWarning();//获取发料列表
+
     Observable<List<CheckStock>> getCheckStock();//获取盘点列表
+
+    Observable<String> getSuccessState();//是否成功?
+
+    Observable<String> getStoreRoomSuccess();//是否成功?
+
+    Observable<String> getCheckStockSuccess();//是否成功?
+
+    Observable<List<ListWarning>> getWarningNumberSuccess();//获取Warning列表的数量
+
+    Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
+
 
     Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
 
@@ -94,6 +115,9 @@ public interface  ApiService {
 
     Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
+    //故障处理预警
+    Observable<List<FalutMesage>> getFalutMessages();
+
     //更新
     @GET(API.bundleJsonUrl)
     Observable<Update> getUpdate();
@@ -102,5 +126,17 @@ public interface  ApiService {
     @Streaming
     @GET
     Observable<ResponseBody> download(@Url String url);
+
+    Observable<List<ModuleUpWarningItem>> getModuleUpWarningItems();
+
+    Observable<List<ModuleDownWarningItem>> getModuleDownWarningItems();
+
+    Observable<List<ModuleUpBindingItem>> getModuleUpBindingItems();
+
+    Observable<List<VirtualLineBindingItem>> getVirtualLineBindingItems();
+
+    Observable<List<ModuleDownDetailsItem>> getModuleDownDetailsItems();
+
+    Observable<List<ProductWorkItem>> getProductWorkItem();
 
 }
