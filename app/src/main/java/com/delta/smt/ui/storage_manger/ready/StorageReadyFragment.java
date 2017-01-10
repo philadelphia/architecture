@@ -42,7 +42,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> im
         adapter = new CommonBaseAdapter<StorageReady>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, StorageReady item, int position) {
-                holder.setText(R.id.tv_title, "线别: " + item.getLine());
+                holder.setText(R.id.tv_title, "产线: " + item.getLine());
                 holder.setText(R.id.tv_line, "工单号: " + item.getNumber());
                 holder.setText(R.id.tv_material_station, "面别: " + item.getFace());
                 holder.setText(R.id.tv_add_count, "状态: " + item.getType());
