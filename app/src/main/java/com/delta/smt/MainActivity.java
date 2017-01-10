@@ -38,14 +38,12 @@ import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
 import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
-import com.delta.smt.ui.product_tools.back.mvp.ProduceToolsBackContract;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;
 import com.delta.smt.ui.product_tools.location.ProduceToolsLocationActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
-import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.delta.smt.ui.smt_module.module_down.ModuleDownActivity;
 import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
-import com.delta.smt.ui.storage_manger.StorageWarningActivity;
+import com.delta.smt.ui.storage_manger.storage_select.StorageSelectActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
 import com.delta.smt.ui.storeroom.StoreRoomActivity;
 import com.delta.smt.ui.warningSample.WarningSampleActivity;
@@ -150,7 +148,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
                 IntentUtils.showIntent(this, com.delta.smt.ui.feeder.wareSelect.WareSelectActivity.class);
                 break;
             case "仓库房":
-                IntentUtils.showIntent(this, StorageWarningActivity.class);
+                IntentUtils.showIntent(this, StorageSelectActivity.class);
                 break;
             case "PCB库房2":
                 IntentUtils.showIntent(this, StoreIssueActivity.class);

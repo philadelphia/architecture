@@ -63,23 +63,24 @@
         <activity
             android:name=".ui.fault_processing.fault_add.FaultProcessingAddActivity"
             android:screenOrientation="portrait" />
-        <!--StorageWarningActivity  -->
+
+
+        <!--StorageWarningActivity  liuzhenyu -->
         <activity
             android:name=".ui.storage_manger.StorageWarningActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".ui.storage_manger.storage_select.StorageSelectActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.storage_manger.details.StorageDetailsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.mantissa_warehouse.detail.MantissaWarehouseDetailsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity"
             android:screenOrientation="portrait" />

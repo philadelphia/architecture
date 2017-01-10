@@ -13,6 +13,7 @@ import rx.functions.Action1;
 /**
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
+
 @ActivityScope
 public class ProduceToolsBorrowPresenter extends BasePresenter<ProduceToolsBorrowContract.Model,ProduceToolsBorrowContract.View> {
 
@@ -21,7 +22,7 @@ public class ProduceToolsBorrowPresenter extends BasePresenter<ProduceToolsBorro
         super(model, mView);
     }
 
-    public void setData(){
+    public void getData(){
         getModel().getProductWorkItem().subscribe(new Action1<List<ProductWorkItem>>() {
             @Override
             public void call(List<ProductWorkItem> productWorkItems) {
