@@ -32,8 +32,7 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
         } else {
             mCountdownViewTest.allShowZero();
         }
-
-
+        
     }
 
     public void refreshTime(long curTimeMillis) {

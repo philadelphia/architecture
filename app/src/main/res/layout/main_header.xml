@@ -16,7 +16,7 @@
         android:layout_width="35px"
         android:layout_height="59px"
         style="@style/style_title"
-        android:background="@drawable/ic_back"
+        android:background="@drawable/ic_return"
         />
     </RelativeLayout>
     <TextView

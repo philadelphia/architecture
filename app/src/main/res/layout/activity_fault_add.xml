@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/appbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="80px">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="方案标题："
+            android:textColor="@color/C_333333"
+            android:textSize="40px" />
+
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_title"
+            android:layout_toRightOf="@id/tv_title"
+            android:textSize="40px" />
+
+
+        <TextView
+            android:id="@+id/tv_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tv_title"
+            android:layout_marginTop="44dp"
+            android:text="使用故障代码："
+            android:textColor="@color/C_333333"
+            android:textSize="40px" />
+
+        <EditText
+            android:id="@+id/et_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_code"
+            android:layout_alignTop="@+id/tv_code"
+            android:layout_toRightOf="@id/tv_code"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/tv_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_code"
+            android:layout_marginTop="90px"
+            android:text="故障排除步骤："
+            android:textColor="@color/C_333333"
+            android:textSize="40px" />
+
+        <EditText
+            android:id="@+id/et_step"
+            android:layout_width="match_parent"
+            android:layout_height="409px"
+            android:layout_below="@id/tv_step"
+            android:layout_marginTop="20px"
+            android:background="@drawable/edit_bg"
+            android:textSize="40px" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginBottom="100px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/bt_preview"
+            android:layout_width="250px"
+            android:layout_height="120px"
+            android:background="@drawable/btn_selector"
+            android:text="预览"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/bt_save"
+            android:layout_width="250px"
+            android:layout_height="120px"
+            android:layout_marginLeft="78px"
+            android:background="@drawable/btn_selector"
+            android:text="保存"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -4,10 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/appbar" />
-
-    <cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
-        android:id="@+id/rv_faultProcessing"
+    <TextView
+        android:id="@+id/tv_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></cn.iwgang.familiarrecyclerview.FamiliarRecyclerView>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10px"
+        android:paddingLeft="150px"
+        android:text="测试"
+        android:textColor="@color/c_428bca"
+        android:textSize="40px" />
+
+
 </LinearLayout>
