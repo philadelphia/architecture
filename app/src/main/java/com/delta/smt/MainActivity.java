@@ -114,9 +114,9 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         fuctionString = new ArrayList<>();
         fuctionString.add("Feeder缓冲区");
         fuctionString.add("仓库房");
-        fuctionString.add("PCB库房2");
-        fuctionString.add("PCB库房3");
-        fuctionString.add("PCB库房4");
+        fuctionString.add("PCB库房发料");
+        fuctionString.add("PCB库房入库");
+        fuctionString.add("盘点");
         fuctionString.add("生产中预警");
         fuctionString.add("warningSample");
         fuctionString.add("手补件通知");
@@ -150,13 +150,13 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "仓库房":
                 IntentUtils.showIntent(this, StorageSelectActivity.class);
                 break;
-            case "PCB库房2":
+            case "PCB库房发料":
                 IntentUtils.showIntent(this, StoreIssueActivity.class);
                 break;
-            case "PCB库房3":
+            case "PCB库房入库":
                 IntentUtils.showIntent(this, StoreRoomActivity.class);
                 break;
-            case "PCB库房4":
+            case "盘点":
                 IntentUtils.showIntent(this, CheckStockActivity.class);
                 break;
             case "生产中预警":
