@@ -10,7 +10,8 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Tao.ZT.Zhang on 2016/12/26.
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/21.
  */
 
 public interface CheckInContract {

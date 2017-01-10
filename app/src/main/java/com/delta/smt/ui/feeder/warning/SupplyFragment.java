@@ -39,6 +39,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+/**
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/21.
+ */
 
 public class SupplyFragment extends BaseFragment<SupplyPresenter> implements SupplyContract.View, ItemOnclick, WarningManger.OnWarning {
     @BindView(R.id.recyclerView)

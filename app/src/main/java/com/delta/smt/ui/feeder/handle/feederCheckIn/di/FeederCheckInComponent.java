@@ -13,5 +13,5 @@ import dagger.Component;
 @Component(modules=FeederCheckInModule.class, dependencies = AppComponent.class)
 
 public interface FeederCheckInComponent {
-//    void inject(CheckinFragment checkinFragment);
+//    void inject(CheckInFragment checkinFragment);
 }

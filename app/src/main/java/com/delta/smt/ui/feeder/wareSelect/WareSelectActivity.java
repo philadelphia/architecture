@@ -31,6 +31,11 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/21.
+ */
+
 public class WareSelectActivity extends BaseActiviy<WareSelectPresenter> implements WareSelectContract.View, CommonBaseAdapter.OnItemClickListener<WareHouse> {
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -76,7 +81,7 @@ public class WareSelectActivity extends BaseActiviy<WareSelectPresenter> impleme
             @Override
             protected void convert(CommonViewHolder holder, WareHouse item, int position) {
                 holder.setText(R.id.chcekbox, item.getName());
-                CheckBox box = (CheckBox) holder.getView(R.id.chcekbox);
+                CheckBox box = holder.getView(R.id.chcekbox);
                 box.setTag(position);
                 checkBoxMap.put(position, box);
             }
@@ -93,7 +98,7 @@ public class WareSelectActivity extends BaseActiviy<WareSelectPresenter> impleme
     }
 
     @Override
-    public void onSucess(List<WareHouse> wareHouses) {
+    public void onSuccess(List<WareHouse> wareHouses) {
         mDataList.clear();
         mDataList.addAll(wareHouses);
         adapter.notifyDataSetChanged();
