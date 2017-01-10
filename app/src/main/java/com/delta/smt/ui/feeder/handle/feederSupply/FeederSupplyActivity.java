@@ -35,6 +35,11 @@ import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
+/**
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/21.
+ */
+
 public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> implements FeederSupplyContract.View {
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -54,7 +59,6 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
     LinearLayout linearLayout;
     @BindView(R.id.tv_moduleID)
     TextView tvModuleID;
-    private CommonBaseAdapter<FeederSupplyItem> adapterTitle;
     private CommonBaseAdapter<FeederSupplyItem> adapter;
     private List<FeederSupplyItem> dataList = new ArrayList<>();
     private List<FeederSupplyItem> dataSource = new ArrayList<>();
@@ -85,7 +89,7 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("备料");
         dataList.add(new FeederSupplyItem("", "", "", "", ""));
-        adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
+        CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
                 holder.itemView.setBackgroundColor(Color.GRAY);
@@ -156,7 +160,7 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
 
 
     @Override
-    public void onFalied() {
+    public void onFailed() {
 
     }
 

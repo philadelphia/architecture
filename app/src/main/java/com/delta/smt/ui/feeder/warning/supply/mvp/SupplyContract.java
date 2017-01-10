@@ -15,11 +15,11 @@ import rx.Observable;
 
 public interface SupplyContract {
     interface View extends IView{
-        public void onSuccess(List<FeederSupplyWarningItem> data);
-        public void onFalied();
+         void onSuccess(List<FeederSupplyWarningItem> data);
+         void onFailed();
     }
 
     interface Model extends IModel{
-        public Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
+         Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
     }
 }

@@ -10,7 +10,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.demacia.barcode.Barcode;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.base.BaseFragment;
@@ -18,7 +17,6 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederCheckInItem;
-import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.ui.feeder.warning.checkin.di.CheckInModule;
 import com.delta.smt.ui.feeder.warning.checkin.di.DaggerCheckInComponent;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInContract;
@@ -30,10 +28,14 @@ import java.util.List;
 
 import butterknife.BindView;
 
+/**
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/21.
+ */
 
-public class CheckinFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View, BaseActiviy.OnBarCodeSucess {
+public class CheckInFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View, BaseActiviy.OnBarCodeSucess {
 
-    private static final String TAG = "CheckinFragment";
+    private static final String TAG = "CheckInFragment";
     private BaseActiviy baseActiviy;
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
@@ -42,7 +44,6 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
     @BindView(R.id.hr_scrow)
     HorizontalScrollView hrScrow;
 
-    private CommonBaseAdapter<FeederCheckInItem> adapterTitle;
     private CommonBaseAdapter<FeederCheckInItem> adapter;
     private List<FeederCheckInItem> dataList = new ArrayList<>();
     private List<FeederCheckInItem> dataSource = new ArrayList<>();
@@ -60,7 +61,7 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
     @Override
     protected void initView() {
         dataList.add(new FeederCheckInItem("", "", "", "", ""));
-        adapterTitle = new CommonBaseAdapter<FeederCheckInItem>(getContext(), dataList) {
+        CommonBaseAdapter<FeederCheckInItem> adapterTitle = new CommonBaseAdapter<FeederCheckInItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederCheckInItem item, int position) {
 //                holder.setText(R.id.tv_workItemID, "工单ID: " + item.getWorkItemID());
@@ -122,9 +123,9 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
     }
 
     @Override
-    public void onSuccess(List<FeederCheckInItem> datas) {
+    public void onSuccess(List<FeederCheckInItem> data) {
         dataSource.clear();
-        dataSource.addAll(datas);
+        dataSource.addAll(data);
         adapter.notifyDataSetChanged();
     }
 
@@ -152,29 +153,31 @@ public class CheckinFragment extends BaseFragment<CheckInPresenter> implements C
         BarCodeType codeType = BarCodeUtils.barCodeType(barcode);
 
         if (!TextUtils.isEmpty(barcode)) {
-            switch (codeType) {
-                case MATERIAL_BLOCK_BARCODE: //料号
-                    for (FeederCheckInItem feederCheckInItem : dataSource) {
-                        if (barcode.trim().equalsIgnoreCase(feederCheckInItem.getMaterialID())) {
-                            dataSource.set(0, feederCheckInItem);
+            if (codeType != null) {
+                switch (codeType) {
+                    case MATERIAL_BLOCK_BARCODE: //料号
+                        for (FeederCheckInItem feederCheckInItem : dataSource) {
+                            if (barcode.trim().equalsIgnoreCase(feederCheckInItem.getMaterialID())) {
+                                dataSource.set(0, feederCheckInItem);
+                            }
                         }
-                    }
 
-                    break;
-                case FRAME_LOCATION: //架位ID
+                        break;
+                    case FRAME_LOCATION: //架位ID
                         if (dataSource.get(0).getLocation().equalsIgnoreCase(barcode)) {
-                        //上传到后台
-                        }else {
+                            //上传到后台
+                        } else {
 
                         }
                         break;
 
-                        default:
-                            break;
+                    default:
+                        break;
 
-                    }
+                }
             }
-
         }
 
     }
+
+}

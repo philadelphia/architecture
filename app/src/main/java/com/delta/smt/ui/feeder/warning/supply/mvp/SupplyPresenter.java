@@ -18,7 +18,7 @@ import rx.functions.Action1;
 @FragmentScope
 public class SupplyPresenter extends BasePresenter<SupplyContract.Model, SupplyContract.View>{
     @Inject
-    public SupplyPresenter(SupplyContract.Model model, SupplyContract.View mView) {
+     SupplyPresenter(SupplyContract.Model model, SupplyContract.View mView) {
         super(model, mView);
     }
 

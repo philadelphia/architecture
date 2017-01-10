@@ -51,8 +51,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
     private ItemCountdownViewAdapter<FeederSupplyWarningItem> adapter;
     private static final String TAG = "SupplyFragment";
     private AlertDialog alertDialog;
-    private boolean item_run_tag=false;
-    private String lastWarningMessage;
+
     @Inject
     WarningManger warningManger;
 
@@ -112,9 +111,10 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
     }
 
     @Override
-    public void onFalied() {
+    public void onFailed() {
 
     }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -139,9 +139,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
 
     @Override
     public void warningComming(String warningMessage) {
-        if(item_run_tag){
-            lastWarningMessage=warningMessage;
-        } else if (alertDialog!=null&&alertDialog.isShowing()) {
+       if (alertDialog!=null&&alertDialog.isShowing()) {
             alertDialog.dismiss();
             alertDialog = createDialog(warningMessage);
         } else {
