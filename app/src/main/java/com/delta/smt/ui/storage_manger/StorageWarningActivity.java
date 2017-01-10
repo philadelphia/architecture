@@ -1,17 +1,16 @@
 package com.delta.smt.ui.storage_manger;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.view.View;
-import android.widget.RelativeLayout;
+import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
-import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseCommonActivity;
 import com.delta.smt.common.DialogRelativelayout;
@@ -23,25 +22,24 @@ import com.delta.smt.utils.ViewUtils;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/21.
  */
 
-public class StorageWarningActivity extends BaseCommonActivity implements TabLayout.OnTabSelectedListener , WarningManger.OnWarning {
+public class StorageWarningActivity extends BaseCommonActivity implements TabLayout.OnTabSelectedListener, WarningManger.OnWarning {
 
 
     @BindView(R.id.tl_title)
     TabLayout mTlTitle;
-    @BindView(R.id.header_title)
-    TextView mHeaderTitle;
-    @BindView(R.id.header_back)
-    RelativeLayout mHeaderBack;
-    @BindView(R.id.header_setting)
-    TextView mHeaderSetting;
-
-
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+    @BindView(R.id.fl_container)
+    FrameLayout mFlContainer;
     private FragmentTransaction mFragmentTransaction;
     private StorageReadyFragment mStorageReadyFragment;
     private StorageReturnFragment mStorageReturnFragment;
@@ -93,20 +91,13 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
 
     }
 
-    @OnClick({R.id.header_back, R.id.header_setting})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.header_back:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-            case R.id.header_setting:
-                break;
-        }
-    }
-
     @Override
     protected void initCView() {
-        mHeaderTitle.setText("仓库A备料");
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        mToolbarTitle.setText("仓库A备料");
         for (int i = 0; i < titles.length; i++) {
             mTlTitle.addTab(mTlTitle.newTab());
         }
@@ -147,7 +138,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
 
     @Override
     public void warningComming(String warningMessage) {
-         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
+        DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
         dialogRelativelayout.setStrTitle("测试标题");
         //3.传入的是黑色字体的二级标题
@@ -166,4 +157,18 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
             }
         }).show();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

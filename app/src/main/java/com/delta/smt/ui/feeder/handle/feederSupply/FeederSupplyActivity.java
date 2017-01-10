@@ -2,17 +2,19 @@ package com.delta.smt.ui.feeder.handle.feederSupply;
 
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -28,28 +30,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
 public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> implements FeederSupplyContract.View {
-    @BindView(R.id.header_back)
-    RelativeLayout headerBack;
-    @BindView(R.id.header_title)
-    TextView headerTitle;
-    @BindView(R.id.header_setting)
-    TextView headerSetting;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar toolbar;
+    @BindView(R.id.btn_upload)
+    Button btnUpload;
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
     RecyclerView recyContent;
     @BindView(R.id.hr_scrow)
     HorizontalScrollView hrScrow;
-    @BindView(R.id.btn_upload)
-    Button btnUpload;
+    @BindView(R.id.linearLayout)
+    LinearLayout linearLayout;
     @BindView(R.id.tv_moduleID)
     TextView tvModuleID;
-
     private CommonBaseAdapter<FeederSupplyItem> adapterTitle;
     private CommonBaseAdapter<FeederSupplyItem> adapter;
     private List<FeederSupplyItem> dataList = new ArrayList<>();
@@ -75,7 +79,11 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
 
     @Override
     protected void initView() {
-        headerTitle.setText("备料");
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbarTitle.setText("备料");
         dataList.add(new FeederSupplyItem("", "", "", "", ""));
         adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
@@ -116,14 +124,10 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
     }
 
 
-    @OnClick({R.id.header_back, R.id.header_setting, R.id.btn_upload})
+    @OnClick({R.id.tv_setting, R.id.btn_upload})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.header_back:
-                onBackPressed();
-                break;
-            case R.id.header_setting:
-
+            case R.id.tv_setting:
                 break;
             case R.id.btn_upload:
                 getPresenter().upLoadToMES();
@@ -137,15 +141,15 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
         for (FeederSupplyItem item : dataSource) {
-            if (item.getStatus().equalsIgnoreCase("等待上模组")){
+            if (item.getStatus().equalsIgnoreCase("等待上模组")) {
                 isHandleOVer = false;
                 break;
-            }else {
+            } else {
                 isHandleOVer = true;
             }
         }
 
-        if (isHandleOVer){
+        if (isHandleOVer) {
             getPresenter().upLoadToMES();
         }
     }
@@ -162,9 +166,9 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
         Log.i(TAG, "onScanSuccess: ");
         super.onScanSuccess(barcode);
         Log.i(TAG, "barcode == " + barcode);
-        for (FeederSupplyItem feederSupplyItem: dataSource) {
-            if(!TextUtils.isEmpty(barcode)){
-                if (barcode.trim().equalsIgnoreCase(feederSupplyItem.getMaterialID())){
+        for (FeederSupplyItem feederSupplyItem : dataSource) {
+            if (!TextUtils.isEmpty(barcode)) {
+                if (barcode.trim().equalsIgnoreCase(feederSupplyItem.getMaterialID())) {
                     tvModuleID.setText("模组料站: " + feederSupplyItem.getModuleID());
                     getPresenter().upLoadFeederSupplyResult();
                 }
@@ -172,6 +176,26 @@ public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> imp
         }
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
 }
