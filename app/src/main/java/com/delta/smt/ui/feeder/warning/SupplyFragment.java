@@ -121,9 +121,9 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
         Log.i(TAG, "onHiddenChanged: ");
         super.onHiddenChanged(hidden);
         if (hidden){
-            warningManger.unregistWReceriver(getContext());
+            warningManger.unregisterWReceriver(getContext());
         }else {
-            warningManger.registWReceiver(getContext());
+            warningManger.registerWReceiver(getContext());
         }
     }
 
@@ -138,7 +138,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
     }
 
     @Override
-    public void warningComming(String warningMessage) {
+    public void warningComing(String warningMessage) {
        if (alertDialog!=null&&alertDialog.isShowing()) {
             alertDialog.dismiss();
             alertDialog = createDialog(warningMessage);
@@ -171,7 +171,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
 
     @Override
     public void onResume() {
-        warningManger.registWReceiver(getContext());
+        warningManger.registerWReceiver(getContext());
         Log.i(TAG, "onResume: ");
         super.onResume();
     }
@@ -180,7 +180,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
     @Override
     public void onStop() {
         Log.i(TAG, "onResume: ");
-        warningManger.unregistWReceriver(getContext());
+        warningManger.unregisterWReceriver(getContext());
         super.onStop();
     }
 }

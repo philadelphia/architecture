@@ -35,10 +35,10 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
         }
     }
 
-    public void removeOnBarCodeSuccess(OnBarCodeSuccess onBarCodeSucess) {
-        if (onBarCodeSucess != null) {
+    public void removeOnBarCodeSuccess(OnBarCodeSuccess onBarCodeSuccess) {
+        if (onBarCodeSuccess != null) {
 
-            events.remove(onBarCodeSucess);
+            events.remove(onBarCodeSuccess);
         }
     }
 
