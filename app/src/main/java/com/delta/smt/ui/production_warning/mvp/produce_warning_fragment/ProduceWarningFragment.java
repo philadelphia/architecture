@@ -104,7 +104,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         super.onAttach(context);
         if (context instanceof BaseActiviy) {
             this.baseActiviy = ((BaseActiviy) context);
-            baseActiviy.addOnBarCodeSucess(this);
+            baseActiviy.addOnBarCodeSuccess(this);
         }
     }
 
@@ -118,9 +118,9 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         tag=0;
         Log.e(TAG, "onHiddenChanged: " + hidden);
         if (hidden) {
-            baseActiviy.removeOnBarCodeSuecss(this);
+            baseActiviy.removeOnBarCodeSuccess(this);
         } else {
-            baseActiviy.addOnBarCodeSucess(this);
+            baseActiviy.addOnBarCodeSuccess(this);
         }
     }
     @Override
