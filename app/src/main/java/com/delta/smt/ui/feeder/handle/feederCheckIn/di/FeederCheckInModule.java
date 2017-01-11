@@ -10,12 +10,13 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by Tao.ZT.Zhang on 2016/12/26.
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/26.
  */
 
 @Module
 public class FeederCheckInModule {
-    CheckInContract.View view;
+    private CheckInContract.View view;
 
     public FeederCheckInModule(CheckInContract.View view){
         this.view = view;

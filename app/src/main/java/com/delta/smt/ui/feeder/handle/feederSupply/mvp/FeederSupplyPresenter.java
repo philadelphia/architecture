@@ -11,13 +11,14 @@ import javax.inject.Inject;
 import rx.functions.Action1;
 
 /**
- * Created by Tao.ZT.Zhang on 2016/12/26.
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/26.
  */
 
 @FragmentScope
 public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Model, FeederSupplyContract.View>{
     @Inject
-    public FeederSupplyPresenter(FeederSupplyContract.Model model, FeederSupplyContract.View mView) {
+     FeederSupplyPresenter(FeederSupplyContract.Model model, FeederSupplyContract.View mView) {
         super(model, mView);
     }
 

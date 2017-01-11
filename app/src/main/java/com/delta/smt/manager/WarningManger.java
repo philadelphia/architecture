@@ -11,8 +11,6 @@ import com.delta.smt.Constant;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
-
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -82,7 +80,7 @@ public class WarningManger {
                 Log.e(TAG, "onReceive: " + "-----------------------------" + waringCalss);
                 if (WarningManger.getInstance().isRecieve()) {
                     if (onWarning != null) {
-                        onWarning.warningComming("测试");
+                        onWarning.warningComing("测试");
                     }
 
                 }
@@ -96,7 +94,7 @@ public class WarningManger {
     /**
      * 注册广播
      */
-    public void registWReceiver(Context context) {
+    public void registerWReceiver(Context context) {
         try {
             if (mBroadcastReceiver == null) {
                 mBroadcastReceiver = new WarningBroadcastReciever();
@@ -112,7 +110,7 @@ public class WarningManger {
     /**
      * 解除注册广播
      */
-    public void unregistWReceriver(Context context) {
+    public void unregisterWReceriver(Context context) {
         if (mBroadcastReceiver == null) return;
         try {
             context.unregisterReceiver(mBroadcastReceiver);
@@ -124,6 +122,6 @@ public class WarningManger {
     }
 
     public interface OnWarning {
-        void warningComming(String warningMessage);
+        void warningComing(String warningMessage);
     }
 }

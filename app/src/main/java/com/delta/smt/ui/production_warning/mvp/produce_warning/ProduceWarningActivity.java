@@ -1,14 +1,11 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
-import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -26,7 +23,6 @@ import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.production_warning.di.produce_warning.DaggerTitleNumberCompent;
 import com.delta.smt.ui.production_warning.di.produce_warning.TitleNumberModule;
-import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.ProduceBreakdownFragment;
 import com.delta.smt.ui.production_warning.mvp.produce_info_fragment.ProduceInfoFragment;
@@ -119,13 +115,13 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
 
     @Override
     protected void onResume() {
-        warningManger.registWReceiver(this);
+        warningManger.registerWReceiver(this);
         super.onResume();
     }
 
     @Override
     protected void onStop() {
-        warningManger.unregistWReceriver(this);
+        warningManger.unregisterWReceriver(this);
         super.onStop();
     }
 
@@ -191,7 +187,7 @@ public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter>
 
     //就收到预警广播触发的方法
     @Override
-    public void warningComming(String warningMessage) {
+    public void warningComing(String warningMessage) {
         if(item_run_tag){
             lastWarningMessage=warningMessage;
         } else if (alertDialog!=null&&alertDialog.isShowing()) {

@@ -3,7 +3,6 @@ package com.delta.smt.base;
 import android.view.KeyEvent;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
-import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.di.component.AppComponent;
@@ -24,19 +23,19 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
     protected p mPresenter;
 
 
+
     private BarCodeIpml barCodeIpml;
 
+    private List<OnBarCodeSuccess> events = new ArrayList<>();
 
-    private List<OnBarCodeSucess> events = new ArrayList<>();
-
-    public void addOnBarCodeSucess(OnBarCodeSucess onBarCodeSucess) {
+    public void addOnBarCodeSucess(OnBarCodeSuccess onBarCodeSucess) {
         if (onBarCodeSucess != null) {
 
             events.add(onBarCodeSucess);
         }
     }
 
-    public void removeOnBarCodeSuecss(OnBarCodeSucess onBarCodeSucess) {
+    public void removeOnBarCodeSuecss(OnBarCodeSuccess onBarCodeSucess) {
         if (onBarCodeSucess != null) {
 
             events.remove(onBarCodeSucess);
@@ -105,14 +104,14 @@ public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonAct
     public void onScanSuccess(String barcode) {
 
         if (events.size() != 0) {
-            for (OnBarCodeSucess event : events) {
-                event.onScanSucess(barcode);
+            for (OnBarCodeSuccess event : events) {
+                event.onScanSuccess(barcode);
             }
         }
     }
 
-    public interface OnBarCodeSucess {
-        void onScanSucess(String barcode);
+    public interface OnBarCodeSuccess {
+        void onScanSuccess(String barcode);
     }
 
 }

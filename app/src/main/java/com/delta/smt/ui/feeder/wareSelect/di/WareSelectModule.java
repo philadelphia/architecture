@@ -9,13 +9,14 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by Tao.ZT.Zhang on 2016/12/21.
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/21.
  */
 
 @Module
 public class WareSelectModule {
 
-    WareSelectContract.View view;
+    private WareSelectContract.View view;
     public WareSelectModule(WareSelectContract.View view) {
         this.view = view;
     }
