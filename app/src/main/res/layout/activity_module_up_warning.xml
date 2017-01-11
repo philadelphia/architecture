@@ -10,7 +10,7 @@
     tools:context=".ui.smt_module.module_up.ModuleUpActivity">
 
     <include
-        layout="@layout/main_header"/>
+        layout="@layout/appbar"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

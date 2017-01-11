@@ -5,6 +5,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.R;
@@ -41,12 +43,11 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener,CommonBaseAdapter.OnItemClickListener<ModuleUpBindingItem>{
 
-    @BindView(R.id.header_back)
-    RelativeLayout headerBack;
-    @BindView(R.id.header_title)
-    TextView headerTitle;
-    @BindView(R.id.header_setting)
-    TextView headerSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar toolbar;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
@@ -79,7 +80,13 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     protected void initView() {
-        headerTitle.setText("上模组");
+        //headerTitle.setText("上模组");
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbarTitle.setText("上模组");
+
         recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         dataList.add(new ModuleUpBindingItem("Feeder号", "料号", "模组料站", "上模组时间", "流水码"));
@@ -144,15 +151,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     }
 
-    @OnClick({R.id.header_back, R.id.header_setting, R.id.btn_upload})
+    @OnClick({R.id.btn_upload})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.header_back:
-                onBackPressed();
-                break;
-            case R.id.header_setting:
-
-                break;
             case R.id.btn_upload:
                 getPresenter().upLoadToMES();
                 break;
@@ -246,5 +247,17 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void onItemClick(View view, ModuleUpBindingItem item, final int item_position) {
 
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
