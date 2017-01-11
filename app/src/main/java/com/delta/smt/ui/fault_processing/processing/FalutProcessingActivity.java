@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
@@ -148,8 +147,8 @@ public class FalutProcessingActivity extends BaseActiviy<FaultProcessingPresente
         builder.setView(view);
         TextView textView = ViewUtils.findView(view, R.id.tv_title);
         RecyclerView rv_ll = ViewUtils.findView(view, R.id.rv_processing_dialog);
-        Button button = ViewUtils.findView(view, R.id.bt_add);
-        button.setOnClickListener(new View.OnClickListener() {
+        TextView tv_add = ViewUtils.findView(view, R.id.tv_add);
+        tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 IntentUtils.showIntent(FalutProcessingActivity.this, FaultProcessingAddActivity.class);
@@ -159,6 +158,20 @@ public class FalutProcessingActivity extends BaseActiviy<FaultProcessingPresente
 //        iv_add.setOnClickListener(this);
         Log.e(TAG, "onItemClick: " + rv_ll.toString());
         List<String> datas = new ArrayList<>();
+        datas.add("修改AOI检测参数");
+        datas.add("AOI机台发生故障，联系厂商修理");
+        datas.add("修改AOI检测参数");
+        datas.add("AOI机台发生故障，联系厂商修理");
+        datas.add("修改AOI检测参数");
+        datas.add("AOI机台发生故障，联系厂商修理");
+        datas.add("修改AOI检测参数");
+        datas.add("AOI机台发生故障，联系厂商修理");
+        datas.add("修改AOI检测参数");
+        datas.add("AOI机台发生故障，联系厂商修理");
+        datas.add("修改AOI检测参数");
+        datas.add("AOI机台发生故障，联系厂商修理");
+        datas.add("修改AOI检测参数");
+        datas.add("AOI机台发生故障，联系厂商修理");
         datas.add("修改AOI检测参数");
         datas.add("AOI机台发生故障，联系厂商修理");
         // datas.add("新增解决方案");
@@ -177,6 +190,7 @@ public class FalutProcessingActivity extends BaseActiviy<FaultProcessingPresente
 
         rv_ll.setLayoutManager(new LinearLayoutManager(this));
         rv_ll.setAdapter(adapter);
+        rv_ll.setVerticalScrollBarEnabled(true);
         adapter.setOnItemClickListener(new CommonBaseAdapter.OnItemClickListener<String>() {
             @Override
             public void onItemClick(View view, String item, int position) {
@@ -188,18 +202,9 @@ public class FalutProcessingActivity extends BaseActiviy<FaultProcessingPresente
     }
 
     @Override
-    public void warningComming(String warningMessage) {
+    public void warningComing(String warningMessage) {
 
     }
 
-//    @Override
-//    public void onClick(View v) {
-//
-//        switch (v.getId()) {
-//            case R.id.iv_add:
-//                IntentUtils.showIntent(this, FaultProcessingAddActivity.class);
-//                Log.e(TAG, "onClick: ");
-//                break;
-//        }
-//    }
+
 }

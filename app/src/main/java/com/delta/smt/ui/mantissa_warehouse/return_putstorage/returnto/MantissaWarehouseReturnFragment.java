@@ -28,7 +28,7 @@ import butterknife.BindView;
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter> implements MantissaWarehouseReturnContract.View, BaseActiviy.OnBarCodeSucess {
+public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter> implements MantissaWarehouseReturnContract.View, BaseActiviy.OnBarCodeSuccess {
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
@@ -147,7 +147,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
 
     @Override
-    public void onScanSucess(String barcode) {
+    public void onScanSuccess(String barcode) {
 
         Log.e(TAG, "onScanSucess: " + barcode);
     }

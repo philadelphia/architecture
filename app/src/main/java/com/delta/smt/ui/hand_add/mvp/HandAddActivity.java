@@ -13,8 +13,6 @@ import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
-import com.delta.smt.common.CommonBaseAdapter;
-import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
@@ -25,7 +23,6 @@ import com.delta.smt.ui.hand_add.di.DaggerHandAddCompent;
 import com.delta.smt.ui.hand_add.di.HandAddModule;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 
-import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,7 +109,7 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
 
     @Override
     protected void onResume() {
-        mWarningManger.registWReceiver(this);
+        mWarningManger.registerWReceiver(this);
         if (null != mAdapter) {
             mAdapter.startRefreshTime();
         }
@@ -122,7 +119,7 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
 
     @Override
     protected void onPause() {
-        mWarningManger.unregistWReceriver(this);
+        mWarningManger.unregisterWReceriver(this);
         if (null != mAdapter) {
             mAdapter.cancelRefreshTime();
         }
@@ -171,7 +168,7 @@ public class HandAddActivity extends BaseActiviy<HandAddPresenter>
 
 
     @Override
-    public void warningComming(String warningMessage) {
+    public void warningComing(String warningMessage) {
 
             if(mItemDialog !=null&& mItemDialog.isShowing()){
                 tag=true;

@@ -64,13 +64,13 @@ public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implement
 
     @Override
     protected void onResume() {
-        warningManger.registWReceiver(this);
+        warningManger.registerWReceiver(this);
         super.onResume();
     }
 
     @Override
     protected void onStop() {
-        warningManger.unregistWReceriver(this);
+        warningManger.unregisterWReceriver(this);
         super.onStop();
     }
 
@@ -85,7 +85,7 @@ public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implement
     }
 
     @Override
-    public void warningComming(String message) {
+    public void warningComing(String message) {
         if (alertDialog != null) {
             alertDialog.show();
         } else {

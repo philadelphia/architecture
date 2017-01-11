@@ -6,74 +6,87 @@
 
     <include layout="@layout/appbar" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="80px">
+        android:layout_margin="80px"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="方案标题："
-            android:textColor="@color/C_333333"
-            android:textSize="40px" />
 
-        <EditText
-            android:id="@+id/et_title"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="使用故障代码："
+                android:textColor="@color/C_333333"
+                android:textSize="40px" />
+
+            <EditText
+                android:id="@+id/et_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40px" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/tv_title"
-            android:layout_toRightOf="@id/tv_title"
-            android:textSize="40px" />
+            android:layout_marginTop="90px">
 
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="方案标题："
+                android:textColor="@color/C_333333"
+                android:textSize="40px" />
 
-        <TextView
-            android:id="@+id/tv_code"
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40px" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/tv_title"
-            android:layout_marginTop="44dp"
-            android:text="使用故障代码："
-            android:textColor="@color/C_333333"
-            android:textSize="40px" />
+            android:layout_marginTop="90px">
+
+            <TextView
+                android:id="@+id/tv_step"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="故障排除步骤："
+                android:textColor="@color/C_333333"
+                android:textSize="40px" />
+        </LinearLayout>
+
 
         <EditText
-            android:id="@+id/et_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/tv_code"
-            android:layout_alignTop="@+id/tv_code"
-            android:layout_toRightOf="@id/tv_code"
-            android:textSize="40px" />
-
-        <TextView
-            android:id="@+id/tv_step"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_code"
-            android:layout_marginTop="90px"
-            android:text="故障排除步骤："
-            android:textColor="@color/C_333333"
-            android:textSize="40px" />
-
-        <EditText
+            android:singleLine="false"
             android:id="@+id/et_step"
             android:layout_width="match_parent"
-            android:layout_height="409px"
-            android:layout_below="@id/tv_step"
-            android:layout_marginTop="20px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30px"
             android:background="@drawable/edit_bg"
+            android:minLines="10"
+            android:inputType="textMultiLine"
             android:textSize="40px" />
-    </RelativeLayout>
+
+
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_marginBottom="100px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="100px"
         android:gravity="center">
 
         <Button
