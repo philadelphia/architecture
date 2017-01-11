@@ -3,6 +3,7 @@ package com.delta.smt.ui.main.di;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.MainActivity;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.ui.setting.SettingActivity;
 
 import dagger.Component;
 
@@ -14,4 +15,5 @@ import dagger.Component;
 @Component(modules = MainModule.class, dependencies = AppComponent.class)
 public interface MainComponent {
     void inject(MainActivity mainActivity);
+    void inject(SettingActivity settingActivity);
 }
