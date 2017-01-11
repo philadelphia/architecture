@@ -17,6 +17,7 @@ import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.ProductWorkItem;
+import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -347,12 +348,24 @@ public class ServiceModule {
 
             @Override
             public Observable<List<ProductWorkItem>> getProductWorkItem() {
-                //TODO zsq
+                //TODO ZSQgetProductWorkItem
                 List<ProductWorkItem> list=new ArrayList<ProductWorkItem>();
                 list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 18:00:00","准备就绪"));
                 list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 19:00:00","等待"));
                 list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 21:00:00","等待"));
                 list.add(new ProductWorkItem("23141232","内部","23141232","01","42692256","H11","42692256","A","2016-12-12 15:00:00","等待"));
+                return Observable.just(list);
+            }
+
+            @Override
+            public Observable<List<Product_mToolsInfo>> getProductToolsInfoItem() {
+                //TODO ZSQgetProductToolsInfoItem
+
+                List<Product_mToolsInfo> list=new ArrayList<Product_mToolsInfo>();
+                list.add(new Product_mToolsInfo("1","11458754","钢网","A11-002","更多","待确认"));
+                list.add(new Product_mToolsInfo("2","11458756","钢网","A11-003","更多","待确认"));
+                list.add(new Product_mToolsInfo("3","11458756","钢网","A11-006","更多","待确认"));
+                list.add(new Product_mToolsInfo("4","11458756","钢网","A11-005","更多","待确认"));
                 return Observable.just(list);
             }
 

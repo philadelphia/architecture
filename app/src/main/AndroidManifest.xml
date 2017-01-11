@@ -187,10 +187,10 @@
             android:name=".ui.product_tools.location.ProduceToolsLocationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.product_tools.borrow.ProduceToolsInfoActivity"
+            android:name=".ui.product_tools.tools_info.ProduceToolsInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.product_tools.borrow.Produce_mToolsActivity"
+            android:name=".ui.product_tools.mtools_info.Produce_mToolsActivity"
             android:screenOrientation="portrait" />
 
     </application>
