@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
@@ -299,18 +300,16 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
             case FEEDER:
                 if (tag==1){
-                    currentBarcode ="FeederID："+barcode;
-                }else currentBarcode=null;
-
-/*                    try {
+                    try {
                         Log.i("barcode", barcode);
                         Feeder mFeeder=(Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
-                        currentBarcode =mFeeder.getSource();
+                        currentBarcode ="FeederID："+mFeeder.getSource();
                         Log.i("barcode", currentBarcode);
                     } catch (EntityNotFountException e) {
                         e.printStackTrace();
-                    }*/
-
+                    }
+//                    currentBarcode ="FeederID："+barcode;
+                }else currentBarcode=null;
                 break;
 
             case MATERIAL_STATION:
@@ -322,7 +321,6 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                         e.printStackTrace();
                     }
                 }else currentBarcode=null;
-
                 break;
             default:
                 currentBarcode=null;

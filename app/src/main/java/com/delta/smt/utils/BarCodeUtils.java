@@ -19,13 +19,13 @@ import static com.delta.buletoothio.barcode.parse.BarCodeType.FRAME_LOCATION;
 
 public class BarCodeUtils {
     private static final String BACKUPMATERIIALCAR= "^SMT-A[0-9]{2}$";
-    private static final String FBOX= "^Fbox-3[0-9]{3}$";
+    private static final String FBOX= "^Fbox-[0-9]{3}$";
     private static final String FEEDER= "^KT[0-9A-Z]+";
     private static final String FEEDERCAR= "^FeederCar-A[0-9]{2}$";
     private static final String FRAMELOCATION= "^[0-9A-Z]{6}-[0-9A-Z]{1}$";
-    private static final String MATERIALBLOCKBARCODE= "^[0-9]{10}.{2}[0-9]{3}.{2}[0-9a-z]{3}.{2}[0-9]{6}.{2}[0-9]{4}.*$";
+    private static final String MATERIALBLOCKBARCODE= "^[0-9]{10}.\\{[0-9]{10}$";
     private static final String MATERIALSTATION= "^[0-9]{3}$";
-    private static final String RBOX= "^RBox-[0-9]{3}$";
+    private static final String RBOX= "^Rbox-[0-9]{3}$";
 
 
 
@@ -60,7 +60,7 @@ public class BarCodeUtils {
             Log.i("barcodeUtils",""+Pattern.compile(RBOX).matcher(s).matches());
                 return BarCodeType.RBOX;
         }
-            else{
+            else if (Pattern.compile(MATERIALBLOCKBARCODE).matcher(s).matches()){
                 Log.i("barcodeUtils",""+Pattern.compile(MATERIALBLOCKBARCODE).matcher(s).matches());
                 return BarCodeType.MATERIAL_BLOCK_BARCODE;
             }
