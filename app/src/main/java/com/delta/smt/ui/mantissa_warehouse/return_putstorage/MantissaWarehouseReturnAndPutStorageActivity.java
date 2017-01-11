@@ -1,16 +1,15 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.view.View;
-import android.widget.RelativeLayout;
+import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
-import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseCommonActivity;
 import com.delta.smt.common.DialogRelativelayout;
@@ -22,26 +21,27 @@ import com.delta.smt.utils.ViewUtils;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActivity implements TabLayout.OnTabSelectedListener ,WarningManger.OnWarning{
+public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActivity implements TabLayout.OnTabSelectedListener, WarningManger.OnWarning {
 
     @BindView(R.id.tl_title)
     TabLayout mTlTitle;
-    @BindView(R.id.header_title)
-    TextView mHeaderTitle;
-    @BindView(R.id.header_back)
-    RelativeLayout mHeaderBack;
-    @BindView(R.id.header_setting)
-    TextView mHeaderSetting;
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+    @BindView(R.id.fl_container)
+    FrameLayout mFlContainer;
     private FragmentTransaction mFragmentTransaction;
-    private MantissaWarehouseReturnFragment mMantissaWarehouseReturnFragment ;
-    private MantissaWarehousePutstorageFragment mMantissaWarehousePutstorageFragment ;
+    private MantissaWarehouseReturnFragment mMantissaWarehouseReturnFragment;
+    private MantissaWarehousePutstorageFragment mMantissaWarehousePutstorageFragment;
 
     private SupportFragment currentFragment;
     private String[] titles;
@@ -49,7 +49,13 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActi
 
     @Override
     protected void initCView() {
-        mHeaderTitle.setText("尾数仓入库及退料");
+
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        mToolbarTitle.setText("尾数仓入库及退料");
+
         for (int i = 0; i < titles.length; i++) {
             mTlTitle.addTab(mTlTitle.newTab());
         }
@@ -57,14 +63,14 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActi
         mTlTitle.addOnTabSelectedListener(this);
         mMantissaWarehousePutstorageFragment = new MantissaWarehousePutstorageFragment();
         mMantissaWarehouseReturnFragment = new MantissaWarehouseReturnFragment();
-        loadMultipleRootFragment(R.id.fl_container,0,mMantissaWarehouseReturnFragment,mMantissaWarehousePutstorageFragment);
+        loadMultipleRootFragment(R.id.fl_container, 0, mMantissaWarehouseReturnFragment, mMantissaWarehousePutstorageFragment);
         currentFragment = mMantissaWarehouseReturnFragment;
     }
 
     @Override
     protected void initCData() {
         //此处的Title应该是 从网络获取的数量
-        titles = new String[]{"入库(3)","退入主仓库(3)"};
+        titles = new String[]{"入库(3)", "退入主仓库(3)"};
 
         //接收那种预警，没有的话自己定义常量
         WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
@@ -79,7 +85,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActi
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
-                showHideFragment(mMantissaWarehouseReturnFragment,currentFragment);
+                showHideFragment(mMantissaWarehouseReturnFragment, currentFragment);
                 currentFragment = mMantissaWarehouseReturnFragment;
                 break;
             case 1:
@@ -95,19 +101,6 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActi
     protected int getContentViewId() {
         return R.layout.tablayout;
     }
-
-
-    @OnClick({R.id.header_back, R.id.header_setting})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.header_back:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-            case R.id.header_setting:
-                break;
-        }
-    }
-
 
 
     @Override
@@ -154,5 +147,18 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActi
             }
         }).show();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
