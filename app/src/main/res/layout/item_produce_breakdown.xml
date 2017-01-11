@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
-    android:id="@+id/rl_item"
-    android:layout_marginTop="10dp"
-    android:background="@drawable/card_background"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rl_item"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/card_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_title"
@@ -89,7 +89,7 @@
             app:suffixGravity="center"
             app:suffixTextColor="#000000"
             app:suffixTextSize="20sp"
-            app:timeTextColor="#000000"
+            app:timeTextColor="#ff0000"
             app:timeTextSize="20sp"
             />
     </LinearLayout>
