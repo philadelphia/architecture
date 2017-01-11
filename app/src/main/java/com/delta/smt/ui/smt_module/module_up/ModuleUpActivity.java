@@ -8,14 +8,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
-import com.delta.smt.common.CommonBaseAdapter;
-import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
@@ -136,13 +133,13 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
 
     @Override
     protected void onStop() {
-        warningManger.unregistWReceriver(this);
+        warningManger.unregisterWReceriver(this);
         super.onStop();
     }
 
     @Override
     protected void onResume() {
-        warningManger.registWReceiver(this);
+        warningManger.registerWReceiver(this);
         if (null != myAdapter) {
             myAdapter.startRefreshTime();
         }
@@ -151,7 +148,7 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
 
     //预警
     @Override
-    public void warningComming(String warningMessage) {
+    public void warningComing(String warningMessage) {
         showDialog(warningMessage);
     }
 

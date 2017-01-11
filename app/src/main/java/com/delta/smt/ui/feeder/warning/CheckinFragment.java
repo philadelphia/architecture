@@ -33,7 +33,7 @@ import butterknife.BindView;
  * Date:     2016/12/21.
  */
 
-public class CheckInFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View, BaseActiviy.OnBarCodeSucess {
+public class CheckInFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View, BaseActiviy.OnBarCodeSuccess{
 
     private static final String TAG = "CheckInFragment";
     private BaseActiviy baseActiviy;
@@ -53,7 +53,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
         super.onAttach(context);
         if (context instanceof BaseActiviy) {
             this.baseActiviy = (BaseActiviy) context;
-            baseActiviy.addOnBarCodeSucess(this);
+            baseActiviy.addOnBarCodeSuccess(this);
         }
 
     }
@@ -139,15 +139,15 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (hidden) {
-            baseActiviy.removeOnBarCodeSuecss(this);
+            baseActiviy.removeOnBarCodeSuccess(this);
         } else {
-            baseActiviy.addOnBarCodeSucess(this);
+            baseActiviy.addOnBarCodeSuccess(this);
         }
 
     }
 
     @Override
-    public void onScanSucess(String barcode) {
+    public void onScanSuccess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
         Log.i(TAG, "barcode == " + barcode);
         BarCodeType codeType = BarCodeUtils.barCodeType(barcode);

@@ -131,7 +131,7 @@ public class MantissaWarehouseReadyActivity extends BaseActiviy<MantissaWarehous
     }
 
     @Override
-    public void warningComming(String warningMessage) {
+    public void warningComing(String warningMessage) {
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
         dialogRelativelayout.setStrTitle("测试标题");
@@ -154,13 +154,13 @@ public class MantissaWarehouseReadyActivity extends BaseActiviy<MantissaWarehous
 
     @Override
     protected void onResume() {
-        WarningManger.getInstance().registWReceiver(this);
+        WarningManger.getInstance().registerWReceiver(this);
         super.onResume();
     }
 
     @Override
     protected void onStop() {
-        WarningManger.getInstance().unregistWReceriver(this);
+        WarningManger.getInstance().unregisterWReceriver(this);
         super.onStop();
     }
 

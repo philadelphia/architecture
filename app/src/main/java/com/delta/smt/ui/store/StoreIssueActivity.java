@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
-import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
@@ -131,7 +130,7 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
 
 
     @Override
-    public void warningComming(String message) {
+    public void warningComing(String message) {
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
         dialogRelativelayout.setStrTitle("预警信息");
@@ -161,13 +160,13 @@ public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements T
 
     @Override
     protected void onResume() {
-        warningManger.registWReceiver(this);
+        warningManger.registerWReceiver(this);
         super.onResume();
     }
 
     @Override
     protected void onStop() {
-        warningManger.unregistWReceriver(this);
+        warningManger.unregisterWReceriver(this);
         super.onStop();
     }
 

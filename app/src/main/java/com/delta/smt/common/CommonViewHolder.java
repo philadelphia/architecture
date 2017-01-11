@@ -121,6 +121,8 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+
+
     /**
      * Sets the on longClick listener of the view.
      *

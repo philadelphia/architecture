@@ -31,7 +31,7 @@ import butterknife.OnClick;
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWarehousePutstoragePresenter> implements MantissaWarehousePutstorageContract.View, BaseActiviy.OnBarCodeSucess {
+public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWarehousePutstoragePresenter> implements MantissaWarehousePutstorageContract.View, BaseActiviy.OnBarCodeSuccess {
 
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
@@ -59,7 +59,7 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
         Log.e(TAG, "onAttach: "+context.getClass().getName());
         if (context instanceof BaseActiviy) {
             this.baseActiviy = ((BaseActiviy) context);
-            baseActiviy.addOnBarCodeSucess(this);
+            baseActiviy.addOnBarCodeSuccess(this);
 
         }
     }
@@ -172,15 +172,15 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
         Log.e(TAG, "onHiddenChanged: " + hidden);
         if (baseActiviy != null) {
             if (hidden) {
-                baseActiviy.removeOnBarCodeSuecss(this);
+                baseActiviy.removeOnBarCodeSuccess(this);
             } else {
-                baseActiviy.addOnBarCodeSucess(this);
+                baseActiviy.addOnBarCodeSuccess(this);
             }
         }
     }
 
     @Override
-    public void onScanSucess(String barcode) {
+    public void onScanSuccess(String barcode) {
         Log.e(TAG, "onScanSucess: " + barcode);
     }
 }

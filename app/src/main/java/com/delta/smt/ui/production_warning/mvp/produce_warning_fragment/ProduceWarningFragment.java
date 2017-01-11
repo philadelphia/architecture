@@ -1,13 +1,8 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning_fragment;
 
-import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,30 +10,21 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.util.LogTime;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
-import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.smt.R;
-import com.delta.smt.app.App;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.base.BaseFragment;
-import com.delta.smt.common.CommonBaseAdapter;
-import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
@@ -50,7 +36,6 @@ import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.DaggerProduceWarningFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWarningFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
-import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.delta.smt.utils.BarCodeUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,12 +43,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Handler;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/22.
@@ -71,7 +52,7 @@ import butterknife.ButterKnife;
 
 public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentPresenter>
         implements ProduceWarningFragmentContract.View,
-        BaseActiviy.OnBarCodeSucess, View.OnClickListener, ItemOnclick {
+        BaseActiviy.OnBarCodeSuccess, View.OnClickListener, ItemOnclick {
 
 
     @BindView(R.id.ryv_produce_warning)
@@ -298,7 +279,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     }
 
     @Override
-    public void onScanSucess( String barcode) {
+    public void onScanSuccess( String barcode) {
 
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :"+ barcode + Thread.currentThread().getName());

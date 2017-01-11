@@ -30,7 +30,8 @@ import java.util.List;
  */
 
 
-public class WarningService extends Service implements ActivityMonitor.OnAppStateChangeListener {
+public class
+WarningService extends Service implements ActivityMonitor.OnAppStateChangeListener {
 
     private Context context;
     private List<String> warningString;
