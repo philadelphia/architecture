@@ -41,6 +41,7 @@ import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;
 import com.delta.smt.ui.product_tools.location.ProduceToolsLocationActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
+import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.smt_module.module_down.ModuleDownActivity;
 import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
 import com.delta.smt.ui.storage_manger.storage_select.StorageSelectActivity;
@@ -124,7 +125,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctionString.add("尾数仓退料及入库");
         fuctionString.add("上模组");
         fuctionString.add("下模组");
-        fuctionString.add("about");
+        fuctionString.add("设置");
         fuctionString.add("故障处理预警");
         fuctionString.add("治具借出");
         fuctionString.add("治具归还");
@@ -179,7 +180,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "下模组":
                 IntentUtils.showIntent(this, ModuleDownActivity.class);
                 break;
-            case "about模组":
+            case "设置":
+                IntentUtils.showIntent(this, SettingActivity.class);
                 break;
             case "故障处理预警":
                 IntentUtils.showIntent(this, com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity.class);
