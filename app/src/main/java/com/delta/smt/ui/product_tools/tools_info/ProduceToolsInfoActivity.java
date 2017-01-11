@@ -1,5 +1,6 @@
 package com.delta.smt.ui.product_tools.tools_info;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -13,9 +14,8 @@ import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.ProductWorkItem;
-import com.delta.smt.entity.Product_mToolsInfo;
-import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowContract;
+import com.delta.smt.entity.ProductToolsInfo;
+import com.delta.smt.ui.product_tools.mtools_info.Produce_mToolsActivity;
 import com.delta.smt.ui.product_tools.tools_info.di.DaggerProduceToolsInfoCompoent;
 import com.delta.smt.ui.product_tools.tools_info.di.ProduceToolsInfoModule;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoContract;
@@ -24,7 +24,6 @@ import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoPresenter;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -32,7 +31,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
 
-public class ProduceToolsInfoActivity extends BaseActiviy<ProduceToolsInfoPresenter> implements ProduceToolsInfoContract.View, CommonBaseAdapter.OnItemClickListener<Product_mToolsInfo> {
+public class ProduceToolsInfoActivity extends BaseActiviy<ProduceToolsInfoPresenter> implements ProduceToolsInfoContract.View, CommonBaseAdapter.OnItemClickListener<ProductToolsInfo> {
 
     @BindView(R.id.ProductInfoRecyclerView)
     RecyclerView mProductBorrowRecyclerView;
@@ -43,8 +42,8 @@ public class ProduceToolsInfoActivity extends BaseActiviy<ProduceToolsInfoPresen
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
 
-    List<Product_mToolsInfo> data;
-    CommonBaseAdapter<Product_mToolsInfo> adapter;
+    List<ProductToolsInfo> data;
+    CommonBaseAdapter<ProductToolsInfo> adapter;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -65,11 +64,11 @@ public class ProduceToolsInfoActivity extends BaseActiviy<ProduceToolsInfoPresen
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具信息");
 
-        data.add(0, new Product_mToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态"));
+        data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态"));
 
-        adapter = new CommonBaseAdapter<Product_mToolsInfo>(getContext(), data) {
+        adapter = new CommonBaseAdapter<ProductToolsInfo>(getContext(), data) {
             @Override
-            protected void convert(CommonViewHolder holder, Product_mToolsInfo item, int position) {
+            protected void convert(CommonViewHolder holder, ProductToolsInfo item, int position) {
 
                 if (position == 0) {
 
@@ -95,7 +94,7 @@ public class ProduceToolsInfoActivity extends BaseActiviy<ProduceToolsInfoPresen
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, Product_mToolsInfo item) {
+            protected int getItemViewLayoutId(int position, ProductToolsInfo item) {
                 return R.layout.item_product_tools_info;
             }
         };
@@ -125,12 +124,22 @@ public class ProduceToolsInfoActivity extends BaseActiviy<ProduceToolsInfoPresen
     }
 
     @Override
-    public void onItemClick(View view, Product_mToolsInfo item, int position) {
+    public void onItemClick(View view, ProductToolsInfo item, int position) {
+
+        TextView moreInfo= (TextView) view.findViewById(R.id.ReSelect);
+        moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.setClass(ProduceToolsInfoActivity.this, Produce_mToolsActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
     @Override
-    public void getToolsInfo(List<Product_mToolsInfo> ProductToolsItem) {
+    public void getToolsInfo(List<ProductToolsInfo> ProductToolsItem) {
         this.data = ProductToolsItem;
     }
 

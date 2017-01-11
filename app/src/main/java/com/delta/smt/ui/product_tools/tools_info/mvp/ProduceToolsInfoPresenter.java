@@ -1,9 +1,7 @@
 package com.delta.smt.ui.product_tools.tools_info.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
-import com.delta.smt.entity.ProductWorkItem;
-import com.delta.smt.entity.Product_mToolsInfo;
-import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowContract;
+import com.delta.smt.entity.ProductToolsInfo;
 
 import java.util.List;
 
@@ -24,9 +22,9 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
 
     public void getToolsInfo(){
 
-        getModel().getProductToolsInfoItem().subscribe(new Action1<List<Product_mToolsInfo>>() {
+        getModel().getProductToolsInfoItem().subscribe(new Action1<List<ProductToolsInfo>>() {
             @Override
-            public void call(List<Product_mToolsInfo> product_mToolsInfos) {
+            public void call(List<ProductToolsInfo> product_mToolsInfos) {
                 getView().getToolsInfo(product_mToolsInfos);
             }
         }, new Action1<Throwable>() {

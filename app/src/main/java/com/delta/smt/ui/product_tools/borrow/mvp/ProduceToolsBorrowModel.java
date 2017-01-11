@@ -6,12 +6,14 @@ import com.delta.smt.entity.ProductWorkItem;
 
 import java.util.List;
 
+import dagger.Module;
 import rx.Observable;
 
 /**
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
 
+@Module
 public class ProduceToolsBorrowModel extends BaseModel<ApiService> implements ProduceToolsBorrowContract.Model{
 
 
