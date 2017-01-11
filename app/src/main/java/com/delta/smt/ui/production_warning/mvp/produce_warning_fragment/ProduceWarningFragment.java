@@ -283,50 +283,54 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     public void onScanSuccess( String barcode) {
 
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :"+ barcode + Thread.currentThread().getName());
-        switch (BarCodeUtils.barCodeType(barcode)){
-            case MATERIAL_BLOCK_BARCODE:
-                if(tag==0){
-                    try {
-                        MaterialBlockBarCode mMaterialBlockBarCode =
-                                (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                        currentBarcode ="料盘："+mMaterialBlockBarCode.getDeltaMaterialNumber();
-                    } catch (EntityNotFountException e) {
-                        e.printStackTrace();
-                    }
-                }else currentBarcode=null;
+        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :  "+ barcode + "  :  "+Thread.currentThread().getName());
+        if(BarCodeUtils.barCodeType(barcode)!=null){
+            switch (BarCodeUtils.barCodeType(barcode)){
 
-                break;
+                case MATERIAL_BLOCK_BARCODE:
+                    if(tag==0){
+                        try {
+                            MaterialBlockBarCode mMaterialBlockBarCode =
+                                    (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                            currentBarcode ="料盘："+mMaterialBlockBarCode.getDeltaMaterialNumber();
+                        } catch (EntityNotFountException e) {
+                            e.printStackTrace();
+                        }
+                    }else currentBarcode=null;
 
-            case FEEDER:
-                if (tag==1){
-                    try {
-                        Log.i("barcode", barcode);
-                        Feeder mFeeder=(Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
-                        currentBarcode ="FeederID："+mFeeder.getSource();
-                        Log.i("barcode", currentBarcode);
-                    } catch (EntityNotFountException e) {
-                        e.printStackTrace();
-                    }
+                    break;
+
+                case FEEDER:
+                    if (tag==1){
+                        try {
+                            Log.i("barcode", barcode);
+                            Feeder mFeeder=(Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
+                            currentBarcode ="FeederID："+mFeeder.getSource();
+                            Log.i("barcode", currentBarcode);
+                        } catch (EntityNotFountException e) {
+                            e.printStackTrace();
+                        }
 //                    currentBarcode ="FeederID："+barcode;
-                }else currentBarcode=null;
-                break;
+                    }else currentBarcode=null;
+                    break;
 
-            case MATERIAL_STATION:
-                if (tag==2){
-                    try {
-                        MaterialStation mMaterialStation=(MaterialStation)barCodeParseIpml.getEntity(barcode,BarCodeType.MATERIAL_STATION);
-                        currentBarcode ="料站："+mMaterialStation.getSource();
-                    } catch (EntityNotFountException e) {
-                        e.printStackTrace();
-                    }
-                }else currentBarcode=null;
-                break;
-            default:
-                currentBarcode=null;
-                break;
+                case MATERIAL_STATION:
+                    if (tag==2){
+                        try {
+                            MaterialStation mMaterialStation=(MaterialStation)barCodeParseIpml.getEntity(barcode,BarCodeType.MATERIAL_STATION);
+                            currentBarcode ="料站："+mMaterialStation.getSource();
+                        } catch (EntityNotFountException e) {
+                            e.printStackTrace();
+                        }
+                    }else currentBarcode=null;
+                    break;
+                default:
+                    currentBarcode=null;
+                    break;
 
+            }
         }
+
 
 //        currentBarcode = barcode;
 
