@@ -1,13 +1,14 @@
 package com.delta.smt.ui.product_tools.borrow;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -18,11 +19,11 @@ import com.delta.smt.ui.product_tools.borrow.di.DaggerProduceToolsBorrowComponen
 import com.delta.smt.ui.product_tools.borrow.di.ProduceToolsBorrowModule;
 import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowContract;
 import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowPresenter;
+import com.delta.smt.ui.product_tools.tools_info.ProduceToolsInfoActivity;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -32,14 +33,14 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class ProduceToolsBorrowActivity extends BaseActiviy<ProduceToolsBorrowPresenter> implements ProduceToolsBorrowContract.View, CommonBaseAdapter.OnItemClickListener<ProductWorkItem> {
 
-    @BindView(R.id.toolbar_title)
-    TextView mTitleTextView;
-
-    @BindView(R.id.navigation)
-    TextView mBackTextView;
-
     @BindView(R.id.ProductBorrowRecyclerView)
     RecyclerView mProductBorrowRecyclerView;
+
+    @BindView(R.id.toolbar)
+    AutoToolbar toolbar;
+
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
 
     List<ProductWorkItem> data;
     CommonBaseAdapter<ProductWorkItem> adapter;
@@ -48,8 +49,7 @@ public class ProduceToolsBorrowActivity extends BaseActiviy<ProduceToolsBorrowPr
     @Override
     protected void componentInject(AppComponent appComponent) {
 
-        DaggerProduceToolsBorrowComponent.builder().appComponent(appComponent).produceToolsBorrowModule(new ProduceToolsBorrowModule(this)).build().Inject(this
-        );
+        DaggerProduceToolsBorrowComponent.builder().appComponent(appComponent).produceToolsBorrowModule(new ProduceToolsBorrowModule(this)).build().Inject(this);
 
     }
 
@@ -60,8 +60,12 @@ public class ProduceToolsBorrowActivity extends BaseActiviy<ProduceToolsBorrowPr
 
     @Override
     protected void initView() {
-        ButterKnife.bind(this);
-        mTitleTextView.setText("治具借出");
+
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbarTitle.setText("治具借出");
 
         data.add(0,new ProductWorkItem("工单号","工单类型","机种","PCB code","组合料号","线别","PWB料号","面别","计划上线时间","治具状态"));
 
@@ -170,8 +174,21 @@ public class ProduceToolsBorrowActivity extends BaseActiviy<ProduceToolsBorrowPr
     public void onItemClick(View view, ProductWorkItem item, int position) {
         if(item.getProductStatus().equals(getString(R.string.AreReady))){
             Intent intent=new Intent();
-            intent.setClass(this,Produce_mToolsActivity.class);
+            intent.setClass(this,ProduceToolsInfoActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

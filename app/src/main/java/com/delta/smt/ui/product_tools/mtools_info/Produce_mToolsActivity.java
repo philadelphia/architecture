@@ -1,4 +1,4 @@
-package com.delta.smt.ui.product_tools.back;
+package com.delta.smt.ui.product_tools.mtools_info;
 
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -11,19 +11,18 @@ import com.delta.smt.di.component.AppComponent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.delta.smt.R.id.toolbar;
-
 /**
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
 
-public class ProduceToolsBackActivity extends BaseActiviy {
+public class Produce_mToolsActivity extends BaseActiviy {
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -37,16 +36,18 @@ public class ProduceToolsBackActivity extends BaseActiviy {
 
     @Override
     protected void initView() {
+
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        toolbarTitle.setText("治具归还");
+        toolbarTitle.setText("治具借出");
+
     }
 
     @Override
     protected int getContentViewId() {
-        return R.layout.activity_product_back;
+        return R.layout.activity_product_mtools_info;
     }
 
     @Override

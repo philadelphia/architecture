@@ -17,6 +17,7 @@ import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.ProductWorkItem;
+import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -128,6 +129,7 @@ public interface ApiService {
 
     Observable<List<ProductWorkItem>> getProductWorkItem();
 
+    Observable<List<Product_mToolsInfo>> getProductToolsInfoItem();
 
     //仓库房备料和尾数仓
     @POST
