@@ -3,13 +3,13 @@ package com.delta.smt.ui.storage_manger.storage_select;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -35,16 +35,16 @@ public class StorageSelectActivity extends BaseActiviy<StorageSelectPresenter> i
     RecyclerView recyclerView;
     @BindView(R.id.btn_storage_select)
     AppCompatButton btnSelectStorageSelect;
-    @BindView(R.id.header_back)
-    RelativeLayout headerBack;
-    @BindView(R.id.header_title)
-    TextView headerTitle;
-    @BindView(R.id.header_setting)
-    TextView headerSetting;
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
 
     private List<StorageSelect> mDataList = new ArrayList<>();
     private CommonBaseAdapter<StorageSelect> adapter;
-    private Map<Integer,CheckBox> checkBoxMap = new HashMap<>();
+    private Map<Integer, CheckBox> checkBoxMap = new HashMap<>();
 
 
     @Override
@@ -64,15 +64,18 @@ public class StorageSelectActivity extends BaseActiviy<StorageSelectPresenter> i
 
     @Override
     protected void initView() {
-        Log.i(TAG, "initView: ");
-        headerTitle.setText("仓库选择");
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        mToolbarTitle.setText("仓库选择");
         adapter = new CommonBaseAdapter<StorageSelect>(getBaseContext(), mDataList) {
             @Override
             protected void convert(CommonViewHolder holder, StorageSelect item, int position) {
                 holder.setText(R.id.chcekbox, item.getName());
                 CheckBox box = (CheckBox) holder.getView(R.id.chcekbox);
                 box.setTag(position);
-                checkBoxMap.put(position,box);
+                checkBoxMap.put(position, box);
             }
 
             @Override
@@ -99,14 +102,9 @@ public class StorageSelectActivity extends BaseActiviy<StorageSelectPresenter> i
 
     }
 
-    @OnClick({R.id.header_back, R.id.header_setting, R.id.btn_storage_select})
+    @OnClick({ R.id.btn_storage_select})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.header_back:
-                onBackPressed();
-                break;
-            case R.id.header_setting:
-                break;
             case R.id.btn_storage_select:
                 IntentUtils.showIntent(this, StorageWarningActivity.class);
                 break;
@@ -134,4 +132,16 @@ public class StorageSelectActivity extends BaseActiviy<StorageSelectPresenter> i
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

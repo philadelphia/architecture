@@ -1,15 +1,15 @@
 package com.delta.smt.ui.mantissa_warehouse.detail;
 
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.delta.smt.MainActivity;
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActiviy;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -33,7 +32,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Zhenyu.Liu on 2016/12/27.
  */
 
-public class MantissaWarehouseDetailsActivity extends BaseActiviy<MantissaWarehouseDetailsPresenter> implements  MantissaWarehouseDetailsContract.View  {
+public class MantissaWarehouseDetailsActivity extends BaseActiviy<MantissaWarehouseDetailsPresenter> implements MantissaWarehouseDetailsContract.View {
 
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
@@ -41,12 +40,16 @@ public class MantissaWarehouseDetailsActivity extends BaseActiviy<MantissaWareho
     RecyclerView mRecyContetn;
     @BindView(R.id.hr_scrow)
     HorizontalScrollView mHrScrow;
-    @BindView(R.id.header_back)
-    RelativeLayout mHeaderBack;
-    @BindView(R.id.header_title)
-    TextView mHeaderTitle;
-    @BindView(R.id.header_setting)
-    TextView mHeaderSetting;
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+    @BindView(R.id.button2)
+    Button mButton2;
+    @BindView(R.id.textView2)
+    TextView mTextView2;
     private List<MantissaWarehouseDetails> dataList = new ArrayList();
     private List<MantissaWarehouseDetails> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseDetails> adapter;
@@ -71,7 +74,12 @@ public class MantissaWarehouseDetailsActivity extends BaseActiviy<MantissaWareho
     @Override
     protected void initView() {
 
-        mHeaderTitle.setText("位数仓备料");
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        mToolbarTitle.setText("尾数仓备料");
+
         dataList.add(new MantissaWarehouseDetails("", "", "", "", ""));
         adapter = new CommonBaseAdapter<MantissaWarehouseDetails>(getContext(), dataList) {
             @Override
@@ -120,7 +128,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActiviy<MantissaWareho
         dataList2.clear();
         dataList2.addAll(mantissaWarehouseDetailses);
         adapter2.notifyDataSetChanged();
-        
+
     }
 
     @Override
@@ -128,21 +136,23 @@ public class MantissaWarehouseDetailsActivity extends BaseActiviy<MantissaWareho
 
     }
 
-    @OnClick({R.id.header_back, R.id.header_setting})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.header_back:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-            case R.id.header_setting:
-                break;
-        }
-    }
-
 
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
