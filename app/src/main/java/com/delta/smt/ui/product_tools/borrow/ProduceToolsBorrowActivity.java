@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -31,7 +31,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
 
-public class ProduceToolsBorrowActivity extends BaseActiviy<ProduceToolsBorrowPresenter> implements ProduceToolsBorrowContract.View, CommonBaseAdapter.OnItemClickListener<ProductWorkItem> {
+public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowPresenter> implements ProduceToolsBorrowContract.View, CommonBaseAdapter.OnItemClickListener<ProductWorkItem> {
 
     @BindView(R.id.ProductBorrowRecyclerView)
     RecyclerView mProductBorrowRecyclerView;

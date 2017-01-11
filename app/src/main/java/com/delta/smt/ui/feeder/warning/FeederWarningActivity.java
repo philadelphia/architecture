@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.utils.ViewUtils;
 
@@ -26,7 +26,7 @@ import butterknife.OnClick;
  * Date:     2016/12/21.
  */
 
-public class FeederWarningActivity extends BaseActiviy implements TabLayout.OnTabSelectedListener {
+public class FeederWarningActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.tv_setting)

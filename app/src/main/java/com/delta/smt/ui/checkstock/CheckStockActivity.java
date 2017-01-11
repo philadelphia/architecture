@@ -19,7 +19,7 @@ import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -45,7 +45,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class CheckStockActivity extends BaseActiviy<CheckStockPresenter> implements CheckStockContract.View, View.OnClickListener {
+public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implements CheckStockContract.View, View.OnClickListener {
     @BindView(R.id.header_back)
     RelativeLayout headerBack;
     @BindView(R.id.header_title)

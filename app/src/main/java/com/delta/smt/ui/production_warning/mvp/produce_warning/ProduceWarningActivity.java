@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
@@ -44,7 +44,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
-public class ProduceWarningActivity extends BaseActiviy<ProduceWarningPresenter> implements
+public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter> implements
         TabLayout.OnTabSelectedListener,ProduceWarningContract.View, WarningManger.OnWarning {
 
     @BindView(R.id.tl_title)

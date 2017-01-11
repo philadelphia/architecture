@@ -8,7 +8,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
@@ -28,7 +28,7 @@ import butterknife.BindView;
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter> implements MantissaWarehouseReturnContract.View, BaseActiviy.OnBarCodeSuccess {
+public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter> implements MantissaWarehouseReturnContract.View, BaseActivity.OnBarCodeSuccess {
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
@@ -39,15 +39,15 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     private List<MantissaWarehouseReturn> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseReturn> adapter;
     private CommonBaseAdapter<MantissaWarehouseReturn> adapter2;
-    private BaseActiviy baseActiviy;
+    private BaseActivity baseActiviy;
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         Log.e(TAG, "onAttach: " + context.getClass().getName());
-        if (context instanceof BaseActiviy) {
-            this.baseActiviy = ((BaseActiviy) context);
+        if (context instanceof BaseActivity) {
+            this.baseActiviy = ((BaseActivity) context);
             baseActiviy.addOnBarCodeSuccess(this);
         }
     }

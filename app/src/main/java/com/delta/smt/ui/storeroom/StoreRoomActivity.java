@@ -18,7 +18,7 @@ import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
@@ -34,7 +34,7 @@ import butterknife.OnClick;
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class StoreRoomActivity extends BaseActiviy<StoreRoomPresenter> implements StoreRoomContract.View {
+public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implements StoreRoomContract.View {
 
     @BindView(R.id.storage_pcbed)
     EditText storagePcbed;

@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -40,7 +40,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Date:     2016/12/21.
  */
 
-public class FeederSupplyActivity extends BaseActiviy<FeederSupplyPresenter> implements FeederSupplyContract.View {
+public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> implements FeederSupplyContract.View {
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.tv_setting)

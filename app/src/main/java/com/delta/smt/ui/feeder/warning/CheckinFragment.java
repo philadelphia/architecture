@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
@@ -33,10 +33,10 @@ import butterknife.BindView;
  * Date:     2016/12/21.
  */
 
-public class CheckInFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View, BaseActiviy.OnBarCodeSuccess{
+public class CheckInFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View, BaseActivity.OnBarCodeSuccess{
 
     private static final String TAG = "CheckInFragment";
-    private BaseActiviy baseActiviy;
+    private BaseActivity baseActiviy;
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
     @BindView(R.id.recy_contetn)
@@ -51,8 +51,8 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof BaseActiviy) {
-            this.baseActiviy = (BaseActiviy) context;
+        if (context instanceof BaseActivity) {
+            this.baseActiviy = (BaseActivity) context;
             baseActiviy.addOnBarCodeSuccess(this);
         }
 

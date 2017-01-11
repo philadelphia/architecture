@@ -20,7 +20,7 @@ import android.view.View;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
@@ -41,6 +41,7 @@ import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;
 import com.delta.smt.ui.product_tools.location.ProduceToolsLocationActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
+import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.smt_module.module_down.ModuleDownActivity;
 import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
 import com.delta.smt.ui.storage_manger.storage_select.StorageSelectActivity;
@@ -56,7 +57,7 @@ import java.util.List;
 import butterknife.BindView;
 
 
-public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<String>, MainContract.View {
+public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<String>, MainContract.View {
 
 
     @BindView(R.id.toolbar)
@@ -124,7 +125,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
         fuctionString.add("尾数仓退料及入库");
         fuctionString.add("上模组");
         fuctionString.add("下模组");
-        fuctionString.add("about");
+        fuctionString.add("设置");
         fuctionString.add("故障处理预警");
         fuctionString.add("治具借出");
         fuctionString.add("治具归还");
@@ -179,7 +180,8 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             case "下模组":
                 IntentUtils.showIntent(this, ModuleDownActivity.class);
                 break;
-            case "about模组":
+            case "设置":
+                IntentUtils.showIntent(this, SettingActivity.class);
                 break;
             case "故障处理预警":
                 IntentUtils.showIntent(this, com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity.class);
@@ -204,17 +206,13 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
     public void checkExistUpdateDialog(final Update update) {
 
         if (Integer.parseInt(update.getVersionCode()) > PkgInfoUtils.getVersionCode(MainActivity.this)) {
-            String message_wifi = "当前版本为:" + PkgInfoUtils.getVersionName(this) + " Code:" + PkgInfoUtils.getVersionCode(this)
-                    + "\n发现新版本:" + update.getVersion() + " Code:" + update.getVersionCode()
-                    + "\n更新日志:"
-                    + "\n" + update.getDescription();
+
             if (!DownloadService.isUpdating) {
                 new AlertDialog.Builder(this)
-                        .setTitle("提示")
-                        .setMessage(message_wifi)
-                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setTitle("发现新版本 " + update.getVersion())
+                        .setMessage(update.getDescription())
                         .setCancelable(false)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("更新", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //显示ProgerssDialog
@@ -235,9 +233,7 @@ public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBa
             }
 
 
-        }/*else{
-            Toast.makeText(this,"没有发现新版本！",Toast.LENGTH_LONG).show();
-        }*/
+        }
     }
 
     //更新状态

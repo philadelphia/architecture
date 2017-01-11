@@ -16,7 +16,7 @@ import javax.inject.Inject;
  * Created by V.Wenju.Tian on 2016/11/29.
  */
 
-public abstract class BaseActiviy<p extends BasePresenter> extends BaseCommonActivity implements BarCodeIpml.OnScanSuccessListener {
+public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonActivity implements BarCodeIpml.OnScanSuccessListener {
 
     public final String TAG = getClass().getSimpleName();
     @Inject

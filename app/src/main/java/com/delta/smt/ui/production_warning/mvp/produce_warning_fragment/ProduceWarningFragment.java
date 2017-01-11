@@ -19,11 +19,12 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.common.ItemOnclick;
@@ -52,7 +53,7 @@ import butterknife.BindView;
 
 public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentPresenter>
         implements ProduceWarningFragmentContract.View,
-        BaseActiviy.OnBarCodeSuccess, View.OnClickListener, ItemOnclick {
+        BaseActivity.OnBarCodeSuccess, View.OnClickListener, ItemOnclick {
 
 
     @BindView(R.id.ryv_produce_warning)
@@ -65,7 +66,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     DialogRelativelayout mDialogRelativelayout;
     public ArrayList<String> barcodedatas = new ArrayList<>();
-    private BaseActiviy baseActiviy;
+    private BaseActivity baseActiviy;
     private String currentBarcode;
     private AlertDialog mAlertDialog;
     private PopupWindow mPopupWindow;
@@ -102,8 +103,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     public void onAttach(Context context) {
         Log.i(TAG, "onAttach: ");
         super.onAttach(context);
-        if (context instanceof BaseActiviy) {
-            this.baseActiviy = ((BaseActiviy) context);
+        if (context instanceof BaseActivity) {
+            this.baseActiviy = ((BaseActivity) context);
             baseActiviy.addOnBarCodeSuccess(this);
         }
     }
@@ -282,55 +283,54 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     public void onScanSuccess( String barcode) {
 
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :"+ barcode + Thread.currentThread().getName());
-        switch (BarCodeUtils.barCodeType(barcode)){
-            case MATERIAL_BLOCK_BARCODE:
-                if(tag==0){
-                    try {
-                        MaterialBlockBarCode mMaterialBlockBarCode =
-                                (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                        currentBarcode ="料盘："+mMaterialBlockBarCode.getDeltaMaterialNumber();
-                    } catch (EntityNotFountException e) {
-                        e.printStackTrace();
-                    }
-                }else currentBarcode=null;
+//        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :  "+ barcode + "  :  "+Thread.currentThread().getName());
+        if(BarCodeUtils.barCodeType(barcode)!=null){
+            switch (BarCodeUtils.barCodeType(barcode)){
 
-                break;
+                case MATERIAL_BLOCK_BARCODE:
+                    if(tag==0){
+                        try {
+                            MaterialBlockBarCode mMaterialBlockBarCode =
+                                    (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                            currentBarcode ="料盘："+mMaterialBlockBarCode.getDeltaMaterialNumber();
+                        } catch (EntityNotFountException e) {
+                            e.printStackTrace();
+                        }
+                    }else currentBarcode=null;
 
-            case FEEDER:
-                if (tag==1){
-                    currentBarcode ="FeederID："+barcode;
-                }else currentBarcode=null;
+                    break;
 
-/*                    try {
-                        Log.i("barcode", barcode);
-                        Feeder mFeeder=(Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
-                        currentBarcode =mFeeder.getSource();
-                        Log.i("barcode", currentBarcode);
-                    } catch (EntityNotFountException e) {
-                        e.printStackTrace();
-                    }*/
+                case FEEDER:
+                    if (tag==1){
+                        try {
+                            Log.i("barcode", barcode);
+                            Feeder mFeeder=(Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
+                            currentBarcode ="FeederID："+mFeeder.getSource();
+                            Log.i("barcode", currentBarcode);
+                        } catch (EntityNotFountException e) {
+                            e.printStackTrace();
+                        }
+                    }else currentBarcode=null;
+                    break;
 
-                break;
+                case MATERIAL_STATION:
+                    if (tag==2){
+                        try {
+                            MaterialStation mMaterialStation=(MaterialStation)barCodeParseIpml.getEntity(barcode,BarCodeType.MATERIAL_STATION);
+                            currentBarcode ="料站："+mMaterialStation.getSource();
+                        } catch (EntityNotFountException e) {
+                            e.printStackTrace();
+                        }
+                    }else currentBarcode=null;
+                    break;
+                default:
+                    currentBarcode=null;
+                    break;
 
-            case MATERIAL_STATION:
-                if (tag==2){
-                    try {
-                        MaterialStation mMaterialStation=(MaterialStation)barCodeParseIpml.getEntity(barcode,BarCodeType.MATERIAL_STATION);
-                        currentBarcode ="料站："+mMaterialStation.getSource();
-                    } catch (EntityNotFountException e) {
-                        e.printStackTrace();
-                    }
-                }else currentBarcode=null;
-
-                break;
-            default:
-                currentBarcode=null;
-                break;
-
+            }
         }
 
-//        currentBarcode = barcode;
+
 
         if (currentBarcode != null && mDialogRelativelayout != null&& mPopupWindow.isShowing()) {
             barcodedatas.add(currentBarcode);

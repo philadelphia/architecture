@@ -4,15 +4,17 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
@@ -38,14 +40,13 @@ import butterknife.OnClick;
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements ModuleUpContract.View, ItemOnclick, WarningManger.OnWarning{
+public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements ModuleUpContract.View, ItemOnclick, WarningManger.OnWarning{
 
-    @BindView(R.id.header_back)
-    RelativeLayout headerBack;
-    @BindView(R.id.header_title)
-    TextView headerTitle;
-    @BindView(R.id.header_setting)
-    TextView headerSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar toolbar;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+
     @BindView(R.id.module_up_warning)
     LinearLayout moduleUpWarning;
 
@@ -77,7 +78,12 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
 
     @Override
     protected void initView() {
-        headerTitle.setText("上模组");
+        //headerTitle.setText("上模组");
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbarTitle.setText("上模组");
 
         myAdapter = new ItemCountdownViewAdapter<ModuleUpWarningItem>(this, dataList) {
             @Override
@@ -115,19 +121,6 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
     @Override
     public void onFalied() {
 
-    }
-
-    @OnClick({R.id.header_back, R.id.header_title, R.id.header_setting/*, R.id.tl_title*/})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.header_back:
-                onBackPressed();
-                break;
-            case R.id.header_title:
-                break;
-            case R.id.header_setting:
-                break;
-        }
     }
 
 
@@ -194,5 +187,17 @@ public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements 
     @Override
     public void onItemClick(View item, int position) {
         IntentUtils.showIntent(this, ModuleUpBindingActivity.class);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

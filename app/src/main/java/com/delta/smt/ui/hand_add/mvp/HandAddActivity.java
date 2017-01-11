@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
@@ -35,7 +35,7 @@ import butterknife.OnClick;
  * Created by Fuxiang.Zhang on 2016/12/27.
  */
 
-public class HandAddActivity extends BaseActiviy<HandAddPresenter>
+public class HandAddActivity extends BaseActivity<HandAddPresenter>
         implements HandAddContract.View,WarningManger.OnWarning, ItemOnclick {
 
     @BindView(R.id.header_title)
