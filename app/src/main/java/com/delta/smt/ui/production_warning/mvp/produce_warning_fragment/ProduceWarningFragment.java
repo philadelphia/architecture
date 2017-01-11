@@ -283,7 +283,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     public void onScanSuccess( String barcode) {
 
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :  "+ barcode + "  :  "+Thread.currentThread().getName());
+//        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :  "+ barcode + "  :  "+Thread.currentThread().getName());
         if(BarCodeUtils.barCodeType(barcode)!=null){
             switch (BarCodeUtils.barCodeType(barcode)){
 
@@ -310,7 +310,6 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                         } catch (EntityNotFountException e) {
                             e.printStackTrace();
                         }
-//                    currentBarcode ="FeederID："+barcode;
                     }else currentBarcode=null;
                     break;
 
@@ -332,7 +331,6 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         }
 
 
-//        currentBarcode = barcode;
 
         if (currentBarcode != null && mDialogRelativelayout != null&& mPopupWindow.isShowing()) {
             barcodedatas.add(currentBarcode);
