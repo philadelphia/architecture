@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <include
-            layout="@layout/main_header"/>
+            layout="@layout/appbar"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

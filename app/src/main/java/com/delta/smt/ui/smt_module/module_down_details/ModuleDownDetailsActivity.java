@@ -5,6 +5,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,6 +16,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.R;
@@ -43,12 +45,11 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPresenter> implements ModuleDownDetailsContract.View, BarCodeIpml.OnScanSuccessListener{
 
-    @BindView(R.id.header_back)
-    RelativeLayout headerBack;
-    @BindView(R.id.header_title)
-    TextView headerTitle;
-    @BindView(R.id.header_setting)
-    TextView headerSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar toolbar;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
@@ -77,7 +78,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     protected void initView() {
-        headerTitle.setText("下模组");
+        //headerTitle.setText("下模组");
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbarTitle.setText("下模组");
+
         dataList.add(new ModuleDownDetailsItem("Feeder号", "料号", "下模组时间", "模组料站", "归属","流水码"));
         adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem>(this, dataList) {
             @Override
@@ -138,18 +145,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     }
 
-    @OnClick({R.id.header_back, R.id.header_setting/*, R.id.btn_upload*/})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.header_back:
-                onBackPressed();
-                break;
-            case R.id.header_setting:
-
-                break;
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -181,5 +176,18 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             return true;
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
