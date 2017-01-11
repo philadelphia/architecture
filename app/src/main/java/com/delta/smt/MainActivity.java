@@ -206,17 +206,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     public void checkExistUpdateDialog(final Update update) {
 
         if (Integer.parseInt(update.getVersionCode()) > PkgInfoUtils.getVersionCode(MainActivity.this)) {
-            String message_wifi = "当前版本为:" + PkgInfoUtils.getVersionName(this) + " Code:" + PkgInfoUtils.getVersionCode(this)
-                    + "\n发现新版本:" + update.getVersion() + " Code:" + update.getVersionCode()
-                    + "\n更新日志:"
-                    + "\n" + update.getDescription();
+
             if (!DownloadService.isUpdating) {
                 new AlertDialog.Builder(this)
-                        .setTitle("提示")
-                        .setMessage(message_wifi)
-                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setTitle("发现新版本 " + update.getVersion())
+                        .setMessage(update.getDescription())
                         .setCancelable(false)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("更新", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //显示ProgerssDialog
@@ -237,9 +233,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             }
 
 
-        }/*else{
-            Toast.makeText(this,"没有发现新版本！",Toast.LENGTH_LONG).show();
-        }*/
+        }
     }
 
     //更新状态
