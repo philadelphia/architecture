@@ -40,15 +40,15 @@ public class ClientModule {
      * @date 8/5/16 11:03 AM
      * @description: 设置baseurl
      */
-    private ClientModule(Buidler buidler) {
+    private ClientModule(Builder buidler) {
         this.mApiUrl = buidler.apiUrl;
         this.mHandler = buidler.handler;
         this.mInterceptors = buidler.interceptors;
         this.mErroListener = buidler.responseErroListener;
     }
 
-    public static Buidler buidler() {
-        return new Buidler();
+    public static Builder buidler() {
+        return new Builder();
     }
 
     /**
@@ -61,9 +61,9 @@ public class ClientModule {
      */
     @Singleton
     @Provides
-    OkHttpClient provideClient(Cache cache, Interceptor intercept) {
-        final OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
-        return configureClient(okHttpClient, cache, intercept);
+    OkHttpClient provideOkHttpClient(Cache cache, Interceptor intercept) {
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        return configureOkHttpClient(builder, cache, intercept);
     }
 
     /**
@@ -153,14 +153,11 @@ public class ClientModule {
     /**
      * 配置okhttpclient
      *
-     * @param okHttpClient
+     * @param builder
      * @return
      */
-    private OkHttpClient configureClient(OkHttpClient.Builder okHttpClient, Cache cache, Interceptor intercept) {
-
-
-        OkHttpClient.Builder builder = okHttpClient
-                .connectTimeout(TOME_OUT, TimeUnit.SECONDS)
+    private OkHttpClient configureOkHttpClient(OkHttpClient.Builder builder, Cache cache, Interceptor intercept) {
+        builder.connectTimeout(TOME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TOME_OUT, TimeUnit.SECONDS)
                 .cache(cache)//设置缓存
                 .addNetworkInterceptor(intercept);
@@ -174,16 +171,16 @@ public class ClientModule {
     }
 
 
-    public static final class Buidler {
+    public static final class Builder {
         private HttpUrl apiUrl = HttpUrl.parse("https://api.github.com/");
         private GlobeHttpHandler handler;
         private Interceptor[] interceptors;
         private ResponseErrorListener responseErroListener;
 
-        private Buidler() {
+        private Builder() {
         }
 
-        public Buidler baseurl(String baseurl) {//基础url
+        public Builder baseurl(String baseurl) {//基础url
             if (TextUtils.isEmpty(baseurl)) {
                 throw new IllegalArgumentException("baseurl can not be empty");
             }
@@ -191,17 +188,17 @@ public class ClientModule {
             return this;
         }
 
-        public Buidler globeHttpHandler(GlobeHttpHandler handler) {//用来处理http响应结果
+        public Builder globeHttpHandler(GlobeHttpHandler handler) {//用来处理http响应结果
             this.handler = handler;
             return this;
         }
 
-        public Buidler interceptors(Interceptor[] interceptors) {//动态添加任意个interceptor
+        public Builder interceptors(Interceptor[] interceptors) {//动态添加任意个interceptor
             this.interceptors = interceptors;
             return this;
         }
 
-        public Buidler responseErroListener(ResponseErrorListener listener) {//处理所有Rxjava的onError逻辑
+        public Builder responseErroListener(ResponseErrorListener listener) {//处理所有Rxjava的onError逻辑
             this.responseErroListener = listener;
             return this;
         }
