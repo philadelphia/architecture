@@ -7,7 +7,7 @@ import android.widget.EditText;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.login.di.DaggerLoginComponent;
 import com.delta.smt.ui.login.di.LoginModule;
@@ -24,7 +24,7 @@ import butterknife.OnClick;
  */
 
 
-public class LoginActivity extends BaseActiviy<LoginPresenter> implements LoginContract.View {
+public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View {
 
 
     @BindView(R.id.userName)

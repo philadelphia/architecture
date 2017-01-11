@@ -15,7 +15,7 @@ import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -36,7 +36,7 @@ import butterknife.OnClick;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class VirtualLineBindingActivity extends BaseActiviy<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View, BarCodeIpml.OnScanSuccessListener{
+public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View, BarCodeIpml.OnScanSuccessListener{
 
     @BindView(R.id.header_back)
     RelativeLayout headerBack;

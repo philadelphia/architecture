@@ -20,7 +20,7 @@ import android.view.View;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
@@ -56,7 +56,7 @@ import java.util.List;
 import butterknife.BindView;
 
 
-public class MainActivity extends BaseActiviy<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<String>, MainContract.View {
+public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<String>, MainContract.View {
 
 
     @BindView(R.id.toolbar)

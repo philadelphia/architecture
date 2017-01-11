@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
@@ -38,7 +38,7 @@ import butterknife.OnClick;
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleUpActivity extends BaseActiviy<ModuleUpPresenter> implements ModuleUpContract.View, ItemOnclick, WarningManger.OnWarning{
+public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements ModuleUpContract.View, ItemOnclick, WarningManger.OnWarning{
 
     @BindView(R.id.header_back)
     RelativeLayout headerBack;

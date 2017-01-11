@@ -22,7 +22,7 @@ import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -45,7 +45,7 @@ import butterknife.OnClick;
  * Created by Lin.Hou on 2016-12-27.
  */
 
-public class WarningListActivity extends BaseActiviy<WarningListPresenter> implements WarningListContract.View {
+public class WarningListActivity extends BaseActivity<WarningListPresenter> implements WarningListContract.View {
     @BindView(R.id.header_back)
     RelativeLayout headerBack;
     @BindView(R.id.header_title)

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -36,7 +36,7 @@ import butterknife.OnClick;
  * Date:     2016/12/21.
  */
 
-public class WareSelectActivity extends BaseActiviy<WareSelectPresenter> implements WareSelectContract.View, CommonBaseAdapter.OnItemClickListener<WareHouse> {
+public class WareSelectActivity extends BaseActivity<WareSelectPresenter> implements WareSelectContract.View, CommonBaseAdapter.OnItemClickListener<WareHouse> {
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.tv_setting)

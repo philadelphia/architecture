@@ -5,7 +5,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.delta.smt.Constant;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.manager.WarningManger;
@@ -25,7 +25,7 @@ import javax.inject.Inject;
  */
 
 
-public class WarningSampleActivity extends BaseActiviy<LoginPresenter> implements LoginContract.View, WarningManger.OnWarning {
+public class WarningSampleActivity extends BaseActivity<LoginPresenter> implements LoginContract.View, WarningManger.OnWarning {
 
 
     private AlertDialog alertDialog;

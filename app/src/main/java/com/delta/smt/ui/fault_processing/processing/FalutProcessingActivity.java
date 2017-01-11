@@ -13,7 +13,7 @@ import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -43,7 +43,7 @@ import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
  */
 
 
-public class FalutProcessingActivity extends BaseActiviy<FaultProcessingPresenter> implements FalutProcessingContract.View, CommonBaseAdapter.OnItemClickListener, WarningManger.OnWarning {
+public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresenter> implements FalutProcessingContract.View, CommonBaseAdapter.OnItemClickListener, WarningManger.OnWarning {
     @BindView(R.id.rv_faultProcessing)
     FamiliarRecyclerView rvFaultProcessing;
     @BindView(R.id.toolbar)

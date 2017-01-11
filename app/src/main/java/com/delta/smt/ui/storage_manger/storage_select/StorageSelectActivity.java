@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -30,7 +30,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class StorageSelectActivity extends BaseActiviy<StorageSelectPresenter> implements StorageSelectContract.View, CommonBaseAdapter.OnItemClickListener<StorageSelect> {
+public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> implements StorageSelectContract.View, CommonBaseAdapter.OnItemClickListener<StorageSelect> {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.btn_storage_select)

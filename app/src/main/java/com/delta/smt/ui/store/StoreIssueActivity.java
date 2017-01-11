@@ -13,7 +13,7 @@ import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ArrangeInt;
@@ -42,7 +42,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class StoreIssueActivity extends BaseActiviy<StorePresenter> implements TabLayout.OnTabSelectedListener, WarningManger.OnWarning, StoreContract.View {
+public class StoreIssueActivity extends BaseActivity<StorePresenter> implements TabLayout.OnTabSelectedListener, WarningManger.OnWarning, StoreContract.View {
     @BindView(R.id.header_title)
     TextView headerTitle;
     @BindView(R.id.main_title)

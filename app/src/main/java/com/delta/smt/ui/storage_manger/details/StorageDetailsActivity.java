@@ -1,16 +1,18 @@
 package com.delta.smt.ui.storage_manger.details;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.smt.MainActivity;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -31,24 +34,26 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Zhenyu.Liu on 2016/12/28.
  */
 
-public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter> implements StorageDetailsContract.View {
+public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter> implements StorageDetailsContract.View{
 
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
     RecyclerView mRecyContetn;
-    @BindView(R.id.toolbar_title)
-    TextView mToolbarTitle;
-    @BindView(R.id.toolbar)
-    AutoToolbar mToolbar;
-    @BindView(R.id.button2)
-    Button mButton2;
+    @BindView(R.id.hr_scrow)
+    HorizontalScrollView mHrScrow;
+    @BindView(R.id.header_back)
+    RelativeLayout mHeaderBack;
+    @BindView(R.id.header_title)
+    TextView mHeaderTitle;
+    @BindView(R.id.header_setting)
+    TextView mHeaderSetting;
     private List<StorageDetails> dataList = new ArrayList();
     private List<StorageDetails> dataList2 = new ArrayList();
     private CommonBaseAdapter<StorageDetails> adapter;
     private CommonBaseAdapter<StorageDetails> adapter2;
     private View mInflate;
-    private BaseActiviy baseActiviy;
+    private BaseActivity baseActiviy;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -66,11 +71,7 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
 
     @Override
     protected void initView() {
-        mToolbar.setTitle("");
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        mToolbarTitle.setText("仓库A备料");
+        mHeaderTitle.setText("仓库A备料");
         dataList.add(new StorageDetails("", "", "", "", ""));
         adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList) {
             @Override
@@ -87,7 +88,7 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
         mRecyTitle.setAdapter(adapter);
 
 
-        adapter2 = new CommonBaseAdapter<StorageDetails>(getContext(), dataList2) {
+               adapter2 = new CommonBaseAdapter<StorageDetails>(getContext(), dataList2) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.setText(R.id.tv_number, item.getNumber());
@@ -127,24 +128,21 @@ public class StorageDetailsActivity extends BaseActiviy<StorageDetailsPresenter>
 
 
 
+    @OnClick({R.id.header_back, R.id.header_setting})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.header_back:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+            case R.id.header_setting:
+                break;
+        }
+    }
+
+
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
 
     }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }

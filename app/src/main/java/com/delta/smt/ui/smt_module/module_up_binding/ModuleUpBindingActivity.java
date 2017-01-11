@@ -15,7 +15,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -39,7 +39,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class ModuleUpBindingActivity extends BaseActiviy<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener,CommonBaseAdapter.OnItemClickListener<ModuleUpBindingItem>{
+public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener,CommonBaseAdapter.OnItemClickListener<ModuleUpBindingItem>{
 
     @BindView(R.id.header_back)
     RelativeLayout headerBack;

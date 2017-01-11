@@ -23,7 +23,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.common.ItemOnclick;
@@ -52,7 +52,7 @@ import butterknife.BindView;
 
 public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentPresenter>
         implements ProduceWarningFragmentContract.View,
-        BaseActiviy.OnBarCodeSuccess, View.OnClickListener, ItemOnclick {
+        BaseActivity.OnBarCodeSuccess, View.OnClickListener, ItemOnclick {
 
 
     @BindView(R.id.ryv_produce_warning)
@@ -65,7 +65,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     DialogRelativelayout mDialogRelativelayout;
     public ArrayList<String> barcodedatas = new ArrayList<>();
-    private BaseActiviy baseActiviy;
+    private BaseActivity baseActiviy;
     private String currentBarcode;
     private AlertDialog mAlertDialog;
     private PopupWindow mPopupWindow;
@@ -102,8 +102,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     public void onAttach(Context context) {
         Log.i(TAG, "onAttach: ");
         super.onAttach(context);
-        if (context instanceof BaseActiviy) {
-            this.baseActiviy = ((BaseActiviy) context);
+        if (context instanceof BaseActivity) {
+            this.baseActiviy = ((BaseActivity) context);
             baseActiviy.addOnBarCodeSuccess(this);
         }
     }

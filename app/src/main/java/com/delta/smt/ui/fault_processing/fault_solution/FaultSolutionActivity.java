@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
 
 import butterknife.BindView;
@@ -17,7 +17,7 @@ import butterknife.BindView;
  */
 
 
-public class FaultSolutionActivity extends BaseActiviy {
+public class FaultSolutionActivity extends BaseActivity {
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.tv_setting)

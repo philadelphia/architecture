@@ -7,7 +7,7 @@ import android.widget.CheckBox;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -28,7 +28,7 @@ import butterknife.OnClick;
  *
  */
 
-public class ProduceLineActivity extends BaseActiviy<ProduceLinePresenter> implements ProduceLineContract.View, CommonBaseAdapter.OnItemClickListener<ItemProduceLine> {
+public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter> implements ProduceLineContract.View, CommonBaseAdapter.OnItemClickListener<ItemProduceLine> {
 
     @BindView(R.id.ryv_production_line)
     RecyclerView ryvProductionLine;
