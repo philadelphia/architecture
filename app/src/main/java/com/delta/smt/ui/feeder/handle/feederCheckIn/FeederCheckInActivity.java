@@ -5,6 +5,11 @@ import android.os.Bundle;
 
 import com.delta.smt.R;
 
+/**
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/21.
+ */
+
 public class FeederCheckInActivity extends AppCompatActivity {
 
     @Override

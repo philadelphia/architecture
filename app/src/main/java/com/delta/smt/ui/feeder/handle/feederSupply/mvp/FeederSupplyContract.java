@@ -11,19 +11,20 @@ import retrofit2.Response;
 import rx.Observable;
 
 /**
- * Created by Tao.ZT.Zhang on 2016/12/26.
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/26.
  */
 
 public interface FeederSupplyContract {
     interface View extends IView{
-        public void onSuccess(List<FeederSupplyItem> data);
+         void onSuccess(List<FeederSupplyItem> data);
 
-        public void onFalied();
+         void onFailed();
     }
 
     interface Model extends IModel{
-        public Observable<List<FeederSupplyItem>> getAllToBeSuppliedFeeders();
+         Observable<List<FeederSupplyItem>> getAllToBeSuppliedFeeders();
 
-        public Observable<Result> upLoadFeederSupplyResult();
+         Observable<Result> upLoadFeederSupplyResult();
     }
 }

@@ -9,16 +9,17 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Tao.ZT.Zhang on 2016/12/26.
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/21.
  */
 
 public interface SupplyContract {
     interface View extends IView{
-        public void onSuccess(List<FeederSupplyWarningItem> data);
-        public void onFalied();
+         void onSuccess(List<FeederSupplyWarningItem> data);
+         void onFailed();
     }
 
     interface Model extends IModel{
-        public Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
+         Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
     }
 }

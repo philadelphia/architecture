@@ -10,16 +10,17 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Tao.ZT.Zhang on 2016/12/26.
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/26.
  */
 
 public interface FeederCheckInContract {
     interface View extends IView{
-        public void onSuccess(List<FeederSupplyWarningItem> datas);
-        public void onFailed();
+         void onSuccess(List<FeederSupplyWarningItem> datas);
+         void onFailed();
     }
 
     interface  Model extends IModel{
-        public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders();
+         Observable<List<FeederCheckInItem>> getAllCheckedInFeeders();
     }
 }

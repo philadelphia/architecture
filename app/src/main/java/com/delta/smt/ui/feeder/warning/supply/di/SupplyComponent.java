@@ -7,8 +7,10 @@ import com.delta.smt.ui.feeder.warning.SupplyFragment;
 import dagger.Component;
 
 /**
- * Created by Tao.ZT.Zhang on 2016/12/26.
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/21.
  */
+
 @FragmentScope
 @Component(modules = SupplyModule.class, dependencies = AppComponent.class)
 public interface SupplyComponent {
