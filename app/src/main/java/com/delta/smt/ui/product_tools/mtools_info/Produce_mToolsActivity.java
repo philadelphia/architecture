@@ -9,22 +9,19 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.ui.product_tools.mtools_info.di.DaggerProduct_mToolsComponent;
 import com.delta.smt.ui.product_tools.mtools_info.di.Product_mToolsModule;
 import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsContract;
 import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsPresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -32,7 +29,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
 
-public class Produce_mToolsActivity extends BaseActiviy<Produce_mToolsPresenter> implements Produce_mToolsContract.View,CommonBaseAdapter.OnItemClickListener<Product_mToolsInfo>{
+public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter> implements Produce_mToolsContract.View,CommonBaseAdapter.OnItemClickListener<Product_mToolsInfo>{
 
     @BindView(R.id.ProductInfoRecyclerView)
     RecyclerView mProductBorrowRecyclerView;
