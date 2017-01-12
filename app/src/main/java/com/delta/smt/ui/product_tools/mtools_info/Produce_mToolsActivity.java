@@ -19,11 +19,9 @@ import com.delta.smt.ui.product_tools.mtools_info.di.Product_mToolsModule;
 import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsContract;
 import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsPresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
