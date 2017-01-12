@@ -9,7 +9,7 @@
         android:gravity="center"
         android:id="@+id/tv"
         android:textColor="@color/c_ffffff"
-        android:background="@color/background"
+        android:background="#00B2EE"
         android:text="产线选择"/>
 
     <android.support.v7.widget.RecyclerView
