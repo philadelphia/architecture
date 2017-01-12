@@ -1,21 +1,41 @@
 package com.delta.smt.ui.product_tools.mtools_info;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseActivity;
+import com.delta.smt.base.BaseActiviy;
+import com.delta.smt.common.CommonBaseAdapter;
+import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.ProductWorkItem;
+import com.delta.smt.entity.Product_mToolsInfo;
+import com.delta.smt.ui.product_tools.mtools_info.di.DaggerProduct_mToolsComponent;
+import com.delta.smt.ui.product_tools.mtools_info.di.Product_mToolsModule;
+import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsContract;
+import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsPresenter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
 
-public class Produce_mToolsActivity extends BaseActivity {
+public class Produce_mToolsActivity extends BaseActiviy<Produce_mToolsPresenter> implements Produce_mToolsContract.View,CommonBaseAdapter.OnItemClickListener<Product_mToolsInfo>{
+
+    @BindView(R.id.ProductInfoRecyclerView)
+    RecyclerView mProductBorrowRecyclerView;
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -23,15 +43,19 @@ public class Produce_mToolsActivity extends BaseActivity {
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
 
+    View selectView;
+
+    List<Product_mToolsInfo> data;
+    CommonBaseAdapter<Product_mToolsInfo> adapter;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-
+        DaggerProduct_mToolsComponent.builder().appComponent(appComponent).product_mToolsModule(new Product_mToolsModule(this)).build().Inject(this);
     }
 
     @Override
     protected void initData() {
-
+        getPresenter().getData();
     }
 
     @Override
@@ -43,11 +67,54 @@ public class Produce_mToolsActivity extends BaseActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具借出");
 
+        data.add(0,new Product_mToolsInfo("序号","治具二维码","治具类型","所在架位"));
+
+        adapter=new CommonBaseAdapter<Product_mToolsInfo>(getContext(),data) {
+            @Override
+            protected void convert(CommonViewHolder holder, Product_mToolsInfo item, int position) {
+
+                if (position == 0) {
+
+                    holder.setBackgroundColor(R.id.TurnNumber,0xFFf2f2f2);
+                    holder.setBackgroundColor(R.id.ProductToolsBarCode,0xFFf2f2f2);
+                    holder.setBackgroundColor(R.id.ProductToolsType,0xFFf2f2f2);
+                    holder.setBackgroundColor(R.id.ProductToolsLocation,0xFFf2f2f2);
+
+                }else {
+
+                    holder.setText(R.id.TurnNumber,item.getTurnNumber());
+                    holder.setText(R.id.ProductToolsBarCode,item.getProductToolsBarCode());
+                    holder.setText(R.id.ProductToolsType,item.getProductToolsType());
+                    holder.setText(R.id.ProductToolsLocation,item.getProductToolsLocation());
+
+                }
+
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, Product_mToolsInfo item) {
+                return R.layout.item_product_mtools_info;
+            }
+        };
+
+        adapter.setOnItemClickListener(this);
+        mProductBorrowRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        mProductBorrowRecyclerView.setAdapter(adapter);
     }
 
     @Override
     protected int getContentViewId() {
         return R.layout.activity_product_mtools_info;
+    }
+
+    @Override
+    public void get_mToolsData(List<Product_mToolsInfo> data) {
+        this.data=data;
+    }
+
+    @Override
+    public void getFail() {
+
     }
 
     @Override
@@ -61,5 +128,14 @@ public class Produce_mToolsActivity extends BaseActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(View view, Product_mToolsInfo item, int position) {
+        if(selectView!=null){
+            selectView.setBackgroundColor(0xFFffffff);
+        }
+        view.setBackgroundColor(0xFF9FDEFF);
+        selectView=view;
     }
 }

@@ -16,7 +16,9 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductWorkItem;
+import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
@@ -342,14 +344,40 @@ public class ServiceModule {
             }
 
             @Override
-            public Observable<List<Product_mToolsInfo>> getProductToolsInfoItem() {
+            public Observable<List<ProductToolsInfo>> getProductToolsInfoItem() {
                 //TODO ZSQgetProductToolsInfoItem
 
-                List<Product_mToolsInfo> list=new ArrayList<Product_mToolsInfo>();
-                list.add(new Product_mToolsInfo("1","11458754","钢网","A11-002","更多","待确认"));
-                list.add(new Product_mToolsInfo("2","11458756","钢网","A11-003","更多","待确认"));
-                list.add(new Product_mToolsInfo("3","11458756","钢网","A11-006","更多","待确认"));
-                list.add(new Product_mToolsInfo("4","11458756","钢网","A11-005","更多","待确认"));
+                List<ProductToolsInfo> list=new ArrayList<>();
+                list.add(new ProductToolsInfo("1","11458754","钢网","A11-002","更多","待确认"));
+                list.add(new ProductToolsInfo("2","11458756","钢网","A11-003","更多","待确认"));
+                list.add(new ProductToolsInfo("3","11458756","钢网","A11-006","更多","待确认"));
+                list.add(new ProductToolsInfo("4","11458756","钢网","A11-005","更多","待确认"));
+                return Observable.just(list);
+            }
+
+            @Override
+            public Observable<List<Product_mToolsInfo>> getProduct_mToolsInfo() {
+
+                //TODO ZSQgetProduct_mToolsInfo
+                List<Product_mToolsInfo> list=new ArrayList<>();
+                list.add(new Product_mToolsInfo("1","32325432","钢网","D9-9001"));
+                list.add(new Product_mToolsInfo("2","32325432","钢网","D2-9001"));
+                list.add(new Product_mToolsInfo("3","32325432","钢网","D6-9001"));
+                list.add(new Product_mToolsInfo("4","32325432","钢网","D8-9001"));
+
+                return Observable.just(list);
+            }
+
+            @Override
+            public Observable<List<ProductToolsBack>> getProductToolsBack() {
+
+                //TODO ZSQgetProductToolsBack
+                List<ProductToolsBack> list=new ArrayList<>();
+                list.add(new ProductToolsBack("1","20003034","23141224","刮刀","已归还"));
+                list.add(new ProductToolsBack("2","20003034","23141224","钢网","未归还"));
+                list.add(new ProductToolsBack("3","20003034","23141224","钢网","未归还"));
+                list.add(new ProductToolsBack("4","20003034","23141224","钢网","未归还"));
+
                 return Observable.just(list);
             }
 
