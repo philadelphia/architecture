@@ -1,6 +1,7 @@
 package com.delta.smt.ui.product_tools.mtools_info.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.Product_mToolsInfo;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import rx.functions.Action1;
 /**
  * Created by Shaoqiang.Zhang on 2017/1/11.
  */
-
+@ActivityScope
 public class Produce_mToolsPresenter extends BasePresenter<Produce_mToolsContract.Model,Produce_mToolsContract.View>{
 
     @Inject

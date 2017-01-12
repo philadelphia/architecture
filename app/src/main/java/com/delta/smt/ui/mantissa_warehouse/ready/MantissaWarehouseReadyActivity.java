@@ -2,13 +2,15 @@ package com.delta.smt.ui.mantissa_warehouse.ready;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
@@ -31,6 +33,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.Module;
 
@@ -41,19 +44,18 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Zhenyu.Liu on 2016/12/27.
  */
 @Module
-public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehouseReadyPresenter> implements MantissaWarehouseReadyContract.View, CommonBaseAdapter.OnItemClickListener<MantissaWarehouseReady> , WarningManger.OnWarning{
-
-    @BindView(recyclerView)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.header_back)
-    RelativeLayout mHeaderBack;
-    @BindView(R.id.header_title)
-    TextView mHeaderTitle;
-    @BindView(R.id.header_setting)
-    TextView mHeaderSetting;
+public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehouseReadyPresenter> implements MantissaWarehouseReadyContract.View, CommonBaseAdapter.OnItemClickListener<MantissaWarehouseReady>, WarningManger.OnWarning {
 
     @Inject
     WarningManger warningManger;
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
 
 
     private List<MantissaWarehouseReady> dataList = new ArrayList();
@@ -81,7 +83,13 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
 
     @Override
     protected void initView() {
-        mHeaderTitle.setText("尾数仓备料");
+
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        mToolbarTitle.setText("尾数仓备料");
+
         adapter = new CommonBaseAdapter<MantissaWarehouseReady>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehouseReady item, int position) {
@@ -126,17 +134,6 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
 
     }
 
-    @OnClick({R.id.header_back, R.id.header_setting})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.header_back:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-            case R.id.header_setting:
-                break;
-        }
-    }
-
     @Override
     public void warningComing(String warningMessage) {
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
@@ -170,4 +167,19 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
         WarningManger.getInstance().unregisterWReceriver(this);
         super.onStop();
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

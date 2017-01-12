@@ -120,7 +120,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         dataList2.clear();
         dataList2.addAll(mantissaWarehouseDetailses);
         adapter2.notifyDataSetChanged();
-        
+
     }
 
     @Override
