@@ -2,7 +2,7 @@ package com.delta.smt.ui.product_tools.tools_info.mvp;
 
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.Product_mToolsInfo;
+import com.delta.smt.entity.ProductToolsInfo;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class ProduceToolsInfoModel extends BaseModel<ApiService> implements Prod
     }
 
     @Override
-    public Observable<List<Product_mToolsInfo>> getProductToolsInfoItem() {
+    public Observable<List<ProductToolsInfo>> getProductToolsInfoItem() {
         return getService().getProductToolsInfoItem();
     }
 }
