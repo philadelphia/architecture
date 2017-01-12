@@ -104,7 +104,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        mToolbarTitle.setText("故障处理预警");
+        mToolbarTitle.setText("生产中预警");
         for (int i = 0; i < titles.length; i++) {
             mTlTitle.addTab(mTlTitle.newTab());
         }
