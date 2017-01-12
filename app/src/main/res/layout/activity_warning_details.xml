@@ -90,5 +90,36 @@
             />
 
     </RelativeLayout>
+    <TextView
+        android:id="@+id/storage_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/style_storagetv"
+        android:layout_marginTop="@dimen/px_12"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <Button
+            android:id="@+id/storage_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            style="@style/button_style"
+            android:text="@string/storage_submit"
+            />
+
+        <Button
+            android:id="@+id/storage_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/storage_clear"
+            style="@style/button_style"
+            android:layout_marginRight="@dimen/px_70"
+            />
+    </LinearLayout>
 
 </LinearLayout>
