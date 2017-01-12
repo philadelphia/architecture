@@ -70,6 +70,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             @Override
             protected void convert(CommonViewHolder holder, ProductToolsInfo item, int position) {
 
+                TextView moreInfo= (TextView) findViewById(R.id.ReSelect);
+
                 if (position == 0) {
 
                     holder.setBackgroundColor(R.id.TurnNumber, 0xFFf2f2f2);
