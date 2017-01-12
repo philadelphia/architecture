@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/px_40"
+    android:layout_marginTop="@dimen/px_20"
+    android:text="@string/title_storehint"
+    />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px_20"
+        android:layout_marginTop="@dimen/px_20"
+        android:textSize="@dimen/px_30"
+        android:text="@string/storehint"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px_70"
+        android:layout_marginTop="@dimen/px_20"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/storehint_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/px_12"
+            android:text="@string/confirm"
+            android:background="@drawable/btn_selector"/>
+        <Button
+            android:id="@+id/storehint_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/px_12"
+            android:text="@string/cancel"
+            android:background="@drawable/btn_selector"
+            android:layout_marginLeft="@dimen/px_70"/>
+    </LinearLayout>
+</LinearLayout>
