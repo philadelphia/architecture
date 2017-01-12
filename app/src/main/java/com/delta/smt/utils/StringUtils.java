@@ -2,12 +2,16 @@ package com.delta.smt.utils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Shufeng.Wu on 2016/12/27.
  */
 
 public class StringUtils {
+
+    static SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd/ HH:mm:ss ");
     //apk文件大小换算+单位
     //B、KB、MB转换
     public static String getChangedContentLength(int progress) {
@@ -56,4 +60,12 @@ public class StringUtils {
     public static String JsonToUrl(String json) {
         return "sdf";
     }
+
+    public static String getNowDateAndTime() {
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        return formatter.format(curDate);
+    }
+
+
+
 }
