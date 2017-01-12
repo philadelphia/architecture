@@ -28,7 +28,6 @@ import static com.delta.smt.base.BaseApplication.getContext;
 /**
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
-
 public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPresenter> implements ProduceToolsBackContract.View,CommonBaseAdapter.OnItemClickListener<ProductToolsBack>{
 
     @BindView(R.id.ProductBorrowRecyclerView)

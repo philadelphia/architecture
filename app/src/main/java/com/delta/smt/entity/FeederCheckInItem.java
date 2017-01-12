@@ -8,23 +8,23 @@ public class FeederCheckInItem {
     private String workItemID;
     private String feederID;
     private String materialID;
-    private String location;
+    private String shelves;
     private String checkInTimeStamp;
     private String status;
 
 
-    public FeederCheckInItem(String workItemID,String feederID,  String materialID, String location, String status) {
+    public FeederCheckInItem(String workItemID,String feederID,  String materialID, String shelves, String status) {
         this.feederID = feederID;
-        this.location = location;
+        this.shelves = shelves;
         this.materialID = materialID;
         this.status = status;
         this.workItemID = workItemID;
     }
 
-    public FeederCheckInItem(String workItemID,String feederID,  String materialID, String location, String checkInTimeStamp,String status) {
+    public FeederCheckInItem(String workItemID,String feederID,  String materialID, String shelves, String checkInTimeStamp,String status) {
         this.checkInTimeStamp = checkInTimeStamp;
         this.feederID = feederID;
-        this.location = location;
+        this.shelves = shelves;
         this.materialID = materialID;
         this.status = status;
         this.workItemID = workItemID;
@@ -47,12 +47,12 @@ public class FeederCheckInItem {
         this.feederID = feederID;
     }
 
-    public String getLocation() {
-        return location;
+    public String getShelves() {
+        return shelves;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setShelves(String shelves) {
+        this.shelves = shelves;
     }
 
     public String getMaterialID() {
@@ -86,7 +86,7 @@ public class FeederCheckInItem {
                 ", workItemID='" + workItemID + '\'' +
                 ", feederID='" + feederID + '\'' +
                 ", materialID='" + materialID + '\'' +
-                ", location='" + location + '\'' +
+                ", shelves='" + shelves + '\'' +
                 ", status='" + status + '\'' +
                 '}';
     }

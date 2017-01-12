@@ -90,7 +90,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
                 holder.setText(R.id.tv_workItemID, item.getWorkItemID());
                 holder.setText(R.id.tv_feederID, item.getFeederID());
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
-                holder.setText(R.id.tv_location, item.getLocation());
+                holder.setText(R.id.tv_location, item.getShelves());
                 holder.setText(R.id.tv_chkinTimestamp, item.getCheckInTimeStamp());
                 holder.setText(R.id.tv_status, item.getStatus());
             }
@@ -164,7 +164,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
 
                         break;
                     case FRAME_LOCATION: //架位ID
-                        if (dataSource.get(0).getLocation().equalsIgnoreCase(barcode)) {
+                        if (dataSource.get(0).getShelves().equalsIgnoreCase(barcode)) {
                             //上传到后台
                         } else {
 

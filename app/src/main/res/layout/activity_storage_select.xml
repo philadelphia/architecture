@@ -21,7 +21,7 @@
         android:layout_height="96px"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="130px"
-        android:layout_marginTop="853px"
+        android:layout_marginTop="453px"
         android:background="@drawable/btn_selector"
         android:gravity="center"
         android:text="@string/confirm"
