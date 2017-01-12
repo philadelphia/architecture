@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -179,69 +180,42 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     }
 
 
-/*    @Override
-    public void onItemClick(View view, ItemWarningInfo item, int position) {
-        EventBus.getDefault().post(new BroadcastCancel());
-        mDialogRelativelayout = new DialogRelativelayout(getContext());
-        barcodedatas.clear();
-
-
-        if (item.getTitle().equals("接料预警")) {
-
-            makePopupWindow();
-
-            mAlertDialog = new AlertDialog.Builder(getContext()).setView(mDialogRelativelayout)
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            tag = false;
-                            dialog.dismiss();
-                        }
-                    }).show();
-//            mAlertDialog.onWindowFocusChanged(false);
-            if (mAlertDialog.isShowing()) {
-//                barcodedatas.add(mScanSucess.getScanCode());
-                mDialogRelativelayout.setDatas(barcodedatas);
-            }
-
-
-
-        } else {
-
-        }
-    }*/
     //item点击事件处理
     @Override
     public void onItemClick(View item, int position) {
-        EventBus.getDefault().post(new BroadcastCancel());
-        mDialogRelativelayout = new DialogRelativelayout(getContext());
-        barcodedatas.clear();
-        final ItemWarningInfo mItemWarningInfo=datas.get(position);
-        if (mItemWarningInfo.getTitle().equals("接料预警")) {
+        if(mPopupWindow!=null&&mPopupWindow.isShowing()){
 
-            makePopupWindow();
+        }else {
+            EventBus.getDefault().post(new BroadcastCancel());
+            mDialogRelativelayout = new DialogRelativelayout(getContext());
+            barcodedatas.clear();
+            final ItemWarningInfo mItemWarningInfo = datas.get(position);
+            if (mItemWarningInfo.getTitle().equals("接料预警")) {
 
-        } else {
-            final ArrayList<String> dialogDatas = new ArrayList<>();
-            mDialogRelativelayout.setStrSecondTitle("请求确认");
-            dialogDatas.add("是否已经完成？");
-            mDialogRelativelayout.setStrContent(dialogDatas);
-            new AlertDialog.Builder(getContext()).setCancelable(false).setView(mDialogRelativelayout)
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            EventBus.getDefault().post(new BroadcastBegin());
-                        }
-                    })
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mItemWarningInfo.setWarninginfo("预警信息：操作完成");
-                            mAdapter.notifyDataSetChanged();
-                            EventBus.getDefault().post(new BroadcastBegin());
-                        }
-                    }).show();
+                makePopupWindow();
+
+            } else {
+                final ArrayList<String> dialogDatas = new ArrayList<>();
+                mDialogRelativelayout.setStrSecondTitle("请求确认");
+                dialogDatas.add("是否已经完成？");
+                mDialogRelativelayout.setStrContent(dialogDatas);
+                new AlertDialog.Builder(getContext()).setCancelable(false).setView(mDialogRelativelayout)
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                EventBus.getDefault().post(new BroadcastBegin());
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mItemWarningInfo.setWarninginfo("预警信息：操作完成");
+                                mAdapter.notifyDataSetChanged();
+                                EventBus.getDefault().post(new BroadcastBegin());
+                            }
+                        }).show();
+            }
         }
     }
 
@@ -274,16 +248,18 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mLayoutParams.alpha=0.4f;
         getmActivity().getWindow().setAttributes(mLayoutParams);
         mPopupWindow.update();*/
-
         //展示popupwindow
         mPopupWindow.showAtLocation(getView(), Gravity.CENTER,0,0);
+
+
     }
 
     @Override
     public void onScanSuccess( String barcode) {
 
+        //二维码识别和解析
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-//        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :  "+ barcode + "  :  "+Thread.currentThread().getName());
+        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :  "+ barcode + "  :  "+Thread.currentThread().getName());
         if(BarCodeUtils.barCodeType(barcode)!=null){
             switch (BarCodeUtils.barCodeType(barcode)){
 
