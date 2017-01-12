@@ -67,6 +67,7 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具借出");
 
+
         data.add(0,new ProductWorkItem("工单号","工单类型","机种","PCB code","组合料号","线别","PWB料号","面别","计划上线时间","治具状态"));
 
         adapter = new CommonBaseAdapter<ProductWorkItem>(getContext(), data) {

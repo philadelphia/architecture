@@ -4,18 +4,20 @@ package com.delta.smt.entity;
  * Created by Shaoqiang.Zhang on 2017/1/11.
  */
 
-public class Product_mToolsInfo {
+public class ProductToolsBack {
 
-    private String TurnNumber;
-    private String ProductToolsBarCode;
-    private String ProductToolsType;
-    private String ProductToolsLocation;
+    String TurnNumber;
+    String ProductToolsBarCode;
+    String WorkNumber;
+    String ProductToolsType;
+    String Status;
 
-    public Product_mToolsInfo(String turnNumber, String productToolsBarCode, String productToolsType, String productToolsLocation) {
+    public ProductToolsBack(String turnNumber, String productToolsBarCode, String workNumber, String productToolsType, String status) {
         TurnNumber = turnNumber;
         ProductToolsBarCode = productToolsBarCode;
+        WorkNumber = workNumber;
         ProductToolsType = productToolsType;
-        ProductToolsLocation = productToolsLocation;
+        Status = status;
     }
 
     public String getTurnNumber() {
@@ -34,6 +36,14 @@ public class Product_mToolsInfo {
         ProductToolsBarCode = productToolsBarCode;
     }
 
+    public String getWorkNumber() {
+        return WorkNumber;
+    }
+
+    public void setWorkNumber(String workNumber) {
+        WorkNumber = workNumber;
+    }
+
     public String getProductToolsType() {
         return ProductToolsType;
     }
@@ -42,11 +52,11 @@ public class Product_mToolsInfo {
         ProductToolsType = productToolsType;
     }
 
-    public String getProductToolsLocation() {
-        return ProductToolsLocation;
+    public String getStatus() {
+        return Status;
     }
 
-    public void setProductToolsLocation(String productToolsLocation) {
-        ProductToolsLocation = productToolsLocation;
+    public void setStatus(String status) {
+        Status = status;
     }
 }

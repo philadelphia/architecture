@@ -2,8 +2,7 @@ package com.delta.smt.ui.product_tools.tools_info.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
-import com.delta.smt.entity.ProductWorkItem;
-import com.delta.smt.entity.Product_mToolsInfo;
+import com.delta.smt.entity.ProductToolsInfo;
 
 import java.util.List;
 
@@ -17,13 +16,13 @@ public interface ProduceToolsInfoContract {
 
     interface Model extends IModel {
 
-        Observable<List<Product_mToolsInfo>> getProductToolsInfoItem();
+        Observable<List<ProductToolsInfo>> getProductToolsInfoItem();
 
     }
 
     interface View extends IView {
 
-        void getToolsInfo(List<Product_mToolsInfo> ProductToolsItem);
+        void getToolsInfo(List<ProductToolsInfo> ProductToolsItem);
 
         void getFail();
     }
