@@ -1,5 +1,7 @@
 package com.delta.smt.ui.storeroom;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,7 @@ import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
+import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.storeroom.mvp.StoreRoomContract;
@@ -157,7 +160,26 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                 }
                 break;
             case R.id.storage_submit:
-               
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                final Dialog dialo=builder.create();
+                dialo.setContentView(R.layout.dialog_storehint);
+                Button confirmButton= (Button) dialo.findViewById(R.id.storehint_confirm);
+                Button cancelButton= (Button) dialo.findViewById(R.id.storehint_cancel);
+                confirmButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (dialo.isShowing()){
+                            dialo.cancel();
+                        }
+                    }
+                });
+                dialo.show();
                 break;
         }
     }
