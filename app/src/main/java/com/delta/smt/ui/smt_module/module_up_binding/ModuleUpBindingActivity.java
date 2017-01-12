@@ -189,7 +189,14 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void onScanSuccess(String barcode) {
 
-        BarCodeParseIpml barCodeParseIpml=new BarCodeParseIpml();
+        //Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+        switch (BarCodeUtils.barCodeType(barcode)){
+            case FEEDER:
+                Toast.makeText(this,"支持此类型码！",Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        /*BarCodeParseIpml barCodeParseIpml=new BarCodeParseIpml();
         switch (BarCodeUtils.barCodeType(barcode)){
             case FEEDER:
                 //Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
@@ -221,7 +228,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             default:
                 Toast.makeText(this,"此处不支持此类型码！",Toast.LENGTH_SHORT).show();
                 break;
-        }
+        }*/
     }
 
     @Override
