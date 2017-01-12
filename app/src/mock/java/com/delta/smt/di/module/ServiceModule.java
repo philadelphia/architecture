@@ -298,23 +298,6 @@ public class ServiceModule {
                 List<VirtualLineBindingItem> dataList = new ArrayList<VirtualLineBindingItem>();
                 dataList.add(new VirtualLineBindingItem("1","-"));
                 dataList.add(new VirtualLineBindingItem("2","-"));
-                dataList.add(new VirtualLineBindingItem("3","-"));
-                dataList.add(new VirtualLineBindingItem("4","-"));
-                dataList.add(new VirtualLineBindingItem("5","-"));
-                dataList.add(new VirtualLineBindingItem("6","-"));
-                dataList.add(new VirtualLineBindingItem("7","-"));
-                dataList.add(new VirtualLineBindingItem("8","-"));
-                dataList.add(new VirtualLineBindingItem("9","-"));
-                dataList.add(new VirtualLineBindingItem("10","-"));
-                dataList.add(new VirtualLineBindingItem("11","-"));
-                dataList.add(new VirtualLineBindingItem("12","-"));
-                dataList.add(new VirtualLineBindingItem("13","-"));
-                dataList.add(new VirtualLineBindingItem("14","-"));
-                dataList.add(new VirtualLineBindingItem("15","-"));
-                dataList.add(new VirtualLineBindingItem("16","-"));
-                dataList.add(new VirtualLineBindingItem("17","-"));
-                dataList.add(new VirtualLineBindingItem("18","-"));
-                dataList.add(new VirtualLineBindingItem("19","-"));
                 return Observable.just(dataList);
             }
 
