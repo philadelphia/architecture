@@ -284,26 +284,10 @@ public class ServiceModule {
             @Override
             public Observable<List<ModuleUpBindingItem>> getModuleUpBindingItems() {
                 List<ModuleUpBindingItem> dataList = new ArrayList<ModuleUpBindingItem>();
-                dataList.add(new ModuleUpBindingItem("-","0351234700","03T021","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234701","03T022","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234702","03T023","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234703","03T024","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234704","03T025","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234705","03T026","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234706","03T027","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234707","03T028","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234708","03T029","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234709","03T030","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234710","03T031","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234711","03T032","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234712","03T033","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234713","03T034","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234714","03T035","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234715","03T036","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234716","03T037","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234717","03T038","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234718","03T039","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234719","03T040","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0353104700","03T021","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","1512445A00","03T022","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","15D2067A00","03T023","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","1511508A00","03T024","-","2016082500"));
                 return Observable.just(dataList);
             }
 

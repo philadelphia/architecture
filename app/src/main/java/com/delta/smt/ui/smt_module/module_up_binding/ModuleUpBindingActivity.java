@@ -13,6 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
+import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.Feeder;
+import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
@@ -65,7 +69,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     //二维码
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
 
-    private int click_position = -1;
+    private int scan_position = -1;
+
+    private String materialBlockCodeCache = null;
+    private String feederCodeCache = null;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -111,10 +118,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         adapter = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem item, int position) {
-                if (click_position==-1){
+                if (scan_position==-1){
                     holder.itemView.setBackgroundColor(Color.WHITE);
-                } else if (click_position==position){
+                } else if (scan_position==position){
                     holder.itemView.setBackgroundColor(Color.YELLOW);
+                } else{
+                    holder.itemView.setBackgroundColor(Color.WHITE);
                 }
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_serialID, item.getSerialID());
@@ -179,39 +188,40 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onScanSuccess(String barcode) {
-        Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
-        System.out.println(barcode +"\n"+barcode.length());
 
-        /*BarCodeParseIpml barCodeParseIpml=new BarCodeParseIpml();
+        BarCodeParseIpml barCodeParseIpml=new BarCodeParseIpml();
         switch (BarCodeUtils.barCodeType(barcode)){
             case FEEDER:
-                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
-                break;
-            case BACKUP_MATERIAL_CAR:
-                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                try {
+                    if(materialBlockCodeCache!=null){
+                        Feeder feederCode = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
+                        setItemFeederNumber(feederCode.getSource(),materialBlockCodeCache);
+                    }else {
+                        Toast.makeText(this,"请首先扫描料盘码！",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                }
                 break;
             case MATERIAL_BLOCK_BARCODE:
-                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
-                break;
-            case MATERIAL_STATION:
-                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
-                break;
-            case FRAME_LOCATION:
-                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
-                break;
-            case RBOX:
-                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
-                break;
-            case FBOX:
-                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
-                break;
-            case FEEDER_CAR:    //OK
-                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                try {
+                    MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode)barCodeParseIpml.getEntity(barcode,BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    String materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
+                    if(isExistInDataSource(materialBlockNumber,dataSource)){
+                        setItemHighLightBasedOnMID(materialBlockNumber);
+                        materialBlockCodeCache = materialBlockNumber;
+                    }else{
+                        Toast.makeText(this,"列表中不包含此码！",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
-                Toast.makeText(this,"不支持此类型码！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"此处不支持此类型码！",Toast.LENGTH_SHORT).show();
                 break;
-        }*/
+        }
     }
 
     @Override
@@ -227,7 +237,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     public void setItemHighLightBasedOnMID(String materialID){
         for (int i=0;i<dataSource.size();i++){
             if (dataSource.get(i).getMaterialID().equals(materialID)){
-                click_position = i;
+                scan_position = i;
                 break;
             }
         }
@@ -237,8 +247,17 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     public void setItemHighLightBasedOnMMSID(String moduleMaterialStationID){
         for (int i=0;i<dataSource.size();i++){
             if (dataSource.get(i).getModuleMaterialStationID().equals(moduleMaterialStationID)){
-                click_position = i;
+                scan_position = i;
                 break;
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void setItemFeederNumber(String feederNumber,String materialBlockCode){
+        for(ModuleUpBindingItem listItem:dataSource){
+            if(listItem.getMaterialID().equals(materialBlockCode)){
+                listItem.setFeederID(feederNumber);
             }
         }
         adapter.notifyDataSetChanged();
@@ -259,5 +278,14 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean isExistInDataSource(String item,List<ModuleUpBindingItem> list){
+        for(ModuleUpBindingItem list_item:list){
+            if(list_item.getMaterialID().equals(item)){
+                return true;
+            }
+        }
+        return false;
     }
 }
