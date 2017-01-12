@@ -2,13 +2,16 @@ package com.delta.smt.ui.hand_add.mvp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
@@ -29,6 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -36,24 +40,29 @@ import butterknife.OnClick;
  */
 
 public class HandAddActivity extends BaseActivity<HandAddPresenter>
-        implements HandAddContract.View,WarningManger.OnWarning, ItemOnclick {
+        implements HandAddContract.View, WarningManger.OnWarning, ItemOnclick {
 
-    @BindView(R.id.header_title)
-    TextView mHeaderTitle;
-    @BindView(R.id.ryv_hand_add)
-    RecyclerView mRyvHandAdd;
+
 
     @Inject
     WarningManger mWarningManger;
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+    @BindView(R.id.ryv_hand_add)
+    RecyclerView mRyvHandAdd;
 
     private AlertDialog alertDialog;
     private AlertDialog mItemDialog;
 
     private ItemCountdownViewAdapter<ItemHandAdd> mAdapter;
-    private List<ItemHandAdd> datas=new ArrayList<>();
+    private List<ItemHandAdd> datas = new ArrayList<>();
 
     DialogRelativelayout mDialogRelativelayout;
-    private boolean tag=false;
+    private boolean tag = false;
     private String dialogwarningMessage;
 
     @Override
@@ -66,7 +75,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     protected void initData() {
 
         //设置接收哪种预警
-        mWarningManger.addWarning(Constant.HAND_ADD,getClass());
+        mWarningManger.addWarning(Constant.HAND_ADD, getClass());
         //是否接收预警 可以控制预警时机
         mWarningManger.setRecieve(true);
 
@@ -77,8 +86,13 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
     @Override
     protected void initView() {
-        mHeaderTitle.setText("线外人员");
-        mAdapter=new ItemCountdownViewAdapter<ItemHandAdd>(this,datas) {
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        mToolbarTitle.setText("线外人员");
+
+        mAdapter = new ItemCountdownViewAdapter<ItemHandAdd>(this, datas) {
             @Override
             protected int getLayoutId() {
                 return R.layout.item_hand_add;
@@ -86,11 +100,11 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
             @Override
             protected void convert(ItemTimeViewHolder holder, ItemHandAdd itemHandAdd, int position) {
-                holder.setText(R.id.tv_title,itemHandAdd.getTitle());
-                holder.setText(R.id.tv_line,itemHandAdd.getProduce_line());
-                holder.setText(R.id.tv_add_count,itemHandAdd.getAdd_count());
-                holder.setText(R.id.tv_material_station,itemHandAdd.getMaterial_station());
-                holder.setText(R.id.tv_warning_info,itemHandAdd.getInfo());
+                holder.setText(R.id.tv_title, itemHandAdd.getTitle());
+                holder.setText(R.id.tv_line, itemHandAdd.getProduce_line());
+                holder.setText(R.id.tv_add_count, itemHandAdd.getAdd_count());
+                holder.setText(R.id.tv_material_station, itemHandAdd.getMaterial_station());
+                holder.setText(R.id.tv_warning_info, itemHandAdd.getInfo());
             }
 
 
@@ -123,13 +137,13 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         if (null != mAdapter) {
             mAdapter.cancelRefreshTime();
         }
-        Log.e(TAG, "onPause: " );
+        Log.e(TAG, "onPause: ");
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        Log.e(TAG, "onStop: " );
+        Log.e(TAG, "onStop: ");
         super.onStop();
     }
 
@@ -141,16 +155,19 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         super.onDestroy();
     }
 
-    @OnClick({R.id.header_back, R.id.header_setting})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.header_back:
-                startActivity(new Intent(this, MainActivity.class));
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
                 break;
-            case R.id.header_setting:
+
+            default:
                 break;
         }
+        return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void getItemHandAddDatas(List<ItemHandAdd> itemHandAdds) {
@@ -166,19 +183,18 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     }
 
 
-
     @Override
     public void warningComing(String warningMessage) {
 
-            if(mItemDialog !=null&& mItemDialog.isShowing()){
-                tag=true;
-                dialogwarningMessage=warningMessage;
-            }else if (alertDialog!=null&&alertDialog.isShowing()){
-                alertDialog.dismiss();
-                alertDialog = createDialog(warningMessage);
-            }else {
-                alertDialog = createDialog(warningMessage);
-            }
+        if (mItemDialog != null && mItemDialog.isShowing()) {
+            tag = true;
+            dialogwarningMessage = warningMessage;
+        } else if (alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+            alertDialog = createDialog(warningMessage);
+        } else {
+            alertDialog = createDialog(warningMessage);
+        }
 
     }
 
@@ -204,7 +220,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     public void onItemClick(final View item, int position) {
         final ItemHandAdd mItemHandAdd = datas.get(position);
-        mDialogRelativelayout=new DialogRelativelayout(this);
+        mDialogRelativelayout = new DialogRelativelayout(this);
         mDialogRelativelayout.setStrSecondTitle("请求确认");
         final ArrayList<String> datas = new ArrayList<>();
         datas.add("手补件完成？");
@@ -216,7 +232,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                         dialog.dismiss();
                         if (tag) {
                             createDialog(dialogwarningMessage);
-                            tag=false;
+                            tag = false;
                         }
                     }
                 })
@@ -227,10 +243,17 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                         mAdapter.notifyDataSetChanged();
                         if (tag) {
                             createDialog(dialogwarningMessage);
-                            tag=false;
+                            tag = false;
                         }
                     }
                 }).create();
         mItemDialog.show();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
