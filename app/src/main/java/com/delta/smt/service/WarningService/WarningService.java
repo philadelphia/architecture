@@ -18,8 +18,8 @@ import com.delta.smt.app.App;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.WarningManger;
-import com.delta.smt.service.warningService.di.DaggerWarningComponent;
 import com.delta.smt.service.warningService.di.WebSocketClientModule;
+//import com.delta.smt.ui.store.di.DaggerWarningComponent;
 
 import java.util.ArrayList;
 
@@ -37,8 +37,8 @@ import okhttp3.WebSocket;
 
 public class WarningService extends Service implements ActivityMonitor.OnAppStateChangeListener, com.delta.smt.service.warningService.WebSocketClientListener {
 
-    @Inject
-    WebSocket webSocket;
+//    @Inject
+//    WebSocket webSocket;
     private boolean foreground = true;
     private Activity topActivity;
 
@@ -48,7 +48,7 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
         ActivityMonitor.getInstance().registerAppStateChangeListener(this);
         ActivityMonitor.setStrictForeground(true);
         WebSocketClientModule module = new WebSocketClientModule.Builder().httpurl(API.WebSocketURl).webSocketClientListener(this).build();
-        DaggerWarningComponent.builder().websocketClientModule(module).build().inject(this);
+       // DaggerWarningComponent.builder().warningModule(module).build().inject(this);
     }
 
     @Override
