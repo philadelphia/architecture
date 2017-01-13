@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -44,6 +45,10 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     List<ProductToolsInfo> data;
     CommonBaseAdapter<ProductToolsInfo> adapter;
+    String workNumber;
+
+    String sourceActivity = "ProduceToolsBorrowActivity";
+    String TAG = "ProduceToolsInfoActivity";
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -53,6 +58,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     protected void initData() {
         getPresenter().getToolsInfo();
+        workNumber = this.getIntent().getExtras().getString(sourceActivity);
     }
 
     @Override
@@ -70,8 +76,6 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             @Override
             protected void convert(CommonViewHolder holder, ProductToolsInfo item, int position) {
 
-                TextView moreInfo= (TextView) findViewById(R.id.ReSelect);
-
                 if (position == 0) {
 
                     holder.setBackgroundColor(R.id.TurnNumber, 0xFFf2f2f2);
@@ -83,16 +87,30 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
                 } else {
 
-                    holder.setBackgroundColor(R.id.ReSelect,0xFF428bca);
-                    holder.setText(R.id.TurnNumber,item.getTurnNumber());
-                    holder.setText(R.id.ProductToolsBarCode,item.getProductToolsBarCode());
-                    holder.setText(R.id.ProductToolsType,item.getProduceToolsType());
-                    holder.setText(R.id.ProductToolsLocation,item.getProductToolsLocation());
-                    holder.setText(R.id.ReSelect,item.getReSelect());
-                    holder.setText(R.id.Status,item.getStatus());
+                    holder.setBackgroundColor(R.id.ReSelect, 0xFF428bca);
+                    holder.setText(R.id.TurnNumber, item.getTurnNumber());
+                    holder.setText(R.id.ProductToolsBarCode, item.getProductToolsBarCode());
+                    holder.setText(R.id.ProductToolsType, item.getProduceToolsType());
+                    holder.setText(R.id.ProductToolsLocation, item.getProductToolsLocation());
+                    holder.setText(R.id.ReSelect, item.getReSelect());
+                    holder.setText(R.id.Status, item.getStatus());
 
                 }
 
+                holder.setOnClickListener(R.id.ReSelect,new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent();
+                        intent.setClass(ProduceToolsInfoActivity.this, Produce_mToolsActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                TextView more=holder.getView(R.id.ReSelect);
+                if(more.getText().equals("更多")) {
+                    more.setScaleY(0.9f);
+                    more.setScaleX(0.9f);
+                }
             }
 
             @Override
@@ -128,16 +146,6 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void onItemClick(View view, ProductToolsInfo item, int position) {
 
-        TextView moreInfo= (TextView) view.findViewById(R.id.ReSelect);
-        moreInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent();
-                intent.setClass(ProduceToolsInfoActivity.this, Produce_mToolsActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
     @Override
@@ -147,6 +155,12 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getFail() {
+
+    }
+
+    @Override
+    public void onScanSuccess(String barcode) {
+        super.onScanSuccess(barcode);
 
     }
 }

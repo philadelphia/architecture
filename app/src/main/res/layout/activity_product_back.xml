@@ -18,9 +18,10 @@
     <EditText
         android:id="@+id/ProductInfoBarCode"
         android:layout_width="698px"
-        android:layout_height="45px"
+        android:layout_height="50px"
         android:layout_marginLeft="310px"
-        android:layout_marginTop="-50px" />
+        android:layout_marginTop="-45px"
+        android:background="@drawable/ed_back_white"/>
 
     <Button
         android:layout_height="wrap_content"

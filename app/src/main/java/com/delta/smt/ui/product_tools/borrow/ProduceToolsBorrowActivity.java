@@ -1,8 +1,10 @@
 package com.delta.smt.ui.product_tools.borrow;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -15,12 +17,16 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ProductWorkItem;
+import com.delta.smt.ui.product_tools.MyCompare;
+import com.delta.smt.ui.product_tools.TimeSortUnit;
 import com.delta.smt.ui.product_tools.borrow.di.DaggerProduceToolsBorrowComponent;
 import com.delta.smt.ui.product_tools.borrow.di.ProduceToolsBorrowModule;
 import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowContract;
 import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowPresenter;
 import com.delta.smt.ui.product_tools.tools_info.ProduceToolsInfoActivity;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,6 +38,8 @@ import static com.delta.smt.base.BaseApplication.getContext;
  */
 
 public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowPresenter> implements ProduceToolsBorrowContract.View, CommonBaseAdapter.OnItemClickListener<ProductWorkItem> {
+
+    String TAG="ProduceToolsBorrowActivity";
 
     @BindView(R.id.ProductBorrowRecyclerView)
     RecyclerView mProductBorrowRecyclerView;
@@ -67,6 +75,10 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具借出");
 
+        //TODO data按时间排序
+
+        MyCompare myCompare=new MyCompare();
+        Collections.sort(data,myCompare);
 
         data.add(0,new ProductWorkItem("工单号","工单类型","机种","PCB code","组合料号","线别","PWB料号","面别","计划上线时间","治具状态"));
 
@@ -175,6 +187,9 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
     public void onItemClick(View view, ProductWorkItem item, int position) {
         if(item.getProductStatus().equals(getString(R.string.AreReady))){
             Intent intent=new Intent();
+            Bundle bundle=new Bundle();
+            bundle.putString(TAG,item.getWorkNumber());
+            intent.putExtras(bundle);
             intent.setClass(this,ProduceToolsInfoActivity.class);
             startActivity(intent);
         }

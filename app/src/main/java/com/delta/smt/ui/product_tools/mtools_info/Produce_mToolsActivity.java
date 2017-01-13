@@ -1,9 +1,12 @@
 package com.delta.smt.ui.product_tools.mtools_info;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,10 +21,12 @@ import com.delta.smt.ui.product_tools.mtools_info.di.DaggerProduct_mToolsCompone
 import com.delta.smt.ui.product_tools.mtools_info.di.Product_mToolsModule;
 import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsContract;
 import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsPresenter;
+import com.delta.smt.ui.product_tools.tools_info.ProduceToolsInfoActivity;
 
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -29,7 +34,9 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shaoqiang.Zhang on 2017/1/6.
  */
 
-public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter> implements Produce_mToolsContract.View,CommonBaseAdapter.OnItemClickListener<Product_mToolsInfo>{
+public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter> implements Produce_mToolsContract.View, CommonBaseAdapter.OnItemClickListener<Product_mToolsInfo> {
+
+    private final String TAG="Produce_mToolsActivity";
 
     @BindView(R.id.ProductInfoRecyclerView)
     RecyclerView mProductBorrowRecyclerView;
@@ -40,10 +47,28 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
 
+    @BindView(R.id.mToolsConfirm)
+    Button confirm;
+
+    @OnClick(R.id.mToolsConfirm)
+    public void confirmData(){
+        if(selectItem!=null) {
+            Intent i = new Intent();
+            Bundle b = new Bundle();
+            b.putSerializable(TAG, selectItem);
+            i.putExtras(b);
+            i.setClass(this, ProduceToolsInfoActivity.class);
+            startActivity(i);
+            finish();
+        }
+    }
+
     View selectView;
 
     List<Product_mToolsInfo> data;
     CommonBaseAdapter<Product_mToolsInfo> adapter;
+
+    Product_mToolsInfo selectItem;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -64,25 +89,25 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具借出");
 
-        data.add(0,new Product_mToolsInfo("序号","治具二维码","治具类型","所在架位"));
+        data.add(0, new Product_mToolsInfo("序号", "治具二维码", "治具类型", "所在架位"));
 
-        adapter=new CommonBaseAdapter<Product_mToolsInfo>(getContext(),data) {
+        adapter = new CommonBaseAdapter<Product_mToolsInfo>(getContext(), data) {
             @Override
             protected void convert(CommonViewHolder holder, Product_mToolsInfo item, int position) {
 
                 if (position == 0) {
 
-                    holder.setBackgroundColor(R.id.TurnNumber,0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.ProductToolsBarCode,0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.ProductToolsType,0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.ProductToolsLocation,0xFFf2f2f2);
+                    holder.setBackgroundColor(R.id.TurnNumber, 0xFFf2f2f2);
+                    holder.setBackgroundColor(R.id.ProductToolsBarCode, 0xFFf2f2f2);
+                    holder.setBackgroundColor(R.id.ProductToolsType, 0xFFf2f2f2);
+                    holder.setBackgroundColor(R.id.ProductToolsLocation, 0xFFf2f2f2);
 
-                }else {
+                } else {
 
-                    holder.setText(R.id.TurnNumber,item.getTurnNumber());
-                    holder.setText(R.id.ProductToolsBarCode,item.getProductToolsBarCode());
-                    holder.setText(R.id.ProductToolsType,item.getProductToolsType());
-                    holder.setText(R.id.ProductToolsLocation,item.getProductToolsLocation());
+                    holder.setText(R.id.TurnNumber, item.getTurnNumber());
+                    holder.setText(R.id.ProductToolsBarCode, item.getProductToolsBarCode());
+                    holder.setText(R.id.ProductToolsType, item.getProductToolsType());
+                    holder.setText(R.id.ProductToolsLocation, item.getProductToolsLocation());
 
                 }
 
@@ -106,7 +131,7 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
 
     @Override
     public void get_mToolsData(List<Product_mToolsInfo> data) {
-        this.data=data;
+        this.data = data;
     }
 
     @Override
@@ -129,10 +154,11 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
 
     @Override
     public void onItemClick(View view, Product_mToolsInfo item, int position) {
-        if(selectView!=null){
+        if (selectView != null) {
             selectView.setBackgroundColor(0xFFffffff);
         }
         view.setBackgroundColor(0xFF9FDEFF);
-        selectView=view;
+        selectView = view;
+        selectItem=item;
     }
 }
