@@ -1,9 +1,18 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning_fragment;
 
+import android.graphics.Color;
+import android.util.TypedValue;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
+import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,4 +42,28 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
             }
         });
     }
+
+/*    public void makePopupWindow(PopupWindow mPopupWindow, DialogRelativelayout mDialogRelativelayout
+            , ArrayList<String> barcodedatas) {
+        mPopupWindow=new PopupWindow(mDialogRelativelayout, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setOutsideTouchable(false);
+
+        mDialogRelativelayout.setStrSecondTitle("请进行接料");
+        barcodedatas.add("从备料车亮灯位置取出接料盘进行接料，" +
+                "接料完成后请扫描新料盘/FeederID/料站 完成接料操作");
+        mDialogRelativelayout.setStrContent(barcodedatas);
+
+        //动态生成布局
+        RelativeLayout layout = new RelativeLayout(getmActivity());
+        layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        TextView textView = new TextView(getmActivity());
+        textView.setText("确定");
+        textView.setTextColor(Color.RED);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        textView.setOnClickListener(this);
+        RelativeLayout.LayoutParams parm = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parm.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        layout.addView(textView,parm);
+        mDialogRelativelayout.addView(layout);
+    }*/
 }

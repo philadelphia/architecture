@@ -74,6 +74,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     protected void initData() {
 
+
         //设置接收哪种预警
         mWarningManger.addWarning(Constant.HAND_ADD, getClass());
         //是否接收预警 可以控制预警时机
@@ -250,10 +251,4 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         mItemDialog.show();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

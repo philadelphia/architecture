@@ -18,11 +18,15 @@ import rx.Observable;
 public interface ProduceLineContract {
     interface View extends IView {
         void getDataLineDatas(List<ItemProduceLine> itemProduceLine);
+        void showToast(String message);
         void getFailed();
 }
 
     interface Model extends IModel {
+
         Observable<List<ItemProduceLine>> getProductionLineDatas();
+
+        Observable<String> sumbitLine();
 
     }
 
