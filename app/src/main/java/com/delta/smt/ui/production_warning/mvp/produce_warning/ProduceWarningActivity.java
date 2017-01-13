@@ -2,15 +2,18 @@ package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
@@ -37,26 +40,30 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.yokeyword.fragmentation.SupportFragment;
+
+import static com.delta.smt.R.id.toolbar;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
 public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter> implements
-        TabLayout.OnTabSelectedListener,ProduceWarningContract.View, WarningManger.OnWarning {
+        TabLayout.OnTabSelectedListener, ProduceWarningContract.View, WarningManger.OnWarning {
 
+
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
     @BindView(R.id.tl_title)
-    TabLayout tlTitle;
+    AutoTabLayout mTlTitle;
     @BindView(R.id.fl_container)
-    FrameLayout flContainer;
-    @BindView(R.id.header_back)
-    RelativeLayout mHeaderBack;
-    @BindView(R.id.header_title)
-    TextView mHeaderTitle;
-    @BindView(R.id.header_setting)
-    TextView mHeaderSetting;
+    FrameLayout mFlContainer;
     private ProduceWarningFragment mProduceWarningFragment;
     private ProduceBreakdownFragment mProduceBreakdownFragment;
     private ProduceInfoFragment mProduceInfoFragment;
@@ -65,11 +72,10 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     private String[] titles;
 
 
-
     @Inject
     WarningManger warningManger;
     private AlertDialog alertDialog;
-    private boolean item_run_tag=false;
+    private boolean item_run_tag = false;
     private String lastWarningMessage;
 
 
@@ -87,6 +93,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     protected void initData() {
 
         getPresenter().getTitileNumber();
+
+        //注册广播初始化
         warningManger.addWarning(Constant.PRODUCE_WARNING, getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
@@ -94,17 +102,22 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     @Override
     protected void initView() {
-            mHeaderTitle.setText("生产中预警");
-            for (int i = 0; i < titles.length; i++) {
-                tlTitle.addTab(tlTitle.newTab());
-            }
-            ViewUtils.setTabTitle(tlTitle, titles);
-            tlTitle.addOnTabSelectedListener(this);
-            mProduceBreakdownFragment=new ProduceBreakdownFragment();
-            mProduceInfoFragment=new ProduceInfoFragment();
-            mProduceWarningFragment = new ProduceWarningFragment();
-            loadMultipleRootFragment(R.id.fl_container,0,mProduceWarningFragment,mProduceBreakdownFragment,mProduceInfoFragment);
-            currentFragment = mProduceWarningFragment;
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        mToolbarTitle.setText("生产中预警");
+
+        for (int i = 0; i < titles.length; i++) {
+            mTlTitle.addTab(mTlTitle.newTab());
+        }
+        ViewUtils.setTabTitle(mTlTitle, titles);
+        mTlTitle.addOnTabSelectedListener(this);
+        mProduceBreakdownFragment = new ProduceBreakdownFragment();
+        mProduceInfoFragment = new ProduceInfoFragment();
+        mProduceWarningFragment = new ProduceWarningFragment();
+        loadMultipleRootFragment(R.id.fl_container, 0, mProduceWarningFragment, mProduceBreakdownFragment, mProduceInfoFragment);
+        currentFragment = mProduceWarningFragment;
 
     }
 
@@ -131,16 +144,16 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
-                showHideFragment(mProduceWarningFragment,currentFragment);
-                currentFragment=mProduceWarningFragment;
+                showHideFragment(mProduceWarningFragment, currentFragment);
+                currentFragment = mProduceWarningFragment;
                 break;
             case 1:
-                showHideFragment(mProduceBreakdownFragment,currentFragment);
-                currentFragment=mProduceBreakdownFragment;
+                showHideFragment(mProduceBreakdownFragment, currentFragment);
+                currentFragment = mProduceBreakdownFragment;
                 break;
             case 2:
-                showHideFragment(mProduceInfoFragment,currentFragment);
-                currentFragment=mProduceInfoFragment;
+                showHideFragment(mProduceInfoFragment, currentFragment);
+                currentFragment = mProduceInfoFragment;
                 break;
             default:
                 break;
@@ -159,16 +172,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     }
 
-    @OnClick({R.id.header_back, R.id.header_setting})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.header_back:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-            case R.id.header_setting:
-                break;
-        }
-    }
+
 
 
     @Override
@@ -185,12 +189,12 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         titles = new String[]{"预警", "故障", "消息"};
     }
 
-    //就收到预警广播触发的方法
+    //收到预警广播触发的方法
     @Override
     public void warningComing(String warningMessage) {
-        if(item_run_tag){
-            lastWarningMessage=warningMessage;
-        } else if (alertDialog!=null&&alertDialog.isShowing()) {
+        if (item_run_tag) {
+            lastWarningMessage = warningMessage;
+        } else if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.dismiss();
             alertDialog = createDialog(warningMessage);
         } else {
@@ -220,20 +224,34 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     //Fragment点击item触发事件处理
     @Subscribe
-    public void event(BroadcastCancel broadcastCancel){
-        item_run_tag=true;
+    public void event(BroadcastCancel broadcastCancel) {
+        item_run_tag = true;
         Log.e(TAG, "event4: ");
     }
 
     //Fragment中item处理完触发事件处理
     @Subscribe
-    public void event(BroadcastBegin broadcastbegin){
-        item_run_tag=false;
-        if (lastWarningMessage!=null){
+    public void event(BroadcastBegin broadcastbegin) {
+        item_run_tag = false;
+        if (lastWarningMessage != null) {
             alertDialog = createDialog(lastWarningMessage);
-            lastWarningMessage=null;
+            lastWarningMessage = null;
         }
         Log.e(TAG, "event5: ");
     }
 
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

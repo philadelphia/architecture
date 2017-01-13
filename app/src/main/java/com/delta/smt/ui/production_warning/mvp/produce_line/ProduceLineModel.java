@@ -27,4 +27,9 @@ public class ProduceLineModel extends BaseModel<ApiService> implements ProduceLi
     public Observable<List<ItemProduceLine>> getProductionLineDatas() {
         return getService().getLineDatas();
     }
+
+    @Override
+    public Observable<String> sumbitLine() {
+        return getService().sumbitLine();
+    }
 }

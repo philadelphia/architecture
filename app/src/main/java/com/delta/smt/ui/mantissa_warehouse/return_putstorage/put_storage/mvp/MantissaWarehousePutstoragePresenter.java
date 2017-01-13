@@ -2,8 +2,7 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
-import com.delta.smt.entity.MantissaWarehousePutstorage;
-import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp.MantissaWarehousePutstorageContract;
+import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 
 import java.util.List;
 
@@ -25,34 +24,36 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
 
     public void getMantissaWarehousePutstorage(){
 
-        getModel().getMantissaWarehousePutstorage().subscribe(new Action1<List<MantissaWarehousePutstorage>>() {
+        getModel().getMantissaWarehousePutstorage().subscribe(new Action1<MantissaWarehousePutstorageResult>() {
             @Override
-            public void call(List<MantissaWarehousePutstorage> mantissaWarehousePutstorage) {
+            public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
-                getView().getSucess(mantissaWarehousePutstorage);
-
+                if("success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                    getView().getSucess(mantissaWarehousePutstorageResult.getData());
+                }else{
+                    getView().getFailed(mantissaWarehousePutstorageResult.getMsg());
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFailed();
-
+                getView().getFailed(throwable.getMessage());
             }
         });
 
     }
 
     public void getBeginPut(){
-        getModel().getbeginput().subscribe(new Action1<List<MantissaWarehousePutstorage>>() {
+        getModel().getbeginput().subscribe(new Action1<List<MantissaWarehousePutstorageResult>>() {
             @Override
-            public void call(List<MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
+            public void call(List<MantissaWarehousePutstorageResult> mantissaWarehousePutstorages) {
                 getView().getBeginSucess(mantissaWarehousePutstorages);
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getFailed();
+                getView().getBeginFailed();
             }
         });
     }

@@ -1,35 +1,40 @@
 package com.delta.smt.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
- * Created by Tao.ZT.Zhang on 2016/12/28.
+ * Author:   Tao.ZT.Zhang
+ * Date:     2016/12/28.
  */
 
 public class FeederCheckInItem {
+    @SerializedName("work_order")
     private String workItemID;
+
+    @SerializedName("feeder_id")
     private String feederID;
+
+    @SerializedName("material_num")
     private String materialID;
-    private String location;
-    private String checkInTimeStamp;
-    private String status;
+
+    private String shelves;
 
 
-    public FeederCheckInItem(String workItemID,String feederID,  String materialID, String location, String status) {
-        this.feederID = feederID;
-        this.location = location;
-        this.materialID = materialID;
-        this.status = status;
-        this.workItemID = workItemID;
-    }
+    private String used_time; //已用时间
 
-    public FeederCheckInItem(String workItemID,String feederID,  String materialID, String location, String checkInTimeStamp,String status) {
+    @SerializedName("op_time")
+    private String checkInTimeStamp;  //入库时间
+    private int status;
+
+    public FeederCheckInItem(String checkInTimeStamp, String feederID, String materialID, String shelves, int status, String used_time, String workItemID) {
         this.checkInTimeStamp = checkInTimeStamp;
         this.feederID = feederID;
-        this.location = location;
         this.materialID = materialID;
+        this.shelves = shelves;
         this.status = status;
+        this.used_time = used_time;
         this.workItemID = workItemID;
     }
-
 
     public String getCheckInTimeStamp() {
         return checkInTimeStamp;
@@ -47,14 +52,6 @@ public class FeederCheckInItem {
         this.feederID = feederID;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public String getMaterialID() {
         return materialID;
     }
@@ -63,12 +60,28 @@ public class FeederCheckInItem {
         this.materialID = materialID;
     }
 
-    public String getStatus() {
+    public String getShelves() {
+        return shelves;
+    }
+
+    public void setShelves(String shelves) {
+        this.shelves = shelves;
+    }
+
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getUsed_time() {
+        return used_time;
+    }
+
+    public void setUsed_time(String used_time) {
+        this.used_time = used_time;
     }
 
     public String getWorkItemID() {
@@ -86,8 +99,9 @@ public class FeederCheckInItem {
                 ", workItemID='" + workItemID + '\'' +
                 ", feederID='" + feederID + '\'' +
                 ", materialID='" + materialID + '\'' +
-                ", location='" + location + '\'' +
-                ", status='" + status + '\'' +
+                ", shelves='" + shelves + '\'' +
+                ", used_time='" + used_time + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

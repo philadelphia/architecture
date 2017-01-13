@@ -1,5 +1,7 @@
 package com.delta.smt;
 
+import org.apache.http.io.SessionOutputBuffer;
+
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -25,7 +27,6 @@ public class Constant {
     public static final int MODULE_UP_WARNING = 10;
     public static final int MODULE_DOWN_WARNING = 11;
 
-
     public static final int STORAGEREAD = 4;
 
 
@@ -37,6 +38,10 @@ public class Constant {
     public static final String MESSAGE_PROGRESS = "message_progress";
     public static final String MESSAGE_DIALOG_DISMISS = "message_dialog_dismiss";
     public static final String MESSAGE_FAILED = "message_failed";
+
+
+    public static final int ACTIVITY_REQUEST_WORK_ITEM_ID = 1;
+    public static final int ACTIVITY_RESULT_WORK_ITEM_ID = 10;
 
 
 }

@@ -9,7 +9,7 @@ import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetails;
-import com.delta.smt.entity.MantissaWarehousePutstorage;
+import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
 import com.delta.smt.entity.ModuleDownDetailsItem;
@@ -194,23 +194,8 @@ public class ServiceModule {
             }
 
             @Override
-            public Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage() {
-                List<MantissaWarehousePutstorage> datas = new ArrayList<>();
-                datas.add(new MantissaWarehousePutstorage("201512121234", "0351234701", "D33E02-02", "-", "等待退入"));
-                datas.add(new MantissaWarehousePutstorage("201512121234", "0351234701", "D33E02-02", "-", "等待退入"));
-                datas.add(new MantissaWarehousePutstorage("201512121234", "0351234701", "D33E02-02", "-", "等待退入"));
-                datas.add(new MantissaWarehousePutstorage("201512121235", "0351234702", "D33E02-02", "", "等待退入"));
-                datas.add(new MantissaWarehousePutstorage("201512121236", "0351234703", "D33E02-02", "", "等待退入"));
-                return Observable.just(datas);
-            }
-
-            @Override
-            public Observable<List<MantissaWarehousePutstorage>> getBeginput() {
-                List<MantissaWarehousePutstorage> datas = new ArrayList<>();
-                datas.add(new MantissaWarehousePutstorage("201512121234", "0351234701", "D33E02-02", "-", "等待退入"));
-                datas.add(new MantissaWarehousePutstorage("201512121234", "0351234701", "D33E02-02", "-", "等待退入"));
-                datas.add(new MantissaWarehousePutstorage("201512121234", "0351234701", "D33E02-02", "T-001", "开始退库"));
-                return Observable.just(datas);
+            public Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage() {
+                return null;
             }
 
             //故障预警
@@ -286,26 +271,10 @@ public class ServiceModule {
             @Override
             public Observable<List<ModuleUpBindingItem>> getModuleUpBindingItems() {
                 List<ModuleUpBindingItem> dataList = new ArrayList<ModuleUpBindingItem>();
-                dataList.add(new ModuleUpBindingItem("-","0351234700","03T021","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234701","03T022","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234702","03T023","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234703","03T024","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234704","03T025","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234705","03T026","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234706","03T027","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234707","03T028","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234708","03T029","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234709","03T030","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234710","03T031","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234711","03T032","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234712","03T033","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234713","03T034","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234714","03T035","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234715","03T036","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234716","03T037","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234717","03T038","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234718","03T039","-","2016082500"));
-                dataList.add(new ModuleUpBindingItem("-","0351234719","03T040","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","0353104700","03T021","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","1512445A00","03T022","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","15D2067A00","03T023","-","2016082500"));
+                dataList.add(new ModuleUpBindingItem("-","1511508A00","03T024","-","2016082500"));
                 return Observable.just(dataList);
             }
 
@@ -315,22 +284,6 @@ public class ServiceModule {
                 dataList.add(new VirtualLineBindingItem("1","-"));
                 dataList.add(new VirtualLineBindingItem("2","-"));
                 dataList.add(new VirtualLineBindingItem("3","-"));
-                dataList.add(new VirtualLineBindingItem("4","-"));
-                dataList.add(new VirtualLineBindingItem("5","-"));
-                dataList.add(new VirtualLineBindingItem("6","-"));
-                dataList.add(new VirtualLineBindingItem("7","-"));
-                dataList.add(new VirtualLineBindingItem("8","-"));
-                dataList.add(new VirtualLineBindingItem("9","-"));
-                dataList.add(new VirtualLineBindingItem("10","-"));
-                dataList.add(new VirtualLineBindingItem("11","-"));
-                dataList.add(new VirtualLineBindingItem("12","-"));
-                dataList.add(new VirtualLineBindingItem("13","-"));
-                dataList.add(new VirtualLineBindingItem("14","-"));
-                dataList.add(new VirtualLineBindingItem("15","-"));
-                dataList.add(new VirtualLineBindingItem("16","-"));
-                dataList.add(new VirtualLineBindingItem("17","-"));
-                dataList.add(new VirtualLineBindingItem("18","-"));
-                dataList.add(new VirtualLineBindingItem("19","-"));
                 return Observable.just(dataList);
             }
 
@@ -417,37 +370,24 @@ public class ServiceModule {
             @Override
             public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {
                 List<FeederCheckInItem> dataList = new ArrayList<>();
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
 
                 return Observable.just(dataList);
 
@@ -500,7 +440,7 @@ public class ServiceModule {
 
             @Override
             public Observable<Result> upLoadFeederSupplyResult() {
-                return Observable.just(new Result("success", "OK"));
+                return null;
             }
 
             @Override
@@ -620,6 +560,11 @@ public class ServiceModule {
                     datas.add(mItemHandAdd);
                 }*/
                 return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<String> sumbitLine() {
+                return null;
             }
 
             //LIN
