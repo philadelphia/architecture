@@ -2,8 +2,7 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
-import com.delta.smt.entity.BeginPut;
-import com.delta.smt.entity.MantissaWarehousePutstorage;
+import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 
 import java.util.List;
 
@@ -18,17 +17,18 @@ public interface MantissaWarehousePutstorageContract {
     public interface Model extends IModel {
 
 
-        Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage();
-        Observable<List<MantissaWarehousePutstorage>> getbeginput();
+        Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
+        Observable<List<MantissaWarehousePutstorageResult>> getbeginput();
 
     }
 
     public interface View extends IView {
 
-        void getSucess(List<MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getBeginSucess(List<MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getFailed();
+        void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void getBeginSucess(List<MantissaWarehousePutstorageResult> mantissaWarehousePutstorages);
+        void getFailed(String message);
         void getBeginFailed();
+
 
     }
 }
