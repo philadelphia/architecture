@@ -1,6 +1,8 @@
 package com.delta.smt.ui.smt_module.module_up;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -186,7 +189,12 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     public void onItemClick(View item, int position) {
-        IntentUtils.showIntent(this, ModuleUpBindingActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.WORK_ITEM_ID,dataList.get(position).getWorkItemID());
+        Intent intent = new Intent(this, ModuleUpBindingActivity.class);
+        intent.putExtras(bundle);
+        //this.startActivity(intent);
+        startActivityForResult(intent, Constant.ACTIVITY_REQUEST_WORK_ITEM_ID);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -199,5 +207,27 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==Constant.ACTIVITY_REQUEST_WORK_ITEM_ID) {
+            if(resultCode==Constant.ACTIVITY_RESULT_WORK_ITEM_ID) {
+                String result=data.getStringExtra(Constant.WORK_ITEM_ID);
+                //Toast.makeText(this, "result "+result, Toast.LENGTH_SHORT).show();
+                deleteItemByWorkItemID(result);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void deleteItemByWorkItemID(String workItemID){
+        for(ModuleUpWarningItem list_item:dataList){
+            if(list_item.getWorkItemID().equals(workItemID)){
+                dataList.remove(list_item);
+                break;
+            }
+        }
+        myAdapter.notifyDataSetChanged();
     }
 }

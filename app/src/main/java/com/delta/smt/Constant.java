@@ -40,4 +40,8 @@ public class Constant {
     public static final String MESSAGE_FAILED = "message_failed";
 
 
+    public static final int ACTIVITY_REQUEST_WORK_ITEM_ID = 1;
+    public static final int ACTIVITY_RESULT_WORK_ITEM_ID = 10;
+
+
 }

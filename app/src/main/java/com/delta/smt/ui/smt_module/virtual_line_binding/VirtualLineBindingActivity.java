@@ -1,6 +1,9 @@
 package com.delta.smt.ui.smt_module.virtual_line_binding;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,21 +15,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
+import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.Feeder;
+import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.ui.smt_module.module_down_details.ModuleDownDetailsActivity;
+import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.DaggerVirtualLineBindingComponent;
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.VirtualLineBindingModule;
 import com.delta.smt.ui.smt_module.virtual_line_binding.mvp.VirtualLineBindingContract;
 import com.delta.smt.ui.smt_module.virtual_line_binding.mvp.VirtualLineBindingPresenter;
+import com.delta.smt.utils.BarCodeUtils;
+import com.delta.smt.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +51,7 @@ import butterknife.OnClick;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View, BarCodeIpml.OnScanSuccessListener{
+public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View, BarCodeIpml.OnScanSuccessListener {
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -56,8 +69,17 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     private List<VirtualLineBindingItem> dataList = new ArrayList<VirtualLineBindingItem>();
     private List<VirtualLineBindingItem> dataSource = new ArrayList<VirtualLineBindingItem>();
 
+    //假数据
+    private List<String> virtualData = new ArrayList<>();
+
     //二维码
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
+
+    private String moduleIDCache = null;
+    private String virtualModuleIDCache = null;
+
+    private int scan_position = -1;
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -66,6 +88,12 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
     @Override
     protected void initData() {
+        //假数据
+        virtualData.clear();
+        virtualData.add("0353104700");
+        virtualData.add("1512445A00");
+        virtualData.add("15D2067A00");
+
         getPresenter().getAllVirtualLineBindingItems();
         barCodeIpml.setOnGunKeyPressListener(this);
     }
@@ -97,7 +125,13 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         adapter = new CommonBaseAdapter<VirtualLineBindingItem>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, VirtualLineBindingItem item, int position) {
-                holder.itemView.setBackgroundColor(Color.WHITE);
+                if (scan_position == -1) {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                } else if (scan_position == position) {
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                } else {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                }
                 holder.setText(R.id.tv_moduleID, item.getModuleID());
                 holder.setText(R.id.tv_virtualModuleID, item.getVirtualModuleID());
             }
@@ -160,7 +194,45 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
     @Override
     public void onScanSuccess(String barcode) {
-        Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
+        BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+        if (BarCodeUtils.barCodeType(barcode) != null) {
+            switch (BarCodeUtils.barCodeType(barcode)) {
+                case MATERIAL_BLOCK_BARCODE:
+                    try {
+                        MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                        String materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
+                        int index = getModuleIndex(materialBlockNumber);
+                        if (index != -1) {
+                            if (virtualModuleIDCache != null) {
+                                moduleIDCache = null;
+                                virtualModuleIDCache = null;
+                            }
+                            //设置高亮
+                            moduleIDCache = index + "";
+                            setItemHighLightBasedOnMID(moduleIDCache);
+                        } else {
+                            Toast.makeText(this, "列表中不包含此码!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (EntityNotFountException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    Toast.makeText(this, "此处不支持此类型码!", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        } else {
+            //Toast.makeText(this, "虚拟模组!", Toast.LENGTH_SHORT).show();
+            if (moduleIDCache != null && virtualModuleIDCache == null) {
+                setItemVirtualModuleID(barcode, moduleIDCache);
+                updateBindingFinishButtonState();
+            } else {
+                Toast.makeText(this, "请首先扫描料盘码!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
     @Override
@@ -183,5 +255,53 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateBindingFinishButtonState() {
+        boolean temp = false;
+        if (dataSource.size() > 0) {
+            for (VirtualLineBindingItem list_item : dataSource) {
+                if (list_item.getVirtualModuleID().equals("-")) {
+                    temp = true;
+                    break;
+                }
+            }
+            if(temp){
+                btnVirtualLineBindingFinish.setEnabled(false);
+            }else{
+                btnVirtualLineBindingFinish.setEnabled(true);
+            }
+        }
+    }
+
+    public int getModuleIndex(String materialBlockNum) {
+        for (int i = 0; i < virtualData.size(); i++) {
+            if (virtualData.get(i).equals(materialBlockNum)) {
+                return i + 1;
+            }
+        }
+        return -1;
+    }
+
+    public void setItemVirtualModuleID(String virtualModuleID, String moduleID) {
+        if (dataSource.size() > 0) {
+            for (VirtualLineBindingItem listItem : dataSource) {
+                if (listItem.getModuleID().equals(moduleID)) {
+                    listItem.setVirtualModuleID(virtualModuleID);
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+    }
+
+    public void setItemHighLightBasedOnMID(String moduleID) {
+        for (int i = 0; i < dataSource.size(); i++) {
+            if (dataSource.get(i).getModuleID().equals(moduleID)) {
+                scan_position = i;
+                break;
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 }

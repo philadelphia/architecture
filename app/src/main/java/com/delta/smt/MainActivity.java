@@ -27,7 +27,7 @@ import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.Download;
 import com.delta.smt.entity.Update;
-import com.delta.smt.service.WarningService;
+import com.delta.smt.service.warningService.WarningService;
 import com.delta.smt.ui.checkstock.CheckStockActivity;
 import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 import com.delta.smt.ui.main.di.DaggerMainComponent;
@@ -195,7 +195,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "治具入架位":
                 IntentUtils.showIntent(this, ProduceToolsLocationActivity.class);
                 break;
-
             default:
                 break;
         }

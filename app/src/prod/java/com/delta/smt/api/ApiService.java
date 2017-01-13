@@ -16,7 +16,9 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductWorkItem;
+import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
@@ -54,8 +56,14 @@ public interface ApiService {
     @POST
     Observable<List<WareHouse>> getAllWareHouse();
 
-    @POST
-    Observable<List<FeederCheckInItem>> getAllCheckedInFeeders();
+
+
+    /*
+     获取feeder入库列表
+     tao.zt.zhang
+     */
+    @GET("http://172.22.34.21:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+    Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     @POST
     Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
@@ -129,7 +137,11 @@ public interface ApiService {
 
     Observable<List<ProductWorkItem>> getProductWorkItem();
 
-    Observable<List<Product_mToolsInfo>> getProductToolsInfoItem();
+    Observable<List<ProductToolsInfo>> getProductToolsInfoItem();
+
+    Observable<List<Product_mToolsInfo>> getProduct_mToolsInfo();
+
+    Observable<List<ProductToolsBack>> getProductToolsBack();
 
     //仓库房备料和尾数仓
     @POST
@@ -146,4 +158,6 @@ public interface ApiService {
     Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
+
+
 }
