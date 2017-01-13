@@ -84,7 +84,7 @@ public class ServiceModule {
                 dataList.add(new WareHouse(11, "Feeder缓冲区"));
 
                 return Observable.just(dataList);
-            }f
+            }
 
             @Override
             public Observable<List<StorageReady>> getStorageReadyDates() {
