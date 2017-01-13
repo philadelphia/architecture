@@ -1,12 +1,10 @@
-package com.delta.smt.service;
+package com.delta.smt.service.warningService;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,13 +13,20 @@ import android.view.WindowManager;
 
 import com.delta.smt.Constant;
 import com.delta.smt.R;
+import com.delta.smt.api.API;
 import com.delta.smt.app.App;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.WarningManger;
+import com.delta.smt.service.warningService.di.DaggerWarningComponent;
+import com.delta.smt.service.warningService.di.WebSocketClientModule;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import javax.inject.Inject;
+
+import okhttp3.Response;
+import okhttp3.WebSocket;
 
 /**
  * @description :
@@ -30,16 +35,11 @@ import java.util.List;
  */
 
 
-public class
-WarningService extends Service implements ActivityMonitor.OnAppStateChangeListener {
+public class WarningService extends Service implements ActivityMonitor.OnAppStateChangeListener, com.delta.smt.service.warningService.WebSocketClientListener {
 
-    private Context context;
-    private List<String> warningString;
-    private int currentType = 0;
-
-
+    @Inject
+    WebSocket webSocket;
     private boolean foreground = true;
-    private Handler handler;
     private Activity topActivity;
 
     @Override
@@ -47,7 +47,8 @@ WarningService extends Service implements ActivityMonitor.OnAppStateChangeListen
         super.onCreate();
         ActivityMonitor.getInstance().registerAppStateChangeListener(this);
         ActivityMonitor.setStrictForeground(true);
-
+        WebSocketClientModule module = new WebSocketClientModule.Builder().httpurl(API.WebSocketURl).webSocketClientListener(this).build();
+        DaggerWarningComponent.builder().websocketClientModule(module).build().inject(this);
     }
 
     @Override
@@ -147,5 +148,20 @@ WarningService extends Service implements ActivityMonitor.OnAppStateChangeListen
         Activity topActivity = ActivityMonitor.getInstance().getTopActivity();
         Log.e("-----", "onAppStateChange: " + foreground + topActivity.getClass().getName());
         this.foreground = foreground;
+    }
+
+    @Override
+    public void onOpen(WebSocket webSocket, Response response) {
+
+    }
+
+    @Override
+    public void onMessage(WebSocket webSocket, String text) {
+
+    }
+
+    @Override
+    public void onClosed(WebSocket webSocket, String reason) {
+
     }
 }
