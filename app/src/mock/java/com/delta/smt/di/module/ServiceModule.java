@@ -606,6 +606,11 @@ public class ServiceModule {
                 return Observable.just(datas);
             }
 
+            @Override
+            public Observable<String> sumbitLine() {
+                return null;
+            }
+
             //LIN
             public Observable<List<CheckStock>> getCheckStock() {
                 List<CheckStock> data = new ArrayList<>();

@@ -82,8 +82,9 @@ public interface ApiService {
 
     Observable<List<ItemInfo>> getItemInfoDatas();
 
-
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
+
+    Observable<String> sumbitLine();
 
 
     //接口PCB库房发料

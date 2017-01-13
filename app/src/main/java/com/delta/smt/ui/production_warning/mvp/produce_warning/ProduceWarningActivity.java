@@ -93,6 +93,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     protected void initData() {
 
         getPresenter().getTitileNumber();
+
+        //注册广播初始化
         warningManger.addWarning(Constant.PRODUCE_WARNING, getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
@@ -105,6 +107,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("生产中预警");
+
         for (int i = 0; i < titles.length; i++) {
             mTlTitle.addTab(mTlTitle.newTab());
         }
@@ -186,7 +189,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         titles = new String[]{"预警", "故障", "消息"};
     }
 
-    //就收到预警广播触发的方法
+    //收到预警广播触发的方法
     @Override
     public void warningComing(String warningMessage) {
         if (item_run_tag) {
@@ -237,12 +240,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         Log.e(TAG, "event5: ");
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

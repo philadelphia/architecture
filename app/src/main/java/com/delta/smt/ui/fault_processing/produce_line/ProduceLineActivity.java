@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
+import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -119,6 +120,11 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter> impl
         datas.addAll(itemProduceLines);
         //对adapter刷新改变
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showToast(String message) {
+
     }
 
     @Override

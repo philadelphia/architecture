@@ -65,7 +65,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     private ItemCountdownViewAdapter<ItemWarningInfo> mAdapter;
     private List<ItemWarningInfo> datas = new ArrayList<>();
 
-    DialogRelativelayout mDialogRelativelayout;
+    private DialogRelativelayout mDialogRelativelayout;
     public ArrayList<String> barcodedatas = new ArrayList<>();
     private BaseActivity baseActiviy;
     private String currentBarcode;
@@ -78,6 +78,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     protected void initView() {
         Log.i(TAG, "initView: ");
+
         mAdapter = new ItemCountdownViewAdapter<ItemWarningInfo>(getContext(), datas) {
             @Override
             protected int getLayoutId() {
@@ -125,6 +126,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             baseActiviy.addOnBarCodeSuccess(this);
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -148,6 +150,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             mAdapter.cancelRefreshTime();
         }
     }
+
     //注入初始化
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -270,6 +273,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                                     (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                             currentBarcode ="料盘："+mMaterialBlockBarCode.getDeltaMaterialNumber();
                         } catch (EntityNotFountException e) {
+
                             e.printStackTrace();
                         }
                     }else currentBarcode=null;
