@@ -80,6 +80,7 @@ public class ClientModule {
         final Retrofit.Builder builder = new Retrofit.Builder();
         return configureRetrofit(builder, client, httpUrl);
     }
+
     @Singleton
     @Provides
     HttpUrl provideBaseUrl() {
