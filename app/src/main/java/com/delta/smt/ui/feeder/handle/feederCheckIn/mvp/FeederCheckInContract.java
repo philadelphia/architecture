@@ -4,6 +4,7 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.Result;
 
 import java.util.List;
 
@@ -21,6 +22,6 @@ public interface FeederCheckInContract {
     }
 
     interface  Model extends IModel{
-         Observable<List<FeederCheckInItem>> getAllCheckedInFeeders();
+         Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
     }
 }

@@ -60,7 +60,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
 
     @Override
     protected void initView() {
-        dataList.add(new FeederCheckInItem("", "", "", "", ""));
+        dataList.add(new FeederCheckInItem(" ", " "," "," ", 0, " ", " "));
         CommonBaseAdapter<FeederCheckInItem> adapterTitle = new CommonBaseAdapter<FeederCheckInItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederCheckInItem item, int position) {
@@ -91,8 +91,9 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
                 holder.setText(R.id.tv_feederID, item.getFeederID());
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_location, item.getShelves());
+                holder.setText(R.id.tv_usedTime, item.getUsed_time());
                 holder.setText(R.id.tv_chkinTimestamp, item.getCheckInTimeStamp());
-                holder.setText(R.id.tv_status, item.getStatus());
+                holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待入库" :"已经入库");
             }
 
             @Override
@@ -130,7 +131,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
     }
 
     @Override
-    public void onFailed() {
+    public void onFailed(String message) {
 
     }
 

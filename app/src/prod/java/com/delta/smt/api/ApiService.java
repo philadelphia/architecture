@@ -62,8 +62,8 @@ public interface ApiService {
      获取feeder入库列表
      tao.zt.zhang
      */
-    @POST
-    Observable<List<FeederCheckInItem>> getAllCheckedInFeeders();
+    @GET("http://172.22.34.21:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+    Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     @POST
     Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();

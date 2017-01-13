@@ -84,7 +84,7 @@ public class ServiceModule {
                 dataList.add(new WareHouse(11, "Feeder缓冲区"));
 
                 return Observable.just(dataList);
-            }
+            }f
 
             @Override
             public Observable<List<StorageReady>> getStorageReadyDates() {
@@ -401,37 +401,24 @@ public class ServiceModule {
             @Override
             public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {
                 List<FeederCheckInItem> dataList = new ArrayList<>();
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
-                dataList.add(new FeederCheckInItem("201689763", "KT8FL 139060", "0351234707", "001-02023", "等待入库"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
+                dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
 
                 return Observable.just(dataList);
 
