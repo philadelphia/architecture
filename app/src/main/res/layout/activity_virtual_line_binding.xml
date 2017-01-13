@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="虚拟线体绑定完成" />
 

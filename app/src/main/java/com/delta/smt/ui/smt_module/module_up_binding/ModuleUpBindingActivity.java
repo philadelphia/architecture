@@ -217,7 +217,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            Intent intent=new Intent();
+                                            Intent intent = new Intent();
                                             intent.putExtra(Constant.WORK_ITEM_ID, workItemID);
                                             setResult(Constant.ACTIVITY_RESULT_WORK_ITEM_ID, intent);
                                             dialogInterface.dismiss();
@@ -289,21 +289,27 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     public void setItemFeederNumber(String feederNumber, String materialBlockCode) {
-        for (ModuleUpBindingItem listItem : dataSource) {
-            if (listItem.getMaterialID().equals(materialBlockCode)) {
-                listItem.setFeederID(feederNumber);
+        if (dataSource.size() > 0) {
+            for (ModuleUpBindingItem listItem : dataSource) {
+                if (listItem.getMaterialID().equals(materialBlockCode)) {
+                    listItem.setFeederID(feederNumber);
+                }
             }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
+
     }
 
     public void setItemModuleUpDateAndTime(String upTime, String materialBlockCode) {
-        for (ModuleUpBindingItem listItem : dataSource) {
-            if (listItem.getMaterialID().equals(materialBlockCode)) {
-                listItem.setModuleUpTime(upTime);
+        if (dataSource.size() > 0) {
+            for (ModuleUpBindingItem listItem : dataSource) {
+                if (listItem.getMaterialID().equals(materialBlockCode)) {
+                    listItem.setModuleUpTime(upTime);
+                }
             }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -324,20 +330,30 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     public boolean isExistInDataSource(String item, List<ModuleUpBindingItem> list) {
-        for (ModuleUpBindingItem list_item : list) {
-            if (list_item.getMaterialID().equals(item)) {
-                return true;
+        if (list.size() > 0) {
+            for (ModuleUpBindingItem list_item : list) {
+                if (list_item.getMaterialID().equals(item)) {
+                    return true;
+                }
             }
+            return false;
+        } else {
+            return false;
         }
-        return false;
+
     }
 
     public boolean isAllFeederScaned() {
-        for (ModuleUpBindingItem listItem : dataSource) {
-            if (listItem.getFeederID().equals("-")) {
-                return false;
+        if (dataSource.size() > 0) {
+            for (ModuleUpBindingItem listItem : dataSource) {
+                if (listItem.getFeederID().equals("-")) {
+                    return false;
+                }
             }
+            return true;
+        } else {
+            return false;
         }
-        return true;
+
     }
 }
