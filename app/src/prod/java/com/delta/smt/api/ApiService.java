@@ -159,7 +159,7 @@ public interface ApiService {
 
     Observable<List<StorageDetails>> getStorageDetails();
 
-    Observable<String> sumbitLine();
+//    Observable<String> sumbitLine();
 
 
 
