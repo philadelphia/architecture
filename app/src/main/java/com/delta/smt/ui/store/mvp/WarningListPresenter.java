@@ -2,16 +2,20 @@ package com.delta.smt.ui.store.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.OutBound;
+import com.delta.smt.entity.ParameterOutBound;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.Success;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.functions.Action1;
+
+import static android.R.attr.id;
 
 /**
  * Created by Lin.Hou on 2016-12-27.
@@ -60,9 +64,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
 
-    public  void fetchPcbNumber(){
-        String s=null;
-        getModel().getPcbNumber(s).subscribe(new Action1<PcbNumber>() {
+    public  void fetchPcbNumber(String streamNumber){
+        getModel().getPcbNumber(streamNumber).subscribe(new Action1<PcbNumber>() {
             @Override
             public void call(PcbNumber pcbNumber) {
             if ("0".equals(pcbNumber.getCode())){
@@ -79,8 +82,12 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
 
-    public void fetchPcbSuccess(){
-        final String s=null;
+    public void fetchPcbSuccess(int amout, int id){
+        Gson gson=new Gson();
+        List<ParameterOutBound> list=new ArrayList<>();
+        ParameterOutBound parameterOutBound=new ParameterOutBound(id,amout);
+        list.add(parameterOutBound);
+        String s=gson.toJson(list).toString();
         getModel().getPcbSuccess(s).subscribe(new Action1<Success>() {
             @Override
             public void call(Success success) {

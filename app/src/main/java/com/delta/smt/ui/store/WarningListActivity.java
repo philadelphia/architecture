@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,7 +19,6 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
-import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -40,8 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.iwgang.familiarrecyclerview.IFamiliarLoadMore;
 
 
 /**
@@ -67,9 +65,11 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     RecyclerView recyContetn;
     @BindView(R.id.activity_mianview)
     LinearLayout activityMianview;
-
+    @BindView(R.id.ed_pcb_demand)
+    TextView edPcbDemand;
 
     List<OutBound.DataBean> mList = new ArrayList<>();
+
     private CommonBaseAdapter<OutBound.DataBean> mAdapter;
     private int position = 0;
     private String mWorkNumberString;
@@ -77,6 +77,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     private String mMaterialNumberString;
     private MaterialBlockBarCode mMaterbarCode;
     private FrameLocation mFramebarCode;
+    private int mAmout;
+    private int mId;
+    private int mAmoutString;
 
 
     @Override
@@ -91,6 +94,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
             mWorkNumberString = bundle.getString("workNumber");
             mMachineString = bundle.getString("machine");
             mMaterialNumberString = bundle.getString("materialNumber");
+            mAmoutString = bundle.getInt("amout");
             Log.i("info-->", mWorkNumberString);
             Log.i("info-->", mMachineString);
             Log.i("info-->", mMaterialNumberString);
@@ -126,7 +130,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
             protected void convert(CommonViewHolder holder, OutBound.DataBean item, int position) {
                 holder.setText(R.id.pcb_number, item.getPartNum());
                 holder.setText(R.id.pcb_price, item.getSubShelfSerial());
-                if (item.getAmount()==0) {
+                if (item.getAmount() == 0) {
                     holder.setText(R.id.pcb_thenumber, "");
                 }
                 holder.setText(R.id.pcb_code, item.getPcbCode());
@@ -137,7 +141,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                     }
 
                 }
-                if ("0".equals(String.valueOf(item.getAmount()))){
+                if ("0".equals(String.valueOf(item.getAmount()))) {
 
                     if (mFramebarCode != null) {
                         if (mFramebarCode.getSource().equals(mList.get(0).getSubShelfSerial())) {
@@ -172,20 +176,22 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     protected int getContentViewId() {
         return R.layout.activity_warning;
     }
-    
+
 
     @Override
     public void onFailed() {
 
     }
-    
+
     @Override
     public void onSucessState(String s) {
-        Snackbar.make(activityMianview,"发料成功",Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_INDEFINITE).show();
         recyContetn.scrollToPosition(position + 1);//请求+1
         mList.get(position).setColor(false);
         mList.get(position + 1).setColor(true);
         mAdapter.notifyDataSetChanged();
+        edPcbDemand.setText(""+(100-mAmout));
+
     }
 
     @Override
@@ -199,23 +205,29 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     public void getNumberSucces(PcbNumber.DataBean dataBean) {
         mList.get(position).setAmount(dataBean.getAmount());
         mList.get(position).setId(dataBean.getId());
+        mAdapter.notifyDataSetChanged();
+        mAmout = dataBean.getAmount();
+        mId = dataBean.getId();
     }
 
     @Override
     public void onScanSuccess(String barcode) {
-        ToastUtils.showMessage(this,"--->"+barcode);
-        Log.i("BARCODE","---->"+barcode);
+        ToastUtils.showMessage(this, "--->" + barcode);
+        Log.i("BARCODE", "---->" + barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
             if (BarCodeUtils.barCodeType(barcode) != null) {
                 switch (BarCodeUtils.barCodeType(barcode)) {
                     case MATERIAL_BLOCK_BARCODE:
                         mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                        if (mMaterbarCode.getStreamNumber()!=null){
+                            getPresenter().fetchPcbNumber(mMaterbarCode.getStreamNumber());
+                        }
                         break;
                     case FRAME_LOCATION:
                         mFramebarCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
-                        if ("0".equals(String.valueOf(mList.get(position).getAmount()))&&"0".equals(String.valueOf(mList.get(position).getId()))){
-
+                        if ("0".equals(String.valueOf(mAmout)) && "0".equals(String.valueOf(mId))) {
+                            getPresenter().fetchPcbSuccess(mAmout, mId);
                         }
                         break;
                 }
@@ -230,10 +242,10 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     }
 
 
-    @OnClick({R.id.header_back,R.id.header_setting})
+    @OnClick({R.id.header_back, R.id.header_setting})
     public void onHeaderClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.header_back:
                 IntentUtils.showIntent(this, StoreIssueActivity.class);
                 break;
@@ -242,4 +254,6 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 break;
         }
     }
+
+
 }
