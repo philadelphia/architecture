@@ -15,10 +15,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
@@ -42,6 +44,11 @@ import butterknife.OnClick;
  */
 
 public class SettingActivity extends BaseActivity<MainPresenter> implements MainContract.View {
+
+    @BindView(R.id.toolbar)
+    AutoToolbar toolbar;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
 
     @BindView(R.id.setting_update)
     TextView checkUpdateButton;
@@ -69,7 +76,11 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
 
     @Override
     protected void initView() {
-
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbarTitle.setText("设置");
     }
 
     @OnClick({R.id.setting_update})
@@ -256,5 +267,17 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
             bManager.unregisterReceiver(broadcastReceiver);
         }
 
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
