@@ -7,15 +7,14 @@ import java.util.List;
  */
 
 public class MantissaWarehousePutstorageResult {
-//MantissaWarehousePutstorageResult
-
     /**
      * msg : success
-     * data : [{"label":"11111","material_num":"4020108700","serial_num":"12344","shelves":"A1D001","status":1}]
+     * rows : [{"label":"11111","material_num":"4020108700","serial_num":"12344","shelves":"A1D001","status":1}]
      */
 
+    private String code;
     private String msg;
-    private List<MantissaWarehousePutstorage> data;
+    private List<MantissaWarehousePutstorage> rows;
 
     public String getMsg() {
         return msg;
@@ -25,13 +24,14 @@ public class MantissaWarehousePutstorageResult {
         this.msg = msg;
     }
 
-    public List<MantissaWarehousePutstorage> getData() {
-        return data;
+    public List<MantissaWarehousePutstorage> getrows() {
+        return rows;
     }
 
-    public void setData(List<MantissaWarehousePutstorage> data) {
-        this.data = data;
+    public void setrows(List<MantissaWarehousePutstorage> rows) {
+        this.rows = rows;
     }
+
 
     public static class MantissaWarehousePutstorage {
         /**

@@ -45,12 +45,10 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     @BindView(R.id.bound)
     Button mBound;
     private List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> dataList = new ArrayList();
-    private List<MantissaWarehousePutstorageResult> dataList2 = new ArrayList();
+    private List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter;
-    private CommonBaseAdapter<MantissaWarehousePutstorageResult> adapter2;
-    private View mInflate;
+    private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter2;
     private BaseActivity baseActiviy;
-
 
     @Override
     public void onAttach(Context context) {
@@ -66,10 +64,25 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     @Override
     protected void initView() {
 
+        dataList.add(new MantissaWarehousePutstorageResult.MantissaWarehousePutstorage("", "", "", "", ""));
         adapter = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item, int position) {
                 holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item) {
+                return R.layout.mantissa_putstorage_item;
+            }
+        };
+        mRecyTitle.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyTitle.setAdapter(adapter);
+
+
+        adapter2 = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getContext(), dataList2) {
+            @Override
+            protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item, int position) {
 
                 holder.setText(R.id.tv_number, item.getMaterial_num());
                 holder.setText(R.id.tv_serialNumber, item.getSerial_num());
@@ -85,30 +98,8 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
             }
         };
 
-
-
-        mRecyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mRecyTitle.setAdapter(adapter);
-
-
-//        adapter2 = new CommonBaseAdapter<MantissaWarehousePutstorageResult>(getContext(), dataList2) {
-//            @Override
-//            protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageResult item, int position) {
-//                holder.setText(R.id.tv_number, item.g);
-//                holder.setText(R.id.tv_serialNumber, item.getSerialNumber());
-//                holder.setText(R.id.tv_location, item.getLocation());
-//                holder.setText(R.id.tv_tag, item.getTag());
-//                holder.setText(R.id.tv_type, item.getType());
-//            }
-//
-//            @Override
-//            protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageResult item) {
-//                return R.layout.mantissa_putstorage_item;
-//            }
-//
-//        };
-//        mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-//        mRecyContetn.setAdapter(adapter);
+        mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mRecyContetn.setAdapter(adapter2);
 
     }
 
@@ -130,19 +121,23 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
 
 
     @Override
-    public void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
-
-        dataList.clear();
-        dataList.addAll(mantissaWarehousePutstorages);
-        adapter.notifyDataSetChanged();
+    public void getSucessUpdate(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehousePutstorages);
+        adapter2.notifyDataSetChanged();
     }
 
     @Override
-    public void getBeginSucess(List<MantissaWarehousePutstorageResult> mantissaWarehousePutstorages) {
+    public void getFailedUpdate(String message) {
 
-//        dataList2.clear();
-//        dataList2.addAll(mantissaWarehousePutstorages);
-//        adapter2.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
+
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehousePutstorages);
+        adapter2.notifyDataSetChanged();
     }
 
     @Override
@@ -150,9 +145,15 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
 
     }
 
+    @Override
+    public void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehousePutstorages);
+        adapter2.notifyDataSetChanged();
+    }
 
     @Override
-    public void getBeginFailed() {
+    public void getBeginFailed(String message) {
 
     }
 
@@ -161,6 +162,7 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.clean:
+                getPresenter().getUpdate();
                 break;
             case R.id.deduct:
                 getPresenter().getBeginPut();
