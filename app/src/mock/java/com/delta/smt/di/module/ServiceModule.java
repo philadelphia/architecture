@@ -368,8 +368,8 @@ public class ServiceModule {
             }
 
             @Override
-            public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {
-                List<FeederCheckInItem> dataList = new ArrayList<>();
+            public Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders() {
+                /*List<FeederCheckInItem> dataList = new ArrayList<>();
                 dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
                 dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
                 dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
@@ -389,7 +389,8 @@ public class ServiceModule {
                 dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
                 dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
 
-                return Observable.just(dataList);
+                return Observable.just(dataList);*/
+                return null;
 
             }
 
