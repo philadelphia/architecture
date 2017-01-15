@@ -9,7 +9,12 @@ import android.util.Log;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.delta.buletoothio.barcode.parse.BarCodeParse;
+import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
+import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
@@ -22,9 +27,12 @@ import com.delta.smt.ui.feeder.warning.checkin.di.DaggerCheckInComponent;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInContract;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInPresenter;
 import com.delta.smt.utils.BarCodeUtils;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -60,7 +68,8 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
 
     @Override
     protected void initView() {
-        dataList.add(new FeederCheckInItem(" ", " "," "," ", 0, " ", " "));
+        Log.i(TAG, "initView: ");
+        dataList.add(new FeederCheckInItem(" ", " "," "," "," ", " ", 0, " ", " "));
         CommonBaseAdapter<FeederCheckInItem> adapterTitle = new CommonBaseAdapter<FeederCheckInItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederCheckInItem item, int position) {
@@ -120,11 +129,13 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
 
     @Override
     protected int getContentViewId() {
+        Log.i(TAG, "getContentViewId: ");
         return R.layout.fragment_checkin;
     }
 
     @Override
     public void onSuccess(List<FeederCheckInItem> data) {
+        Log.i(TAG, "onSuccess: ");
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
@@ -132,7 +143,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
 
     @Override
     public void onFailed(String message) {
-
+        Log.i(TAG, "onFailed: ");
     }
 
 
@@ -152,24 +163,59 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
         Log.i(TAG, "onScanSuccess: ");
         Log.i(TAG, "barcode == " + barcode);
         BarCodeType codeType = BarCodeUtils.barCodeType(barcode);
-
+        Log.i(TAG, "codeType:== " + codeType);
         if (!TextUtils.isEmpty(barcode)) {
             if (codeType != null) {
                 switch (codeType) {
                     case MATERIAL_BLOCK_BARCODE: //料号
-                        for (FeederCheckInItem feederCheckInItem : dataSource) {
-                            if (barcode.trim().equalsIgnoreCase(feederCheckInItem.getMaterialID())) {
-                                dataSource.set(0, feederCheckInItem);
+                        Log.i(TAG, "料号: ");
+                        try {
+                            MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) new BarCodeParseIpml().getEntity(barcode,BarCodeType.MATERIAL_BLOCK_BARCODE);
+                            if (null != materialBlockBarCode){
+                                Log.i(TAG, "onScanSuccess: " + materialBlockBarCode.toString());
                             }
+                            for (FeederCheckInItem feederCheckInItem : dataSource) {
+                                if (materialBlockBarCode.getDeltaMaterialNumber().equalsIgnoreCase(feederCheckInItem.getMaterialID()) && materialBlockBarCode.getStreamNumber().equalsIgnoreCase(feederCheckInItem.getSerial_num()) ) {
+                                    Log.i(TAG, "对应的feederCheckInItem: " + feederCheckInItem.toString());
+                                    dataSource.set(0, feederCheckInItem);
+                                    adapter.notifyDataSetChanged();
+                                    Log.i(TAG, "onScanSuccess: " );
+                                    Map<String, String> map = new HashMap<>();
+                                    map.put("material_num", materialBlockBarCode.getDeltaMaterialNumber());
+                                    map.put("serial_num", materialBlockBarCode.getStreamNumber());
+                                    Gson gson = new Gson();
+                                    String argument = gson.toJson(map);
+                                    Log.i(TAG, "argument== " + argument);
+                                    getPresenter().getFeederLocation(argument);
+                                }
+                            }
+                        } catch (EntityNotFountException e) {
+                            e.printStackTrace();
                         }
+
+
 
                         break;
                     case FRAME_LOCATION: //架位ID
-                        if (dataSource.get(0).getShelves().equalsIgnoreCase(barcode)) {
-                            //上传到后台
-                        } else {
 
+
+                        FrameLocation frameLocation = null;
+                        try {
+                            frameLocation = (FrameLocation) new BarCodeParseIpml().getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                            if (null != frameLocation){
+//                                Log.i(TAG, "onScanSuccess: " + frameLocation.toString());
+//                                Map<String, String> map = new HashMap<>();
+//                                map.put("material_num", frameLocation.getDeltaMaterialNumber());
+//                                map.put("serial_num", materialBlockBarCode.getStreamNumber());
+//                                Gson gson = new Gson();
+//                                String argument = gson.toJson(map);
+//                                Log.i(TAG, "argument== " + argument);
+//                                getPresenter().getFeederCheckInTime();
+                            }
+                        } catch (EntityNotFountException e) {
+                            e.printStackTrace();
                         }
+
                         break;
 
                     default:
