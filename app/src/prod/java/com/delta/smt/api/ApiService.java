@@ -118,6 +118,7 @@ public interface ApiService {
     @GET(API.bundleJsonUrl)
     Observable<Update> getUpdate();
 
+    public Observable<String> sumbitLine() ;
     //下载更新
     @Streaming
     @GET

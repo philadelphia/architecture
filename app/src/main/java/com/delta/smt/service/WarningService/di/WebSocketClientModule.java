@@ -2,22 +2,17 @@ package com.delta.smt.service.warningService.di;
 
 
 
-import com.delta.smt.service.warningService.WebSocketClientListener;
+import com.delta.smt.manager.ActivityMonitor;
+import com.delta.smt.manager.WarningManger;
+import com.delta.smt.service.warningService.WarningSocketClient;
 
-import java.util.concurrent.TimeUnit;
+import org.java_websocket.drafts.Draft;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
 
 /**
  * @description :
@@ -28,116 +23,59 @@ import okio.ByteString;
 @Module
 public class WebSocketClientModule {
 
-    private HttpUrl httpUrl;
-    private WebSocketClientListener webSocketClientListener;
-    private Builder builder;
+    private URI uri;
+    private Draft draft;
 
     public WebSocketClientModule(Builder builder) {
-        this.builder = builder;
-        this.httpUrl = builder.httpUrl;
-        this.webSocketClientListener = builder.webSocketClientListener;
+        this.uri = builder.uri;
+        this.draft = builder.draft;
     }
 
-    @Singleton
+
+
+    @ServiceScope
     @Provides
-    @Named("webSocket")
-    public HttpUrl httpUrl() {
-        return httpUrl;
+    WarningSocketClient warningSocketClient(URI uri, Draft draft,ActivityMonitor activityMonitor,WarningManger warningManger){
+        return  new WarningSocketClient(uri,draft,activityMonitor, warningManger);
     }
 
-
-    @Singleton
+    @ServiceScope
     @Provides
-    public WebSocketListener webSocketListener() {
-
-
-        return new WebSocketListener() {
-            @Override
-            public void onOpen(WebSocket webSocket, Response response) {
-                super.onOpen(webSocket, response);
-                webSocketClientListener.onOpen(webSocket, response);
-            }
-
-            @Override
-            public void onMessage(WebSocket webSocket, String text) {
-
-                super.onMessage(webSocket, text);
-                webSocketClientListener.onMessage(webSocket, text);
-            }
-
-            @Override
-            public void onMessage(WebSocket webSocket, ByteString bytes) {
-                super.onMessage(webSocket, bytes);
-            }
-
-            @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                super.onClosing(webSocket, code, reason);
-
-            }
-
-            @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
-                super.onClosed(webSocket, code, reason);
-                webSocketClientListener.onClosed(webSocket, reason);
-
-            }
-        };
+    URI uri(){
+        return uri;
     }
-
-    @Singleton
+    @ServiceScope
     @Provides
-    @Named("webSocket")
-    public Request request(@Named("webSocket") HttpUrl httpUrl) {
-        return new Request.Builder().url(httpUrl).build();
+    Draft draft(){
+        return  draft;
     }
 
-    @Singleton
+    @ServiceScope
     @Provides
-    @Named("webSocket")
-    public OkHttpClient okHttpClient() {
-        return new OkHttpClient.Builder()
-                .readTimeout(3000, TimeUnit.SECONDS)//设置读取超时时间
-                .writeTimeout(3000, TimeUnit.SECONDS)//设置写的超时时间
-                .connectTimeout(3000, TimeUnit.SECONDS)//设置连接超时时间
-                .build();
+    ActivityMonitor activityMonitor(){
+        return ActivityMonitor.getInstance();
     }
 
-
-    @Singleton
-    @Provides
-    public WebSocket providerWebSocket(@Named("webSocket") OkHttpClient okHttpClient, @Named("webSocket") Request request, WebSocketListener webSocketListener) {
-
-        return okHttpClient.newWebSocket(request, webSocketListener);
+    public static Builder builder(){
+     return  new Builder();
     }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-
-
-        private HttpUrl httpUrl;
-
-        private WebSocketClientListener webSocketClientListener;
-
-        public Builder() {
-        }
-
-        public Builder httpurl(String url) {
-            this.httpUrl = HttpUrl.parse(url);
+    public static final class Builder{
+        private URI uri;
+        private Draft draft;
+       public Builder draft(Draft draft) {
+            this.draft = draft;
             return this;
         }
-
-        public Builder webSocketClientListener(WebSocketClientListener webSocketListener) {
-            this.webSocketClientListener = webSocketListener;
-            return this;
-        }
-
-        public WebSocketClientModule build() {
-
-            return new WebSocketClientModule(this);
-        }
-    }
+      public Builder uri(String uri){
+           try {
+               this.uri = new URI(uri);
+           } catch (URISyntaxException e) {
+               e.printStackTrace();
+           }
+           return this;
+       }
+      public WebSocketClientModule build(){
+          return new WebSocketClientModule(this);
+       }
+   }
 }
