@@ -41,6 +41,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -62,8 +63,14 @@ public interface ApiService {
      获取feeder入库列表
      tao.zt.zhang
      */
-    @GET("http://172.22.34.21:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
+
+    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qMaterialPlace")
+    Observable<Result<FeederCheckInItem>> getFeederLocation(@Query("condition") String condition);
+
+    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/feederBuffStorages")
+    Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
 
     @POST
     Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
