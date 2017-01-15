@@ -16,6 +16,7 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.OverReceiveItem;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.ProductToolsInfo;
@@ -126,6 +127,15 @@ public class ServiceModule {
                 datas.add(new StorageDetails("0351234706", "D33E02-07", "70000", "70000", "完成"));
                 datas.add(new StorageDetails("0351234706", "D33E02-07", "70000", "70000", "完成"));
 
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<OverReceiveItem>> getOverReceiveItems() {
+                List<OverReceiveItem> datas = new ArrayList<>();
+                datas.add(new OverReceiveItem("H14","205820536890","D33E02-01","100","00:10:00","等待超领发料"));
+                datas.add(new OverReceiveItem("H15","205820536890","D33E02-02","200","00:10:00","等待超领发料"));
+                datas.add(new OverReceiveItem("H16","205820536890","D33E02-03","300","00:10:00","等待超领发料"));
                 return Observable.just(datas);
             }
 
@@ -368,8 +378,8 @@ public class ServiceModule {
             }
 
             @Override
-            public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {
-                List<FeederCheckInItem> dataList = new ArrayList<>();
+            public Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders() {
+                /*List<FeederCheckInItem> dataList = new ArrayList<>();
                 dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
                 dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
                 dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
@@ -389,7 +399,8 @@ public class ServiceModule {
                 dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
                 dataList.add(new FeederCheckInItem(" ", "KT8FL 139060", "0351234707", "001-02023", 0,"", "201689763"));
 
-                return Observable.just(dataList);
+                return Observable.just(dataList);*/
+                return null;
 
             }
 
@@ -521,7 +532,6 @@ public class ServiceModule {
             @Override
             public Observable<List<ItemBreakDown>> getItemBreakDownDatas() {
                 List<ItemBreakDown> datas = new ArrayList<>();
-
                 datas.add(new ItemBreakDown("贴片机-卡料故障", "产线：H13", "制程：叠送一体机", "料站：06T022", "故障信息：卡料故障"));
                 datas.add(new ItemBreakDown("贴片机-卷带故障", "产线：H13", "制程：贴片机", "料站：06T022", "故障信息：卷带故障"));
                 return Observable.just(datas);
@@ -530,7 +540,6 @@ public class ServiceModule {
             @Override
             public Observable<List<ItemInfo>> getItemInfoDatas() {
                 List<ItemInfo> datas = new ArrayList<>();
-
                 datas.add(new ItemInfo("锡膏配送中", "产线：H13", "消息：锡膏即将配送到产线，请确认"));
                 datas.add(new ItemInfo("替换钢网配送中", "产线：H13", "消息：替换钢网配送产线，请确认"));
                 return Observable.just(datas);

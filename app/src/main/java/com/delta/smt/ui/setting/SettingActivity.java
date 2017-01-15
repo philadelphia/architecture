@@ -15,10 +15,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
@@ -41,7 +43,12 @@ import butterknife.OnClick;
  * Created by Lin.Hou on 2017-01-09.
  */
 
-public class SettingActivity extends BaseActivity<MainPresenter> implements MainContract.View{
+public class SettingActivity extends BaseActivity<MainPresenter> implements MainContract.View {
+
+    @BindView(R.id.toolbar)
+    AutoToolbar toolbar;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
 
     @BindView(R.id.setting_update)
     TextView checkUpdateButton;
@@ -49,6 +56,8 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     //更新
     private static ProgressDialog progressDialog = null;
     private LocalBroadcastManager bManager;
+    private String downloadStr = null;
+    private AlertDialog retryAlertDialog = null;
 
     @Override
     protected int getContentViewId() {
@@ -62,12 +71,16 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
 
     @Override
     protected void initData() {
-        checkUpdateButton.setText("检查更新 ("+PkgInfoUtils.getVersionName(this)+")");
+        checkUpdateButton.setText("检查更新 (" + PkgInfoUtils.getVersionName(this) + ")");
     }
 
     @Override
     protected void initView() {
-
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbarTitle.setText("设置");
     }
 
     @OnClick({R.id.setting_update})
@@ -94,15 +107,16 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         if (Integer.parseInt(update.getVersionCode()) > PkgInfoUtils.getVersionCode(SettingActivity.this)) {
             if (!DownloadService.isUpdating) {
                 new AlertDialog.Builder(this)
-                        .setTitle("发现新版本 "+ update.getVersion())
+                        .setTitle("发现新版本 " + update.getVersion())
                         .setMessage(update.getDescription())
                         .setCancelable(false)
                         .setPositiveButton("更新", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                downloadStr = update.getUrl();
                                 //显示ProgerssDialog
                                 showProgerssDialog(SettingActivity.this);
-                                getPresenter().download(SettingActivity.this, update.getUrl());
+                                getPresenter().download(SettingActivity.this, downloadStr);
                                 dialogInterface.dismiss();
                             }
                         })
@@ -118,7 +132,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
             }
 
 
-        }else {
+        } else {
             if (!DownloadService.isUpdating) {
                 new AlertDialog.Builder(this)
                         .setTitle("未发现新版本！")
@@ -169,6 +183,34 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
             } else if (intent.getAction().equals(Constant.MESSAGE_FAILED)) {
                 progressDialog.setMessage("下载失败");
                 progressDialog.setCancelable(true);
+                if(retryAlertDialog==null){
+                    retryAlertDialog = new AlertDialog.Builder(SettingActivity.this)
+                            .setTitle("提示")
+                            .setMessage("下载失败，请重试或取消更新！")
+                            .setCancelable(false)
+                            .setPositiveButton("重试", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    progressDialog.dismiss();
+                                    //显示ProgerssDialog
+                                    showProgerssDialog(SettingActivity.this);
+                                    getPresenter().download(SettingActivity.this, downloadStr);
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    progressDialog.dismiss();
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create();
+                }
+                if (!retryAlertDialog.isShowing()) {
+                    retryAlertDialog.show();
+                }
+
             }
         }
     };
@@ -225,5 +267,17 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
             bManager.unregisterReceiver(broadcastReceiver);
         }
 
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

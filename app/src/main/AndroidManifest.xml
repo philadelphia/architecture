@@ -193,6 +193,10 @@
             android:name=".ui.product_tools.mtools_info.Produce_mToolsActivity"
             android:screenOrientation="portrait" />
 
+        <!--超领-->
+        <activity android:name=".ui.over_receive.OverReceiveActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
