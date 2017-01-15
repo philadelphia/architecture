@@ -18,16 +18,24 @@ public interface MantissaWarehousePutstorageContract {
 
 
         Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
-        Observable<List<MantissaWarehousePutstorageResult>> getbeginput();
+
+        Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
+
+        Observable<MantissaWarehousePutstorageResult> getbeginput();
 
     }
 
     public interface View extends IView {
 
+        void getSucessUpdate(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void getFailedUpdate(String message);
+
         void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getBeginSucess(List<MantissaWarehousePutstorageResult> mantissaWarehousePutstorages);
         void getFailed(String message);
-        void getBeginFailed();
+
+
+        void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void getBeginFailed(String message);
 
 
     }

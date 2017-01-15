@@ -159,10 +159,20 @@ public interface ApiService {
 
     Observable<List<StorageDetails>> getStorageDetails();
 
+    Observable<String> sumbitLine();
+
+
+
 
     //liuzhenyu
-    @GET("http://172.22.34.30:8081/SMM/ManToWareh/queryReturnedWarehList")
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/queryReturnedWarehList")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
+
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/triggerListUpdate")
+    Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
+
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
+    Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
 
 }
