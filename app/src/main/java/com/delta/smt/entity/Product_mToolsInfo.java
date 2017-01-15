@@ -1,10 +1,12 @@
 package com.delta.smt.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Shaoqiang.Zhang on 2017/1/11.
  */
 
-public class Product_mToolsInfo {
+public class Product_mToolsInfo implements Serializable{
 
     private String TurnNumber;
     private String ProductToolsBarCode;

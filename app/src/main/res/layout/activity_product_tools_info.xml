@@ -41,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_marginLeft="310px"
         android:layout_marginTop="-50px"
+        android:background="@drawable/ed_back_white"
         />
 
     <android.support.v7.widget.RecyclerView

@@ -13,6 +13,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <Button
+        android:id="@+id/mToolsConfirm"
         android:layout_marginTop="80px"
         android:layout_width="199px"
         android:layout_height="100px"
