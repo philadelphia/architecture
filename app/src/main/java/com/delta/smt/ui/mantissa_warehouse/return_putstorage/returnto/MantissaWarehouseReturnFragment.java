@@ -62,7 +62,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     @Override
     protected void initData() {
 
-        getPresenter().getMantissaWarehouseReturn();
+        //getPresenter().getMantissaWarehouseReturn();
 
     }
 

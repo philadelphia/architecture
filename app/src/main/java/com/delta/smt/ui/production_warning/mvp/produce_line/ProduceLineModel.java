@@ -4,6 +4,7 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -25,6 +26,17 @@ public class ProduceLineModel extends BaseModel<ApiService> implements ProduceLi
 
     @Override
     public Observable<List<ItemProduceLine>> getProductionLineDatas() {
-        return getService().getLineDatas();
+        List<ItemProduceLine> datas = new ArrayList<>();
+        for (int mI = 1; mI < 16; mI++) {
+            ItemProduceLine line = new ItemProduceLine("SMT_H" + mI, false);
+            datas.add(line);
+        }
+        return Observable.just(datas);
+//        return getService().getLineDatas();
+    }
+
+    @Override
+    public Observable<String> sumbitLine() {
+        return getService().sumbitLine();
     }
 }

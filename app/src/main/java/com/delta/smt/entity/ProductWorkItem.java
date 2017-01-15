@@ -1,11 +1,13 @@
 package com.delta.smt.entity;
 
 
+import com.delta.smt.ui.product_tools.TimeSortUnit;
+
 /**
  * Created by Shaoqiang.Zhang on 2017/1/9.
  */
 
-public class ProductWorkItem {
+public class ProductWorkItem implements Comparable{
     private String workNumber;
     private String workItemTypr;
     private String machineType;
@@ -108,5 +110,13 @@ public class ProductWorkItem {
 
     public void setProductStatus(String productStatus) {
         this.productStatus = productStatus;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        ProductWorkItem otherItem= (ProductWorkItem) o;
+        String otherTime=otherItem.getPlayOnLineTime();
+        TimeSortUnit timeSortUnit=new TimeSortUnit(this.playOnLineTime,otherTime);
+        return timeSortUnit.compare();
     }
 }

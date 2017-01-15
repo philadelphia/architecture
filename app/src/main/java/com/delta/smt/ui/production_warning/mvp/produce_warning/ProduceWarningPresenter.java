@@ -19,6 +19,7 @@ public class ProduceWarningPresenter extends BasePresenter<ProduceWarningContrac
         super(model, mView);
     }
 
+
     public void getTitileNumber(){
 
         getModel().getTitleDatas().subscribe(new Action1<TitleNumber>() {
@@ -33,6 +34,8 @@ public class ProduceWarningPresenter extends BasePresenter<ProduceWarningContrac
             }
         });
     }
+
+
 
 
 }

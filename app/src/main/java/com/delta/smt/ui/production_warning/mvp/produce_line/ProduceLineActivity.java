@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -87,7 +88,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         switch (view.getId()) {
             case R.id.btn_confirm:
 
-                getPresenter().sumbitLine(submitline);
+//                getPresenter().sumbitLine(submitline);
 
                 startActivity(new Intent(this,ProduceWarningActivity.class));
                 break;
@@ -122,6 +123,12 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     }
 
     @Override
+    public void showToast(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
     public void getFailed() {
 
     }
@@ -132,4 +139,5 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         item.setChecked(!item.isChecked());
         cb.setChecked(item.isChecked());
     }
+
 }

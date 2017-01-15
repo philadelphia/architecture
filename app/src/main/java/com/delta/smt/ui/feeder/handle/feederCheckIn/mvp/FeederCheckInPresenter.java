@@ -4,6 +4,7 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.Result;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInContract;
 
 import java.util.List;
@@ -25,10 +26,14 @@ public class FeederCheckInPresenter extends BasePresenter<CheckInContract.Model,
     }
 
     public void getAllCheckedInFeeders() {
-        getModel().getAllCheckedInFeeders().subscribe(new Action1<List<FeederCheckInItem>>() {
+        getModel().getAllCheckedInFeeders().subscribe(new Action1<Result<FeederCheckInItem>>() {
             @Override
-            public void call(List<FeederCheckInItem> wareHouses) {
-                getView().onSuccess(wareHouses);
+            public void call(Result<FeederCheckInItem> dataSource) {
+                if (dataSource.getMessage().equalsIgnoreCase("success")){
+                    getView().onSuccess(dataSource.getRows());
+                }else {
+                    getView().onFailed(dataSource.getMessage());
+                }
             }
         }, new Action1<Throwable>() {
             @Override

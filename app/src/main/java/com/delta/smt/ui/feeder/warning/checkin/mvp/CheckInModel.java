@@ -5,6 +5,7 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.Result;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class CheckInModel extends BaseModel<ApiService> implements CheckInContra
     }
 
     @Override
-    public Observable<List<FeederCheckInItem>> getAllCheckedInFeeders() {
-        return getService().getAllCheckedInFeeders().compose(RxsRxSchedulers.<List<FeederCheckInItem>>io_main());
+    public Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders() {
+        return getService().getAllCheckedInFeeders().compose(RxsRxSchedulers.<Result<FeederCheckInItem>>io_main());
     }
 }

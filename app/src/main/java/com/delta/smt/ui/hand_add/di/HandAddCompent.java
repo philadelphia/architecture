@@ -4,6 +4,8 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 
+import javax.security.auth.login.LoginException;
+
 import dagger.Component;
 
 /**

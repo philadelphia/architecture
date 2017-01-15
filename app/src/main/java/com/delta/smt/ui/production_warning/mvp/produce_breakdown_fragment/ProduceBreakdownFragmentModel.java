@@ -4,6 +4,7 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -20,6 +21,10 @@ public class ProduceBreakdownFragmentModel extends BaseModel<ApiService> impleme
 
     @Override
     public Observable<List<ItemBreakDown>> getItemBreakdownDatas() {
-        return getService().getItemBreakDownDatas();
+        List<ItemBreakDown> datas = new ArrayList<>();
+        datas.add(new ItemBreakDown("贴片机-卡料故障", "产线：H13", "制程：叠送一体机", "料站：06T022", "故障信息：卡料故障"));
+        datas.add(new ItemBreakDown("贴片机-卷带故障", "产线：H13", "制程：贴片机", "料站：06T022", "故障信息：卷带故障"));
+        return Observable.just(datas);
+//        return getService().getItemBreakDownDatas();
     }
 }

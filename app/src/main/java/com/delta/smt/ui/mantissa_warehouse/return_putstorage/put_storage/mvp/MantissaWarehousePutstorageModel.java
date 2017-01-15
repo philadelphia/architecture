@@ -1,10 +1,9 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp;
 
+import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.MantissaWarehousePutstorage;
-
-import java.util.List;
+import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 
 import rx.Observable;
 
@@ -20,12 +19,17 @@ public class MantissaWarehousePutstorageModel extends BaseModel<ApiService> impl
     }
 
     @Override
-    public Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage() {
-        return getService().getMantissaWarehousePutstorage();
+    public Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage() {
+        return getService().getMantissaWarehousePutstorage().compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
     }
 
     @Override
-    public Observable<List<MantissaWarehousePutstorage>> getbeginput() {
-        return getService().getBeginput();
+    public Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate() {
+        return getService().getMantissaWarehousePutstorageUpdate().compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+    }
+
+    @Override
+    public Observable<MantissaWarehousePutstorageResult> getbeginput() {
+        return getService().getbeginPut().compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
     }
 }

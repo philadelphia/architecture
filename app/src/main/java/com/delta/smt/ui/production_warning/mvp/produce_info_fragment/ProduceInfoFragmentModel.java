@@ -5,6 +5,7 @@ import com.delta.smt.base.BaseModel;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningContract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -20,6 +21,10 @@ public class ProduceInfoFragmentModel extends BaseModel<ApiService> implements P
 
     @Override
     public Observable<List<ItemInfo>> getItemInfoDatas() {
-        return getService().getItemInfoDatas();
+        List<ItemInfo> datas = new ArrayList<>();
+        datas.add(new ItemInfo("锡膏配送中", "产线：H13", "消息：锡膏即将配送到产线，请确认"));
+        datas.add(new ItemInfo("替换钢网配送中", "产线：H13", "消息：替换钢网配送产线，请确认"));
+        return Observable.just(datas);
+//        return getService().getItemInfoDatas();
     }
 }

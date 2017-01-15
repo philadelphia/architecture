@@ -20,7 +20,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 @Module
 public class UpdateClientModule {
 
-    private static final int TOME_OUT = 30;
+    private static final int TOME_OUT = 5;
     private String urlStr;
     private DownloadProgressInterceptor interceptor;
 

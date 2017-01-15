@@ -10,7 +10,7 @@ import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetails;
-import com.delta.smt.entity.MantissaWarehousePutstorage;
+import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
 import com.delta.smt.entity.ModuleDownDetailsItem;
@@ -67,8 +67,8 @@ public interface ApiService {
      获取feeder入库列表
      tao.zt.zhang
      */
-    @POST
-    Observable<List<FeederCheckInItem>> getAllCheckedInFeeders();
+    @GET("http://172.22.34.21:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+    Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     @POST
     Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
@@ -96,6 +96,7 @@ public interface ApiService {
 
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
 
+    Observable<String> sumbitLine();
 
     //接口PCB库房发料
 
@@ -168,13 +169,30 @@ public interface ApiService {
 
     Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn();
 
-    Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage();
+    //Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage();
+
+    //  Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
     Observable<List<StorageReady>> getStorageReadyDates();
 
     Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
+
+//    Observable<String> sumbitLine();
+
+
+
+
+    //liuzhenyu
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/queryReturnedWarehList")
+    Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
+
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/triggerListUpdate")
+    Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
+
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
+    Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
 
 }

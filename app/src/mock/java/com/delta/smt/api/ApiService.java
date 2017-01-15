@@ -9,13 +9,14 @@ import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetails;
-import com.delta.smt.entity.MantissaWarehousePutstorage;
+import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.OverReceiveItem;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.ProductToolsInfo;
@@ -57,7 +58,7 @@ public interface ApiService {
     Observable<List<WareHouse>> getAllWareHouse();
 
     @POST
-    Observable<List<FeederCheckInItem>> getAllCheckedInFeeders();
+    Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     @POST
     Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
@@ -82,8 +83,9 @@ public interface ApiService {
 
     Observable<List<ItemInfo>> getItemInfoDatas();
 
-
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
+
+    Observable<String> sumbitLine();
 
 
     //接口PCB库房发料
@@ -103,9 +105,6 @@ public interface ApiService {
     Observable<List<ListWarning>> getWarningNumberSuccess();//获取Warning列表的数量
 
     Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
-
-
-    Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
     //故障处理预警
     Observable<List<FalutMesage>> getFalutMessages();
@@ -145,13 +144,21 @@ public interface ApiService {
 
     Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn();
 
-    Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage();
+    Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
 
     Observable<List<StorageReady>> getStorageReadyDates();
 
     Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
+
+   // Observable<List<MantissaWarehousePutstorageResult>> getBeginput();
+
+    Observable<List<OverReceiveItem>> getOverReceiveItems();
+
+
+
+
 
 
 }
