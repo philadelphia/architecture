@@ -16,6 +16,7 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.OverReceiveItem;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.ProductToolsInfo;
@@ -126,6 +127,15 @@ public class ServiceModule {
                 datas.add(new StorageDetails("0351234706", "D33E02-07", "70000", "70000", "完成"));
                 datas.add(new StorageDetails("0351234706", "D33E02-07", "70000", "70000", "完成"));
 
+                return Observable.just(datas);
+            }
+
+            @Override
+            public Observable<List<OverReceiveItem>> getOverReceiveItems() {
+                List<OverReceiveItem> datas = new ArrayList<>();
+                datas.add(new OverReceiveItem("H14","205820536890","D33E02-01","100","00:10:00","等待超领发料"));
+                datas.add(new OverReceiveItem("H15","205820536890","D33E02-02","200","00:10:00","等待超领发料"));
+                datas.add(new OverReceiveItem("H16","205820536890","D33E02-03","300","00:10:00","等待超领发料"));
                 return Observable.just(datas);
             }
 
