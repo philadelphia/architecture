@@ -6,6 +6,7 @@ import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetails;
@@ -16,14 +17,17 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.OutBound;
+import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProductToolsBack;
-import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.ProductToolsInfo;
+import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.StorageSelect;
+import com.delta.smt.entity.Success;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineBindingItem;
@@ -41,6 +45,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -109,6 +114,18 @@ public interface ApiService {
     Observable<List<ListWarning>> getWarningNumberSuccess();//获取Warning列表的数量
 
     Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
+
+    @GET("webapi/pcb/management/inbound")
+    Observable<Light> onLight(@Query("param") String s);//点灯操作
+    @GET("webapi/pcb/management/inbound")
+    Observable<Success> putInStorage(@Query("param") String s);//入库操作
+    @GET("pcb/management/outbound/bill")
+    Observable<OutBound> outBound(@Query("param") String s);//仓库发料清单
+    @GET("pcb/management/capacity")
+    Observable<PcbNumber> getPcbNumber(@Query("param") String s);//获取实际数量
+    @GET("webapi/pcb/management/outbound")
+    Observable<Success> getPcbSuccess(@Query("param") String s);//获取是否发料成功
+
 
 
     Observable<List<MantissaWarehousePutstorage>> getBeginput();

@@ -27,6 +27,8 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ListWarning;
+import com.delta.smt.entity.OutBound;
+import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.store.di.DaggerWarningListComponent;
 import com.delta.smt.ui.store.di.WarningListModule;
@@ -39,6 +41,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.iwgang.familiarrecyclerview.IFamiliarLoadMore;
 
 
 /**
@@ -66,8 +69,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     LinearLayout activityMianview;
 
 
-    List<ListWarning> mList = new ArrayList<>();
-    private CommonBaseAdapter<ListWarning> mAdapter;
+    List<OutBound.DataBean> mList = new ArrayList<>();
+    private CommonBaseAdapter<OutBound.DataBean> mAdapter;
     private int position = 0;
     private String mWorkNumberString;
     private String mMachineString;
@@ -83,7 +86,6 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     @Override
     protected void initData() {
-        getPresenter().fetchListWarning();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mWorkNumberString = bundle.getString("workNumber");
@@ -102,7 +104,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         edPcb.setText(mMachineString);
         edMachine.setText(mMaterialNumberString);
         List<ListWarning> list = new ArrayList<>();
-        list.add(new ListWarning("", "", "", "", "", ""));
+        list.add(new ListWarning("", "", "", "", ""));
 
         CommonBaseAdapter<ListWarning> AdapterTitle = new CommonBaseAdapter<ListWarning>(this, list) {
             @Override
@@ -118,27 +120,27 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         recyTitle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyTitle.setAdapter(AdapterTitle);
 
-        mAdapter = new CommonBaseAdapter<ListWarning>(this, mList) {
-            @Override
-            protected void convert(CommonViewHolder holder, ListWarning item, int position) {
+        mAdapter = new CommonBaseAdapter<OutBound.DataBean>(this, mList) {
 
-                holder.setText(R.id.pcb_number, item.getPcb());
-                holder.setText(R.id.pcb_price, item.getJia());
-                if (TextUtils.isEmpty(item.getDangqaian())) {
+            @Override
+            protected void convert(CommonViewHolder holder, OutBound.DataBean item, int position) {
+                holder.setText(R.id.pcb_number, item.getPartNum());
+                holder.setText(R.id.pcb_price, item.getSubShelfSerial());
+                if (item.getAmount()==0) {
                     holder.setText(R.id.pcb_thenumber, "");
                 }
-                holder.setText(R.id.pcb_demand, item.getXuqiu());
                 holder.setText(R.id.pcb_code, item.getPcbCode());
                 holder.setText(R.id.pcb_time, item.getPcbCode());
                 if (mMaterbarCode != null) {
-                    if (mList.get(0).getPcb().equals(mMaterbarCode.getDeltaMaterialNumber())) {
-                        getPresenter().fetchWarningNumber();
+                    if (mList.get(0).getPcbCode().equals(mMaterbarCode.getDeltaMaterialNumber())) {
+//                        getPresenter().fetchWarningNumber(); // TODO: 2017-01-15 网络请求操作
                     }
 
                 }
-                if (item.getDangqaian() != null) {
+                if ("0".equals(String.valueOf(item.getAmount()))){
+
                     if (mFramebarCode != null) {
-                        if (mFramebarCode.getSource().equals(mList.get(0).getJia())) {
+                        if (mFramebarCode.getSource().equals(mList.get(0).getSubShelfSerial())) {
                             getPresenter().fetchSuccessState();
                         }
                     }
@@ -154,8 +156,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
             }
 
+
             @Override
-            protected int getItemViewLayoutId(int position, ListWarning item) {
+            protected int getItemViewLayoutId(int position, OutBound.DataBean item) {
                 return R.layout.item_warning;
             }
         };
@@ -169,34 +172,13 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     protected int getContentViewId() {
         return R.layout.activity_warning;
     }
-
-
-
-    @Override
-    public void onSucess(List<ListWarning> wareHouses) {
-        mList.clear();
-        mList.addAll(wareHouses);
-        mList.get(0).setColor(true);
-        mAdapter.notifyDataSetChanged();
-    }
+    
 
     @Override
     public void onFailed() {
 
     }
-
-    @Override
-    public void onWarningNumberSucess(List<ListWarning> wareHouses) {
-        mList.clear();
-        mList.addAll(wareHouses);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onWarningNumberFailed() {
-
-    }
-
+    
     @Override
     public void onSucessState(String s) {
         Snackbar.make(activityMianview,"发料成功",Snackbar.LENGTH_INDEFINITE).show();
@@ -207,8 +189,16 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     }
 
     @Override
-    public void onFailedState(String s) {
+    public void onOutSuccess(List<OutBound.DataBean> dataBeanList) {
+        mList.clear();
+        mList.addAll(dataBeanList);
+        mAdapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void getNumberSucces(PcbNumber.DataBean dataBean) {
+        mList.get(position).setAmount(dataBean.getAmount());
+        mList.get(position).setId(dataBean.getId());
     }
 
     @Override
@@ -224,6 +214,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                         break;
                     case FRAME_LOCATION:
                         mFramebarCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                        if ("0".equals(String.valueOf(mList.get(position).getAmount()))&&"0".equals(String.valueOf(mList.get(position).getId()))){
+
+                        }
                         break;
                 }
 

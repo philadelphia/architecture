@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -108,7 +109,10 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                     storageDatacodeed.setText(barCode.getDC());
                     if (materialBlockBarCodes.size()<3){
                     materialBlockBarCodes.add(barCode);
+                    }else if (materialBlockBarCodes.size()==3){
+                        getPresenter().fatchOnLight(materialBlockBarCodes);
                     }
+
                     setTextView();
                     break;
                 case FRAME_LOCATION:
@@ -140,6 +144,29 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @Override
     public void storeFaild(String s) {
+
+    }
+
+    @Override
+    public void lightSuccsee() {
+        materialBlockBarCodes.clear();
+        if(materialBlockBarCodes.size()==3){
+            if (!TextUtils.isEmpty(storageIded.getText()))
+        getPresenter().fatchPutInStorage(materialBlockBarCodes,storageIded.getText().toString());}
+    }
+
+    @Override
+    public void lightfaild() {
+
+    }
+
+    @Override
+    public void storageSuccsee() {
+
+    }
+
+    @Override
+    public void storagefaild() {
 
     }
 
