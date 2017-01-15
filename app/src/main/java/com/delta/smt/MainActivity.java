@@ -68,6 +68,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     //更新
     private static ProgressDialog progressDialog = null;
     private LocalBroadcastManager bManager;
+    private String downloadStr = null;
+    private AlertDialog retryAlertDialog = null;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -130,6 +132,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctionString.add("治具借出");
         fuctionString.add("治具归还");
         fuctionString.add("治具入架位");
+        fuctionString.add("超领");
     }
 
 
@@ -195,6 +198,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "治具入架位":
                 IntentUtils.showIntent(this, ProduceToolsLocationActivity.class);
                 break;
+            case "超领":
+                break;
             default:
                 break;
         }
@@ -214,9 +219,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                         .setPositiveButton("更新", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                downloadStr = update.getUrl();
                                 //显示ProgerssDialog
                                 showProgerssDialog(MainActivity.this);
-                                getPresenter().download(MainActivity.this, update.getUrl());
+                                getPresenter().download(MainActivity.this, downloadStr);
                                 dialogInterface.dismiss();
                             }
                         })
@@ -267,6 +273,33 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             } else if (intent.getAction().equals(Constant.MESSAGE_FAILED)) {
                 progressDialog.setMessage("下载失败");
                 progressDialog.setCancelable(true);
+                if(retryAlertDialog==null){
+                    retryAlertDialog = new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("提示")
+                            .setMessage("下载失败，请重试或取消更新！")
+                            .setCancelable(false)
+                            .setPositiveButton("重试", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    progressDialog.dismiss();
+                                    //显示ProgerssDialog
+                                    showProgerssDialog(MainActivity.this);
+                                    getPresenter().download(MainActivity.this, downloadStr);
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    progressDialog.dismiss();
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create();
+                }
+                if (!retryAlertDialog.isShowing()) {
+                    retryAlertDialog.show();
+                }
             }
         }
     };

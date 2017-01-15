@@ -57,7 +57,7 @@ public interface ApiService {
     Observable<List<WareHouse>> getAllWareHouse();
 
     @POST
-    Observable<List<FeederCheckInItem>> getAllCheckedInFeeders();
+    Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     @POST
     Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
