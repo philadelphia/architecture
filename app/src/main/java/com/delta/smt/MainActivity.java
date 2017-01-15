@@ -132,6 +132,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctionString.add("治具借出");
         fuctionString.add("治具归还");
         fuctionString.add("治具入架位");
+        fuctionString.add("超领");
     }
 
 
@@ -196,6 +197,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 break;
             case "治具入架位":
                 IntentUtils.showIntent(this, ProduceToolsLocationActivity.class);
+                break;
+            case "超领":
                 break;
             default:
                 break;
