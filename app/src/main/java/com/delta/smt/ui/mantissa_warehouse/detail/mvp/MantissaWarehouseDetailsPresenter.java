@@ -2,9 +2,7 @@ package com.delta.smt.ui.mantissa_warehouse.detail.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.smt.entity.MantissaWarehouseDetails;
-
-import java.util.List;
+import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 
 import javax.inject.Inject;
 
@@ -22,20 +20,24 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
         super(model, mView);
     }
 
-    public void getMantissaWarehouseDetails(){
+    public void getMantissaWarehouseDetails(String str){
 
-        getModel().getMantissaWarehouseDetails().subscribe(new Action1<List<MantissaWarehouseDetails>>() {
+        getModel().getMantissaWarehouseDetails(str).subscribe(new Action1<MantissaWarehouseDetailsResult>() {
             @Override
-            public void call(List<MantissaWarehouseDetails> mantissaWarehouseDetailses) {
+            public void call(MantissaWarehouseDetailsResult mantissaWarehouseDetailses) {
 
-                getView().getSucess(mantissaWarehouseDetailses);
+                if("Success".equals(mantissaWarehouseDetailses.getMsg())){
+                    getView().getSucess(mantissaWarehouseDetailses.getRows());
+                }else{
+                    getView().getFailed(mantissaWarehouseDetailses.getMsg());
+                }
 
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFailed();
+                getView().getFailed(throwable.getMessage());
 
             }
         });

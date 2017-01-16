@@ -8,7 +8,7 @@ import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.MantissaWarehouseDetails;
+import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
@@ -41,6 +41,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -146,7 +147,7 @@ public interface ApiService {
     @POST
     Observable<List<StorageSelect>> getStorageSelect();
 
-    Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
+  //  Observable<List<MantissaWarehouseDetailsResult>> getMantissaWarehouseDetails();
 
     Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn();
 
@@ -176,8 +177,12 @@ public interface ApiService {
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
     //尾数仓备料
-    @GET("http://172.22.34.40:8081/SMM/IssueMana/querymantiss")
+    @GET("http://172.22.34.6:8081/SMM/IssueMana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
+    //尾数仓备料详情
+    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryMantissIssue")
+    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query( "condition") String bind);
+
 
 
 }
