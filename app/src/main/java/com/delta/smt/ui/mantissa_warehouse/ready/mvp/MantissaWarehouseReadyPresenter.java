@@ -4,8 +4,6 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.MantissaWarehouseReady;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import rx.functions.Action1;
@@ -24,18 +22,21 @@ public class MantissaWarehouseReadyPresenter extends BasePresenter<MantissaWareh
 
   public void getMantissaWarehouseReadies(){
 
-      getModel().getMantissaWarehouseReadies().subscribe(new Action1<List<MantissaWarehouseReady>>() {
+      getModel().getMantissaWarehouseReadies().subscribe(new Action1<MantissaWarehouseReady>() {
           @Override
-          public void call(List<MantissaWarehouseReady> mantissaWarehouseReadies) {
+          public void call(MantissaWarehouseReady mantissaWarehouseReady) {
 
-              getView().getSucess(mantissaWarehouseReadies);
+              if("Success".equals(mantissaWarehouseReady.getMsg())){
+                  getView().getSucess(mantissaWarehouseReady.getRows());
+              }else{
+                  getView().getFailed(mantissaWarehouseReady.getMsg());
+              }
 
           }
       }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-
-              getView().getFailed();
+              getView().getFailed(throwable.getMessage());
           }
       });
 
