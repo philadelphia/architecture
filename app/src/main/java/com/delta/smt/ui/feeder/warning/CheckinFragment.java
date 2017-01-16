@@ -55,6 +55,9 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
     private CommonBaseAdapter<FeederCheckInItem> adapter;
     private List<FeederCheckInItem> dataList = new ArrayList<>();
     private List<FeederCheckInItem> dataSource = new ArrayList<>();
+    private String mCurrentMaterialID;
+    private String mCurrentSerialNumber;
+    private String mCurrentLocation;
 
     @Override
     public void onAttach(Context context) {
@@ -172,7 +175,10 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
                         try {
                             MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) new BarCodeParseIpml().getEntity(barcode,BarCodeType.MATERIAL_BLOCK_BARCODE);
                             if (null != materialBlockBarCode){
-                                Log.i(TAG, "onScanSuccess: " + materialBlockBarCode.toString());
+                                mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
+                                mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
+                                Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID) ;
+                                Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber) ;
                             }
                             for (FeederCheckInItem feederCheckInItem : dataSource) {
                                 if (materialBlockBarCode.getDeltaMaterialNumber().equalsIgnoreCase(feederCheckInItem.getMaterialID()) && materialBlockBarCode.getStreamNumber().equalsIgnoreCase(feederCheckInItem.getSerial_num()) ) {
@@ -197,20 +203,20 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
 
                         break;
                     case FRAME_LOCATION: //架位ID
-
-
                         FrameLocation frameLocation = null;
                         try {
                             frameLocation = (FrameLocation) new BarCodeParseIpml().getEntity(barcode, BarCodeType.FRAME_LOCATION);
                             if (null != frameLocation){
-//                                Log.i(TAG, "onScanSuccess: " + frameLocation.toString());
-//                                Map<String, String> map = new HashMap<>();
-//                                map.put("material_num", frameLocation.getDeltaMaterialNumber());
-//                                map.put("serial_num", materialBlockBarCode.getStreamNumber());
-//                                Gson gson = new Gson();
-//                                String argument = gson.toJson(map);
-//                                Log.i(TAG, "argument== " + argument);
-//                                getPresenter().getFeederCheckInTime();
+                                mCurrentLocation = frameLocation.getSource();
+                                Log.i(TAG, "onScanSuccess: " + frameLocation.toString());
+                                Map<String, String> map = new HashMap<>();
+                                map.put("material_num", mCurrentMaterialID);
+                                map.put("serial_num", mCurrentSerialNumber);
+                                map.put("position", mCurrentLocation);
+                                Gson gson = new Gson();
+                                String argument = gson.toJson(map);
+                                Log.i(TAG, "argument== " + argument);
+                                getPresenter().getFeederCheckInTime(argument);
                             }
                         } catch (EntityNotFountException e) {
                             e.printStackTrace();
