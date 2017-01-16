@@ -118,6 +118,7 @@ public interface ApiService {
     @GET(API.bundleJsonUrl)
     Observable<Update> getUpdate();
 
+
     //下载更新
     @Streaming
     @GET
@@ -155,7 +156,7 @@ public interface ApiService {
 
     Observable<List<StorageReady>> getStorageReadyDates();
 
-   // Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
+    Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
 
@@ -165,17 +166,14 @@ public interface ApiService {
 
 
     //liuzhenyu
-    //尾数仓退入主仓库
-    @GET("http://172.22.34.40:8081/SMM/ManToWareh/queryReturnedWarehList")
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/queryReturnedWarehList")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
 
-    @GET("http://172.22.34.40:8081/SMM/ManToWareh/triggerListUpdate")
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
-    @GET("http://172.22.34.40:8081/SMM/ManToWareh/startStorage")
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
-    //尾数仓备料
-    @GET("http://172.22.34.40:8081/SMM/IssueMana/querymantiss")
-    Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
+
 }

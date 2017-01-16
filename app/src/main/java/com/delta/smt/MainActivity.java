@@ -127,6 +127,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("PCB库房盘点", R.drawable.ic_warehouseinventory));
         fuctions.add(new Fuction("PCB库房发料", R.drawable.ic_warehouseforsending));
         fuctions.add(new Fuction("仓库房备料", R.drawable.ic_warehousestorage));
+        fuctions.add(new Fuction("仓库房超领", R.drawable.ic_warehouseroomchaoling));
         fuctions.add(new Fuction("Feeder缓冲区", R.drawable.ic_feederbuffer));
         fuctions.add(new Fuction("尾数仓备料", R.drawable.ic_mantissawarehousestock));
         fuctions.add(new Fuction("上模组", R.drawable.ic_onthemodule));
@@ -137,7 +138,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("治具入架位", R.drawable.ic_thereturn));
         fuctions.add(new Fuction("治具借出", R.drawable.ic_lend));
         fuctions.add(new Fuction("治具归还", R.drawable.ic_return));
-        fuctions.add(new Fuction("手补件通知", R.drawable.ic_handpatch));
+        fuctions.add(new Fuction("手补件", R.drawable.ic_handpatch));
         fuctions.add(new Fuction("warningSample", R.drawable.title));
     }
 
@@ -158,6 +159,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "仓库房备料":
                 IntentUtils.showIntent(this, StorageSelectActivity.class);
                 break;
+            case "仓库房超领":
+                break;
             case "PCB库房发料":
                 IntentUtils.showIntent(this, StoreIssueActivity.class);
                 break;
@@ -170,7 +173,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "生产中预警":
                 IntentUtils.showIntent(this, ProduceLineActivity.class);
                 break;
-            case "手补件通知":
+            case "手补件":
                 IntentUtils.showIntent(this, HandAddActivity.class);
                 break;
             case "尾数仓备料":
