@@ -27,7 +27,6 @@ import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
-import com.delta.smt.entity.StorageSelect;
 import com.delta.smt.entity.Success;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
@@ -41,7 +40,6 @@ import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -184,7 +182,7 @@ public interface ApiService {
   //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     //Zhangfuxiang
-    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryIssue")
+    @GET("http://172.22.34.40:8081/SMM/Issue/startIssue")
     Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
 
 //    Observable<String> sumbitLine();
