@@ -71,23 +71,15 @@ public class WarningManger {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
             Log.i(TAG, "onReceive: ");
-            int intExtra = intent.getIntExtra(Constant.WARNINGTYPE, -1);
-            Class waringCalss = WarningManger.getInstance().getWaringCalss(intExtra);
-            if (waringCalss != null) {
+            //int intExtra = intent.getIntExtra(Constant.WARNINGTYPE, -1);
+            String message = intent.getStringExtra(Constant.WARNINGMESSAGE);
 
-                Log.e(TAG, "onReceive: " + "-----------------------------" + waringCalss);
                 if (WarningManger.getInstance().isRecieve()) {
                     if (onWarning != null) {
-                        onWarning.warningComing("测试");
+                        onWarning.warningComing(message);
                     }
-
                 }
-            }
-
-            Log.e(TAG, "onReceive: " + intExtra);
-
         }
     }
 

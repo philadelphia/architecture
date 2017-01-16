@@ -1,6 +1,5 @@
 package com.delta.smt.service.warningService;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.DialogInterface;
@@ -17,16 +16,16 @@ import com.delta.smt.api.API;
 import com.delta.smt.app.App;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.manager.ActivityMonitor;
-import com.delta.smt.manager.WarningManger;
+import com.delta.smt.service.warningService.di.DaggerWarningComponent;
 import com.delta.smt.service.warningService.di.WebSocketClientModule;
-//import com.delta.smt.ui.store.di.DaggerWarningComponent;
+
+import org.java_websocket.drafts.Draft_17;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import okhttp3.Response;
-import okhttp3.WebSocket;
+//import com.delta.smt.ui.store.di.DaggerWarningComponent;
 
 /**
  * @description :
@@ -35,73 +34,64 @@ import okhttp3.WebSocket;
  */
 
 
-public class WarningService extends Service implements ActivityMonitor.OnAppStateChangeListener, com.delta.smt.service.warningService.WebSocketClientListener {
+public class WarningService extends Service implements WarningSocketClient.OnRecieveLisneter {
 
-//    @Inject
-//    WebSocket webSocket;
-    private boolean foreground = true;
-    private Activity topActivity;
-
+    private static final String TAG = "WarningService";
+    @Inject
+    WarningSocketClient warningSocketClient;
+    @Inject
+    ActivityMonitor activityMonitor;
     @Override
     public void onCreate() {
         super.onCreate();
-        ActivityMonitor.getInstance().registerAppStateChangeListener(this);
-        ActivityMonitor.setStrictForeground(true);
-        WebSocketClientModule module = new WebSocketClientModule.Builder().httpurl(API.WebSocketURl).webSocketClientListener(this).build();
-       // DaggerWarningComponent.builder().warningModule(module).build().inject(this);
+        Log.e(TAG, "onCreate: ");
+        WebSocketClientModule webSocketClientModule = WebSocketClientModule.builder().draft(new Draft_17()).uri(API.WebSocketURl).build();
+        DaggerWarningComponent.builder().appComponent(App.getAppComponent()).webSocketClientModule(webSocketClientModule).build().inject(this);
+        try {
+            warningSocketClient.connectBlocking();
+            warningSocketClient.send("dfd");
+            warningSocketClient.addOnRecieveLisneter(this);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        final android.app.AlertDialog dialog = getAlertDialog();
-        Log.e("dsfsf", "onStartCommand: ");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    //模拟预警
-                    int randomInt = (int) (Math.random() * 10);
-                    //   int randomInt = 4;
-                    Intent intent = new Intent();
-                    intent.setAction(Constant.WARNINGRECIEVE);
-                    intent.putExtra(Constant.WARNINGTYPE, randomInt);
-                    //1.首先判断栈顶是不是有我们的预警页面
-                    //2.其次判断是否是在前台如果是前台就发送广播如果是后台就弹出dialog
-                    topActivity = ActivityMonitor.getInstance().getTopActivity();
-                    if (topActivity != null) {
-                        if (topActivity.getClass().equals(WarningManger.getInstance().getWaringCalss(randomInt))) {
-                            if (foreground) {
-                                sendBroadcast(intent);
-                            } else {
-                                App.getMainHander().post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        dialog.show();
-                                    }
-                                });
-                            }
-                        }
-                    }
-                    Log.e("---", "run: " + randomInt);
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-        ).
-
-                start();
-
-
-        return super.
-
-                onStartCommand(intent, flags, startId);
+        Log.e(TAG, "onStartCommand: ");
+        return super.onStartCommand(intent, flags, startId);
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void OnForeground(String text) {
+        Log.e(TAG, "OnForeground: "+text);
+        Intent intent = new Intent();
+        intent.setAction(Constant.WARNINGRECIEVE);
+        intent.putExtra(Constant.WARNINGMESSAGE,"message");
+        sendBroadcast(intent);
+    }
+
+    @Override
+    public void OnBackground(String text) {
+
+        App.getMainHander().post(new Runnable() {
+            @Override
+            public void run() {
+                getAlertDialog().show();
+            }
+        });
+    }
     @NonNull
     public AlertDialog getAlertDialog() {
         //1.创建这个DialogRelativelayout
@@ -121,7 +111,7 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.AlertDialogCustom).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(WarningService.this, topActivity.getClass());
+                Intent intent = new Intent(WarningService.this, activityMonitor.getTopActivity().getClass());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
@@ -129,39 +119,5 @@ public class WarningService extends Service implements ActivityMonitor.OnAppStat
         AlertDialog dialog = builder1.create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         return dialog;
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-
-    @Override
-    public void onAppStateChange(boolean foreground) {
-        Activity topActivity = ActivityMonitor.getInstance().getTopActivity();
-        Log.e("-----", "onAppStateChange: " + foreground + topActivity.getClass().getName());
-        this.foreground = foreground;
-    }
-
-    @Override
-    public void onOpen(WebSocket webSocket, Response response) {
-
-    }
-
-    @Override
-    public void onMessage(WebSocket webSocket, String text) {
-
-    }
-
-    @Override
-    public void onClosed(WebSocket webSocket, String reason) {
-
     }
 }

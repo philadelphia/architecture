@@ -16,6 +16,7 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.OverReceiveItem;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.ProductWorkItem;
@@ -120,6 +121,7 @@ public interface ApiService {
     @GET(API.bundleJsonUrl)
     Observable<Update> getUpdate();
 
+
     //下载更新
     @Streaming
     @GET
@@ -161,7 +163,7 @@ public interface ApiService {
     Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
-
+    Observable<List<OverReceiveItem>> getOverReceiveItems();
 //    Observable<String> sumbitLine();
 
 
