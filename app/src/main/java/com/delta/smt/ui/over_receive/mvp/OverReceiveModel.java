@@ -21,6 +21,7 @@ public class OverReceiveModel extends BaseModel<ApiService> implements OverRecei
 
     @Override
     public Observable<List<OverReceiveItem>> getAllOverReceiveItems() {
-        return getService().getOverReceiveItems().compose(RxsRxSchedulers.<List<OverReceiveItem>>io_main());
+        return null;
+                //getService().getOverReceiveItems().compose(RxsRxSchedulers.<List<OverReceiveItem>>io_main());
     }
 }

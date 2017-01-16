@@ -5,11 +5,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
@@ -43,8 +46,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  */
 
 public class StoreIssueActivity extends BaseActivity<StorePresenter> implements TabLayout.OnTabSelectedListener, WarningManger.OnWarning, StoreContract.View {
-    @BindView(R.id.header_title)
-    TextView headerTitle;
+
     @BindView(R.id.main_title)
     TabLayout tlTitle;
     @Inject
@@ -53,6 +55,14 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     RelativeLayout headerBack;
     @BindView(R.id.header_setting)
     TextView headerSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar toolbar;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
+    @BindView(R.id.fragment)
+    FrameLayout fragment;
     private String[] mTitles;
     private WarringFragment mWarringFragment;
     private ArrangeFragment mArrangeFragment;
@@ -83,15 +93,19 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
         for (int i = 0; i < mTitles.length; i++) {
             tlTitle.addTab(tlTitle.newTab());
         }
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbarTitle.setText(this.getResources().getString(R.string.storetitle));
         ViewUtils.setTabTitle(tlTitle, mTitles);
         tlTitle.addOnTabSelectedListener(this);
         fragmentManager = getSupportFragmentManager();
-
         mWarringFragment = new WarringFragment();
         mArrangeFragment = new ArrangeFragment();
         loadMultipleRootFragment(R.id.fragment, 0, mWarringFragment, mArrangeFragment);
         currentFragment = mWarringFragment;
-        headerTitle.setText(this.getResources().getString(R.string.storetitle));
+
+
 
     }
 
@@ -99,7 +113,18 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     protected int getContentViewId() {
         return R.layout.activity_warning_list;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
 
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         switch (tab.getPosition()) {
@@ -174,15 +199,15 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     public void event(ArrangeInt message) {
         this.arrayint = message.getAnInt();
         if (arrayint == 0 && warnInt == 0) {
-            mTitles=null;
+            mTitles = null;
             mTitles = new String[]{"预警", "排程"};
-        } else if (arrayint!=0&&warnInt==0){
-            mTitles=null;
-            mTitles = new String[]{"预警(" + arrayint+")", "排程"};
-        }else if (arrayint==0&&warnInt!=0){
-            mTitles = new String[]{"预警", "排程("+warnInt+")"};
-        }else if (arrayint!=0&&warnInt!=0){
-            mTitles = new String[]{"预警(" + arrayint+")", "排程("+warnInt+")"};
+        } else if (arrayint != 0 && warnInt == 0) {
+            mTitles = null;
+            mTitles = new String[]{"预警(" + arrayint + ")", "排程"};
+        } else if (arrayint == 0 && warnInt != 0) {
+            mTitles = new String[]{"预警", "排程(" + warnInt + ")"};
+        } else if (arrayint != 0 && warnInt != 0) {
+            mTitles = new String[]{"预警(" + arrayint + ")", "排程(" + warnInt + ")"};
         }
         for (int i = 0; i < mTitles.length; i++) {
             tlTitle.addTab(tlTitle.newTab());
@@ -196,18 +221,6 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
         this.warnInt = message.getWarnInt();
     }
 
-    @OnClick({R.id.header_back,R.id.header_setting})
-    public void onHeaderClick(View v) {
-
-        switch (v.getId()){
-            case R.id.header_back:
-                IntentUtils.showIntent(this, MainActivity.class);
-                break;
-            case R.id.header_setting:
-                IntentUtils.showIntent(this, SettingActivity.class);
-                break;
-        }
-    }
 
 
 }

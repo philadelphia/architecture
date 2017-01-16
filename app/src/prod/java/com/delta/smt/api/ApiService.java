@@ -129,7 +129,7 @@ public interface ApiService {
 
 
 
-    Observable<List<MantissaWarehousePutstorage>> getBeginput();
+    //Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
     //故障处理预警
     Observable<List<FalutMesage>> getFalutMessages();

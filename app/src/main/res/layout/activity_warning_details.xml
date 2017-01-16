@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/main_header"/>
+    <include layout="@layout/appbar"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/style_storageedi"
-            android:layout_marginLeft="@dimen/px_16"
+            android:layout_marginLeft="@dimen/px_80"
             android:layout_toRightOf="@id/storage_pcbtv"
             android:layout_alignBottom="@id/storage_pcbtv"
            />
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/style_storagetv"
-            android:text="@string/storage_vendortv"
+            android:text="@string/storage_PCBCODE"
             android:layout_below="@id/storage_pcbtv"
             android:layout_alignLeft="@id/storage_pcbtv"
             />
