@@ -40,6 +40,7 @@ import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.List;
+import java.util.concurrent.locks.Condition;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -163,8 +164,8 @@ public interface ApiService {
     Observable<List<ProductToolsBack>> getProductToolsBack();
 
     //仓库房备料和尾数仓
-    @POST
-    Observable<List<StorageSelect>> getStorageSelect();
+    @GET("http://172.22.34.40:8081/SMM/IssueMana/queryWarehousePart")
+    Observable<Result<String>> getStorageSelect();
 
     Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
 
@@ -174,9 +175,10 @@ public interface ApiService {
 
     //  Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
-    Observable<List<StorageReady>> getStorageReadyDates();
+    @GET("http://172.22.34.40:8081/SMM/IssueMana/queryWorkOrder")
+    Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
-    Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
+  //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
 
@@ -194,6 +196,10 @@ public interface ApiService {
 
     @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
+
+    //尾数仓备料
+    @GET("http://172.22.34.40:8081/SMM/IssueMana/querymantiss")
+    Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
 
 
 }

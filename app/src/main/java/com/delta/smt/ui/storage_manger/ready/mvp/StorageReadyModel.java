@@ -1,7 +1,9 @@
 package com.delta.smt.ui.storage_manger.ready.mvp;
 
+import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageReady;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class StorageReadyModel extends BaseModel<ApiService> implements StorageR
 
 
     @Override
-    public Observable<List<StorageReady>> getStorageReady() {
-        return getService().getStorageReadyDates();
+    public Observable<Result<StorageReady>> getStorageReady(String content) {
+        return getService().getStorageReadyDates(content).compose(RxsRxSchedulers.<Result<StorageReady>>io_main());
     }
 }

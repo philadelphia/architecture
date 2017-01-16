@@ -2,6 +2,7 @@ package com.delta.smt.ui.mantissa_warehouse.ready;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -179,7 +180,13 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
 
     @Override
     public void onItemClick(View view, MantissaWarehouseReady.MantissaWarehouse item, int position) {
+
         Intent intent = new Intent(this, MantissaWarehouseDetailsActivity.class);
-        startActivity(intent);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("item", item);
+        intent.putExtras(bundle);
+        this.startActivity(intent);
+
     }
 }
