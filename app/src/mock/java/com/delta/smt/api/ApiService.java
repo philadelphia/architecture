@@ -8,7 +8,7 @@ import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.MantissaWarehouseDetails;
+import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
@@ -140,7 +140,7 @@ public interface ApiService {
     @POST
     Observable<List<StorageSelect>> getStorageSelect();
 
-    Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
+    Observable<List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails>> getMantissaWarehouseDetails();
 
     Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn();
 
@@ -148,7 +148,7 @@ public interface ApiService {
 
     Observable<List<StorageReady>> getStorageReadyDates();
 
-    Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
+    Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
 
@@ -162,24 +162,6 @@ public interface ApiService {
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
-
-
-    //liuzhenyu
-    //尾数仓退入主仓库
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/queryReturnedWarehList")
-    Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
-
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/triggerListUpdate")
-    Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
-
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
-    Observable<MantissaWarehousePutstorageResult> getbeginPut();
-
-
-    //尾数仓备料
-    @GET("http://172.22.34.8:8081/SMM/IssueMana/querymantiss")
-    Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
-
 
 
 }

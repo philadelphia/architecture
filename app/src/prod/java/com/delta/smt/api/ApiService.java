@@ -9,7 +9,7 @@ import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.MantissaWarehouseDetails;
+import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
@@ -169,7 +169,7 @@ public interface ApiService {
     @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWarehousePart")
     Observable<Result<String>> getStorageSelect();
 
-    Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
+  //  Observable<List<MantissaWarehouseDetailsResult>> getMantissaWarehouseDetails();
 
     Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn();
 
@@ -203,8 +203,12 @@ public interface ApiService {
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
     //尾数仓备料
-    @GET("http://172.22.34.40:8081/SMM/IssueMana/querymantiss")
+    @GET("http://172.22.34.6:8081/SMM/IssueMana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
+    //尾数仓备料详情
+    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryMantissIssue")
+    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query( "condition") String bind);
+
 
     @GET("http://172.22.34.6:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
