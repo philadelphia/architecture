@@ -116,6 +116,8 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
         //此处的Title应该是 从网络获取的数量
         titles = new String[]{"备料(3)"};
 
+
+
         //接收那种预警，没有的话自己定义常量
         WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
         //是否接收预警 可以控制预警时机

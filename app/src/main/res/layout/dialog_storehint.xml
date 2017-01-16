@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/textcolor"
+    android:padding="@dimen/px_20"
+    >
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="@dimen/px_40"
-    android:layout_marginTop="@dimen/px_20"
+    android:textSize="@dimen/px_50"
+    android:layout_marginTop="@dimen/px_40"
+    android:layout_marginLeft="@dimen/px_20"
     android:text="@string/title_storehint"
     />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/px_20"
-        android:layout_marginTop="@dimen/px_20"
-        android:textSize="@dimen/px_30"
+        android:layout_marginLeft="@dimen/px_40"
+        android:layout_marginTop="@dimen/px_40"
+        android:textSize="@dimen/px_40"
         android:text="@string/storehint"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/px_70"
-        android:layout_marginTop="@dimen/px_20"
+        android:layout_marginBottom="@dimen/px_50"
+        android:layout_marginTop="@dimen/px_40"
         android:orientation="horizontal"
+        android:gravity="center_horizontal"
         >
         <Button
             android:id="@+id/storehint_confirm"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/px_12"
+            android:layout_height="@dimen/px_100"
+            android:textSize="@dimen/px_40"
+            android:textColor="@color/textcolor"
             android:text="@string/confirm"
             android:background="@drawable/btn_selector"/>
         <Button
             android:id="@+id/storehint_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/px_12"
+            android:layout_height="@dimen/px_100"
+            android:textSize="@dimen/px_40"
+            android:textColor="@color/textcolor"
             android:text="@string/cancel"
             android:background="@drawable/btn_selector"
             android:layout_marginLeft="@dimen/px_70"/>

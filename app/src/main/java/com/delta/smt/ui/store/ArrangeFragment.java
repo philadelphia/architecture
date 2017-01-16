@@ -66,6 +66,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
                     bundle.putString("workNumber", itemInfo.getWorkNumber());
                     bundle.putString("machine", itemInfo.getMachine());
                     bundle.putString("materialNumber", itemInfo.getMaterialNumber());
+                    bundle.putInt("amout", Integer.valueOf(itemInfo.getWorkNumber()));
                     Log.i("info ----", itemInfo.getWorkNumber());
                     Log.i("info ----", itemInfo.getMachine());
                     Log.i("info ----", itemInfo.getMaterialNumber());

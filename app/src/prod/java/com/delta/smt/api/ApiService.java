@@ -6,6 +6,7 @@ import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetails;
@@ -16,6 +17,8 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.OutBound;
+import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductToolsInfo;
@@ -25,6 +28,7 @@ import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.StorageSelect;
+import com.delta.smt.entity.Success;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineBindingItem;
@@ -37,6 +41,7 @@ import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.List;
+import java.util.concurrent.locks.Condition;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -93,8 +98,7 @@ public interface ApiService {
 
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
 
-    //Observable<String> sumbitLine();
-
+    Observable<String> sumbitLine();
 
     //接口PCB库房发料
 
@@ -114,12 +118,28 @@ public interface ApiService {
 
     Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
 
+    @GET("webapi/pcb/management/inbound")
+    Observable<Light> onLight(@Query("param") String s);//点灯操作
+    @GET("webapi/pcb/management/inbound")
+    Observable<Success> putInStorage(@Query("param") String s);//入库操作
+    @GET("pcb/management/outbound/bill")
+    Observable<OutBound> outBound(@Query("param") String s);//仓库发料清单
+    @GET("pcb/management/capacity")
+    Observable<PcbNumber> getPcbNumber(@Query("param") String s);//获取实际数量
+    @GET("webapi/pcb/management/outbound")
+    Observable<Success> getPcbSuccess(@Query("param") String s);//获取是否发料成功
+
+
+
+    //Observable<List<MantissaWarehousePutstorage>> getBeginput();
+
     //故障处理预警
     Observable<List<FalutMesage>> getFalutMessages();
 
     //更新
     @GET(API.bundleJsonUrl)
     Observable<Update> getUpdate();
+
 
     //下载更新
     @Streaming
@@ -145,8 +165,9 @@ public interface ApiService {
     Observable<List<ProductToolsBack>> getProductToolsBack();
 
     //仓库房备料和尾数仓
-    @POST
-    Observable<List<StorageSelect>> getStorageSelect();
+    //Zhangfuxiang
+    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWarehousePart")
+    Observable<Result<String>> getStorageSelect();
 
     Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
 
@@ -156,13 +177,17 @@ public interface ApiService {
 
     //  Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
-    Observable<List<StorageReady>> getStorageReadyDates();
+    //Zhangfuxiang
+    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWorkOrder")
+    Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
-    Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
+  //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
-    Observable<List<StorageDetails>> getStorageDetails();
+    //Zhangfuxiang
+    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryIssue")
+    Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
 
-    Observable<String> sumbitLine();
+//    Observable<String> sumbitLine();
 
 
 
@@ -176,6 +201,10 @@ public interface ApiService {
 
     @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
+
+    //尾数仓备料
+    @GET("http://172.22.34.40:8081/SMM/IssueMana/querymantiss")
+    Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
 
     @GET("http://172.22.34.6:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();

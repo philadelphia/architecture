@@ -22,7 +22,7 @@ import com.delta.smt.manager.ActivityState;
 
 public class App extends BaseApplication implements Application.ActivityLifecycleCallbacks {
 
-    private AppComponent appComponent;
+    private static AppComponent appComponent;
     private static int appCount = 0;
     private static Handler mainHander;
 
@@ -51,7 +51,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
         return API.BASE_URL;
     }
 
-    public AppComponent getAppComponent() {
+    public static AppComponent getAppComponent() {
         return appComponent;
     }
 

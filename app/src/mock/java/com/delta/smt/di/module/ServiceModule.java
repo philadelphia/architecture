@@ -561,7 +561,6 @@ public class ServiceModule {
             @Override
             public Observable<List<ItemBreakDown>> getItemBreakDownDatas() {
                 List<ItemBreakDown> datas = new ArrayList<>();
-
                 datas.add(new ItemBreakDown("贴片机-卡料故障", "产线：H13", "制程：叠送一体机", "料站：06T022", "故障信息：卡料故障"));
                 datas.add(new ItemBreakDown("贴片机-卷带故障", "产线：H13", "制程：贴片机", "料站：06T022", "故障信息：卷带故障"));
                 return Observable.just(datas);
@@ -570,7 +569,6 @@ public class ServiceModule {
             @Override
             public Observable<List<ItemInfo>> getItemInfoDatas() {
                 List<ItemInfo> datas = new ArrayList<>();
-
                 datas.add(new ItemInfo("锡膏配送中", "产线：H13", "消息：锡膏即将配送到产线，请确认"));
                 datas.add(new ItemInfo("替换钢网配送中", "产线：H13", "消息：替换钢网配送产线，请确认"));
                 return Observable.just(datas);
