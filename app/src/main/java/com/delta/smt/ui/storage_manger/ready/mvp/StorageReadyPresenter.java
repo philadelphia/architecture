@@ -36,8 +36,6 @@ public class StorageReadyPresenter extends BasePresenter<StorageReadyContract.Mo
                       getView().getStorageReadyFailed(storageReadies.getMessage());
 
                   }
-
-
                  }
                 },new Action1<Throwable>() {
             @Override

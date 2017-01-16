@@ -2,6 +2,7 @@ package com.delta.smt.ui.storage_manger.details.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 
 import java.util.List;
@@ -21,17 +22,22 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
         super(model, mView);
     }
 
-    public void getStorageDetails(){
+    public void getStorageDetails(String content){
 
-        getModel().getStorageDetails().subscribe(new Action1<List<StorageDetails>>() {
+        getModel().getStorageDetails(content).subscribe(new Action1<Result<StorageDetails>>() {
             @Override
-            public void call(List<StorageDetails> storageDetailses) {
-                getView().getSucess(storageDetailses);
+            public void call(Result<StorageDetails> storageDetailses) {
+                if ("0".equals(storageDetailses.getCode())) {
+                    getView().getSucess(storageDetailses.getRows());
+                } else {
+                    getView().getFailed(storageDetailses.getMessage());
+
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getFailed();
+                getView().getFailed(throwable.getMessage());
             }
         });
     }

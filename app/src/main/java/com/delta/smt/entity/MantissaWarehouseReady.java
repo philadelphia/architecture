@@ -62,6 +62,13 @@ public class MantissaWarehouseReady implements Serializable {
         //状态
         private String status;
 
+        public MantissaWarehouse(String work_order, String line, String face, String status) {
+            this.work_order = work_order;
+            this.line = line;
+            this.face = face;
+            this.status = status;
+        }
+
         public String getStatus() {
             return status;
         }

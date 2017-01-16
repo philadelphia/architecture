@@ -8,7 +8,7 @@ import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.MantissaWarehouseDetails;
+import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
@@ -18,8 +18,8 @@ import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.OverReceiveItem;
 import com.delta.smt.entity.ProductToolsBack;
-import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.ProductToolsInfo;
+import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
@@ -100,16 +100,15 @@ public class ServiceModule {
 
 
             @Override
-            public Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates() {
-                List<MantissaWarehouseReady> datas = new ArrayList<>();
-                datas.add(new MantissaWarehouseReady("H11", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
-                datas.add(new MantissaWarehouseReady("H12", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
-                datas.add(new MantissaWarehouseReady("H13", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
-                datas.add(new MantissaWarehouseReady("H14", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
-                datas.add(new MantissaWarehouseReady("H14", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
-                datas.add(new MantissaWarehouseReady("H14", "A", "等待仓库A备货", "2016121200000012", "06:00:00"));
+            public Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates() {
+                List<MantissaWarehouseReady.MantissaWarehouse> datas = new ArrayList<>();
+                datas.add(new MantissaWarehouseReady.MantissaWarehouse("035123", "h11", "a", "1"));
+                MantissaWarehouseReady ad = new MantissaWarehouseReady();
+                ad.setCode("0");
+                ad.setMsg("succdee");
+                ad.setRows(datas);
 
-                return Observable.just(datas);
+                return Observable.just(ad);
             }
 
             @Override
@@ -175,20 +174,14 @@ public class ServiceModule {
             }
 
             @Override
-            public Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails() {
-                List<MantissaWarehouseDetails> datas = new ArrayList<>();
-                datas.add(new MantissaWarehouseDetails("0351234701", "D33E02-02", "20000", "10000", "发料中"));
-                datas.add(new MantissaWarehouseDetails("0351234702", "D33E02-03", "30000", "60000", "未开始"));
-                datas.add(new MantissaWarehouseDetails("0351234703", "D33E02-04", "40000", "70000", "未开始"));
-                datas.add(new MantissaWarehouseDetails("0351234704", "D33E02-05", "50000", "70000", "完成"));
-                datas.add(new MantissaWarehouseDetails("0351234705", "D33E02-06", "60000", "70000", "完成"));
-                datas.add(new MantissaWarehouseDetails("0351234706", "D33E02-07", "70000", "70000", "完成"));
-                datas.add(new MantissaWarehouseDetails("0351234706", "D33E02-07", "70000", "70000", "完成"));
-                datas.add(new MantissaWarehouseDetails("0351234706", "D33E02-07", "70000", "70000", "完成"));
-                datas.add(new MantissaWarehouseDetails("0351234706", "D33E02-07", "70000", "70000", "完成"));
-                datas.add(new MantissaWarehouseDetails("0351234706", "D33E02-07", "70000", "70000", "完成"));
-                datas.add(new MantissaWarehouseDetails("0351234706", "D33E02-07", "70000", "70000", "完成"));
+            public Observable<List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails>> getMantissaWarehouseDetails() {
 
+                List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> datas = new ArrayList<>();
+                datas.add(new MantissaWarehouseDetailsResult.MantissaWarehouseDetails("0351234701", "D33E02-02", "20000", "10000", "发料中",""));
+                MantissaWarehouseDetailsResult ad = new MantissaWarehouseDetailsResult();
+                ad.setCode("0");
+                ad.setMsg("succdee");
+                ad.setRows(datas);
                 return Observable.just(datas);
             }
 

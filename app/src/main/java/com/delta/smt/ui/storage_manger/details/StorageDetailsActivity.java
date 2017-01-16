@@ -1,15 +1,19 @@
 package com.delta.smt.ui.storage_manger.details;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -20,9 +24,12 @@ import com.delta.smt.ui.storage_manger.details.di.DaggerStorageDetailsComponent;
 import com.delta.smt.ui.storage_manger.details.di.StorageDetailsModule;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsContract;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsPresenter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -67,7 +74,13 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     protected void initData() {
 
-        getPresenter().getStorageDetails();
+        Map<String,String> mMap=new HashMap<>();
+        mMap.put("part", Constant.WARE_HOUSE_NAME);
+        mMap.put("work_order",getIntent().getStringExtra("work_order"));
+        Gson mGson=new Gson();
+        String mS=mGson.toJson(mMap);
+        Log.i("aaa", mS);
+        getPresenter().getStorageDetails(mS);
 
     }
 
@@ -130,8 +143,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     @Override
-    public void getFailed() {
-
+    public void getFailed(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
 
