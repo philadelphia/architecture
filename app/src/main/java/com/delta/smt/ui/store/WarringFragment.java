@@ -107,7 +107,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
     }
 
     @Override
-    public void onSucess(List<ItemInfo> wareHouses) {
+    public void onSucess(List<com.delta.smt.entity.ItemInfo> wareHouses) {
         Log.i("info", "" + wareHouses.size());
         mList.clear();
         mList.addAll(wareHouses);

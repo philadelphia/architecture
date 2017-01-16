@@ -15,16 +15,6 @@ public class CountDownEntity  {
     protected long endTime;
     protected int id;
 
-    protected  String text;
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public int getId() {
         return id;
     }

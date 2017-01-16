@@ -22,6 +22,8 @@ import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.ui.storeroom.di.DaggerStoreRoomComponent;
+import com.delta.smt.ui.storeroom.di.StoreRoomModule;
 import com.delta.smt.ui.storeroom.mvp.StoreRoomContract;
 import com.delta.smt.ui.storeroom.mvp.StoreRoomPresenter;
 import com.delta.smt.utils.BarCodeUtils;
@@ -70,7 +72,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-
+        DaggerStoreRoomComponent.builder().appComponent(appComponent).storeRoomModule(new StoreRoomModule(this)).build().inject(this);
     }
 
     @Override
@@ -115,6 +117,11 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                 case FRAME_LOCATION:
                     FrameLocation frameCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, FRAME_LOCATION);
                     storageIded.setText(frameCode.getSource());
+                    if (materialBlockBarCodes.size() == 3) {
+                        if (!TextUtils.isEmpty(storageIded.getText()))
+                            getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
+                    }
+
                     break;
             }
 
@@ -150,16 +157,14 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @Override
     public void lightSuccsee() {
+        ToastUtils.showMessage(this,"点灯操作成功");
         materialBlockBarCodes.clear();
-        if (materialBlockBarCodes.size() == 3) {
-            if (!TextUtils.isEmpty(storageIded.getText()))
-                getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
-        }
+
     }
 
     @Override
     public void lightfaild() {
-
+        ToastUtils.showMessage(this,"点灯操作失败");
     }
 
     @Override
@@ -191,15 +196,12 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         switch (v.getId()) {
             case R.id.storage_clear:
                 if (isButtonOnclick) {
-                    storageClear.setBackgroundColor(Color.GRAY);
-                    storageClear.setEnabled(false);
-                }
                 storagePcbed.setText(null);
                 storageVendored.setText(null);
                 storageDatacodeed.setText(null);
                 materialBlockBarCodes.clear();
                 storageShow.setText("");
-
+                }
                 break;
             case R.id.storage_submit:
                 final Dialog dialo = builder.create();
@@ -211,6 +213,13 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                  confirmButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        storageClear.setBackgroundColor(Color.GRAY);
+                        storageClear.setEnabled(false);
+
+
+                        if (dialo.isShowing()) {
+                            dialo.cancel();
+                        }
                         isButtonOnclick=true;
                         if(materialBlockBarCodes.size()!=0){
                         getPresenter().fatchOnLight(materialBlockBarCodes);}else {
