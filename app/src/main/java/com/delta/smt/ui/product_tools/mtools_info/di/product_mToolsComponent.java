@@ -4,8 +4,6 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.product_tools.mtools_info.Produce_mToolsActivity;
 
-import javax.inject.Inject;
-
 import dagger.Component;
 
 /**
