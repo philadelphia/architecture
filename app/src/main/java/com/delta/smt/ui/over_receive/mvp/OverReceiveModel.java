@@ -3,8 +3,7 @@ package com.delta.smt.ui.over_receive.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.entity.OverReceiveItem;
+import com.delta.smt.entity.OverReceiveWarning;
 
 import java.util.List;
 

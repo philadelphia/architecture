@@ -40,6 +40,7 @@ import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
+import com.delta.smt.ui.over_receive.OverReceiveActivity;
 import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;
 import com.delta.smt.ui.product_tools.location.ProduceToolsLocationActivity;
@@ -160,6 +161,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 IntentUtils.showIntent(this, StorageSelectActivity.class);
                 break;
             case "仓库房超领":
+                IntentUtils.showIntent(this, OverReceiveActivity.class);
                 break;
             case "PCB库房发料":
                 IntentUtils.showIntent(this, StoreIssueActivity.class);
