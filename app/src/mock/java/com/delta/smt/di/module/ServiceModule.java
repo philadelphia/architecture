@@ -16,7 +16,7 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.entity.OverReceiveItem;
+import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.ProductToolsInfo;
@@ -130,13 +130,42 @@ public class ServiceModule {
                 return Observable.just(datas);
             }
 
-            @Override
+            /*@Override
             public Observable<List<OverReceiveItem>> getOverReceiveItems() {
                 List<OverReceiveItem> datas = new ArrayList<>();
                 datas.add(new OverReceiveItem("H14","205820536890","D33E02-01","100","00:10:00","等待超领发料"));
                 datas.add(new OverReceiveItem("H15","205820536890","D33E02-02","200","00:10:00","等待超领发料"));
                 datas.add(new OverReceiveItem("H16","205820536890","D33E02-03","300","00:10:00","等待超领发料"));
                 return Observable.just(datas);
+            }*/
+
+            @Override
+            public Observable<OverReceiveWarning> getOverReceiveItems(){
+                OverReceiveWarning overReceiveWarning = new OverReceiveWarning();
+                List<OverReceiveWarning.RowsBean.DataBean> datas = new ArrayList<>();
+                datas.add(new OverReceiveWarning.RowsBean.DataBean("H14","205820536890","D33E02-01","100","00:10:00","0"));
+                datas.add(new OverReceiveWarning.RowsBean.DataBean("H15","205820536890","D33E02-02","200","00:10:00","0"));
+                datas.add(new OverReceiveWarning.RowsBean.DataBean("H16","205820536890","D33E02-03","300","00:10:00","0"));
+                OverReceiveWarning.RowsBean rowsBean = new OverReceiveWarning.RowsBean();
+                rowsBean.setData(datas);
+                overReceiveWarning.setRows(rowsBean);
+                return Observable.just(overReceiveWarning);
+
+            }
+
+            @Override
+            public Observable<OverReceiveWarning> getOverReceiveItemSend(String content) {
+                return null;
+            }
+
+            @Override
+            public Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate() {
+                return null;
+            }
+
+            @Override
+            public Observable<MantissaWarehousePutstorageResult> getbeginPut() {
+                return null;
             }
 
             @Override

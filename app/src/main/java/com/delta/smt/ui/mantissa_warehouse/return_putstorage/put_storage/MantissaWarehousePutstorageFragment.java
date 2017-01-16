@@ -111,7 +111,7 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     @Override
     protected void initData() {
 
-        getPresenter().getMantissaWarehousePutstorage();
+     //   getPresenter().getMantissaWarehousePutstorage();
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.ProductWorkItem;
@@ -41,6 +42,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -91,7 +93,7 @@ public interface ApiService {
 
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
 
-    Observable<String> sumbitLine();
+    //Observable<String> sumbitLine();
 
 
     //接口PCB库房发料
@@ -174,6 +176,12 @@ public interface ApiService {
 
     @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
+
+    @GET("http://172.22.34.6:8081/SMM/ExcessManagement/qExcessList")
+    Observable<OverReceiveWarning> getOverReceiveItems();
+
+    @GET("http://172.22.34.6:8081/SMM/ExcessManagement/execessIssure")
+    Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
 
 
 }
