@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
@@ -18,16 +16,16 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
-import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
-import com.delta.smt.MainActivity;
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ListWarning;
-import com.delta.smt.ui.setting.SettingActivity;
+import com.delta.smt.entity.OutBound;
+import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.ui.store.di.DaggerWarningListComponent;
 import com.delta.smt.ui.store.di.WarningListModule;
 import com.delta.smt.ui.store.mvp.WarningListContract;
@@ -38,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 
 /**
@@ -46,12 +43,7 @@ import butterknife.OnClick;
  */
 
 public class WarningListActivity extends BaseActivity<WarningListPresenter> implements WarningListContract.View {
-    @BindView(R.id.header_back)
-    RelativeLayout headerBack;
-    @BindView(R.id.header_title)
-    TextView headerTitle;
-    @BindView(R.id.header_setting)
-    TextView headerSetting;
+
     @BindView(R.id.ed_work)
     TextView edWork;
     @BindView(R.id.ed_pcb)
@@ -64,16 +56,27 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     RecyclerView recyContetn;
     @BindView(R.id.activity_mianview)
     LinearLayout activityMianview;
+    @BindView(R.id.ed_pcb_demand)
+    TextView edPcbDemand;
 
+    List<OutBound.DataBean> mList = new ArrayList<>();
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar toolbar;
 
-    List<ListWarning> mList = new ArrayList<>();
-    private CommonBaseAdapter<ListWarning> mAdapter;
+    private CommonBaseAdapter<OutBound.DataBean> mAdapter;
     private int position = 0;
     private String mWorkNumberString;
     private String mMachineString;
     private String mMaterialNumberString;
     private MaterialBlockBarCode mMaterbarCode;
     private FrameLocation mFramebarCode;
+    private int mAmout;
+    private int mId;
+    private int mAmoutString;
 
 
     @Override
@@ -83,12 +86,12 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     @Override
     protected void initData() {
-        getPresenter().fetchListWarning();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mWorkNumberString = bundle.getString("workNumber");
             mMachineString = bundle.getString("machine");
             mMaterialNumberString = bundle.getString("materialNumber");
+            mAmoutString = bundle.getInt("amout");
             Log.i("info-->", mWorkNumberString);
             Log.i("info-->", mMachineString);
             Log.i("info-->", mMaterialNumberString);
@@ -97,12 +100,16 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     @Override
     protected void initView() {
-        headerTitle.setText(this.getResources().getString(R.string.storetitle));
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbarTitle.setText(this.getResources().getString(R.string.storetitle));
         edWork.setText(mWorkNumberString);
         edPcb.setText(mMachineString);
         edMachine.setText(mMaterialNumberString);
         List<ListWarning> list = new ArrayList<>();
-        list.add(new ListWarning("", "", "", "", "", ""));
+        list.add(new ListWarning("", "", "", "", ""));
 
         CommonBaseAdapter<ListWarning> AdapterTitle = new CommonBaseAdapter<ListWarning>(this, list) {
             @Override
@@ -118,27 +125,27 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         recyTitle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyTitle.setAdapter(AdapterTitle);
 
-        mAdapter = new CommonBaseAdapter<ListWarning>(this, mList) {
-            @Override
-            protected void convert(CommonViewHolder holder, ListWarning item, int position) {
+        mAdapter = new CommonBaseAdapter<OutBound.DataBean>(this, mList) {
 
-                holder.setText(R.id.pcb_number, item.getPcb());
-                holder.setText(R.id.pcb_price, item.getJia());
-                if (TextUtils.isEmpty(item.getDangqaian())) {
+            @Override
+            protected void convert(CommonViewHolder holder, OutBound.DataBean item, int position) {
+                holder.setText(R.id.pcb_number, item.getPartNum());
+                holder.setText(R.id.pcb_price, item.getSubShelfSerial());
+                if (item.getAmount() == 0) {
                     holder.setText(R.id.pcb_thenumber, "");
                 }
-                holder.setText(R.id.pcb_demand, item.getXuqiu());
                 holder.setText(R.id.pcb_code, item.getPcbCode());
                 holder.setText(R.id.pcb_time, item.getPcbCode());
                 if (mMaterbarCode != null) {
-                    if (mList.get(0).getPcb().equals(mMaterbarCode.getDeltaMaterialNumber())) {
-                        getPresenter().fetchWarningNumber();
+                    if (mList.get(0).getPcbCode().equals(mMaterbarCode.getDeltaMaterialNumber())) {
+//                        getPresenter().fetchWarningNumber(); // TODO: 2017-01-15 网络请求操作
                     }
 
                 }
-                if (item.getDangqaian() != null) {
+                if ("0".equals(String.valueOf(item.getAmount()))) {
+
                     if (mFramebarCode != null) {
-                        if (mFramebarCode.getSource().equals(mList.get(0).getJia())) {
+                        if (mFramebarCode.getSource().equals(mList.get(0).getSubShelfSerial())) {
                             getPresenter().fetchSuccessState();
                         }
                     }
@@ -154,8 +161,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
             }
 
+
             @Override
-            protected int getItemViewLayoutId(int position, ListWarning item) {
+            protected int getItemViewLayoutId(int position, OutBound.DataBean item) {
                 return R.layout.item_warning;
             }
         };
@@ -171,59 +179,69 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     }
 
 
-
-    @Override
-    public void onSucess(List<ListWarning> wareHouses) {
-        mList.clear();
-        mList.addAll(wareHouses);
-        mList.get(0).setColor(true);
-        mAdapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onFailed() {
 
     }
-
     @Override
-    public void onWarningNumberSucess(List<ListWarning> wareHouses) {
-        mList.clear();
-        mList.addAll(wareHouses);
-        mAdapter.notifyDataSetChanged();
-    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
 
-    @Override
-    public void onWarningNumberFailed() {
-
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onSucessState(String s) {
-        Snackbar.make(activityMianview,"发料成功",Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_INDEFINITE).show();
         recyContetn.scrollToPosition(position + 1);//请求+1
         mList.get(position).setColor(false);
         mList.get(position + 1).setColor(true);
         mAdapter.notifyDataSetChanged();
+        edPcbDemand.setText("" + (100 - mAmout));
+
     }
 
     @Override
-    public void onFailedState(String s) {
+    public void onOutSuccess(List<OutBound.DataBean> dataBeanList) {
+        mList.clear();
+        mList.addAll(dataBeanList);
+        mAdapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void getNumberSucces(PcbNumber.DataBean dataBean) {
+        mList.get(position).setAmount(dataBean.getAmount());
+        mList.get(position).setId(dataBean.getId());
+        mAdapter.notifyDataSetChanged();
+        mAmout = dataBean.getAmount();
+        mId = dataBean.getId();
     }
 
     @Override
     public void onScanSuccess(String barcode) {
-        ToastUtils.showMessage(this,"--->"+barcode);
-        Log.i("BARCODE","---->"+barcode);
+        ToastUtils.showMessage(this, "--->" + barcode);
+        Log.i("BARCODE", "---->" + barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
             if (BarCodeUtils.barCodeType(barcode) != null) {
                 switch (BarCodeUtils.barCodeType(barcode)) {
                     case MATERIAL_BLOCK_BARCODE:
                         mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                        if (mMaterbarCode.getStreamNumber() != null) {
+                            getPresenter().fetchPcbNumber(mMaterbarCode.getStreamNumber());
+                        }
                         break;
                     case FRAME_LOCATION:
                         mFramebarCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                        if ("0".equals(String.valueOf(mAmout)) && "0".equals(String.valueOf(mId))) {
+                            getPresenter().fetchPcbSuccess(mAmout, mId);
+                        }
                         break;
                 }
 
@@ -237,16 +255,5 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     }
 
 
-    @OnClick({R.id.header_back,R.id.header_setting})
-    public void onHeaderClick(View v) {
 
-        switch (v.getId()){
-            case R.id.header_back:
-                IntentUtils.showIntent(this, StoreIssueActivity.class);
-                break;
-            case R.id.header_setting:
-                IntentUtils.showIntent(this, SettingActivity.class);
-                break;
-        }
-    }
 }
