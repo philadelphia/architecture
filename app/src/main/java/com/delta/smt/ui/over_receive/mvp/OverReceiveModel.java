@@ -3,6 +3,7 @@ package com.delta.smt.ui.over_receive.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 
 import java.util.List;
@@ -26,6 +27,16 @@ public class OverReceiveModel extends BaseModel<ApiService> implements OverRecei
     @Override
     public Observable<OverReceiveWarning> getOverReceiveItemsAfterSend(String str) {
         return getService().getOverReceiveItemSend(str).compose(RxsRxSchedulers.<OverReceiveWarning>io_main());
+    }
+
+    @Override
+    public Observable<OverReceiveWarning> getOverReceiveItemsAfterSendArrive(String str) {
+        return getService().getOverReceiveItemSendArrive(str).compose(RxsRxSchedulers.<OverReceiveWarning>io_main());
+    }
+
+    @Override
+    public Observable<OverReceiveDebitResult> getOverReceiveDebit() {
+        return getService().getOverReceiveDebit().compose(RxsRxSchedulers.<OverReceiveDebitResult>io_main());
     }
 
 

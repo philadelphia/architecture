@@ -30,7 +30,9 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveMaterialSend;
+import com.delta.smt.entity.OverReceiveMaterialSendArrive;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.over_receive.di.DaggerOverReceiveComponent;
@@ -80,9 +82,15 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @BindView(R.id.testSend)
     AppCompatButton testSend;
+    @BindView(R.id.testSendArrive)
+    AppCompatButton testSendArrive;
 
     @Inject
     WarningManger warningManger;
+
+    String materialBlockNumber = "4020108700";
+    String serialNumber = "12344";
+    String count = "2000";
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -163,10 +171,15 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @Override
     public void onSuccess(OverReceiveWarning data) {
         Toast.makeText(this,"onSuccess",Toast.LENGTH_SHORT).show();
-        dataSource.clear();
-        List<OverReceiveWarning.RowsBean.DataBean> rowsBeanList = data.getRows().getData();
-        dataSource.addAll(rowsBeanList);
-        adapter.notifyDataSetChanged();
+        if(data.getMsg().toLowerCase().equals("success")){
+            dataSource.clear();
+            List<OverReceiveWarning.RowsBean.DataBean> rowsBeanList = data.getRows().getData();
+            dataSource.addAll(rowsBeanList);
+            adapter.notifyDataSetChanged();
+        }else{
+            Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -174,19 +187,38 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         Toast.makeText(this,"onFalied",Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick({R.id.manual_debit,R.id.testSend})
+    @Override
+    public void onSuccessOverReceiveDebit(OverReceiveDebitResult data) {
+        if (data.getMsg().toLowerCase().equals("success")){
+            //
+            Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
+        }else{
+            //
+            Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onFaliedOverReceiveDebit() {
+
+    }
+
+    @OnClick({R.id.manual_debit,R.id.testSend,R.id.testSendArrive})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.manual_debit:
                 getPresenter().manualDebit();
                 break;
             case R.id.testSend:
-                String materialBlockNumber = "4020108700";
-                String serialNumber = "12344";
-                String count = "2000";
                 OverReceiveMaterialSend overReceiveMaterialSend = new OverReceiveMaterialSend(materialBlockNumber,serialNumber,count);
-                String str = gson.toJson(overReceiveMaterialSend);
-                getPresenter().getOverReceiveItemsAfterSend(str);
+                String strSend = gson.toJson(overReceiveMaterialSend);
+                getPresenter().getOverReceiveItemsAfterSend(strSend);
+                break;
+            case R.id.testSendArrive:
+                OverReceiveMaterialSendArrive overReceiveMaterialSendArrive = new OverReceiveMaterialSendArrive(materialBlockNumber,serialNumber);
+                String strSendArrive = gson.toJson(overReceiveMaterialSendArrive);
+                getPresenter().getOverReceiveItemsAfterSendArrive(strSendArrive);
+                getPresenter().getOverReceiveItemsAfterSendArrive(strSendArrive);
                 break;
         }
     }
@@ -276,9 +308,9 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             case MATERIAL_BLOCK_BARCODE:
                 try {
                     MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    String materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                    String serialNumber = materialBlockBarCode.getStreamNumber();
-                    String count = materialBlockBarCode.getCount();
+                    materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
+                    serialNumber = materialBlockBarCode.getStreamNumber();
+                    count = materialBlockBarCode.getCount();
                     OverReceiveMaterialSend overReceiveMaterialSend = new OverReceiveMaterialSend(materialBlockNumber,serialNumber,count);
                     String str = gson.toJson(overReceiveMaterialSend);
                     getPresenter().getOverReceiveItemsAfterSend(str);

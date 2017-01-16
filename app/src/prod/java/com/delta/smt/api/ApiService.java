@@ -18,6 +18,7 @@ import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.OutBound;
+import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.ProductToolsBack;
@@ -214,5 +215,9 @@ public interface ApiService {
     @GET("http://172.22.34.6:8081/SMM/ExcessManagement/execessIssure")
     Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
 
+    @GET("http://172.22.34.6:8081/SMM/WareHIssue/delivery")
+    Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
 
+    @GET("http://172.22.34.6:8081/SMM/WareHIssue/debit")
+    Observable<OverReceiveDebitResult> getOverReceiveDebit();
 }
