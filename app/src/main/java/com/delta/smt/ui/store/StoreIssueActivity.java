@@ -47,14 +47,10 @@ import me.yokeyword.fragmentation.SupportFragment;
 
 public class StoreIssueActivity extends BaseActivity<StorePresenter> implements TabLayout.OnTabSelectedListener, WarningManger.OnWarning, StoreContract.View {
 
-    @BindView(R.id.main_title)
-    TabLayout tlTitle;
     @Inject
     WarningManger warningManger;
-    @BindView(R.id.header_back)
-    RelativeLayout headerBack;
-    @BindView(R.id.header_setting)
-    TextView headerSetting;
+    @BindView(R.id.main_title)
+    TabLayout tlTitle;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
@@ -90,13 +86,13 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
 
     @Override
     protected void initView() {
-        for (int i = 0; i < mTitles.length; i++) {
-            tlTitle.addTab(tlTitle.newTab());
-        }
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(this.getResources().getString(R.string.storetitle));
+        for (int i = 0; i < mTitles.length; i++) {
+            tlTitle.addTab(tlTitle.newTab());
+        }
         ViewUtils.setTabTitle(tlTitle, mTitles);
         tlTitle.addOnTabSelectedListener(this);
         fragmentManager = getSupportFragmentManager();

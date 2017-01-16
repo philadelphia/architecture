@@ -26,7 +26,6 @@ import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
-import com.delta.smt.entity.StorageSelect;
 import com.delta.smt.entity.Success;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
@@ -40,7 +39,6 @@ import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -117,7 +115,7 @@ public interface ApiService {
 
     Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
 
-    @GET("webapi/pcb/management/inbound")
+    @GET("webapi/pcb/management/inbound/location")
     Observable<Light> onLight(@Query("param") String s);//点灯操作
     @GET("webapi/pcb/management/inbound")
     Observable<Success> putInStorage(@Query("param") String s);//入库操作
