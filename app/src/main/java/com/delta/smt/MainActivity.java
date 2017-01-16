@@ -17,18 +17,21 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
-import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.Download;
+import com.delta.smt.entity.Fuction;
 import com.delta.smt.entity.Update;
 import com.delta.smt.service.warningService.WarningService;
 import com.delta.smt.ui.checkstock.CheckStockActivity;
+import com.delta.smt.ui.feeder.wareSelect.WareSelectActivity;
 import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 import com.delta.smt.ui.main.di.DaggerMainComponent;
 import com.delta.smt.ui.main.di.MainModule;
@@ -37,7 +40,6 @@ import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
-import com.delta.smt.ui.over_receive.OverReceiveActivity;
 import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;
 import com.delta.smt.ui.product_tools.location.ProduceToolsLocationActivity;
@@ -56,21 +58,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
-public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<String>, MainContract.View {
+public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<Fuction>, MainContract.View {
 
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rv)
     RecyclerView rv;
-    private List<String> fuctionString;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
+    @BindView(R.id.drawer_layout)
+    LinearLayout drawerLayout;
+    private List<Fuction> fuctions;
     //更新
     private static ProgressDialog progressDialog = null;
     private LocalBroadcastManager bManager;
-    private String downloadStr = null;
-    private AlertDialog retryAlertDialog = null;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -81,16 +88,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
     @Override
     protected void initView() {
-        CommonBaseAdapter<String> adapter = new CommonBaseAdapter<String>(this, fuctionString) {
+        CommonBaseAdapter<Fuction> adapter = new CommonBaseAdapter<Fuction>(this, fuctions) {
             @Override
-            protected void convert(CommonViewHolder holder, String item, int position) {
-                holder.setImageResource(R.id.iv_function, R.drawable.title);
+            protected void convert(CommonViewHolder holder, Fuction item, int position) {
+                holder.setImageResource(R.id.iv_function, item.getId());
                 Log.e(TAG, "convert: " + item);
-                holder.setText(R.id.tv_function, item);
+                holder.setText(R.id.tv_function, item.getTitle());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, String item) {
+            protected int getItemViewLayoutId(int position, Fuction item) {
                 return R.layout.item_function;
             }
         };
@@ -115,25 +122,24 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
         Intent intent = new Intent(this, WarningService.class);
         startService(intent);
-        fuctionString = new ArrayList<>();
-        fuctionString.add("Feeder缓冲区");
-        fuctionString.add("仓库房");
-        fuctionString.add("PCB库房发料");
-        fuctionString.add("PCB库房入库");
-        fuctionString.add("盘点");
-        fuctionString.add("生产中预警");
-        fuctionString.add("warningSample");
-        fuctionString.add("手补件通知");
-        fuctionString.add("尾数仓备料");
-        fuctionString.add("尾数仓退料及入库");
-        fuctionString.add("上模组");
-        fuctionString.add("下模组");
-        fuctionString.add("设置");
-        fuctionString.add("故障处理预警");
-        fuctionString.add("治具借出");
-        fuctionString.add("治具归还");
-        fuctionString.add("治具入架位");
-        fuctionString.add("超领");
+        fuctions = new ArrayList<>();
+        fuctions.add(new Fuction("PCB库房入库", R.drawable.ic_warehouseroompreparation));
+        fuctions.add(new Fuction("PCB库房盘点", R.drawable.ic_warehouseinventory));
+        fuctions.add(new Fuction("PCB库房发料", R.drawable.ic_warehouseforsending));
+        fuctions.add(new Fuction("仓库房备料", R.drawable.ic_warehousestorage));
+        fuctions.add(new Fuction("仓库房超领", R.drawable.ic_warehouseroomchaoling));
+        fuctions.add(new Fuction("Feeder缓冲区", R.drawable.ic_feederbuffer));
+        fuctions.add(new Fuction("尾数仓备料", R.drawable.ic_mantissawarehousestock));
+        fuctions.add(new Fuction("上模组", R.drawable.ic_onthemodule));
+        fuctions.add(new Fuction("下模组", R.drawable.ic_themodule));
+        fuctions.add(new Fuction("故障处理", R.drawable.ic_faulthandling));
+        fuctions.add(new Fuction("尾数仓入库及退料", R.drawable.ic_return));
+        fuctions.add(new Fuction("生产中预警", R.drawable.ic_warning));
+        fuctions.add(new Fuction("治具入架位", R.drawable.ic_thereturn));
+        fuctions.add(new Fuction("治具借出", R.drawable.ic_lend));
+        fuctions.add(new Fuction("治具归还", R.drawable.ic_return));
+        fuctions.add(new Fuction("手补件", R.drawable.ic_handpatch));
+        fuctions.add(new Fuction("warningSample", R.drawable.title));
     }
 
 
@@ -142,18 +148,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         return R.layout.activity_main;
     }
 
-
     @Override
-    public void onItemClick(View view, String item, int position) {
-        Log.e(TAG, "onItemClick: " + item + position);
-        ToastUtils.showMessage(this, item);
+    public void onItemClick(View view, Fuction item, int position) {
 
-        switch (item) {
+
+        switch (item.getTitle()) {
             case "Feeder缓冲区":
-                IntentUtils.showIntent(this, com.delta.smt.ui.feeder.wareSelect.WareSelectActivity.class);
+                IntentUtils.showIntent(this, WareSelectActivity.class);
                 break;
-            case "仓库房":
+            case "仓库房备料":
                 IntentUtils.showIntent(this, StorageSelectActivity.class);
+                break;
+            case "仓库房超领":
                 break;
             case "PCB库房发料":
                 IntentUtils.showIntent(this, StoreIssueActivity.class);
@@ -161,19 +167,19 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "PCB库房入库":
                 IntentUtils.showIntent(this, StoreRoomActivity.class);
                 break;
-            case "盘点":
+            case "PCB库房盘点":
                 IntentUtils.showIntent(this, CheckStockActivity.class);
                 break;
             case "生产中预警":
                 IntentUtils.showIntent(this, ProduceLineActivity.class);
                 break;
-            case "手补件通知":
+            case "手补件":
                 IntentUtils.showIntent(this, HandAddActivity.class);
                 break;
             case "尾数仓备料":
                 IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class);
                 break;
-            case "尾数仓退料及入库":
+            case "尾数仓入库及退料":
                 IntentUtils.showIntent(this, MantissaWarehouseReturnAndPutStorageActivity.class);
                 break;
             case "warningSample":
@@ -184,10 +190,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "下模组":
                 IntentUtils.showIntent(this, ModuleDownActivity.class);
                 break;
-            case "设置":
-                IntentUtils.showIntent(this, SettingActivity.class);
-                break;
-            case "故障处理预警":
+            case "故障处理":
                 IntentUtils.showIntent(this, com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity.class);
                 break;
             case "治具借出":
@@ -198,9 +201,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 break;
             case "治具入架位":
                 IntentUtils.showIntent(this, ProduceToolsLocationActivity.class);
-                break;
-            case "超领":
-                IntentUtils.showIntent(this, OverReceiveActivity.class);
                 break;
             default:
                 break;
@@ -221,10 +221,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                         .setPositiveButton("更新", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                downloadStr = update.getUrl();
                                 //显示ProgerssDialog
                                 showProgerssDialog(MainActivity.this);
-                                getPresenter().download(MainActivity.this, downloadStr);
+                                getPresenter().download(MainActivity.this, update.getUrl());
                                 dialogInterface.dismiss();
                             }
                         })
@@ -275,33 +274,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             } else if (intent.getAction().equals(Constant.MESSAGE_FAILED)) {
                 progressDialog.setMessage("下载失败");
                 progressDialog.setCancelable(true);
-                if(retryAlertDialog==null){
-                    retryAlertDialog = new AlertDialog.Builder(MainActivity.this)
-                            .setTitle("提示")
-                            .setMessage("下载失败，请重试或取消更新！")
-                            .setCancelable(false)
-                            .setPositiveButton("重试", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    progressDialog.dismiss();
-                                    //显示ProgerssDialog
-                                    showProgerssDialog(MainActivity.this);
-                                    getPresenter().download(MainActivity.this, downloadStr);
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    progressDialog.dismiss();
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .create();
-                }
-                if (!retryAlertDialog.isShowing()) {
-                    retryAlertDialog.show();
-                }
             }
         }
     };
@@ -360,4 +332,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
     }
 
+
+    @OnClick(R.id.tv_setting)
+    public void onClick() {
+        IntentUtils.showIntent(this, SettingActivity.class);
+    }
 }
