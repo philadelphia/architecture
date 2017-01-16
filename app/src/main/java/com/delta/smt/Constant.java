@@ -43,5 +43,7 @@ public class Constant {
     public static final int ACTIVITY_REQUEST_WORK_ITEM_ID = 1;
     public static final int ACTIVITY_RESULT_WORK_ITEM_ID = 10;
 
+    public static  String WARE_HOUSE_NAME = "wareHouseName";
+
 
 }

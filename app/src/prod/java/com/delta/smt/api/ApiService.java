@@ -36,11 +36,13 @@ import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.List;
+import java.util.concurrent.locks.Condition;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -142,8 +144,8 @@ public interface ApiService {
     Observable<List<ProductToolsBack>> getProductToolsBack();
 
     //仓库房备料和尾数仓
-    @POST
-    Observable<List<StorageSelect>> getStorageSelect();
+    @GET("http://172.22.34.40:8081/SMM/IssueMana/queryWarehousePart")
+    Observable<Result<String>> getStorageSelect();
 
     Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
 
@@ -153,7 +155,8 @@ public interface ApiService {
 
     //  Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
-    Observable<List<StorageReady>> getStorageReadyDates();
+    @GET("http://172.22.34.40:8081/SMM/IssueMana/queryWorkOrder")
+    Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
     Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
