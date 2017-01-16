@@ -1,13 +1,14 @@
 package com.delta.smt.ui.mantissa_warehouse.detail;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
@@ -16,6 +17,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaWarehouseDetails;
+import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.DaggerMantissaWarehouseDetailsComponent;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsModule;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsContract;
@@ -54,7 +56,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private List<MantissaWarehouseDetails> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseDetails> adapter;
     private CommonBaseAdapter<MantissaWarehouseDetails> adapter2;
-    private View mInflate;
+    private MantissaWarehouseReady.MantissaWarehouse mMantissaWarehouse ;
 
 
     @Override
@@ -67,7 +69,10 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     protected void initData() {
 
-        getPresenter().getMantissaWarehouseDetails();
+        Intent intent = this.getIntent();
+        mMantissaWarehouse=(MantissaWarehouseReady.MantissaWarehouse)intent.getSerializableExtra("item");
+        Toast.makeText(this, mMantissaWarehouse.getLine(), Toast.LENGTH_SHORT).show();
+        // getPresenter().getMantissaWarehouseDetails();
 
     }
 

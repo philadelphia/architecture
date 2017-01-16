@@ -1,12 +1,13 @@
 package com.delta.smt.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/22.
  */
 
-public class MantissaWarehouseReady {
+public class MantissaWarehouseReady implements Serializable {
 
 
     /**
@@ -43,7 +44,7 @@ public class MantissaWarehouseReady {
         this.rows = rows;
     }
 
-    public static class MantissaWarehouse {
+    public static class MantissaWarehouse implements Serializable{
         /**
          * work_order : 20171011
          * line : H-01

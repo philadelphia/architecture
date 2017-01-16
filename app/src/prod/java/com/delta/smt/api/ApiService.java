@@ -159,7 +159,7 @@ public interface ApiService {
     @GET("http://172.22.34.40:8081/SMM/IssueMana/queryWorkOrder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
-    Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
+  //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
 
@@ -177,6 +177,10 @@ public interface ApiService {
 
     @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
+
+    //尾数仓备料
+    @GET("http://172.22.34.40:8081/SMM/IssueMana/querymantiss")
+    Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
 
 
 }
