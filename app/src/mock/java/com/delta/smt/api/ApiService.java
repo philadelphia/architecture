@@ -18,8 +18,8 @@ import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.OverReceiveItem;
 import com.delta.smt.entity.ProductToolsBack;
-import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.ProductToolsInfo;
+import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
@@ -157,7 +157,21 @@ public interface ApiService {
     Observable<List<OverReceiveItem>> getOverReceiveItems();
 
 
+    //liuzhenyu
+    //尾数仓退入主仓库
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/queryReturnedWarehList")
+    Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
 
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/triggerListUpdate")
+    Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
+
+    @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
+    Observable<MantissaWarehousePutstorageResult> getbeginPut();
+
+
+    //尾数仓备料
+    @GET("http://172.22.34.8:8081/SMM/IssueMana/querymantiss")
+    Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
 
 
 
