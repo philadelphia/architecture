@@ -114,7 +114,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> im
     public void onItemClick(View view, StorageReady item, int position) {
 
         Intent intent = new Intent(getActivity(), StorageDetailsActivity.class);
-
+        intent.putExtra("work_order",item.getWork_order());
         startActivity(intent);
 
     }

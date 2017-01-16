@@ -145,7 +145,8 @@ public interface ApiService {
     Observable<List<ProductToolsBack>> getProductToolsBack();
 
     //仓库房备料和尾数仓
-    @GET("http://172.22.34.40:8081/SMM/IssueMana/queryWarehousePart")
+    //Zhangfuxiang
+    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWarehousePart")
     Observable<Result<String>> getStorageSelect();
 
     Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
@@ -156,12 +157,15 @@ public interface ApiService {
 
     //  Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
-    @GET("http://172.22.34.40:8081/SMM/IssueMana/queryWorkOrder")
+    //Zhangfuxiang
+    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWorkOrder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
   //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
-    Observable<List<StorageDetails>> getStorageDetails();
+    //Zhangfuxiang
+    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryIssue")
+    Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
 
 //    Observable<String> sumbitLine();
 

@@ -1,8 +1,11 @@
 package com.delta.smt.ui.storage_manger.details.mvp;
 
+import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
+import com.delta.smt.entity.StorageReady;
 
 import java.util.List;
 
@@ -19,7 +22,8 @@ public class StorageDetailsModel extends BaseModel<ApiService> implements Storag
     }
 
     @Override
-    public Observable<List<StorageDetails>> getStorageDetails() {
-        return getService().getStorageDetails();
+    public Observable<Result<StorageDetails>> getStorageDetails(String content) {
+        return getService().getStorageDetails(content).compose(RxsRxSchedulers.<Result<StorageDetails>>io_main());
     }
+
 }

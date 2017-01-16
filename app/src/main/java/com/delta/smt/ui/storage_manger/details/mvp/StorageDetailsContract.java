@@ -2,6 +2,7 @@ package com.delta.smt.ui.storage_manger.details.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 
 import java.util.List;
@@ -17,14 +18,14 @@ public interface StorageDetailsContract {
     interface Model extends IModel {
 
 
-        Observable<List<StorageDetails>> getStorageDetails();
+        Observable<Result<StorageDetails>> getStorageDetails(String content);
 
     }
 
     interface View extends IView {
 
         void getSucess(List<StorageDetails> storageDetailses);
-        void getFailed();
+        void getFailed(String message);
 
     }
 
