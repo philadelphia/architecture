@@ -8,7 +8,6 @@ public class ListWarning {
     String pcb;
     String jia;
     String dangqaian;
-    String xuqiu;
     String pcbCode;
     String dc;
 
@@ -21,14 +20,13 @@ public class ListWarning {
     }
 
     boolean isColor;
-    public ListWarning() {
+    public ListWarning(String s, String s1, String s2, String s3, String s4) {
     }
 
     public ListWarning(String pcb, String jia, String dangqaian, String xuqiu, String pcbCode, String dc) {
         this.pcb = pcb;
         this.jia = jia;
         this.dangqaian = dangqaian;
-        this.xuqiu = xuqiu;
         this.pcbCode = pcbCode;
         this.dc = dc;
     }
@@ -57,13 +55,6 @@ public class ListWarning {
         this.dangqaian = dangqaian;
     }
 
-    public String getXuqiu() {
-        return xuqiu;
-    }
-
-    public void setXuqiu(String xuqiu) {
-        this.xuqiu = xuqiu;
-    }
 
     public String getPcbCode() {
         return pcbCode;
