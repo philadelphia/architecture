@@ -7,6 +7,7 @@ import android.content.Intent;
 import com.delta.commonlibs.di.module.AppModule;
 import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.http.GlobeHttpHandler;
+import com.delta.smt.BuildConfig;
 import com.delta.smt.di.module.ServiceModule;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
@@ -15,6 +16,7 @@ import java.util.LinkedList;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import timber.log.Timber;
 
 /**
  * 本项目由
@@ -36,6 +38,9 @@ public abstract class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
         AutoLayoutConifg.getInstance().useDeviceSize();
         mApplication = this;
         this.mClientModule = ClientModule//用于提供okhttp和retrofit的单列
