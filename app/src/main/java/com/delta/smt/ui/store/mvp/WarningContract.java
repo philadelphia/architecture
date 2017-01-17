@@ -2,6 +2,7 @@ package com.delta.smt.ui.store.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ItemInfo;
 
 import java.util.List;
@@ -19,6 +20,6 @@ public class WarningContract {
         void onFailed();
     }
      public interface Model extends IModel{
-         Observable<List<ItemInfo>> getWarning();
+         Observable<AllQuery> getWarning();
     }
 }

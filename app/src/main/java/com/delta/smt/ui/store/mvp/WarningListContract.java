@@ -2,13 +2,13 @@ package com.delta.smt.ui.store.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
-import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.OutBound;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.Success;
 
 import java.util.List;
 
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -25,10 +25,14 @@ public class WarningListContract {
     }
     public interface Model extends IModel{
 
-        Observable<String>getSuccessfulState ();
-        Observable<OutBound>getOutbound(String s);
+
+        Observable<OutBound>getOutbound(int id,String sapWorkOrderId,String partNum,int amount);
+        Observable<OutBound> getScheduleDetailed(String sapWorkOrderId, String partNum, int  amount);
         Observable<PcbNumber>getPcbNumber(String s);
         Observable<Success>getPcbSuccess(String s);
+        Observable<String>getAlarmSuccessfulState (String sapWorkOrderId, int alarmId );
+        Observable<String>getScheduleSuccessState (String sapWorkOrderId );
+
 
     }
 }

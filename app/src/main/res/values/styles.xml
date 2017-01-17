@@ -74,14 +74,14 @@
     </style>
 
     <style name="waring_editext">
-        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/waring_editext</item>
         <item name="android:layout_marginLeft">@dimen/dp_6</item>
     </style>
 
     <style name="style_storageedi">
         <item name="android:background">@drawable/ed_frame</item>
-        <item name="android:layout_marginRight">@dimen/dp_16</item>
+        <item name="android:layout_marginRight">@dimen/px_16</item>
     </style>
     <style name="style_storagetv" >
         <item name="android:textSize">@dimen/px_40</item>
@@ -90,10 +90,12 @@
     </style>
 
     <style name="item_textstyle">
-        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/waring_text</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:background">@drawable/option_frame</item>
+        <item name="android:paddingBottom">@dimen/px_16</item>
+        <item name="android:paddingTop">@dimen/px_16</item>
 
     </style>
     >

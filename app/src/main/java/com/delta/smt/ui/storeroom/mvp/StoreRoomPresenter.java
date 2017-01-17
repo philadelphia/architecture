@@ -9,7 +9,6 @@ import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ParameterLight;
 import com.delta.smt.entity.Success;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,8 +82,11 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         getModel().OnLight(jsonString).subscribe(new Action1<Light>() {
             @Override
             public void call(Light light) {
-            if (light.getMsg().equals("Success")){
-                getView().lightSuccsee();
+            if ("0".equals(light.getCode())){
+                if ("success".equals(light.getMsg())){
+                getView().lightSuccsee();}else {
+                    getView().lightfaild();
+                }
                 }
             }
         }, new Action1<Throwable>() {

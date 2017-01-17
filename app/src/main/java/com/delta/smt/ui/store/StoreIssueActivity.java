@@ -86,6 +86,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
 
     @Override
     protected void initView() {
+        toolbarTitle.setText("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);

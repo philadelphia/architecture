@@ -1,6 +1,8 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.entity.AlarmInfoDetailed;
+import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FeederCheckInItem;
@@ -99,13 +101,12 @@ public interface ApiService {
 
     //接口PCB库房发料
 
-    Observable<List<com.delta.smt.entity.ItemInfo>> getWarning();//获取所有预警信息
 
     Observable<List<ListWarning>> getListWarning();//获取发料列表
 
     Observable<List<CheckStock>> getCheckStock();//获取盘点列表
 
-    Observable<String> getSuccessState();//是否成功?
+
 
     Observable<String> getStoreRoomSuccess();//是否成功?
 
@@ -115,16 +116,27 @@ public interface ApiService {
 
     Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
 
+
     @GET("webapi/pcb/management/inbound/location")
     Observable<Light> onLight(@Query("param") String s);//点灯操作
     @GET("webapi/pcb/management/inbound")
     Observable<Success> putInStorage(@Query("param") String s);//入库操作
-    @GET("pcb/management/outbound/bill")
-    Observable<OutBound> outBound(@Query("param") String s);//仓库发料清单
+    @GET("pcb/management/scheduleinfo")
+    Observable<AllQuery> getWarning();//获取所有预警信息
+    @GET("pcb/management/outbound/alarm/bill")
+    Observable<OutBound> outBound(@Query("id") int id,@Query("sapWorkOrderId") String sapWorkOrderId,@Query("partNum") String partNum,@Query("amount") int amount);//预警仓库发料清单
+    @GET("pcb/management/outbound/schedule/bill")
+    Observable<OutBound> getScheduleDetailed(@Query("sapWorkOrderId") String sapWorkOrderId,@Query("partNum") String partNum,@Query("amount") int amount);//获取发料详情列表
     @GET("pcb/management/capacity")
-    Observable<PcbNumber> getPcbNumber(@Query("param") String s);//获取实际数量
+    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
     @GET("webapi/pcb/management/outbound")
-    Observable<Success> getPcbSuccess(@Query("param") String s);//获取是否发料成功
+    Observable<Success> getPcbSuccess(@Query("param") String s);//出料操作
+    @GET("pcb/management/outbound/alarm/submit")
+    Observable<String> getAlarmSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId,@Query("alarmId") int alarmId );//预警出库完成
+    @GET("pcb/management/outbound/schedule/submit")
+    Observable<String> getScheduleSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId);//预警出库完成
+
+
 
 
 

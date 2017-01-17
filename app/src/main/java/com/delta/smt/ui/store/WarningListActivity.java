@@ -23,6 +23,7 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.AlarmInfoDetailed;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.OutBound;
 import com.delta.smt.entity.PcbNumber;
@@ -77,6 +78,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     private int mAmout;
     private int mId;
     private int mAmoutString;
+    private int mAlarminfoId;
+    private boolean mIsAlarmInfo;
 
 
     @Override
@@ -92,6 +95,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
             mMachineString = bundle.getString("machine");
             mMaterialNumberString = bundle.getString("materialNumber");
             mAmoutString = bundle.getInt("amout");
+            mAlarminfoId= bundle.getInt("alarminfoid");
+            mIsAlarmInfo = bundle.getBoolean("alarminfo");
             Log.i("info-->", mWorkNumberString);
             Log.i("info-->", mMachineString);
             Log.i("info-->", mMaterialNumberString);
@@ -146,7 +151,6 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
                     if (mFramebarCode != null) {
                         if (mFramebarCode.getSource().equals(mList.get(0).getSubShelfSerial())) {
-                            getPresenter().fetchSuccessState();
                         }
                     }
                 }
@@ -169,7 +173,11 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         };
         recyContetn.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyContetn.setAdapter(mAdapter);
-
+        if (mIsAlarmInfo){
+            getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAlarminfoId);
+        }else {
+            getPresenter().fetchScheduleOutBound(mWorkNumberString,mMaterialNumberString,mAlarminfoId);
+        }
 
     }
 
@@ -199,11 +207,19 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void onSucessState(String s) {
         Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_INDEFINITE).show();
+        if (mAmoutString!=0){
         recyContetn.scrollToPosition(position + 1);//请求+1
         mList.get(position).setColor(false);
         mList.get(position + 1).setColor(true);
         mAdapter.notifyDataSetChanged();
-        edPcbDemand.setText("" + (100 - mAmout));
+        edPcbDemand.setText("" + (mAmoutString - mAmout));
+        }else {
+            if (mIsAlarmInfo){
+                getPresenter().getAlarmSuccessfulState(mWorkNumberString,mId);
+            }else {
+                getPresenter().getScheduleSuccessState(mWorkNumberString);
+            }
+        }
 
     }
 
@@ -222,6 +238,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         mAmout = dataBean.getAmount();
         mId = dataBean.getId();
     }
+
+
 
     @Override
     public void onScanSuccess(String barcode) {
