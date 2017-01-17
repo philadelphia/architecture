@@ -37,6 +37,20 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         });
     }
 
+    public void getFeederInsertionToSlot(String serinal_num, String material_num, String quantity){
+        getModel().getFeederInsertionToSlot(serinal_num, material_num, quantity).subscribe(new Action1<Result<FeederSupplyItem>>() {
+            @Override
+            public void call(Result<FeederSupplyItem> feederSupplyItems) {
+                getView().onSuccess(feederSupplyItems.getRows());
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+    }
+
 
     public void upLoadFeederSupplyResult(String workID){
         getModel().getAllToBeSuppliedFeeders(workID).subscribe(new Action1<Result<FeederSupplyItem>>() {

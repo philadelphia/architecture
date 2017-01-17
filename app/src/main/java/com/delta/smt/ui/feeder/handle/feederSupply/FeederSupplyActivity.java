@@ -69,6 +69,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private List<FeederSupplyItem> dataSource = new ArrayList<>();
     private static final String TAG = "FeederSupplyActivity";
     private boolean isHandleOVer = false;
+    private String mCurrentSerinalNumber;
+    private String mCurrentMaterialNumber;
+    private String mCurrentquantity;
 
     @Override
     protected int getContentViewId() {
@@ -188,7 +191,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             if (!TextUtils.isEmpty(barcode)) {
                 if (barcode.trim().equalsIgnoreCase(feederSupplyItem.getMaterialID())) {
                     tvModuleID.setText("模组料站: " + feederSupplyItem.getModuleID());
-//                    getPresenter().upLoadFeederSupplyResult();
+                    getPresenter().getFeederInsertionToSlot(mCurrentSerinalNumber, mCurrentMaterialNumber, mCurrentquantity);
                 }
             }
         }

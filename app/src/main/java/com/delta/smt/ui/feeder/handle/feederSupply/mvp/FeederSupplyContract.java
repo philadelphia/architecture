@@ -8,6 +8,7 @@ import com.delta.smt.entity.Result;
 import java.util.List;
 
 import retrofit2.Response;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -24,6 +25,8 @@ public interface FeederSupplyContract {
 
     interface Model extends IModel{
          Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(String workID);
+        
+        Observable<Result<FeederSupplyItem>> getFeederInsertionToSlot(String serinal_num, String material_num, String quantity);
 
          Observable<Result> upLoadFeederSupplyResult();
     }

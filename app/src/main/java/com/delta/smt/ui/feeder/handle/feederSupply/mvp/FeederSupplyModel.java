@@ -26,6 +26,12 @@ public class FeederSupplyModel extends BaseModel<ApiService> implements FeederSu
         return getService().getAllToBeSuppliedFeeders(workID).compose(RxsRxSchedulers.<Result<FeederSupplyItem>>io_main());
     }
 
+    //获取feeder上模组时间
+    @Override
+    public Observable<Result<FeederSupplyItem>> getFeederInsertionToSlot(String serinal_num, String material_num, String quantity) {
+        return getService().getFeederInsertionToSlot(serinal_num, material_num, quantity);
+    }
+
     @Override
     public Observable<Result> upLoadFeederSupplyResult() {
         return getService().upLoadFeederSupplyResult().compose(RxsRxSchedulers.<Result>io_main());

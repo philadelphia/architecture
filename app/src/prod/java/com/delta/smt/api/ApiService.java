@@ -87,7 +87,7 @@ public interface ApiService {
 
  //获取Feeder备料时间
  @GET("http://172.22.34.34:8081/SMM/Buffer/bufferIssue")
- Observable<Result<FeederSupplyItem>> getFeederSuppliedTime(@Query("condition") String workID);
+ Observable<Result<FeederSupplyItem>> getFeederInsertionToSlot(@Query("condition") String serinal_num,@Query("condition") String material_num, @Query("condition") String quantity );
 
     @POST
     Observable<Result> upLoadFeederSupplyResult();
