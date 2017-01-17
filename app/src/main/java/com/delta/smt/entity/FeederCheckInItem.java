@@ -18,18 +18,21 @@ public class FeederCheckInItem {
     private String materialID;
 
     private String shelves;
-
+    private String serial_num;
 
     private String used_time; //已用时间
 
     @SerializedName("op_time")
     private String checkInTimeStamp;  //入库时间
     private int status;
+    private String msg;
 
-    public FeederCheckInItem(String checkInTimeStamp, String feederID, String materialID, String shelves, int status, String used_time, String workItemID) {
+    public FeederCheckInItem(String checkInTimeStamp, String feederID, String materialID, String msg, String serial_num, String shelves, int status, String used_time, String workItemID) {
         this.checkInTimeStamp = checkInTimeStamp;
         this.feederID = feederID;
         this.materialID = materialID;
+        this.msg = msg;
+        this.serial_num = serial_num;
         this.shelves = shelves;
         this.status = status;
         this.used_time = used_time;
@@ -58,6 +61,22 @@ public class FeederCheckInItem {
 
     public void setMaterialID(String materialID) {
         this.materialID = materialID;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getSerial_num() {
+        return serial_num;
+    }
+
+    public void setSerial_num(String serial_num) {
+        this.serial_num = serial_num;
     }
 
     public String getShelves() {
@@ -100,8 +119,10 @@ public class FeederCheckInItem {
                 ", feederID='" + feederID + '\'' +
                 ", materialID='" + materialID + '\'' +
                 ", shelves='" + shelves + '\'' +
+                ", serial_num='" + serial_num + '\'' +
                 ", used_time='" + used_time + '\'' +
                 ", status=" + status +
+                ", msg='" + msg + '\'' +
                 '}';
     }
 }

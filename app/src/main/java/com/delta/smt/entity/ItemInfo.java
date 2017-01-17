@@ -86,11 +86,5 @@ public class ItemInfo extends CountDownEntity {
         this.text = text;
     }
 
-    public long getCountdown() {
-        return countdown;
-    }
-
-    public void setCountdown(long countdown) {
-        this.countdown = countdown;
-    }
+    
 }

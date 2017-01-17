@@ -65,7 +65,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
 
             @Override
             protected void convert(ItemTimeViewHolder holder, FeederSupplyWarningItem item, int position) {
-                holder.setText(R.id.tv_title, "线别: " + String.valueOf(item.getLineNumber()));
+                holder.setText(R.id.tv_title, "线别: " + item.getLineNumber());
                 holder.setText(R.id.tv_line, "工单号: " + item.getWorkItemID());
                 holder.setText(R.id.tv_material_station, "面别: " + item.getFaceID());
                 holder.setText(R.id.tv_add_count, "状态: " + item.getStatus());
@@ -103,6 +103,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
     @Override
     public void onSuccess(List<FeederSupplyWarningItem> data) {
         Log.i(TAG, "onSuccess: ");
+        Log.i(TAG, "后台返回的数据长度为: " + data.size());
         dataList.clear();
         dataList.addAll(data);
         adapter.notifyDataSetChanged();
@@ -111,8 +112,8 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
     }
 
     @Override
-    public void onFailed() {
-
+    public void onFailed(String message) {
+        Log.i(TAG, "onFailed: " + message);
     }
 
 
