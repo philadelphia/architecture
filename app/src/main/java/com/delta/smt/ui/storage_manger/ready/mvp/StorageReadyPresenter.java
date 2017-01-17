@@ -2,6 +2,7 @@ package com.delta.smt.ui.storage_manger.ready.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageReady;
 
 import java.util.List;
@@ -24,20 +25,23 @@ public class StorageReadyPresenter extends BasePresenter<StorageReadyContract.Mo
     }
 
 
-    public void getStorageReady (){
+    public void getStorageReady (String content){
 
-        getModel().getStorageReady().subscribe(new Action1<List<StorageReady>>() {
+        getModel().getStorageReady(content).subscribe(new Action1<Result<StorageReady>>() {
               @Override
-               public void call(List<StorageReady> storageReadies) {
+               public void call(Result<StorageReady> storageReadies) {
+                  if ("0".equals(storageReadies.getCode())) {
+                      getView().getStorageReadySucess(storageReadies.getRows());
+                  } else {
+                      getView().getStorageReadyFailed(storageReadies.getMessage());
 
-                    getView().getStorageReadySucess(storageReadies);
-
+                  }
                  }
                 },new Action1<Throwable>() {
             @Override
             public void call(Throwable thorwable) {
 
-                getView().getStorageReadyFailed();
+                getView().getStorageReadyFailed(thorwable.getMessage());
 
             }
         });

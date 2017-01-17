@@ -22,8 +22,8 @@
     <string name="waring_buttom">点亮对应位置的灯</string>
     <string name="storage_enterbtn">手动键入</string>
     <string name="storage_emptybtn">全部清空</string>
-    <string name="storage_pcbtv">PCB料号：</string>
-    <string name="storage_vendortv">Vendor:</string>
+    <string name="storage_pcbtv">料号：</string>
+    <string name="storage_PCBCODE">PCB Code:</string>
     <string name="storage_datacodetv">Data Code:</string>
     <string name="storage_labeltv">标签编号：</string>
     <string name="storage_idtv">对应架位：</string>

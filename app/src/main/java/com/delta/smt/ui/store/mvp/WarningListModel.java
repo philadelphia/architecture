@@ -4,6 +4,9 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ListWarning;
+import com.delta.smt.entity.OutBound;
+import com.delta.smt.entity.PcbNumber;
+import com.delta.smt.entity.Success;
 
 import java.util.List;
 
@@ -22,18 +25,24 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
         super(service);
     }
 
-    @Override
-    public Observable<List<ListWarning>> getListWarning() {
-        return getService().getListWarning().compose(RxsRxSchedulers.<List<ListWarning>>io_main());
-    }
-
-    @Override
-    public Observable<List<ListWarning>> getWarningNumber() {
-        return getService().getWarningNumberSuccess().compose(RxsRxSchedulers.<List<ListWarning>>io_main());
-    }
 
     @Override
     public Observable<String> getSuccessfulState() {
         return getService().getSuccessState().compose(RxsRxSchedulers.<String>io_main());
+    }
+
+    @Override
+    public Observable<OutBound> getOutbound(String s) {
+        return getService().outBound(s).compose(RxsRxSchedulers.<OutBound>io_main());
+    }
+
+    @Override
+    public Observable<PcbNumber> getPcbNumber(String s) {
+        return getService().getPcbNumber(s).compose(RxsRxSchedulers.<PcbNumber>io_main());
+    }
+
+    @Override
+    public Observable<Success> getPcbSuccess(String s) {
+        return getService().getPcbSuccess(s).compose(RxsRxSchedulers.<Success>io_main());
     }
 }

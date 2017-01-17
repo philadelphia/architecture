@@ -6,6 +6,7 @@ import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -22,6 +23,12 @@ public class ModuleUpBindingModel extends BaseModel<ApiService> implements Modul
 
     @Override
     public Observable<List<ModuleUpBindingItem>> getAllModuleUpBindingItems() {
-        return getService().getModuleUpBindingItems().compose(RxsRxSchedulers.<List<ModuleUpBindingItem>>io_main());
+        List<ModuleUpBindingItem> dataList = new ArrayList<ModuleUpBindingItem>();
+        dataList.add(new ModuleUpBindingItem("-","0353104700","03T021","-","2016082500"));
+        dataList.add(new ModuleUpBindingItem("-","1512445A00","03T022","-","2016082500"));
+        dataList.add(new ModuleUpBindingItem("-","15D2067A00","03T023","-","2016082500"));
+        dataList.add(new ModuleUpBindingItem("-","1511508A00","03T024","-","2016082500"));
+        return Observable.just(dataList);
+        //return getService().getModuleUpBindingItems().compose(RxsRxSchedulers.<List<ModuleUpBindingItem>>io_main());
     }
 }

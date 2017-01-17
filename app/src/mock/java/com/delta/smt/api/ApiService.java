@@ -8,7 +8,7 @@ import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.MantissaWarehouseDetails;
+import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturn;
@@ -16,10 +16,10 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.entity.OverReceiveItem;
+import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.ProductToolsBack;
-import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.ProductToolsInfo;
+import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
@@ -140,7 +140,7 @@ public interface ApiService {
     @POST
     Observable<List<StorageSelect>> getStorageSelect();
 
-    Observable<List<MantissaWarehouseDetails>> getMantissaWarehouseDetails();
+    Observable<List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails>> getMantissaWarehouseDetails();
 
     Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn();
 
@@ -148,17 +148,20 @@ public interface ApiService {
 
     Observable<List<StorageReady>> getStorageReadyDates();
 
-    Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
+    Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
 
    // Observable<List<MantissaWarehousePutstorageResult>> getBeginput();
 
-    Observable<List<OverReceiveItem>> getOverReceiveItems();
+    //Observable<List<OverReceiveItem>> getOverReceiveItems();
+    Observable<OverReceiveWarning> getOverReceiveItems();
 
+    Observable<OverReceiveWarning> getOverReceiveItemSend(String content);
 
+    Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
-
+    Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
 
 }
