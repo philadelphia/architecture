@@ -63,6 +63,8 @@ public interface ApiService {
     @POST
     Observable<List<WareHouse>> getAllWareHouse();
 
+
+
     /*
      获取feeder入库列表
      tao.zt.zhang
@@ -187,7 +189,6 @@ public interface ApiService {
   //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
-  //  Observable<List<OverReceiveWarning>> getOverReceiveItems();
 
 
     //Zhangfuxiang
@@ -201,13 +202,13 @@ public interface ApiService {
 
     //liuzhenyu
     //尾数仓退入主仓库
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/queryReturnedWarehList")
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/queryReturnedWarehList")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
     //点击清理按钮
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/triggerListUpdate")
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
     //点击开始入库
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
     //尾数仓入库
