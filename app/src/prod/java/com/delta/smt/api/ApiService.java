@@ -6,6 +6,7 @@ import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetails;
@@ -42,6 +43,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -135,7 +137,9 @@ public interface ApiService {
 
     Observable<List<ModuleDownDetailsItem>> getModuleDownDetailsItems();
 
-    Observable<List<ProductWorkItem>> getProductWorkItem();
+    //TODO shaoqiang,4Interfance
+    @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/order/list/page")
+    Observable<JsonProductBorrowRoot> getProductWorkItem(@Query("pageSize")int pageSize,@Query("pageCurrent")int pageCurrent);
 
     Observable<List<ProductToolsInfo>> getProductToolsInfoItem();
 
@@ -161,6 +165,8 @@ public interface ApiService {
 
     Observable<List<StorageDetails>> getStorageDetails();
     Observable<List<OverReceiveItem>> getOverReceiveItems();
+
+
 //    Observable<String> sumbitLine();
 
 
@@ -175,6 +181,5 @@ public interface ApiService {
 
     @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
-
 
 }
