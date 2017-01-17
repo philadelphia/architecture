@@ -3,6 +3,7 @@ package com.delta.smt.ui.feeder.warning.supply.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.Result;
 
 import java.util.List;
 
@@ -16,10 +17,10 @@ import rx.Observable;
 public interface SupplyContract {
     interface View extends IView{
          void onSuccess(List<FeederSupplyWarningItem> data);
-         void onFailed();
+         void onFailed(String message);
     }
 
     interface Model extends IModel{
-         Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
+         Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
     }
 }

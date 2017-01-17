@@ -1,16 +1,22 @@
 package com.delta.smt.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Tao.ZT.Zhang on 2016/12/26.
  */
 
 public class FeederSupplyWarningItem extends CountDownEntity{
-    private int lineNumber;
+    @SerializedName("line")
+    private String lineNumber;
+    @SerializedName("work_order")
     private String workItemID;
+
+    @SerializedName("face")
     private String faceID;
     private String status;
 
-    public FeederSupplyWarningItem(int lineNumber, String workItemID, String faceID, String status,long countDown) {
+    public FeederSupplyWarningItem(String lineNumber, String workItemID, String faceID, String status,String countDown) {
         this.lineNumber = lineNumber;
         this.workItemID = workItemID;
         this.faceID = faceID;
@@ -27,11 +33,11 @@ public class FeederSupplyWarningItem extends CountDownEntity{
         this.faceID = faceID;
     }
 
-    public int getLineNumber() {
+    public String getLineNumber() {
         return lineNumber;
     }
 
-    public void setLineNumber(int lineNumber) {
+    public void setLineNumber(String lineNumber) {
         this.lineNumber = lineNumber;
     }
 

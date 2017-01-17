@@ -26,15 +26,15 @@ public class ProduceWarningFragmentModel extends BaseModel<ApiService> implement
 
         datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警", "产线：H13",
                 "制程：叠送一体机", "预警信息：锡膏机需要换瓶",
-                50000l,System.currentTimeMillis()+50000l,1));
+                "400001",System.currentTimeMillis()+50000l,1));
 
         datas.add(new ItemWarningInfo("叠送一体机-PCB不足预警",
                 "产线：H13", "制程：叠送一体机", "预警信息：锡膏机需要换瓶",
-                60000l,System.currentTimeMillis()+60000l,2));
+                "400001",System.currentTimeMillis()+60000l,2));
 
         datas.add(new ItemWarningInfo("接料预警", "产线：H13",
                 "制程：叠送一体机", "预警信息：锡膏机需要换瓶",
-                40000l,System.currentTimeMillis()+40000l,3));
+                "400001",System.currentTimeMillis()+40000l,3));
 
 
         return Observable.just(datas);
