@@ -6,8 +6,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParse;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
@@ -68,6 +70,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
         }
 
     }
+
 
     @Override
     protected void initView() {
@@ -148,7 +151,6 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
     public void onFailed(String message) {
         Log.i(TAG, "onFailed: ");
     }
-
 
     @Override
     public void onHiddenChanged(boolean hidden) {
