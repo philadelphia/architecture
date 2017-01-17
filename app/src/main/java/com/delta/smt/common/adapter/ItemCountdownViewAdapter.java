@@ -86,6 +86,8 @@ public abstract class ItemCountdownViewAdapter<T extends CountDownEntity> extend
     @Override
     public void onBindViewHolder(final ItemTimeViewHolder holder, final int position) {
         CountDownEntity curItemInfo = mList.get(position);
+        curItemInfo.setEndTime(curItemInfo.getCountDownLong() + System.currentTimeMillis());
+        curItemInfo.setId(position);
         holder.bindData(curItemInfo);
 
         // 处理倒计时

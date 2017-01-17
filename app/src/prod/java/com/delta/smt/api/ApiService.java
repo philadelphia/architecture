@@ -81,8 +81,13 @@ public interface ApiService {
     @GET("http://172.22.34.34:8081/SMM/Buffer/querySchedule")
     Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
 
-    @POST
-    Observable<List<FeederSupplyItem>> getAllToBeSuppliedFeeders();
+   //获取指定工单的Feeder备料列表
+    @GET("http://172.22.34.34:8081/SMM/Buffer/startBufferIssue")
+    Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("condition") String workID);
+
+ //获取Feeder备料时间
+ @GET("http://172.22.34.34:8081/SMM/Buffer/bufferIssue")
+ Observable<Result<FeederSupplyItem>> getFeederSuppliedTime(@Query("condition") String workID);
 
     @POST
     Observable<Result> upLoadFeederSupplyResult();

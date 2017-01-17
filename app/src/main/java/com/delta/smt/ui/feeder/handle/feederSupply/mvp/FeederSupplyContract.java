@@ -23,7 +23,7 @@ public interface FeederSupplyContract {
     }
 
     interface Model extends IModel{
-         Observable<List<FeederSupplyItem>> getAllToBeSuppliedFeeders();
+         Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(String workID);
 
          Observable<Result> upLoadFeederSupplyResult();
     }
