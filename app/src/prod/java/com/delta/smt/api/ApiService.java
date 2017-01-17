@@ -19,6 +19,7 @@ import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.OutBound;
 import com.delta.smt.entity.PcbNumber;
+import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.ProductWorkItem;
@@ -90,7 +91,8 @@ public interface ApiService {
 
     Observable<List<ItemBreakDown>> getItemBreakDownDatas();
 
-    Observable<List<ItemInfo>> getItemInfoDatas();
+    @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos?condition={\"lines\":\"'H12','H13'\"} ")
+    Observable<ProduceWarning> getItemInfoDatas();
 
 
     Observable<List<ItemHandAdd>> getItemHandAddDatas();

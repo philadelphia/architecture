@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-        <TextView
+    <TextView
             android:id="@+id/tv_make_process"
             android:textColor="@android:color/black"
             android:text="制程：叠送一体机"
@@ -34,7 +34,7 @@
             android:padding="1dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <TextView
+    <TextView
             android:id="@+id/tv_warning_info"
             android:textColor="@android:color/black"
             android:text="预警信息：锡膏机需要换瓶"

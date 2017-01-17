@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
@@ -68,8 +69,8 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
             @Override
             protected void convert(CommonViewHolder holder, ItemInfo item, int position) {
                 holder.setText(R.id.tv_title,item.getTitle());
-                holder.setText(R.id.tv_produce_line,item.getProduceline());
-                holder.setText(R.id.tv_info,item.getInfo());
+                holder.setText(R.id.tv_produce_line,"产线："+item.getProduceline());
+                holder.setText(R.id.tv_info,"消息："+item.getInfo());
             }
 
             @Override
@@ -108,9 +109,11 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     }
 
     @Override
-    public void getItemInfoDatasFailed() {
-
+    public void getItemInfoDatasFailed(String message) {
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }
+
+
 
 
     @Override
