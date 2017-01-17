@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -13,7 +14,7 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.MantissaWarehouseReturn;
+import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.DaggerMantissaWarehouseReturnComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.MantissaWarehouseReturnModule;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnContract;
@@ -35,10 +36,10 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     RecyclerView mRecyContetn;
     @BindView(R.id.hr_scrow)
     HorizontalScrollView mHrScrow;
-    private List<MantissaWarehouseReturn> dataList = new ArrayList();
-    private List<MantissaWarehouseReturn> dataList2 = new ArrayList();
-    private CommonBaseAdapter<MantissaWarehouseReturn> adapter;
-    private CommonBaseAdapter<MantissaWarehouseReturn> adapter2;
+    private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList = new ArrayList();
+    private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList2 = new ArrayList();
+    private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter;
+    private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter2;
     private BaseActivity baseActiviy;
 
 
@@ -62,22 +63,22 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     @Override
     protected void initData() {
 
-        //getPresenter().getMantissaWarehouseReturn();
+        getPresenter().getMantissaWarehouseReturn();
 
     }
 
     @Override
     protected void initView() {
 
-        dataList.add(new MantissaWarehouseReturn("", "", "", "", ""));
-        adapter = new CommonBaseAdapter<MantissaWarehouseReturn>(getContext(), dataList) {
+        dataList.add(new MantissaWarehouseReturnResult.MantissaWarehouseReturn("", "", "", "",""));
+        adapter = new CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn>(getContext(), dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, MantissaWarehouseReturn item, int position) {
+            protected void convert(CommonViewHolder holder, MantissaWarehouseReturnResult.MantissaWarehouseReturn item, int position) {
                 holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, MantissaWarehouseReturn item) {
+            protected int getItemViewLayoutId(int position, MantissaWarehouseReturnResult.MantissaWarehouseReturn item) {
                 return R.layout.mantissa_return_item;
             }
         };
@@ -85,18 +86,18 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         mRecyTitle.setAdapter(adapter);
 
 
-        adapter2 = new CommonBaseAdapter<MantissaWarehouseReturn>(getContext(), dataList2) {
+        adapter2 = new CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn>(getContext(), dataList2) {
             @Override
-            protected void convert(CommonViewHolder holder, MantissaWarehouseReturn item, int position) {
-                holder.setText(R.id.tv_workOrder, item.getWorkOrder());
-                holder.setText(R.id.tv_number, item.getNumber());
-                holder.setText(R.id.tv_serialNumber, item.getSerialNumber());
-                holder.setText(R.id.tv_location, item.getLocation());
-                holder.setText(R.id.tv_type, item.getType());
+            protected void convert(CommonViewHolder holder, MantissaWarehouseReturnResult.MantissaWarehouseReturn item, int position) {
+                holder.setText(R.id.tv_workOrder, item.getWork_order());
+                holder.setText(R.id.tv_number, item.getMaterial_num());
+                holder.setText(R.id.tv_serialNumber, item.getSerial_num());
+                holder.setText(R.id.tv_location, item.getShelves());
+                holder.setText(R.id.tv_type, item.getStatus());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, MantissaWarehouseReturn item) {
+            protected int getItemViewLayoutId(int position, MantissaWarehouseReturnResult.MantissaWarehouseReturn item) {
                 return R.layout.mantissa_return_item;
             }
 
@@ -112,7 +113,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     }
 
     @Override
-    public void getSucess(List<MantissaWarehouseReturn> mantissaWarehouseReturnes) {
+    public void getSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturnes) {
 
         dataList2.clear();
         dataList2.addAll(mantissaWarehouseReturnes);
@@ -121,7 +122,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     }
 
     @Override
-    public void getFailed() {
+    public void getFailed(String message) {
 
     }
 
@@ -150,5 +151,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     public void onScanSuccess(String barcode) {
 
         Log.e(TAG, "onScanSucess: " + barcode);
+        Toast.makeText(baseActiviy, barcode, Toast.LENGTH_SHORT).show();
     }
 }

@@ -20,14 +20,13 @@ public class Constant {
     public static final int FAULTWARNING = 1;
     public static final int GENERATEDWARNING = 2;
     public static final int HANDPARHTSWARNING = 3;
-    public static final int SAMPLEWARING = 4;
+    public static final int SAMPLEWARING = 13;
     public static final int PRODUCE_WARNING=5;
     public static final int HAND_ADD=6;
     public static final int MODULE_UP_WARNING = 10;
     public static final int MODULE_DOWN_WARNING = 11;
 
     public static final int STORAGEREAD = 4;
-
 
     public static final String WORK_ITEM_ID = "WorkItemID";
 

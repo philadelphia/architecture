@@ -3,6 +3,8 @@ package com.delta.smt.ui.production_warning.mvp.produce_info_fragment;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.di.scope.FragmentScope;
+import com.delta.smt.entity.ProduceWarning;
+import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
 
 import java.util.List;
@@ -23,15 +25,20 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
     }
 
     public void getItemInfoDatas(){
-        getModel().getItemInfoDatas().subscribe(new Action1<List<ItemInfo>>() {
+        getModel().getItemInfoDatas().subscribe(new Action1<ProduceWarning>() {
             @Override
-            public void call(List<ItemInfo> itemInfos) {
-                getView().getItemInfoDatas(itemInfos);
+            public void call(ProduceWarning itemInfos) {
+//                getView().getItemInfoDatas(itemInfos);
+                if ("0".equals(itemInfos.getCode())) {
+                    getView().getItemInfoDatas(itemInfos.getRows().getMessage());
+                }else {
+                    getView().getItemInfoDatasFailed(itemInfos.getMsg());
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getItemInfoDatasFailed();
+                getView().getItemInfoDatasFailed(throwable.getMessage());
             }
         });
     }

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
-import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.entity.OverReceiveItem;
+import com.delta.smt.entity.OverReceiveDebitResult;
+import com.delta.smt.entity.OverReceiveWarning;
 
 import java.util.List;
 
@@ -25,10 +25,38 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
     }
 
     public void getAllOverReceiveItems(){
-        getModel().getAllOverReceiveItems().subscribe(new Action1<List<OverReceiveItem>>() {
+        getModel().getAllOverReceiveItems().subscribe(new Action1<OverReceiveWarning>() {
             @Override
-            public void call(List<OverReceiveItem> overReceiveItems) {
+            public void call(OverReceiveWarning overReceiveItems) {
                 getView().onSuccess(overReceiveItems);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFalied();
+            }
+        });
+    }
+
+    public void getOverReceiveItemsAfterSend(String str){
+        getModel().getOverReceiveItemsAfterSend(str).subscribe(new Action1<OverReceiveWarning>() {
+            @Override
+            public void call(OverReceiveWarning overReceiveWarning) {
+                getView().onSuccess(overReceiveWarning);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFalied();
+            }
+        });
+    }
+
+    public void getOverReceiveItemsAfterSendArrive(String str){
+        getModel().getOverReceiveItemsAfterSend(str).subscribe(new Action1<OverReceiveWarning>() {
+            @Override
+            public void call(OverReceiveWarning overReceiveWarning) {
+                getView().onSuccess(overReceiveWarning);
             }
         }, new Action1<Throwable>() {
             @Override
@@ -40,5 +68,17 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
 
     public void manualDebit(){
         Toast.makeText((Context) getView(),"手动扣账",Toast.LENGTH_SHORT).show();
+        getModel().getOverReceiveDebit().subscribe(new Action1<OverReceiveDebitResult>() {
+            @Override
+            public void call(OverReceiveDebitResult overReceiveDebitResult) {
+                getView().onSuccessOverReceiveDebit(overReceiveDebitResult);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFaliedOverReceiveDebit();
+            }
+        });
     }
+
 }

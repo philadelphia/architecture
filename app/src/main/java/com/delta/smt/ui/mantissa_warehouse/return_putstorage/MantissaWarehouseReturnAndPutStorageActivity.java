@@ -11,8 +11,9 @@ import android.widget.TextView;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
-import com.delta.smt.base.BaseCommonActivity;
+import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.MantissaWarehousePutstorageFragment;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.MantissaWarehouseReturnFragment;
@@ -27,7 +28,8 @@ import me.yokeyword.fragmentation.SupportFragment;
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActivity implements TabLayout.OnTabSelectedListener, WarningManger.OnWarning {
+public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
+        implements TabLayout.OnTabSelectedListener, WarningManger.OnWarning {
 
     @BindView(R.id.tl_title)
     TabLayout mTlTitle;
@@ -46,10 +48,26 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActi
     private SupportFragment currentFragment;
     private String[] titles;
 
+    @Override
+    protected void componentInject(AppComponent appComponent) {
+
+    }
 
     @Override
-    protected void initCView() {
+    protected void initData() {
+//此处的Title应该是 从网络获取的数量
+        titles = new String[]{"入库(3)", "退入主仓库(3)"};
 
+        //接收那种预警，没有的话自己定义常量
+        WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
+        //是否接收预警 可以控制预警时机
+        WarningManger.getInstance().setRecieve(true);
+        //关键 初始化预警接口
+        WarningManger.getInstance().setOnWarning(this);
+    }
+
+    @Override
+    protected void initView() {
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -65,19 +83,6 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActi
         mMantissaWarehouseReturnFragment = new MantissaWarehouseReturnFragment();
         loadMultipleRootFragment(R.id.fl_container, 0, mMantissaWarehouseReturnFragment, mMantissaWarehousePutstorageFragment);
         currentFragment = mMantissaWarehouseReturnFragment;
-    }
-
-    @Override
-    protected void initCData() {
-        //此处的Title应该是 从网络获取的数量
-        titles = new String[]{"入库(3)", "退入主仓库(3)"};
-
-        //接收那种预警，没有的话自己定义常量
-        WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
-        //是否接收预警 可以控制预警时机
-        WarningManger.getInstance().setRecieve(true);
-        //关键 初始化预警接口
-        WarningManger.getInstance().setOnWarning(this);
     }
 
     @Override
@@ -160,5 +165,13 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseCommonActi
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+    @Override
+    public void onScanSuccess(String barcode) {
+
     }
 }

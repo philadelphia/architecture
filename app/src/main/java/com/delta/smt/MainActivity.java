@@ -29,7 +29,6 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.Download;
 import com.delta.smt.entity.Fuction;
 import com.delta.smt.entity.Update;
-import com.delta.smt.service.warningService.WarningService;
 import com.delta.smt.ui.checkstock.CheckStockActivity;
 import com.delta.smt.ui.feeder.wareSelect.WareSelectActivity;
 import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
@@ -40,6 +39,7 @@ import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
+import com.delta.smt.ui.over_receive.OverReceiveActivity;
 import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;
 import com.delta.smt.ui.product_tools.location.ProduceToolsLocationActivity;
@@ -120,8 +120,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             getPresenter().checkUpdate();
         }
 
-        Intent intent = new Intent(this, WarningService.class);
-        startService(intent);
+
         fuctions = new ArrayList<>();
         fuctions.add(new Fuction("PCB库房入库", R.drawable.ic_warehouseroompreparation));
         fuctions.add(new Fuction("PCB库房盘点", R.drawable.ic_warehouseinventory));
@@ -135,9 +134,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("故障处理", R.drawable.ic_faulthandling));
         fuctions.add(new Fuction("尾数仓入库及退料", R.drawable.ic_return));
         fuctions.add(new Fuction("生产中预警", R.drawable.ic_warning));
-        fuctions.add(new Fuction("治具入架位", R.drawable.ic_thereturn));
+        fuctions.add(new Fuction("治具入架位", R.drawable.ic_intherack));
         fuctions.add(new Fuction("治具借出", R.drawable.ic_lend));
-        fuctions.add(new Fuction("治具归还", R.drawable.ic_return));
+        fuctions.add(new Fuction("治具归还", R.drawable.ic_thereturn));
         fuctions.add(new Fuction("手补件", R.drawable.ic_handpatch));
         fuctions.add(new Fuction("warningSample", R.drawable.title));
     }
@@ -160,6 +159,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 IntentUtils.showIntent(this, StorageSelectActivity.class);
                 break;
             case "仓库房超领":
+                IntentUtils.showIntent(this, OverReceiveActivity.class);
                 break;
             case "PCB库房发料":
                 IntentUtils.showIntent(this, StoreIssueActivity.class);
@@ -184,6 +184,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 break;
             case "warningSample":
                 IntentUtils.showIntent(this, WarningSampleActivity.class);
+                break;
             case "上模组":
                 IntentUtils.showIntent(this, ModuleUpActivity.class);
                 break;
