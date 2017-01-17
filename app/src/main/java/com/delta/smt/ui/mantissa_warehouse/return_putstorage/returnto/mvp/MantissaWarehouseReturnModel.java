@@ -1,10 +1,9 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp;
 
+import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.MantissaWarehouseReturn;
-
-import java.util.List;
+import com.delta.smt.entity.MantissaWarehouseReturnResult;
 
 import rx.Observable;
 
@@ -21,7 +20,7 @@ public class MantissaWarehouseReturnModel extends BaseModel<ApiService> implemen
 
 
     @Override
-    public Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn() {
-        return getService().getMantissaWarehouseReturn();
+    public Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn() {
+        return getService().getMantissaWarehouseReturn().compose(RxsRxSchedulers.<MantissaWarehouseReturnResult>io_main());
     }
 }

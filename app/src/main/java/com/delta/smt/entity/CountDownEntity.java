@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -8,19 +10,10 @@ package com.delta.smt.entity;
 
 
 public class CountDownEntity  {
+    @SerializedName("remain_time")
     protected long countdown;
     protected long endTime;
     protected int id;
-
-    protected  String text;
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     public int getId() {
         return id;

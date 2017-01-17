@@ -2,8 +2,8 @@ package com.delta.smt.ui.over_receive.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
-import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.entity.OverReceiveItem;
+import com.delta.smt.entity.OverReceiveDebitResult;
+import com.delta.smt.entity.OverReceiveWarning;
 
 import java.util.List;
 
@@ -16,13 +16,24 @@ import rx.Observable;
 public interface OverReceiveContract {
     interface View extends IView {
 
-        public void onSuccess(List<OverReceiveItem> data);
+        public void onSuccess(OverReceiveWarning data);
 
         public void onFalied();
+
+        public void onSuccessOverReceiveDebit(OverReceiveDebitResult data);
+
+        public void onFaliedOverReceiveDebit();
 
     }
 
     interface Model extends IModel {
-        public Observable<List<OverReceiveItem>> getAllOverReceiveItems();
+        public Observable<OverReceiveWarning> getAllOverReceiveItems();
+
+        public Observable<OverReceiveWarning> getOverReceiveItemsAfterSend(String str);
+
+        public Observable<OverReceiveWarning> getOverReceiveItemsAfterSendArrive(String str);
+
+        public Observable<OverReceiveDebitResult > getOverReceiveDebit();
+
     }
 }

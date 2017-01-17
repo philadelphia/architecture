@@ -1,10 +1,9 @@
 package com.delta.smt.ui.mantissa_warehouse.ready.mvp;
 
+import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.MantissaWarehouseReady;
-
-import java.util.List;
 
 import rx.Observable;
 
@@ -19,7 +18,7 @@ public class MantissaWarehouseReadyModel extends BaseModel<ApiService> implement
     }
 
     @Override
-    public Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadies() {
-        return getService().getMantissaWarehouseReadyDates();
+    public Observable<MantissaWarehouseReady> getMantissaWarehouseReadies() {
+        return getService().getMantissaWarehouseReadyDates().compose(RxsRxSchedulers.<MantissaWarehouseReady>io_main());
     }
 }

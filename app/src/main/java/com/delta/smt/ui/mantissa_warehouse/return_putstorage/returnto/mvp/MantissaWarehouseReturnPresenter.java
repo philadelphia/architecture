@@ -2,9 +2,7 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
-import com.delta.smt.entity.MantissaWarehouseReturn;
-
-import java.util.List;
+import com.delta.smt.entity.MantissaWarehouseReturnResult;
 
 import javax.inject.Inject;
 
@@ -24,18 +22,22 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
 
     public void getMantissaWarehouseReturn(){
 
-        getModel().getMantissaWarehouseReturn().subscribe(new Action1<List<MantissaWarehouseReturn>>() {
+        getModel().getMantissaWarehouseReturn().subscribe(new Action1<MantissaWarehouseReturnResult>() {
             @Override
-            public void call(List<MantissaWarehouseReturn> mantissaWarehouseReturnes) {
+            public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnes) {
 
-                getView().getSucess(mantissaWarehouseReturnes);
+                if("Success".equals(mantissaWarehouseReturnes.getMsg())){
+                    getView().getSucess(mantissaWarehouseReturnes.getRows());
+                }else{
+                    getView().getFailed(mantissaWarehouseReturnes.getMsg());
+                }
 
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFailed();
+                getView().getFailed(throwable.getMessage());
 
             }
         });

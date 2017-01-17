@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
-import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -33,18 +32,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import dagger.Module;
 
-import static com.delta.smt.R.id.recyclerView;
 import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/27.
  */
-@Module
-public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehouseReadyPresenter> implements MantissaWarehouseReadyContract.View, CommonBaseAdapter.OnItemClickListener<MantissaWarehouseReady>, WarningManger.OnWarning {
+
+public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehouseReadyPresenter>
+        implements MantissaWarehouseReadyContract.View,
+        CommonBaseAdapter.OnItemClickListener<MantissaWarehouseReady.MantissaWarehouse>,
+        WarningManger.OnWarning {
 
     @Inject
     WarningManger warningManger;
@@ -58,8 +56,9 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     RecyclerView mRecyclerView;
 
 
-    private List<MantissaWarehouseReady> dataList = new ArrayList();
-    private CommonBaseAdapter<MantissaWarehouseReady> adapter;
+    private List<MantissaWarehouseReady.MantissaWarehouse> dataList = new ArrayList();
+
+    private CommonBaseAdapter<MantissaWarehouseReady.MantissaWarehouse> adapter;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -90,25 +89,26 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("尾数仓备料");
 
-        adapter = new CommonBaseAdapter<MantissaWarehouseReady>(getContext(), dataList) {
+
+        adapter = new CommonBaseAdapter<MantissaWarehouseReady.MantissaWarehouse>(getContext(), dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, MantissaWarehouseReady item, int position) {
+            protected void convert(CommonViewHolder holder, MantissaWarehouseReady.MantissaWarehouse item, int position) {
                 holder.setText(R.id.tv_linee, "线别: " + item.getLine());
-                holder.setText(R.id.tv_number, "工单号: " + item.getNumber());
+                holder.setText(R.id.tv_number, "工单号: " + item.getWork_order());
                 holder.setText(R.id.tv_face, "面别: " + item.getFace());
-                holder.setText(R.id.tv_type, "状态: " + item.getType());
+                holder.setText(R.id.tv_type, "状态: " + item.getStatus());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, MantissaWarehouseReady item) {
+            protected int getItemViewLayoutId(int position, MantissaWarehouseReady.MantissaWarehouse item) {
                 return R.layout.fragment_mantissa_ready;
             }
-
         };
 
         adapter.setOnItemClickListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -116,21 +116,18 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
         return R.layout.activity_mantissa;
     }
 
-    @Override
-    public void onItemClick(View view, MantissaWarehouseReady item, int position) {
-        Intent intent = new Intent(this, MantissaWarehouseDetailsActivity.class);
-        startActivity(intent);
-    }
 
     @Override
-    public void getSucess(List<MantissaWarehouseReady> mantissaWarehouseReadies) {
+    public void getSucess(List<MantissaWarehouseReady.MantissaWarehouse> mantissaWarehouseReadies) {
+
         dataList.clear();
         dataList.addAll(mantissaWarehouseReadies);
         adapter.notifyDataSetChanged();
+
     }
 
     @Override
-    public void getFailed() {
+    public void getFailed(String message) {
 
     }
 
@@ -161,7 +158,6 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
         WarningManger.getInstance().registerWReceiver(this);
         super.onResume();
     }
-
     @Override
     protected void onStop() {
         WarningManger.getInstance().unregisterWReceriver(this);
@@ -182,4 +178,15 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onItemClick(View view, MantissaWarehouseReady.MantissaWarehouse item, int position) {
+
+        Intent intent = new Intent(this, MantissaWarehouseDetailsActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("item", item);
+        intent.putExtras(bundle);
+        this.startActivity(intent);
+
+    }
 }

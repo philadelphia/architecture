@@ -1,7 +1,7 @@
 package com.delta.smt.entity;
 
 
-import com.delta.smt.ui.product_tools.TimeSortUnit;
+import com.delta.smt.ui.product_tools.TimeSortUtils;
 
 /**
  * Created by Shaoqiang.Zhang on 2017/1/9.
@@ -9,7 +9,7 @@ import com.delta.smt.ui.product_tools.TimeSortUnit;
 
 public class ProductWorkItem implements Comparable{
     private String workNumber;
-    private String workItemTypr;
+    private String workItemType;
     private String machineType;
     private String PCB_Code;
     private String formMaterialNumber;
@@ -19,9 +19,9 @@ public class ProductWorkItem implements Comparable{
     private String playOnLineTime;
     private String productStatus;
 
-    public ProductWorkItem(String workNumber, String workItemTypr, String machineType, String PCB_Code, String formMaterialNumber, String line, String PWB_Number, String cover, String playOnLineTime, String productStatus) {
+    public ProductWorkItem(String workNumber, String workItemType, String machineType, String PCB_Code, String formMaterialNumber, String line, String PWB_Number, String cover, String playOnLineTime, String productStatus) {
         this.workNumber = workNumber;
-        this.workItemTypr = workItemTypr;
+        this.workItemType = workItemType;
         this.machineType = machineType;
         this.PCB_Code = PCB_Code;
         this.formMaterialNumber = formMaterialNumber;
@@ -41,11 +41,11 @@ public class ProductWorkItem implements Comparable{
     }
 
     public String getWorkItemType() {
-        return workItemTypr;
+        return workItemType;
     }
 
-    public void setWorkItemTypr(String workItemTypr) {
-        this.workItemTypr = workItemTypr;
+    public void setWorkItemType(String workItemType) {
+        this.workItemType = workItemType;
     }
 
     public String getMachineType() {
@@ -116,7 +116,7 @@ public class ProductWorkItem implements Comparable{
     public int compareTo(Object o) {
         ProductWorkItem otherItem= (ProductWorkItem) o;
         String otherTime=otherItem.getPlayOnLineTime();
-        TimeSortUnit timeSortUnit=new TimeSortUnit(this.playOnLineTime,otherTime);
+        TimeSortUtils timeSortUnit=new TimeSortUtils(this.playOnLineTime,otherTime);
         return timeSortUnit.compare();
     }
 }

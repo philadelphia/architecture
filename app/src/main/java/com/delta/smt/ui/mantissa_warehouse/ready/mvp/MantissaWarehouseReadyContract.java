@@ -17,14 +17,14 @@ public interface MantissaWarehouseReadyContract {
     interface Model extends IModel {
 
 
-        Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadies();
+        Observable<MantissaWarehouseReady> getMantissaWarehouseReadies();
 
     }
 
     interface View extends IView {
 
-        void getSucess(List<MantissaWarehouseReady> mantissaWarehouseReadies);
-        void getFailed();
+        void getSucess(List<MantissaWarehouseReady.MantissaWarehouse> mantissaWarehouseReadies);
+        void getFailed(String message);
 
     }
 

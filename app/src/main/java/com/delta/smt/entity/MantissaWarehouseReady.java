@@ -1,63 +1,105 @@
 package com.delta.smt.entity;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * Created by Zhenyu.Liu on 2016/12/22.
  */
 
-public class MantissaWarehouseReady {
+public class MantissaWarehouseReady implements Serializable {
 
-    private String line;
-    private String face;
-    private String type;
-    private String number;
-    private String time;
 
-    public MantissaWarehouseReady(String line, String face, String type, String number, String time) {
-        this.line = line;
-        this.face = face;
-        this.type = type;
-        this.number = number;
-        this.time = time;
+    /**
+     * code : 0
+     * msg : Success
+     * rows : [{"work_order":"20171011","line":"H-01","face":"A","material_num":"3460016900","remain_time":"11:21:27"}]
+     */
+
+    private String code;
+    private String msg;
+    private List<MantissaWarehouse> rows;
+
+    public String getCode() {
+        return code;
     }
 
-
-    public String getLine() {
-        return line;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public void setLine(String line) {
-        this.line = line;
+    public String getMsg() {
+        return msg;
     }
 
-    public String getFace() {
-        return face;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public void setFace(String face) {
-        this.face = face;
+    public List<MantissaWarehouse> getRows() {
+        return rows;
     }
 
-    public String getType() {
-        return type;
+    public void setRows(List<MantissaWarehouse> rows) {
+        this.rows = rows;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public static class MantissaWarehouse implements Serializable{
+        /**
+         * work_order : 20171011
+         * line : H-01
+         * face : A
+         * material_num : 3460016900
+         * remain_time : 11:21:27
+         */
 
-    public String getNumber() {
-        return number;
-    }
+        //工单
+        private String work_order;
+        //产线
+        private String line;
+        //面别
+        private String face;
+        //状态
+        private String status;
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
+        public MantissaWarehouse(String work_order, String line, String face, String status) {
+            this.work_order = work_order;
+            this.line = line;
+            this.face = face;
+            this.status = status;
+        }
 
-    public String getTime() {
-        return time;
-    }
+        public String getStatus() {
+            return status;
+        }
 
-    public void setTime(String time) {
-        this.time = time;
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getWork_order() {
+            return work_order;
+        }
+
+        public void setWork_order(String work_order) {
+            this.work_order = work_order;
+        }
+
+        public String getLine() {
+            return line;
+        }
+
+        public void setLine(String line) {
+            this.line = line;
+        }
+
+        public String getFace() {
+            return face;
+        }
+
+        public void setFace(String face) {
+            this.face = face;
+        }
+
     }
 }
