@@ -51,16 +51,6 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter2;
     private BaseActivity baseActiviy;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.e(TAG, "onAttach: "+context.getClass().getName());
-        if (context instanceof BaseActivity) {
-            this.baseActiviy = ((BaseActivity) context);
-            baseActiviy.addOnBarCodeSuccess(this);
-
-        }
-    }
 
     @Override
     protected void initView() {
@@ -186,6 +176,17 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
             } else {
                 baseActiviy.addOnBarCodeSuccess(this);
             }
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.e(TAG, "onAttach: "+context.getClass().getName());
+        if (context instanceof BaseActivity) {
+            this.baseActiviy = ((BaseActivity) context);
+            baseActiviy.addOnBarCodeSuccess(this);
+
         }
     }
 

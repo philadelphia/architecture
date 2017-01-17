@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -150,5 +151,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     public void onScanSuccess(String barcode) {
 
         Log.e(TAG, "onScanSucess: " + barcode);
+        Toast.makeText(baseActiviy, barcode, Toast.LENGTH_SHORT).show();
     }
 }
