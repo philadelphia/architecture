@@ -219,6 +219,9 @@ public interface ApiService {
     @GET("http://172.22.34.22:8081/SMM/IssueMana/queryMantissIssue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query( "condition") String bind);
 
+    //料盘绑定标签
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/materBoundLabel")
+    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query( "condition") String bind);
 
     @GET("http://172.22.34.6:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();

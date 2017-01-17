@@ -23,6 +23,8 @@ public interface MantissaWarehousePutstorageContract {
 
         Observable<MantissaWarehousePutstorageResult> getbeginput();
 
+        Observable<MantissaWarehousePutstorageResult> getBingingLable(String str);
+
     }
 
     public interface View extends IView {
@@ -36,6 +38,9 @@ public interface MantissaWarehousePutstorageContract {
 
         void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getBeginFailed(String message);
+
+        void getBingingLableSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void getBingingLableFailed(String message);
 
 
     }

@@ -19,6 +19,8 @@ import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.Mantiss
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.MantissaWarehouseReturnFragment;
 import com.delta.smt.utils.ViewUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -167,11 +169,14 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-
-
+    @Override
+    public boolean UseEventBus() {
+        return true;
+    }
 
     @Override
     public void onScanSuccess(String barcode) {
-
+        EventBus.getDefault().post(barcode);
+        super.onScanSuccess(barcode);
     }
 }
