@@ -18,7 +18,9 @@ import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.OutBound;
+import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.PcbNumber;
+import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.ProductWorkItem;
@@ -115,7 +117,7 @@ public interface ApiService {
 
     Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
 
-    @GET("webapi/pcb/management/inbound")
+    @GET("webapi/pcb/management/inbound/location")
     Observable<Light> onLight(@Query("param") String s);//点灯操作
     @GET("webapi/pcb/management/inbound")
     Observable<Success> putInStorage(@Query("param") String s);//入库操作
@@ -212,5 +214,15 @@ public interface ApiService {
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query( "condition") String bind);
 
 
+    @GET("http://172.22.34.6:8081/SMM/ExcessManagement/qExcessList")
+    Observable<OverReceiveWarning> getOverReceiveItems();
 
+    @GET("http://172.22.34.6:8081/SMM/ExcessManagement/execessIssure")
+    Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
+
+    @GET("http://172.22.34.6:8081/SMM/WareHIssue/delivery")
+    Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
+
+    @GET("http://172.22.34.6:8081/SMM/WareHIssue/debit")
+    Observable<OverReceiveDebitResult> getOverReceiveDebit();
 }

@@ -9,6 +9,11 @@ import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ParameterLight;
 import com.delta.smt.entity.Success;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,19 +45,40 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         });
     }
     public void fatchOnLight(List<MaterialBlockBarCode> materialBlockBarCodes){
-        Gson gson=new Gson();
-        ParameterLight pa=new ParameterLight();
-        List<ParameterLight.DataBean> listData=new ArrayList<>();
+        JSONObject jsonObject=new JSONObject();
+        JSONArray jsonArray=new JSONArray();
         for (int i=0;i<materialBlockBarCodes.size();i++){
-            ParameterLight.DataBean data=new ParameterLight.DataBean();
-            data.setPartNum(materialBlockBarCodes.get(i).getDeltaMaterialNumber());
-            data.setPcbCode(materialBlockBarCodes.get(i).getBusinessCode());
-            data.setDateCode(materialBlockBarCodes.get(i).getDC());
-            data.setSerial(materialBlockBarCodes.get(i).getStreamNumber());
-            listData.add(data);
+        JSONObject jsonObject1=new JSONObject();
+            try {
+                jsonObject1.putOpt("partNum",materialBlockBarCodes.get(i).getDeltaMaterialNumber());
+                jsonObject1.putOpt("pcbCode",materialBlockBarCodes.get(i).getBusinessCode());
+                jsonObject1.putOpt("dateCode",materialBlockBarCodes.get(i).getDC());
+                jsonObject1.putOpt("serial",materialBlockBarCodes.get(i).getStreamNumber());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            jsonArray.put(jsonObject1);
         }
-        pa.setData(listData);
-        String jsonString=gson.toJson(pa).toString();
+        try {
+            jsonObject.putOpt("data",jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        Gson gson=new Gson();
+//        ParameterLight pa=new ParameterLight();
+//        List<ParameterLight.DataBean> listData=new ArrayList<>();
+//        for (int i=0;i<materialBlockBarCodes.size();i++){
+//            ParameterLight.DataBean data=new ParameterLight.DataBean();
+//            data.setPartNum(materialBlockBarCodes.get(i).getDeltaMaterialNumber());
+//            data.setPcbCode(materialBlockBarCodes.get(i).getBusinessCode());
+//            data.setDateCode(materialBlockBarCodes.get(i).getDC());
+//            data.setSerial(materialBlockBarCodes.get(i).getStreamNumber());
+//            listData.add(data);
+//        }
+//        pa.setData(listData);
+//        String jsonString="[\'{\"data:\""+gson.toJson(listData).toString()+"}\']";
+//                //.replace("\"","\\\"`");
+        String jsonString="[\'"+jsonObject.toString()+"\']";
         Log.e("info",jsonString);
         getModel().OnLight(jsonString).subscribe(new Action1<Light>() {
             @Override

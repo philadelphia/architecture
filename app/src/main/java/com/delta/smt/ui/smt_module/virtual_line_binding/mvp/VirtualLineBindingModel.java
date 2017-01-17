@@ -6,6 +6,7 @@ import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.VirtualLineBindingItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -21,6 +22,11 @@ public class VirtualLineBindingModel extends BaseModel<ApiService> implements Vi
 
     @Override
     public Observable<List<VirtualLineBindingItem>> getAllVirtualLineBindingItems() {
-        return getService().getVirtualLineBindingItems().compose(RxsRxSchedulers.<List<VirtualLineBindingItem>>io_main());
+        List<VirtualLineBindingItem> dataList = new ArrayList<VirtualLineBindingItem>();
+        dataList.add(new VirtualLineBindingItem("1","-"));
+        dataList.add(new VirtualLineBindingItem("2","-"));
+        dataList.add(new VirtualLineBindingItem("3","-"));
+        return Observable.just(dataList);
+        //return getService().getVirtualLineBindingItems().compose(RxsRxSchedulers.<List<VirtualLineBindingItem>>io_main());
     }
 }
