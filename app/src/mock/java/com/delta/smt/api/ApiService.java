@@ -16,7 +16,7 @@ import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.entity.OverReceiveItem;
+import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.ProductWorkItem;
@@ -154,7 +154,14 @@ public interface ApiService {
 
    // Observable<List<MantissaWarehousePutstorageResult>> getBeginput();
 
-    Observable<List<OverReceiveItem>> getOverReceiveItems();
+    //Observable<List<OverReceiveItem>> getOverReceiveItems();
+    Observable<OverReceiveWarning> getOverReceiveItems();
+
+    Observable<OverReceiveWarning> getOverReceiveItemSend(String content);
+
+    Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
+
+    Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
 
 }

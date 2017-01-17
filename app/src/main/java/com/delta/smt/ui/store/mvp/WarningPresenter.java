@@ -23,7 +23,7 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
     public  void fatchWarning(){
         getModel().getWarning().subscribe(new Action1<List<ItemInfo>>() {
             @Override
-            public void call(List<ItemInfo> itemInfos) {
+            public void call(List<com.delta.smt.entity.ItemInfo> itemInfos) {
                 getView().onSucess(itemInfos);
             }
         }, new Action1<Throwable>() {

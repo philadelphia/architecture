@@ -3,6 +3,7 @@ package com.delta.smt.ui.product_tools;
 import android.util.Log;
 
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,7 +11,7 @@ import java.util.regex.Pattern;
  * Created by Shaoqiang.Zhang on 2017/1/11.
  */
 
-public class TimeSortUnit{
+public class TimeSortUtils {
 
     private String sourceTime1;
 
@@ -26,9 +27,9 @@ public class TimeSortUnit{
 
     private String mTime2;
 
-    boolean parseSuccess = true;
+    private boolean parseSuccess = true;
 
-    public TimeSortUnit(String sourceTime1, String sourceTime2) {
+    public TimeSortUtils(String sourceTime1, String sourceTime2) {
 
         this.sourceTime1 = sourceTime1;
         this.sourceTime2 = sourceTime2;
@@ -103,4 +104,14 @@ public class TimeSortUnit{
         }
     }
 
+    public static String getContentFromSource(String string, int from, int to) {
+
+        char[] chars = new char[string.length()];
+        for (int i = 0; i < string.length(); i++) {
+
+            chars[i] = string.charAt(i);
+
+        }
+        return String.valueOf(Arrays.copyOfRange(chars, from, to));
+    }
 }

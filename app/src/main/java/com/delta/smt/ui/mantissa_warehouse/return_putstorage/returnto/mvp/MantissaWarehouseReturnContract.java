@@ -2,7 +2,7 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
-import com.delta.smt.entity.MantissaWarehouseReturn;
+import com.delta.smt.entity.MantissaWarehouseReturnResult;
 
 import java.util.List;
 
@@ -17,14 +17,14 @@ public interface MantissaWarehouseReturnContract {
     interface Model extends IModel {
 
 
-        Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn();
+        Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
 
     }
 
     interface View extends IView {
 
-        void getSucess(List<MantissaWarehouseReturn> mantissaWarehouseReturns);
-        void getFailed();
+        void getSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
+        void getFailed(String message);
 
     }
 }

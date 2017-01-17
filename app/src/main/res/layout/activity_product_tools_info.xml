@@ -38,17 +38,21 @@
     <EditText
         android:id="@+id/ProductInfoBarCode"
         android:layout_height="45px"
-        android:layout_width="wrap_content"
+        android:layout_width="600px"
         android:layout_marginLeft="310px"
         android:layout_marginTop="-50px"
         android:background="@drawable/ed_back_white"
+        android:focusable="false"
+
         />
 
     <android.support.v7.widget.RecyclerView
+
         android:layout_marginTop="80px"
         android:id="@+id/ProductInfoRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
     </android.support.v7.widget.RecyclerView>
 
     <Button
