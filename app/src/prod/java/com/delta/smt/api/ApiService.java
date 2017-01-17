@@ -12,7 +12,7 @@ import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
-import com.delta.smt.entity.MantissaWarehouseReturn;
+import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
@@ -168,7 +168,7 @@ public interface ApiService {
 
   //  Observable<List<MantissaWarehouseDetailsResult>> getMantissaWarehouseDetails();
 
-    Observable<List<MantissaWarehouseReturn>> getMantissaWarehouseReturn();
+   // Observable<List<MantissaWarehouseReturnResult>> getMantissaWarehouseReturn();
 
     //Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage();
 
@@ -190,20 +190,25 @@ public interface ApiService {
 
 
     //liuzhenyu
+    //尾数仓退入主仓库
     @GET("http://172.22.34.8:8081/SMM/ManToWareh/queryReturnedWarehList")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
-
+    //点击清理按钮
     @GET("http://172.22.34.8:8081/SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
-
+    //点击开始入库
     @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
+    //尾数仓入库
+    @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMantissaStorageList")
+    Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
+
     //尾数仓备料
-    @GET("http://172.22.34.6:8081/SMM/IssueMana/querymantiss")
+    @GET("http://172.22.34.22:8081/SMM/IssueMana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
     //尾数仓备料详情
-    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryMantissIssue")
+    @GET("http://172.22.34.22:8081/SMM/IssueMana/queryMantissIssue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query( "condition") String bind);
 
 
