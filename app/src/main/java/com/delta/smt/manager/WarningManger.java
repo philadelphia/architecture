@@ -24,6 +24,24 @@ public class WarningManger {
     private Map<Integer, Class> maps = new HashMap<>();
     private boolean isRecieve = true;
     private OnWarning onWarning;
+    private boolean isConsume;
+    private OnRegister onRegister;
+
+    public void setOnRegister(OnRegister onRegister) {
+        this.onRegister = onRegister;
+    }
+
+    public OnRegister getOnRegister() {
+        return onRegister;
+    }
+
+    public void setConsume(boolean consume) {
+        isConsume = consume;
+    }
+
+    public boolean isConsume() {
+        return isConsume;
+    }
 
     private WarningBroadcastReciever mBroadcastReceiver;
 
@@ -41,6 +59,10 @@ public class WarningManger {
 
     public void addWarning(int type, Class mclass) {
         maps.put(type, mclass);
+        if (onRegister != null) {
+            onRegister.register(type);
+        }
+
     }
 
     public void removeWarning(int type) {
@@ -74,12 +96,13 @@ public class WarningManger {
             Log.i(TAG, "onReceive: ");
             //int intExtra = intent.getIntExtra(Constant.WARNINGTYPE, -1);
             String message = intent.getStringExtra(Constant.WARNINGMESSAGE);
+            Log.e(TAG, "onReceive: " + message);
 
-                if (WarningManger.getInstance().isRecieve()) {
-                    if (onWarning != null) {
-                        onWarning.warningComing(message);
-                    }
+            if (WarningManger.getInstance().isRecieve()) {
+                if (onWarning != null) {
+                    onWarning.warningComing(message);
                 }
+            }
         }
     }
 
@@ -115,5 +138,9 @@ public class WarningManger {
 
     public interface OnWarning {
         void warningComing(String warningMessage);
+    }
+
+    public interface OnRegister {
+        void register(int type);
     }
 }

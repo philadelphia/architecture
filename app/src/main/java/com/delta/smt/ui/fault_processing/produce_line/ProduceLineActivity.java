@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
-import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -88,7 +87,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter> impl
         Log.e(TAG, "onClick: "+datas.toString());
         switch (view.getId()) {
             case R.id.btn_confirm:
-                getPresenter().sumbitLine(submitline);
+               // getPresenter().sumbitLine(submitline);
                 IntentUtils.showIntent(this, FalutProcessingActivity.class);
                 break;
             case R.id.btn_all_select:
