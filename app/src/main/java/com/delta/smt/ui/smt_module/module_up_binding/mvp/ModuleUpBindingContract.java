@@ -16,13 +16,13 @@ import rx.Observable;
 public interface ModuleUpBindingContract {
     interface View extends IView {
 
-        public void onSuccess(List<ModuleUpBindingItem> data);
+        public void onSuccess(ModuleUpBindingItem data);
 
         public void onFalied();
 
     }
 
     interface Model extends IModel {
-        public Observable<List<ModuleUpBindingItem>> getAllModuleUpBindingItems();
+        public Observable<ModuleUpBindingItem> getAllModuleUpBindingItems(String str);
     }
 }

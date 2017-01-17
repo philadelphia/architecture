@@ -22,13 +22,8 @@ public class ModuleUpBindingModel extends BaseModel<ApiService> implements Modul
     }
 
     @Override
-    public Observable<List<ModuleUpBindingItem>> getAllModuleUpBindingItems() {
-        List<ModuleUpBindingItem> dataList = new ArrayList<ModuleUpBindingItem>();
-        dataList.add(new ModuleUpBindingItem("-","0353104700","03T021","-","2016082500"));
-        dataList.add(new ModuleUpBindingItem("-","1512445A00","03T022","-","2016082500"));
-        dataList.add(new ModuleUpBindingItem("-","15D2067A00","03T023","-","2016082500"));
-        dataList.add(new ModuleUpBindingItem("-","1511508A00","03T024","-","2016082500"));
-        return Observable.just(dataList);
-        //return getService().getModuleUpBindingItems().compose(RxsRxSchedulers.<List<ModuleUpBindingItem>>io_main());
+    public Observable<ModuleUpBindingItem> getAllModuleUpBindingItems(String str) {
+
+        return getService().getModuleUpBindingItems(str).compose(RxsRxSchedulers.<ModuleUpBindingItem>io_main());
     }
 }

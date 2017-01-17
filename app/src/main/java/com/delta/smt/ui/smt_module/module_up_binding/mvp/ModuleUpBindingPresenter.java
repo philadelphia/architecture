@@ -22,10 +22,10 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
         super(model, mView);
     }
 
-    public void getAllModuleUpBindingItems(){
-        getModel().getAllModuleUpBindingItems().subscribe(new Action1<List<ModuleUpBindingItem>>() {
+    public void getAllModuleUpBindingItems(String str){
+        getModel().getAllModuleUpBindingItems(str).subscribe(new Action1<ModuleUpBindingItem>() {
             @Override
-            public void call(List<ModuleUpBindingItem> moduleUpBindingItems) {
+            public void call(ModuleUpBindingItem moduleUpBindingItems) {
                 getView().onSuccess(moduleUpBindingItems);
             }
         }, new Action1<Throwable>() {

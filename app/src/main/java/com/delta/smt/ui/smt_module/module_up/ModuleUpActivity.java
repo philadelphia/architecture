@@ -9,11 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
@@ -24,6 +20,7 @@ import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
 import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.smt_module.module_up.di.DaggerModuleUpComponent;
 import com.delta.smt.ui.smt_module.module_up.di.ModuleUpModule;
@@ -55,8 +52,8 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
-    private List<ModuleUpWarningItem> dataList = new ArrayList<>();
-    private ItemCountdownViewAdapter <ModuleUpWarningItem> myAdapter;
+    private List<ModuleUpWarningItem.RowsBean> dataList = new ArrayList<>();
+    private ItemCountdownViewAdapter <ModuleUpWarningItem.RowsBean> myAdapter;
 
     @Inject
     WarningManger warningManger;
@@ -75,7 +72,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         warningManger.setRecieve(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        getPresenter().getAllModuleUpWarningItems();
+        getPresenter().getAllModuleUpWarningItems("1,2");
 
     }
 
@@ -88,19 +85,19 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("上模组");
 
-        myAdapter = new ItemCountdownViewAdapter<ModuleUpWarningItem>(this, dataList) {
+        myAdapter = new ItemCountdownViewAdapter<ModuleUpWarningItem.RowsBean>(this, dataList) {
             @Override
             protected int getLayoutId() {
                 return R.layout.item_module_up_warning_list;
             }
 
             @Override
-            protected void convert(ItemTimeViewHolder holder, ModuleUpWarningItem moduleUpWarningItem, int position) {
+            protected void convert(ItemTimeViewHolder holder, ModuleUpWarningItem.RowsBean moduleUpWarningItem, int position) {
 
-                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLineNumber());
-                holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWorkItemID());
-                holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFaceID());
-                holder.setText(R.id.tv_status, "状态: " + moduleUpWarningItem.getStatus());
+                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine());
+                holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
+                holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFace());
+                holder.setText(R.id.tv_status, "状态: " + "仓库物料正在上模组");
 
             }
         };
@@ -115,9 +112,10 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     }
 
     @Override
-    public void onSuccess(List<ModuleUpWarningItem> data) {
+    public void onSuccess(ModuleUpWarningItem data) {
         dataList.clear();
-        dataList.addAll(data);
+        List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
+        dataList.addAll(rows);
         myAdapter.notifyDataSetChanged();
     }
 
@@ -166,7 +164,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getPresenter().getAllModuleUpWarningItems();
+                getPresenter().getAllModuleUpWarningItems("1,2");
             }
         }).show();
     }
@@ -190,7 +188,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Override
     public void onItemClick(View item, int position) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constant.WORK_ITEM_ID,dataList.get(position).getWorkItemID());
+        bundle.putString(Constant.WORK_ITEM_ID,dataList.get(position).getWork_order());
         Intent intent = new Intent(this, ModuleUpBindingActivity.class);
         intent.putExtras(bundle);
         //this.startActivity(intent);
@@ -215,19 +213,19 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             if(resultCode==Constant.ACTIVITY_RESULT_WORK_ITEM_ID) {
                 String result=data.getStringExtra(Constant.WORK_ITEM_ID);
                 //Toast.makeText(this, "result "+result, Toast.LENGTH_SHORT).show();
-                deleteItemByWorkItemID(result);
+                //deleteItemByWorkItemID(result);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void deleteItemByWorkItemID(String workItemID){
-        for(ModuleUpWarningItem list_item:dataList){
+    /*public void deleteItemByWorkItemID(String workItemID){
+        for(ModuleUpWarningItem.RowsBean list_item:dataList){
             if(list_item.getWorkItemID().equals(workItemID)){
                 dataList.remove(list_item);
                 break;
             }
         }
         myAdapter.notifyDataSetChanged();
-    }
+    }*/
 }
