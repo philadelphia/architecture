@@ -20,11 +20,11 @@ import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.OutBound;
 import com.delta.smt.entity.OverReceiveDebitResult;
-import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.OverReceiveWarning;
+import com.delta.smt.entity.PcbNumber;
+import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductToolsInfo;
-import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
@@ -36,7 +36,6 @@ import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
-import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
@@ -99,7 +98,8 @@ public interface ApiService {
 
     Observable<List<ItemBreakDown>> getItemBreakDownDatas();
 
-    Observable<List<ItemInfo>> getItemInfoDatas();
+    @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos?condition={\"lines\":\"'H12','H13'\"} ")
+    Observable<ProduceWarning> getItemInfoDatas();
 
 
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
@@ -192,7 +192,6 @@ public interface ApiService {
   //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
-    Observable<List<OverReceiveItem>> getOverReceiveItems();
 
 
     //Zhangfuxiang
@@ -206,13 +205,13 @@ public interface ApiService {
 
     //liuzhenyu
     //尾数仓退入主仓库
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/queryReturnedWarehList")
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/queryReturnedWarehList")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
     //点击清理按钮
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/triggerListUpdate")
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
     //点击开始入库
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
     //尾数仓入库

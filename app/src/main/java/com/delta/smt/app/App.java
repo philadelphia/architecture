@@ -4,6 +4,7 @@ package com.delta.smt.app;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +16,7 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.di.component.DaggerAppComponent;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.ActivityState;
+import com.delta.smt.service.warningService.WarningService;
 
 import timber.log.Timber;
 
@@ -42,10 +44,11 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
             Timber.plant(new Timber.DebugTree());
         }
         mContenxt = this;
-
         mainHander = new Handler(Looper.getMainLooper());
         appComponent = DaggerAppComponent.builder().clientModule(getClientModule()).appModule(getAppModule()).serviceModule(getServiceModule()).build();
         registerActivityLifecycleCallbacks(this);
+        Intent intent = new Intent(this, WarningService.class);
+        startService(intent);
     }
 
     public static Handler getMainHander() {

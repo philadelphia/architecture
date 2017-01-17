@@ -109,6 +109,8 @@ public interface ApiService {
     //故障处理预警
     Observable<List<FalutMesage>> getFalutMessages();
 
+    Observable<MantissaWarehousePutstorageResult> getbeginput();
+
     //更新
     @GET(API.bundleJsonUrl)
     Observable<Update> getUpdate();

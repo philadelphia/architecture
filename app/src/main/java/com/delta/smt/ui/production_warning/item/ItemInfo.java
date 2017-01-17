@@ -1,12 +1,17 @@
 package com.delta.smt.ui.production_warning.item;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Fuxiang.Zhang on 2016/12/26.
  */
 
 public class ItemInfo {
+    @SerializedName("type")
     private String title;
+    @SerializedName("line")
     private String produceline;
+    @SerializedName("message")
     private String info;
 
     public ItemInfo() {

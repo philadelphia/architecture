@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.Toast;
 
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -50,16 +51,6 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter2;
     private BaseActivity baseActiviy;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.e(TAG, "onAttach: "+context.getClass().getName());
-        if (context instanceof BaseActivity) {
-            this.baseActiviy = ((BaseActivity) context);
-            baseActiviy.addOnBarCodeSuccess(this);
-
-        }
-    }
 
     @Override
     protected void initView() {
@@ -111,7 +102,7 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     @Override
     protected void initData() {
 
-     //   getPresenter().getMantissaWarehousePutstorage();
+        getPresenter().getMantissaWarehousePutstorage();
     }
 
     @Override
@@ -189,7 +180,21 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.e(TAG, "onAttach: "+context.getClass().getName());
+        if (context instanceof BaseActivity) {
+            this.baseActiviy = ((BaseActivity) context);
+            baseActiviy.addOnBarCodeSuccess(this);
+
+        }
+    }
+
+    @Override
     public void onScanSuccess(String barcode) {
+
         Log.e(TAG, "onScanSucess: " + barcode);
+        Toast.makeText(baseActiviy, barcode, Toast.LENGTH_SHORT).show();
+
     }
 }
