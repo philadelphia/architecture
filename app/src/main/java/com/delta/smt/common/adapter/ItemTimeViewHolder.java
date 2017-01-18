@@ -53,6 +53,7 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
     public ItemTimeViewHolder setText(int viewId, CharSequence value) {
         TextView view = getView(viewId);
         view.setText(value);
+
         return this;
     }
 

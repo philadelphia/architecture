@@ -37,7 +37,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     private CommonBaseAdapter<ItemProduceLine> mAdapter;
     private List<ItemProduceLine> datas=new ArrayList<>();
 
-    String submitline="dfsdf";
+    String submitline="add";
 
     @Override
     protected void initData() {
@@ -51,7 +51,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         mAdapter=new CommonBaseAdapter<ItemProduceLine>(this,datas) {
             @Override
             protected void convert(CommonViewHolder holder, ItemProduceLine item, int position) {
-                holder.setText(R.id.cb_production_line,item.getLinename());
+                holder.setText(R.id.cb_production_line,"SMT_"+item.getLinename());
                 CheckBox checkBox = holder.getView(R.id.cb_production_line);
                 checkBox.setChecked(item.isChecked());
             }
@@ -88,9 +88,22 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         switch (view.getId()) {
             case R.id.btn_confirm:
 
-//                getPresenter().sumbitLine(submitline);
+                StringBuffer mStringBuffer = new StringBuffer();
 
-                startActivity(new Intent(this,ProduceWarningActivity.class));
+                for (int mI = 0; mI < datas.size(); mI++) {
+                    if (datas.get(mI).isChecked()){
+                        mStringBuffer.append(datas.get(mI).getLinename()+",");
+                    }
+
+                }
+                Log.i("aaa", String.valueOf(mStringBuffer));
+/*                for (ItemProduceLine data:datas){
+                   mStringBuffer.append(data.getLinename()+"'");
+                }*/
+//                getPresenter().sumbitLine(submitline);
+                Intent mIntent=new Intent(this,ProduceWarningActivity.class);
+                mIntent.putExtra("condition", (CharSequence) mStringBuffer);
+                startActivity(mIntent);
                 break;
             case R.id.btn_all_select:
 
@@ -135,9 +148,12 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
     @Override
     public void onItemClick(View view, ItemProduceLine item, int position) {
+
         CheckBox cb = (CheckBox) view.findViewById(R.id.cb_production_line);
         item.setChecked(!item.isChecked());
         cb.setChecked(item.isChecked());
+//        datas.get(position).setChecked(!datas.get(position).isChecked());
+//        cb.setChecked(datas.get(position).isChecked());
     }
 
 }

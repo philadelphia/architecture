@@ -24,8 +24,8 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
         super(model, mView);
     }
 
-    public void getItemInfoDatas(){
-        getModel().getItemInfoDatas().subscribe(new Action1<ProduceWarning>() {
+    public void getItemInfoDatas(String condition){
+        getModel().getItemInfoDatas(condition).subscribe(new Action1<ProduceWarning>() {
             @Override
             public void call(ProduceWarning itemInfos) {
 //                getView().getItemInfoDatas(itemInfos);
@@ -33,6 +33,24 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
                     getView().getItemInfoDatas(itemInfos.getRows().getMessage());
                 }else {
                     getView().getItemInfoDatasFailed(itemInfos.getMsg());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().getItemInfoDatasFailed(throwable.getMessage());
+            }
+        });
+    }
+
+    public void getItemInfoConfirm(String condition){
+        getModel().getItemInfoConfirm(condition).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                if ("0".equals(result.getCode())) {
+
+                }else {
+                    getView().getItemInfoDatasFailed(result.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
