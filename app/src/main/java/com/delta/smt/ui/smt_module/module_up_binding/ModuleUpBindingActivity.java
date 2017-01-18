@@ -30,6 +30,7 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.ui.main.update.DownloadService;
@@ -68,10 +69,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @BindView(R.id.tv_moduleStationID)
     TextView tvModuleID;
 
-    private CommonBaseAdapter<ModuleUpBindingItem> adapterTitle;
-    private CommonBaseAdapter<ModuleUpBindingItem> adapter;
-    private List<ModuleUpBindingItem> dataList = new ArrayList<ModuleUpBindingItem>();
-    private List<ModuleUpBindingItem> dataSource = new ArrayList<ModuleUpBindingItem>();
+    private CommonBaseAdapter<ModuleUpBindingItem.RowsBean> adapterTitle;
+    private CommonBaseAdapter<ModuleUpBindingItem.RowsBean> adapter;
+    private List<ModuleUpBindingItem.RowsBean> dataList = new ArrayList<>();
+    private List<ModuleUpBindingItem.RowsBean> dataSource = new ArrayList<>();
 
     //二维码
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
@@ -92,13 +93,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     protected void initData() {
         Intent intent = ModuleUpBindingActivity.this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
-        getPresenter().getAllModuleUpBindingItems();
+        getPresenter().getAllModuleUpBindingItems(workItemID);
         barCodeIpml.setOnGunKeyPressListener(this);
     }
 
     @Override
     protected void initView() {
-        //headerTitle.setText("上模组");
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -107,28 +107,29 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
         recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        dataList.add(new ModuleUpBindingItem("Feeder号", "料号", "模组料站", "上模组时间", "流水码"));
-        adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataList) {
+        dataList.add(new ModuleUpBindingItem.RowsBean(1, "料号", "流水码", "Feeder号", "模组料站", "上模组时间"));
+        adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, ModuleUpBindingItem item, int position) {
+            protected void convert(CommonViewHolder holder, ModuleUpBindingItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_materialID, item.getMaterialID());
-                holder.setText(R.id.tv_serialID, item.getSerialID());
-                holder.setText(R.id.tv_feederID, item.getFeederID());
-                holder.setText(R.id.tv_moduleMaterialStationID, item.getModuleMaterialStationID());
-                holder.setText(R.id.tv_moduleUpTime, item.getModuleUpTime());
+                holder.setText(R.id.tv_ID, item.getId() + "");
+                holder.setText(R.id.tv_materialID, item.getMaterial_num());
+                holder.setText(R.id.tv_serialID, item.getSerial_num());
+                holder.setText(R.id.tv_feederID, item.getFeeder_id());
+                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+                holder.setText(R.id.tv_moduleUpTime, item.getCreate_time());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ModuleUpBindingItem item) {
+            protected int getItemViewLayoutId(int position, ModuleUpBindingItem.RowsBean item) {
                 return R.layout.item_module_up_binding;
             }
         };
 
         recyTitle.setAdapter(adapterTitle);
-        adapter = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataSource) {
+        adapter = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataSource) {
             @Override
-            protected void convert(CommonViewHolder holder, ModuleUpBindingItem item, int position) {
+            protected void convert(CommonViewHolder holder, ModuleUpBindingItem.RowsBean item, int position) {
                 if (scan_position == -1) {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 } else if (scan_position == position) {
@@ -136,15 +137,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
-                holder.setText(R.id.tv_materialID, item.getMaterialID());
-                holder.setText(R.id.tv_serialID, item.getSerialID());
-                holder.setText(R.id.tv_feederID, item.getFeederID());
-                holder.setText(R.id.tv_moduleMaterialStationID, item.getModuleMaterialStationID());
-                holder.setText(R.id.tv_moduleUpTime, item.getModuleUpTime());
+                holder.setText(R.id.tv_ID, item.getId() + "");
+                holder.setText(R.id.tv_materialID, item.getMaterial_num());
+                holder.setText(R.id.tv_serialID, item.getSerial_num());
+                holder.setText(R.id.tv_feederID, item.getFeeder_id());
+                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+                holder.setText(R.id.tv_moduleUpTime, item.getCreate_time());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ModuleUpBindingItem item) {
+            protected int getItemViewLayoutId(int position, ModuleUpBindingItem.RowsBean item) {
                 return R.layout.item_module_up_binding;
             }
 
@@ -160,14 +162,32 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void onSuccess(List<ModuleUpBindingItem> data) {
-        dataSource.clear();
-        dataSource.addAll(data);
-        adapter.notifyDataSetChanged();
+    public void onSuccess(ModuleUpBindingItem data) {
+        if (data.getMsg().toLowerCase().equals("success")){
+            dataSource.clear();
+            List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
+            dataSource.addAll(rowsBeen);
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override
     public void onFalied() {
+
+    }
+
+    @Override
+    public void onSuccessBinding(MaterialAndFeederBindingResult data) {
+        if(data.getMsg().toLowerCase().equals("success")){
+            getPresenter().getAllModuleUpBindingItems(workItemID);
+            scan_position = -1;
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onFailedBinding() {
 
     }
 
@@ -197,10 +217,55 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         barCodeIpml.onComplete();
     }
 
+    int state = 1;
+
     @Override
     public void onScanSuccess(String barcode) {
 
+        //Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+        switch (state) {
+            case 1:
+                try {
+                    MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    String materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
+                    //setItemHighLightBasedOnMID(materialBlockNumber);
+                    if (isExistInDataSource(materialBlockNumber, dataSource)) {
+                        if (feederCodeCache != null) {
+                            materialBlockCodeCache = null;
+                            feederCodeCache = null;
+                        }
+                        setItemHighLightBasedOnMID(materialBlockNumber);
+                        materialBlockCodeCache = materialBlockNumber;
+                    } else {
+                        Toast.makeText(this, "列表中不包含此料盘码!", Toast.LENGTH_SHORT).show();
+                    }
+                    //Toast.makeText(this, materialBlockNumber, Toast.LENGTH_SHORT).show();
+                    state = 2;
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "请扫描料盘码！", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 2:
+                if (materialBlockCodeCache != null && feederCodeCache == null) {
+                    try {
+                        Feeder feederCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
+                        if(isFeederExistInDataSource(feederCode.getSource(),dataSource)){
+                            Toast.makeText(this, "此Feeder已经被绑定！", Toast.LENGTH_SHORT).show();
+                        }else{
+                            feederCodeCache = feederCode.getSource();
+                            getPresenter().getMaterialAndFeederBindingResult(dataSource.get(scan_position).getId()+"",feederCodeCache);
+                        }
+                    } catch (EntityNotFountException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    Toast.makeText(this, "请扫描料盘码！", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+        /*BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (BarCodeUtils.barCodeType(barcode)) {
             case FEEDER:
                 try {
@@ -255,7 +320,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             default:
                 Toast.makeText(this, "此处不支持此类型码!", Toast.LENGTH_SHORT).show();
                 break;
-        }
+        }*/
     }
 
     @Override
@@ -270,17 +335,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     public void setItemHighLightBasedOnMID(String materialID) {
         for (int i = 0; i < dataSource.size(); i++) {
-            if (dataSource.get(i).getMaterialID().equals(materialID)) {
-                scan_position = i;
-                break;
-            }
-        }
-        adapter.notifyDataSetChanged();
-    }
-
-    public void setItemHighLightBasedOnMMSID(String moduleMaterialStationID) {
-        for (int i = 0; i < dataSource.size(); i++) {
-            if (dataSource.get(i).getModuleMaterialStationID().equals(moduleMaterialStationID)) {
+            if (dataSource.get(i).getMaterial_num().equals(materialID)) {
                 scan_position = i;
                 break;
             }
@@ -290,9 +345,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     public void setItemFeederNumber(String feederNumber, String materialBlockCode) {
         if (dataSource.size() > 0) {
-            for (ModuleUpBindingItem listItem : dataSource) {
-                if (listItem.getMaterialID().equals(materialBlockCode)) {
-                    listItem.setFeederID(feederNumber);
+            for (ModuleUpBindingItem.RowsBean listItem : dataSource) {
+                if (listItem.getMaterial_num().equals(materialBlockCode)) {
+                    listItem.setFeeder_id(feederNumber);
                 }
             }
             adapter.notifyDataSetChanged();
@@ -302,9 +357,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     public void setItemModuleUpDateAndTime(String upTime, String materialBlockCode) {
         if (dataSource.size() > 0) {
-            for (ModuleUpBindingItem listItem : dataSource) {
-                if (listItem.getMaterialID().equals(materialBlockCode)) {
-                    listItem.setModuleUpTime(upTime);
+            for (ModuleUpBindingItem.RowsBean listItem : dataSource) {
+                if (listItem.getMaterial_num().equals(materialBlockCode)) {
+                    listItem.setCreate_time(upTime);
                 }
             }
             adapter.notifyDataSetChanged();
@@ -329,10 +384,26 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean isExistInDataSource(String item, List<ModuleUpBindingItem> list) {
+    public boolean isExistInDataSource(String item, List<ModuleUpBindingItem.RowsBean> list) {
         if (list.size() > 0) {
-            for (ModuleUpBindingItem list_item : list) {
-                if (list_item.getMaterialID().equals(item)) {
+            for (ModuleUpBindingItem.RowsBean list_item : list) {
+                if (list_item.getMaterial_num().equals(item)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+
+    }
+
+
+
+    public boolean isFeederExistInDataSource(String item, List<ModuleUpBindingItem.RowsBean> list) {
+        if (list.size() > 0) {
+            for (ModuleUpBindingItem.RowsBean list_item : list) {
+                if (list_item.getFeeder_id().equals(item)) {
                     return true;
                 }
             }
@@ -345,8 +416,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     public boolean isAllFeederScaned() {
         if (dataSource.size() > 0) {
-            for (ModuleUpBindingItem listItem : dataSource) {
-                if (listItem.getFeederID().equals("-")) {
+            for (ModuleUpBindingItem.RowsBean listItem : dataSource) {
+                if (listItem.getFeeder_id().equals("-")) {
                     return false;
                 }
             }
@@ -356,4 +427,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         }
 
     }
+
+
 }

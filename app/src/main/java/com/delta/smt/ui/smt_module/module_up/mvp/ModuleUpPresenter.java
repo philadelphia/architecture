@@ -20,10 +20,10 @@ public class ModuleUpPresenter extends BasePresenter<ModuleUpContract.Model,Modu
         super(model, mView);
     }
 
-    public void getAllModuleUpWarningItems(){
-        getModel().getAllModuleUpWarningItems().subscribe(new Action1<List<ModuleUpWarningItem>>() {
+    public void getAllModuleUpWarningItems(String str){
+        getModel().getAllModuleUpWarningItems(str).subscribe(new Action1<ModuleUpWarningItem>() {
             @Override
-            public void call(List<ModuleUpWarningItem> moduleUpWarningItems) {
+            public void call(ModuleUpWarningItem moduleUpWarningItems) {
                 getView().onSuccess(moduleUpWarningItems);
             }
         }, new Action1<Throwable>() {
