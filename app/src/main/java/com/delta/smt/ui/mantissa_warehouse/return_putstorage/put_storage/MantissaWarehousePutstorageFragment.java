@@ -189,6 +189,7 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
                 mBound.setEnabled(false);
                 mClean.setEnabled(false);
                 mDeduct.setEnabled(false);
+                flag = 3;
                 break;
             case R.id.bound:
                 break;
@@ -235,6 +236,9 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
                 }
+                break;
+
+            case 3:
 
                 break;
 

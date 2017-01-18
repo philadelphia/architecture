@@ -6,23 +6,34 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
+import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.LabelBarcode;
+import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.MantissaWarehouseReturnBean;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
+import com.delta.smt.entity.WarehousePutstorageBean;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.DaggerMantissaWarehouseReturnComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.MantissaWarehouseReturnModule;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnContract;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnPresenter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
@@ -42,6 +53,11 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter2;
     private BaseActivity baseActiviy;
 
+    private int flag = 1;
+
+    private String materialNumber;
+    private String lableBarCode;
+    private String serialNum;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -117,6 +133,18 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     }
 
     @Override
+    public void getMaterialLocationSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns) {
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehouseReturns);
+        adapter2.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getMaterialLocationFailed(String message) {
+
+    }
+
+    @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         Log.e(TAG, "onHiddenChanged: " + hidden);
@@ -142,7 +170,52 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     @Override
     public void onScanSuccess(String barcode) {
 
+        BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
 
+        switch (flag) {
+            case 1:
+                try {
+                    MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+                    materialNumber = materiaBar.getDeltaMaterialNumber();
+                    serialNum = materiaBar.getStreamNumber();
+                    flag = 2;
+                    Toast.makeText(baseActiviy, "已扫描料盘", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(baseActiviy, materialNumber, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(baseActiviy, serialNum, Toast.LENGTH_SHORT).show();
+
+                    MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(bindBean);
+
+                    getPresenter().getMaterialLocation(s);
+
+                } catch (EntityNotFountException e) {
+
+                }
+                break;
+            case 2:
+                try {
+                    LabelBarcode lableBar = (LabelBarcode) barCodeParseIpml.getEntity(barcode, BarCodeType.LABLE_BARCODE);
+                    lableBarCode = lableBar.getSource();
+
+                    WarehousePutstorageBean bindBean = new WarehousePutstorageBean(materialNumber, serialNum, lableBarCode);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(bindBean);
+
+                   // getPresenter().getBindingLabel(s);
+                    flag = 1;
+                    Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(baseActiviy, lableBarCode, Toast.LENGTH_SHORT).show();
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case 3:
+
+                break;
+
+        }
 
     }
 }
