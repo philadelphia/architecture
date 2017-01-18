@@ -121,6 +121,7 @@ public class MantissaWarehousePutstorageFragment extends
     @Override
     protected void initData() {
 
+
         getPresenter().getMantissaWarehousePutstorage();
     }
 
@@ -205,6 +206,7 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Subscribe
     public void scanSucceses(PutBarCode putBarCode) {
+     //   mBound.setFocusable(true);
 
         String barcode =putBarCode.getBarCode();
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
@@ -225,6 +227,7 @@ public class MantissaWarehousePutstorageFragment extends
                 break;
             case 2:
                 try {
+
                     LabelBarcode lableBar = (LabelBarcode) barCodeParseIpml.getEntity(barcode, BarCodeType.LABLE_BARCODE);
                     lableBarCode = lableBar.getSource();
 

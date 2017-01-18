@@ -60,7 +60,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     @Override
     protected void initData() {
 //此处的Title应该是 从网络获取的数量
-        titles = new String[]{"入库(3)", "退入主仓库(3)"};
+        titles = new String[]{"入库", "退入主仓库"};
 
         //接收那种预警，没有的话自己定义常量
         WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
