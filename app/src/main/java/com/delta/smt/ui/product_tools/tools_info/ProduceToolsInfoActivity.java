@@ -69,6 +69,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
         workNumber = this.getIntent().getExtras().getString(sourceActivity);
 
+
         getPresenter().getToolsInfo("{\"workOrderID\":" + workNumber + "}");
 
 
