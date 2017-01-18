@@ -1,5 +1,6 @@
 package com.delta.smt.base;
 
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
@@ -104,6 +105,7 @@ public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonAc
     public void onScanSuccess(String barcode) {
 
         if (events.size() != 0) {
+            Log.e(TAG, "onScanSuccess: "+events.size());
             for (OnBarCodeSuccess event : events) {
                 event.onScanSuccess(barcode);
             }

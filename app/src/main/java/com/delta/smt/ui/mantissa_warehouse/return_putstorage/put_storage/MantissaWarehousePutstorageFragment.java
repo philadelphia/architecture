@@ -21,6 +21,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
+import com.delta.smt.entity.PutBarCode;
 import com.delta.smt.entity.WarehousePutstorageBean;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.DaggerMantissaWarehousePutstorageComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.MantissaWarehousePutstorageModule;
@@ -42,7 +43,8 @@ import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BAR
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWarehousePutstoragePresenter> implements MantissaWarehousePutstorageContract.View, BaseActivity.OnBarCodeSuccess {
+public class MantissaWarehousePutstorageFragment extends
+        BaseFragment<MantissaWarehousePutstoragePresenter> implements MantissaWarehousePutstorageContract.View, BaseActivity.OnBarCodeSuccess {
 
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
@@ -202,8 +204,9 @@ public class MantissaWarehousePutstorageFragment extends BaseFragment<MantissaWa
     }
 
     @Subscribe
-    public void scanSucceses(String barcode) {
+    public void scanSucceses(PutBarCode putBarCode) {
 
+        String barcode =putBarCode.getBarCode();
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
 
         switch (flag) {

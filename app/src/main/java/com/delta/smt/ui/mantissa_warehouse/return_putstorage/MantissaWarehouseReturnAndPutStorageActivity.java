@@ -14,6 +14,8 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.BacKBarCode;
+import com.delta.smt.entity.PutBarCode;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.MantissaWarehousePutstorageFragment;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.MantissaWarehouseReturnFragment;
@@ -176,7 +178,8 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     @Override
     public void onScanSuccess(String barcode) {
-        EventBus.getDefault().post(barcode);
-        super.onScanSuccess(barcode);
+        EventBus.getDefault().post(new BacKBarCode(barcode));
+        EventBus.getDefault().post(new PutBarCode(barcode));
+        //super.onScanSuccess(barcode);
     }
 }
