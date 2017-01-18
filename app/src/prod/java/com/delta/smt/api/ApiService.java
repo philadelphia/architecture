@@ -7,6 +7,8 @@ import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.JsonProductBorrowRoot;
+import com.delta.smt.entity.JsonProductRequestToolsRoot;
+import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
@@ -162,9 +164,11 @@ public interface ApiService {
     @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/order/list/page")
     Observable<JsonProductBorrowRoot> getProductWorkItem(@Query("pageSize")int pageSize,@Query("pageCurrent")int pageCurrent);
 
-    Observable<List<ProductToolsInfo>> getProductToolsInfoItem();
+    @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/jig/list/page")
+    Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Query("pageSize")int pageSize,@Query("pageCurrent")int pageCurrent,@Query("condition")String condition);
 
-    Observable<List<Product_mToolsInfo>> getProduct_mToolsInfo();
+    @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/jig/list/page")
+    Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Query("pageSize")int pageSize,@Query("pageCurrent")int pageCurrent,@Query("condition")String condition_and_jigTypeID);
 
     Observable<List<ProductToolsBack>> getProductToolsBack();
 
@@ -188,7 +192,6 @@ public interface ApiService {
   //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
-    Observable<List<OverReceiveItem>> getOverReceiveItems();
 
 
     //Zhangfuxiang
