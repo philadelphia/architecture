@@ -23,5 +23,7 @@ public interface CheckInContract {
 
     interface  Model extends IModel{
          Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
+         Observable<Result<FeederCheckInItem>> getFeederLocation(String condition);
+         Observable<Result<FeederCheckInItem>> getFeederCheckInTime(String condition);
     }
 }

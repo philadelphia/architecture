@@ -3,7 +3,6 @@ package com.delta.smt.ui.product_tools.borrow.mvp;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.JsonProductBorrowList;
@@ -44,7 +43,7 @@ public class ProduceToolsBorrowPresenter extends BasePresenter<ProduceToolsBorro
 
                         String lastDate = getMyStyleTime(j);
                         Log.e("time",lastDate);
-                        ProductWorkItem productWorkItem = new ProductWorkItem(j.getOrderName(), String.valueOf(j.getOrderType()), j.getModel(), j.getPcbCode(), j.getCompositeMaterial(), j.getLineName(), j.getPcbMaterial(), j.getSide(), lastDate, j.getOrderStatus() == 0 ? "等待" : "准备就绪");
+                        ProductWorkItem productWorkItem = new ProductWorkItem(String.valueOf(j.getOrderID()), String.valueOf(j.getOrderType()), j.getModel(), j.getPcbCode(), j.getCompositeMaterial(), j.getLineName(), j.getPcbMaterial(), j.getSide(), lastDate, j.getOrderStatus() == 0 ? "等待" : "准备就绪");
                         data.add(productWorkItem);
 
                     }

@@ -1,7 +1,5 @@
 package com.delta.smt.entity;
 
-import java.util.List;
-
 /**
  * Created by Shufeng.Wu on 2017/1/3.
  */
