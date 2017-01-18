@@ -48,4 +48,9 @@ public class ProduceWarningFragmentModel extends BaseModel<ApiService> implement
     public Observable<Result> getItemWarningConfirm(String condition) {
         return getService().getItemWarningConfirm(condition).compose(RxsRxSchedulers.<Result>io_main());
     }
+
+    @Override
+    public Observable<Result> getBarcodeInfo(String codition) {
+        return getService().getBarcodeInfo(codition).compose(RxsRxSchedulers.<Result>io_main());
+    }
 }

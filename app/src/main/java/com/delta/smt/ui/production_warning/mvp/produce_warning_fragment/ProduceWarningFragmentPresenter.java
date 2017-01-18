@@ -32,12 +32,14 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
     public ProduceWarningFragmentPresenter(ProduceWarningFragmentContract.Model model, ProduceWarningFragmentContract.View mView) {
         super(model, mView);
     }
+
+
     public void getItemWarningDatas(String condition){
         getModel().getItemWarningDatas(condition).subscribe(new Action1<ProduceWarning>() {
 
             @Override
             public void call(ProduceWarning itemWarningInfos) {
-//                getView().getItemWarningDatas(itemWarningInfos);
+                //getView().getItemWarningDatas(itemWarningInfos);
                 if (itemWarningInfos.getCode().equals("0")) {
                     getView().getItemWarningDatas(itemWarningInfos.getRows().getAlarm());
                 }else {
@@ -52,8 +54,28 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
         });
     }
 
+
     public void getItemWarningConfirm(String condition){
         getModel().getItemWarningConfirm(condition).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                if ("0".equals(result.getCode())) {
+                    getView().getItemWarningDatasFailed(result.getMessage());
+                    getItemWarningDatas(ProduceWarningActivity.initLine());
+                }else {
+                    getView().getItemWarningDatasFailed(result.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().getItemWarningDatasFailed(throwable.getMessage());
+            }
+        });
+    }
+
+    public void getBarcodeInfo(String condition){
+        getModel().getBarcodeInfo(condition).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
