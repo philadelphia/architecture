@@ -121,6 +121,11 @@ public interface ApiService {
     Observable<Result> getItemInfoConfirm(@Query("condition") String condition);
 
 
+   //Zhangfuxiang
+   @GET("http://172.22.34.10:8081/lineAlarmFault/confirmAlarmMessage")
+   Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
+
+
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
 
     Observable<String> sumbitLine();
@@ -236,7 +241,6 @@ public interface ApiService {
     //点击开始入库
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
-
 
     //尾数仓入库
     @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMantissaStorageList")

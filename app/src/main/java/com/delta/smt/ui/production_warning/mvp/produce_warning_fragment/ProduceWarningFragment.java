@@ -40,12 +40,15 @@ import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWa
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.delta.smt.utils.BarCodeUtils;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -220,11 +223,13 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             mDialogRelativelayout = new DialogRelativelayout(getContext());
             barcodedatas.clear();
             final ItemWarningInfo mItemWarningInfo = datas.get(position);
+
             if (mItemWarningInfo.getTitle().equals("接料预警")) {
 
                 makePopupWindow();
 
             } else {
+
                 final ArrayList<String> dialogDatas = new ArrayList<>();
                 mDialogRelativelayout.setStrSecondTitle("请求确认");
                 dialogDatas.add("是否已经完成？");
@@ -240,6 +245,14 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
+                                Map<String, String > map = new HashMap<>();
+                                map.put("id", String.valueOf(mItemWarningInfo.getId()));
+                                Gson gson = new Gson();
+                                String id = gson.toJson(map);
+                                Log.i("ProduceWarningFragment",id);
+
+                                getPresenter().getItemWarningConfirm(id);
                                 mItemWarningInfo.setWarninginfo("操作完成");
                                 mAdapter.notifyDataSetChanged();
                                 EventBus.getDefault().post(new BroadcastBegin());

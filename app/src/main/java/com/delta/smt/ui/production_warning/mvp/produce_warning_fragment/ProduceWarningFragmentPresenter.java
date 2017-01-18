@@ -11,6 +11,7 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.entity.ProduceWarning;
+import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 
 import java.util.ArrayList;
@@ -40,6 +41,24 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
                     getView().getItemWarningDatas(itemWarningInfos.getRows().getAlarm());
                 }else {
                     getView().getItemWarningDatasFailed(itemWarningInfos.getMsg());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().getItemWarningDatasFailed(throwable.getMessage());
+            }
+        });
+    }
+
+    public void getItemWarningConfirm(String condition){
+        getModel().getItemWarningConfirm(condition).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                if ("0".equals(result.getCode())) {
+                    getView().getItemWarningDatasFailed(result.getMessage());
+                }else {
+                    getView().getItemWarningDatasFailed(result.getMessage());
                 }
             }
         }, new Action1<Throwable>() {

@@ -18,6 +18,7 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
 import com.delta.smt.entity.ProduceWarningMessage;
+import com.delta.smt.ui.login.mvp.LoginPresenter;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.DaggerProduceInfoFragmentCompent;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.ProduceInfoFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
@@ -132,6 +133,8 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+
+                        //预警广播开始接受
                         EventBus.getDefault().post(new BroadcastBegin());
 
                     }
@@ -139,13 +142,20 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+
                         Map<String, String > map = new HashMap<>();
-                        map.put("id", "1");
+                        map.put("id", String.valueOf(item.getId()));
                         Gson gson = new Gson();
                         String id = gson.toJson(map);
+                        Log.i("ProduceInfoFragment",id);
                         getPresenter().getItemInfoConfirm(id);
+
                         item.setInfo("操作完成");
+
                         mAdapter.notifyDataSetChanged();
+
+                        //预警广播开始接受
                         EventBus.getDefault().post(new BroadcastBegin());
                     }
                 }).show();
