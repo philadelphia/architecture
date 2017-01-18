@@ -116,11 +116,14 @@ public interface ApiService {
     Observable<Result> getItemInfoConfirm(@Query("condition") String condition);
 
 
-   //Zhangfuxiang
-   @GET("http://172.22.34.10:8081/lineAlarmFault/confirmAlarmMessage")
-   Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
+    //Zhangfuxiang
+    @GET("http://172.22.34.10:8081/lineAlarmFault/confirmAlarmMessage")
+    Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
 
 
+    //Zhangfuxiang
+    @GET("http://172.22.34.10:8081/lineAlarmFault/relayMaterial")
+    Observable<Result> getBarcodeInfo(@Query("condition") String condition);
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
 
     Observable<String> sumbitLine();

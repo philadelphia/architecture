@@ -24,6 +24,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
@@ -78,6 +79,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     private int tag=0;
     private static final String TAG = "ProduceWarningFragment";
 
+    private String materialPlate,feederId,materialStation,id;
 
     @Override
     protected void initView() {
@@ -227,6 +229,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             if (mItemWarningInfo.getTitle().equals("接料预警")) {
 
                 makePopupWindow();
+                id= String.valueOf(mItemWarningInfo.getId());
 
             } else {
 
@@ -303,100 +306,62 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
         //二维码识别和解析
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-/*        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :  "+ barcode + "  :  "+Thread.currentThread().getName());
-        if(BarCodeUtils.barCodeType(barcode)!=null){
-            switch (BarCodeUtils.barCodeType(barcode)){
+        Log.i("barcode", barcode);
 
-                case MATERIAL_BLOCK_BARCODE:
-                    if(tag==0){
-                        try {
-                            MaterialBlockBarCode mMaterialBlockBarCode =
-                                    (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                            currentBarcode ="料盘："+mMaterialBlockBarCode.getDeltaMaterialNumber();
-                        } catch (EntityNotFountException e) {
+        switch (tag){
+            case 0:
+                try {
+                    MaterialBlockBarCode mMaterialBlockBarCode =
+                            (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    currentBarcode ="料盘："+mMaterialBlockBarCode.getDeltaMaterialNumber();
+                    materialPlate=currentBarcode;
+                    Log.i("barcode", currentBarcode);
+                } catch (EntityNotFountException e) {
 
-                            e.printStackTrace();
-                        }
-                    }else currentBarcode=null;
-
-                    break;
-
-                case FEEDER:
-                    if (tag==1){
-                        try {
-                            Log.i("barcode", barcode);
-                            Feeder mFeeder=(Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
-                            currentBarcode ="FeederID："+mFeeder.getSource();
-                            Log.i("barcode", currentBarcode);
-                        } catch (EntityNotFountException e) {
-                            e.printStackTrace();
-                        }
-                    }else currentBarcode=null;
-                    break;
-
-                case MATERIAL_STATION:
-                    if (tag==2){
-                        try {
-                            MaterialStation mMaterialStation=(MaterialStation)barCodeParseIpml.getEntity(barcode,BarCodeType.MATERIAL_STATION);
-                            currentBarcode ="料站："+mMaterialStation.getSource();
-                        } catch (EntityNotFountException e) {
-                            e.printStackTrace();
-                        }
-                    }else currentBarcode=null;
-                    break;
-                default:
                     currentBarcode=null;
-                    break;
+                    e.printStackTrace();
+                }
+                break;
 
-            }
-        }*/
-        Log.i("aaa", barcode);
-        if(tag==0){
-            try {
-                MaterialBlockBarCode mMaterialBlockBarCode =
-                        (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                currentBarcode ="料盘："+mMaterialBlockBarCode.getDeltaMaterialNumber();
-            } catch (EntityNotFountException e) {
+            case 1:
+                try {
+                    Feeder mFeeder=(Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
+                    currentBarcode ="FeederID："+mFeeder.getSource();
+                    feederId=currentBarcode;
+                    Log.i("barcode", currentBarcode);
+                } catch (EntityNotFountException e) {
+                    currentBarcode=null;
+                    e.printStackTrace();
+                }
+                break;
 
-                currentBarcode=null;
-                e.printStackTrace();
-            }
-            Log.i("aaa", currentBarcode);
-        }else currentBarcode=null;
+            case 2:
+                try {
+                    MaterialStation mMaterialStation = (MaterialStation) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_STATION);
+                    currentBarcode = "料站：" + mMaterialStation.getSource();
+                    materialStation=currentBarcode;
+                    Log.i("barcode", currentBarcode);
+                } catch (EntityNotFountException e) {
+                    currentBarcode=null;
+                    e.printStackTrace();
+                }
+                break;
 
-        if (tag==1){
-            try {
-                Log.i("barcode", barcode);
-                Feeder mFeeder=(Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
-                currentBarcode ="FeederID："+mFeeder.getSource();
-                Log.i("barcode", currentBarcode);
-            } catch (EntityNotFountException e) {
-                currentBarcode=null;
-                e.printStackTrace();
-            }
-            Log.i("aaa", currentBarcode);
-        }else currentBarcode=null;
 
-        if (tag==2) {
-            try {
-                MaterialStation mMaterialStation = (MaterialStation) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_STATION);
-                currentBarcode = "料站：" + mMaterialStation.getSource();
-            } catch (EntityNotFountException e) {
-                currentBarcode=null;
-                e.printStackTrace();
-            }
-            Log.i("aaa", currentBarcode);
-        }else currentBarcode=null;
-
+        }
 
         if (currentBarcode != null && mDialogRelativelayout != null&& mPopupWindow.isShowing()) {
+            Log.i("barcode", "呈现："+currentBarcode);
             barcodedatas.add(currentBarcode);
             mDialogRelativelayout.setDatas(barcodedatas);
             tag++;
+            if(tag==3){
+                hanlder.sendEmptyMessageDelayed(1, 1000);
+            }
         }
-        if (tag==3){
-            hanlder.sendEmptyMessageDelayed(1, 1000);
-        }
+
+
+
 
     }
 
@@ -404,12 +369,31 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
+            /*向后台提交数据*/
             if (msg.what==1) {
                 if(mPopupWindow!=null&&mPopupWindow.isShowing()){
-                    mPopupWindow.dismiss();
-                    ToastUtils.showMessage(getContext(),"绑定成功");
-                    EventBus.getDefault().post(new BroadcastBegin());
-                    tag=0;
+
+                    if (materialPlate!=null&&feederId!=null&&materialStation!=null&&id!=null) {
+                        Map<String,String> mMap=new HashMap<>();
+                        mMap.put("materialPlate", materialPlate);
+                        mMap.put("feederId",feederId);
+                        mMap.put("materialStation",materialStation);
+                        mMap.put("id",id);
+                        Gson mGson=new Gson();
+                        String mS=mGson.toJson(mMap);
+                        Log.i("barcode", mS);
+                        getPresenter().getBarcodeInfo(mS);
+                        mPopupWindow.dismiss();
+                        ToastUtils.showMessage(getContext(),"绑定成功");
+
+                        //启动接受广播预警
+                        EventBus.getDefault().post(new BroadcastBegin());
+
+
+                        tag=0;
+                    }
+
                 }
             }
 

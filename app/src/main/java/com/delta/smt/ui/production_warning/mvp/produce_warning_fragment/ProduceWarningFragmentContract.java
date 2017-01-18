@@ -25,5 +25,6 @@ public interface ProduceWarningFragmentContract{
 
         Observable<ProduceWarning> getItemWarningDatas(String condition);
         Observable<Result> getItemWarningConfirm(String condition);
+        Observable<Result> getBarcodeInfo(String codition);
     }
 }
