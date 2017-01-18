@@ -100,33 +100,47 @@ public interface ApiService {
     Observable<TitleNumber> getTitleDatas();
 
     //Zhangfuxiang
+    //请求预警中item数据
     @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
     //Zhangfuxiang
+    //请求故障中item数据
     @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
 
     //Zhangfuxiang
+    //请求消息中item数据
     @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemInfoDatas(@Query("condition") String condition);
 
     //Zhangfuxiang
+    //确认信息中item
     @GET("http://172.22.34.10:8081/lineAlarmFault/confirmMessage")
     Observable<Result> getItemInfoConfirm(@Query("condition") String condition);
 
 
     //Zhangfuxiang
+    //确认预警中item
     @GET("http://172.22.34.10:8081/lineAlarmFault/confirmAlarmMessage")
     Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
 
 
     //Zhangfuxiang
+    //提交预警中扫码数据
     @GET("http://172.22.34.10:8081/lineAlarmFault/relayMaterial")
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
-    Observable<List<ItemHandAdd>> getItemHandAddDatas();
 
-    Observable<String> sumbitLine();
+    //Zhangfuxiang
+    //请求手补件item数据
+    @GET("http://172.22.34.10:8081/lineAlarmFault/getPatchMaterial?condition={}")
+    Observable<Result<ItemHandAdd>> getItemHandAddDatas();
+
+    //Zhangfuxiang
+    //确认手补件item数据
+    @GET("http://172.22.34.10:8081/lineAlarmFault/confirmPatchMateria")
+    Observable<Result> getItemHandAddConfirm(@Query("condition") String condition);
+
 
     //接口PCB库房发料
 
