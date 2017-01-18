@@ -28,8 +28,6 @@ import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.ProductToolsBack;
-import com.delta.smt.entity.ProductToolsInfo;
-import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -39,10 +37,7 @@ import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
-import com.delta.smt.ui.production_warning.item.ItemBreakDown;
-import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
-import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.List;
@@ -104,12 +99,26 @@ public interface ApiService {
 
     Observable<TitleNumber> getTitleDatas();
 
-    Observable<List<ItemWarningInfo>> getItemWarningDatas();
+    //Zhangfuxiang
+    @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
+    Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
-    Observable<List<ItemBreakDown>> getItemBreakDownDatas();
+    //Zhangfuxiang
+    @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
+    Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
 
-    @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos?condition={\"lines\":\"'H12','H13'\"} ")
-    Observable<ProduceWarning> getItemInfoDatas();
+    //Zhangfuxiang
+    @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
+    Observable<ProduceWarning> getItemInfoDatas(@Query("condition") String condition);
+
+    //Zhangfuxiang
+    @GET("http://172.22.34.10:8081/lineAlarmFault/confirmMessage")
+    Observable<Result> getItemInfoConfirm(@Query("condition") String condition);
+
+
+   //Zhangfuxiang
+   @GET("http://172.22.34.10:8081/lineAlarmFault/confirmAlarmMessage")
+   Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
 
 
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
@@ -240,6 +249,14 @@ public interface ApiService {
     //尾数仓入库
     @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMantissaStorageList")
     Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
+
+    //尾数仓查询料盘的位置
+    @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMaterialPlace")
+    Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query( "condition") String bind);
+
+   //尾数仓查料盘入库
+   @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMaterialPlace")
+   Observable<MantissaWarehouseReturnResult> getputinstrage(@Query( "condition") String bind);
 
     //尾数仓备料
     @GET("http://172.22.34.22:8081/SMM/IssueMana/querymantiss")

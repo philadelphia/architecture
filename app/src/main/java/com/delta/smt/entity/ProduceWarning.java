@@ -1,5 +1,8 @@
 package com.delta.smt.entity;
 
+import com.delta.smt.ui.production_warning.item.ItemBreakDown;
+import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
+
 import java.util.List;
 
 /**
@@ -43,23 +46,23 @@ public class ProduceWarning {
     }
 
     public static class RowsBean {
-        private List<AlarmBean> alarm;
-        private List<FaultBean> fault;
+        private List<ItemWarningInfo> alarm;
+        private List<ItemBreakDown> fault;
         private List<com.delta.smt.ui.production_warning.item.ItemInfo> message;
 
-        public List<AlarmBean> getAlarm() {
+        public List<ItemWarningInfo> getAlarm() {
             return alarm;
         }
 
-        public void setAlarm(List<AlarmBean> alarm) {
+        public void setAlarm(List<ItemWarningInfo> alarm) {
             this.alarm = alarm;
         }
 
-        public List<FaultBean> getFault() {
+        public List<ItemBreakDown> getFault() {
             return fault;
         }
 
-        public void setFault(List<FaultBean> fault) {
+        public void setFault(List<ItemBreakDown> fault) {
             this.fault = fault;
         }
 
@@ -303,60 +306,6 @@ public class ProduceWarning {
             }
         }
 
-/*        public static class MessageBean {
-            *//**
-             * type : 锡膏正在运送
-             * line : H12
-             * message : 替换钢网即将配送到产线，请确认
-             * isOk : 0
-             * id : 1
-             *//*
 
-            private String type;
-            private String line;
-            private String message;
-            private int isOk;
-            private int id;
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
-            public String getLine() {
-                return line;
-            }
-
-            public void setLine(String line) {
-                this.line = line;
-            }
-
-            public String getMessage() {
-                return message;
-            }
-
-            public void setMessage(String message) {
-                this.message = message;
-            }
-
-            public int getIsOk() {
-                return isOk;
-            }
-
-            public void setIsOk(int isOk) {
-                this.isOk = isOk;
-            }
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-        }*/
     }
 }

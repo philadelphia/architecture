@@ -12,7 +12,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +23,7 @@ import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
@@ -38,13 +38,17 @@ import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.DaggerProduceWarningFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWarningFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
+import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.delta.smt.utils.BarCodeUtils;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -87,10 +91,32 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
             @Override
             protected void convert(ItemTimeViewHolder holder, ItemWarningInfo itemWarningInfo, int position) {
-                holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
-                holder.setText(R.id.tv_produce_line, itemWarningInfo.getProductionline());
-                holder.setText(R.id.tv_make_process, itemWarningInfo.getMakeprocess());
-                holder.setText(R.id.tv_warning_info, itemWarningInfo.getWarninginfo());
+                if ("接料预警".equals(itemWarningInfo.getTitle())) {
+                    holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
+                    holder.setText(R.id.tv_produce_line, "产线："+itemWarningInfo.getProductionline());
+                    holder.setText(R.id.tv_word_code, "工单号："+itemWarningInfo.getWorkcode());
+                    holder.setText(R.id.tv_face, "面别："+itemWarningInfo.getFace());
+                    holder.setText(R.id.tv_unused_materials,"备料车未使用料量："+itemWarningInfo.getUnusedmaterials());
+                    holder.setText(R.id.tv_material_station,"模组料站："+itemWarningInfo.getMaterialstation());
+                    holder.setText(R.id.tv_status,"状态："+itemWarningInfo.getStatus());
+
+                    holder.getView(R.id.tv_make_process).setVisibility(View.GONE);
+                    holder.getView(R.id.tv_warning_message).setVisibility(View.GONE);
+                }else {
+                    holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
+                    holder.setText(R.id.tv_produce_line, "产线："+itemWarningInfo.getProductionline());
+                    holder.setText(R.id.tv_make_process,"制程："+itemWarningInfo.getMakeprocess());
+                    holder.setText(R.id.tv_warning_message,"预警信息："+itemWarningInfo.getWarninginfo());
+
+                    holder.getView(R.id.tv_word_code).setVisibility(View.GONE);
+                    holder.getView(R.id.tv_face).setVisibility(View.GONE);
+                    holder.getView(R.id.tv_unused_materials).setVisibility(View.GONE);
+                    holder.getView(R.id.tv_material_station).setVisibility(View.GONE);
+                    holder.getView(R.id.tv_status).setVisibility(View.GONE);
+
+                }
+
+
             }
 
         };
@@ -160,7 +186,11 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     @Override
     protected void initData() {
-        getPresenter().getItemWarningDatas();
+        Log.i("aaa", "argument== " + ProduceWarningActivity.initLine());
+
+        if (ProduceWarningActivity.initLine() != null) {
+            getPresenter().getItemWarningDatas(ProduceWarningActivity.initLine());
+        }
     }
 
     @Override
@@ -178,8 +208,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     }
 
     @Override
-    public void getItemWarningDatasFailed() {
-
+    public void getItemWarningDatasFailed(String message) {
+        ToastUtils.showMessage(getContext(),message);
     }
 
 
@@ -193,11 +223,13 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             mDialogRelativelayout = new DialogRelativelayout(getContext());
             barcodedatas.clear();
             final ItemWarningInfo mItemWarningInfo = datas.get(position);
+
             if (mItemWarningInfo.getTitle().equals("接料预警")) {
 
                 makePopupWindow();
 
             } else {
+
                 final ArrayList<String> dialogDatas = new ArrayList<>();
                 mDialogRelativelayout.setStrSecondTitle("请求确认");
                 dialogDatas.add("是否已经完成？");
@@ -213,7 +245,15 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mItemWarningInfo.setWarninginfo("预警信息：操作完成");
+
+                                Map<String, String > map = new HashMap<>();
+                                map.put("id", String.valueOf(mItemWarningInfo.getId()));
+                                Gson gson = new Gson();
+                                String id = gson.toJson(map);
+                                Log.i("ProduceWarningFragment",id);
+
+                                getPresenter().getItemWarningConfirm(id);
+                                mItemWarningInfo.setWarninginfo("操作完成");
                                 mAdapter.notifyDataSetChanged();
                                 EventBus.getDefault().post(new BroadcastBegin());
                             }
@@ -251,6 +291,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mLayoutParams.alpha=0.4f;
         getmActivity().getWindow().setAttributes(mLayoutParams);
         mPopupWindow.update();*/
+
         //展示popupwindow
         mPopupWindow.showAtLocation(getView(), Gravity.CENTER,0,0);
 
@@ -262,7 +303,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
         //二维码识别和解析
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :  "+ barcode + "  :  "+Thread.currentThread().getName());
+/*        Log.i("barcode",BarCodeUtils.barCodeType(barcode)+"  :  "+ barcode + "  :  "+Thread.currentThread().getName());
         if(BarCodeUtils.barCodeType(barcode)!=null){
             switch (BarCodeUtils.barCodeType(barcode)){
 
@@ -308,8 +349,44 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     break;
 
             }
-        }
+        }*/
+        Log.i("aaa", barcode);
+        if(tag==0){
+            try {
+                MaterialBlockBarCode mMaterialBlockBarCode =
+                        (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                currentBarcode ="料盘："+mMaterialBlockBarCode.getDeltaMaterialNumber();
+            } catch (EntityNotFountException e) {
 
+                currentBarcode=null;
+                e.printStackTrace();
+            }
+            Log.i("aaa", currentBarcode);
+        }else currentBarcode=null;
+
+        if (tag==1){
+            try {
+                Log.i("barcode", barcode);
+                Feeder mFeeder=(Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
+                currentBarcode ="FeederID："+mFeeder.getSource();
+                Log.i("barcode", currentBarcode);
+            } catch (EntityNotFountException e) {
+                currentBarcode=null;
+                e.printStackTrace();
+            }
+            Log.i("aaa", currentBarcode);
+        }else currentBarcode=null;
+
+        if (tag==2) {
+            try {
+                MaterialStation mMaterialStation = (MaterialStation) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_STATION);
+                currentBarcode = "料站：" + mMaterialStation.getSource();
+            } catch (EntityNotFountException e) {
+                currentBarcode=null;
+                e.printStackTrace();
+            }
+            Log.i("aaa", currentBarcode);
+        }else currentBarcode=null;
 
 
         if (currentBarcode != null && mDialogRelativelayout != null&& mPopupWindow.isShowing()) {
@@ -330,7 +407,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             if (msg.what==1) {
                 if(mPopupWindow!=null&&mPopupWindow.isShowing()){
                     mPopupWindow.dismiss();
-                    Toast.makeText(getContext(),"绑定成功",Toast.LENGTH_SHORT).show();
+                    ToastUtils.showMessage(getContext(),"绑定成功");
                     EventBus.getDefault().post(new BroadcastBegin());
                     tag=0;
                 }
@@ -356,7 +433,9 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     //Activity预警广播触发事件处理
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage){
-        getPresenter().getItemWarningDatas();
+        if (ProduceWarningActivity.initLine() != null) {
+            getPresenter().getItemWarningDatas(ProduceWarningActivity.initLine());
+        }
         Log.e(TAG, "event1: ");
     }
 

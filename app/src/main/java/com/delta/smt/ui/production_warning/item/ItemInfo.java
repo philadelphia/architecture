@@ -14,6 +14,8 @@ public class ItemInfo {
     @SerializedName("message")
     private String info;
 
+    private int id;
+
     public ItemInfo() {
     }
 
@@ -21,6 +23,14 @@ public class ItemInfo {
         this.title = title;
         this.produceline = produceline;
         this.info = info;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

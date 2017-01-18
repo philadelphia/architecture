@@ -1,18 +1,14 @@
 package com.delta.smt.ui.production_warning.mvp.produce_info_fragment;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -22,21 +18,22 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
 import com.delta.smt.entity.ProduceWarningMessage;
+import com.delta.smt.ui.login.mvp.LoginPresenter;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.DaggerProduceInfoFragmentCompent;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.ProduceInfoFragmentModule;
-import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
+import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
+import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import rx.internal.schedulers.NewThreadScheduler;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/22.
@@ -59,7 +56,13 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
     @Override
     protected void initData() {
-        getPresenter().getItemInfoDatas();
+
+        Log.i("aaa", "argument== " + ProduceWarningActivity.initLine());
+
+        if (ProduceWarningActivity.initLine() != null) {
+            getPresenter().getItemInfoDatas(ProduceWarningActivity.initLine());
+        }
+
 
     }
 
@@ -110,7 +113,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
     @Override
     public void getItemInfoDatasFailed(String message) {
-        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+        ToastUtils.showMessage(getContext(),message);
     }
 
 
@@ -130,6 +133,8 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+
+                        //预警广播开始接受
                         EventBus.getDefault().post(new BroadcastBegin());
 
                     }
@@ -137,8 +142,21 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        item.setInfo("dfsafa");
+
+
+                        Map<String, String > map = new HashMap<>();
+                        map.put("id", String.valueOf(item.getId()));
+                        Gson gson = new Gson();
+                        String id = gson.toJson(map);
+                        Log.i("ProduceInfoFragment",id);
+                        getPresenter().getItemInfoConfirm(id);
+
+                        item.setInfo("操作完成");
+
                         mAdapter.notifyDataSetChanged();
+
+
+                        //预警广播开始接受
                         EventBus.getDefault().post(new BroadcastBegin());
                     }
                 }).show();
@@ -154,7 +172,9 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     //Activity预警广播触发事件处理
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage){
-        getPresenter().getItemInfoDatas();
+        if (ProduceWarningActivity.initLine() != null) {
+            getPresenter().getItemInfoDatas(ProduceWarningActivity.initLine());
+        }
         Log.e(TAG, "event3: ");
     }
 }

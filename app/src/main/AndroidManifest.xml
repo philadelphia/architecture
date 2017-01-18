@@ -89,7 +89,6 @@
         <!--production warning activity-->
         <activity
             android:name=".ui.production_warning.mvp.produce_line.ProduceLineActivity"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
 
         <activity

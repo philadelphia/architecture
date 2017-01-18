@@ -19,12 +19,22 @@ public interface MantissaWarehouseReturnContract {
 
         Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
 
+        Observable<MantissaWarehouseReturnResult> getMaterialLocation(String str);
+
+        Observable<MantissaWarehouseReturnResult> getputinstrage(String str);
+
     }
 
     interface View extends IView {
 
         void getSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
         void getFailed(String message);
+
+        void getMaterialLocationSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
+        void getMaterialLocationFailed(String message);
+
+        void getputinstrageSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
+        void getputinstrageFailed(String message);
 
     }
 }

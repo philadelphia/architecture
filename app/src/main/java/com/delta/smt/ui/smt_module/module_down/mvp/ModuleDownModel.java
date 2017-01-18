@@ -35,7 +35,7 @@ public class ModuleDownModel extends BaseModel<ApiService> implements ModuleDown
         dataList.add(new ModuleDownWarningItem("A","H21","等待下模组","2016121010000009","540000L"));
         for (int i=0;i<dataList.size();i++){
             dataList.get(i).setEndTime(System.currentTimeMillis()+dataList.get(i).getCountDownLong());
-            dataList.get(i).setId(i);
+            dataList.get(i).setTimeId(i);
         }
         return Observable.just(dataList);
         //return getService().getModuleDownWarningItems().compose(RxsRxSchedulers.<List<ModuleDownWarningItem>>io_main());
