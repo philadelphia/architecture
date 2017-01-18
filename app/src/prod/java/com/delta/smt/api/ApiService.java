@@ -101,12 +101,26 @@ public interface ApiService {
 
     Observable<TitleNumber> getTitleDatas();
 
-    Observable<List<ItemWarningInfo>> getItemWarningDatas();
+    //Zhangfuxiang
+    @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
+    Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
-    Observable<List<ItemBreakDown>> getItemBreakDownDatas();
+    //Zhangfuxiang
+    @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
+    Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
 
-    @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos?condition={\"lines\":\"'H12','H13'\"} ")
-    Observable<ProduceWarning> getItemInfoDatas();
+    //Zhangfuxiang
+    @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
+    Observable<ProduceWarning> getItemInfoDatas(@Query("condition") String condition);
+
+    //Zhangfuxiang
+    @GET("http://172.22.34.10:8081/lineAlarmFault/confirmMessage")
+    Observable<Result> getItemInfoConfirm(@Query("condition") String condition);
+
+
+   //Zhangfuxiang
+   @GET("http://172.22.34.10:8081/lineAlarmFault/confirmAlarmMessage")
+   Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
 
 
     Observable<List<ItemHandAdd>> getItemHandAddDatas();
@@ -224,7 +238,6 @@ public interface ApiService {
     //点击开始入库
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
-
 
     //尾数仓入库
     @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMantissaStorageList")

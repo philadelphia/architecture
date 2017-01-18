@@ -17,7 +17,7 @@ public class ProduceWarningModel extends BaseModel<ApiService> implements Produc
 
     @Override
     public Observable<TitleNumber> getTitleDatas() {
-        TitleNumber mTitleNumber = new TitleNumber(3, 2, 1);
+        TitleNumber mTitleNumber = new TitleNumber(2, 1, 1);
 
         return Observable.just(mTitleNumber);
 
