@@ -20,13 +20,13 @@ public interface FeederSupplyContract {
     interface View extends IView{
          void onSuccess(List<FeederSupplyItem> data);
 
-         void onFailed();
+         void onFailed(String message);
     }
 
     interface Model extends IModel{
          Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(String workID);
-        
-        Observable<Result<FeederSupplyItem>> getFeederInsertionToSlot(String serinal_num, String material_num, String quantity);
+
+        Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(String condition);
 
          Observable<Result> upLoadFeederSupplyResult();
     }

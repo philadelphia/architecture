@@ -64,17 +64,18 @@ public interface ApiService {
 
 
 
-    /*
-     获取feeder入库列表
-     tao.zt.zhang
-     */
-    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+
+   //  tao.zt.zhang
+
+   //  获取feeder入库列表
+    @GET("http://172.22.34.22:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
-    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qMaterialPlace")
+   //获取feeder对应的架位
+    @GET("http://172.22.34.22:8081/SMM/FeederBuffStorage/qMaterialPlace")
     Observable<Result<FeederCheckInItem>> getFeederLocation(@Query("condition") String condition);
 
-    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/feederBuffStorages")
+    @GET("http://172.22.34.22:8081/SMM/FeederBuffStorage/feederBuffStorages")
     Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
 
    //获取所有的Feeder备料工单列表
@@ -87,7 +88,7 @@ public interface ApiService {
 
  //获取Feeder备料时间
  @GET("http://172.22.34.34:8081/SMM/Buffer/bufferIssue")
- Observable<Result<FeederSupplyItem>> getFeederInsertionToSlot(@Query("condition") String serinal_num,@Query("condition") String material_num, @Query("condition") String quantity );
+ Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("condition") String condition);
 
     @POST
     Observable<Result> upLoadFeederSupplyResult();

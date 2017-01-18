@@ -28,8 +28,8 @@ public class FeederSupplyModel extends BaseModel<ApiService> implements FeederSu
 
     //获取feeder上模组时间
     @Override
-    public Observable<Result<FeederSupplyItem>> getFeederInsertionToSlot(String serinal_num, String material_num, String quantity) {
-        return getService().getFeederInsertionToSlot(serinal_num, material_num, quantity);
+    public Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(String condition ) {
+        return getService().getFeederInsertionToSlotTimeStamp(condition).compose(RxsRxSchedulers.<Result<FeederSupplyItem>>io_main());
     }
 
     @Override
