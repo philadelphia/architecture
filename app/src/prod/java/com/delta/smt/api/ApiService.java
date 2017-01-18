@@ -8,6 +8,7 @@ import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
+import com.delta.smt.entity.JsonProductToolsLocation;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
@@ -67,7 +68,6 @@ public interface ApiService {
     Observable<List<WareHouse>> getAllWareHouse();
 
 
-
     /*
      获取feeder入库列表
      tao.zt.zhang
@@ -81,17 +81,17 @@ public interface ApiService {
     @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/feederBuffStorages")
     Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
 
-   //获取所有的Feeder备料工单列表
+    //获取所有的Feeder备料工单列表
     @GET("http://172.22.34.34:8081/SMM/Buffer/querySchedule")
     Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
 
-   //获取指定工单的Feeder备料列表
+    //获取指定工单的Feeder备料列表
     @GET("http://172.22.34.34:8081/SMM/Buffer/startBufferIssue")
     Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("condition") String workID);
 
- //获取Feeder备料时间
- @GET("http://172.22.34.34:8081/SMM/Buffer/bufferIssue")
- Observable<Result<FeederSupplyItem>> getFeederSuppliedTime(@Query("condition") String workID);
+    //获取Feeder备料时间
+    @GET("http://172.22.34.34:8081/SMM/Buffer/bufferIssue")
+    Observable<Result<FeederSupplyItem>> getFeederSuppliedTime(@Query("condition") String workID);
 
     @POST
     Observable<Result> upLoadFeederSupplyResult();
@@ -136,15 +136,18 @@ public interface ApiService {
 
     @GET("webapi/pcb/management/inbound/location")
     Observable<Light> onLight(@Query("param") String s);//点灯操作
+
     @GET("webapi/pcb/management/inbound")
     Observable<Success> putInStorage(@Query("param") String s);//入库操作
+
     @GET("pcb/management/outbound/bill")
     Observable<OutBound> outBound(@Query("param") String s);//仓库发料清单
+
     @GET("pcb/management/capacity")
     Observable<PcbNumber> getPcbNumber(@Query("param") String s);//获取实际数量
+
     @GET("webapi/pcb/management/outbound")
     Observable<Success> getPcbSuccess(@Query("param") String s);//获取是否发料成功
-
 
 
     //Observable<List<MantissaWarehousePutstorage>> getBeginput();
@@ -174,15 +177,21 @@ public interface ApiService {
 
     Observable<List<ModuleDownDetailsItem>> getModuleDownDetailsItems();
 
-    //TODO shaoqiang,4Interfance
+    //TODO shaoqiang,6Interfance
     @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/order/list/page")
-    Observable<JsonProductBorrowRoot> getProductWorkItem(@Query("pageSize")int pageSize,@Query("pageCurrent")int pageCurrent);
+    Observable<JsonProductBorrowRoot> getProductWorkItem(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent);
 
     @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/jig/list/page")
-    Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Query("pageSize")int pageSize,@Query("pageCurrent")int pageCurrent,@Query("condition")String condition);
+    Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent, @Query("condition") String condition);
 
     @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/jig/list/page")
-    Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Query("pageSize")int pageSize,@Query("pageCurrent")int pageCurrent,@Query("condition")String condition_and_jigTypeID);
+    Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent, @Query("condition") String condition_and_jigTypeID);
+
+    @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/instore/verify")
+    Observable<JsonProductToolsLocation> getgetLocationVerify(@Query("param")String param);
+
+    @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/instore/submit")
+    Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param")String param);
 
     Observable<List<ProductToolsBack>> getProductToolsBack();
 
@@ -191,9 +200,9 @@ public interface ApiService {
     @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWarehousePart")
     Observable<Result<String>> getStorageSelect();
 
-  //  Observable<List<MantissaWarehouseDetailsResult>> getMantissaWarehouseDetails();
+    //  Observable<List<MantissaWarehouseDetailsResult>> getMantissaWarehouseDetails();
 
-   // Observable<List<MantissaWarehouseReturnResult>> getMantissaWarehouseReturn();
+    // Observable<List<MantissaWarehouseReturnResult>> getMantissaWarehouseReturn();
 
     //Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage();
 
@@ -203,7 +212,7 @@ public interface ApiService {
     @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWorkOrder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
-  //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
+    //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
 
@@ -215,15 +224,15 @@ public interface ApiService {
 //    Observable<String> sumbitLine();
 
 
-
-
     //liuzhenyu
     //尾数仓退入主仓库
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/queryReturnedWarehList")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
+
     //点击清理按钮
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
+
     //点击开始入库
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
@@ -235,13 +244,14 @@ public interface ApiService {
     //尾数仓备料
     @GET("http://172.22.34.22:8081/SMM/IssueMana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
+
     //尾数仓备料详情
     @GET("http://172.22.34.22:8081/SMM/IssueMana/queryMantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query( "condition") String bind);
+    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query("condition") String bind);
 
     //料盘绑定标签
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/materBoundLabel")
-    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query( "condition") String bind);
+    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query("condition") String bind);
 
     @GET("http://172.22.34.22:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
@@ -256,5 +266,5 @@ public interface ApiService {
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     @GET("http://172.22.34.42:8081/smm/plugmod/updateMod")
-    Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(@Query("id")String id,@Query("feeder")String feederID);
+    Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(@Query("id") String id, @Query("feeder") String feederID);
 }

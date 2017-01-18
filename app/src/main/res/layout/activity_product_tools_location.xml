@@ -15,12 +15,13 @@
         android:text="@string/ProductToolsBarCodePlus"/>
 
     <EditText
+        android:id="@+id/ProductToolsBarCode"
         android:layout_height="84px"
         android:layout_width="698px"
         android:layout_marginLeft="288px"
         android:layout_marginTop="-75px"
         android:background="@drawable/ed_back_white"
-
+        android:focusable="false"
         />
 
     <TextView
@@ -38,8 +39,9 @@
         android:layout_width="698px"
         android:layout_marginTop="-75px"
         android:layout_marginLeft="288px"
-        android:id="@+id/editText"
+        android:id="@+id/ShiftBarcode"
         android:background="@drawable/ed_back_white"
+        android:focusable="false"
         />
 
 </LinearLayout>
