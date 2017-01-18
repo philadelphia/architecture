@@ -14,6 +14,7 @@ import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
+import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
@@ -234,4 +235,7 @@ public interface ApiService {
 
     @GET("http://172.22.34.22:8081/SMM/WareHIssue/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
+
+    @GET("http://172.22.34.42:8081/smm/plugmod/updateMod")
+    Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(@Query("id")String id,@Query("feeder")String feederID);
 }

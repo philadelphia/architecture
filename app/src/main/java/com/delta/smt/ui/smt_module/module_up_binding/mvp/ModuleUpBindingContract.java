@@ -2,6 +2,7 @@ package com.delta.smt.ui.smt_module.module_up_binding.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 
@@ -20,9 +21,15 @@ public interface ModuleUpBindingContract {
 
         public void onFalied();
 
+        public void onSuccessBinding(MaterialAndFeederBindingResult data);
+
+        public void onFailedBinding();
+
     }
 
     interface Model extends IModel {
         public Observable<ModuleUpBindingItem> getAllModuleUpBindingItems(String str);
+
+        public Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(String id,String feederID);
     }
 }

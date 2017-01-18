@@ -3,12 +3,14 @@ package com.delta.smt.ui.smt_module.module_up_binding.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -25,5 +27,10 @@ public class ModuleUpBindingModel extends BaseModel<ApiService> implements Modul
     public Observable<ModuleUpBindingItem> getAllModuleUpBindingItems(String str) {
 
         return getService().getModuleUpBindingItems(str).compose(RxsRxSchedulers.<ModuleUpBindingItem>io_main());
+    }
+
+    @Override
+    public Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(String id,String feederID) {
+        return getService().getMaterialAndFeederBindingResult(id,feederID).compose(RxsRxSchedulers.<MaterialAndFeederBindingResult>io_main());
     }
 }

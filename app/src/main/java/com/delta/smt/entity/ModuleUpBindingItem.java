@@ -54,19 +54,18 @@ public class ModuleUpBindingItem {
 
         private int id;
         private String material_num;
-        private String feeder_id;
-
         private String serial_num;
-        private String solt;
+        private String feeder_id;
+        private String slot;
         private String create_time;
 
-        public RowsBean(int id, String material_num, String feeder_id,  String serial_num, String solt,String create_time) {
+        public RowsBean(int id, String material_num,String serial_num, String feeder_id,  String slot, String create_time) {
             this.create_time = create_time;
             this.feeder_id = feeder_id;
             this.id = id;
             this.material_num = material_num;
             this.serial_num = serial_num;
-            this.solt = solt;
+            this.slot = slot;
         }
 
         public int getId() {
@@ -101,12 +100,12 @@ public class ModuleUpBindingItem {
             this.serial_num = serial_num;
         }
 
-        public String getSolt() {
-            return solt;
+        public String getSlot() {
+            return slot;
         }
 
-        public void setSolt(String solt) {
-            this.solt = solt;
+        public void setSlot(String slot) {
+            this.slot = slot;
         }
 
         public String getMaterial_num() {

@@ -113,10 +113,13 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     public void onSuccess(ModuleUpWarningItem data) {
-        dataList.clear();
-        List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
-        dataList.addAll(rows);
-        myAdapter.notifyDataSetChanged();
+        if (data.getMsg().toLowerCase().equals("success")){
+            dataList.clear();
+            List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
+            dataList.addAll(rows);
+            myAdapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override
