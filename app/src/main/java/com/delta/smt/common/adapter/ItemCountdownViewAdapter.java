@@ -12,6 +12,7 @@ import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.entity.CountDownEntity;
 import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -85,10 +86,13 @@ public abstract class ItemCountdownViewAdapter<T extends CountDownEntity> extend
     @Override
     public void onBindViewHolder(final ItemTimeViewHolder holder, final int position) {
         CountDownEntity curItemInfo = mList.get(position);
+        curItemInfo.setEndTime(curItemInfo.getCountDownLong() + System.currentTimeMillis());
+        curItemInfo.setId(position);
         holder.bindData(curItemInfo);
 
         // 处理倒计时
-        if (curItemInfo.getCountdown() > 0) {
+
+        if (curItemInfo.getCountDownLong() > 0) {
             synchronized (mCountdownVHList) {
                 mCountdownVHList.put(curItemInfo.getId(), holder);
             }
@@ -118,7 +122,7 @@ public abstract class ItemCountdownViewAdapter<T extends CountDownEntity> extend
         super.onViewRecycled(holder);
 
         CountDownEntity curAnnounceGoodsInfo = holder.getBean();
-        if (null != curAnnounceGoodsInfo && curAnnounceGoodsInfo.getCountdown() > 0) {
+        if (null != curAnnounceGoodsInfo && curAnnounceGoodsInfo.getCountDownLong() > 0) {
             mCountdownVHList.remove(curAnnounceGoodsInfo.getId());
         }
     }
@@ -136,7 +140,7 @@ public abstract class ItemCountdownViewAdapter<T extends CountDownEntity> extend
                     ItemTimeViewHolder curMyViewHolder = mCountdownVHList.get(key);
                     if (currentTime >= curMyViewHolder.getBean().getEndTime()) {
                         // 倒计时结束
-                        curMyViewHolder.getBean().setCountdown(0);
+                        curMyViewHolder.getBean().setCountDownLong(0);
                         mCountdownVHList.remove(key);
                         notifyDataSetChanged();
                     } else {

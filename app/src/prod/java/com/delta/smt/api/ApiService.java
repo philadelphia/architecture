@@ -22,12 +22,11 @@ import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.OutBound;
 import com.delta.smt.entity.OverReceiveDebitResult;
-import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.OverReceiveWarning;
+import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.ProductToolsInfo;
-import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
@@ -39,7 +38,6 @@ import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
-import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
@@ -72,14 +70,26 @@ public interface ApiService {
      获取feeder入库列表
      tao.zt.zhang
      */
-    @GET("http://172.22.34.21:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
-    @POST
-    Observable<List<FeederSupplyWarningItem>> getAllSupplyWorkItems();
+    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qMaterialPlace")
+    Observable<Result<FeederCheckInItem>> getFeederLocation(@Query("condition") String condition);
 
-    @POST
-    Observable<List<FeederSupplyItem>> getAllToBeSuppliedFeeders();
+    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/feederBuffStorages")
+    Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
+
+   //获取所有的Feeder备料工单列表
+    @GET("http://172.22.34.34:8081/SMM/Buffer/querySchedule")
+    Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
+
+   //获取指定工单的Feeder备料列表
+    @GET("http://172.22.34.34:8081/SMM/Buffer/startBufferIssue")
+    Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("condition") String workID);
+
+ //获取Feeder备料时间
+ @GET("http://172.22.34.34:8081/SMM/Buffer/bufferIssue")
+ Observable<Result<FeederSupplyItem>> getFeederSuppliedTime(@Query("condition") String workID);
 
     @POST
     Observable<Result> upLoadFeederSupplyResult();
@@ -205,13 +215,13 @@ public interface ApiService {
 
     //liuzhenyu
     //尾数仓退入主仓库
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/queryReturnedWarehList")
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/queryReturnedWarehList")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
     //点击清理按钮
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/triggerListUpdate")
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
     //点击开始入库
-    @GET("http://172.22.34.8:8081/SMM/ManToWareh/startStorage")
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
     //尾数仓入库
@@ -225,6 +235,9 @@ public interface ApiService {
     @GET("http://172.22.34.22:8081/SMM/IssueMana/queryMantissIssue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query( "condition") String bind);
 
+    //料盘绑定标签
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/materBoundLabel")
+    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query( "condition") String bind);
 
     @GET("http://172.22.34.6:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();

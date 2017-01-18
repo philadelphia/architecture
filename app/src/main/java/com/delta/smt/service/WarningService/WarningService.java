@@ -15,9 +15,12 @@ import com.delta.smt.R;
 import com.delta.smt.api.API;
 import com.delta.smt.app.App;
 import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.entity.TypeObject;
 import com.delta.smt.manager.ActivityMonitor;
+import com.delta.smt.manager.WarningManger;
 import com.delta.smt.service.warningService.di.DaggerWarningComponent;
 import com.delta.smt.service.warningService.di.WebSocketClientModule;
+import com.google.gson.Gson;
 
 import org.java_websocket.drafts.Draft_17;
 
@@ -34,13 +37,16 @@ import javax.inject.Inject;
  */
 
 
-public class WarningService extends Service implements WarningSocketClient.OnRecieveLisneter {
+public class WarningService extends Service implements WarningSocketClient.OnRecieveLisneter, WarningManger.OnRegister {
 
     private static final String TAG = "WarningService";
     @Inject
     WarningSocketClient warningSocketClient;
     @Inject
+    WarningManger warningManger;
+    @Inject
     ActivityMonitor activityMonitor;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -49,8 +55,8 @@ public class WarningService extends Service implements WarningSocketClient.OnRec
         DaggerWarningComponent.builder().appComponent(App.getAppComponent()).webSocketClientModule(webSocketClientModule).build().inject(this);
         try {
             warningSocketClient.connectBlocking();
-            warningSocketClient.send("dfd");
             warningSocketClient.addOnRecieveLisneter(this);
+            warningManger.setOnRegister(this);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -75,38 +81,43 @@ public class WarningService extends Service implements WarningSocketClient.OnRec
 
     @Override
     public void OnForeground(String text) {
-        Log.e(TAG, "OnForeground: "+text);
+        Log.e(TAG, "OnForeground: " + text);
         Intent intent = new Intent();
         intent.setAction(Constant.WARNINGRECIEVE);
-        intent.putExtra(Constant.WARNINGMESSAGE,"message");
+        intent.putExtra(Constant.WARNINGMESSAGE, text);
         sendBroadcast(intent);
     }
 
     @Override
-    public void OnBackground(String text) {
+    public void OnBackground(final String text) {
 
         App.getMainHander().post(new Runnable() {
             @Override
             public void run() {
-                getAlertDialog().show();
+                getAlertDialog(text).show();
             }
         });
     }
+
+    @Override
+    public void register(int type) {
+        String s = new Gson().toJson(new TypeObject(type));
+        Log.e(TAG, "register: " + s);
+        warningSocketClient.send(s);
+    }
+
     @NonNull
-    public AlertDialog getAlertDialog() {
+    public AlertDialog getAlertDialog(String text) {
         //1.创建这个DialogRelativelayout
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
-        dialogRelativelayout.setStrTitle("测试标题");
+        dialogRelativelayout.setStrTitle("预警信息");
         //3.传入的是黑色字体的二级标题
         dialogRelativelayout.setStrSecondTitle("预警异常");
         //4.传入的是一个ArrayList<String>
         ArrayList<String> datas = new ArrayList<>();
-        datas.add("dsfdsf");
-        datas.add("sdfsdf1");
-        datas.add("dsfsdf2");
+        datas.add(text);
         dialogRelativelayout.setStrContent(datas);
-
         //5.构建Dialog，setView的时候把这个View set进去。
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.AlertDialogCustom).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
@@ -120,4 +131,6 @@ public class WarningService extends Service implements WarningSocketClient.OnRec
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         return dialog;
     }
+
+
 }

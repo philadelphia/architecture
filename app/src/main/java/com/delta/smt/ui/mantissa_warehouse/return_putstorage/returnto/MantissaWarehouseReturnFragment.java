@@ -28,7 +28,8 @@ import butterknife.BindView;
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter> implements MantissaWarehouseReturnContract.View, BaseActivity.OnBarCodeSuccess {
+public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter>
+        implements MantissaWarehouseReturnContract.View, BaseActivity.OnBarCodeSuccess {
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
@@ -41,16 +42,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter2;
     private BaseActivity baseActiviy;
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.e(TAG, "onAttach: " + context.getClass().getName());
-        if (context instanceof BaseActivity) {
-            this.baseActiviy = ((BaseActivity) context);
-            baseActiviy.addOnBarCodeSuccess(this);
-        }
-    }
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -137,18 +128,21 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
             }
         }
     }
-
     @Override
-    public void onPause() {
-
-        super.onPause();
-
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.e(TAG, "onAttach: " + context.getClass().getName());
+        if (context instanceof BaseActivity) {
+            this.baseActiviy = ((BaseActivity) context);
+            baseActiviy.addOnBarCodeSuccess(this);
+        }
     }
 
 
     @Override
     public void onScanSuccess(String barcode) {
 
-        Log.e(TAG, "onScanSucess: " + barcode);
+
+
     }
 }

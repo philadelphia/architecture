@@ -27,7 +27,7 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
     public void bindData(CountDownEntity itemInfo) {
         mItemInfo = itemInfo;
 
-        if (itemInfo.getCountdown() > 0) {
+        if (itemInfo.getCountDownLong() > 0) {
             refreshTime(System.currentTimeMillis());
         } else {
             mCountdownViewTest.allShowZero();
@@ -36,7 +36,7 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void refreshTime(long curTimeMillis) {
-        if (null == mItemInfo || mItemInfo.getCountdown() <= 0) return;
+        if (null == mItemInfo || mItemInfo.getCountDownLong() <= 0) return;
 
         mCountdownViewTest.updateShow(mItemInfo.getEndTime() - curTimeMillis);
     }

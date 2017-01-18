@@ -16,7 +16,7 @@ public class FalutMesage extends CountDownEntity {
     private String faultCode;
 
 
-    public FalutMesage(String produceline, String processing, String faultMessage, String faultCode, Long countdown) {
+    public FalutMesage(String produceline, String processing, String faultMessage, String faultCode, String countdown) {
         this.produceline = produceline;
         this.processing = processing;
         this.faultMessage = faultMessage;
