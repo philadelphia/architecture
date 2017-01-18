@@ -3,6 +3,7 @@ package com.delta.smt.ui.feeder.handle.feederSupply.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.FeederSupplyItem;
+import com.delta.smt.entity.Result;
 
 import java.util.List;
 
@@ -22,11 +23,11 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         super(model, mView);
     }
 
-    public void getAllToBeSuppliedFeeders(){
-        getModel().getAllToBeSuppliedFeeders().subscribe(new Action1<List<FeederSupplyItem>>() {
+    public void getAllToBeSuppliedFeeders(String workID){
+        getModel().getAllToBeSuppliedFeeders(workID).subscribe(new Action1<Result<FeederSupplyItem>>() {
             @Override
-            public void call(List<FeederSupplyItem> feederSupplyItems) {
-                getView().onSuccess(feederSupplyItems);
+            public void call(Result<FeederSupplyItem> feederSupplyItems) {
+                getView().onSuccess(feederSupplyItems.getRows());
             }
         }, new Action1<Throwable>() {
             @Override
@@ -37,11 +38,11 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
     }
 
 
-    public void upLoadFeederSupplyResult(){
-        getModel().getAllToBeSuppliedFeeders().subscribe(new Action1<List<FeederSupplyItem>>() {
+    public void upLoadFeederSupplyResult(String workID){
+        getModel().getAllToBeSuppliedFeeders(workID).subscribe(new Action1<Result<FeederSupplyItem>>() {
             @Override
-            public void call(List<FeederSupplyItem> feederSupplyItems) {
-                getView().onSuccess(feederSupplyItems);
+            public void call(Result<FeederSupplyItem> feederSupplyItems) {
+                getView().onSuccess(feederSupplyItems.getRows());
             }
         }, new Action1<Throwable>() {
             @Override

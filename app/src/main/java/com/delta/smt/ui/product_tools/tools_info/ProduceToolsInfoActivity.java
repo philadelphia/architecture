@@ -1,14 +1,15 @@
 package com.delta.smt.ui.product_tools.tools_info;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -22,6 +23,7 @@ import com.delta.smt.ui.product_tools.tools_info.di.ProduceToolsInfoModule;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoContract;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,7 +45,13 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
 
-    List<ProductToolsInfo> data;
+    @BindView(R.id.ProductInfoBarCode)
+    EditText productInfoBarCodeEditText;
+
+    @BindView(R.id.ProductToolsWorkItem)
+    TextView mProductToolsWorkItemTextView;
+
+    List<ProductToolsInfo> data = new ArrayList<>();
     CommonBaseAdapter<ProductToolsInfo> adapter;
     String workNumber;
 
@@ -57,8 +65,14 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     protected void initData() {
-        getPresenter().getToolsInfo();
+
+
         workNumber = this.getIntent().getExtras().getString(sourceActivity);
+
+
+        getPresenter().getToolsInfo("{\"workOrderID\":" + workNumber + "}");
+
+
     }
 
     @Override
@@ -70,11 +84,14 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具信息");
 
-        data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态"));
+        mProductToolsWorkItemTextView.setText(workNumber);
+        //productInfoBarCodeEditText.setText(workNumber);
+
+        data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态",""));
 
         adapter = new CommonBaseAdapter<ProductToolsInfo>(getContext(), data) {
             @Override
-            protected void convert(CommonViewHolder holder, ProductToolsInfo item, int position) {
+            protected void convert(CommonViewHolder holder, final ProductToolsInfo item, int position) {
 
                 if (position == 0) {
 
@@ -97,17 +114,21 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
                 }
 
-                holder.setOnClickListener(R.id.ReSelect,new View.OnClickListener() {
+                holder.setOnClickListener(R.id.ReSelect, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=new Intent();
+                        Intent intent = new Intent();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("workNumber",workNumber);
+                        bundle.putString("jigTypeID",item.getJigTypeID());
+                        intent.putExtras(bundle);
                         intent.setClass(ProduceToolsInfoActivity.this, Produce_mToolsActivity.class);
                         startActivity(intent);
                     }
                 });
 
-                TextView more=holder.getView(R.id.ReSelect);
-                if(more.getText().equals("更多")) {
+                TextView more = holder.getView(R.id.ReSelect);
+                if (more.getText().equals("更多")) {
                     more.setScaleY(0.9f);
                     more.setScaleX(0.9f);
                 }
@@ -150,7 +171,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getToolsInfo(List<ProductToolsInfo> ProductToolsItem) {
-        this.data = ProductToolsItem;
+        data.addAll(ProductToolsItem);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

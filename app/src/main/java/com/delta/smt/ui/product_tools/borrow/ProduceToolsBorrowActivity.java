@@ -172,7 +172,6 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
         //TODO data按时间排序
         MyCompare myCompare = new MyCompare();
-        Log.e("nono", myCompare.toString());
         Collections.sort(data, myCompare);
 
         for (int i = 0; i < data.size(); i++) {

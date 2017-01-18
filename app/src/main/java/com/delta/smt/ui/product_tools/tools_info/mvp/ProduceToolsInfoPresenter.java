@@ -1,8 +1,11 @@
 package com.delta.smt.ui.product_tools.tools_info.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.smt.entity.JsonProductRequestToolsList;
+import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.ProductToolsInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,12 +23,21 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
         super(model, mView);
     }
 
-    public void getToolsInfo(){
+    public void getToolsInfo(String condition){
 
-        getModel().getProductToolsInfoItem().subscribe(new Action1<List<ProductToolsInfo>>() {
+        getModel().getProductToolsInfoItem(1000000000,1,condition).subscribe(new Action1<JsonProductRequestToolsRoot>() {
             @Override
-            public void call(List<ProductToolsInfo> product_mToolsInfos) {
-                getView().getToolsInfo(product_mToolsInfos);
+            public void call(JsonProductRequestToolsRoot jsonProductRequestToolsRoot) {
+                //getView().getToolsInfo();
+                List<JsonProductRequestToolsList> rows=jsonProductRequestToolsRoot.getRows();
+                List<ProductToolsInfo> data=new ArrayList<>();
+                int size=0;
+                for(JsonProductRequestToolsList j:rows){
+                    size++;
+                    ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName(),"更多",j.getLoanStatus()==1?"待确认":"待取",String.valueOf(j.getJigTypeID()));
+                    data.add(p);
+                }
+                getView().getToolsInfo(data);
             }
         }, new Action1<Throwable>() {
             @Override

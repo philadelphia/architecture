@@ -1,6 +1,7 @@
 package com.delta.smt.ui.feeder.handle.feederSupply;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -25,9 +27,12 @@ import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponen
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyPresenter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,7 +83,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     protected void initData() {
         Log.i(TAG, "initData: ");
-        getPresenter().getAllToBeSuppliedFeeders();
+        Intent intent = getIntent();
+        String workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
+        Log.i(TAG, "workId==: " + workId);
+        Map<String,String> map = new HashMap<>();
+        map.put("work_order", workId);
+        String argument = new Gson().toJson(map);
+        Log.i(TAG, "argument==: " + argument);
+        getPresenter().getAllToBeSuppliedFeeders(argument);
     }
 
     @Override
@@ -88,7 +100,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("备料");
-        dataList.add(new FeederSupplyItem("", "", "", "", ""));
+        dataList.add(new FeederSupplyItem("", "", "", "", 0));
         CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
@@ -112,7 +124,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_module, item.getModuleID());
                 holder.setText(R.id.tv_timestamp, item.getTimeStamp());
-                holder.setText(R.id.tv_status, item.getStatus());
+                holder.setText(R.id.tv_status, item.getStatus()==0 ? "等待上模组" :" 上模组完成");
             }
 
             @Override
@@ -141,11 +153,13 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     @Override
     public void onSuccess(List<FeederSupplyItem> data) {
+        Log.i(TAG, "onSuccess: ");
+        Log.i(TAG, "后台返回的数据长度是: " + data.size());
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
         for (FeederSupplyItem item : dataSource) {
-            if (item.getStatus().equalsIgnoreCase("等待上模组")) {
+            if (item.getStatus() == 0) {
                 isHandleOVer = false;
                 break;
             } else {
@@ -161,7 +175,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     @Override
     public void onFailed() {
-
+        Log.i(TAG, "onFailed: ");
     }
 
 
@@ -174,7 +188,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             if (!TextUtils.isEmpty(barcode)) {
                 if (barcode.trim().equalsIgnoreCase(feederSupplyItem.getMaterialID())) {
                     tvModuleID.setText("模组料站: " + feederSupplyItem.getModuleID());
-                    getPresenter().upLoadFeederSupplyResult();
+//                    getPresenter().upLoadFeederSupplyResult();
                 }
             }
         }
@@ -194,12 +208,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+    
 
 }

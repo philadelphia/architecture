@@ -107,6 +107,8 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
         dataList.clear();
         dataList.addAll(data);
         adapter.notifyDataSetChanged();
+        Log.i(TAG, "后台返回的数据长度为: " + dataList.get(0).getCountDownLong());
+        Log.i(TAG, "后台返回的数据长度为: " + dataList.get(0).getCountdown());
         Log.i(TAG, "onSuccess: " + dataList.size());
         
     }
@@ -134,7 +136,7 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
         String workItemID = feederSupplyWarningItem.getWorkItemID();
         Bundle bundle = new Bundle();
         bundle.putString(Constant.WORK_ITEM_ID,workItemID);
-        IntentUtils.showIntent(getmActivity(), FeederSupplyActivity.class);
+        IntentUtils.showIntent(getmActivity(), FeederSupplyActivity.class,bundle);
 
     }
 

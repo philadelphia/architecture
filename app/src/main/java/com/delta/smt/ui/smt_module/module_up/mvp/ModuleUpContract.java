@@ -17,13 +17,13 @@ import rx.Observable;
 public interface ModuleUpContract {
     interface View extends IView {
 
-        public void onSuccess(List<ModuleUpWarningItem> data);
+        public void onSuccess(ModuleUpWarningItem data);
 
         public void onFalied();
 
     }
 
     interface Model extends IModel {
-        public Observable<List<ModuleUpWarningItem>> getAllModuleUpWarningItems();
+        public Observable<ModuleUpWarningItem> getAllModuleUpWarningItems(String str);
     }
 }

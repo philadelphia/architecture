@@ -1,8 +1,6 @@
 package com.delta.smt.ui.hand_add.mvp;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +11,6 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
-import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
@@ -32,8 +29,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/27.
@@ -105,7 +100,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                 holder.setText(R.id.tv_line, itemHandAdd.getProduce_line());
                 holder.setText(R.id.tv_add_count, itemHandAdd.getAdd_count());
                 holder.setText(R.id.tv_material_station, itemHandAdd.getMaterial_station());
-                holder.setText(R.id.tv_warning_info, itemHandAdd.getInfo());
+                holder.setText(R.id.tv_face, itemHandAdd.getInfo());
             }
 
 

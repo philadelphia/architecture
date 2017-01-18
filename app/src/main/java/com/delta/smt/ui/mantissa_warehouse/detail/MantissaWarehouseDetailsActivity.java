@@ -15,7 +15,7 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.BindBean;
+import com.delta.smt.entity.WarehouseDetailBean;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.DaggerMantissaWarehouseDetailsComponent;
@@ -74,7 +74,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         mMantissaWarehouse=(MantissaWarehouseReady.MantissaWarehouse)intent.getSerializableExtra("item");
 
         String bb = mMantissaWarehouse.getWork_order();
-        BindBean bindBean = new BindBean(bb);
+        WarehouseDetailBean bindBean = new WarehouseDetailBean(bb);
         Gson gson = new Gson();
         String s = gson.toJson(bindBean);
 
