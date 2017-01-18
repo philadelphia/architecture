@@ -22,6 +22,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.PutBarCode;
+import com.delta.smt.entity.UpLocation;
 import com.delta.smt.entity.WarehousePutstorageBean;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.DaggerMantissaWarehousePutstorageComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.MantissaWarehousePutstorageModule;
@@ -69,6 +70,7 @@ public class MantissaWarehousePutstorageFragment extends
     private String materialNumber;
     private String lableBarCode;
     private String serialNum;
+    private String count;
 
 
     @Override
@@ -180,6 +182,18 @@ public class MantissaWarehousePutstorageFragment extends
 
     }
 
+    @Override
+    public void getUpLocationSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehousePutstorages);
+        adapter2.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getUpLocationFailed(String message) {
+
+    }
+
 
     @OnClick({R.id.clean, R.id.deduct, R.id.bound})
     public void onClick(View view) {
@@ -205,7 +219,7 @@ public class MantissaWarehousePutstorageFragment extends
     }
 
     @Subscribe
-    public void scanSucceses(PutBarCode putBarCode) {
+    public void scanSucceses(PutBarCode putBarCode) throws EntityNotFountException {
      //   mBound.setFocusable(true);
 
         String barcode =putBarCode.getBarCode();
@@ -245,6 +259,18 @@ public class MantissaWarehousePutstorageFragment extends
                 break;
 
             case 3:
+
+                MaterialBlockBarCode lableBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                count = lableBar.getCount();
+                materialNumber = lableBar.getDeltaMaterialNumber();
+                serialNum = lableBar.getStreamNumber();
+                Toast.makeText(baseActiviy, count, Toast.LENGTH_SHORT).show();
+
+                UpLocation bindBean = new UpLocation(materialNumber, serialNum, count);
+                Gson gson = new Gson();
+                String s = gson.toJson(bindBean);
+
+                getPresenter().getUpLocation(s);
 
                 break;
 

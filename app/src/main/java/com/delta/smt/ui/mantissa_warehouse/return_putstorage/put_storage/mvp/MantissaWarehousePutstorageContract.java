@@ -25,6 +25,8 @@ public interface MantissaWarehousePutstorageContract {
 
         Observable<MantissaWarehousePutstorageResult> getBingingLable(String str);
 
+        Observable<MantissaWarehousePutstorageResult> getUpLocation(String str);
+
     }
 
     public interface View extends IView {
@@ -41,6 +43,9 @@ public interface MantissaWarehousePutstorageContract {
 
         void getBingingLableSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getBingingLableFailed(String message);
+
+        void getUpLocationSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void getUpLocationFailed(String message);
 
 
     }

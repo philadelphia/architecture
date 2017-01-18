@@ -242,9 +242,14 @@ public interface ApiService {
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
-    //点击开始入库
+    //尾数仓点击开始入库
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
+
+    //尾数仓点击开始入库上架位完成
+    @GET("http://172.22.34.34:8081/SMM/ManToWareh/materToShel")
+    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query( "condition") String bind);
+
 
     //尾数仓入库
     @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMantissaStorageList")
