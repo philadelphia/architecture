@@ -155,6 +155,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
                         mAdapter.notifyDataSetChanged();
 
+
                         //预警广播开始接受
                         EventBus.getDefault().post(new BroadcastBegin());
                     }

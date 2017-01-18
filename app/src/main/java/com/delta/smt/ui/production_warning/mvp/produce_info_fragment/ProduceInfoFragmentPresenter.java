@@ -6,6 +6,7 @@ import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
+import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
                     getView().getItemInfoDatasFailed(result.getMessage());
+                    getItemInfoDatas(ProduceWarningActivity.initLine());
                 }else {
                     getView().getItemInfoDatasFailed(result.getMessage());
                 }

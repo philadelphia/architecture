@@ -13,6 +13,7 @@ import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
+import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
                     getView().getItemWarningDatasFailed(result.getMessage());
+                    getItemWarningDatas(ProduceWarningActivity.initLine());
                 }else {
                     getView().getItemWarningDatasFailed(result.getMessage());
                 }
