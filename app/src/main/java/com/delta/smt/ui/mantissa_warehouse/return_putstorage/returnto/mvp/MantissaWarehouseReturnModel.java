@@ -28,4 +28,9 @@ public class MantissaWarehouseReturnModel extends BaseModel<ApiService> implemen
     public Observable<MantissaWarehouseReturnResult> getMaterialLocation(String str) {
         return getService().getMaterialLocation(str).compose(RxsRxSchedulers.<MantissaWarehouseReturnResult>io_main());
     }
+
+    @Override
+    public Observable<MantissaWarehouseReturnResult> getputinstrage(String str) {
+        return getService().getputinstrage(str).compose(RxsRxSchedulers.<MantissaWarehouseReturnResult>io_main());
+    }
 }
