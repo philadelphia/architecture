@@ -23,6 +23,7 @@ import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsContract;
 import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsPresenter;
 import com.delta.smt.ui.product_tools.tools_info.ProduceToolsInfoActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,9 +64,12 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
         }
     }
 
+    private String workNumber;
+    private String jigTypeID;
+
     View selectView;
 
-    List<Product_mToolsInfo> data;
+    List<Product_mToolsInfo> data=new ArrayList<>();
     CommonBaseAdapter<Product_mToolsInfo> adapter;
 
     Product_mToolsInfo selectItem;
@@ -77,7 +81,12 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
 
     @Override
     protected void initData() {
-        getPresenter().getData();
+
+        workNumber=getIntent().getExtras().getString("workNumber");
+        jigTypeID=getIntent().getExtras().getString("jigTypeID");
+
+        getPresenter().getData("{\"workOrderID\":"+workNumber+",\"jigTypeID\":"+jigTypeID+"}");
+
     }
 
     @Override
@@ -130,8 +139,11 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
     }
 
     @Override
-    public void get_mToolsData(List<Product_mToolsInfo> data) {
-        this.data = data;
+    public void get_mToolsData(List<Product_mToolsInfo> product_mToolsInfo) {
+
+        data.addAll(product_mToolsInfo);
+        adapter.notifyDataSetChanged();
+
     }
 
     @Override

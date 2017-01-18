@@ -11,7 +11,7 @@ public class ModuleDownWarningItem extends CountDownEntity{
     private String status;
     //private String rest_time;
 
-    public ModuleDownWarningItem(String faceID, String lineNumber, /*String rest_time,*/ String status, String workItemID, Long countdown) {
+    public ModuleDownWarningItem(String faceID, String lineNumber, /*String rest_time,*/ String status, String workItemID, String countdown) {
         this.faceID = faceID;
         this.lineNumber = lineNumber;
         //this.rest_time = rest_time;

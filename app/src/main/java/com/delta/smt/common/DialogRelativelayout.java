@@ -25,6 +25,7 @@ public class DialogRelativelayout extends LinearLayout {
     private Context context;
     private ArrayAdapter<String> mStringArrayAdapter;
     private ArrayList<String> datas = new ArrayList<>();
+    private ListView listView;
 
     public DialogRelativelayout(Context context) {
         super(context);
@@ -117,7 +118,7 @@ public class DialogRelativelayout extends LinearLayout {
 
         datas.clear();
         datas.addAll(arrayListContent);
-        ListView listView =  new ListView(context);
+        listView = new ListView(context);
         listView.setDivider(null);
         mStringArrayAdapter = new ArrayAdapter<>(context, R.layout.warn_dialog_item, datas);
         listView.setAdapter(mStringArrayAdapter);

@@ -1,8 +1,12 @@
 package com.delta.commonlibs.http;
+import android.util.Log;
+
 import com.delta.commonlibs.utils.ZipHelper;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -11,6 +15,7 @@ import okhttp3.ResponseBody;
 import okio.Buffer;
 import okio.BufferedSource;
 import timber.log.Timber;
+
 import static com.delta.commonlibs.utils.CharactorHandler.jsonFormat;
 
 /**
@@ -62,6 +67,7 @@ public class RequestIntercept implements Interceptor {
         Buffer clone = buffer.clone();
         String bodyString;
 
+
         //解析response content
         if (encoding != null && encoding.equalsIgnoreCase("gzip")) {//content使用gzip压缩
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -84,7 +90,7 @@ public class RequestIntercept implements Interceptor {
             bodyString = clone.readString(charset);
         }
 
-
+        Log.e("-------", "intercept: "+bodyString);
         Timber.tag("Result").w(jsonFormat(bodyString));
 
         if (mHandler != null)//这里可以比客户端提前一步拿到服务器返回的结果,可以做一些操作,比如token超时,重新获取

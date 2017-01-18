@@ -1,9 +1,14 @@
 package com.delta.smt.ui.product_tools.mtools_info.mvp;
 
+import android.util.Log;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.smt.entity.JsonProduct_mToolsList;
+import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Product_mToolsInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,16 +26,31 @@ public class Produce_mToolsPresenter extends BasePresenter<Produce_mToolsContrac
         super(model, mView);
     }
 
-    public void getData(){
-         getModel().getProduct_mToolsInfo().subscribe(new Action1<List<Product_mToolsInfo>>() {
+    public void getData(String condition_and_jigTypeID){
+         getModel().getProduct_mToolsInfo(1000000000,1,condition_and_jigTypeID).subscribe(new Action1<JsonProduct_mToolsRoot>() {
              @Override
-             public void call(List<Product_mToolsInfo> product_mToolsInfos) {
-                 getView().get_mToolsData(product_mToolsInfos);
+             public void call(JsonProduct_mToolsRoot jsonProduct_mToolsRoot) {
+
+                 Log.e("Produce_mToolsPresenter","fail----------------------------------->"+jsonProduct_mToolsRoot.toString());
+
+                 List<JsonProduct_mToolsList> rows=jsonProduct_mToolsRoot.getRows();
+                 List<Product_mToolsInfo> data=new ArrayList<>();
+                 int size=0;
+                 for (JsonProduct_mToolsList j:rows){
+
+                     size++;
+                     Product_mToolsInfo p=new Product_mToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName());
+                     data.add(p);
+
+                 }
+
+                 getView().get_mToolsData(data);
+
              }
          }, new Action1<Throwable>() {
              @Override
              public void call(Throwable throwable) {
-                 getView().getFail();
+
              }
          });
     }

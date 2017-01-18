@@ -1,7 +1,10 @@
 package com.delta.smt.ui.product_tools.mtools_info.mvp;
 
+import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.JsonProductRequestToolsRoot;
+import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Product_mToolsInfo;
 
 import java.util.ArrayList;
@@ -19,14 +22,9 @@ public class Produce_mToolsModel extends BaseModel<ApiService> implements Produc
     }
 
     @Override
-    public Observable<List<Product_mToolsInfo>> getProduct_mToolsInfo() {
+    public Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(int pageSize,int pageCurrent,String condition_and_jigTypeID) {
         //TODO ZSQgetProduct_mToolsInfo
-        List<Product_mToolsInfo> list=new ArrayList<>();
-        list.add(new Product_mToolsInfo("1","32325432","钢网","D9-9001"));
-        list.add(new Product_mToolsInfo("2","32325432","钢网","D2-9001"));
-        list.add(new Product_mToolsInfo("3","32325432","钢网","D6-9001"));
-        list.add(new Product_mToolsInfo("4","32325432","钢网","D8-9001"));
 
-        return Observable.just(list);
+        return getService().getProduct_mToolsInfo(pageSize,pageCurrent,condition_and_jigTypeID).compose(RxsRxSchedulers.<JsonProduct_mToolsRoot>io_main());
     }
 }

@@ -41,7 +41,7 @@ public class ItemWarningInfo extends CountDownEntity{
 
     public ItemWarningInfo(String title,String productionline,
                            String makeprocess,String warninginfo,
-                           Long countdown,Long endtime,int id){
+                           String countdown,Long endtime,int id){
         this.title=title;
         this.productionline=productionline;
         this.makeprocess=makeprocess;

@@ -1,6 +1,12 @@
 package com.delta.smt.entity;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @description :
@@ -11,10 +17,28 @@ import com.google.gson.annotations.SerializedName;
 
 public class CountDownEntity  {
     @SerializedName("remain_time")
-    protected long countdown;
+    protected String countdown;
     protected long endTime;
     protected int id;
+    public long  countDownLong;
 
+    public Long getCountDownLong(){
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+        Date date ;
+        try {
+            date = sdf.parse(countdown);
+            long time = date.getTime();
+            Log.i("SupplyFragment", "time: " + time);
+            return  date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void setCountDownLong(long countDownLong){
+        this.countDownLong = countDownLong;
+    }
     public int getId() {
         return id;
     }
@@ -23,11 +47,11 @@ public class CountDownEntity  {
         this.id = id;
     }
 
-    public long getCountdown() {
+    public String getCountdown() {
         return countdown;
     }
 
-    public void setCountdown(long countdown) {
+    public void setCountdown(String countdown) {
         this.countdown = countdown;
     }
 

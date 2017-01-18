@@ -10,7 +10,7 @@ public class ModuleUpWarningItem extends CountDownEntity{
     private String faceID;
     private String status;
 
-    public ModuleUpWarningItem(String faceID, String lineNumber, String status, String workItemID,Long countdown) {
+    public ModuleUpWarningItem(String faceID, String lineNumber, String status, String workItemID,String countdown) {
         this.faceID = faceID;
         this.lineNumber = lineNumber;
         this.status = status;

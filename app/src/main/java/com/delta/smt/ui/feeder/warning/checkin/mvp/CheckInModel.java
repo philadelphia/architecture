@@ -25,4 +25,14 @@ public class CheckInModel extends BaseModel<ApiService> implements CheckInContra
     public Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders() {
         return getService().getAllCheckedInFeeders().compose(RxsRxSchedulers.<Result<FeederCheckInItem>>io_main());
     }
+
+    @Override
+    public Observable<Result<FeederCheckInItem>> getFeederLocation(String condition) {
+        return getService().getFeederLocation(condition).compose(RxsRxSchedulers.<Result<FeederCheckInItem>>io_main());
+    }
+
+    @Override
+    public Observable<Result<FeederCheckInItem>> getFeederCheckInTime(String condition) {
+        return getService().getFeederCheckInTime(condition).compose(RxsRxSchedulers.<Result<FeederCheckInItem>>io_main());
+    }
 }

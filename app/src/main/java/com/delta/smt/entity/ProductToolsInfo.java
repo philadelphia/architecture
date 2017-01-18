@@ -12,14 +12,16 @@ public class ProductToolsInfo {
     String productToolsLocation;
     String reSelect;
     String status;
+    String jigTypeID;
 
-    public ProductToolsInfo(String turnNumber, String productToolsBarCode, String workNumber, String productToolsLocation, String productToolsType, String status) {
+    public ProductToolsInfo(String turnNumber, String productToolsBarCode, String produceToolsType, String productToolsLocation, String reSelect, String status, String jigTypeID) {
         this.turnNumber = turnNumber;
         this.productToolsBarCode = productToolsBarCode;
-        this.produceToolsType = workNumber;
+        this.produceToolsType = produceToolsType;
         this.productToolsLocation = productToolsLocation;
-        reSelect = productToolsType;
+        this.reSelect = reSelect;
         this.status = status;
+        this.jigTypeID = jigTypeID;
     }
 
     public String getTurnNumber() {
@@ -68,5 +70,13 @@ public class ProductToolsInfo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getJigTypeID() {
+        return jigTypeID;
+    }
+
+    public void setJigTypeID(String jigTypeID) {
+        this.jigTypeID = jigTypeID;
     }
 }

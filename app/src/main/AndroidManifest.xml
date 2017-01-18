@@ -129,7 +129,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-        <service android:name=".service.WarningService" />
+        <service android:name=".service.warningService.WarningService" />
 
         <activity android:name=".ui.feeder.warning.FeederWarningActivity"></activity>
 
