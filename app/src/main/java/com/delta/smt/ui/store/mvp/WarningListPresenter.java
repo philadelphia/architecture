@@ -35,28 +35,34 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
 
 
     public void getAlarmSuccessfulState(String sapWorkOrderId, int alarmId){
-        getModel().getAlarmSuccessfulState(sapWorkOrderId,alarmId).subscribe(new Action1<String>() {
+        getModel().getAlarmSuccessfulState(sapWorkOrderId,alarmId).subscribe(new Action1<Success>() {
             @Override
-            public void call(String s) {
-                getView().onSucessState(s);
+            public void call(Success s) {
+                if ("0".equals(s.getCode())){
+                    getView().onSucessState(s.getMsg());}else {
+                    getView().onFailed(s.getMsg());
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed();
+                getView().onFailed("请确认后台服务正常启动");
             }
         });
     }
     public void getScheduleSuccessState(String sapWorkOrderId){
-        getModel().getScheduleSuccessState(sapWorkOrderId).subscribe(new Action1<String>() {
+        getModel().getScheduleSuccessState(sapWorkOrderId).subscribe(new Action1<Success>() {
             @Override
-            public void call(String s) {
-                getView().onSucessState(s);
+            public void call(Success s) {
+                if ("0".equals(s.getCode())){
+                getView().onSucessState(s.getMsg());}else {
+                    getView().onFailed(s.getMsg());
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed();
+                getView().onFailed("请确认后台服务正常启动");
             }
         });
     }
@@ -70,13 +76,13 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             List<OutBound.DataBean> datalist = outBound.getData();
             getView().onOutSuccess(datalist);
             }else {
-                getView().onFailed();
+                getView().onFailed(outBound.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed();
+                getView().onFailed("请确认后台服务正常启动");
             }
         });
     }
@@ -88,13 +94,13 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
                     List<OutBound.DataBean> datalist = outBound.getData();
                     getView().onOutSuccess(datalist);
                 }else {
-                    getView().onFailed();
+                    getView().onFailed(outBound.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed();
+                getView().onFailed("请确认后台服务正常启动");
             }
         });
     }
@@ -106,13 +112,13 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             if ("0".equals(pcbNumber.getCode())){
                 getView().getNumberSucces(pcbNumber.getData());
             }else {
-                getView().onFailed();
+                getView().onFailed(pcbNumber.getMsg());
             }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed();
+                getView().onFailed("请确认后台服务正常启动");
             }
         });
     }
@@ -140,13 +146,13 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             public void call(Success success) {
                 if("0".equals(success.getCode())){
                 getView().onSucessState(success.getMsg());}else {
-                    getView().onFailed();
+                    getView().onFailed(success.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed();
+                getView().onFailed("请确认后台服务正常启动");
             }
         });
     }

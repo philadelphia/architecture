@@ -6,39 +6,35 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
-import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ArrangeInt;
-import com.delta.smt.entity.StoreEmptyMessage;
+import com.delta.smt.entity.WarningContent;
 import com.delta.smt.entity.WarningInt;
 import com.delta.smt.manager.WarningManger;
-import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.store.di.DaggerStoreComponent;
 import com.delta.smt.ui.store.di.StoreModule;
 import com.delta.smt.ui.store.mvp.StoreContract;
 import com.delta.smt.ui.store.mvp.StorePresenter;
 import com.delta.smt.utils.ViewUtils;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
@@ -67,6 +63,11 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     private int arrayint;
     private int warnInt;
 
+    private AlertDialog alertDialog;
+    private DialogRelativelayout dialogRelativelayout;
+    ArrayList<String> SimpleWarningdatas = new ArrayList<>();
+    private SimpleDateFormat dateFormat;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerStoreComponent.builder().appComponent(appComponent).storeModule(new StoreModule(this)).build().inject(this);
@@ -79,14 +80,15 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
         } else {
             mTitles = new String[]{"预警" + arrayint, "排程" + warnInt};
         }
-        warningManger.addWarning(Constant.SAMPLEWARING, getClass());
+        dateFormat = new SimpleDateFormat("hh:mm:ss");
+        warningManger.addWarning(Constant.PCB_WAREH_ISSUE_ALARM_FLAG , getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
     }
 
     @Override
     protected void initView() {
-        toolbarTitle.setText("");
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -150,27 +152,49 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
 
     }
 
-
     @Override
     public void warningComing(String message) {
-        DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
+        Log.e(TAG, "warningComing: " + message);
+        if (alertDialog != null) {
+            SimpleWarningdatas.clear();
+            ArrayList<WarningContent> warningContents = GsonTools.changeGsonToList(message, WarningContent.class);
+
+            for (WarningContent warningContent : warningContents) {
+                if(warningContent.getType()==Constant.SAMPLEWARING){
+                    String format = dateFormat.format(new Date(System.currentTimeMillis() - Long.valueOf(warningContent.getMessage().getDeadLine())));
+                    SimpleWarningdatas.add(warningContent.getMessage().getProductline()+"--"+format+"\n");
+                }
+
+            }
+            dialogRelativelayout.setDatas(SimpleWarningdatas);
+            alertDialog.show();
+        } else {
+            alertDialog = createDialog(message);
+        }
+    }
+
+    public AlertDialog createDialog(String message) {
+
+        Log.e(TAG, "createDialog: "+message);
+        dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
         dialogRelativelayout.setStrTitle("预警信息");
+        ArrayList<WarningContent> warningContents = GsonTools.changeGsonToList(message, WarningContent.class);
+        for (WarningContent warningContent : warningContents) {
+            if(warningContent.getType()==Constant.SAMPLEWARING){
+                String format = dateFormat.format(new Date(System.currentTimeMillis() - Long.valueOf(warningContent.getMessage().getDeadLine())));
+                SimpleWarningdatas.add(warningContent.getMessage().getProductline()+"--"+format);
+            }
+        }
         //3.传入的是黑色字体的二级标题
-        //dialogRelativelayout.setStrSecondTitle("新发料预警");
+        dialogRelativelayout.setStrSecondTitle("simple预警");
         //4.传入的是一个ArrayList<String>
-        ArrayList<String> datas = new ArrayList<>();
-        datas.add("新发料预警");
-        datas.add("H13-00:10:00");
-        datas.add("H14-00:10:00");
-        datas.add("AI镭雕-00：30：00");
-        dialogRelativelayout.setStrContent(datas);
+        dialogRelativelayout.setStrContent(SimpleWarningdatas);
         //5.构建Dialog，setView的时候把这个View set进去。
-        new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        return new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                EventBus.getDefault().post(new StoreEmptyMessage());
+                warningManger.setConsume(true);
             }
         }).show();
     }

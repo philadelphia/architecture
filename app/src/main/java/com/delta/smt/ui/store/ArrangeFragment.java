@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.ItemOnclick;
@@ -29,6 +30,8 @@ import java.util.List;
 import butterknife.BindView;
 import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 /**
  * Created by Lin.Hou on 2016-12-26.
  */
@@ -51,6 +54,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
             @Override
             protected void convert(ItemTimeViewHolder holder, ItemInfo itemInfo, int position) {
+                Log.e("info4","----------------------");
                 holder.setText(R.id.content_text,itemInfo.getText());
             }
         };
@@ -64,8 +68,8 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
                     ItemInfo itemInfo = mList.get(position);
                     Bundle bundle = new Bundle();
                     bundle.putString("workNumber", itemInfo.getWorkNumber());
-                    bundle.putString("machine", itemInfo.getMachine());
-                    bundle.putString("materialNumber", itemInfo.getMaterialNumber());
+                    bundle.putString("machine", itemInfo.getMaterialNumber());
+                    bundle.putString("materialNumber", itemInfo.getMachine());
                     bundle.putInt("amout", Integer.valueOf(itemInfo.getWorkNumber()));
                     bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
                     bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
@@ -87,7 +91,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
     @Override
     protected void initData() {
-        getPresenter().fatchArrange();
+//        getPresenter().fatchArrange();
 
     }
 
@@ -99,10 +103,13 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
     @Override
     public void onSucess(List<ItemInfo> wareHouses) {
+        Log.e("info1","----------------------");
         mList.clear();
         mList.addAll(wareHouses);
-        EventBus.getDefault().post(new ArrangeInt(wareHouses.size()));
+        Log.e("info2","----------------------");
         mAdapter.notifyDataSetChanged();
+        Log.e("info3","----------------------");
+        EventBus.getDefault().post(new ArrangeInt(wareHouses.size()));
     }
 
     @Subscribe
@@ -117,7 +124,8 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
     }
 
     @Override
-    public void onFailed() {
+    public void onFailed(String s) {
+        ToastUtils.showMessage(getActivity(),s);
 
     }
     @Override

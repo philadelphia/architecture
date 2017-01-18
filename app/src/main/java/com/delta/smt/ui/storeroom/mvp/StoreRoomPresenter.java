@@ -83,16 +83,15 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             @Override
             public void call(Light light) {
             if ("0".equals(light.getCode())){
-                if ("success".equals(light.getMsg())){
-                getView().lightSuccsee();}else {
-                    getView().lightfaild();
-                }
+              getView().lightSuccsee();}else {
+             getView().storeFaild(light.getMsg());
+
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                getView().storeFaild("请确认后台服务正常启动");
             }
         });
     }
@@ -120,13 +119,13 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
                 if (storageSuccess.getCode().equals("0")) {
                     getView().storageSuccsee();
                 }else {
-                    getView().storagefaild();
+                    getView().storeFaild(storageSuccess.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().storagefaild();
+                getView().storeFaild("请确认后台服务正常启动");
             }
         });
     }

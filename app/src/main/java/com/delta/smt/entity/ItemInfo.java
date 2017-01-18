@@ -12,6 +12,8 @@ public class ItemInfo extends CountDownEntity {
     private String amount;
     private boolean isAlarminfo;
 
+
+
     public boolean isAlarminfo() {
         return isAlarminfo;
     }

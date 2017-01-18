@@ -71,6 +71,8 @@
     <style name="waring_text">
         <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/waring_text</item>
+        <item name="android:layout_marginTop">@dimen/px_20</item>
+        <item name="android:layout_marginLeft">@dimen/px_20</item>
     </style>
 
     <style name="waring_editext">

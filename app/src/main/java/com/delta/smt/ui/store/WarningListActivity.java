@@ -97,9 +97,6 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
             mAmoutString = bundle.getInt("amout");
             mAlarminfoId= bundle.getInt("alarminfoid");
             mIsAlarmInfo = bundle.getBoolean("alarminfo");
-            Log.i("info-->", mWorkNumberString);
-            Log.i("info-->", mMachineString);
-            Log.i("info-->", mMaterialNumberString);
         }
     }
 
@@ -188,8 +185,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
 
     @Override
-    public void onFailed() {
-
+    public void onFailed(String s) {
+        ToastUtils.showMessage(this,s);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

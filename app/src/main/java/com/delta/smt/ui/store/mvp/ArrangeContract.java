@@ -16,7 +16,7 @@ import rx.Observable;
 public class ArrangeContract {
     public   interface View extends IView{
         void onSucess(List<ItemInfo> wareHouses);
-        void onFailed();
+        void onFailed(String s);
     }
     public interface Model extends IModel{
         Observable<AllQuery> getArrange();

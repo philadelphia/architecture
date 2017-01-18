@@ -47,12 +47,12 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
     }
 
     @Override
-    public Observable<String> getAlarmSuccessfulState(String sapWorkOrderId, int alarmId) {
-       return getService().getAlarmSuccessState(sapWorkOrderId,alarmId).compose(RxsRxSchedulers.<String>io_main());
+    public Observable<Success> getAlarmSuccessfulState(String sapWorkOrderId, int alarmId) {
+       return getService().getAlarmSuccessState(sapWorkOrderId,alarmId).compose(RxsRxSchedulers.<Success>io_main());
     }
 
     @Override
-    public Observable<String> getScheduleSuccessState(String sapWorkOrderId) {
-        return getService().getScheduleSuccessState(sapWorkOrderId).compose(RxsRxSchedulers.<String>io_main());
+    public Observable<Success> getScheduleSuccessState(String sapWorkOrderId) {
+        return getService().getScheduleSuccessState(sapWorkOrderId).compose(RxsRxSchedulers.<Success>io_main());
     }
 }
