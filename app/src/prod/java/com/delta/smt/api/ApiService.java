@@ -16,6 +16,7 @@ import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
+import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
@@ -38,6 +39,7 @@ import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
+import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
@@ -160,11 +162,13 @@ public interface ApiService {
     @GET
     Observable<ResponseBody> download(@Url String url);
 
-    Observable<List<ModuleUpWarningItem>> getModuleUpWarningItems();
+    @GET("http://172.22.34.42:8081/smm/plugmod/getProductionLines")
+    Observable<ModuleUpWarningItem> getModuleUpWarningItems(@Query("workOrderNum") String content);
 
     Observable<List<ModuleDownWarningItem>> getModuleDownWarningItems();
 
-    Observable<List<ModuleUpBindingItem>> getModuleUpBindingItems();
+    @GET("http://172.22.34.42:8081/smm/plugmod/getModsByWordOrder")
+    Observable<ModuleUpBindingItem> getModuleUpBindingItems(@Query("workOrderNum") String content);
 
     Observable<List<VirtualLineBindingItem>> getVirtualLineBindingItems();
 
@@ -239,15 +243,18 @@ public interface ApiService {
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/materBoundLabel")
     Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query( "condition") String bind);
 
-    @GET("http://172.22.34.6:8081/SMM/ExcessManagement/qExcessList")
+    @GET("http://172.22.34.22:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
 
-    @GET("http://172.22.34.6:8081/SMM/ExcessManagement/execessIssure")
+    @GET("http://172.22.34.22:8081/SMM/ExcessManagement/execessIssure")
     Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
 
-    @GET("http://172.22.34.6:8081/SMM/WareHIssue/delivery")
+    @GET("http://172.22.34.22:8081/SMM/ExcessManagement/delivery")
     Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
 
-    @GET("http://172.22.34.6:8081/SMM/WareHIssue/debit")
+    @GET("http://172.22.34.22:8081/SMM/WareHIssue/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
+
+    @GET("http://172.22.34.42:8081/smm/plugmod/updateMod")
+    Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(@Query("id")String id,@Query("feeder")String feederID);
 }

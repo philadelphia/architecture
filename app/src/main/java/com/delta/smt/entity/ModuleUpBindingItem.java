@@ -1,72 +1,119 @@
 package com.delta.smt.entity;
 
+import java.util.List;
+
 /**
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
 public class ModuleUpBindingItem {
-    private String materialID;
-    private String serialID;
-    private String feederID;
-    private String moduleMaterialStationID;
-    private String moduleUpTime;
 
-    public ModuleUpBindingItem(String feederID, String materialID, String moduleMaterialStationID, String moduleUpTime, String serialID) {
-        this.feederID = feederID;
-        this.materialID = materialID;
-        this.moduleMaterialStationID = moduleMaterialStationID;
-        this.moduleUpTime = moduleUpTime;
-        this.serialID = serialID;
+    /**
+     * code : 0
+     * msg : Success
+     * rows : [{"id":3,"part_id":"0351234709","feeder_id":"","create_time":""},{"id":1,"part_id":"0351234707","serial_num":"5432","feeder_id":"562632","solt":"03T028","create_time":"2017-01-17 13:17:23"},{"id":2,"part_id":"0351234708","serial_num":"w543","feeder_id":"feeder2","solt":"03T028","create_time":"2017-01-18 12:49:58"}]
+     */
+
+    private String code;
+    private String msg;
+    private List<RowsBean> rows;
+
+    public String getCode() {
+        return code;
     }
 
-    public String getFeederID() {
-        return feederID;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public void setFeederID(String feederID) {
-        this.feederID = feederID;
+    public String getMsg() {
+        return msg;
     }
 
-    public String getMaterialID() {
-        return materialID;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public void setMaterialID(String materialID) {
-        this.materialID = materialID;
+    public List<RowsBean> getRows() {
+        return rows;
     }
 
-    public String getModuleMaterialStationID() {
-        return moduleMaterialStationID;
+    public void setRows(List<RowsBean> rows) {
+        this.rows = rows;
     }
 
-    public void setModuleMaterialStationID(String moduleMaterialStationID) {
-        this.moduleMaterialStationID = moduleMaterialStationID;
-    }
+    public static class RowsBean {
+        /**
+         * id : 3
+         * part_id : 0351234709
+         * feeder_id :
+         * create_time :
+         * serial_num : 5432
+         * solt : 03T028
+         */
 
-    public String getModuleUpTime() {
-        return moduleUpTime;
-    }
+        private int id;
+        private String material_num;
+        private String serial_num;
+        private String feeder_id;
+        private String slot;
+        private String create_time;
 
-    public void setModuleUpTime(String moduleUpTime) {
-        this.moduleUpTime = moduleUpTime;
-    }
+        public RowsBean(int id, String material_num,String serial_num, String feeder_id,  String slot, String create_time) {
+            this.create_time = create_time;
+            this.feeder_id = feeder_id;
+            this.id = id;
+            this.material_num = material_num;
+            this.serial_num = serial_num;
+            this.slot = slot;
+        }
 
-    public String getSerialID() {
-        return serialID;
-    }
+        public int getId() {
+            return id;
+        }
 
-    public void setSerialID(String serialID) {
-        this.serialID = serialID;
-    }
+        public void setId(int id) {
+            this.id = id;
+        }
 
-    @Override
-    public String toString() {
-        return "ModuleUpBindingItem{" +
-                "feederID='" + feederID + '\'' +
-                ", materialID='" + materialID + '\'' +
-                ", serialID='" + serialID + '\'' +
-                ", moduleMaterialStationID='" + moduleMaterialStationID + '\'' +
-                ", moduleUpTime='" + moduleUpTime + '\'' +
-                '}';
+        public String getFeeder_id() {
+            return feeder_id;
+        }
+
+        public void setFeeder_id(String feeder_id) {
+            this.feeder_id = feeder_id;
+        }
+
+        public String getCreate_time() {
+            return create_time;
+        }
+
+        public void setCreate_time(String create_time) {
+            this.create_time = create_time;
+        }
+
+        public String getSerial_num() {
+            return serial_num;
+        }
+
+        public void setSerial_num(String serial_num) {
+            this.serial_num = serial_num;
+        }
+
+        public String getSlot() {
+            return slot;
+        }
+
+        public void setSlot(String slot) {
+            this.slot = slot;
+        }
+
+        public String getMaterial_num() {
+            return material_num;
+        }
+
+        public void setMaterial_num(String material_num) {
+            this.material_num = material_num;
+        }
     }
 }
