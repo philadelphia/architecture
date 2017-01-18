@@ -2,6 +2,7 @@ package com.delta.smt.ui.product_tools.mtools_info.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Product_mToolsInfo;
 
@@ -16,7 +17,7 @@ import rx.Observable;
 public interface Produce_mToolsContract {
 
     interface Model extends IModel {
-        Observable<List<Product_mToolsInfo>> getProduct_mToolsInfo();
+        Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(int pageSize,int pageCurrent,String condition_and_jigTypeID);
     }
 
     interface View extends IView {

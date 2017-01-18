@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.text.ParseException;
@@ -21,10 +23,12 @@ public class CountDownEntity  {
     public long  countDownLong;
 
     public Long getCountDownLong(){
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
         Date date ;
         try {
             date = sdf.parse(countdown);
+            long time = date.getTime();
+            Log.i("SupplyFragment", "time: " + time);
             return  date.getTime();
         } catch (ParseException e) {
             e.printStackTrace();

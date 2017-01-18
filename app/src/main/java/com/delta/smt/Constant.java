@@ -28,6 +28,7 @@ public class Constant {
 
     public static final int STORAGEREAD = 4;
 
+    //工单ID
     public static final String WORK_ITEM_ID = "WorkItemID";
 
 
