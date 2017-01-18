@@ -178,8 +178,13 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     @Override
     public void onScanSuccess(String barcode) {
-        EventBus.getDefault().post(new BacKBarCode(barcode));
-        EventBus.getDefault().post(new PutBarCode(barcode));
+        if(currentFragment==mMantissaWarehouseReturnFragment){
+
+            EventBus.getDefault().post(new BacKBarCode(barcode));
+        }else {
+
+            EventBus.getDefault().post(new PutBarCode(barcode));
+        }
         //super.onScanSuccess(barcode);
     }
 }
