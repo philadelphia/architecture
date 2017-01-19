@@ -95,6 +95,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         Gson gson = new Gson();
         String s = gson.toJson(bindBean);
         getPresenter().getMantissaWarehouseDetails(s);
+        mCar.setText("");
 
 
         //备料车
