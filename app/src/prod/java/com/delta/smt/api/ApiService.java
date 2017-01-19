@@ -38,7 +38,6 @@ import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
 import com.delta.smt.entity.SolutionMessage;
-import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.Success;
@@ -285,28 +284,19 @@ public interface ApiService {
     Observable<JsonProductToolsLocation> getProductToolsBorrowSubmit(@Query("param")String param);
 
 
-    //仓库房备料和尾数仓
-    //Zhangfuxiang
-    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWarehousePart")
-    Observable<Result<String>> getStorageSelect();
-
-    //  Observable<List<MantissaWarehouseDetailsResult>> getMantissaWarehouseDetails();
-
-    // Observable<List<MantissaWarehouseReturnResult>> getMantissaWarehouseReturn();
-
-
-
-
-    //Zhangfuxiang
-    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWorkOrder")
-    Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
-
-
     Observable<List<StorageDetails>> getStorageDetails();
 
 
+
+    //仓库房备料和尾数仓
     //Zhangfuxiang
-    @GET("http://172.22.34.40:8081/SMM/Issue/startIssue")
+    @GET("http://172.22.34.34:8081/SMM/IssueMana/queryWarehousePart")
+    Observable<Result<String>> getStorageSelect();
+
+    @GET("http://172.22.34.34:8081/SMM/IssueMana/queryWorkOrder")
+    Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
+
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/startWareHIssure")
     Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
 
 

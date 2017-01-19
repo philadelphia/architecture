@@ -155,7 +155,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                     holder.setBackgroundColor(R.id.pcb_number, Color.YELLOW);
                     holder.setBackgroundColor(R.id.pcb_price, Color.YELLOW);
                     holder.setBackgroundColor(R.id.pcb_thenumber, Color.YELLOW);
-                    holder.setBackgroundColor(R.id.pcb_demand, Color.YELLOW);
+         //           holder.setBackgroundColor(R.id.pcb_demand, Color.YELLOW);
                     holder.setBackgroundColor(R.id.pcb_code, Color.YELLOW);
                     holder.setBackgroundColor(R.id.pcb_time, Color.YELLOW);
                 }
