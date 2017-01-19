@@ -10,15 +10,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
+import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
+import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.WarehouseDetailBean;
+import com.delta.smt.entity.MantissaBingingCarBean;
+import com.delta.smt.entity.MantissaCar;
+import com.delta.smt.entity.MantissaCarBean;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
+import com.delta.smt.entity.MantissaWarehouseputBean;
+import com.delta.smt.entity.WarehouseDetailBean;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.DaggerMantissaWarehouseDetailsComponent;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsModule;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsContract;
@@ -30,6 +39,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
 import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
@@ -54,12 +64,18 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     Button mButton2;
     @BindView(R.id.textView2)
     TextView mTextView2;
+    @BindView(R.id.car)
+    TextView mCar;
     private List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> dataList = new ArrayList();
     private List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> adapter;
     private CommonBaseAdapter<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> adapter2;
-    private MantissaWarehouseReady.MantissaWarehouse mMantissaWarehouse ;
+    private MantissaWarehouseReady.MantissaWarehouse mMantissaWarehouse;
+    private String workorder;
 
+    private String lastCar;
+
+    private int flag = 1;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -72,15 +88,19 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     protected void initData() {
 
         Intent intent = this.getIntent();
-        mMantissaWarehouse=(MantissaWarehouseReady.MantissaWarehouse)intent.getSerializableExtra("item");
+        mMantissaWarehouse = (MantissaWarehouseReady.MantissaWarehouse) intent.getSerializableExtra("item");
 
-        String bb = mMantissaWarehouse.getWork_order();
-        WarehouseDetailBean bindBean = new WarehouseDetailBean(bb);
+        workorder = mMantissaWarehouse.getWork_order();
+        WarehouseDetailBean bindBean = new WarehouseDetailBean(workorder);
         Gson gson = new Gson();
         String s = gson.toJson(bindBean);
-
-
         getPresenter().getMantissaWarehouseDetails(s);
+
+
+        //备料车
+        MantissaCarBean car = new MantissaCarBean(workorder, "Mantiss");
+        String carbean = gson.toJson(car);
+        getPresenter().getFindCar(carbean);
 
     }
 
@@ -93,7 +113,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("尾数仓备料");
 
-        dataList.add(new MantissaWarehouseDetailsResult.MantissaWarehouseDetails("", "", "", "", "",""));
+        dataList.add(new MantissaWarehouseDetailsResult.MantissaWarehouseDetails("", "", "", "", "", ""));
         adapter = new CommonBaseAdapter<MantissaWarehouseDetailsResult.MantissaWarehouseDetails>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehouseDetailsResult.MantissaWarehouseDetails item, int position) {
@@ -149,12 +169,96 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     }
 
+    @Override
+    public void getBingingCarSucess(MantissaCar car) {
+        mCar.setText("");
+        mCar.setText(lastCar);
+    }
+
+
+    @Override
+    public void getBingingCarFailed(String message) {
+
+    }
+
+    @Override
+    public void getMantissaWarehouseputSucess(List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> mantissaWarehouseDetailses) {
+
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehouseDetailses);
+        adapter2.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void getMantissaWarehouseputFailed(String message) {
+
+    }
+
+    @Override
+    public void getFindCarSucess(MantissaCar car) {
+        String rows = car.getRows();
+       // mCar.setText(rows);
+    }
+
+    @Override
+    public void getFindCarFailed(String message) {
+
+    }
+
 
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
-        Toast.makeText(this, barcode, Toast.LENGTH_SHORT).show();
+        BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
 
+        switch (flag) {
+            case 1:
+                try {
+
+                    LastMaterialCar LastMaterialCar = (LastMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_CAR);
+                    lastCar = LastMaterialCar.getSource();
+                    Toast.makeText(this, lastCar, Toast.LENGTH_SHORT).show();
+
+                    MantissaBingingCarBean bindBean = new MantissaBingingCarBean(workorder, "Mantiss", lastCar);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(bindBean);
+                    getPresenter().getbingingCar(s);
+                    flag = 2;
+
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case 2:
+                try {
+
+                    MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+                    String serial_num = materiaBar.getStreamNumber();
+                    String material_num = materiaBar.getDeltaMaterialNumber();
+                    String unit = materiaBar.getUnit();
+                    String vendor = materiaBar.getVendor();
+                    String dc = materiaBar.getDC();
+                    String lc = materiaBar.getLC();
+                    String trasaction_code = materiaBar.getBusinessCode();
+                    String po = materiaBar.getPO();
+                    String quantity = materiaBar.getCount();
+
+
+                    MantissaWarehouseputBean bindBean = new MantissaWarehouseputBean(serial_num, material_num, unit,vendor,dc,lc,trasaction_code,po,quantity);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(bindBean);
+                    getPresenter().getMantissaWarehouseput(s);
+                    flag = 1;
+
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+
+        }
     }
 
     @Override
@@ -169,4 +273,5 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
