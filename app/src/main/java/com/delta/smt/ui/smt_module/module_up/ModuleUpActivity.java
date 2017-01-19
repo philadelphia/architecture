@@ -1,7 +1,9 @@
 package com.delta.smt.ui.smt_module.module_up;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
@@ -28,6 +32,7 @@ import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpContract;
 import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpPresenter;
 import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +63,12 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Inject
     WarningManger warningManger;
 
+    //List<String> workOrderIDCacheList = new ArrayList<>();
+    String workOrderID = "";
+    List<String> status = new ArrayList<>();
+
+
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -66,13 +77,23 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     protected void initData() {
+        //通过预警获得工单号
+        //workOrderIDCacheList.add("1");
+        //workOrderIDCacheList.add("2");
+
         //接收那种预警，没有的话自己定义常量
-        warningManger.addWarning(Constant.SAMPLEWARING, getClass());
+        warningManger.addWarning(Constant.MODULE_UP_WARNING, getClass());
         //是否接收预警 可以控制预警时机
         warningManger.setRecieve(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        getPresenter().getAllModuleUpWarningItems("1,2");
+
+
+        //workOrderID = getWorkOrderIDCacheStr(workOrderIDCacheList);
+        //if (workOrderID.length()!=0){
+        getPresenter().getAllModuleUpWarningItems();
+        //}
+
 
     }
 
@@ -97,8 +118,12 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine());
                 holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
                 holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFace());
-                holder.setText(R.id.tv_status, "状态: " + "仓库物料正在上模组");
-
+                if(moduleUpWarningItem.getStart_time_plan().equals("")){
+                    holder.setText(R.id.tv_status, "状态: " + "上模组完成");
+                }else{
+                    holder.setText(R.id.tv_status, "状态: " + "仓库物料正在上模组");
+                }
+                //Toast.makeText(ModuleUpActivity.this, moduleUpWarningItem.getStart_time_plan()+"", Toast.LENGTH_SHORT).show();
             }
         };
         myAdapter.setOnItemTimeOnclck(this);
@@ -140,6 +165,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         if (null != myAdapter) {
             myAdapter.startRefreshTime();
         }
+
         super.onResume();
     }
 
@@ -167,7 +193,9 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getPresenter().getAllModuleUpWarningItems("1,2");
+                //if (workOrderID.length()!=0){
+                getPresenter().getAllModuleUpWarningItems();
+                //}
             }
         }).show();
     }
@@ -215,8 +243,17 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         if(requestCode==Constant.ACTIVITY_REQUEST_WORK_ITEM_ID) {
             if(resultCode==Constant.ACTIVITY_RESULT_WORK_ITEM_ID) {
                 String result=data.getStringExtra(Constant.WORK_ITEM_ID);
-                //Toast.makeText(this, "result "+result, Toast.LENGTH_SHORT).show();
+
+                for(int i=0;i<dataList.size();i++){
+                    if(dataList.get(i).getWork_order().equals(result)){
+                        ModuleUpWarningItem.RowsBean rb = dataList.get(i);
+                        rb.setStart_time_plan("");
+                        dataList.set(i,rb);
+                    }
+                }
+                myAdapter.notifyDataSetChanged();
                 //deleteItemByWorkItemID(result);
+                //deleteWorkOrderIDCacheList(result);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -224,11 +261,33 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     /*public void deleteItemByWorkItemID(String workItemID){
         for(ModuleUpWarningItem.RowsBean list_item:dataList){
-            if(list_item.getWorkItemID().equals(workItemID)){
+            if(list_item.getWork_order().equals(workItemID)){
                 dataList.remove(list_item);
                 break;
             }
         }
         myAdapter.notifyDataSetChanged();
     }*/
+
+    /*public void deleteWorkOrderIDCacheList(String workOrderID){
+        for (String item:workOrderIDCacheList){
+            if(item.equals(workOrderID)){
+                dataList.remove(item);
+                break;
+            }
+        }
+    }*/
+
+    public String getWorkOrderIDCacheStr(List<String> workOrderIDCacheList){
+        String res = "";
+        if(workOrderIDCacheList.size()>0){
+            for (int i=0;i<workOrderIDCacheList.size()-1;i++){
+                res+=workOrderIDCacheList.get(i)+",";
+            }
+            res+=workOrderIDCacheList.get(workOrderIDCacheList.size()-1);
+        }
+        return res;
+    }
+
+
 }

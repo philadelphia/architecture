@@ -24,6 +24,6 @@ public interface ModuleUpContract {
     }
 
     interface Model extends IModel {
-        public Observable<ModuleUpWarningItem> getAllModuleUpWarningItems(String str);
+        public Observable<ModuleUpWarningItem> getAllModuleUpWarningItems();
     }
 }

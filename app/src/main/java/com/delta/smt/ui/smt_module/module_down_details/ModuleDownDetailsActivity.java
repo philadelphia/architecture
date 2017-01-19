@@ -1,5 +1,7 @@
 package com.delta.smt.ui.smt_module.module_down_details;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +27,8 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownDetailsItem;
+import com.delta.smt.entity.ModuleDownMaintain;
+import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.ui.smt_module.module_down_details.di.DaggerModuleDownDetailsComponent;
 import com.delta.smt.ui.smt_module.module_down_details.di.ModuleDownDetailsModule;
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsContract;
@@ -57,13 +61,14 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @BindView(R.id.btn_feederMaintain)
     AppCompatButton btnFeederMaintain;
 
-    private CommonBaseAdapter<ModuleDownDetailsItem> adapterTitle;
-    private CommonBaseAdapter<ModuleDownDetailsItem> adapter;
-    private List<ModuleDownDetailsItem> dataList = new ArrayList<>();
-    private List<ModuleDownDetailsItem> dataSource = new ArrayList<>();
+    private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapterTitle;
+    private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapter;
+    private List<ModuleDownDetailsItem.RowsBean> dataList = new ArrayList<>();
+    private List<ModuleDownDetailsItem.RowsBean> dataSource = new ArrayList<>();
 
     //二维码
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
+    SharedPreferences preferences=null;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -72,7 +77,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     protected void initData() {
-        getPresenter().getAllModuleDownDetailsItems();
+        preferences=getSharedPreferences("module_down", Context.MODE_PRIVATE);
+        getPresenter().getAllModuleDownDetailsItems(preferences.getString("work_order",""));
         barCodeIpml.setOnGunKeyPressListener(this);
     }
 
@@ -85,41 +91,43 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
 
-        dataList.add(new ModuleDownDetailsItem("Feeder号", "料号", "下模组时间", "模组料站", "归属","流水码"));
-        adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem>(this, dataList) {
+        dataList.add(new ModuleDownDetailsItem.RowsBean(1,"料号","流水码","Feeder号", "模组料站", "归属", "下模组时间"));
+        adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, ModuleDownDetailsItem item, int position) {
+            protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_materialID, item.getMaterialID());
-                holder.setText(R.id.tv_serialID, item.getSerialID());
-                holder.setText(R.id.tv_feederID, item.getFeederID());
-                holder.setText(R.id.tv_moduleMaterialStationID, item.getModuleMaterialStationID());
-                holder.setText(R.id.tv_ownership, item.getOwnership());
-                holder.setText(R.id.tv_moduleDownTime, item.getModuleDownTime());
+                holder.setText(R.id.tv_ID,item.getId()+"");
+                holder.setText(R.id.tv_materialID, item.getMaterial_num());
+                holder.setText(R.id.tv_serialID, item.getSerial_num());
+                holder.setText(R.id.tv_feederID, item.getFeeder_id());
+                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+                holder.setText(R.id.tv_ownership, item.getBelong());
+                holder.setText(R.id.tv_moduleDownTime, item.getEnd_time());
 
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ModuleDownDetailsItem item) {
+            protected int getItemViewLayoutId(int position, ModuleDownDetailsItem.RowsBean item) {
                 return R.layout.item_module_down_details;
             }
         };
         recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyTitle.setAdapter(adapterTitle);
-        adapter = new CommonBaseAdapter<ModuleDownDetailsItem>(this, dataSource) {
+        adapter = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataSource) {
             @Override
-            protected void convert(CommonViewHolder holder, ModuleDownDetailsItem item, int position) {
+            protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(Color.WHITE);
-                holder.setText(R.id.tv_materialID, item.getMaterialID());
-                holder.setText(R.id.tv_serialID, item.getSerialID());
-                holder.setText(R.id.tv_feederID, item.getFeederID());
-                holder.setText(R.id.tv_moduleMaterialStationID, item.getModuleMaterialStationID());
-                holder.setText(R.id.tv_ownership, item.getOwnership());
-                holder.setText(R.id.tv_moduleDownTime, item.getModuleDownTime());
+                holder.setText(R.id.tv_ID,item.getId()+"");
+                holder.setText(R.id.tv_materialID, item.getMaterial_num());
+                holder.setText(R.id.tv_serialID, item.getSerial_num());
+                holder.setText(R.id.tv_feederID, item.getFeeder_id());
+                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+                holder.setText(R.id.tv_ownership, item.getBelong());
+                holder.setText(R.id.tv_moduleDownTime, item.getEnd_time());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ModuleDownDetailsItem item) {
+            protected int getItemViewLayoutId(int position, ModuleDownDetailsItem.RowsBean item) {
                 return R.layout.item_module_down_details;
             }
 
@@ -134,14 +142,27 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     }
 
     @Override
-    public void onSuccess(List<ModuleDownDetailsItem> data) {
+    public void onSuccess(ModuleDownDetailsItem data) {
         dataSource.clear();
-        dataSource.addAll(data);
+        List<ModuleDownDetailsItem.RowsBean> rowsBean = data.getRows();
+        dataSource.addAll(rowsBean);
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onFalied() {
+
+    }
+
+    @Override
+    public void onSuccessMaintain(ModuleDownMaintain maintain) {
+        if(maintain.getMsg().toLowerCase().equals("success")){
+            getPresenter().getAllModuleDownDetailsItems(preferences.getString("work_order",""));
+        }
+    }
+
+    @Override
+    public void onFailMaintain() {
 
     }
 
@@ -189,5 +210,24 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick({R.id.btn_feederMaintain})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_feederMaintain:
+
+                if(dataSource.size()>0){
+                    String res ="";
+                    for (int i=0;i<dataSource.size()-1;i++){
+                        res += dataSource.get(i).getId()+",";
+                    }
+                    res += dataSource.get(dataSource.size()-1).getId();
+                    Toast.makeText(this,res,Toast.LENGTH_SHORT).show();
+                    getPresenter().getAllModuleDownMaintainResult(res);
+                }
+
+                break;
+        }
     }
 }

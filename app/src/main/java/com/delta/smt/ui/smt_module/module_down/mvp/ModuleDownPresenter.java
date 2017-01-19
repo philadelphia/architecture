@@ -23,9 +23,9 @@ public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,
     }
 
     public void getAllModuleDownWarningItems(){
-        getModel().getAllModuleDownWarningItems().subscribe(new Action1<List<ModuleDownWarningItem>>() {
+        getModel().getAllModuleDownWarningItems().subscribe(new Action1<ModuleDownWarningItem>() {
             @Override
-            public void call(List<ModuleDownWarningItem> moduleDownWarningItems) {
+            public void call(ModuleDownWarningItem moduleDownWarningItems) {
                 getView().onSuccess(moduleDownWarningItems);
             }
         }, new Action1<Throwable>() {

@@ -1,12 +1,13 @@
 package com.delta.smt.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleUpWarningItem extends CountDownEntity{
+public class ModuleUpWarningItem {
 
     /**
      * code : 0
@@ -50,6 +51,24 @@ public class ModuleUpWarningItem extends CountDownEntity{
          * start_time_plan : Jan 16, 2017 2:36:43 PM
          */
 
+        @Override
+        public Long getCountDownLong() {
+            long res = 0;
+            if(start_time_plan.length()!=0){
+                long getTime = Long.parseLong(date2TimeStamp(start_time_plan, "yyyy-MM-dd HH:mm:ss"));
+                long nowTime = Long.parseLong(timeStamp());
+                if (nowTime < getTime) {
+                    res = getTime - nowTime;
+                } else {
+                    res = 0;
+                }
+            }else{
+                res = 0;
+            }
+
+            return res;
+        }
+
         private String line;
         private String work_order;
         private String face;
@@ -85,6 +104,22 @@ public class ModuleUpWarningItem extends CountDownEntity{
 
         public void setStart_time_plan(String start_time_plan) {
             this.start_time_plan = start_time_plan;
+        }
+
+        public String date2TimeStamp(String date_str, String format) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(format);
+                return String.valueOf(sdf.parse(date_str).getTime());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+        public String timeStamp() {
+            long time = System.currentTimeMillis();
+            String t = String.valueOf(time);
+            return t;
         }
     }
 }

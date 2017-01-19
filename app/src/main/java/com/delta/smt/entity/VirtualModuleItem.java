@@ -3,10 +3,10 @@ package com.delta.smt.entity;
 import java.util.List;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Created by Shufeng.Wu on 2017/1/18.
  */
 
-public class VirtualLineBindingItem {
+public class VirtualModuleItem {
 
     /**
      * code : 0

@@ -1,22 +1,21 @@
 package com.delta.smt.entity;
 
-import java.util.List;
-
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Created by Shufeng.Wu on 2017/1/18.
  */
 
-public class VirtualLineBindingItem {
+public class ModNumByMaterialResult {
+
 
     /**
      * code : 0
      * msg : Success
-     * rows : ["1","2","3","4","5","6"]
+     * rows : T01
      */
 
     private String code;
     private String msg;
-    private List<String> rows;
+    private String rows;
 
     public String getCode() {
         return code;
@@ -34,11 +33,11 @@ public class VirtualLineBindingItem {
         this.msg = msg;
     }
 
-    public List<String> getRows() {
+    public String getRows() {
         return rows;
     }
 
-    public void setRows(List<String> rows) {
+    public void setRows(String rows) {
         this.rows = rows;
     }
 }
