@@ -11,7 +11,7 @@
        android:checked="false"
        android:focusable="false"
        android:clickable="false"
-       android:textSize="40px"
+       android:textSize="15dp"
        android:textColor="#333333"
        android:layout_marginLeft="55px"
        android:layout_marginRight="55px"

@@ -26,6 +26,8 @@ public interface MantissaWarehouseDetailsContract {
 
         Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(String str);
 
+        Observable<MantissaWarehouseDetailsResult> getMantissaWareOver();
+
     }
 
     interface View extends IView {
@@ -38,6 +40,9 @@ public interface MantissaWarehouseDetailsContract {
 
         void getMantissaWarehouseputSucess(List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> mantissaWarehouseDetailses);
         void getMantissaWarehouseputFailed(String message);
+
+        void getMantissaWareOverSucess(List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> mantissaWarehouseDetailses);
+        void getMantissaWareOverFailed(String message);
 
         void getFindCarSucess(MantissaCar car);
         void getFindCarFailed(String message);
