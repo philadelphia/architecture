@@ -247,6 +247,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                 i++;
                 if (data.get(i).getProductToolsBarCode().equals(this.barcode)) {
 
+                    data.get(i).setStatus("已完成");
                     productInfoBarCodeEditText.setText(this.barcode);
                     adapter.notifyDataSetChanged();
 

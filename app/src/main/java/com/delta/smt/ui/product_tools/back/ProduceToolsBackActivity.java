@@ -1,5 +1,6 @@
 package com.delta.smt.ui.product_tools.back;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -152,11 +153,12 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
         List<JsonProductBackList> j = list.getRows();
 
         int i = 0;
-        for (JsonProductBackList jp : j) {
-            ProductToolsBack pt = new ProductToolsBack(i + "", jp.getBarcode(), "1001", jp.getJigTypeName(), jp.getStatName());
-            p.add(pt);
+        if (j != null) {
+            for (JsonProductBackList jp : j) {
+                ProductToolsBack pt = new ProductToolsBack(i + "", jp.getBarcode(), "1001", jp.getJigTypeName(), jp.getStatName());
+                p.add(pt);
+            }
         }
-
 
         if (list.getCode() == 0) {
             editText.setText(barCode);

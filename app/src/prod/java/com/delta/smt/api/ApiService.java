@@ -2,18 +2,23 @@ package com.delta.smt.api;
 
 
 import com.delta.smt.entity.AllQuery;
+import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.CheckStock;
-import com.delta.smt.entity.FalutMesage;
+import com.delta.smt.entity.FaultMessage;
+import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsLocation;
+import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
+import com.delta.smt.entity.MantissaCar;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
@@ -30,9 +35,10 @@ import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProduceWarning;
-import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
+import com.delta.smt.entity.SolutionMessage;
+import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.Success;
@@ -260,7 +266,7 @@ public interface ApiService {
     Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent, @Query("condition") String condition_and_jigTypeID);
 
     @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/instore/verify")
-    Observable<JsonProductToolsLocation> getgetLocationVerify(@Query("param")String param);
+    Observable<JsonProductToolsLocation> getLocationVerify(@Query("param")String param);
 
     @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/instore/submit")
     Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param")String param);
@@ -341,6 +347,22 @@ public interface ApiService {
     //料盘绑定标签
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/materBoundLabel")
     Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query("condition") String bind);
+
+    //查询尾数仓备料车
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/qPrepCarIDByWorkOrder")
+    Observable<MantissaCar> getFindCar(@Query("condition") String bind);
+
+    //绑定尾数仓备料车
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/bindPrepCarIDByWorkOrder")
+    Observable<MantissaCar> getbingingCar(@Query("condition") String bind);
+
+    //尾数仓发料
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/mantissIssue")
+    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(@Query("condition") String bind);
+
+
+
+
 
 
 
