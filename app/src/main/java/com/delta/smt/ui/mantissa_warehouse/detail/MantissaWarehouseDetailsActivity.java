@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
@@ -152,6 +153,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
+        Toast.makeText(this, barcode, Toast.LENGTH_SHORT).show();
 
     }
 

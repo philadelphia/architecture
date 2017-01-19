@@ -9,7 +9,6 @@ import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ParameterLight;
 import com.delta.smt.entity.Success;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,14 +82,16 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         getModel().OnLight(jsonString).subscribe(new Action1<Light>() {
             @Override
             public void call(Light light) {
-            if (light.getMsg().equals("Success")){
-                getView().lightSuccsee();
+            if ("0".equals(light.getCode())){
+              getView().lightSuccsee();}else {
+             getView().storeFaild(light.getMsg());
+
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                getView().storeFaild("请确认后台服务正常启动");
             }
         });
     }
@@ -118,13 +119,13 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
                 if (storageSuccess.getCode().equals("0")) {
                     getView().storageSuccsee();
                 }else {
-                    getView().storagefaild();
+                    getView().storeFaild(storageSuccess.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().storagefaild();
+                getView().storeFaild("请确认后台服务正常启动");
             }
         });
     }

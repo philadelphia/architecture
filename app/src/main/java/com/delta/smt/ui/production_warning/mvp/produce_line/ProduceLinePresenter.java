@@ -21,20 +21,7 @@ public class ProduceLinePresenter extends BasePresenter<ProduceLineContract.Mode
         super(model, mView);
     }
 
-    public void sumbitLine(String linename){
-        getModel().sumbitLine().subscribe(new Action1<String>() {
-            @Override
-            public void call(String s) {
-                getView().showToast("成功");
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                getView().showToast("出错");
-            }
-        });
 
-    }
     public void getProductionLineDatas(){
 
         getModel().getProductionLineDatas().subscribe(new Action1<List<ItemProduceLine>>() {

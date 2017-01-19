@@ -2,6 +2,11 @@ package com.delta.smt;
 
 import org.junit.Test;
 
+import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import static android.R.attr.lines;
 import static org.junit.Assert.*;
 
 /**
@@ -14,4 +19,5 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
+
 }

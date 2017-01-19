@@ -3,6 +3,7 @@ package com.delta.smt.ui.store.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.AllQuery;
 
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class WarningModel extends BaseModel<ApiService> implements WarningContra
     }
 
     @Override
-    public Observable<List<com.delta.smt.entity.ItemInfo>> getWarning() {
-        return getService().getWarning().compose(RxsRxSchedulers.<List<com.delta.smt.entity.ItemInfo>>io_main());
+    public Observable<AllQuery> getWarning() {
+        return getService().getWarning().compose(RxsRxSchedulers.<AllQuery>io_main());
     }
 }

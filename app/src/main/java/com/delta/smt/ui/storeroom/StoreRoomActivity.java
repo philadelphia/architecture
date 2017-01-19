@@ -3,7 +3,6 @@ package com.delta.smt.ui.storeroom;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -26,7 +25,6 @@ import com.delta.smt.ui.storeroom.di.DaggerStoreRoomComponent;
 import com.delta.smt.ui.storeroom.di.StoreRoomModule;
 import com.delta.smt.ui.storeroom.mvp.StoreRoomContract;
 import com.delta.smt.ui.storeroom.mvp.StoreRoomPresenter;
-import com.delta.smt.utils.BarCodeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,36 +99,35 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     @Override
     public void onScanSuccess(String barcode) {
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+        Log.i("info","-------------------------->"+barcode);
         try {
-            switch (BarCodeUtils.barCodeType(barcode)) {
-                case MATERIAL_BLOCK_BARCODE:
-                    MaterialBlockBarCode barCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+          MaterialBlockBarCode barCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     Log.e("barcode", barCode.getDeltaMaterialNumber());
                     storagePcbed.setText(barCode.getDeltaMaterialNumber());
                     storageVendored.setText(barCode.getBusinessCode());
-                    storageDatacodeed.setText(barCode.getDC());
+                    storageDatacodeed.setText(barCode.getDeltaMaterialNumber().substring(0,2));
                     if (materialBlockBarCodes.size() < 3) {
                         materialBlockBarCodes.add(barCode);
                     }
                     setTextView();
-                    break;
-                case FRAME_LOCATION:
-                    FrameLocation frameCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, FRAME_LOCATION);
-                    storageIded.setText(frameCode.getSource());
-                    if (materialBlockBarCodes.size() == 3) {
-                        if (!TextUtils.isEmpty(storageIded.getText()))
-                            getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
-                    }
-
-                    break;
-            }
 
         } catch (EntityNotFountException e) {
 
             e.printStackTrace();
+            try {
+                FrameLocation frameCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, FRAME_LOCATION);
+                storageIded.setText(frameCode.getSource());
+                Log.e("info",frameCode.getSource());
+                if (materialBlockBarCodes.size() < 3) {
+                    if (!TextUtils.isEmpty(storageIded.getText()))
+                        getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
+                }
+            } catch (EntityNotFountException e1) {
+
+                e1.printStackTrace();
+            }
+
         }
-
-
     }
 
     private void setTextView() {
@@ -152,13 +149,17 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @Override
     public void storeFaild(String s) {
-
+        ToastUtils.showMessage(this,s);
     }
 
     @Override
     public void lightSuccsee() {
         ToastUtils.showMessage(this,"点灯操作成功");
         materialBlockBarCodes.clear();
+        storageShow.setText("");
+
+
+
 
     }
 

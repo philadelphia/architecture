@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.entity.Result;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 
 import java.util.ArrayList;
@@ -27,15 +28,37 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
     }
 
     public void getItemHandAddDatas(){
-        getModel().getItemHandAddDatas().subscribe(new Action1<List<ItemHandAdd>>() {
+        getModel().getItemHandAddDatas().subscribe(new Action1<Result<ItemHandAdd>>() {
             @Override
-            public void call(List<ItemHandAdd> itemHandAdds) {
-                getView().getItemHandAddDatas(itemHandAdds);
+            public void call(Result<ItemHandAdd> itemHandAdds) {
+                if ("0".equals(itemHandAdds.getCode())) {
+                    getView().getItemHandAddDatas(itemHandAdds.getRows());
+                }else {
+                    getView().getItemHandAddDatasFailed(itemHandAdds.getMessage());
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getItemHandAddDatasFailed();
+                getView().getItemHandAddDatasFailed(throwable.getMessage());
+            }
+        });
+    }
+
+    public void getItemHandAddConfirm(String codition){
+        getModel().getItemHandAddConfirm(codition).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                if (result.getCode().equals("0")) {
+
+                }else {
+                    getView().getItemHandAddDatasFailed(result.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().getItemHandAddDatasFailed(throwable.getMessage());
             }
         });
     }
