@@ -177,6 +177,7 @@ public interface ApiService {
     @GET("pcb/management/outbound/bill")
     Observable<OutBound> outBound(@Query("param") String s);//仓库发料清单
 
+    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
     @GET("pcb/management/capacity")
     Observable<PcbNumber> getPcbNumber(@Query("param") String s);//获取实际数量
 
@@ -256,15 +257,13 @@ public interface ApiService {
 
     // Observable<List<MantissaWarehouseReturnResult>> getMantissaWarehouseReturn();
 
-    //Observable<List<MantissaWarehousePutstorage>> getMantissaWarehousePutstorage();
 
-    //  Observable<List<MantissaWarehousePutstorage>> getBeginput();
+
 
     //Zhangfuxiang
     @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWorkOrder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
-    //  Observable<List<MantissaWarehouseReady>> getMantissaWarehouseReadyDates();
 
     Observable<List<StorageDetails>> getStorageDetails();
 
@@ -272,8 +271,6 @@ public interface ApiService {
     //Zhangfuxiang
     @GET("http://172.22.34.40:8081/SMM/Issue/startIssue")
     Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
-
-//    Observable<String> sumbitLine();
 
 
     //liuzhenyu
@@ -307,16 +304,19 @@ public interface ApiService {
    Observable<MantissaWarehouseReturnResult> getputinstrage(@Query( "condition") String bind);
 
     //尾数仓备料
-    @GET("http://172.22.34.22:8081/SMM/IssueMana/querymantiss")
+    @GET("http://172.22.34.34:8081/SMM/IssueMana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
 
     //尾数仓备料详情
-    @GET("http://172.22.34.22:8081/SMM/IssueMana/queryMantissIssue")
+    @GET("http://172.22.34.34:8081/SMM/IssueMana/queryMantissIssue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query("condition") String bind);
 
     //料盘绑定标签
     @GET("http://172.22.34.34:8081/SMM/ManToWareh/materBoundLabel")
     Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query("condition") String bind);
+
+
+
 
     @GET("http://172.22.34.22:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
