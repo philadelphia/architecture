@@ -4,7 +4,6 @@ package com.delta.smt.api;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.CheckStock;
-import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.entity.FeederCheckInItem;

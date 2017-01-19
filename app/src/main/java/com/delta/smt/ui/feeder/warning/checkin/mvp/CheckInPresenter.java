@@ -38,26 +38,11 @@ public class CheckInPresenter extends BasePresenter<CheckInContract.Model, Check
         });
     }
 
-    public void getFeederLocation(String condition){
-        getModel().getFeederLocation(condition).subscribe(new Action1<Result<FeederCheckInItem>>() {
-            @Override
-            public void call(Result<FeederCheckInItem> feederCheckInItemResult) {
-
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-
-            }
-        });
-
-    }
-
     public  void getFeederCheckInTime(String condition){
         getModel().getFeederCheckInTime(condition).subscribe(new Action1<Result<FeederCheckInItem>>() {
             @Override
-            public void call(Result<FeederCheckInItem> checkInPresenterResult) {
-
+            public void call(Result<FeederCheckInItem> feederCheckInItemResult) {
+                    getView().onSuccess(feederCheckInItemResult.getRows());
             }
         }, new Action1<Throwable>() {
             @Override
