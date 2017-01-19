@@ -147,7 +147,12 @@ public interface ApiService {
 
 
     //接口PCB库房发料
+
+
     Observable<List<ListWarning>> getListWarning();//获取发料列表
+
+
+
 
 
     Observable<String> getStoreRoomSuccess();//是否成功?
@@ -274,15 +279,15 @@ public interface ApiService {
 
     /*Zhangfuxiang*/
     //仓库房备料和尾数仓
-    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWarehousePart")
+    @GET("http://172.22.34.34:8081/SMM/IssueMana/queryWarehousePart")
     Observable<Result<String>> getStorageSelect();
 
 
-    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWorkOrder")
+    @GET("http://172.22.34.34:8081/SMM/IssueMana/queryWorkOrder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
 
-    @GET("http://172.22.34.40:8081/SMM/Issue/startIssue")
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/startWareHIssure")
     Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
 
 
