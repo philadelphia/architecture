@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -78,6 +79,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     //更新
     private static ProgressDialog progressDialog = null;
     private LocalBroadcastManager bManager;
+    private Bundle bundle;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -88,6 +90,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
     @Override
     protected void initView() {
+        toolbarTitle.setText("首页");
         CommonBaseAdapter<Fuction> adapter = new CommonBaseAdapter<Fuction>(this, fuctions) {
             @Override
             protected void convert(CommonViewHolder holder, Fuction item, int position) {
@@ -171,7 +174,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 IntentUtils.showIntent(this, CheckStockActivity.class);
                 break;
             case "生产中预警":
-                IntentUtils.showIntent(this, ProduceLineActivity.class);
+                bundle = new Bundle();
+                bundle.putInt(Constant.SELECTTYPE, 0);
+                IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
                 break;
             case "手补件":
                 IntentUtils.showIntent(this, HandAddActivity.class);
@@ -192,7 +197,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 IntentUtils.showIntent(this, ModuleDownActivity.class);
                 break;
             case "故障处理":
-                IntentUtils.showIntent(this, com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity.class);
+                bundle = new Bundle();
+                bundle.putInt(Constant.SELECTTYPE, 1);
+                IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
                 break;
             case "治具借出":
                 IntentUtils.showIntent(this, ProduceToolsBorrowActivity.class);
@@ -324,7 +331,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         //更新
         //解除注册时，使用注册时的manager解绑
         if (broadcastReceiver != null && bManager != null) {

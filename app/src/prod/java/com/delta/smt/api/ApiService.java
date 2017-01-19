@@ -7,11 +7,9 @@ import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
-import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsLocation;
-import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
@@ -207,7 +205,20 @@ public interface ApiService {
     //Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
     //故障处理预警
-    Observable<List<FalutMesage>> getFalutMessages();
+    @GET("http://172.22.34.19:8081/lineAlarmFault/getSeriousFaultInfos")
+    Observable<FaultMessage> getFalutMessages(@Query("condition") String s);
+
+    @GET("http://172.22.34.19:8081/lineAlarmFault/faultSolutionList")
+    public Observable<SolutionMessage> getSolutionMessage(@Query("condition") String s);
+
+    @GET("http://172.22.34.19:8081/lineAlarmFault/faultSolutionDetailList")
+    public Observable<FaultSolutionMessage> getDetailSolutionMessage(@Query("condition") String s);
+
+    @GET("http://172.22.34.19:8081/lineAlarmFault/resolveFault")
+    Observable<BaseEntity> resolveFault(@Query("condition") String content);
+
+    @GET("http://172.22.34.19:8081/lineAlarmFault/addFaultSolution")
+    Observable<BaseEntity> addSolution(@Query("condition") String content);
 
     //更新
     @GET(API.bundleJsonUrl)
@@ -252,7 +263,7 @@ public interface ApiService {
     Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent, @Query("condition") String condition_and_jigTypeID);
 
     @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/instore/verify")
-    Observable<JsonProductToolsLocation> getLocationVerify(@Query("param")String param);
+    Observable<JsonProductToolsLocation> getgetLocationVerify(@Query("param")String param);
 
     @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/instore/submit")
     Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param")String param);
