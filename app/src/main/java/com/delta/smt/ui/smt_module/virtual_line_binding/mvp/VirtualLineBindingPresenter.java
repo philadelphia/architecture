@@ -1,6 +1,9 @@
 package com.delta.smt.ui.smt_module.virtual_line_binding.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.smt.entity.ModNumByMaterialResult;
+import com.delta.smt.entity.ModuleDownMaintain;
+import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
 
 import java.util.List;
@@ -19,16 +22,46 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
         super(model, mView);
     }
 
-    public void getAllVirtualLineBindingItems(){
-        getModel().getAllVirtualLineBindingItems().subscribe(new Action1<List<VirtualLineBindingItem>>() {
+    public void getAllVirtualLineBindingItems(String str){
+        getModel().getAllVirtualLineBindingItems(str).subscribe(new Action1<VirtualLineBindingItem>() {
             @Override
-            public void call(List<VirtualLineBindingItem> virtualLineBindingItems) {
+            public void call(VirtualLineBindingItem virtualLineBindingItems) {
                 getView().onSuccess(virtualLineBindingItems);
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 getView().onFalied();
+            }
+        });
+    }
+
+    public void getAllVirtualBindingResult(String id,String virtualID){
+        getModel().getVirtualBinding(id,virtualID).subscribe(new Action1<VirtualBindingResult>() {
+            @Override
+            public void call(VirtualBindingResult virtualBindingResult) {
+
+                getView().onSuccessBinding(virtualBindingResult);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFailBinding();
+            }
+        });
+    }
+
+    public void getModNumByMaterial(String str){
+        getModel().getModNumByMaterial(str).subscribe(new Action1<ModNumByMaterialResult>() {
+            @Override
+            public void call(ModNumByMaterialResult modNumByMaterialResult) {
+
+                getView().onSuccessGetModByMate(modNumByMaterialResult);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFailGetModByMate();
             }
         });
     }

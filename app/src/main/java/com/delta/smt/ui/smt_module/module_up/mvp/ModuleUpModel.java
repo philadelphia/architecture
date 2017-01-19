@@ -23,8 +23,17 @@ public class ModuleUpModel extends BaseModel<ApiService> implements ModuleUpCont
     }
 
     @Override
-    public Observable<ModuleUpWarningItem> getAllModuleUpWarningItems(String str) {
-
-        return getService().getModuleUpWarningItems(str).compose(RxsRxSchedulers.<ModuleUpWarningItem>io_main());
+    public Observable<ModuleUpWarningItem> getAllModuleUpWarningItems() {
+        /*ModuleUpWarningItem mi = new ModuleUpWarningItem();
+        List<ModuleUpWarningItem.RowsBean> l = new ArrayList<>();
+        ModuleUpWarningItem.RowsBean r = new ModuleUpWarningItem.RowsBean();
+        r.setWork_order("100");
+        r.setLine("1");
+        r.setFace("A");
+        r.setStart_time_plan("2017-01-19 15:00:00");
+        l.add(r);
+        mi.setRows(l);
+        return Observable.just(mi);*/
+        return getService().getModuleUpWarningItems().compose(RxsRxSchedulers.<ModuleUpWarningItem>io_main());
     }
 }

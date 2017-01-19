@@ -1,7 +1,10 @@
 package com.delta.smt.ui.product_tools.back.mvp;
 
+import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.JsonProductBackRoot;
+import com.delta.smt.entity.JsonProductToolsLocation;
 import com.delta.smt.entity.ProductToolsBack;
 
 import java.util.ArrayList;
@@ -21,14 +24,9 @@ public class ProduceToolsBackModel extends BaseModel<ApiService> implements Prod
     }
 
     @Override
-    public Observable<List<ProductToolsBack>> getProductToolsBack() {
+    public Observable<JsonProductBackRoot> getProductToolsBack(String param) {
         //TODO ZSQgetProductToolsBack
-        List<ProductToolsBack> list=new ArrayList<>();
-        list.add(new ProductToolsBack("1","20003034","23141224","刮刀","已归还"));
-        list.add(new ProductToolsBack("2","20003034","23141224","钢网","未归还"));
-        list.add(new ProductToolsBack("3","20003034","23141224","钢网","未归还"));
-        list.add(new ProductToolsBack("4","20003034","23141224","钢网","未归还"));
 
-        return Observable.just(list);
+        return getService().getProductToolsBack(param).compose(RxsRxSchedulers.<JsonProductBackRoot>io_main());
     }
 }

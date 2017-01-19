@@ -1,10 +1,12 @@
 package com.delta.smt.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Shaoqiang.Zhang on 2017/1/10.
  */
 
-public class ProductToolsInfo {
+public class ProductToolsInfo implements Serializable{
 
     String turnNumber;
     String productToolsBarCode;
@@ -13,8 +15,9 @@ public class ProductToolsInfo {
     String reSelect;
     String status;
     String jigTypeID;
+    String jigID;
 
-    public ProductToolsInfo(String turnNumber, String productToolsBarCode, String produceToolsType, String productToolsLocation, String reSelect, String status, String jigTypeID) {
+    public ProductToolsInfo(String turnNumber, String productToolsBarCode, String produceToolsType, String productToolsLocation, String reSelect, String status, String jigTypeID, String jigID) {
         this.turnNumber = turnNumber;
         this.productToolsBarCode = productToolsBarCode;
         this.produceToolsType = produceToolsType;
@@ -22,6 +25,7 @@ public class ProductToolsInfo {
         this.reSelect = reSelect;
         this.status = status;
         this.jigTypeID = jigTypeID;
+        this.jigID = jigID;
     }
 
     public String getTurnNumber() {
@@ -78,5 +82,13 @@ public class ProductToolsInfo {
 
     public void setJigTypeID(String jigTypeID) {
         this.jigTypeID = jigTypeID;
+    }
+
+    public String getJigID() {
+        return jigID;
+    }
+
+    public void setJigID(String jigID) {
+        this.jigID = jigID;
     }
 }

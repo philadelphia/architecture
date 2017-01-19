@@ -1,21 +1,18 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
-import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
@@ -31,7 +28,6 @@ import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.Produc
 import com.delta.smt.ui.production_warning.mvp.produce_info_fragment.ProduceInfoFragment;
 import com.delta.smt.ui.production_warning.mvp.produce_warning_fragment.ProduceWarningFragment;
 import com.delta.smt.utils.ViewUtils;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,11 +39,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import me.yokeyword.fragmentation.SupportFragment;
-
-import static com.delta.smt.R.id.toolbar;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/22.
@@ -75,7 +67,6 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     private String[] titles;
     public static String condition;
 
-
     @Inject
     WarningManger warningManger;
     private AlertDialog alertDialog;
@@ -95,9 +86,9 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     @Override
     protected void initData() {
-        condition=null;
-        condition=getIntent().getStringExtra("condition");
-        Log.i("aaa", "选择进入："+getIntent().getStringExtra("condition"));
+        condition = null;
+        condition = getIntent().getExtras().getString(Constant.PRODUCTIONLINE);
+        Log.i("aaa", "选择进入：" + condition);
         getPresenter().getTitileNumber();
 
         //注册广播初始化
@@ -106,11 +97,10 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         warningManger.setOnWarning(this);
     }
 
-    public static String initLine(){
-        Map<String, String > map = new HashMap<>();
+    public static String initLine() {
+        Map<String, String> map = new HashMap<>();
         map.put("lines", condition);
-        Gson gson = new Gson();
-        String line = gson.toJson(map);
+        String line = GsonTools.createGsonString(map);
         return line;
     }
 
@@ -187,8 +177,6 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     }
 
 
-
-
     @Override
     public void getTitleDatas(TitleNumber titleNumber) {
 
@@ -253,7 +241,6 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         }
         Log.e(TAG, "event5: ");
     }
-
 
 
     @Override

@@ -19,6 +19,9 @@ import com.delta.smt.ui.product_tools.location.di.ProductToolsLocationModule;
 import com.delta.smt.ui.product_tools.location.mvp.ProduceToolsLocationContract;
 import com.delta.smt.ui.product_tools.location.mvp.ProduceToolsLocationPresenter;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,7 +45,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     EditText mShiftBarcodeCodeEditText;
 
     private int flag1 = 1;
-    private int ID=1001;
+    private int ID = 1001;
 
     private String tools;
     private String shift;
@@ -94,19 +97,28 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         if (flag1 != 0) {
             try {
-                getPresenter().getLocation("[\"{\\\"jigBarcode\\\":\\\""+barcode+"\\\",\\\"userID\\\":"+ID+"}");
-                tools=barcode;
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("barcode", barcode);
+                jsonObject.put("userID", ID);
+                String s = "[\'" + jsonObject.toString() + "\']";
+                getPresenter().getLocation(s);
+                tools = barcode;
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
 
             try {
-                ProductToolsRoom productToolsRoom = (ProductToolsRoom) barCodeParseIpml.getEntity(barcode, BarCodeType.PRODECT_TOOLS_ROOM);
-                getPresenter().getSubmitResoult("[\"{\\\"jigBarcode\\\":\\\""+tools+"\\\",\\\"shelfBarcode\\\":\\\""+productToolsRoom.getSource()+"\\\", \\\"userID\\\":"+ID+"}\"]");
-                shift=barcode;
-                mShiftBarcodeCodeEditText.setText(productToolsRoom.getSource());
-            } catch (EntityNotFountException e) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("jigBarcode", tools);
+                jsonObject.put("shelfBarcode", barcode);
+                jsonObject.put("userID", ID);
+                String s = "[\'" + jsonObject.toString() + "\']";
+                getPresenter().getSubmitResoult(s);
+                shift = barcode;
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -115,8 +127,10 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
     @Override
     public int getLocation(int param) {
-        if(param==0){
+        if (param == 0) {
             mProductToolsBarCodeEditText.setText(tools);
+        }else {
+            Toast.makeText(this, "次治具无法完成入架位操作!", Toast.LENGTH_SHORT).show();
         }
         return flag1 = param;
     }
@@ -125,7 +139,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     public int getSubmitResoult(int param) {
         if (param == 0) {
             mShiftBarcodeCodeEditText.setText(shift);
-            Toast.makeText(this,"治具入架位完成！",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "治具入架位完成！", Toast.LENGTH_SHORT).show();
             finish();
         }
         return 0;

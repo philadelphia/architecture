@@ -10,9 +10,8 @@
     <com.delta.commonlibs.widget.autolayout.AutoToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="144px"
-        android:background="?attr/colorPrimary"
-        android:backgroundTint="#00B2EE"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/c_428bca"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <TextView

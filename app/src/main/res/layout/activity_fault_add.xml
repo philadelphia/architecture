@@ -21,11 +21,11 @@
                 android:id="@+id/tv_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="使用故障代码："
+                android:text="故障代码："
                 android:textColor="@color/C_333333"
                 android:textSize="40px" />
 
-            <EditText
+            <TextView
                 android:id="@+id/et_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,14 +69,14 @@
 
 
         <EditText
-            android:singleLine="false"
             android:id="@+id/et_step"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30px"
             android:background="@drawable/edit_bg"
-            android:minLines="10"
+            android:gravity="left|top"
             android:inputType="textMultiLine"
+            android:minLines="10"
             android:textSize="40px" />
 
 
@@ -88,14 +88,6 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="100px"
         android:gravity="center">
-
-        <Button
-            android:id="@+id/bt_preview"
-            android:layout_width="250px"
-            android:layout_height="120px"
-            android:background="@drawable/btn_selector"
-            android:text="预览"
-            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/bt_save"

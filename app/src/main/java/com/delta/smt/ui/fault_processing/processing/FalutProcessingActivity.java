@@ -1,5 +1,6 @@
 package com.delta.smt.ui.fault_processing.processing;
 
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
@@ -17,10 +19,12 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.FalutMesage;
+import com.delta.smt.entity.FaultMessage;
+import com.delta.smt.entity.FaultMessage.RowsBean;
+import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.fault_processing.fault_add.FaultProcessingAddActivity;
-import com.delta.smt.ui.fault_processing.fault_solution.FaultSolutionActivity;
+import com.delta.smt.ui.fault_processing.fault_solution.FaultSolutionDetailActivity;
 import com.delta.smt.ui.fault_processing.processing.di.DaggerFaultProcessingComponent;
 import com.delta.smt.ui.fault_processing.processing.di.FaultProcessingModule;
 import com.delta.smt.ui.fault_processing.processing.mvp.FalutProcessingContract;
@@ -43,7 +47,7 @@ import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
  */
 
 
-public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresenter> implements FalutProcessingContract.View, CommonBaseAdapter.OnItemClickListener, WarningManger.OnWarning {
+public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresenter> implements FalutProcessingContract.View, CommonBaseAdapter.OnItemClickListener<RowsBean>, WarningManger.OnWarning {
     @BindView(R.id.rv_faultProcessing)
     FamiliarRecyclerView rvFaultProcessing;
     @BindView(R.id.toolbar)
@@ -54,8 +58,11 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     TextView tvSetting;
     @Inject
     WarningManger warningManger;
-    private List<FalutMesage> datas = new ArrayList<>();
-    private CommonBaseAdapter<FalutMesage> mMyAdapter;
+    private List<RowsBean> datas = new ArrayList<>();
+    List<SolutionMessage.RowsBean> solutionDatas = new ArrayList<>();
+    private CommonBaseAdapter<RowsBean> mMyAdapter;
+    CommonBaseAdapter<SolutionMessage.RowsBean> dialog_adapter;
+    private String lines;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -65,11 +72,11 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     @Override
     protected void initData() {
-
-        warningManger.addWarning(Constant.FAULTWARNING, this.getClass());
+        lines = getIntent().getExtras().getString(Constant.PRODUCTIONLINE);
+        warningManger.addWarning(Constant.ENGINEER_FAULT_ALARM_FLAG, this.getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
-        getPresenter().getFaultProcessingMessages();
+        getPresenter().getFaultProcessingMessages(lines);
     }
 
     @Override
@@ -80,19 +87,19 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("故障处理预警");
-        mMyAdapter = new CommonBaseAdapter<FalutMesage>(this, datas) {
+        mMyAdapter = new CommonBaseAdapter<RowsBean>(this, datas) {
             @Override
-            protected void convert(CommonViewHolder holder, FalutMesage falutMesage, int position) {
-                holder.setText(R.id.tv_line, "产线：" + falutMesage.getProduceline());
-                holder.setText(R.id.tv_name, falutMesage.getProcessing() + "-" + falutMesage.getFaultMessage());
-                holder.setText(R.id.tv_processing, "制程：" + falutMesage.getProcessing());
+            protected void convert(CommonViewHolder holder, RowsBean falutMesage, int position) {
+                holder.setText(R.id.tv_line, "产线：" + falutMesage.getLine());
+                holder.setText(R.id.tv_name, falutMesage.getProcess() + "-" + falutMesage.getFaultMessage());
+                holder.setText(R.id.tv_processing, "制程：" + falutMesage.getProcess());
                 holder.setText(R.id.tv_faultMessage, "故障信息：" + falutMesage.getFaultMessage());
                 holder.setText(R.id.tv_code, "故障代码：" + falutMesage.getFaultCode());
 
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, FalutMesage item) {
+            protected int getItemViewLayoutId(int position, RowsBean item) {
                 return R.layout.item_processing;
             }
 
@@ -121,84 +128,94 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         return R.layout.activity_fault_processing;
     }
 
-    @Override
-    public void getFalutMessgeSucess(List<FalutMesage> falutMesages) {
 
-        Log.e(TAG, "getFalutMessgeSucess: " + falutMesages + falutMesages.size());
+    @Override
+    public void getFalutMessgeSucess(FaultMessage falutMesage) {
+
+        // Log.e(TAG, "addSolution: " + falutMesages + falutMesages.size());
         datas.clear();
-        datas.addAll(falutMesages);
+        datas.addAll(falutMesage.getRows());
         mMyAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void getFalutMessageFailed() {
+    public void getFalutMessageFailed(String message) {
 
+        ToastUtils.showMessage(this, message);
     }
 
+    @Override
+    public void getSolutionMessageSucess(List<SolutionMessage.RowsBean> rowsBeen) {
+
+
+        solutionDatas.clear();
+        solutionDatas.addAll(rowsBeen);
+
+        dialog_adapter.notifyDataSetChanged();
+
+    }
 
     @OnClick({R.id.tv_setting})
     public void onClick() {
     }
 
     @Override
-    public void onItemClick(View Itemview, Object item, int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.mystyle);
+    public void onItemClick(View Itemview, final RowsBean item, int position) {
+        getPresenter().getSolution(item.getFaultCode());
+        solutionDatas.clear();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.mystyle);
         View view = LayoutInflater.from(this).inflate(R.layout.dialogview_fault_processing, null);
         builder.setView(view);
         TextView textView = ViewUtils.findView(view, R.id.tv_title);
         RecyclerView rv_ll = ViewUtils.findView(view, R.id.rv_processing_dialog);
         TextView tv_add = ViewUtils.findView(view, R.id.tv_add);
+        textView.setText(item.getFaultType() + " " + item.getFaultCode());
+        final AlertDialog dialog = builder.show();
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentUtils.showIntent(FalutProcessingActivity.this, FaultProcessingAddActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.FAULTCODE, item.getFaultCode());
+                IntentUtils.showIntent(FalutProcessingActivity.this, FaultProcessingAddActivity.class, bundle);
+                dialog.dismiss();
             }
         });
 //        ImageView iv_add = ViewUtils.findView(view, R.id.iv_add);
 //        iv_add.setOnClickListener(this);
         Log.e(TAG, "onItemClick: " + rv_ll.toString());
-        List<String> datas = new ArrayList<>();
-        datas.add("修改AOI检测参数");
-        datas.add("AOI机台发生故障，联系厂商修理");
-        datas.add("修改AOI检测参数");
-        datas.add("AOI机台发生故障，联系厂商修理");
-        datas.add("修改AOI检测参数");
-        datas.add("AOI机台发生故障，联系厂商修理");
-        datas.add("修改AOI检测参数");
-        datas.add("AOI机台发生故障，联系厂商修理");
-        datas.add("修改AOI检测参数");
-        datas.add("AOI机台发生故障，联系厂商修理");
-        datas.add("修改AOI检测参数");
-        datas.add("AOI机台发生故障，联系厂商修理");
-        datas.add("修改AOI检测参数");
-        datas.add("AOI机台发生故障，联系厂商修理");
-        datas.add("修改AOI检测参数");
-        datas.add("AOI机台发生故障，联系厂商修理");
-        // datas.add("新增解决方案");
-        CommonBaseAdapter<String> adapter = new CommonBaseAdapter<String>(this, datas) {
-            @Override
-            protected void convert(CommonViewHolder holder, String item, int position) {
 
-                holder.setText(R.id.tv_content, item);
+
+        dialog_adapter = new CommonBaseAdapter<SolutionMessage.RowsBean>(this, solutionDatas) {
+            @Override
+            protected void convert(CommonViewHolder holder, SolutionMessage.RowsBean item, int position) {
+
+                holder.setText(R.id.tv_content, item.getName());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, String item) {
+            protected int getItemViewLayoutId(int position, SolutionMessage.RowsBean item) {
                 return R.layout.item_fault_processing_dialog;
             }
         };
 
         rv_ll.setLayoutManager(new LinearLayoutManager(this));
-        rv_ll.setAdapter(adapter);
+        rv_ll.setAdapter(dialog_adapter);
         rv_ll.setVerticalScrollBarEnabled(true);
-        adapter.setOnItemClickListener(new CommonBaseAdapter.OnItemClickListener<String>() {
+        dialog_adapter.setOnItemClickListener(new CommonBaseAdapter.OnItemClickListener<SolutionMessage.RowsBean>() {
             @Override
-            public void onItemClick(View view, String item, int position) {
-                IntentUtils.showIntent(FalutProcessingActivity.this, FaultSolutionActivity.class);
+            public void onItemClick(View view, SolutionMessage.RowsBean rowsBean, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.FAULTID, String.valueOf(item.getId()));
+                bundle.putString(Constant.FAULTCODE, rowsBean.getFaultCode());
+                bundle.putString(Constant.FAULTSOLUTIONID, String.valueOf(rowsBean.getId()));
+                bundle.putString(Constant.FAULTSOLUTIONNAME, rowsBean.getName());
+                IntentUtils.showIntent(FalutProcessingActivity.this, FaultSolutionDetailActivity.class, bundle);
+                dialog.dismiss();
+
             }
         });
-        textView.setText("故障代码：AOI-00001");
-        builder.show();
+
     }
 
     @Override

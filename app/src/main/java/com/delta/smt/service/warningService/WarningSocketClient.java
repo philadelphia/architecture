@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.WarningContent;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.WarningManger;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,10 +32,11 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
  */
 
 
-public class WarningSocketClient extends WebSocketClient implements ActivityMonitor.OnAppStateChangeListener {
+public class WarningSocketClient extends WebSocketClient implements ActivityMonitor.OnAppStateChangeListener, WarningManger.OnRegister {
 
     private boolean foreground = true;
 
+    private boolean isConnect = false;
     private List<OnRecieveLisneter> onRecieveLisneters = new ArrayList<>();
 
     private List<WarningContent> contents = new ArrayList<>();
@@ -56,6 +59,7 @@ public class WarningSocketClient extends WebSocketClient implements ActivityMoni
         super(serverUri, draft);
         this.activityMonitor = activityMonitor;
         this.warningManger = warningManger;
+        warningManger.setOnRegister(this);
         activityMonitor.registerAppStateChangeListener(this);
         ActivityMonitor.setStrictForeground(true);
     }
@@ -76,10 +80,12 @@ public class WarningSocketClient extends WebSocketClient implements ActivityMoni
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
         Log.e(TAG, "onOpen() called with: serverHandshake = [" + serverHandshake + "]");
+        isConnect = true;
     }
 
     @Override
     public void onMessage(String text) {
+        isConnect = true;
         {
             Log.e(TAG, "onMessage() called with: text = [" + text + "]");
             if (!TextUtils.isEmpty(text)) {
@@ -121,12 +127,14 @@ public class WarningSocketClient extends WebSocketClient implements ActivityMoni
     @Override
     public void onClose(int i, String s, boolean b) {
 
+        isConnect = false;
         Log.e(TAG, "onClose() called with: i = [" + i + "], s = [" + s + "], b = [" + b + "]");
     }
 
     @Override
     public void onError(Exception e) {
 
+        isConnect = false;
         Log.e(TAG, "onError() called with: e = [" + e + "]");
     }
 
@@ -137,6 +145,18 @@ public class WarningSocketClient extends WebSocketClient implements ActivityMoni
         this.foreground = foreground;
     }
 
+    @Override
+    public void register(int type) {
+
+        if (isConnect) {
+            Map<String, String> maps = new HashMap<>();
+            maps.put("type", String.valueOf(type));
+            String s = GsonTools.createGsonString(maps);
+            Log.e(TAG, "register: " + s);
+            this.send(s);
+        }
+    }
+
     interface OnRecieveLisneter {
 
         void OnForeground(String text);
@@ -145,3 +165,4 @@ public class WarningSocketClient extends WebSocketClient implements ActivityMoni
 
     }
 }
+

@@ -58,7 +58,7 @@
             android:name=".ui.fault_processing.processing.FalutProcessingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.fault_processing.fault_solution.FaultSolutionActivity"
+            android:name=".ui.fault_processing.fault_solution.FaultSolutionDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.fault_processing.fault_add.FaultProcessingAddActivity"
