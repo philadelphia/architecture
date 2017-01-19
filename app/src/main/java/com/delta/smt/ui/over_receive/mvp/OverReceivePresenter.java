@@ -53,7 +53,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
     }
 
     public void getOverReceiveItemsAfterSendArrive(String str){
-        getModel().getOverReceiveItemsAfterSend(str).subscribe(new Action1<OverReceiveWarning>() {
+        getModel().getOverReceiveItemsAfterSendArrive(str).subscribe(new Action1<OverReceiveWarning>() {
             @Override
             public void call(OverReceiveWarning overReceiveWarning) {
                 getView().onSuccess(overReceiveWarning);
