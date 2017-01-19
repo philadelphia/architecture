@@ -1,6 +1,12 @@
 package com.delta.smt.entity;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Tao.ZT.Zhang on 2016/12/28.
@@ -9,7 +15,7 @@ import com.google.gson.annotations.SerializedName;
 public class FeederSupplyItem {
 
     //架位
-    private String location;
+    private String position;
 
     @SerializedName("feeder_id")
     private String feederID;
@@ -20,28 +26,22 @@ public class FeederSupplyItem {
     //模组ID
     @SerializedName("slot")
     private String moduleID;
+
     private int status;
 
     //上模组时间
+    @SerializedName("upmodle_time")
     private String timeStamp;
 
     //流水号
+    @SerializedName("serial_num")
     private String serialNumber;
 
-    public FeederSupplyItem(String feederID,  String materialID, String moduleID, String serialNumber, int status) {
+    public FeederSupplyItem(String feederID, String materialID, String moduleID, String position, String serialNumber, int status, String timeStamp) {
         this.feederID = feederID;
         this.materialID = materialID;
         this.moduleID = moduleID;
-        this.serialNumber = serialNumber;
-        this.status = status;
-
-    }
-
-    public FeederSupplyItem(String feederID, String location, String materialID, String moduleID, String serialNumber, int status, String timeStamp) {
-        this.feederID = feederID;
-        this.location = location;
-        this.materialID = materialID;
-        this.moduleID = moduleID;
+        this.position = position;
         this.serialNumber = serialNumber;
         this.status = status;
         this.timeStamp = timeStamp;
@@ -63,13 +63,12 @@ public class FeederSupplyItem {
         this.serialNumber = serialNumber;
     }
 
-
-    public String getLocation() {
-        return location;
+    public String getPosition() {
+        return position;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public String getMaterialID() {
@@ -97,6 +96,17 @@ public class FeederSupplyItem {
     }
 
     public String getTimeStamp() {
+        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        try {
+            Date date = sdf.parse(timeStamp);
+            SimpleDateFormat sdf2  = new SimpleDateFormat("MM/dd HH:mm");
+            timeStamp =sdf2.format(date);
+//            timeStamp = new StringBuilder().append(date.getMonth()).append("/").append(date.getDay()).append(" ").append(date.getHours()).append(":").append(date.getMinutes()).toString();
+            Log.i("FeederSupplyItem", "getTimeStamp: " + timeStamp);
+            return timeStamp;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return timeStamp;
     }
 
@@ -108,11 +118,12 @@ public class FeederSupplyItem {
     public String toString() {
         return "FeederSupplyItem{" +
                 "feederID='" + feederID + '\'' +
-                ", location='" + location + '\'' +
+                ", position='" + position + '\'' +
                 ", materialID='" + materialID + '\'' +
                 ", moduleID='" + moduleID + '\'' +
+                ", status=" + status +
                 ", timeStamp='" + timeStamp + '\'' +
-                ", status='" + status + '\'' +
+                ", serialNumber='" + serialNumber + '\'' +
                 '}';
     }
 }

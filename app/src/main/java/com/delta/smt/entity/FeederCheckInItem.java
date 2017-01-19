@@ -1,6 +1,12 @@
 package com.delta.smt.entity;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Author:   Tao.ZT.Zhang
@@ -40,7 +46,19 @@ public class FeederCheckInItem {
     }
 
     public String getCheckInTimeStamp() {
+        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date date = sdf.parse(checkInTimeStamp);
+            SimpleDateFormat sdf2  = new SimpleDateFormat("MM/dd HH:mm");
+            checkInTimeStamp =sdf2.format(date);
+//            timeStamp = new StringBuilder().append(date.getMonth()).append("/").append(date.getDay()).append(" ").append(date.getHours()).append(":").append(date.getMinutes()).toString();
+            Log.i("FeederSupplyItem", "getTimeStamp: " + checkInTimeStamp);
+            return checkInTimeStamp;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return checkInTimeStamp;
+
     }
 
     public void setCheckInTimeStamp(String checkInTimeStamp) {
