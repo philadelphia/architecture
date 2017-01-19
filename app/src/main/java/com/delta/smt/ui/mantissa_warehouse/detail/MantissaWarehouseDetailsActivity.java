@@ -189,10 +189,27 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         dataList2.addAll(mantissaWarehouseDetailses);
         adapter2.notifyDataSetChanged();
 
+//        for (int i = 0;i<=mantissaWarehouseDetailses.size();i++){
+//            if(mantissaWarehouseDetailses.get(i).getStatus().equals("2")){
+//                getPresenter().getMantissaWareOver();
+//            }
+//
+//        }
+
     }
 
     @Override
     public void getMantissaWarehouseputFailed(String message) {
+
+    }
+
+    @Override
+    public void getMantissaWareOverSucess(List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> mantissaWarehouseDetailses) {
+        Toast.makeText(this, "扣账成功", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getMantissaWareOverFailed(String message) {
 
     }
 

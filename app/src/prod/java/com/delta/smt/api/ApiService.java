@@ -4,7 +4,6 @@ package com.delta.smt.api;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.CheckStock;
-import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.entity.FeederCheckInItem;
@@ -36,7 +35,6 @@ import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProduceWarning;
-import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
 import com.delta.smt.entity.SolutionMessage;
@@ -50,7 +48,6 @@ import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
-import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import java.util.List;
 
@@ -345,6 +342,10 @@ public interface ApiService {
     //尾数仓发料
     @GET("http://172.22.34.34:8081/SMM/WareHIssue/mantissIssue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(@Query("condition") String bind);
+
+    //尾数仓发料完成
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/completeMantissIssue")
+    Observable<MantissaWarehouseDetailsResult> getMantissaWareOver();
 
 
 
