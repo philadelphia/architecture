@@ -51,7 +51,6 @@ public class FeederCheckInItem {
             Date date = sdf.parse(checkInTimeStamp);
             SimpleDateFormat sdf2  = new SimpleDateFormat("MM/dd HH:mm");
             checkInTimeStamp =sdf2.format(date);
-//            timeStamp = new StringBuilder().append(date.getMonth()).append("/").append(date.getDay()).append(" ").append(date.getHours()).append(":").append(date.getMinutes()).toString();
             Log.i("FeederSupplyItem", "getTimeStamp: " + checkInTimeStamp);
             return checkInTimeStamp;
         } catch (ParseException e) {
