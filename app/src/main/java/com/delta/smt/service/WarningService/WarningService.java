@@ -1,7 +1,7 @@
 package com.delta.smt.service.warningService;
 
 import android.app.AlertDialog;
-import android.app.Service;
+import android.app.IntentService;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.IBinder;
@@ -15,12 +15,10 @@ import com.delta.smt.R;
 import com.delta.smt.api.API;
 import com.delta.smt.app.App;
 import com.delta.smt.common.DialogRelativelayout;
-import com.delta.smt.entity.TypeObject;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.service.warningService.di.DaggerWarningComponent;
 import com.delta.smt.service.warningService.di.WebSocketClientModule;
-import com.google.gson.Gson;
 
 import org.java_websocket.drafts.Draft_17;
 
@@ -37,7 +35,7 @@ import javax.inject.Inject;
  */
 
 
-public class WarningService extends Service implements WarningSocketClient.OnRecieveLisneter, WarningManger.OnRegister {
+public class WarningService extends IntentService implements WarningSocketClient.OnRecieveLisneter {
 
     private static final String TAG = "WarningService";
     @Inject
@@ -47,24 +45,34 @@ public class WarningService extends Service implements WarningSocketClient.OnRec
     @Inject
     ActivityMonitor activityMonitor;
 
+    public WarningService() {
+        this("WarningService");
+    }
+
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param name Used to name the worker thread, important only for debugging.
+     */
+    public WarningService(String name) {
+        super("WarningService");
+    }
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         Log.e(TAG, "onCreate: ");
         WebSocketClientModule webSocketClientModule = WebSocketClientModule.builder().draft(new Draft_17()).uri(API.WebSocketURl).build();
         DaggerWarningComponent.builder().appComponent(App.getAppComponent()).webSocketClientModule(webSocketClientModule).build().inject(this);
-        try {
-            warningSocketClient.connectBlocking();
-            warningSocketClient.addOnRecieveLisneter(this);
-            warningManger.setOnRegister(this);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        warningSocketClient.addOnRecieveLisneter(this);
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(TAG, "onStartCommand: ");
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -72,6 +80,16 @@ public class WarningService extends Service implements WarningSocketClient.OnRec
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        Log.e(TAG, "onHandleIntent: ");
+        try {
+            warningSocketClient.connectBlocking();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -99,12 +117,6 @@ public class WarningService extends Service implements WarningSocketClient.OnRec
         });
     }
 
-    @Override
-    public void register(int type) {
-        String s = new Gson().toJson(new TypeObject(type));
-        Log.e(TAG, "register: " + s);
-        warningSocketClient.send(s);
-    }
 
     @NonNull
     public AlertDialog getAlertDialog(String text) {
