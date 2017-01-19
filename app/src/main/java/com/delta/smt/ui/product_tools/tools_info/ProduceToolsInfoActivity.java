@@ -240,7 +240,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     public void getToolsBorrowSubmit(JsonProductToolsLocation j) {
 
         Log.e("getToolsBorrowSubmit", j.toString());
-        if (j.getCode() == 1) {
+        if (j.getCode() == 0) {
 
             int i = 0;
             for (ProductToolsInfo p : data) {
