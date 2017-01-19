@@ -3,7 +3,10 @@ package com.delta.smt.ui.smt_module.virtual_line_binding.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.ModNumByMaterialResult;
+import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
 
 import java.util.ArrayList;
@@ -21,12 +24,17 @@ public class VirtualLineBindingModel extends BaseModel<ApiService> implements Vi
     }
 
     @Override
-    public Observable<List<VirtualLineBindingItem>> getAllVirtualLineBindingItems() {
-        List<VirtualLineBindingItem> dataList = new ArrayList<VirtualLineBindingItem>();
-        dataList.add(new VirtualLineBindingItem("1","-"));
-        dataList.add(new VirtualLineBindingItem("2","-"));
-        dataList.add(new VirtualLineBindingItem("3","-"));
-        return Observable.just(dataList);
-        //return getService().getVirtualLineBindingItems().compose(RxsRxSchedulers.<List<VirtualLineBindingItem>>io_main());
+    public Observable<VirtualLineBindingItem> getAllVirtualLineBindingItems(String str) {
+        return getService().getVirtualLineBindingItems(str).compose(RxsRxSchedulers.<VirtualLineBindingItem>io_main());
+    }
+
+    @Override
+    public Observable<VirtualBindingResult> getVirtualBinding(String id, String virtualId) {
+        return getService().getVirtualBindingResult(id,virtualId).compose(RxsRxSchedulers.<VirtualBindingResult>io_main());
+    }
+
+    @Override
+    public Observable<ModNumByMaterialResult> getModNumByMaterial(String str) {
+        return getService().getModNumByMaterial(str).compose(RxsRxSchedulers.<ModNumByMaterialResult>io_main());
     }
 }

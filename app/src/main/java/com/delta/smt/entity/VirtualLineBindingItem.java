@@ -1,31 +1,44 @@
 package com.delta.smt.entity;
 
+import java.util.List;
+
 /**
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
 public class VirtualLineBindingItem {
-    private String moduleID;
-    private String virtualModuleID;
 
-    public VirtualLineBindingItem(String moduleID, String virtualModuleID) {
-        this.moduleID = moduleID;
-        this.virtualModuleID = virtualModuleID;
+    /**
+     * code : 0
+     * msg : Success
+     * rows : ["1","2","3","4","5","6"]
+     */
+
+    private String code;
+    private String msg;
+    private List<String> rows;
+
+    public String getCode() {
+        return code;
     }
 
-    public String getModuleID() {
-        return moduleID;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public void setModuleID(String moduleID) {
-        this.moduleID = moduleID;
+    public String getMsg() {
+        return msg;
     }
 
-    public String getVirtualModuleID() {
-        return virtualModuleID;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public void setVirtualModuleID(String virtualModuleID) {
-        this.virtualModuleID = virtualModuleID;
+    public List<String> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<String> rows) {
+        this.rows = rows;
     }
 }

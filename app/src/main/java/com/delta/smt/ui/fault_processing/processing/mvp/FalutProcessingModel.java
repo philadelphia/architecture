@@ -3,9 +3,8 @@ package com.delta.smt.ui.fault_processing.processing.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.FalutMesage;
-
-import java.util.List;
+import com.delta.smt.entity.FaultMessage;
+import com.delta.smt.entity.SolutionMessage;
 
 import rx.Observable;
 
@@ -23,7 +22,14 @@ public class FalutProcessingModel extends BaseModel<ApiService> implements Falut
     }
 
     @Override
-    public Observable<List<FalutMesage>> getFalutMessages() {
-        return getService().getFalutMessages().compose(RxsRxSchedulers.<List<FalutMesage>>io_main());
+    public Observable<FaultMessage> getFalutMessages(String producelines) {
+
+
+        return getService().getFalutMessages(producelines).compose(RxsRxSchedulers.<FaultMessage>io_main());
+    }
+
+    @Override
+    public Observable<SolutionMessage> getSolutionMessage(String faultCode) {
+        return getService().getSolutionMessage(faultCode).compose(RxsRxSchedulers.<SolutionMessage>io_main());
     }
 }
