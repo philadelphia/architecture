@@ -24,4 +24,7 @@
     <dimen name="px_310">310px</dimen>
     <dimen name="px_1">1px</dimen>
     <dimen name="px_50">50px</dimen>
+    <dimen name="px_360">360px</dimen>
+    <dimen name="px_140">140px</dimen>
+    <dimen name="px_240">240px</dimen>
 </resources>

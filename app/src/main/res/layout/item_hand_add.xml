@@ -34,8 +34,9 @@
                  android:layout_height="wrap_content"
                  android:layout_below="@+id/tv_line"
                  android:layout_alignParentLeft="true"/>
+
             <TextView
-                android:id="@+id/tv_add_count"
+                android:id="@+id/tv_expectedAmount"
                 android:textColor="@android:color/black"
                 android:text="预计Pass数量：2"
                 android:layout_below="@+id/tv_material_station"
@@ -43,11 +44,21 @@
                 android:padding="1dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
-                android:id="@+id/tv_warning_info"
+                android:id="@+id/tv_realAmount"
+                android:textColor="@android:color/black"
+                android:text="手补件数量：2"
+                android:layout_below="@+id/tv_expectedAmount"
+                android:textSize="12sp"
+                android:padding="1dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_message"
                 android:textColor="@android:color/black"
                 android:text="预警信息：201位置需要手补件"
-                android:layout_below="@+id/tv_add_count"
+                android:layout_below="@+id/tv_realAmount"
                 android:textSize="12sp"
                 android:padding="1dp"
                 android:layout_width="match_parent"

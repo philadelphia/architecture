@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_6"
+        android:layout_marginBottom="@dimen/px_40"
         >
         <TextView
             android:id="@+id/cargon_text"
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/cargon_text"
-            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginLeft="@dimen/px_20"
             style="@style/waring_text"
             />
         <TextView
@@ -30,23 +30,23 @@
             android:layout_height="wrap_content"
             android:text="@string/cargonumber"
             android:layout_below="@id/cargon_text"
-            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginTop="@dimen/px_20"
             style="@style/waring_text"
             />
         <EditText
             android:id="@+id/cargoned"
-            android:layout_width="@dimen/dp_66"
-            android:layout_height="@dimen/dp_30"
+            android:layout_width="@dimen/px_140"
+            android:layout_height="@dimen/px_60"
             android:background="@drawable/ed_frame"
             android:layout_toRightOf="@id/cargontv"
             android:layout_alignBottom="@id/cargontv"
             android:layout_alignTop="@id/cargontv"
-            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginLeft="@dimen/px_20"
             />
         <Button
             android:id="@+id/cargon_affirm"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_16"
+            android:layout_height="@dimen/px_60"
             android:text="@string/cargon_affirm"
            android:layout_marginRight="@dimen/dp_16"
             android:layout_alignParentRight="true"

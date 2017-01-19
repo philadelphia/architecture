@@ -1,14 +1,26 @@
 package com.delta.smt.ui.production_warning.item;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Fuxiang.Zhang on 2016/12/26.
  */
 
 public class ItemBreakDown {
+
+    @SerializedName("faultType")
     private String title;
+
+    @SerializedName("line")
     private String produce_line;
+
+    @SerializedName("process")
     private String make_process;
+
+    @SerializedName("faultCode")
     private String material_station;
+
+    @SerializedName("faultMessage")
     private String breakdown_info;
 
     public ItemBreakDown() {

@@ -28,15 +28,12 @@ public class ProduceLineModel extends BaseModel<ApiService> implements ProduceLi
     public Observable<List<ItemProduceLine>> getProductionLineDatas() {
         List<ItemProduceLine> datas = new ArrayList<>();
         for (int mI = 1; mI < 16; mI++) {
-            ItemProduceLine line = new ItemProduceLine("SMT_H" + mI, false);
+            ItemProduceLine line = new ItemProduceLine("H" + mI, false);
             datas.add(line);
         }
         return Observable.just(datas);
 //        return getService().getLineDatas();
     }
 
-    @Override
-    public Observable<String> sumbitLine() {
-        return getService().sumbitLine();
-    }
+
 }

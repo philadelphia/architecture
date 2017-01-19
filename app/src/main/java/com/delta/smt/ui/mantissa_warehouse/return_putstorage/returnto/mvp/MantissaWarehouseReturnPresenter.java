@@ -44,4 +44,52 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
 
     }
 
+    public void getMaterialLocation(String str){
+
+        getModel().getMaterialLocation(str).subscribe(new Action1<MantissaWarehouseReturnResult>() {
+            @Override
+            public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnes) {
+
+                if("Success".equals(mantissaWarehouseReturnes.getMsg())){
+                    getView().getSucess(mantissaWarehouseReturnes.getRows());
+                }else{
+                    getView().getFailed(mantissaWarehouseReturnes.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                getView().getFailed(throwable.getMessage());
+
+            }
+        });
+
+    }
+
+    public void getputinstrage(String str){
+
+        getModel().getputinstrage(str).subscribe(new Action1<MantissaWarehouseReturnResult>() {
+            @Override
+            public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnes) {
+
+                if("Success".equals(mantissaWarehouseReturnes.getMsg())){
+                    getView().getSucess(mantissaWarehouseReturnes.getRows());
+                }else{
+                    getView().getFailed(mantissaWarehouseReturnes.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                getView().getFailed(throwable.getMessage());
+
+            }
+        });
+
+    }
+
 }

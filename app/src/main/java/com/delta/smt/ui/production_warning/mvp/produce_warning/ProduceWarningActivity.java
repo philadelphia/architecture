@@ -31,11 +31,14 @@ import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.Produc
 import com.delta.smt.ui.production_warning.mvp.produce_info_fragment.ProduceInfoFragment;
 import com.delta.smt.ui.production_warning.mvp.produce_warning_fragment.ProduceWarningFragment;
 import com.delta.smt.utils.ViewUtils;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -70,6 +73,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     private FragmentTransaction mFragmentTransaction;
     private SupportFragment currentFragment;
     private String[] titles;
+    public static String condition;
 
 
     @Inject
@@ -91,13 +95,23 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     @Override
     protected void initData() {
-
+        condition=null;
+        condition=getIntent().getStringExtra("condition");
+        Log.i("aaa", "选择进入："+getIntent().getStringExtra("condition"));
         getPresenter().getTitileNumber();
 
         //注册广播初始化
         warningManger.addWarning(Constant.PRODUCE_WARNING, getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
+    }
+
+    public static String initLine(){
+        Map<String, String > map = new HashMap<>();
+        map.put("lines", condition);
+        Gson gson = new Gson();
+        String line = gson.toJson(map);
+        return line;
     }
 
     @Override

@@ -303,6 +303,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     public void onScanSuccess(String barcode) {
+        Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (BarCodeUtils.barCodeType(barcode)) {
             case MATERIAL_BLOCK_BARCODE:

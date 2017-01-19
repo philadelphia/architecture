@@ -1,35 +1,48 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto;
 
-import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
+import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
+import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.BacKBarCode;
+import com.delta.smt.entity.MantissaWarehouseReturnBean;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
+import com.delta.smt.entity.WarehousePutinStorageBean;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.DaggerMantissaWarehouseReturnComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.MantissaWarehouseReturnModule;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnContract;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnPresenter;
+import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
+import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
+
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
 public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter>
-        implements MantissaWarehouseReturnContract.View, BaseActivity.OnBarCodeSuccess {
+        implements MantissaWarehouseReturnContract.View {
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
@@ -42,6 +55,11 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter2;
     private BaseActivity baseActiviy;
 
+    private int flag = 1;
+
+    private String materialNumber;
+    private String lastCar;
+    private String serialNum;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -117,32 +135,89 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.e(TAG, "onHiddenChanged: " + hidden);
-        if (baseActiviy != null) {
-            if (hidden) {
-                baseActiviy.removeOnBarCodeSuccess(this);
-            } else {
-                baseActiviy.addOnBarCodeSuccess(this);
+    public void getMaterialLocationSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns) {
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehouseReturns);
+        adapter2.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getMaterialLocationFailed(String message) {
+
+    }
+
+    @Override
+    protected boolean UseEventBus() {
+        return true;
+    }
+
+    @Override
+    public void getputinstrageSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns) {
+
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehouseReturns);
+        adapter2.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void getputinstrageFailed(String message) {
+
+    }
+
+
+    @Subscribe
+    public void scanSucceses(BacKBarCode bacKBarCode) {
+
+        String barcode = bacKBarCode.getBarCode();
+
+
+            BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+
+            switch (flag) {
+                case 1:
+                    try {
+                        MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+                        materialNumber = materiaBar.getDeltaMaterialNumber();
+                        serialNum = materiaBar.getStreamNumber();
+
+
+                        Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), materialNumber, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), serialNum, Toast.LENGTH_SHORT).show();
+
+                        MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
+                        Gson gson = new Gson();
+                        String s = gson.toJson(bindBean);
+
+                        getPresenter().getMaterialLocation(s);
+                        flag = 2;
+                        Log.i(TAG,flag+"aaaaaaaaaaaaaaa");
+                    } catch (EntityNotFountException e) {
+                        Log.i(TAG,e+"eeeeeeeeeeeeeee111111");
+                    }
+                    break;
+                case 2:
+                    try {
+                        LastMaterialCar lastMaterialCar = (LastMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_CAR);
+                        lastCar = lastMaterialCar.getSource();
+
+                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar);
+                        Gson gson = new Gson();
+                        String s = gson.toJson(bindBean);
+
+                        getPresenter().getputinstrage(s);
+                        flag = 1;
+                        Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), lastCar, Toast.LENGTH_SHORT).show();
+                    } catch (EntityNotFountException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
             }
-        }
-    }
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.e(TAG, "onAttach: " + context.getClass().getName());
-        if (context instanceof BaseActivity) {
-            this.baseActiviy = ((BaseActivity) context);
-            baseActiviy.addOnBarCodeSuccess(this);
-        }
-    }
-
-
-    @Override
-    public void onScanSuccess(String barcode) {
-
 
 
     }
+
 }
