@@ -91,13 +91,14 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     protected void initView() {
+
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(this.getResources().getString(R.string.pcbcheck));
         builder = new AlertDialog.Builder(this);
-
+        cargonTv.requestFocus();
         List<CheckStockDemo> list = new ArrayList<>();
         list.add(new CheckStockDemo("", "", "", "", ""));
         CommonBaseAdapter<CheckStockDemo> mAdapterTitle = new CommonBaseAdapter<CheckStockDemo>(getContext(), list) {
@@ -171,9 +172,10 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case 1:
                 try {
                     mFrameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                    if (mFrameLocation!=null){
                     cargonTv.setText(mFrameLocation.getSource());
                     getPresenter().fetchCheckStock(mFrameLocation.getSource());
-                    status = 2;
+                    status = 2;}
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
                     ToastUtils.showMessage(this, "扫描码有问题");

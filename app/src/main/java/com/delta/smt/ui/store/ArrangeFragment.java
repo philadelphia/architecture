@@ -103,12 +103,9 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
     @Override
     public void onSucess(List<ItemInfo> wareHouses) {
-        Log.e("info1","----------------------");
         mList.clear();
         mList.addAll(wareHouses);
-        Log.e("info2","----------------------");
         mAdapter.notifyDataSetChanged();
-        Log.e("info3","----------------------");
         EventBus.getDefault().post(new ArrangeInt(wareHouses.size()));
     }
 

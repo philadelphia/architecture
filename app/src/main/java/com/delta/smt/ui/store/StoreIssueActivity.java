@@ -17,6 +17,7 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ArrangeInt;
+import com.delta.smt.entity.StoreEmptyMessage;
 import com.delta.smt.entity.WarningContent;
 import com.delta.smt.entity.WarningInt;
 import com.delta.smt.manager.WarningManger;
@@ -26,6 +27,7 @@ import com.delta.smt.ui.store.mvp.StoreContract;
 import com.delta.smt.ui.store.mvp.StorePresenter;
 import com.delta.smt.utils.ViewUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
@@ -194,6 +196,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
         return new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                EventBus.getDefault().post(new StoreEmptyMessage());
                 warningManger.setConsume(true);
             }
         }).show();
