@@ -3,6 +3,7 @@ package com.delta.smt.ui.store.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.AlarmInfoDetailed;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.OutBound;
 import com.delta.smt.entity.PcbNumber;
@@ -27,13 +28,8 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
 
 
     @Override
-    public Observable<String> getSuccessfulState() {
-        return getService().getSuccessState().compose(RxsRxSchedulers.<String>io_main());
-    }
-
-    @Override
-    public Observable<OutBound> getOutbound(String s) {
-        return getService().outBound(s).compose(RxsRxSchedulers.<OutBound>io_main());
+    public Observable<OutBound> getOutbound(int id,String sapWorkOrderId,String partNum,int amount) {
+        return getService().outBound(id,sapWorkOrderId,partNum,amount).compose(RxsRxSchedulers.<OutBound>io_main());
     }
 
     @Override
@@ -44,5 +40,19 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
     @Override
     public Observable<Success> getPcbSuccess(String s) {
         return getService().getPcbSuccess(s).compose(RxsRxSchedulers.<Success>io_main());
+    }
+    @Override
+    public Observable<OutBound> getScheduleDetailed(String sapWorkOrderId, String partNum, int amount) {
+        return getService().getScheduleDetailed(sapWorkOrderId,partNum,amount).compose(RxsRxSchedulers.<OutBound>io_main());
+    }
+
+    @Override
+    public Observable<Success> getAlarmSuccessfulState(String sapWorkOrderId, int alarmId) {
+       return getService().getAlarmSuccessState(sapWorkOrderId,alarmId).compose(RxsRxSchedulers.<Success>io_main());
+    }
+
+    @Override
+    public Observable<Success> getScheduleSuccessState(String sapWorkOrderId) {
+        return getService().getScheduleSuccessState(sapWorkOrderId).compose(RxsRxSchedulers.<Success>io_main());
     }
 }

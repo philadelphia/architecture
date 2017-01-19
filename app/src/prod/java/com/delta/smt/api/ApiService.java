@@ -1,6 +1,7 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FeederCheckInItem;
@@ -100,57 +101,78 @@ public interface ApiService {
     Observable<TitleNumber> getTitleDatas();
 
     //Zhangfuxiang
+    //请求预警中item数据
     @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
     //Zhangfuxiang
+    //请求故障中item数据
     @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
 
     //Zhangfuxiang
+    //请求消息中item数据
     @GET("http://172.22.34.10:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemInfoDatas(@Query("condition") String condition);
 
     //Zhangfuxiang
+    //确认信息中item
     @GET("http://172.22.34.10:8081/lineAlarmFault/confirmMessage")
     Observable<Result> getItemInfoConfirm(@Query("condition") String condition);
 
 
     //Zhangfuxiang
+    //确认预警中item
     @GET("http://172.22.34.10:8081/lineAlarmFault/confirmAlarmMessage")
     Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
 
 
     //Zhangfuxiang
+    //提交预警中扫码数据
     @GET("http://172.22.34.10:8081/lineAlarmFault/relayMaterial")
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
-    Observable<List<ItemHandAdd>> getItemHandAddDatas();
 
-    Observable<String> sumbitLine();
+    //Zhangfuxiang
+    //请求手补件item数据
+    @GET("http://172.22.34.10:8081/lineAlarmFault/getPatchMaterial?condition={}")
+    Observable<Result<ItemHandAdd>> getItemHandAddDatas();
+
+    //Zhangfuxiang
+    //确认手补件item数据
+    @GET("http://172.22.34.10:8081/lineAlarmFault/confirmPatchMateria")
+    Observable<Result> getItemHandAddConfirm(@Query("condition") String condition);
+
 
     //接口PCB库房发料
 
-    Observable<List<com.delta.smt.entity.ItemInfo>> getWarning();//获取所有预警信息
 
     Observable<List<ListWarning>> getListWarning();//获取发料列表
 
-    Observable<List<CheckStock>> getCheckStock();//获取盘点列表
 
-    Observable<String> getSuccessState();//是否成功?
+
+
 
     Observable<String> getStoreRoomSuccess();//是否成功?
 
-    Observable<String> getCheckStockSuccess();//是否成功?
 
     Observable<List<ListWarning>> getWarningNumberSuccess();//获取Warning列表的数量
 
-    Observable<List<CheckStock>> getCheckNumber();//获取盘点列表的数量
+
+
 
     @GET("webapi/pcb/management/inbound/location")
     Observable<Light> onLight(@Query("param") String s);//点灯操作
 
     @GET("webapi/pcb/management/inbound")
     Observable<Success> putInStorage(@Query("param") String s);//入库操作
+    @GET("pcb/management/alarminfo")
+    Observable<AllQuery> getWarning();//获取所有预警信息
+    @GET("pcb/management/scheduleinfo")
+    Observable<AllQuery> getArrange();//获取所有排程信息
+    @GET("pcb/management/outbound/alarm/bill")
+    Observable<OutBound> outBound(@Query("id") int id,@Query("sapWorkOrderId") String sapWorkOrderId,@Query("partNum") String partNum,@Query("amount") int amount);//预警仓库发料清单
+    @GET("pcb/management/outbound/schedule/bill")
+    Observable<OutBound> getScheduleDetailed(@Query("sapWorkOrderId") String sapWorkOrderId,@Query("partNum") String partNum,@Query("amount") int amount);//获取发料详情列表
 
     @GET("pcb/management/outbound/bill")
     Observable<OutBound> outBound(@Query("param") String s);//仓库发料清单
@@ -158,9 +180,27 @@ public interface ApiService {
     @GET("pcb/management/capacity")
     Observable<PcbNumber> getPcbNumber(@Query("param") String s);//获取实际数量
 
+    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
     @GET("webapi/pcb/management/outbound")
-    Observable<Success> getPcbSuccess(@Query("param") String s);//获取是否发料成功
+    Observable<Success> getPcbSuccess(@Query("param") String s);//出料操作
+    @GET("pcb/management/outbound/alarm/submit")
+    Observable<Success> getAlarmSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId,@Query("alarmId") int alarmId );//预警出库完成
+    @GET("pcb/management/outbound/schedule/submit")
+    Observable<Success> getScheduleSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId);//预警出库完成
+    @GET("pcb/inventory/detail")
+    Observable<CheckStock> getCheckStock(@Query("subShelfSerial") String s);//获取盘点列表
+     @GET("pcb/inventory/subinventory")
+    Observable<Success> getCheckNumber(@Query("id") int id,@Query("realCount") int realCount);//发送盘点数量
+    @GET("pcb/inventory/alteration")
+    Observable<Success> getError(@Query("boxSerial") String boxSerial,@Query("subShelfCode") String subShelfCode);//发送盘点异常
+    @GET("pcb/inventory/exception")
+    Observable<Success> getException(@Query("subShelfSerial") String boxSerial);//盘点结果
+    @GET("pcb/inventory/submit")
+    Observable<Success> getSubmit(@Query("subShelfSerial") String boxSerial);//发送盘点结果
 
+
+
+     Observable<String> getCheckStockSuccess();//是否成功?
 
     //Observable<List<MantissaWarehousePutstorage>> getBeginput();
 

@@ -1,5 +1,6 @@
 package com.delta.smt.ui.feeder.warning;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +20,7 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.utils.ViewUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -27,18 +29,16 @@ import butterknife.OnClick;
  */
 
 public class FeederWarningActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
-    @BindView(R.id.toolbar_title)
-    TextView toolbarTitle;
-    @BindView(R.id.tv_setting)
-    TextView tvSetting;
-    @BindView(R.id.toolbar)
-    AutoToolbar toolbar;
     @BindView(R.id.tl_title)
     AutoTabLayout tlTitle;
     @BindView(R.id.fl_container)
     FrameLayout flContainer;
     @BindView(R.id.activity_feeder_warning)
     LinearLayout activityFeederWarning;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+    @BindView(R.id.toolbar)
+    AutoToolbar toolbar;
     private String[] mTitles;
     private CheckInFragment checkinFragment;
     private SupplyFragment supplyFragment;
@@ -125,7 +125,7 @@ public class FeederWarningActivity extends BaseActivity implements TabLayout.OnT
     }
 
 
-    @OnClick({ R.id.tv_setting, R.id.tl_title})
+    @OnClick({R.id.tv_setting, R.id.tl_title})
     public void onClick(View view) {
         switch (view.getId()) {
 
@@ -148,4 +148,6 @@ public class FeederWarningActivity extends BaseActivity implements TabLayout.OnT
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

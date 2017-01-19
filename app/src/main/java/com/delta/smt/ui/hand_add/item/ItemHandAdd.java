@@ -1,29 +1,111 @@
 package com.delta.smt.ui.hand_add.item;
 
+import android.util.Log;
+
 import com.delta.smt.entity.CountDownEntity;
+import com.google.gson.annotations.SerializedName;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/27.
  */
 
 public class ItemHandAdd extends CountDownEntity{
+
+
     private String title;
+
+    @SerializedName("line")
     private String produce_line;
+
+    @SerializedName("slot")
     private String material_station;
-    private String add_count;
+
+    
+    private int expectedAmount;
+
+    private int realAmount;
+
+    @SerializedName("message")
     private String info;
+
+    @SerializedName("executeTime")
+    private String time;
+
+    private int id;
+
+    private int state;
+
 
     public ItemHandAdd() {
     }
 
-    public ItemHandAdd(String title, String produce_line, String material_station, String add_count, String info,String countdown,Long endTime) {
+    public ItemHandAdd(String title, String produce_line, String material_station, int realAmount, String info,String countdown,Long endTime) {
         this.title = title;
         this.produce_line = produce_line;
         this.material_station = material_station;
-        this.add_count = add_count;
+        this.realAmount = realAmount;
         this.info = info;
         this.countdown=countdown;
         this.endTime=endTime;
+    }
+
+    public Long getCountDownLong(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+        Date date ;
+        try {
+            date = sdf.parse(time);
+            long time = date.getTime();
+
+            Log.i("SupplyFragment", "time: " + time);
+            return  date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public int getExpectedAmount() {
+        return expectedAmount;
+    }
+
+    public void setExpectedAmount(int expectedAmount) {
+        this.expectedAmount = expectedAmount;
+    }
+
+    public int getRealAmount() {
+        return realAmount;
+    }
+
+    public void setRealAmount(int realAmount) {
+        this.realAmount = realAmount;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -48,14 +130,6 @@ public class ItemHandAdd extends CountDownEntity{
 
     public void setMaterial_station(String material_station) {
         this.material_station = material_station;
-    }
-
-    public String getAdd_count() {
-        return add_count;
-    }
-
-    public void setAdd_count(String add_count) {
-        this.add_count = add_count;
     }
 
     public String getInfo() {
