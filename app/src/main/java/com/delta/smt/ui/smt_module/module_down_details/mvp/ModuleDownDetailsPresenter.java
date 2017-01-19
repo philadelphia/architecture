@@ -2,6 +2,7 @@ package com.delta.smt.ui.smt_module.module_down_details.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.ModuleDownDetailsItem;
+import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.ModuleDownWarningItem;
 
 import java.util.List;
@@ -20,11 +21,25 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         super(model, mView);
     }
 
-    public void getAllModuleDownDetailsItems(){
-        getModel().getAllModuleDownDetailsItems().subscribe(new Action1<List<ModuleDownDetailsItem>>() {
+    public void getAllModuleDownDetailsItems(String str){
+        getModel().getAllModuleDownDetailsItems(str).subscribe(new Action1<ModuleDownDetailsItem>() {
             @Override
-            public void call(List<ModuleDownDetailsItem> moduleDownWarningItems) {
+            public void call(ModuleDownDetailsItem moduleDownWarningItems) {
                 getView().onSuccess(moduleDownWarningItems);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFalied();
+            }
+        });
+    }
+
+    public void getAllModuleDownMaintainResult(String str){
+        getModel().getModuleDownMaintainResult(str).subscribe(new Action1<ModuleDownMaintain>() {
+            @Override
+            public void call(ModuleDownMaintain moduleDownMaintain) {
+                getView().onSuccessMaintain(moduleDownMaintain);
             }
         }, new Action1<Throwable>() {
             @Override

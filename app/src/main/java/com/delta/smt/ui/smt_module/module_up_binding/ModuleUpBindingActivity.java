@@ -168,6 +168,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
             dataSource.addAll(rowsBeen);
             adapter.notifyDataSetChanged();
+
         }
 
     }
@@ -183,6 +184,31 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             getPresenter().getAllModuleUpBindingItems(workItemID);
             scan_position = -1;
             adapter.notifyDataSetChanged();
+            state = 1;
+            if (isAllFeederScaned()) {
+                new AlertDialog.Builder(this)
+                        .setTitle("上模组完成")
+                        .setMessage("工单" + workItemID + "上模组完成！")
+                        .setCancelable(false)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent();
+                                intent.putExtra(Constant.WORK_ITEM_ID, workItemID);
+                                setResult(Constant.ACTIVITY_RESULT_WORK_ITEM_ID, intent);
+                                dialogInterface.dismiss();
+                                ModuleUpBindingActivity.this.finish();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
         }
     }
 
@@ -222,14 +248,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void onScanSuccess(String barcode) {
 
-        //Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:
                 try {
                     MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     String materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                    //setItemHighLightBasedOnMID(materialBlockNumber);
                     if (isExistInDataSource(materialBlockNumber, dataSource)) {
                         if (feederCodeCache != null) {
                             materialBlockCodeCache = null;
@@ -237,11 +261,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         }
                         setItemHighLightBasedOnMID(materialBlockNumber);
                         materialBlockCodeCache = materialBlockNumber;
+                        state = 2;
                     } else {
                         Toast.makeText(this, "列表中不包含此料盘码!", Toast.LENGTH_SHORT).show();
                     }
-                    //Toast.makeText(this, materialBlockNumber, Toast.LENGTH_SHORT).show();
-                    state = 2;
+
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
                     Toast.makeText(this, "请扫描料盘码！", Toast.LENGTH_SHORT).show();
@@ -256,8 +280,28 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         }else{
                             feederCodeCache = feederCode.getSource();
                             getPresenter().getMaterialAndFeederBindingResult(dataSource.get(scan_position).getId()+"",feederCodeCache);
+
                         }
                     } catch (EntityNotFountException e) {
+                        try {
+                            MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                            String materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
+                            if (isExistInDataSource(materialBlockNumber, dataSource)) {
+                                if (feederCodeCache != null) {
+                                    materialBlockCodeCache = null;
+                                    feederCodeCache = null;
+                                }
+                                setItemHighLightBasedOnMID(materialBlockNumber);
+                                materialBlockCodeCache = materialBlockNumber;
+                                state = 2;
+                            } else {
+                                Toast.makeText(this, "此处不支持此码!", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (EntityNotFountException ee) {
+                            ee.printStackTrace();
+                            Toast.makeText(this, "请扫描料盘码！", Toast.LENGTH_SHORT).show();
+                        }
                         e.printStackTrace();
                     }
                 }else{
@@ -417,7 +461,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     public boolean isAllFeederScaned() {
         if (dataSource.size() > 0) {
             for (ModuleUpBindingItem.RowsBean listItem : dataSource) {
-                if (listItem.getFeeder_id().equals("-")) {
+                if (listItem.getFeeder_id().equals("")) {
                     return false;
                 }
             }
@@ -425,7 +469,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         } else {
             return false;
         }
-
     }
 
 

@@ -5,4 +5,34 @@
     android:orientation="vertical">
 
     <include layout="@layout/appbar" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40px"
+        android:layout_marginTop="80px"
+        android:text="修改AOI检测参数:"
+        android:textColor="@color/c_111111"
+        android:textSize="40px" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+
+    <Button
+
+        android:id="@+id/button"
+        android:layout_width="440px"
+        android:layout_height="120px"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="100px"
+        android:layout_marginTop="100px"
+        android:background="@color/c_428bca"
+        android:gravity="center"
+        android:text="使用本方案解决了故障"
+        android:textColor="@color/c_ffffff"
+        android:textSize="40px" />
 </LinearLayout>

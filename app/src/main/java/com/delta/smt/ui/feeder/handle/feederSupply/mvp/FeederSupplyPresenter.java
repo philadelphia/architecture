@@ -4,6 +4,7 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.ResultFeeder;
 
 import java.util.List;
 
@@ -27,22 +28,48 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         getModel().getAllToBeSuppliedFeeders(workID).subscribe(new Action1<Result<FeederSupplyItem>>() {
             @Override
             public void call(Result<FeederSupplyItem> feederSupplyItems) {
-                getView().onSuccess(feederSupplyItems.getRows());
+                if (feederSupplyItems.getMessage().equalsIgnoreCase("success")){
+
+                    getView().onSuccess(feederSupplyItems.getRows());
+                }else {
+                    getView().onFailed(feederSupplyItems.getMessage());
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                getView().onFailed(throwable.getMessage());
             }
         });
     }
 
-
-    public void upLoadFeederSupplyResult(String workID){
-        getModel().getAllToBeSuppliedFeeders(workID).subscribe(new Action1<Result<FeederSupplyItem>>() {
+    public void getFeederInsertionToSlotTimeStamp(String condition){
+        getModel().getFeederInsertionToSlotTimeStamp(condition).subscribe(new Action1<Result<FeederSupplyItem>>() {
             @Override
             public void call(Result<FeederSupplyItem> feederSupplyItems) {
-                getView().onSuccess(feederSupplyItems.getRows());
+                if (feederSupplyItems.getMessage().equalsIgnoreCase("success")){
+                    getView().onSuccess(feederSupplyItems.getRows());
+                }else {
+                    getView().onFailed(feederSupplyItems.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
+    public void upLoadToMES(){
+        getModel().upLoadFeederSupplyResult().subscribe(new Action1<ResultFeeder>() {
+            @Override
+            public void call(ResultFeeder resultFeeder) {
+                if (!resultFeeder.isRows()){
+                    getView().onUpLoadFailed("上传失败，请手动上传到MES");
+                }
+
             }
         }, new Action1<Throwable>() {
             @Override
@@ -51,6 +78,4 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             }
         });
     }
-
-    public void upLoadToMES(){}
 }

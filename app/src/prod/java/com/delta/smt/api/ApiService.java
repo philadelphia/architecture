@@ -7,11 +7,9 @@ import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
-import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsLocation;
-import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
@@ -21,7 +19,9 @@ import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.MaterialAndFeederBindingResult;
+import com.delta.smt.entity.ModNumByMaterialResult;
 import com.delta.smt.entity.ModuleDownDetailsItem;
+import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
@@ -32,11 +32,13 @@ import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.ResultFeeder;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.Success;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
+import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
@@ -66,17 +68,14 @@ public interface ApiService {
     Observable<List<WareHouse>> getAllWareHouse();
 
 
-    /*
-     获取feeder入库列表
-     tao.zt.zhang
-     */
-    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+    //  tao.zt.zhang
+
+    //  获取feeder入库列表
+    @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
-    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qMaterialPlace")
-    Observable<Result<FeederCheckInItem>> getFeederLocation(@Query("condition") String condition);
-
-    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/feederBuffStorages")
+    //获取feeder入库时间
+    @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/feederBuffStorage")
     Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
 
     //获取所有的Feeder备料工单列表
@@ -89,13 +88,12 @@ public interface ApiService {
 
     //获取Feeder备料时间
     @GET("http://172.22.34.34:8081/SMM/Buffer/bufferIssue")
-    Observable<Result<FeederSupplyItem>> getFeederSuppliedTime(@Query("condition") String workID);
+    Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("condition") String condition);
 
-    @POST
-    Observable<Result> upLoadFeederSupplyResult();
+    //上传feeder备料上模组结果
+    @GET("http://172.22.34.34:8081/SMM/Buffer/completeBufferIssue")
+    Observable<ResultFeeder> upLoadFeederSupplyResult();
 
-    @POST
-    Observable<List<FeederSupplyItem>> getAllToBeCheckedInFeeders();
 
     /*预警模块的模拟接口*/
     Observable<List<ItemProduceLine>> getLineDatas();
@@ -204,7 +202,20 @@ public interface ApiService {
     //Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
     //故障处理预警
-    Observable<List<FalutMesage>> getFalutMessages();
+    @GET("http://172.22.34.19:8081/lineAlarmFault/getSeriousFaultInfos")
+    Observable<FaultMessage> getFalutMessages(@Query("condition") String s);
+
+    @GET("http://172.22.34.19:8081/lineAlarmFault/faultSolutionList")
+    public Observable<SolutionMessage> getSolutionMessage(@Query("condition") String s);
+
+    @GET("http://172.22.34.19:8081/lineAlarmFault/faultSolutionDetailList")
+    public Observable<FaultSolutionMessage> getDetailSolutionMessage(@Query("condition") String s);
+
+    @GET("http://172.22.34.19:8081/lineAlarmFault/resolveFault")
+    Observable<BaseEntity> resolveFault(@Query("condition") String content);
+
+    @GET("http://172.22.34.19:8081/lineAlarmFault/addFaultSolution")
+    Observable<BaseEntity> addSolution(@Query("condition") String content);
 
     //更新
     @GET(API.bundleJsonUrl)
@@ -216,17 +227,27 @@ public interface ApiService {
     @GET
     Observable<ResponseBody> download(@Url String url);
 
-    @GET("http://172.22.34.42:8081/smm/plugmod/getProductionLines")
+    /*@GET("http://172.22.35.155:8081/smm/plugmod/getProductionLines")
     Observable<ModuleUpWarningItem> getModuleUpWarningItems(@Query("workOrderNum") String content);
 
-    Observable<List<ModuleDownWarningItem>> getModuleDownWarningItems();
+   @GET("http://172.22.35.155:8081/smm/unplugmod/getProductionLines")
+    Observable<ModuleDownWarningItem> getModuleDownWarningItems(@Query("workOrderNum") String content);*/
 
-    @GET("http://172.22.34.42:8081/smm/plugmod/getModsByWordOrder")
+    @GET("http://172.22.35.155:8081/smm/plugmod/getProductionLines")
+    Observable<ModuleUpWarningItem> getModuleUpWarningItems();
+
+    @GET("http://172.22.35.155:8081/smm/unplugmod/getProductionLines")
+    Observable<ModuleDownWarningItem> getModuleDownWarningItems();
+
+
+    @GET("http://172.22.35.155:8081/smm/plugmod/getModsByWordOrder")
     Observable<ModuleUpBindingItem> getModuleUpBindingItems(@Query("workOrderNum") String content);
 
-    Observable<List<VirtualLineBindingItem>> getVirtualLineBindingItems();
+    @GET("http://172.22.35.155:8081/smm/unplugmod/getVirtualLine")
+    Observable<VirtualLineBindingItem> getVirtualLineBindingItems(@Query("workOrderNum") String content);
 
-    Observable<List<ModuleDownDetailsItem>> getModuleDownDetailsItems();
+    @GET("http://172.22.35.155:8081/smm/unplugmod/getModsByWordOrder")
+    Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("workOrderNum")String content);
 
     //TODO shaoqiang,8Interfance
     @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/order/list/page")
@@ -239,7 +260,7 @@ public interface ApiService {
     Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent, @Query("condition") String condition_and_jigTypeID);
 
     @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/instore/verify")
-    Observable<JsonProductToolsLocation> getLocationVerify(@Query("param")String param);
+    Observable<JsonProductToolsLocation> getgetLocationVerify(@Query("param")String param);
 
     @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/instore/submit")
     Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param")String param);
@@ -333,9 +354,18 @@ public interface ApiService {
     @GET("http://172.22.34.22:8081/SMM/ExcessManagement/delivery")
     Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
 
-    @GET("http://172.22.34.22:8081/SMM/WareHIssue/debit")
+    @GET("http://172.22.35.155:8081/SMM/WareHIssue/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
-    @GET("http://172.22.34.42:8081/smm/plugmod/updateMod")
-    Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(@Query("id") String id, @Query("feeder") String feederID);
+    @GET("http://172.22.35.155:8081/smm/plugmod/updateMod")
+    Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(@Query("id")String id,@Query("feeder")String feederID);
+
+    @GET("http://172.22.35.155:8081/smm/unplugmod/updateMod")
+    Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("ids")String content);
+
+    @GET("http://172.22.35.155:8081/smm/unplugmod/bindVirtualLine")
+    Observable<VirtualBindingResult> getVirtualBindingResult(@Query("id")String id, @Query("vitualId")String vitualId);
+
+    @GET("http://172.22.35.155:8081/smm/unplugmod/getModNumByMaterial")
+    Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num);
 }

@@ -17,11 +17,18 @@ import com.delta.smt.ui.login.di.LoginModule;
 import com.delta.smt.ui.login.mvp.LoginContract;
 import com.delta.smt.ui.login.mvp.LoginPresenter;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.inject.Inject;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * @description :
@@ -58,6 +65,29 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
         // getPresenter().login("sdf", "sdf");
+        //创建okHttpClient对象
+        OkHttpClient mOkHttpClient = new OkHttpClient();
+//创建一个Request
+        final Request request = new Request.Builder()
+                .url("http://172.22.34.24:8081/SMM/AlarmManager/alarm")
+                .build();
+//new call
+        Call call = mOkHttpClient.newCall(request);
+//请求加入调度
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+                Log.e(TAG, "onFailure: ");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                Log.e(TAG, "onResponse: "+response.body().string());
+            }
+        });
+
     }
 
     @Override
@@ -100,9 +130,9 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
             ArrayList<WarningContent> warningContents = GsonTools.changeGsonToList(message, WarningContent.class);
 
             for (WarningContent warningContent : warningContents) {
-                if(warningContent.getType()==Constant.SAMPLEWARING){
+                if (warningContent.getType() == Constant.SAMPLEWARING) {
                     String format = dateFormat.format(new Date(System.currentTimeMillis() - Long.valueOf(warningContent.getMessage().getDeadLine())));
-                    SimpleWarningdatas.add(warningContent.getMessage().getProductline()+"--"+format+"\n");
+                    SimpleWarningdatas.add(warningContent.getMessage().getProductline() + "--" + format + "\n");
                 }
 
             }
@@ -115,16 +145,16 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
 
     public AlertDialog createDialog(String message) {
 
-        Log.e(TAG, "createDialog: "+message);
+        Log.e(TAG, "createDialog: " + message);
         dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
         dialogRelativelayout.setStrTitle("预警信息");
         ArrayList<WarningContent> warningContents = GsonTools.changeGsonToList(message, WarningContent.class);
         for (WarningContent warningContent : warningContents) {
-            if(warningContent.getType()==Constant.SAMPLEWARING){
+            if (warningContent.getType() == Constant.SAMPLEWARING) {
                 String format = dateFormat.format(new Date(System.currentTimeMillis() - Long.valueOf(warningContent.getMessage().getDeadLine())));
-                SimpleWarningdatas.add(warningContent.getMessage().getProductline()+"--"+format);
-        }
+                SimpleWarningdatas.add(warningContent.getMessage().getProductline() + "--" + format);
+            }
         }
         //3.传入的是黑色字体的二级标题
         dialogRelativelayout.setStrSecondTitle("simple预警");

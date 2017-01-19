@@ -4,16 +4,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.delta.buletoothio.barcode.parse.BarCodeParse;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.FeederBuffer;
 import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
@@ -28,7 +24,6 @@ import com.delta.smt.ui.feeder.warning.checkin.di.CheckInModule;
 import com.delta.smt.ui.feeder.warning.checkin.di.DaggerCheckInComponent;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInContract;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInPresenter;
-import com.delta.smt.utils.BarCodeUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -37,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+
+import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
 
 /**
  * Author:   Tao.ZT.Zhang
@@ -60,7 +57,8 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
     private String mCurrentMaterialID;
     private String mCurrentSerialNumber;
     private String mCurrentLocation;
-
+    private boolean flag1;
+    private boolean flag2;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -142,6 +140,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
     @Override
     public void onSuccess(List<FeederCheckInItem> data) {
         Log.i(TAG, "onSuccess: ");
+        Log.i(TAG, "从后台返回的数据长度是: " + data.size());
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
@@ -163,76 +162,135 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
 
     }
 
+//    @Override
+//    public void onScanSuccess(String barcode) {
+//        Log.i(TAG, "onScanSuccess: ");
+//        Log.i(TAG, "barcode == " + barcode);
+//        BarCodeType codeType = BarCodeUtils.barCodeType(barcode);
+//        Log.i(TAG, "codeType:== " + codeType);
+//        if (!TextUtils.isEmpty(barcode)) {
+//            if (codeType != null) {
+//                switch (codeType) {
+//                    case MATERIAL_BLOCK_BARCODE: //料号
+//                        Log.i(TAG, "料号: ");
+//                        try {
+//                            MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) new BarCodeParseIpml().getEntity(barcode,BarCodeType.MATERIAL_BLOCK_BARCODE);
+//                            if (null != materialBlockBarCode){
+//                                mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
+//                                mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
+//                                Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID) ;
+//                                Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber) ;
+//                            }
+//                            for (FeederCheckInItem feederCheckInItem : dataSource) {
+//                                if (materialBlockBarCode.getDeltaMaterialNumber().equalsIgnoreCase(feederCheckInItem.getMaterialID()) && materialBlockBarCode.getStreamNumber().equalsIgnoreCase(feederCheckInItem.getSerial_num()) ) {
+//                                    Log.i(TAG, "对应的feederCheckInItem: " + feederCheckInItem.toString());
+//                                    dataSource.set(0, feederCheckInItem);
+//                                    adapter.notifyDataSetChanged();
+//                                    Log.i(TAG, "onScanSuccess: " );
+//                                    Map<String, String> map = new HashMap<>();
+//                                    map.put("material_num", materialBlockBarCode.getDeltaMaterialNumber());
+//                                    map.put("serial_num", materialBlockBarCode.getStreamNumber());
+//                                    Gson gson = new Gson();
+//                                    String argument = gson.toJson(map);
+//                                    Log.i(TAG, "argument== " + argument);
+//                                    getPresenter().getFeederLocation(argument);
+//                                }
+//                            }
+//                        } catch (EntityNotFountException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//
+//
+//                        break;
+//                    case FRAME_LOCATION: //架位ID
+//                        FrameLocation frameLocation = null;
+//                        try {
+//                            frameLocation = (FrameLocation) new BarCodeParseIpml().getEntity(barcode, BarCodeType.FRAME_LOCATION);
+//                            if (null != frameLocation){
+//                                mCurrentLocation = frameLocation.getSource();
+//                                Log.i(TAG, "onScanSuccess: " + frameLocation.toString());
+//                                Map<String, String> map = new HashMap<>();
+//                                map.put("material_num", mCurrentMaterialID);
+//                                map.put("serial_num", mCurrentSerialNumber);
+//                                map.put("position", mCurrentLocation);
+//                                Gson gson = new Gson();
+//                                String argument = gson.toJson(map);
+//                                Log.i(TAG, "argument== " + argument);
+//                                getPresenter().getFeederCheckInTime(argument);
+//                            }
+//                        } catch (EntityNotFountException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        break;
+//
+//                    default:
+//                        break;
+//
+//                }
+//            }
+//        }
+//
+//    }
+
+
     @Override
     public void onScanSuccess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
         Log.i(TAG, "barcode == " + barcode);
-        BarCodeType codeType = BarCodeUtils.barCodeType(barcode);
-        Log.i(TAG, "codeType:== " + codeType);
-        if (!TextUtils.isEmpty(barcode)) {
-            if (codeType != null) {
-                switch (codeType) {
-                    case MATERIAL_BLOCK_BARCODE: //料号
-                        Log.i(TAG, "料号: ");
-                        try {
-                            MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) new BarCodeParseIpml().getEntity(barcode,BarCodeType.MATERIAL_BLOCK_BARCODE);
-                            if (null != materialBlockBarCode){
-                                mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
-                                mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
-                                Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID) ;
-                                Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber) ;
-                            }
-                            for (FeederCheckInItem feederCheckInItem : dataSource) {
-                                if (materialBlockBarCode.getDeltaMaterialNumber().equalsIgnoreCase(feederCheckInItem.getMaterialID()) && materialBlockBarCode.getStreamNumber().equalsIgnoreCase(feederCheckInItem.getSerial_num()) ) {
-                                    Log.i(TAG, "对应的feederCheckInItem: " + feederCheckInItem.toString());
-                                    dataSource.set(0, feederCheckInItem);
-                                    adapter.notifyDataSetChanged();
-                                    Log.i(TAG, "onScanSuccess: " );
-                                    Map<String, String> map = new HashMap<>();
-                                    map.put("material_num", materialBlockBarCode.getDeltaMaterialNumber());
-                                    map.put("serial_num", materialBlockBarCode.getStreamNumber());
-                                    Gson gson = new Gson();
-                                    String argument = gson.toJson(map);
-                                    Log.i(TAG, "argument== " + argument);
-                                    getPresenter().getFeederLocation(argument);
-                                }
-                            }
-                        } catch (EntityNotFountException e) {
-                            e.printStackTrace();
-                        }
+        BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+        if (!flag1){
+            try {
+                MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+                flag1 = true;
 
+                mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
+                mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
+                Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID) ;
+                Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber) ;
+                for (FeederCheckInItem feederCheckInItem : dataSource) {
+                    if (mCurrentMaterialID.equalsIgnoreCase(feederCheckInItem.getMaterialID()) && mCurrentSerialNumber.equalsIgnoreCase(feederCheckInItem.getSerial_num()) ) {
+                        Log.i(TAG, "对应的feederCheckInItem: " + feederCheckInItem.toString());
+                        dataSource.set(0, feederCheckInItem);
+                        adapter.notifyDataSetChanged();
+                        Log.i(TAG, "onScanSuccess: " );
+                        Map<String, String> map = new HashMap<>();
+                        map.put("material_num", materialBlockBarCode.getDeltaMaterialNumber());
+                        map.put("serial_num", materialBlockBarCode.getStreamNumber());
+                        Gson gson = new Gson();
+                        String argument = gson.toJson(map);
+                        Log.i(TAG, "argument== " + argument);
+                        Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
 
-
-                        break;
-                    case FRAME_LOCATION: //架位ID
-                        FrameLocation frameLocation = null;
-                        try {
-                            frameLocation = (FrameLocation) new BarCodeParseIpml().getEntity(barcode, BarCodeType.FRAME_LOCATION);
-                            if (null != frameLocation){
-                                mCurrentLocation = frameLocation.getSource();
-                                Log.i(TAG, "onScanSuccess: " + frameLocation.toString());
-                                Map<String, String> map = new HashMap<>();
-                                map.put("material_num", mCurrentMaterialID);
-                                map.put("serial_num", mCurrentSerialNumber);
-                                map.put("position", mCurrentLocation);
-                                Gson gson = new Gson();
-                                String argument = gson.toJson(map);
-                                Log.i(TAG, "argument== " + argument);
-                                getPresenter().getFeederCheckInTime(argument);
-                            }
-                        } catch (EntityNotFountException e) {
-                            e.printStackTrace();
-                        }
-
-                        break;
-
-                    default:
-                        break;
-
+                    }
                 }
+
+            } catch (EntityNotFountException e) {
+                e.printStackTrace();
             }
         }
 
+        if (!flag2){
+            try {
+                FeederBuffer frameLocation = (FeederBuffer) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER_BUFFER);
+                flag2 = true;
+                mCurrentLocation = frameLocation.getSource();
+                Log.i(TAG, "mCurrentLocation: " + frameLocation.toString());
+                Map<String, String> map = new HashMap<>();
+                map.put("material_num", mCurrentMaterialID);
+                map.put("serial_num", mCurrentSerialNumber);
+                map.put("position", mCurrentLocation);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+                Log.i(TAG, "argument== " + argument);
+                Log.i(TAG, "料架已经扫描完成，接下来入库: ");
+                getPresenter().getFeederCheckInTime(argument);
+                flag1 = false;
+                flag2 = false;
+            } catch (EntityNotFountException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
-
 }
