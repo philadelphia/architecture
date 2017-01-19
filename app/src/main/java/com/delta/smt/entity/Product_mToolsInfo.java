@@ -12,12 +12,14 @@ public class Product_mToolsInfo implements Serializable{
     private String ProductToolsBarCode;
     private String ProductToolsType;
     private String ProductToolsLocation;
+    private String jigID;
 
-    public Product_mToolsInfo(String turnNumber, String productToolsBarCode, String productToolsType, String productToolsLocation) {
+    public Product_mToolsInfo(String turnNumber, String productToolsBarCode, String productToolsType, String productToolsLocation, String jigID) {
         TurnNumber = turnNumber;
         ProductToolsBarCode = productToolsBarCode;
         ProductToolsType = productToolsType;
         ProductToolsLocation = productToolsLocation;
+        this.jigID = jigID;
     }
 
     public String getTurnNumber() {
@@ -50,5 +52,13 @@ public class Product_mToolsInfo implements Serializable{
 
     public void setProductToolsLocation(String productToolsLocation) {
         ProductToolsLocation = productToolsLocation;
+    }
+
+    public String getJigID() {
+        return jigID;
+    }
+
+    public void setJigID(String jigID) {
+        this.jigID = jigID;
     }
 }

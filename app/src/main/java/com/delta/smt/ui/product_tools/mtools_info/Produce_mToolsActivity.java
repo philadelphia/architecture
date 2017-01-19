@@ -99,7 +99,7 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具借出");
 
-        data.add(0, new Product_mToolsInfo("序号", "治具二维码", "治具类型", "所在架位"));
+        data.add(0, new Product_mToolsInfo("序号", "治具二维码", "治具类型", "所在架位",""));
 
         adapter = new CommonBaseAdapter<Product_mToolsInfo>(getContext(), data) {
             @Override

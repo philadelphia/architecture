@@ -205,9 +205,12 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
             for (ProductToolsInfo p : ProductToolsItem) {
 
+                Log.e("selectItem",selectItem.getProductToolsType()+666+selectItem.getProductToolsType());
+
                 if (selectItem.getProductToolsType().equals(p.getProduceToolsType())) {
                     p.setProductToolsBarCode(selectItem.getProductToolsBarCode());
                     p.setProductToolsLocation(selectItem.getProductToolsLocation());
+                    p.setJigID(selectItem.getJigID());
                 }
 
             }
@@ -237,14 +240,13 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     public void getToolsBorrowSubmit(JsonProductToolsLocation j) {
 
         Log.e("getToolsBorrowSubmit", j.toString());
-        if (j.getCode() == 0) {
+        if (j.getCode() == 1) {
 
             int i = 0;
             for (ProductToolsInfo p : data) {
                 i++;
                 if (data.get(i).getProductToolsBarCode().equals(this.barcode)) {
 
-                    data.get(i).setStatus("已完成");
                     productInfoBarCodeEditText.setText(this.barcode);
                     adapter.notifyDataSetChanged();
 
