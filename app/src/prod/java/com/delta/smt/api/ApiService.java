@@ -36,6 +36,8 @@ import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.ResultFeeder;
+import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -72,17 +74,14 @@ public interface ApiService {
     Observable<List<WareHouse>> getAllWareHouse();
 
 
-    /*
-     获取feeder入库列表
-     tao.zt.zhang
-     */
-    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+    //  tao.zt.zhang
+
+    //  获取feeder入库列表
+    @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
-    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qMaterialPlace")
-    Observable<Result<FeederCheckInItem>> getFeederLocation(@Query("condition") String condition);
-
-    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/feederBuffStorages")
+    //获取feeder入库时间
+    @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/feederBuffStorage")
     Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
 
     //获取所有的Feeder备料工单列表
@@ -95,13 +94,12 @@ public interface ApiService {
 
     //获取Feeder备料时间
     @GET("http://172.22.34.34:8081/SMM/Buffer/bufferIssue")
-    Observable<Result<FeederSupplyItem>> getFeederSuppliedTime(@Query("condition") String workID);
+    Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("condition") String condition);
 
-    @POST
-    Observable<Result> upLoadFeederSupplyResult();
+    //上传feeder备料上模组结果
+    @GET("http://172.22.34.34:8081/SMM/Buffer/completeBufferIssue")
+    Observable<ResultFeeder> upLoadFeederSupplyResult();
 
-    @POST
-    Observable<List<FeederSupplyItem>> getAllToBeCheckedInFeeders();
 
     /*预警模块的模拟接口*/
     Observable<List<ItemProduceLine>> getLineDatas();
