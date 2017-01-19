@@ -1,6 +1,12 @@
 package com.delta.smt.entity;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Tao.ZT.Zhang on 2016/12/28.
@@ -90,6 +96,17 @@ public class FeederSupplyItem {
     }
 
     public String getTimeStamp() {
+        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        try {
+            Date date = sdf.parse(timeStamp);
+            SimpleDateFormat sdf2  = new SimpleDateFormat("MM/dd HH:mm");
+            timeStamp =sdf2.format(date);
+//            timeStamp = new StringBuilder().append(date.getMonth()).append("/").append(date.getDay()).append(" ").append(date.getHours()).append(":").append(date.getMinutes()).toString();
+            Log.i("FeederSupplyItem", "getTimeStamp: " + timeStamp);
+            return timeStamp;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return timeStamp;
     }
 

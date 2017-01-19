@@ -14,10 +14,12 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
@@ -73,7 +75,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private List<FeederSupplyItem> dataList = new ArrayList<>();
     private List<FeederSupplyItem> dataSource = new ArrayList<>();
     private static final String TAG = "FeederSupplyActivity";
-    private boolean isHandleOVer = false;
+    private boolean isAllHandleOVer = false;
     private String mCurrentSerinalNumber;
     private String mCurrentMaterialNumber;
     private String mCurrentquantity;
@@ -174,14 +176,15 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         adapter.notifyDataSetChanged();
         for (FeederSupplyItem item : dataSource) {
             if (item.getStatus() == 0) {
-                isHandleOVer = false;
+                isAllHandleOVer = false;
                 break;
             } else {
-                isHandleOVer = true;
+                isAllHandleOVer = true;
             }
         }
 
-        if (isHandleOVer) {
+        if (isAllHandleOVer) {
+            Log.i(TAG, "feeder全部上模组，开始上传结果: ");
             getPresenter().upLoadToMES();
         }
     }
@@ -190,6 +193,12 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void onFailed(String message) {
         Log.i(TAG, "onFailed: " + message);
+    }
+
+    @Override
+    public void onUpLoadFailed(String message) {
+        Log.i(TAG, "onUpLoadFailed: ");
+        ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
 

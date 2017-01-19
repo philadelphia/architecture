@@ -5,6 +5,7 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.ResultFeeder;
 
 
 import java.util.List;
@@ -33,8 +34,8 @@ public class FeederSupplyModel extends BaseModel<ApiService> implements FeederSu
     }
 
     @Override
-    public Observable<Result> upLoadFeederSupplyResult() {
-        return getService().upLoadFeederSupplyResult().compose(RxsRxSchedulers.<Result>io_main());
+    public Observable<ResultFeeder> upLoadFeederSupplyResult() {
+        return getService().upLoadFeederSupplyResult().compose(RxsRxSchedulers.<ResultFeeder>io_main());
     }
 
 

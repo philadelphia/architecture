@@ -267,7 +267,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
                         String argument = gson.toJson(map);
                         Log.i(TAG, "argument== " + argument);
                         Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
-                        getPresenter().getFeederLocation(argument);
+                        getPresenter().getFeederCheckInTime(argument);
                     }
                 }
 

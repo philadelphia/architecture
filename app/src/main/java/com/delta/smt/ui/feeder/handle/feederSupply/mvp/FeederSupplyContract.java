@@ -4,6 +4,7 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.ResultFeeder;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public interface FeederSupplyContract {
          void onSuccess(List<FeederSupplyItem> data);
 
          void onFailed(String message);
+
+        void onUpLoadFailed(String message);
     }
 
     interface Model extends IModel{
@@ -28,6 +31,6 @@ public interface FeederSupplyContract {
 
         Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(String condition);
 
-         Observable<Result> upLoadFeederSupplyResult();
+         Observable<ResultFeeder> upLoadFeederSupplyResult();
     }
 }
