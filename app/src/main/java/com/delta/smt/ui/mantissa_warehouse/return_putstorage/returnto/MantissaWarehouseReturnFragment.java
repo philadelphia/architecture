@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
+import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.smt.R;
@@ -58,7 +58,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     private int flag = 1;
 
     private String materialNumber;
-    private String frameCode;
+    private String lastCar;
     private String serialNum;
 
     @Override
@@ -199,21 +199,19 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     break;
                 case 2:
                     try {
-                        FrameLocation frameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
-                        frameCode = frameLocation.getSource();
+                        LastMaterialCar lastMaterialCar = (LastMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_CAR);
+                        lastCar = lastMaterialCar.getSource();
 
-                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, frameCode);
+                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar);
                         Gson gson = new Gson();
                         String s = gson.toJson(bindBean);
 
                         getPresenter().getputinstrage(s);
                         flag = 1;
-                        Log.i(TAG,flag+"bbbbbbbbbbbbbbb");
                         Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getActivity(), frameCode, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), lastCar, Toast.LENGTH_SHORT).show();
                     } catch (EntityNotFountException e) {
                         e.printStackTrace();
-                        Log.i(TAG,e+"eeeeeeeeeeeeeee222222222222222");
                     }
                     break;
 
