@@ -9,6 +9,8 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
+import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
+import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.DaggerProduceBreakdownFragmentCompnent;
@@ -35,7 +37,7 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
 
     @BindView(R.id.ryv_produce_breakdown)
     RecyclerView mRyvProduceBreakdown;
-    private CommonBaseAdapter<ItemBreakDown> mAdapter;
+    private ItemCountdownViewAdapter<ItemBreakDown> mAdapter;
     private List<ItemBreakDown> datas=new ArrayList<>();
 
 
@@ -52,20 +54,22 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
 
     @Override
     protected void initView() {
-        mAdapter=new CommonBaseAdapter<ItemBreakDown>(getContext(),datas) {
+        mAdapter=new ItemCountdownViewAdapter<ItemBreakDown>(getContext(),datas) {
             @Override
-            protected void convert(CommonViewHolder holder, ItemBreakDown item, int position) {
-                holder.setText(R.id.tv_title,item.getTitle());
-                holder.setText(R.id.tv_produce_line,"产线："+item.getProduce_line());
-                holder.setText(R.id.tv_word_code,"制程："+item.getMake_process());
-                holder.setText(R.id.tv_material_station,"料站："+item.getMaterial_station());
-                holder.setText(R.id.tv_breakdown_info,"故障信息："+item.getBreakdown_info());
+            protected int getLayoutId() {
+                return R.layout.item_produce_breakdown;
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ItemBreakDown item) {
-                return R.layout.item_produce_breakdown;
+            protected void convert(ItemTimeViewHolder holder, ItemBreakDown itemBreakDown, int position) {
+                holder.setText(R.id.tv_title,itemBreakDown.getTitle());
+                holder.setText(R.id.tv_produce_line,"产线："+itemBreakDown.getProduce_line());
+                holder.setText(R.id.tv_word_code,"制程："+itemBreakDown.getMake_process());
+                holder.setText(R.id.tv_material_station,"料站："+itemBreakDown.getMaterial_station());
+                holder.setText(R.id.tv_breakdown_info,"故障信息："+itemBreakDown.getBreakdown_info());
             }
+
+
         };
 
         mRyvProduceBreakdown.setLayoutManager(new LinearLayoutManager(getContext()));

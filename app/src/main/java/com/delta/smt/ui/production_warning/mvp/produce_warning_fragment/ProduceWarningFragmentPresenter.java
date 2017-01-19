@@ -1,6 +1,7 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning_fragment;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
@@ -42,6 +43,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
                 //getView().getItemWarningDatas(itemWarningInfos);
                 if (itemWarningInfos.getCode().equals("0")) {
                     getView().getItemWarningDatas(itemWarningInfos.getRows().getAlarm());
+                    Log.e("aaa", "预警数量"+String.valueOf(itemWarningInfos.getRows().getAlarm().size()) );
                 }else {
                     getView().getItemWarningDatasFailed(itemWarningInfos.getMsg());
                 }

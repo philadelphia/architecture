@@ -1,12 +1,19 @@
 package com.delta.smt.ui.production_warning.item;
 
+import android.util.Log;
+
+import com.delta.smt.entity.CountDownEntity;
 import com.google.gson.annotations.SerializedName;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/26.
  */
 
-public class ItemBreakDown {
+public class ItemBreakDown extends CountDownEntity {
 
     @SerializedName("faultType")
     private String title;
@@ -23,6 +30,8 @@ public class ItemBreakDown {
     @SerializedName("faultMessage")
     private String breakdown_info;
 
+    private String createTime;
+
     public ItemBreakDown() {
     }
 
@@ -32,6 +41,30 @@ public class ItemBreakDown {
         this.make_process = make_process;
         this.material_station = material_station;
         this.breakdown_info = breakdown_info;
+    }
+
+    public Long getCountDownLong(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+        Date date ;
+        try {
+            date = sdf.parse(createTime);
+            long time = date.getTime();
+
+            Log.i("ItemWarningInfo", "time: " + time);
+            return  date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public String getTitle() {
