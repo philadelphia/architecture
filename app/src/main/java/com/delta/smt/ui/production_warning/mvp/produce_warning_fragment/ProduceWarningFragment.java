@@ -197,10 +197,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     @Override
     protected void initData() {
-        Log.i("aaa", "argument== " + ProduceWarningActivity.initLine());
+        Log.i("aaa", "argument== " + Constant.initLine());
 
-        if (ProduceWarningActivity.initLine() != null) {
-            getPresenter().getItemWarningDatas(ProduceWarningActivity.initLine());
+        if (Constant.initLine() != null) {
+            getPresenter().getItemWarningDatas(Constant.initLine());
         }
     }
 
@@ -428,8 +428,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     //Activity预警广播触发事件处理
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage){
-        if (ProduceWarningActivity.initLine() != null) {
-            getPresenter().getItemWarningDatas(ProduceWarningActivity.initLine());
+        if (Constant.initLine()!= null) {
+            getPresenter().getItemWarningDatas(Constant.initLine());
         }
         Log.e(TAG, "event1: ");
     }

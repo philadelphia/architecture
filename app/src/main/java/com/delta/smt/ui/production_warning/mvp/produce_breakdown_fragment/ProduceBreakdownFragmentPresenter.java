@@ -30,7 +30,7 @@ public class ProduceBreakdownFragmentPresenter extends BasePresenter<ProduceBrea
 //                getView().getItemBreakdownDatas(itemBreakDowns);
                 if (itemBreakDowns.getCode().equals("0")) {
                     getView().getItemBreakdownDatas(itemBreakDowns.getRows().getFault());
-                    Log.e("aaa", "故障数量"+String.valueOf(itemBreakDowns.getRows().getFault().size()) );
+                    Log.e("aaa", "fagment:故障数量"+String.valueOf(itemBreakDowns.getRows().getFault().size()) );
 
                 }else {
                     getView().getItemBreakdownDatasFailed(itemBreakDowns.getMsg());

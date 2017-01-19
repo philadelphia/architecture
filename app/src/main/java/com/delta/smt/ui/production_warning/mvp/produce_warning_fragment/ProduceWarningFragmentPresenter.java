@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
+import com.delta.smt.Constant;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
@@ -43,9 +44,9 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
                 //getView().getItemWarningDatas(itemWarningInfos);
                 if (itemWarningInfos.getCode().equals("0")) {
                     getView().getItemWarningDatas(itemWarningInfos.getRows().getAlarm());
-                    Log.e("aaa", "预警数量"+String.valueOf(itemWarningInfos.getRows().getAlarm().size()) );
+                    Log.e("aaa", "fagment:预警数量"+String.valueOf(itemWarningInfos.getRows().getAlarm().size()) );
                 }else {
-                    getView().getItemWarningDatasFailed(itemWarningInfos.getMsg());
+//                    getView().getItemWarningDatasFailed(itemWarningInfos.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
@@ -63,7 +64,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
                     getView().getItemWarningDatasFailed(result.getMessage());
-                    getItemWarningDatas(ProduceWarningActivity.initLine());
+                    getItemWarningDatas(Constant.initLine());
                 }else {
                     getView().getItemWarningDatasFailed(result.getMessage());
                 }
@@ -82,7 +83,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
                     getView().getItemWarningDatasFailed(result.getMessage());
-                    getItemWarningDatas(ProduceWarningActivity.initLine());
+                    getItemWarningDatas(Constant.initLine());
                 }else {
                     getView().getItemWarningDatasFailed(result.getMessage());
                 }
