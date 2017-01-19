@@ -57,6 +57,7 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
             Intent i = new Intent();
             Bundle b = new Bundle();
             b.putSerializable(TAG, selectItem);
+            b.putString("workNumber",workNumber);
             i.putExtras(b);
             i.setClass(this, ProduceToolsInfoActivity.class);
             startActivity(i);
@@ -172,5 +173,11 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
         view.setBackgroundColor(0xFF9FDEFF);
         selectView = view;
         selectItem=item;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }
