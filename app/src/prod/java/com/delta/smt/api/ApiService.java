@@ -2,9 +2,7 @@ package com.delta.smt.api;
 
 
 import com.delta.smt.entity.AllQuery;
-import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.CheckStock;
-import com.delta.smt.entity.FalutMesage;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.entity.FeederCheckInItem;
@@ -35,9 +33,9 @@ import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProduceWarning;
-import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
+import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
