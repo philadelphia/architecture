@@ -85,4 +85,5 @@
     <string name="storage_clear">清空</string>
     <string name="title_storehint">提示</string>
     <string name="storehint">您确认要进行点灯操作吗？</string>
+    <string name="hasComplete">已完成</string>
 </resources>

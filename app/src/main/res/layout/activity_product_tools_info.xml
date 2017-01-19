@@ -65,5 +65,6 @@
         android:layout_gravity="center"
         android:text="@string/confirm"
         android:background="#00B2EE"
+        android:id="@+id/confirm"
         />
 </LinearLayout>

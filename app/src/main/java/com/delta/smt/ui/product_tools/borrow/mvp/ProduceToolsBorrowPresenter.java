@@ -43,7 +43,7 @@ public class ProduceToolsBorrowPresenter extends BasePresenter<ProduceToolsBorro
 
                         String lastDate = TimeSortUtils.getMyStyleTime(j);
                         Log.e("time",lastDate);
-                        ProductWorkItem productWorkItem = new ProductWorkItem(String.valueOf(j.getOrderID()), String.valueOf(j.getOrderType()), j.getModel(), j.getPcbCode(), j.getCompositeMaterial(), j.getLineName(), j.getPcbMaterial(), j.getSide(), lastDate, j.getOrderStatus() == 0 ? "等待" : "准备就绪");
+                        ProductWorkItem productWorkItem = new ProductWorkItem(String.valueOf(j.getOrderID()), j.getOrderType()==0?"内部":"外部", j.getModel(), j.getPcbCode(), j.getCompositeMaterial(), j.getLineName(), j.getPcbMaterial(), j.getSide(), lastDate, j.getOrderStatus() == 0 ? "等待" : "准备就绪");
                         data.add(productWorkItem);
 
                     }
