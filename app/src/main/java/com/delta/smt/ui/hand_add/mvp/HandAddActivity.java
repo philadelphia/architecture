@@ -1,8 +1,7 @@
 package com.delta.smt.ui.hand_add.mvp;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
-import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
@@ -25,15 +24,16 @@ import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.hand_add.di.DaggerHandAddCompent;
 import com.delta.smt.ui.hand_add.di.HandAddModule;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/27.
@@ -101,11 +101,27 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
             @Override
             protected void convert(ItemTimeViewHolder holder, ItemHandAdd itemHandAdd, int position) {
-                holder.setText(R.id.tv_title, itemHandAdd.getTitle());
-                holder.setText(R.id.tv_line, itemHandAdd.getProduce_line());
-                holder.setText(R.id.tv_add_count, itemHandAdd.getAdd_count());
-                holder.setText(R.id.tv_material_station, itemHandAdd.getMaterial_station());
-                holder.setText(R.id.tv_warning_info, itemHandAdd.getInfo());
+                if(itemHandAdd.getState()==1){
+                    holder.setText(R.id.tv_title, itemHandAdd.getTitle());
+                    holder.setText(R.id.tv_line,"产线：" +itemHandAdd.getProduce_line());
+                    holder.setText(R.id.tv_material_station, "模组料站："+itemHandAdd.getMaterial_station());
+                    holder.setText(R.id.tv_realAmount,"手补件数量："+String.valueOf(itemHandAdd.getRealAmount()));
+                    holder.setText(R.id.tv_message, "信息："+itemHandAdd.getInfo());
+
+                    holder.getView(R.id.tv_expectedAmount).setVisibility(View.GONE);
+                }else {
+
+                    holder.setText(R.id.tv_title, itemHandAdd.getTitle());
+                    holder.setText(R.id.tv_line, "产线：" +itemHandAdd.getProduce_line());
+                    holder.setText(R.id.tv_material_station, "模组料站："+itemHandAdd.getMaterial_station());
+                    holder.setText(R.id.tv_expectedAmount,"预计Pass数量："+String.valueOf(itemHandAdd.getExpectedAmount()));
+                    holder.setText(R.id.tv_message,  "信息："+itemHandAdd.getInfo());
+
+                    holder.getView(R.id.tv_realAmount).setVisibility(View.GONE);
+
+                }
+
+
             }
 
 
@@ -179,8 +195,8 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     }
 
     @Override
-    public void getItemHandAddDatasFailed() {
-
+    public void getItemHandAddDatasFailed(String message) {
+        ToastUtils.showMessage(this,message);
     }
 
 
@@ -221,34 +237,46 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     public void onItemClick(final View item, int position) {
         final ItemHandAdd mItemHandAdd = datas.get(position);
-        mDialogRelativelayout = new DialogRelativelayout(this);
-        mDialogRelativelayout.setStrSecondTitle("请求确认");
-        final ArrayList<String> datas = new ArrayList<>();
-        datas.add("手补件完成？");
-        mDialogRelativelayout.setStrContent(datas);
-        mItemDialog = new AlertDialog.Builder(this).setCancelable(false).setView(mDialogRelativelayout)
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if (tag) {
-                            createDialog(dialogwarningMessage);
-                            tag = false;
+        if (mItemHandAdd.getState()!=1){
+            mDialogRelativelayout = new DialogRelativelayout(this);
+            mDialogRelativelayout.setStrSecondTitle("请求确认");
+            final ArrayList<String> datas = new ArrayList<>();
+            datas.add("手补件完成？");
+            mDialogRelativelayout.setStrContent(datas);
+            mItemDialog = new AlertDialog.Builder(this).setCancelable(false).setView(mDialogRelativelayout)
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            if (tag) {
+                                createDialog(dialogwarningMessage);
+                                tag = false;
+                            }
                         }
-                    }
-                })
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mItemHandAdd.setInfo("预警信息：手补件完成，等待品管确认");
-                        mAdapter.notifyDataSetChanged();
-                        if (tag) {
-                            createDialog(dialogwarningMessage);
-                            tag = false;
+                    })
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+//                            mItemHandAdd.setInfo("手补件完成，等待品管确认");
+//                            mAdapter.notifyDataSetChanged();
+                            Map<String,String> mMap=new HashMap<>();
+                            mMap.put("id",String.valueOf(mItemHandAdd.getId()));
+                            Gson mGson=new Gson();
+                            String mS=mGson.toJson(mMap);
+                            Log.i("HandAddActivity", mS);
+                            getPresenter().getItemHandAddConfirm(mS);
+                            getPresenter().getItemHandAddDatas();
+                            mAdapter.notifyDataSetChanged();
+
+                            if (tag) {
+                                createDialog(dialogwarningMessage);
+                                tag = false;
+                            }
                         }
-                    }
-                }).create();
-        mItemDialog.show();
+                    }).create();
+            mItemDialog.show();
+        }
+
     }
 
 }

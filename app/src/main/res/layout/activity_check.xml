@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<include layout="@layout/appbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/px_40"
+        >
+        <TextView
+            android:id="@+id/cargon_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cargon_text"
+            style="@style/waring_text"
+            />
+        <TextView
+            android:id="@+id/cargon_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cargon_text"
+            android:layout_marginLeft="@dimen/px_20"
+            style="@style/waring_text"
+            />
+        <TextView
+            android:id="@+id/cargontv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cargonumber"
+            android:layout_below="@id/cargon_text"
+            android:layout_marginTop="@dimen/px_20"
+            style="@style/waring_text"
+            />
+        <EditText
+            android:id="@+id/cargoned"
+            android:layout_width="@dimen/px_240"
+            android:layout_height="@dimen/px_60"
+            android:background="@drawable/ed_frame"
+            android:layout_toRightOf="@id/cargontv"
+            android:layout_alignBottom="@id/cargontv"
+            android:layout_alignTop="@id/cargontv"
+            android:layout_marginLeft="@dimen/px_20"
+            />
+        <Button
+            android:id="@+id/cargon_affirm"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/px_60"
+            android:text="@string/cargon_affirm"
+           android:layout_marginRight="@dimen/dp_16"
+            android:layout_alignParentRight="true"
+            style="@style/pcb_button"
+            android:layout_alignBottom="@id/cargontv"
+            />
+
+
+    </RelativeLayout>
+
+    <include
+        layout="@layout/main_recyclerview"
+        />
+</LinearLayout>

@@ -14,6 +14,8 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.BacKBarCode;
+import com.delta.smt.entity.PutBarCode;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.MantissaWarehousePutstorageFragment;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.MantissaWarehouseReturnFragment;
@@ -58,7 +60,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     @Override
     protected void initData() {
 //此处的Title应该是 从网络获取的数量
-        titles = new String[]{"入库(3)", "退入主仓库(3)"};
+        titles = new String[]{"入库", "退入主仓库"};
 
         //接收那种预警，没有的话自己定义常量
         WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
@@ -176,7 +178,13 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     @Override
     public void onScanSuccess(String barcode) {
-        EventBus.getDefault().post(barcode);
-        super.onScanSuccess(barcode);
+        if(currentFragment==mMantissaWarehouseReturnFragment){
+
+            EventBus.getDefault().post(new BacKBarCode(barcode));
+        }else {
+
+            EventBus.getDefault().post(new PutBarCode(barcode));
+        }
+        //super.onScanSuccess(barcode);
     }
 }

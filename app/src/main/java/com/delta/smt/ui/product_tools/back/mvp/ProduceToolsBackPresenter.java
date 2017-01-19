@@ -1,6 +1,8 @@
 package com.delta.smt.ui.product_tools.back.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.smt.entity.JsonProductBackRoot;
+import com.delta.smt.entity.JsonProductToolsLocation;
 import com.delta.smt.entity.ProductToolsBack;
 
 import java.util.List;
@@ -20,11 +22,11 @@ public class ProduceToolsBackPresenter extends BasePresenter<ProduceToolsBackCon
         super(model, mView);
     }
 
-    public void getData(){
-        getModel().getProductToolsBack().subscribe(new Action1<List<ProductToolsBack>>() {
+    public void getData(String param){
+        getModel().getProductToolsBack(param).subscribe(new Action1<JsonProductBackRoot>() {
             @Override
-            public void call(List<ProductToolsBack> productToolsBacks) {
-                getView().getData(productToolsBacks);
+            public void call(JsonProductBackRoot jsonProductBackRoot) {
+                getView().getData(jsonProductBackRoot);
             }
         }, new Action1<Throwable>() {
             @Override

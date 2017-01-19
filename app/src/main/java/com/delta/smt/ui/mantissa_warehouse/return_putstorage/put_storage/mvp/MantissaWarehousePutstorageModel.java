@@ -38,4 +38,9 @@ public class MantissaWarehousePutstorageModel extends BaseModel<ApiService> impl
         return getService().getBingingLable(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
     }
 
+    @Override
+    public Observable<MantissaWarehousePutstorageResult> getUpLocation(String str) {
+        return getService().getUpLocation(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+    }
+
 }

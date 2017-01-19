@@ -1,10 +1,12 @@
 package com.delta.smt.ui.store;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.ItemOnclick;
@@ -58,10 +60,23 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
         mAdapter.setOnItemTimeOnclck(new ItemOnclick() {
             @Override
             public void onItemClick(View item, int position) {
-                Toast.makeText(getActivity(), "" + position, Toast.LENGTH_SHORT).show();
-                IntentUtils.showIntent(getActivity(), WarningListActivity.class);
+                if (mList.size() == 0) {
+
+                } else {
+                    ItemInfo itemInfo = mList.get(position);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("workNumber", itemInfo.getWorkNumber());
+                    bundle.putString("machine", itemInfo.getMaterialNumber());
+                    bundle.putString("materialNumber", itemInfo.getMachine());
+                    bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
+                    bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
+                    bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
+                    Toast.makeText(getActivity(), "" + position, Toast.LENGTH_SHORT).show();
+                    IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
+                }
             }
         });
+//       getPresenter().fatchWarning();
     }
 
     @Override
@@ -71,7 +86,9 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
     }
 
     @Subscribe
-    public void event(StoreEmptyMessage message) {
+    public void event(StoreEmptyMessage message)
+    {
+        getPresenter().fatchWarning();
         Log.e(TAG, "event: ");
     }
 
@@ -89,7 +106,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
 
     @Override
     protected void initData() {
-        getPresenter().fatchWarning();
+
 //        mList=new ArrayList<>();
 //        for (int i=0;i<10;i++){
 //            ItemInfo item=new ItemInfo();
@@ -115,8 +132,10 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
         mAdapter.notifyDataSetChanged();
     }
 
+
     @Override
-    public void onFailed() {
+    public void onFailed(String s) {
+        ToastUtils.showMessage(getActivity(),s);
 
     }
     @Override

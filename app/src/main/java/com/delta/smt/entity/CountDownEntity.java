@@ -19,7 +19,7 @@ public class CountDownEntity  {
     @SerializedName("remain_time")
     protected String countdown;
     protected long endTime;
-    protected int id;
+    protected int timeId;
     public long  countDownLong;
 
     public Long getCountDownLong(){
@@ -39,12 +39,12 @@ public class CountDownEntity  {
     public void setCountDownLong(long countDownLong){
         this.countDownLong = countDownLong;
     }
-    public int getId() {
-        return id;
+    public int getTimeId() {
+        return timeId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTimeId(int timeId) {
+        this.timeId = timeId;
     }
 
     public String getCountdown() {

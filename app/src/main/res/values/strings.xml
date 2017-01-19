@@ -61,7 +61,7 @@
     <string name="ToolsFeedBack">治具入架位</string>
     <string name="pcbcheck">PCB库房盘点</string>
     <string name="ProductToolsBarCodePlus">治具二维码:</string>
-    <string name="LocationBarCode">价位二维码:</string>
+    <string name="LocationBarCode">架位二维码:</string>
     <string name="Back">返回</string>
     <string name="WordNumber">工单号</string>
     <string name="WordType">工单类型</string>
@@ -85,4 +85,5 @@
     <string name="storage_clear">清空</string>
     <string name="title_storehint">提示</string>
     <string name="storehint">您确认要进行点灯操作吗？</string>
+    <string name="hasComplete">已完成</string>
 </resources>
