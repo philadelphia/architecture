@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by Lin.Hou on 2016-12-27.
  */
@@ -82,5 +84,34 @@ public class ItemInfo extends CountDownEntity {
         this.text = text;
     }
 
-    
+//    @Override
+//    public Long getCountDownLong() {
+//        //网络请求到的时间
+//        long getTime = Long.parseLong(date2TimeStamp(, "yyyy-MM-dd HH:mm:ss"));
+//        //现在时间
+//        long nowTime = Long.parseLong(timeStamp());
+//        if (nowTime >getTime) {
+//            res = nowTime-getTime;
+//        } else {
+//            res = 0;
+//        }
+//        return res;
+//
+//    }
+    public String date2TimeStamp(String date_str, String format) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            return String.valueOf(sdf.parse(date_str).getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public String timeStamp() {
+        long time = System.currentTimeMillis();
+        String t = String.valueOf(time);
+        return t;
+    }
+
 }

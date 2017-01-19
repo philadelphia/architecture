@@ -8,36 +8,42 @@
     >
     <TextView
         android:id="@+id/statistics"
-        android:layout_width="@dimen/px_360"
+        android:layout_width="@dimen/px_180"
         android:layout_height="wrap_content"
         android:text="@string/warning_pcbnumber"
+        android:textSize="@dimen/px_40"
         style="@style/item_textstyle"
         />
     <TextView
         android:id="@+id/statistics_id"
         android:layout_width="@dimen/px_360"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/px_40"
         android:text="@string/statistics_id"
         style="@style/item_textstyle"
         />
     <TextView
         android:id="@+id/statistics_pcbnumber"
-        android:layout_width="@dimen/px_360"
+        android:layout_width="@dimen/px_180"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/px_40"
+
         android:text="@string/statistics_pcbnumber"
         style="@style/item_textstyle"
         />
     <TextView
         android:id="@+id/statistics_number"
-        android:layout_width="@dimen/px_360"
+        android:layout_width="@dimen/px_180"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/px_40"
         android:text="@string/statistics_number"
         style="@style/item_textstyle"
         />
     <TextView
         android:id="@+id/statistics_storenumber"
-        android:layout_width="@dimen/px_360"
+        android:layout_width="@dimen/px_180"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/px_40"
         android:text="@string/statistics_storenumber"
         style="@style/item_textstyle"
         />

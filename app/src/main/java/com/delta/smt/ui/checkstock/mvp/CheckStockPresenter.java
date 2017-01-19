@@ -25,7 +25,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(CheckStock rowsBeen) {
                 if ("0".equals(rowsBeen.getCode())) {
-                    if (rowsBeen.getMsg().contains("Sucess")){
+                    if (rowsBeen.getMsg().contains("Success")){
                     List<CheckStock.RowsBean> rows = rowsBeen.getRows();
                     getView().onSucess(rows);
                 } else {
@@ -45,7 +45,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(Success success) {
                 if ("0".equals(success.getCode())){
-                    if (success.getMsg().contains("Sucess")){
+                    if (success.getMsg().contains("Success")){
                     getView().onCheckStockNumberSucess(success.getMsg());
                 }else {
                     getView().onFailed(success.getMsg());
@@ -64,7 +64,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(Success success) {
             if ("0".equals(success.getCode())){
-                if (success.getMsg().contains("Sucess")){
+                if (success.getMsg().contains("Success")){
                 getView().onErrorSucess(success.getMsg());
             }else {
                 getView().onFailed(success.getMsg());
@@ -82,7 +82,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(Success success) {
                 if ("0".equals(success.getCode())){
-                    if (success.getMsg().contains("Sucess")){
+                    if (success.getMsg().contains("Success")){
                     getView().onErrorSucess(success.getMsg());
                 }else {
                     getView().onFailed(success.getMsg());
@@ -100,7 +100,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(Success success) {
                 if ("0".equals(success.getCode())){
-                    if (success.getMsg().contains("Sucess")){
+                    if (success.getMsg().contains("Success")){
                     getView().onErrorSucess(success.getMsg());
                 }else {
                     getView().onFailed(success.getMsg());

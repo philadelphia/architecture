@@ -29,7 +29,7 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
             @Override
             public void call(AllQuery itemInfos) {
                 if ("0".equals(itemInfos.getCode())) {
-                    if (itemInfos.getMsg().contains("Sucess")) {
+                    if (itemInfos.getMsg().contains("Success")) {
                         List<ItemInfo> itemInfoList = new ArrayList<ItemInfo>();
                         for (int i = 0; i < itemInfos.getRows().size(); i++) {
                             ItemInfo itemInfo = new ItemInfo();

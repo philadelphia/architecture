@@ -2,7 +2,6 @@ package com.delta.smt.ui.checkstock;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -36,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.smt.R.id.recy_contetn;
@@ -98,7 +96,9 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(this.getResources().getString(R.string.pcbcheck));
         builder = new AlertDialog.Builder(this);
-        cargonTv.requestFocus();
+        cargonTv.setFocusable(true);
+        cargoned.clearFocus();
+        cargoned.setFocusable(false);
         List<CheckStockDemo> list = new ArrayList<>();
         list.add(new CheckStockDemo("", "", "", "", ""));
         CommonBaseAdapter<CheckStockDemo> mAdapterTitle = new CommonBaseAdapter<CheckStockDemo>(getContext(), list) {
@@ -136,7 +136,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                 mId = dataList.get(i).getId();
                                 getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(mMaterbarCode.getCount()));
                             } else {
-                                cargoned.requestFocus();
+                                cargoned.setFocusable(true);
                             }
                         } else {
                             mErrorDialog = builder.create();

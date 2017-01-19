@@ -100,7 +100,6 @@
         <item name="android:paddingTop">@dimen/px_16</item>
 
     </style>
-    >
 
     <style name="mystyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>

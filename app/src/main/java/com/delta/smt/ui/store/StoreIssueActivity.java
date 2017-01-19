@@ -70,6 +70,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     ArrayList<String> SimpleWarningdatas = new ArrayList<>();
     private SimpleDateFormat dateFormat;
 
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerStoreComponent.builder().appComponent(appComponent).storeModule(new StoreModule(this)).build().inject(this);
@@ -87,6 +88,8 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
     }
+
+
 
     @Override
     protected void initView() {
@@ -221,28 +224,12 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
 
     @Subscribe
     public void event(ArrangeInt message) {
-        this.arrayint = message.getAnInt();
-        if (arrayint == 0 && warnInt == 0) {
-            mTitles = null;
-            mTitles = new String[]{"预警", "排程"};
-        } else if (arrayint != 0 && warnInt == 0) {
-            mTitles = null;
-            mTitles = new String[]{"预警(" + arrayint + ")", "排程"};
-        } else if (arrayint == 0 && warnInt != 0) {
-            mTitles = new String[]{"预警", "排程(" + warnInt + ")"};
-        } else if (arrayint != 0 && warnInt != 0) {
-            mTitles = new String[]{"预警(" + arrayint + ")", "排程(" + warnInt + ")"};
-        }
-        for (int i = 0; i < mTitles.length; i++) {
-            tlTitle.addTab(tlTitle.newTab());
-        }
-        ViewUtils.setTabTitle(tlTitle, mTitles);
-        tlTitle.addOnTabSelectedListener(this);
+        tlTitle.getTabAt(1).setText("排程(" + message.getAnInt() + ")");
     }
 
     @Subscribe
     public void event(WarningInt message) {
-        this.warnInt = message.getWarnInt();
+        tlTitle.getTabAt(0).setText("预警(" +message.getWarnInt() + ")");
     }
 
 

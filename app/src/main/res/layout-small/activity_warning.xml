@@ -59,6 +59,23 @@
             android:layout_below="@id/tv_pcb"
             android:layout_toRightOf="@id/tv_machine"
             />
+        <TextView
+            android:id="@+id/tv_pcb_demand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px_50"
+            android:layout_toRightOf="@id/ed_work"
+            android:text="@string/pcb_demand"
+            style="@style/waring_text"
+            />
+        <TextView
+            android:id="@+id/ed_pcb_demand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_pcb_demand"
+            android:layout_alignBottom="@id/tv_pcb_demand"
+            style="@style/waring_editext"
+            />
 
     </RelativeLayout>
     <include layout="@layout/main_recyclerview"
