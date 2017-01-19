@@ -1,5 +1,10 @@
 package com.delta.smt;
 
+import com.delta.commonlibs.utils.GsonTools;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -103,4 +108,12 @@ public class Constant {
     public static String FAULTCODE = "fault_code";
     public static String FAULTID = "fault_id";
     public static String PRODUCTIONLINE = "production_line";
+    public static String CONDITION=null;
+
+    public static String initLine() {
+        Map<String, String> map = new HashMap<>();
+        map.put("lines", Constant.CONDITION);
+        String line = GsonTools.createGsonString(map);
+        return line;
+    }
 }

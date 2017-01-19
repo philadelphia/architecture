@@ -104,6 +104,12 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
                     holder.getView(R.id.tv_make_process).setVisibility(View.GONE);
                     holder.getView(R.id.tv_warning_message).setVisibility(View.GONE);
+
+                    holder.getView(R.id.tv_word_code).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.tv_face).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.tv_unused_materials).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.tv_material_station).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.tv_status).setVisibility(View.VISIBLE);
                 }else {
                     holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
                     holder.setText(R.id.tv_produce_line, "产线："+itemWarningInfo.getProductionline());
@@ -115,6 +121,9 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     holder.getView(R.id.tv_unused_materials).setVisibility(View.GONE);
                     holder.getView(R.id.tv_material_station).setVisibility(View.GONE);
                     holder.getView(R.id.tv_status).setVisibility(View.GONE);
+
+                    holder.getView(R.id.tv_make_process).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.tv_warning_message).setVisibility(View.VISIBLE);
 
                 }
 
@@ -188,10 +197,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     @Override
     protected void initData() {
-        Log.i("aaa", "argument== " + ProduceWarningActivity.initLine());
+        Log.i("aaa", "argument== " + Constant.initLine());
 
-        if (ProduceWarningActivity.initLine() != null) {
-            getPresenter().getItemWarningDatas(ProduceWarningActivity.initLine());
+        if (Constant.initLine() != null) {
+            getPresenter().getItemWarningDatas(Constant.initLine());
         }
     }
 
@@ -317,7 +326,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     materialPlate=currentBarcode;
                     Log.i("barcode", currentBarcode);
                 } catch (EntityNotFountException e) {
-
+                    ToastUtils.showMessage(getContext(),"请扫描料盘！");
                     currentBarcode=null;
                     e.printStackTrace();
                 }
@@ -330,6 +339,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     feederId=currentBarcode;
                     Log.i("barcode", currentBarcode);
                 } catch (EntityNotFountException e) {
+                    ToastUtils.showMessage(getContext(),"请扫描FeederID！");
                     currentBarcode=null;
                     e.printStackTrace();
                 }
@@ -342,6 +352,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     materialStation=currentBarcode;
                     Log.i("barcode", currentBarcode);
                 } catch (EntityNotFountException e) {
+                    ToastUtils.showMessage(getContext(),"请扫描料站！");
                     currentBarcode=null;
                     e.printStackTrace();
                 }
@@ -417,8 +428,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     //Activity预警广播触发事件处理
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage){
-        if (ProduceWarningActivity.initLine() != null) {
-            getPresenter().getItemWarningDatas(ProduceWarningActivity.initLine());
+        if (Constant.initLine()!= null) {
+            getPresenter().getItemWarningDatas(Constant.initLine());
         }
         Log.e(TAG, "event1: ");
     }

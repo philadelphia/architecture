@@ -77,7 +77,7 @@ public class ItemWarningInfo extends CountDownEntity{
             date = sdf.parse(time);
             long time = date.getTime();
 
-            Log.i("SupplyFragment", "time: " + time);
+            Log.i("ItemWarningInfo", "time: " + time);
             return  date.getTime();
         } catch (ParseException e) {
             e.printStackTrace();

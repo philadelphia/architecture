@@ -1,8 +1,11 @@
 package com.delta.smt.ui.production_warning.mvp.produce_info_fragment;
 
+import android.util.Log;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.di.scope.FragmentScope;
+import com.delta.smt.Constant;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
@@ -32,6 +35,8 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
 //                getView().getItemInfoDatas(itemInfos);
                 if ("0".equals(itemInfos.getCode())) {
                     getView().getItemInfoDatas(itemInfos.getRows().getMessage());
+                    Log.e("aaa", "fagment:信息数量"+String.valueOf(itemInfos.getRows().getMessage().size()) );
+
                 }else {
                     getView().getItemInfoDatasFailed(itemInfos.getMsg());
                 }
@@ -50,7 +55,7 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
                     getView().getItemInfoDatasFailed(result.getMessage());
-                    getItemInfoDatas(ProduceWarningActivity.initLine());
+                    getItemInfoDatas(Constant.initLine());
                 }else {
                     getView().getItemInfoDatasFailed(result.getMessage());
                 }

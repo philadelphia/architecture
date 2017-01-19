@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -57,10 +58,10 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     @Override
     protected void initData() {
 
-        Log.i("aaa", "argument== " + ProduceWarningActivity.initLine());
+        Log.i("aaa", "argument== " + Constant.initLine());
 
-        if (ProduceWarningActivity.initLine() != null) {
-            getPresenter().getItemInfoDatas(ProduceWarningActivity.initLine());
+        if (Constant.initLine() != null) {
+            getPresenter().getItemInfoDatas(Constant.initLine());
         }
 
 
@@ -172,8 +173,8 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     //Activity预警广播触发事件处理
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage){
-        if (ProduceWarningActivity.initLine() != null) {
-            getPresenter().getItemInfoDatas(ProduceWarningActivity.initLine());
+        if (Constant.initLine() != null) {
+            getPresenter().getItemInfoDatas(Constant.initLine());
         }
         Log.e(TAG, "event3: ");
     }

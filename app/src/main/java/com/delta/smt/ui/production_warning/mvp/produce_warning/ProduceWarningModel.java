@@ -1,7 +1,10 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
+import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.ProduceWarning;
+import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import rx.Observable;
@@ -16,11 +19,11 @@ public class ProduceWarningModel extends BaseModel<ApiService> implements Produc
     }
 
     @Override
-    public Observable<TitleNumber> getTitleDatas() {
-        TitleNumber mTitleNumber = new TitleNumber(2, 1, 1);
+    public Observable<ProduceWarning> getTitleDatas(String condition) {
+/*        TitleNumber mTitleNumber = new TitleNumber(2, 1, 1);
 
-        return Observable.just(mTitleNumber);
+        return Observable.just(mTitleNumber);*/
 
-//        return getService().getTitleDatas();
+        return getService().getTitleDatas(condition).compose(RxsRxSchedulers.<ProduceWarning>io_main());
     }
 }

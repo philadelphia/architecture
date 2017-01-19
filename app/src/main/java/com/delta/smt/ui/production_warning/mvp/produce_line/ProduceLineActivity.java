@@ -6,12 +6,15 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -28,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -40,10 +44,17 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     @BindView(R.id.ryv_production_line)
     RecyclerView ryvProductionLine;
 
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+
+
     private CommonBaseAdapter<ItemProduceLine> mAdapter;
     private List<ItemProduceLine> datas = new ArrayList<>();
 
-    String submitline = "dfsdf";
     private int type;
 
     @Override
@@ -55,11 +66,19 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
     @Override
     protected void initView() {
+
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        mToolbarTitle.setText("产线选择");
+
+
         //设置Recyleview的adapter
         mAdapter = new CommonBaseAdapter<ItemProduceLine>(this, datas) {
             @Override
             protected void convert(CommonViewHolder holder, ItemProduceLine item, int position) {
-                holder.setText(R.id.cb_production_line, item.getLinename());
+                holder.setText(R.id.cb_production_line, "SMT_" + item.getLinename());
                 CheckBox checkBox = holder.getView(R.id.cb_production_line);
                 checkBox.setChecked(item.isChecked());
             }
@@ -102,10 +121,13 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 }
                 if (TextUtils.isEmpty(mStringBuffer.toString())) {
                     ToastUtils.showMessage(this, "请选择产线！");
+                    Constant.CONDITION = null;
                     return;
                 }
-                Log.i("aaa", String.valueOf(mStringBuffer));
 
+                Log.i("aaa", String.valueOf(mStringBuffer));
+                Constant.CONDITION = mStringBuffer.toString();
+                Constant.initLine();
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.PRODUCTIONLINE, mStringBuffer.toString());
                 if (type == 0) {
@@ -164,5 +186,19 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         item.setChecked(!item.isChecked());
         cb.setChecked(item.isChecked());
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }
