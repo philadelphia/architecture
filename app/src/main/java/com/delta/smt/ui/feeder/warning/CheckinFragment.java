@@ -4,16 +4,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.delta.buletoothio.barcode.parse.BarCodeParse;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.FeederBuffer;
 import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
@@ -28,7 +24,6 @@ import com.delta.smt.ui.feeder.warning.checkin.di.CheckInModule;
 import com.delta.smt.ui.feeder.warning.checkin.di.DaggerCheckInComponent;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInContract;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInPresenter;
-import com.delta.smt.utils.BarCodeUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -267,7 +262,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
                         String argument = gson.toJson(map);
                         Log.i(TAG, "argument== " + argument);
                         Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
-                        getPresenter().getFeederCheckInTime(argument);
+
                     }
                 }
 
@@ -278,7 +273,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
 
         if (!flag2){
             try {
-                FrameLocation frameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                FeederBuffer frameLocation = (FeederBuffer) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER_BUFFER);
                 flag2 = true;
                 mCurrentLocation = frameLocation.getSource();
                 Log.i(TAG, "mCurrentLocation: " + frameLocation.toString());
@@ -291,6 +286,8 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
                 Log.i(TAG, "argument== " + argument);
                 Log.i(TAG, "料架已经扫描完成，接下来入库: ");
                 getPresenter().getFeederCheckInTime(argument);
+                flag1 = false;
+                flag2 = false;
             } catch (EntityNotFountException e1) {
                 e1.printStackTrace();
             }

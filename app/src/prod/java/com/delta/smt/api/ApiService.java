@@ -69,15 +69,10 @@ public interface ApiService {
 
     //  获取feeder入库列表
     @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
-    /*
-     获取feeder入库列表
-     tao.zt.zhang
-     */
-    @GET("http://172.22.34.6:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     //获取feeder入库时间
-    @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/feederBuffStorages")
+    @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/feederBuffStorage")
     Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
 
     //获取所有的Feeder备料工单列表

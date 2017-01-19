@@ -44,7 +44,7 @@ import butterknife.OnClick;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.FRAME_LOCATION;
 import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
-import static com.delta.smt.R.id.editText;
+
 import static com.delta.smt.R.id.recy_contetn;
 import static com.delta.smt.base.BaseApplication.getContext;
 
