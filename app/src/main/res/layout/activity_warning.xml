@@ -10,6 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/px_20"
         >
         <TextView
             android:id="@+id/tv_work"
@@ -63,7 +64,7 @@
             android:id="@+id/tv_pcb_demand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/px_20"
+            android:layout_marginLeft="@dimen/px_50"
             android:layout_toRightOf="@id/ed_work"
             android:layout_alignBottom="@id/ed_work"
             android:text="@string/pcb_demand"
@@ -80,7 +81,6 @@
     </RelativeLayout>
 
     <include layout="@layout/main_recyclerview"
-
         />
 
 

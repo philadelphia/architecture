@@ -1,64 +1,170 @@
 package com.delta.smt.entity;
 
+import java.util.List;
+
 /**
  * Created by Lin.Hou on 2016-12-28.
  */
 
 public class CheckStock {
-    String pcb;
-    String liu;
-    String number;
-    String check;
-    String zhuangtai;
 
-    public CheckStock() {
+    /**
+     * code : 0
+     * msg : success
+     * rows : [{"id":1,"partNum":"0343362301","subShelfSerial":"A11-1","boxSerial":"1234342","pcbCode":"01","dateCode":"1620","boundCount":600,"realCount":0,"date":"2016/12/13","userName":"admin","status":"未开始","description":""},{"id":1,"partNum":"0343362301","subShelfSerial":"A11-1","boxSerial":"23423424","pcbCode":"01","dateCode":"1620","boundCount":600,"realCount":0,"date":"2016/12/13","userName":"admin","status":"未开始","description":""}]
+     */
+
+    private String code;
+    private String msg;
+    /**
+     * id : 1
+     * partNum : 0343362301
+     * subShelfSerial : A11-1
+     * boxSerial : 1234342
+     * pcbCode : 01
+     * dateCode : 1620
+     * boundCount : 600
+     * realCount : 0
+     * date : 2016/12/13
+     * userName : admin
+     * status : 未开始
+     * description :
+     */
+
+    private List<RowsBean> rows;
+
+    public String getCode() {
+        return code;
     }
 
-    public CheckStock(String pcb, String liu, String number, String check, String zhuangtai) {
-        this.pcb = pcb;
-        this.liu = liu;
-        this.number = number;
-        this.check = check;
-        this.zhuangtai = zhuangtai;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getPcb() {
-        return pcb;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setPcb(String pcb) {
-        this.pcb = pcb;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getLiu() {
-        return liu;
+    public List<RowsBean> getRows() {
+        return rows;
     }
 
-    public void setLiu(String liu) {
-        this.liu = liu;
+    public void setRows(List<RowsBean> rows) {
+        this.rows = rows;
     }
 
-    public String getNumber() {
-        return number;
-    }
+    public static class RowsBean {
+        private int id;
+        private String partNum;
+        private String subShelfSerial;
+        private String boxSerial;
+        private String pcbCode;
+        private String dateCode;
+        private int boundCount;
+        private int realCount;
+        private String date;
+        private String userName;
+        private String status;
+        private String description;
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
+        public int getId() {
+            return id;
+        }
 
-    public String getCheck() {
-        return check;
-    }
+        public void setId(int id) {
+            this.id = id;
+        }
 
-    public void setCheck(String check) {
-        this.check = check;
-    }
+        public String getPartNum() {
+            return partNum;
+        }
 
-    public String getZhuangtai() {
-        return zhuangtai;
-    }
+        public void setPartNum(String partNum) {
+            this.partNum = partNum;
+        }
 
-    public void setZhuangtai(String zhuangtai) {
-        this.zhuangtai = zhuangtai;
+        public String getSubShelfSerial() {
+            return subShelfSerial;
+        }
+
+        public void setSubShelfSerial(String subShelfSerial) {
+            this.subShelfSerial = subShelfSerial;
+        }
+
+        public String getBoxSerial() {
+            return boxSerial;
+        }
+
+        public void setBoxSerial(String boxSerial) {
+            this.boxSerial = boxSerial;
+        }
+
+        public String getPcbCode() {
+            return pcbCode;
+        }
+
+        public void setPcbCode(String pcbCode) {
+            this.pcbCode = pcbCode;
+        }
+
+        public String getDateCode() {
+            return dateCode;
+        }
+
+        public void setDateCode(String dateCode) {
+            this.dateCode = dateCode;
+        }
+
+        public int getBoundCount() {
+            return boundCount;
+        }
+
+        public void setBoundCount(int boundCount) {
+            this.boundCount = boundCount;
+        }
+
+        public int getRealCount() {
+            return realCount;
+        }
+
+        public void setRealCount(int realCount) {
+            this.realCount = realCount;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
     }
 }
