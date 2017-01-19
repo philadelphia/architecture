@@ -26,7 +26,6 @@ public interface ProduceLineContract {
 
         Observable<List<ItemProduceLine>> getProductionLineDatas();
 
-        Observable<String> sumbitLine();
 
     }
 
