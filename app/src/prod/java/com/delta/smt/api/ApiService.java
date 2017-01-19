@@ -2,6 +2,7 @@ package com.delta.smt.api;
 
 
 import com.delta.smt.entity.AllQuery;
+import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.FaultSolutionMessage;
