@@ -21,24 +21,23 @@
             android:layout_height="wrap_content"
             android:text="剩余时间："
             android:textColor="#000000"
-            android:textSize="40px" />
+            android:textSize="20dp" />
 
         <cn.iwgang.countdownview.CountdownView
-            android:id="@+id/cv_countdownViewTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/time_remain"
-            android:layout_below="@+id/time_remain"
-            app:isShowDay="false"
-            app:isShowHour="true"
-            app:isShowMillisecond="false"
+            android:id="@+id/cv_countdownView"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_title"
+            android:layout_marginTop="10dp"
+            app:isShowMillisecond="true"
             app:isShowMinute="true"
             app:isShowSecond="true"
             app:suffixGravity="center"
             app:suffixTextColor="#000000"
-            app:suffixTextSize="40px"
+            app:suffixTextSize="15sp"
             app:timeTextColor="#000000"
-            app:timeTextSize="40px" />
+            app:timeTextSize="30sp" />
     </LinearLayout>
 
     <TextView
@@ -49,7 +48,7 @@
         android:padding="20px"
         android:text="第一行数据"
         android:textColor="#000000"
-        android:textSize="40px" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/tv_number"
@@ -61,7 +60,7 @@
         android:padding="20px"
         android:text="第二行数据"
         android:textColor="#000000"
-        android:textSize="40px" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/tv_face"
@@ -73,7 +72,7 @@
         android:padding="20px"
         android:text="第三行数据"
         android:textColor="#000000"
-        android:textSize="40px" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/tv_type"
@@ -84,6 +83,6 @@
         android:padding="20px"
         android:text="第四行数据"
         android:textColor="#000000"
-        android:textSize="40px" />
+        android:textSize="20dp" />
 
 </RelativeLayout>
