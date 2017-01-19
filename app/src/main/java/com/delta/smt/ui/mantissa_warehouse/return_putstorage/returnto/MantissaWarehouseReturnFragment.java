@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
+import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.smt.R;
@@ -199,7 +200,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     break;
                 case 2:
                     try {
-                        LastMaterialCar lastMaterialCar = (LastMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_CAR);
+                        LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
                         lastCar = lastMaterialCar.getSource();
 
                         WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar);
