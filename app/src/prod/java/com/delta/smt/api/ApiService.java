@@ -180,7 +180,7 @@ public interface ApiService {
     @GET("pcb/management/capacity")
     Observable<PcbNumber> getPcbNumber(@Query("param") String s);//获取实际数量
 
-    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
+//    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
     @GET("webapi/pcb/management/outbound")
     Observable<Success> getPcbSuccess(@Query("param") String s);//出料操作
     @GET("pcb/management/outbound/alarm/submit")

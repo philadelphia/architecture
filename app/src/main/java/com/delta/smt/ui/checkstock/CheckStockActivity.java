@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,12 +27,10 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.CheckStockDemo;
-import com.delta.smt.entity.Success;
 import com.delta.smt.ui.checkstock.di.CheckStockModule;
 import com.delta.smt.ui.checkstock.di.DaggerCheckStockComponent;
 import com.delta.smt.ui.checkstock.mvp.CheckStockContract;
 import com.delta.smt.ui.checkstock.mvp.CheckStockPresenter;
-import com.delta.smt.utils.BarCodeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +39,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.delta.buletoothio.barcode.parse.BarCodeType.FRAME_LOCATION;
-import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
-import static com.delta.smt.R.id.editText;
 import static com.delta.smt.R.id.recy_contetn;
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -68,6 +62,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     TextView tvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
+    @BindView(R.id.cargon_tv)
+    TextView cargonTv;
     private List<CheckStock.RowsBean> dataList = new ArrayList<>();
     private CommonBaseAdapter<CheckStock.RowsBean> mAdapter;
     private TextView mErrorContent;
@@ -76,7 +72,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     private AlertDialog mResultDialog;
     private TextView mResultContent;
     private MaterialBlockBarCode mMaterbarCode;
-    private  int status=1;
+    private int status = 1;
     private FrameLocation mFrameLocation;
     private int mId;
     private FrameLocation mFrameLocationSuccess;
@@ -89,7 +85,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     protected void initData() {
-
 
 
     }
@@ -125,27 +120,28 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             protected void convert(CommonViewHolder holder, CheckStock.RowsBean item, int position) {
                 holder.setText(R.id.statistics, item.getPartNum());
                 holder.setText(R.id.statistics_id, item.getBoxSerial());
-                holder.setText(R.id.statistics_pcbnumber, ""+item.getBoundCount());
-                if (item.getRealCount()==0) {
+                holder.setText(R.id.statistics_pcbnumber, "" + item.getBoundCount());
+                if (item.getRealCount() == 0) {
                     holder.setText(R.id.statistics_number, "");
-                }else {
-                    holder.setText(R.id.statistics_number, ""+item.getRealCount());
+                } else {
+                    holder.setText(R.id.statistics_number, "" + item.getRealCount());
                 }
                 holder.setText(R.id.statistics_storenumber, item.getStatus());
 
                 if (mMaterbarCode != null) {
                     for (int i = 0; i < dataList.size(); i++) {
                         if (mMaterbarCode.getDeltaMaterialNumber().equals(dataList.get(i).getPartNum())) {
-                            if (Integer.valueOf(mMaterbarCode.getCount())==dataList.get(i).getBoundCount()){
-                            mId=dataList.get(i).getId();
-                            getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(),Integer.valueOf(mMaterbarCode.getCount()));}else {
+                            if (Integer.valueOf(mMaterbarCode.getCount()) == dataList.get(i).getBoundCount()) {
+                                mId = dataList.get(i).getId();
+                                getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(mMaterbarCode.getCount()));
+                            } else {
                                 cargoned.requestFocus();
                             }
-                        }else{
+                        } else {
                             mErrorDialog = builder.create();
                             mErrorDialog.setContentView(R.layout.dialog_error);
                             mErrorContent = (TextView) mErrorDialog.findViewById(R.id.error_content);
-                            mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber()+"-"+mMaterbarCode.getCount()+"片\n不是本架位的物料，是否变更架位");
+                            mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
                             mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
                             mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
                             mErrorDialog.show();
@@ -174,37 +170,38 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         switch (status) {
             case 1:
                 try {
-                    mFrameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, FRAME_LOCATION);
+                    mFrameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                    cargonTv.setText(mFrameLocation.getSource());
                     getPresenter().fetchCheckStock(mFrameLocation.getSource());
-                    status=2;
+                    status = 2;
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this,"扫描码有问题");
-                    status=1;
+                    ToastUtils.showMessage(this, "扫描码有问题");
+                    status = 1;
                 }
                 break;
-            case  2:
+            case 2:
                 try {
-                    mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
-                    status=2;
+                    mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    status = 2;
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this,"请重新扫描架位");
-                    status=3;
+                    ToastUtils.showMessage(this, "请重新扫描架位");
+                    status = 3;
                 }
                 break;
             case 3:
                 try {
-                    mFrameLocationSuccess = (FrameLocation) barCodeParseIpml.getEntity(barcode, FRAME_LOCATION);
-                    if(mFrameLocationSuccess.getSource().equals(mFrameLocation.getSource())){
+                    mFrameLocationSuccess = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                    if (mFrameLocationSuccess.getSource().equals(mFrameLocation.getSource())) {
                         getPresenter().fetchException(mFrameLocationSuccess.getSource());
-                    }else {
-                        ToastUtils.showMessage(this,"两次扫描架位不一致");
+                    } else {
+                        ToastUtils.showMessage(this, "两次扫描架位不一致");
                     }
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this,"扫描码有问题");
+                    ToastUtils.showMessage(this, "扫描码有问题");
                 }
 
                 break;
@@ -220,9 +217,10 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     public void onClick() {
         if (mMaterbarCode != null) {
             if (!TextUtils.isEmpty(cargoned.getText())) {
-                if (mId!=0){
-                String ss=cargoned.getText().toString();
-                getPresenter().fetchCheckStockSuccessNumber(mId,Integer.valueOf(ss));}
+                if (mId != 0) {
+                    String ss = cargoned.getText().toString();
+                    getPresenter().fetchCheckStockSuccessNumber(mId, Integer.valueOf(ss));
+                }
             } else {
                 Toast toast = Toast.makeText(this, "请输入数量", Toast.LENGTH_SHORT);
                 View view = toast.getView();
@@ -248,7 +246,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onFailed(String s) {
-        ToastUtils.showMessage(this,s);
+        ToastUtils.showMessage(this, s);
     }
 
     @Override
@@ -268,7 +266,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onSubmitSucess(String wareHouses) {
-        ToastUtils.showMessage(this,"盘点成功");
+        ToastUtils.showMessage(this, "盘点成功");
     }
 
 
@@ -289,7 +287,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     }
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -299,7 +296,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 }
                 break;
             case R.id.error_alteration:
-                getPresenter().fetchError(mMaterbarCode.getDeltaMaterialNumber(),mFrameLocation.getSource());
+                getPresenter().fetchError(mMaterbarCode.getDeltaMaterialNumber(), mFrameLocation.getSource());
                 break;
             case R.id.result_cancel:
                 if (mErrorDialog.isShowing()) {
@@ -326,5 +323,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }

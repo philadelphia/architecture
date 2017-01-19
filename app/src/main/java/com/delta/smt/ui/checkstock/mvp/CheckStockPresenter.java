@@ -25,11 +25,12 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(CheckStock rowsBeen) {
                 if ("0".equals(rowsBeen.getCode())) {
+                    if (rowsBeen.getMsg().contains("Sucess")){
                     List<CheckStock.RowsBean> rows = rowsBeen.getRows();
                     getView().onSucess(rows);
                 } else {
                     getView().onFailed(rowsBeen.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -44,10 +45,11 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(Success success) {
                 if ("0".equals(success.getCode())){
+                    if (success.getMsg().contains("Sucess")){
                     getView().onCheckStockNumberSucess(success.getMsg());
                 }else {
                     getView().onFailed(success.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -62,10 +64,11 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(Success success) {
             if ("0".equals(success.getCode())){
+                if (success.getMsg().contains("Sucess")){
                 getView().onErrorSucess(success.getMsg());
             }else {
                 getView().onFailed(success.getMsg());
-            }
+            }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -79,10 +82,11 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(Success success) {
                 if ("0".equals(success.getCode())){
+                    if (success.getMsg().contains("Sucess")){
                     getView().onErrorSucess(success.getMsg());
                 }else {
                     getView().onFailed(success.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -96,10 +100,11 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(Success success) {
                 if ("0".equals(success.getCode())){
+                    if (success.getMsg().contains("Sucess")){
                     getView().onErrorSucess(success.getMsg());
                 }else {
                     getView().onFailed(success.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override

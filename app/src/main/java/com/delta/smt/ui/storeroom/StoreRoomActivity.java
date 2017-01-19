@@ -66,6 +66,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     private StringBuffer stringBuffer = new StringBuffer();
 
     private List<MaterialBlockBarCode> materialBlockBarCodes = new ArrayList<>();
+    private MaterialBlockBarCode mBarCode;
 
 
     @Override
@@ -101,13 +102,13 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         Log.i("info","-------------------------->"+barcode);
         try {
-          MaterialBlockBarCode barCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    Log.e("barcode", barCode.getDeltaMaterialNumber());
-                    storagePcbed.setText(barCode.getDeltaMaterialNumber());
-                    storageVendored.setText(barCode.getBusinessCode());
-                    storageDatacodeed.setText(barCode.getDeltaMaterialNumber().substring(0,2));
+           mBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    Log.e("barcode", mBarCode.getDeltaMaterialNumber());
+                    storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
+                    storageVendored.setText(mBarCode.getBusinessCode());
+                    storageDatacodeed.setText(mBarCode.getDeltaMaterialNumber().substring(0,2));
                     if (materialBlockBarCodes.size() < 3) {
-                        materialBlockBarCodes.add(barCode);
+                        materialBlockBarCodes.add(mBarCode);
                     }
                     setTextView();
 
@@ -131,10 +132,10 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     }
 
     private void setTextView() {
-
-        stringBuffer.append("\n" + storagePcbed.getText() + storageVendored.getText() + storageDatacodeed.getText());
-        storageShow.setText(stringBuffer);
-
+        if(mBarCode!=null) {
+            stringBuffer.append("\n" + mBarCode.getDeltaMaterialNumber() + mBarCode.getBusinessCode() + mBarCode.getDeltaMaterialNumber().substring(0, 2));
+            storageShow.setText(stringBuffer);
+        }
 
     }
 
@@ -157,6 +158,12 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         ToastUtils.showMessage(this,"点灯操作成功");
         materialBlockBarCodes.clear();
         storageShow.setText("");
+        stringBuffer=null;
+        stringBuffer=new StringBuffer();
+        storagePcbed.setText(null);
+        storageVendored.setText(null);
+        storageDatacodeed.setText(null);
+        storageIded.setText(null);
 
 
 

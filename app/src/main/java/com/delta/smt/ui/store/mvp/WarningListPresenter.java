@@ -39,9 +39,10 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(Success s) {
                 if ("0".equals(s.getCode())){
+                    if (s.getMsg().contains("Sucess")){
                     getView().onSucessState(s.getMsg());}else {
                     getView().onFailed(s.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -73,11 +74,12 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(OutBound outBound) {
                 if ("0".equals(outBound.getCode())){
+                    if (outBound.getMsg().contains("Sucess")){
             List<OutBound.DataBean> datalist = outBound.getData();
             getView().onOutSuccess(datalist);
             }else {
                 getView().onFailed(outBound.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -91,11 +93,12 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(OutBound outBound) {
                 if ("0".equals(outBound.getCode())){
+                    if (outBound.getMsg().contains("Sucess")){
                     List<OutBound.DataBean> datalist = outBound.getData();
                     getView().onOutSuccess(datalist);
                 }else {
                     getView().onFailed(outBound.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -110,10 +113,11 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(PcbNumber pcbNumber) {
             if ("0".equals(pcbNumber.getCode())){
+                if (pcbNumber.getMsg().contains("Sucess")){
                 getView().getNumberSucces(pcbNumber.getData());
             }else {
                 getView().onFailed(pcbNumber.getMsg());
-            }
+            }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -145,9 +149,10 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(Success success) {
                 if("0".equals(success.getCode())){
+                if (success.getMsg().contains("Sucess")){
                 getView().onSucessState(success.getMsg());}else {
                     getView().onFailed(success.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override

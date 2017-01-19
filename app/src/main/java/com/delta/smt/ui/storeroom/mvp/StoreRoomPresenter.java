@@ -50,7 +50,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         JSONObject jsonObject1=new JSONObject();
             try {
                 jsonObject1.putOpt("partNum",materialBlockBarCodes.get(i).getDeltaMaterialNumber());
-                jsonObject1.putOpt("pcbCode",materialBlockBarCodes.get(i).getBusinessCode());
+                jsonObject1.putOpt("pcbCode",materialBlockBarCodes.get(i).getStreamNumber().substring(0,2));
                 jsonObject1.putOpt("dateCode",materialBlockBarCodes.get(i).getDC());
                 jsonObject1.putOpt("serial",materialBlockBarCodes.get(i).getStreamNumber());
             } catch (JSONException e) {
@@ -83,10 +83,12 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             @Override
             public void call(Light light) {
             if ("0".equals(light.getCode())){
+                if (light.getMsg().contains("Sucess")){
               getView().lightSuccsee();}else {
              getView().storeFaild(light.getMsg());
 
                 }
+            }
             }
         }, new Action1<Throwable>() {
             @Override
@@ -97,29 +99,53 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
     }
 
     public  void fatchPutInStorage(List<MaterialBlockBarCode> materialBlockBarCodes,String s){
-        Gson gson=new Gson();
-        ParameterLight pa=new ParameterLight();
-        List<ParameterLight.DataBean> listData=new ArrayList<>();
+//        Gson gson=new Gson();
+//        ParameterLight pa=new ParameterLight();
+//        List<ParameterLight.DataBean> listData=new ArrayList<>();
+//        for (int i=0;i<materialBlockBarCodes.size();i++){
+//            ParameterLight.DataBean data=new ParameterLight.DataBean();
+//            data.setSerial(materialBlockBarCodes.get(i).getStreamNumber());
+//            data.setPartNum(materialBlockBarCodes.get(i).getDeltaMaterialNumber());
+//            data.setPcbCode(materialBlockBarCodes.get(i).getBusinessCode());
+//            data.setDateCode(materialBlockBarCodes.get(i).getDC());
+//            data.setCount(materialBlockBarCodes.get(i).getCount());
+//            data.setSubShelfCode(s);
+//            listData.add(data);
+//        }
+//        pa.setData(listData);
+        JSONObject jsonObject=new JSONObject();
+        JSONArray jsonArray=new JSONArray();
         for (int i=0;i<materialBlockBarCodes.size();i++){
-            ParameterLight.DataBean data=new ParameterLight.DataBean();
-            data.setSerial(materialBlockBarCodes.get(i).getStreamNumber());
-            data.setPartNum(materialBlockBarCodes.get(i).getDeltaMaterialNumber());
-            data.setPcbCode(materialBlockBarCodes.get(i).getBusinessCode());
-            data.setDateCode(materialBlockBarCodes.get(i).getDC());
-            data.setCount(materialBlockBarCodes.get(i).getCount());
-            data.setSubShelfCode(s);
-            listData.add(data);
+            JSONObject jsonObject1=new JSONObject();
+            try {
+                jsonObject1.putOpt("partNum",materialBlockBarCodes.get(i).getDeltaMaterialNumber());
+                jsonObject1.putOpt("pcbCode",materialBlockBarCodes.get(i).getStreamNumber().substring(0,2));
+                jsonObject1.putOpt("dateCode",materialBlockBarCodes.get(i).getDC());
+                jsonObject1.putOpt("serial",materialBlockBarCodes.get(i).getStreamNumber());
+                jsonObject1.putOpt("count",materialBlockBarCodes.get(i).getCount());
+                jsonObject1.putOpt("subShelfCode",s);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            jsonArray.put(jsonObject1);
         }
-        pa.setData(listData);
-        String jsonString=gson.toJson(pa).toString();
+        try {
+            jsonObject.putOpt("data",jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        String jsonString=gson.toJson(pa).toString();
+        String jsonString="[\'"+jsonObject.toString()+"\']";
         Log.e("info",jsonString);
         getModel().PutInStorage(jsonString).subscribe(new Action1<Success>() {
             @Override
             public void call(Success storageSuccess) {
                 if (storageSuccess.getCode().equals("0")) {
+                    if (storageSuccess.getMsg().contains("Sucess")){
                     getView().storageSuccsee();
                 }else {
                     getView().storeFaild(storageSuccess.getMsg());
+                }
                 }
             }
         }, new Action1<Throwable>() {

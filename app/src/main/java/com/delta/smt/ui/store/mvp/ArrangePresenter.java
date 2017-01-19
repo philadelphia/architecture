@@ -28,7 +28,7 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
             @Override
             public void call(AllQuery itemInfos) {
                 if ("0".equals(itemInfos.getCode())){
-
+                    if (itemInfos.getMsg().contains("Sucess")){
                     List<ItemInfo> itemInfoList=new ArrayList<>();
                     for (int i=0;i<itemInfos.getRows().size();i++){
                         Log.e("infows1",""+itemInfos.getRows().size());
@@ -49,7 +49,7 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
                     getView().onSucess(itemInfoList);
                 }else {
                     getView().onFailed(itemInfos.getMsg());
-                }
+                }}
 
             }
         },new Action1<Throwable>() {
