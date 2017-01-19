@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
@@ -16,17 +18,23 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.JsonProductToolsLocation;
 import com.delta.smt.entity.ProductToolsInfo;
+import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.ui.product_tools.mtools_info.Produce_mToolsActivity;
 import com.delta.smt.ui.product_tools.tools_info.di.DaggerProduceToolsInfoCompoent;
 import com.delta.smt.ui.product_tools.tools_info.di.ProduceToolsInfoModule;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoContract;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoPresenter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -51,12 +59,24 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @BindView(R.id.ProductToolsWorkItem)
     TextView mProductToolsWorkItemTextView;
 
+    @OnClick(R.id.confirm)
+    public void confirmData() {
+
+        if (data.size() > 1) {
+            getPresenter().getToolsVerfy("[\"{\\\"workOrderID\\\":" + workNumber + ",\\\"stencil\\\":" + data.get(1).getJigID() + ",\\\"scraper\\\":" + data.get(2).getJigID() + ",\\\"plate\\\":" + data.get(3).getJigID() + ",\\\"ict\\\":" + data.get(4).getJigID() + "}\"]");
+        }
+
+    }
+
     List<ProductToolsInfo> data = new ArrayList<>();
     CommonBaseAdapter<ProductToolsInfo> adapter;
     String workNumber;
 
     String sourceActivity = "ProduceToolsBorrowActivity";
     String TAG = "ProduceToolsInfoActivity";
+    Product_mToolsInfo selectItem;
+    String barcode;
+    int ID = 1001;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -69,10 +89,16 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
         workNumber = this.getIntent().getExtras().getString(sourceActivity);
 
+        if (workNumber == null) {
 
-        getPresenter().getToolsInfo("{\"workOrderID\":" + workNumber + "}");
+            this.selectItem = (Product_mToolsInfo) this.getIntent().getExtras().getSerializable("Produce_mToolsActivity");
+            String workNumber = this.getIntent().getExtras().getString("workNumber");
+            this.workNumber = workNumber;
+            getPresenter().getToolsInfo("{\"workOrderID\":" + workNumber + "}");
 
-
+        } else {
+            getPresenter().getToolsInfo("{\"workOrderID\":" + workNumber + "}");
+        }
     }
 
     @Override
@@ -87,7 +113,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
         mProductToolsWorkItemTextView.setText(workNumber);
         //productInfoBarCodeEditText.setText(workNumber);
 
-        data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态",""));
+        data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态", "", ""));
 
         adapter = new CommonBaseAdapter<ProductToolsInfo>(getContext(), data) {
             @Override
@@ -118,12 +144,13 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        Bundle bundle=new Bundle();
-                        bundle.putString("workNumber",workNumber);
-                        bundle.putString("jigTypeID",item.getJigTypeID());
+                        Bundle bundle = new Bundle();
+                        bundle.putString("workNumber", workNumber);
+                        bundle.putString("jigTypeID", item.getJigTypeID());
                         intent.putExtras(bundle);
                         intent.setClass(ProduceToolsInfoActivity.this, Produce_mToolsActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 });
 
@@ -171,8 +198,66 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getToolsInfo(List<ProductToolsInfo> ProductToolsItem) {
-        data.addAll(ProductToolsItem);
+        if (selectItem == null) {
+            data.addAll(ProductToolsItem);
+            adapter.notifyDataSetChanged();
+        } else {
+
+            for (ProductToolsInfo p : ProductToolsItem) {
+
+                Log.e("selectItem",selectItem.getProductToolsType()+666+selectItem.getProductToolsType());
+
+                if (selectItem.getProductToolsType().equals(p.getProduceToolsType())) {
+                    p.setProductToolsBarCode(selectItem.getProductToolsBarCode());
+                    p.setProductToolsLocation(selectItem.getProductToolsLocation());
+                    p.setJigID(selectItem.getJigID());
+                }
+
+            }
+
+            data.addAll(ProductToolsItem);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void getToolsVerfy(List<ProductToolsInfo> ProductToolsItem) {
+
+        int i = 0;
+        for (ProductToolsInfo p : ProductToolsItem) {
+            i++;
+            data.get(i).setTurnNumber(p.getTurnNumber());
+            data.get(i).setProductToolsBarCode(p.getProductToolsBarCode());
+            data.get(i).setJigTypeID(p.getJigTypeID());
+            data.get(i).setStatus(p.getStatus());
+            data.get(i).setProduceToolsType(p.getProduceToolsType());
+
+        }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getToolsBorrowSubmit(JsonProductToolsLocation j) {
+
+        Log.e("getToolsBorrowSubmit", j.toString());
+        if (j.getCode() == 1) {
+
+            int i = 0;
+            for (ProductToolsInfo p : data) {
+                i++;
+                if (data.get(i).getProductToolsBarCode().equals(this.barcode)) {
+
+                    productInfoBarCodeEditText.setText(this.barcode);
+                    adapter.notifyDataSetChanged();
+
+                }
+            }
+        } else {
+
+            Toast.makeText(this, j.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
     @Override
@@ -183,6 +268,10 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
+
+        getPresenter().getToolsBorrowSubmit("[\"{\\\"workOrderID\\\":" + workNumber + ",\\\"barcode\\\":\\\"" + barcode + "\\\",\\\"userID\\\":" + ID + "}\"]");
+
+        this.barcode = barcode;
 
     }
 }

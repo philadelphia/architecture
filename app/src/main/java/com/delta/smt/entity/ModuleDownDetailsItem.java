@@ -1,71 +1,132 @@
 package com.delta.smt.entity;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Created by Shufeng.Wu on 2017/1/5.
  */
 
 public class ModuleDownDetailsItem {
-    private String materialID;
-    private String serialID;
-    private String feederID;
-    private String moduleMaterialStationID;
-    private String ownership;
-    private String moduleDownTime;
 
-    public ModuleDownDetailsItem(String feederID, String materialID, String moduleDownTime, String moduleMaterialStationID, String ownership, String serialID) {
-        this.feederID = feederID;
-        this.materialID = materialID;
-        this.moduleDownTime = moduleDownTime;
-        this.moduleMaterialStationID = moduleMaterialStationID;
-        this.ownership = ownership;
-        this.serialID = serialID;
+    /**
+     * code : 0
+     * msg : Success
+     * rows : [{"id":1,"material_num":"4020108700","serial_num":"2016082500","feeder_id":"562632","slot":"03T0128","belong":"Feeder缓冲区","end_time":""},{"id":2,"material_num":"4020112600","serial_num":"2016082501","feeder_id":"KT8BD30661","slot":"03T0229","belong":"尾数仓","end_time":""},{"id":3,"material_num":"0341236301","serial_num":"2016082502","feeder_id":"KT8BD30663","slot":"03T0330","end_time":""}]
+     */
+
+    private String code;
+    private String msg;
+    private List<RowsBean> rows;
+
+    public String getCode() {
+        return code;
     }
 
-    public String getFeederID() {
-        return feederID;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public void setFeederID(String feederID) {
-        this.feederID = feederID;
+    public String getMsg() {
+        return msg;
     }
 
-    public String getMaterialID() {
-        return materialID;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public void setMaterialID(String materialID) {
-        this.materialID = materialID;
+    public List<RowsBean> getRows() {
+        return rows;
     }
 
-    public String getModuleDownTime() {
-        return moduleDownTime;
+    public void setRows(List<RowsBean> rows) {
+        this.rows = rows;
     }
 
-    public void setModuleDownTime(String moduleDownTime) {
-        this.moduleDownTime = moduleDownTime;
-    }
+    public static class RowsBean {
+        /**
+         * id : 1
+         * material_num : 4020108700
+         * serial_num : 2016082500
+         * feeder_id : 562632
+         * slot : 03T0128
+         * belong : Feeder缓冲区
+         * end_time :
+         */
 
-    public String getModuleMaterialStationID() {
-        return moduleMaterialStationID;
-    }
+        private int id;
+        private String material_num;
+        private String serial_num;
+        private String feeder_id;
+        private String slot;
+        private String belong;
+        private String end_time;
 
-    public void setModuleMaterialStationID(String moduleMaterialStationID) {
-        this.moduleMaterialStationID = moduleMaterialStationID;
-    }
+        public RowsBean(int id, String material_num, String serial_num, String feeder_id, String slot, String belong, String end_time) {
+            this.belong = belong;
+            this.end_time = end_time;
+            this.feeder_id = feeder_id;
+            this.id = id;
+            this.material_num = material_num;
+            this.serial_num = serial_num;
+            this.slot = slot;
+        }
 
-    public String getOwnership() {
-        return ownership;
-    }
+        public int getId() {
+            return id;
+        }
 
-    public void setOwnership(String ownership) {
-        this.ownership = ownership;
-    }
+        public void setId(int id) {
+            this.id = id;
+        }
 
-    public String getSerialID() {
-        return serialID;
-    }
+        public String getMaterial_num() {
+            return material_num;
+        }
 
-    public void setSerialID(String serialID) {
-        this.serialID = serialID;
+        public void setMaterial_num(String material_num) {
+            this.material_num = material_num;
+        }
+
+        public String getSerial_num() {
+            return serial_num;
+        }
+
+        public void setSerial_num(String serial_num) {
+            this.serial_num = serial_num;
+        }
+
+        public String getFeeder_id() {
+            return feeder_id;
+        }
+
+        public void setFeeder_id(String feeder_id) {
+            this.feeder_id = feeder_id;
+        }
+
+        public String getSlot() {
+            return slot;
+        }
+
+        public void setSlot(String slot) {
+            this.slot = slot;
+        }
+
+        public String getBelong() {
+            return belong;
+        }
+
+        public void setBelong(String belong) {
+            this.belong = belong;
+        }
+
+        public String getEnd_time() {
+            return end_time;
+        }
+
+        public void setEnd_time(String end_time) {
+            this.end_time = end_time;
+        }
     }
 }

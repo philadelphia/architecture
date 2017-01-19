@@ -19,7 +19,8 @@ public class GsonTools {
 		String gsonString = gson.toJson(object);
 		return gsonString;
 	}
-	
+
+
 	public static <T> T changeGsonToBean(String gsonString, Class<T> cls) {
 		Gson gson = new Gson();
 		T t = gson.fromJson(gsonString, cls);

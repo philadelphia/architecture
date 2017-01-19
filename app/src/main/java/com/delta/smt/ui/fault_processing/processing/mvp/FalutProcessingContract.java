@@ -2,7 +2,8 @@ package com.delta.smt.ui.fault_processing.processing.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
-import com.delta.smt.entity.FalutMesage;
+import com.delta.smt.entity.FaultMessage;
+import com.delta.smt.entity.SolutionMessage;
 
 import java.util.List;
 
@@ -18,13 +19,18 @@ import rx.Observable;
 public interface FalutProcessingContract {
 
     interface Model extends IModel {
-        Observable<List<FalutMesage>> getFalutMessages();
+        Observable<FaultMessage> getFalutMessages(String productLines);
+
+
+        Observable<SolutionMessage> getSolutionMessage(String faultCode);
     }
 
     interface View extends IView {
 
-        void getFalutMessgeSucess(List<FalutMesage> falutMesages);
+        void getFalutMessgeSucess(FaultMessage falutMesage);
 
-        void getFalutMessageFailed();
+        void getFalutMessageFailed(String message);
+
+        void getSolutionMessageSucess(List<SolutionMessage.RowsBean> rowsBeen);
     }
 }

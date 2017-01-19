@@ -18,7 +18,7 @@ public class ProduceToolsLocationModel extends BaseModel<ApiService> implements 
 
     @Override
     public Observable<JsonProductToolsLocation> getLocationVerify(String param) {
-        return getService().getgetLocationVerify(param).compose(RxsRxSchedulers.<JsonProductToolsLocation>io_main());
+        return getService().getLocationVerify(param).compose(RxsRxSchedulers.<JsonProductToolsLocation>io_main());
     }
 
     @Override

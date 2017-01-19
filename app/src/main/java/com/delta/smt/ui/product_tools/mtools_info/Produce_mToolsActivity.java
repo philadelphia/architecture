@@ -57,6 +57,7 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
             Intent i = new Intent();
             Bundle b = new Bundle();
             b.putSerializable(TAG, selectItem);
+            b.putString("workNumber",workNumber);
             i.putExtras(b);
             i.setClass(this, ProduceToolsInfoActivity.class);
             startActivity(i);
@@ -98,7 +99,7 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具借出");
 
-        data.add(0, new Product_mToolsInfo("序号", "治具二维码", "治具类型", "所在架位"));
+        data.add(0, new Product_mToolsInfo("序号", "治具二维码", "治具类型", "所在架位",""));
 
         adapter = new CommonBaseAdapter<Product_mToolsInfo>(getContext(), data) {
             @Override
@@ -172,5 +173,11 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
         view.setBackgroundColor(0xFF9FDEFF);
         selectView = view;
         selectItem=item;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }

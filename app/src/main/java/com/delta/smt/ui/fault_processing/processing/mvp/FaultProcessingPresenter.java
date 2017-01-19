@@ -2,9 +2,12 @@ package com.delta.smt.ui.fault_processing.processing.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.smt.entity.FalutMesage;
+import com.delta.smt.entity.FaultMessage;
+import com.delta.smt.entity.SolutionMessage;
+import com.google.gson.Gson;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -24,18 +27,49 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
         super(model, mView);
     }
 
-    public void getFaultProcessingMessages() {
+    public void getFaultProcessingMessages(String producelines) {
 
-        getModel().getFalutMessages().subscribe(new Action1<List<FalutMesage>>() {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("lines", producelines);
+        producelines = new Gson().toJson(maps);
+        getModel().getFalutMessages(producelines).subscribe(new Action1<FaultMessage>() {
             @Override
-            public void call(List<FalutMesage> falutMesages) {
+            public void call(FaultMessage falutMesages) {
 
-                getView().getFalutMessgeSucess(falutMesages);
+                if ("0".equals(falutMesages.getCode())) {
+                    getView().getFalutMessgeSucess(falutMesages);
+                } else {
+
+                    getView().getFalutMessageFailed(falutMesages.getMsg());
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getFalutMessageFailed();
+                getView().getFalutMessageFailed(throwable.getMessage());
+            }
+        });
+    }
+
+    public void getSolution(String faultCode) {
+        Map<String, String> maps = new HashMap<>();
+        maps.put("faultCode", faultCode);
+        faultCode = new Gson().toJson(maps);
+        getModel().getSolutionMessage(faultCode).subscribe(new Action1<SolutionMessage>() {
+            @Override
+            public void call(SolutionMessage solutionMessage) {
+
+                if ("0".equals(solutionMessage.getCode())) {
+                    getView().getSolutionMessageSucess(solutionMessage.getRows());
+                } else {
+                    getView().getFalutMessageFailed(solutionMessage.getMsg());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                getView().getFalutMessageFailed(throwable.getMessage());
             }
         });
     }

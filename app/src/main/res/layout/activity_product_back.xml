@@ -21,6 +21,7 @@
         android:layout_height="50px"
         android:layout_marginLeft="310px"
         android:layout_marginTop="-45px"
+        android:focusable="false"
         android:background="@drawable/ed_back_white"/>
 
     <Button

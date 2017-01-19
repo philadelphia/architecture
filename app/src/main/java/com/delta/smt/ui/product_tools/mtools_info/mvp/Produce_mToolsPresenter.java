@@ -39,7 +39,7 @@ public class Produce_mToolsPresenter extends BasePresenter<Produce_mToolsContrac
                  for (JsonProduct_mToolsList j:rows){
 
                      size++;
-                     Product_mToolsInfo p=new Product_mToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName());
+                     Product_mToolsInfo p=new Product_mToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName(),String.valueOf(j.getJigID()));
                      data.add(p);
 
                  }

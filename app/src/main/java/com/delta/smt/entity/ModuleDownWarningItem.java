@@ -1,62 +1,130 @@
 package com.delta.smt.entity;
 
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleDownWarningItem extends CountDownEntity{
-    private String lineNumber;
-    private String workItemID;
-    private String faceID;
-    private String status;
-    //private String rest_time;
+public class ModuleDownWarningItem {
 
-    public ModuleDownWarningItem(String faceID, String lineNumber, /*String rest_time,*/ String status, String workItemID, String countdown) {
-        this.faceID = faceID;
-        this.lineNumber = lineNumber;
-        //this.rest_time = rest_time;
-        this.status = status;
-        this.workItemID = workItemID;
-        this.countdown = countdown;
+    /**
+     * code : 0
+     * msg : Success
+     * rows : [{"line":"H3","work_order":"1","face":"A","end_time":"Jan 9, 2017 2:36:53 PM"}]
+     */
+
+    private String code;
+    private String msg;
+    private List<RowsBean> rows;
+
+
+    public String getCode() {
+        return code;
     }
 
-    public String getFaceID() {
-        return faceID;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getLineNumber() {
-        return lineNumber;
+    public String getMsg() {
+        return msg;
     }
 
-    public String getStatus() {
-        return status;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getWorkItemID() {
-        return workItemID;
+    public List<RowsBean> getRows() {
+        return rows;
     }
 
-    public void setFaceID(String faceID) {
-        this.faceID = faceID;
+    public void setRows(List<RowsBean> rows) {
+        this.rows = rows;
     }
 
-    public void setLineNumber(String lineNumber) {
-        this.lineNumber = lineNumber;
-    }
+    public static class RowsBean extends CountDownEntity {
+        /**
+         * line : H3
+         * work_order : 1
+         * face : A
+         * end_time : Jan 9, 2017 2:36:53 PM
+         */
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+        @Override
+        public Long getCountDownLong() {
+            long res = 0;
+            if(end_time.length()!=0){
+                long getTime = Long.parseLong(date2TimeStamp(end_time, "yyyy-MM-dd HH:mm:ss"));
+                long nowTime = Long.parseLong(timeStamp());
+                if (nowTime > getTime) {
+                    res = nowTime - getTime;
+                } else {
+                    res = 0;
+                }
+            }else{
+                res = 0;
+            }
 
-    public void setWorkItemID(String workItemID) {
-        this.workItemID = workItemID;
-    }
+            return res;
+        }
 
-    /*public String getRest_time() {
-        return rest_time;
-    }
 
-    public void setRest_time(String rest_time) {
-        this.rest_time = rest_time;
-    }*/
+        private String line;
+        private String work_order;
+        private String face;
+        private String end_time;
+
+        public String getLine() {
+            return line;
+        }
+
+        public void setLine(String line) {
+            this.line = line;
+        }
+
+        public String getWork_order() {
+            return work_order;
+        }
+
+        public void setWork_order(String work_order) {
+            this.work_order = work_order;
+        }
+
+        public String getFace() {
+            return face;
+        }
+
+        public void setFace(String face) {
+            this.face = face;
+        }
+
+        public String getEnd_time() {
+            return end_time;
+        }
+
+        public void setEnd_time(String end_time) {
+            this.end_time = end_time;
+        }
+
+        public String date2TimeStamp(String date_str, String format) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(format);
+                return String.valueOf(sdf.parse(date_str).getTime());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+        public String timeStamp() {
+            long time = System.currentTimeMillis();
+            String t = String.valueOf(time);
+            return t;
+        }
+    }
 }

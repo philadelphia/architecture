@@ -21,7 +21,7 @@ public class ProduceToolsLocationPresenter extends BasePresenter<ProduceToolsLoc
     }
 
     public void getLocation(String param){
-        getModel().getLocationSubmit(param).subscribe(new Action1<JsonProductToolsLocation>() {
+        getModel().getLocationVerify(param).subscribe(new Action1<JsonProductToolsLocation>() {
             @Override
             public void call(JsonProductToolsLocation jsonProductToolsLocation) {
                 getView().getLocation(jsonProductToolsLocation.getCode());

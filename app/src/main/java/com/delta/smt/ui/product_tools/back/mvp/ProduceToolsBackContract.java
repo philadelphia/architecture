@@ -2,6 +2,8 @@ package com.delta.smt.ui.product_tools.back.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.JsonProductBackRoot;
+import com.delta.smt.entity.JsonProductToolsLocation;
 import com.delta.smt.entity.ProductToolsBack;
 
 import java.util.List;
@@ -15,12 +17,12 @@ import rx.Observable;
 public interface ProduceToolsBackContract {
 
     interface Model extends IModel {
-        Observable<List<ProductToolsBack>> getProductToolsBack();
+        Observable<JsonProductBackRoot> getProductToolsBack(String param);
     }
 
     interface View extends IView {
 
-        void getData(List<ProductToolsBack> data);
+        void getData(JsonProductBackRoot data);
 
         void getFail();
 

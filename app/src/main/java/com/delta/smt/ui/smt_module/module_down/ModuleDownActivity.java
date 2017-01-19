@@ -1,6 +1,8 @@
 package com.delta.smt.ui.smt_module.module_down;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -23,6 +26,7 @@ import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
 import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownWarningItem;
+import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.smt_module.module_down.di.DaggerModuleDownComponent;
 import com.delta.smt.ui.smt_module.module_down.di.ModuleDownModule;
@@ -30,6 +34,7 @@ import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownContract;
 import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownPresenter;
 import com.delta.smt.ui.smt_module.virtual_line_binding.VirtualLineBindingActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +57,14 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     LinearLayout moduleUpWarning;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
-    private List<ModuleDownWarningItem> dataList = new ArrayList<>();
-    private ItemCountdownViewAdapter<ModuleDownWarningItem> myAdapter;
+    private List<ModuleDownWarningItem.RowsBean> dataList = new ArrayList<>();
+    private ItemCountdownViewAdapter<ModuleDownWarningItem.RowsBean> myAdapter;
 
     @Inject
     WarningManger warningManger;
+
+    String workOrderID = "";
+    SharedPreferences preferences=null;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -65,8 +73,9 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @Override
     protected void initData() {
+        preferences=getSharedPreferences("module_down", Context.MODE_PRIVATE);
         //接收那种预警，没有的话自己定义常量
-        warningManger.addWarning(Constant.SAMPLEWARING, getClass());
+        warningManger.addWarning(Constant.MODULE_DOWN_WARNING, getClass());
         //是否接收预警 可以控制预警时机
         warningManger.setRecieve(true);
         //关键 初始化预警接口
@@ -83,25 +92,30 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
 
-        myAdapter = new ItemCountdownViewAdapter<ModuleDownWarningItem>(this, dataList) {
+        myAdapter = new ItemCountdownViewAdapter<ModuleDownWarningItem.RowsBean>(this, dataList) {
             @Override
             protected int getLayoutId() {
                 return R.layout.item_module_down_warning_list;
             }
 
             @Override
-            protected void convert(ItemTimeViewHolder holder, ModuleDownWarningItem moduleUpWarningItem, int position) {
+            protected void convert(ItemTimeViewHolder holder, ModuleDownWarningItem.RowsBean moduleUpWarningItem, int position) {
 
-                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLineNumber());
-                holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWorkItemID());
-                holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFaceID());
-                holder.setText(R.id.tv_status, "状态: " + moduleUpWarningItem.getStatus());
-
+                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine());
+                holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
+                holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFace());
+                if(moduleUpWarningItem.getEnd_time().equals("")){
+                    holder.setText(R.id.tv_status, "状态: " + "下模组完成");
+                }else{
+                    holder.setText(R.id.tv_status, "状态: " + "等待下模组");
+                }
+                //holder.setText(R.id.tv_status, "状态: " + "等待下模组");
             }
         };
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(myAdapter);
         myAdapter.setOnItemTimeOnclck(this);
+
     }
 
     @Override
@@ -110,15 +124,18 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     }
 
     @Override
-    public void onSuccess(List<ModuleDownWarningItem> data) {
-        dataList.clear();
-        dataList.addAll(data);
-        myAdapter.notifyDataSetChanged();
+    public void onSuccess(ModuleDownWarningItem data) {
+        if (data.getMsg().toLowerCase().equals("success")){
+            dataList.clear();
+            List<ModuleDownWarningItem.RowsBean> rowsList = data.getRows();
+            dataList.addAll(rowsList);
+            myAdapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override
     public void onFalied() {
-
     }
 
     @Override
@@ -134,6 +151,20 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             myAdapter.startRefreshTime();
         }
         warningManger.registerWReceiver(this);
+        workOrderID=preferences.getString("work_order","");
+        if(!workOrderID.equals("")){
+            for(int i=0;i<dataList.size();i++){
+                if(dataList.get(i).getWork_order().equals(workOrderID)){
+                    ModuleDownWarningItem.RowsBean rb = dataList.get(i);
+                    rb.setEnd_time("");
+                    dataList.set(i,rb);
+                }
+            }
+            myAdapter.notifyDataSetChanged();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("work_order","");
+            editor.commit();
+        }
 
     }
 
@@ -184,6 +215,9 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @Override
     public void onItemClick(View item, int position) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("work_order",dataList.get(position).getWork_order());
+        editor.commit();
         IntentUtils.showIntent(this, VirtualLineBindingActivity.class);
     }
 
@@ -198,5 +232,21 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public String date2TimeStamp(String date_str,String format){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            return String.valueOf(sdf.parse(date_str).getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String timeStamp(){
+        long time = System.currentTimeMillis();
+        String t = String.valueOf(time);
+        return t;
     }
 }
