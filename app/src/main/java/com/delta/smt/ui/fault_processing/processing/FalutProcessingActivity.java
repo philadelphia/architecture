@@ -99,7 +99,6 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
                 holder.setText(R.id.tv_code, "故障代码：" + falutMesage.getFaultCode());
                 holder.setText(R.id.chronometer, "10:30:20");
 
-
             }
 
             @Override
@@ -250,39 +249,4 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         //return String.format(Locale.CHINA, "02d:%02d:%02d:%02", day, hour, min, second);
     }
 
-    class MyThread extends Thread {
-
-
-        @Override
-        public void run() {
-            while (true) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                int firstVisible = manager.findFirstVisibleItemPosition();
-                int lastVisible = manager.findLastVisibleItemPosition();
-                for (int i = 0; i < datas.size(); i++) {
-                    datas.get(i).setDurationTime(datas.get(i).getDurationTime() + 1);
-                    if (i >= firstVisible && i <= lastVisible) {
-                        final CommonViewHolder vh = (CommonViewHolder) rvFaultProcessing.findViewHolderForPosition(i);
-                        //final String text = myList.get(i)+"";
-                        Long data3 = datas.get(i).getDurationTime();
-                        final String da = getStringTime(data3 + 1);
-
-                        runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                vh.setText(R.id.chronometer, da);
-                            }
-                        });
-
-                    }
-                }
-
-            }
-        }
-    }
 }
