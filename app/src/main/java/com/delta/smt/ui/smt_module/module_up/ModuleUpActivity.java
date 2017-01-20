@@ -1,9 +1,7 @@
 package com.delta.smt.ui.smt_module.module_up;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
@@ -24,7 +21,6 @@ import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
 import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.smt_module.module_up.di.DaggerModuleUpComponent;
 import com.delta.smt.ui.smt_module.module_up.di.ModuleUpModule;
@@ -32,20 +28,19 @@ import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpContract;
 import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpPresenter;
 import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements ModuleUpContract.View, ItemOnclick, WarningManger.OnWarning{
+public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
+        ModuleUpContract.View, ItemOnclick, WarningManger.OnWarning{
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
