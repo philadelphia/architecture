@@ -130,7 +130,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         if (param == 0) {
             mProductToolsBarCodeEditText.setText(tools);
         }else {
-            Toast.makeText(this, "次治具无法完成入架位操作!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "该治具无法完成入架位操作!", Toast.LENGTH_SHORT).show();
         }
         return flag1 = param;
     }

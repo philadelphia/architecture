@@ -111,9 +111,9 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
         toolbarTitle.setText("治具信息");
 
         mProductToolsWorkItemTextView.setText(workNumber);
-        //productInfoBarCodeEditText.setText(workNumber);
 
         data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态", "", ""));
+
 
         adapter = new CommonBaseAdapter<ProductToolsInfo>(getContext(), data) {
             @Override
