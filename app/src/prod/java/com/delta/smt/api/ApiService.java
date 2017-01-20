@@ -320,15 +320,15 @@ public interface ApiService {
 
 
     //尾数仓入库
-    @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMantissaStorageList")
+    @GET("http://172.22.34.24:8081/SMM/MantissaStorage/qMantissaStorageList")
     Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
 
     //尾数仓查询料盘的位置
-    @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMaterialPlace")
+    @GET("http://172.22.34.24:8081/SMM/MantissaStorage/qMaterialPlace")
     Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query( "condition") String bind);
 
    //尾数仓查料盘入库
-   @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMaterialPlace")
+   @GET("http://172.22.34.24:8081/SMM/MantissaStorage/qMaterialPlace")
    Observable<MantissaWarehouseReturnResult> getputinstrage(@Query( "condition") String bind);
 
     //尾数仓备料
