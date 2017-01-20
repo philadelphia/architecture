@@ -255,7 +255,7 @@ public interface ApiService {
    @GET("http://172.22.35.155:8081/smm/unplugmod/getProductionLines")
     Observable<ModuleDownWarningItem> getModuleDownWarningItems(@Query("workOrderNum") String content);*/
 
-    @GET("http://172.22.35.155:8081/smm/plugmod/getProductionLines")
+    @GET("http://172.22.35.75:8081/smm/plugmod/getProductionLines")
     Observable<ModuleUpWarningItem> getModuleUpWarningItems();
 
     @GET("http://172.22.34.75:8081/smm/unplugmod/getProductionLines")
