@@ -319,7 +319,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case android.R.id.home:
                 finish();
                 break;
-
             default:
                 break;
         }

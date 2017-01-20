@@ -102,7 +102,11 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 holder.setText(R.id.tv_number, item.getMaterial_num());
                 holder.setText(R.id.tv_serialNumber, item.getSerial_num());
                 holder.setText(R.id.tv_location, item.getShelves());
-                holder.setText(R.id.tv_type, item.getStatus());
+                if("1".equals(item.getStatus())){
+                    holder.setText(R.id.tv_type, "状态: " + "已入库");
+                }else {
+                    holder.setText(R.id.tv_type, "状态: " + "未入库");
+                }
             }
 
             @Override
@@ -184,8 +188,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
 
                         Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getActivity(), materialNumber, Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getActivity(), serialNum, Toast.LENGTH_SHORT).show();
 
                         MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
                         Gson gson = new Gson();
@@ -210,7 +212,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         getPresenter().getputinstrage(s);
                         flag = 1;
                         Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getActivity(), lastCar, Toast.LENGTH_SHORT).show();
                     } catch (EntityNotFountException e) {
                         e.printStackTrace();
                     }

@@ -104,39 +104,39 @@ public interface ApiService {
     Observable<List<ItemProduceLine>> getLineDatas();
 
     //请求预警，故障，消息的item数量
-    @GET("http://172.22.34.19:8081/lineAlarmFault/alarmFaultInfos")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getTitleDatas(@Query("condition") String condition);
 
     //请求预警中item数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/alarmFaultInfos")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
     //请求故障中item数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/alarmFaultInfos")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
 
     //请求消息中item数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/alarmFaultInfos")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemInfoDatas(@Query("condition") String condition);
 
     //确认信息中item
-    @GET("http://172.22.34.19:8081/lineAlarmFault/confirmMessage")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/confirmMessage")
     Observable<Result> getItemInfoConfirm(@Query("condition") String condition);
 
     //确认预警中item
-    @GET("http://172.22.34.19:8081/lineAlarmFault/confirmAlarmMessage")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/confirmAlarmMessage")
     Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
 
     //提交预警中扫码数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/relayMaterial")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/relayMaterial")
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
 
     //请求手补件item数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/getPatchMaterial?condition={}")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/getPatchMaterial?condition={}")
     Observable<Result<ItemHandAdd>> getItemHandAddDatas();
 
     //确认手补件item数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/confirmPatchMaterial")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/confirmPatchMaterial")
     Observable<Result> getItemHandAddConfirm(@Query("condition") String condition);
 
 
@@ -254,28 +254,36 @@ public interface ApiService {
     Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("workOrderNum")String content);
 
     //TODO shaoqiang,8Interfance
-    @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/order/list/page")
+    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/order/list/page")
+//    @GET(API.BASE_URL+"sms/jig/life/use/loan/order/list/page")
     Observable<JsonProductBorrowRoot> getProductWorkItem(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent);
 
-    @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/jig")
+    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
+//    @GET(API.BASE_URL+"sms/jig/life/use/loan/jig")
     Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Query("condition") String condition);
 
-    @GET("http://172.22.34.122:8081/sms/jig/life/use/loan/jig")
+    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
+//    @GET(API.BASE_URL+"sms/jig/life/use/loan/jig")
     Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent, @Query("condition") String condition_and_jigTypeID);
 
-    @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/instore/verify")
+    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/verify")
+//    @GET(API.BASE_URL+"webapi/sms/jig/life/use/instore/verify")
     Observable<JsonProductToolsLocation> getLocationVerify(@Query("param")String param);
 
-    @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/instore/submit")
+    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
+//    @GET(API.BASE_URL+"webapi/sms/jig/life/use/instore/submit")
     Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param")String param);
 
-    @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/back/submit")
+    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/back/submit")
+//    @GET(API.BASE_URL+"webapi/sms/jig/life/use/back/submit")
     Observable<JsonProductBackRoot> getProductToolsBack(@Query("param")String param);
 
-    @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/loan/verify")
+    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/verify")
+//    @GET(API.BASE_URL+"webapi/sms/jig/life/use/loan/verify")
     Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(@Query(("param"))String param);
 
-    @GET("http://172.22.34.122:8081/webapi/sms/jig/life/use/loan/submit")
+    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
+//    @GET(API.BASE_URL+"webapi/sms/jig/life/use/loan/submit")
     Observable<JsonProductToolsLocation> getProductToolsBorrowSubmit(@Query("param")String param);
 
     /*Zhangfuxiang*/
