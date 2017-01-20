@@ -83,11 +83,11 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             @Override
             public void call(Light light) {
             if ("0".equals(light.getCode())){
-                if (light.getMsg().contains("Success")){
-              getView().lightSuccsee();}else {
+              getView().lightSuccsee();
+                }else {
              getView().storeFaild(light.getMsg());
 
-                }
+
             }
             }
         }, new Action1<Throwable>() {

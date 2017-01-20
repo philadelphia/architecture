@@ -135,7 +135,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getFailed(String message) {
-
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -147,7 +147,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getMaterialLocationFailed(String message) {
-
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -166,7 +166,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getputinstrageFailed(String message) {
-
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
 
 

@@ -6,6 +6,8 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ItemInfo;
+import com.delta.smt.entity.JsonProductBorrowList;
+import com.delta.smt.ui.product_tools.TimeSortUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +36,14 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
                         for (int i = 0; i < itemInfos.getRows().size(); i++) {
                             ItemInfo itemInfo = new ItemInfo();
                             itemInfo.setText("产线:" + itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "机种:" + itemInfos.getRows().get(i).getMachineType() + "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus());
-                            //itemInfo.setEndTime(Long.valueOf(itemInfos.getRows().get(i).getEndTime()));
                             itemInfo.setEndTime(9000);
-                            itemInfo.setCountdown("7:53:48");
+//                            JsonProductBorrowList jsonProductBorrowList=new JsonProductBorrowList();
+//                            jsonProductBorrowList.setPlanPrdTime(itemInfos.getRows().get(i).getEndTime());
+//                            itemInfo.setEndTime(Long.parseLong(TimeSortUtils.getMyStyleTime(jsonProductBorrowList)));
+//                            Log.e("info","--------1-------------"+itemInfos.getRows().get(i).getEndTime());
+//                            Log.e("info","--------2-------------"+TimeSortUtils.getMyStyleTime(jsonProductBorrowList));
+//                            Log.e("info","--------3-------------"+Long.parseLong(TimeSortUtils.getMyStyleTime(jsonProductBorrowList)));
+                            itemInfo.setCountdown("00:53:48");
                             itemInfo.setMaterialNumber(itemInfos.getRows().get(i).getMachineType());
                             itemInfo.setMachine(itemInfos.getRows().get(i).getPartNum());
                             itemInfo.setWorkNumber(itemInfos.getRows().get(i).getSapWorkOrderId());

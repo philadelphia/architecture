@@ -100,7 +100,7 @@ public class TimeUtils {
      * @param millis
      * @return
      */
-    public static String format(long millis) {
+    public static String format(Long millis) {
         long delta = System.currentTimeMillis() - millis;
         if (delta < 1L * ONE_MINUTE) {
 //            long seconds = toSeconds(delta);
@@ -131,27 +131,27 @@ public class TimeUtils {
         }
     }
 
-    private static long toSeconds(long date) {
+    public static long toSeconds(long date) {
         return date / 1000L;
     }
 
-    private static long toMinutes(long date) {
+    public static long toMinutes(long date) {
         return toSeconds(date) / 60L;
     }
 
-    private static long toHours(long date) {
+    public static long toHours(long date) {
         return toMinutes(date) / 60L;
     }
 
-    private static long toDays(long date) {
+    public static long toDays(long date) {
         return toHours(date) / 24L;
     }
 
-    private static long toMonths(long date) {
+    public static long toMonths(long date) {
         return toDays(date) / 30L;
     }
 
-    private static long toYears(long date) {
+    public static long toYears(long date) {
         return toMonths(date) / 365L;
     }
 

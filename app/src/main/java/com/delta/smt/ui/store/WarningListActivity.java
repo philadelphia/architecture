@@ -107,8 +107,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(this.getResources().getString(R.string.storetitle));
         edWork.setText(mWorkNumberString);
-        edPcb.setText(mMachineString);
-        edMachine.setText(mMaterialNumberString);
+        edPcb.setText(mMaterialNumberString);
+        edMachine.setText(mMachineString);
         edPcbDemand.setText(""+mAmoutString);
         List<ListWarning> list = new ArrayList<>();
         list.add(new ListWarning("", "", "", "", ""));

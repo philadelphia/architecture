@@ -68,7 +68,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             public void call(OutBound outBound) {
                 if ("0".equals(outBound.getCode())){
                     if (outBound.getMsg().contains("Success")){
-            List<OutBound.DataBean> datalist = outBound.getData();
+            List<OutBound.DataBean> datalist = outBound.getRows();
             getView().onOutSuccess(datalist);
             }else {
                 getView().onFailed(outBound.getMsg());
@@ -87,7 +87,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             public void call(OutBound outBound) {
                 if ("0".equals(outBound.getCode())){
                     if (outBound.getMsg().contains("Success")){
-                    List<OutBound.DataBean> datalist = outBound.getData();
+                    List<OutBound.DataBean> datalist = outBound.getRows();
                     getView().onOutSuccess(datalist);
                 }else {
                     getView().onFailed(outBound.getMsg());
@@ -107,7 +107,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             public void call(PcbNumber pcbNumber) {
             if ("0".equals(pcbNumber.getCode())){
                 if (pcbNumber.getMsg().contains("Success")){
-                getView().getNumberSucces(pcbNumber.getData());
+                getView().getNumberSucces(pcbNumber.getRows());
             }else {
                 getView().onFailed(pcbNumber.getMsg());
             }}
