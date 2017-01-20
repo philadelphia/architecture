@@ -176,6 +176,8 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
     @Override
     public void getFail() {
 
+        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
