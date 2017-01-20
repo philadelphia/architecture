@@ -2,6 +2,7 @@ package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 import com.delta.smt.ui.production_warning.item.TitleNumber;
 
@@ -16,10 +17,10 @@ import rx.Observable;
 public interface ProduceWarningContract {
     interface View extends IView {
         void getTitleDatas(TitleNumber titleNumber);
-        void getTitleDatasFailed();
+        void getTitleDatasFailed(String message);
     }
 
     interface Model extends IModel {
-        Observable<TitleNumber> getTitleDatas();
+        Observable<ProduceWarning> getTitleDatas(String condition);
     }
 }

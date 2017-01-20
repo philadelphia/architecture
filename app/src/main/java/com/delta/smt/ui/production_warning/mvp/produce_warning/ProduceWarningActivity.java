@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.GsonTools;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
@@ -65,7 +66,6 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     private FragmentTransaction mFragmentTransaction;
     private SupportFragment currentFragment;
     private String[] titles;
-    public static String condition;
 
     @Inject
     WarningManger warningManger;
@@ -73,7 +73,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     private boolean item_run_tag = false;
     private String lastWarningMessage;
 
-
+    private int warning_number,breakdown_number,info_number;
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerTitleNumberCompent.builder().appComponent(appComponent).titleNumberModule(new TitleNumberModule(this)).build().inject(this);
@@ -86,10 +86,23 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     @Override
     protected void initData() {
-        condition = null;
-        condition = getIntent().getExtras().getString(Constant.PRODUCTIONLINE);
-        Log.i("aaa", "选择进入：" + condition);
-        getPresenter().getTitileNumber();
+
+        Log.i("aaa", "选择进入：" + Constant.CONDITION);
+        if (Constant.initLine() != null) {
+            getPresenter().getTitileNumber(Constant.initLine());
+        }
+        if (warning_number == 0 && breakdown_number == 0 && info_number==0) {
+            titles = new String[]{"预警", "故障", "消息"};
+        } else {
+            titles = new String[]{"预警(" + warning_number + ")",
+                    "故障(" + breakdown_number + ")",
+                    "消息(" + info_number + ")"};
+        }
+
+/*        Constant.CONDITION = null;
+        Constant.CONDITION = getIntent().getExtras().getString(Constant.PRODUCTIONLINE);*/
+
+
 
         //注册广播初始化
         warningManger.addWarning(Constant.PRODUCE_WARNING, getClass());
@@ -97,26 +110,25 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         warningManger.setOnWarning(this);
     }
 
-    public static String initLine() {
-        Map<String, String> map = new HashMap<>();
-        map.put("lines", condition);
-        String line = GsonTools.createGsonString(map);
-        return line;
-    }
+
 
     @Override
     protected void initView() {
+
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("生产中预警");
 
-        for (int i = 0; i < titles.length; i++) {
-            mTlTitle.addTab(mTlTitle.newTab());
+        if(titles!=null){
+            for (int i = 0; i < titles.length; i++) {
+                mTlTitle.addTab(mTlTitle.newTab());
+            }
+            ViewUtils.setTabTitle(mTlTitle, titles);
+            mTlTitle.addOnTabSelectedListener(this);
         }
-        ViewUtils.setTabTitle(mTlTitle, titles);
-        mTlTitle.addOnTabSelectedListener(this);
+
         mProduceBreakdownFragment = new ProduceBreakdownFragment();
         mProduceInfoFragment = new ProduceInfoFragment();
         mProduceWarningFragment = new ProduceWarningFragment();
@@ -180,14 +192,19 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     @Override
     public void getTitleDatas(TitleNumber titleNumber) {
 
-        titles = new String[]{"预警(" + titleNumber.getWarning_number() + ")",
-                "故障(" + titleNumber.getBreakdown_number() + ")",
-                "消息(" + titleNumber.getInfo_number() + ")"};
+        warning_number=titleNumber.getWarning_number();
+        breakdown_number=titleNumber.getBreakdown_number();
+        info_number=titleNumber.getInfo_number();
 
+        titles = new String[]{"预警(" + warning_number + ")",
+                "故障(" + breakdown_number + ")",
+                "消息(" + info_number + ")"};
+        initView();
     }
 
     @Override
-    public void getTitleDatasFailed() {
+    public void getTitleDatasFailed(String message) {
+        ToastUtils.showMessage(this,message);
         titles = new String[]{"预警", "故障", "消息"};
     }
 

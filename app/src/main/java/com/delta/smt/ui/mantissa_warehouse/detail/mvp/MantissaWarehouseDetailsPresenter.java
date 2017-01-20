@@ -2,6 +2,7 @@ package com.delta.smt.ui.mantissa_warehouse.detail.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.smt.entity.MantissaCar;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 
 import javax.inject.Inject;
@@ -43,5 +44,106 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
         });
 
     }
+
+
+    public void getFindCar(String str){
+
+
+        getModel().getFindCar(str).subscribe(new Action1<MantissaCar>() {
+            @Override
+            public void call(MantissaCar car) {
+
+                if("Success".equals(car.getMsg())){
+                    getView().getFindCarSucess(car);
+                }else{
+                    getView().getFindCarFailed(car.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                getView().getFindCarFailed(throwable.getMessage());
+
+            }
+        });
+
+
+    }
+
+    public void getbingingCar(String str){
+
+        getModel().getBingingCar(str).subscribe(new Action1<MantissaCar>() {
+            @Override
+            public void call(MantissaCar car) {
+
+                if("Success".equals(car.getMsg())){
+                    getView().getBingingCarSucess(car);
+                }else{
+                    getView().getBingingCarFailed(car.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                getView().getBingingCarFailed(throwable.getMessage());
+
+            }
+        });
+
+    }
+
+
+    public void getMantissaWarehouseput(String str){
+
+        getModel().getMantissaWarehouseput(str).subscribe(new Action1<MantissaWarehouseDetailsResult>() {
+            @Override
+            public void call(MantissaWarehouseDetailsResult mantissaWarehouseDetailses) {
+
+                if("Success".equals(mantissaWarehouseDetailses.getMsg())){
+                    getView().getMantissaWarehouseputSucess(mantissaWarehouseDetailses.getRows());
+                }else{
+                    getView().getMantissaWarehouseputFailed(mantissaWarehouseDetailses.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                getView().getMantissaWarehouseputFailed(throwable.getMessage());
+
+            }
+        });
+
+    }
+
+    public void getMantissaWareOver(){
+
+        getModel().getMantissaWareOver().subscribe(new Action1<MantissaWarehouseDetailsResult>() {
+            @Override
+            public void call(MantissaWarehouseDetailsResult mantissaWarehouseDetailses) {
+
+                if("Success".equals(mantissaWarehouseDetailses.getMsg())){
+                    getView().getMantissaWareOverSucess(mantissaWarehouseDetailses.getRows());
+                }else{
+                    getView().getMantissaWareOverFailed(mantissaWarehouseDetailses.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                getView().getMantissaWareOverFailed(throwable.getMessage());
+
+            }
+        });
+
+    }
+
 
 }

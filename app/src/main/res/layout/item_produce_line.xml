@@ -9,8 +9,8 @@
         android:textColor="#333333"
         android:clickable="false"
         android:layout_marginBottom="80px"
-        android:layout_marginLeft="55px"
-        android:layout_marginRight="55px"
+        android:layout_marginLeft="40px"
+        android:layout_marginRight="40px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/cb_production_line" />

@@ -1,5 +1,7 @@
 package com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment;
 
+import android.util.Log;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.ProduceWarning;
@@ -28,6 +30,8 @@ public class ProduceBreakdownFragmentPresenter extends BasePresenter<ProduceBrea
 //                getView().getItemBreakdownDatas(itemBreakDowns);
                 if (itemBreakDowns.getCode().equals("0")) {
                     getView().getItemBreakdownDatas(itemBreakDowns.getRows().getFault());
+                    Log.e("aaa", "fagment:故障数量"+String.valueOf(itemBreakDowns.getRows().getFault().size()) );
+
                 }else {
                     getView().getItemBreakdownDatasFailed(itemBreakDowns.getMsg());
                 }

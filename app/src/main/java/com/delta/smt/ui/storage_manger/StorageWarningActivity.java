@@ -16,7 +16,6 @@ import com.delta.smt.base.BaseCommonActivity;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.storage_manger.ready.StorageReadyFragment;
-import com.delta.smt.ui.storage_manger.ready.StorageReturnFragment;
 import com.delta.smt.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -42,7 +41,6 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
     FrameLayout mFlContainer;
     private FragmentTransaction mFragmentTransaction;
     private StorageReadyFragment mStorageReadyFragment;
-    private StorageReturnFragment mStorageReturnFragment;
 
     private Fragment currentFragment;
     private String[] titles;
@@ -114,7 +112,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
     @Override
     protected void initCData() {
         //此处的Title应该是 从网络获取的数量
-        titles = new String[]{"备料(3)"};
+        titles = new String[]{"备料"};
 
 
 

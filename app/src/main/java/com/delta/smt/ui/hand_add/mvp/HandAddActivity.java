@@ -108,6 +108,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                     holder.setText(R.id.tv_realAmount,"手补件数量："+String.valueOf(itemHandAdd.getRealAmount()));
                     holder.setText(R.id.tv_message, "信息："+itemHandAdd.getInfo());
 
+                    holder.getView(R.id.tv_realAmount).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_expectedAmount).setVisibility(View.GONE);
                 }else {
 
@@ -117,6 +118,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                     holder.setText(R.id.tv_expectedAmount,"预计Pass数量："+String.valueOf(itemHandAdd.getExpectedAmount()));
                     holder.setText(R.id.tv_message,  "信息："+itemHandAdd.getInfo());
 
+                    holder.getView(R.id.tv_expectedAmount).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_realAmount).setVisibility(View.GONE);
 
                 }
