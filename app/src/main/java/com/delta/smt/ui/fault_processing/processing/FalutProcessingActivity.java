@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.TimeUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
@@ -63,6 +64,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     private CommonBaseAdapter<RowsBean> mMyAdapter;
     CommonBaseAdapter<SolutionMessage.RowsBean> dialog_adapter;
     private String lines;
+    private LinearLayoutManager manager;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -95,6 +97,8 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
                 holder.setText(R.id.tv_processing, "制程：" + falutMesage.getProcess());
                 holder.setText(R.id.tv_faultMessage, "故障信息：" + falutMesage.getFaultMessage());
                 holder.setText(R.id.tv_code, "故障代码：" + falutMesage.getFaultCode());
+                holder.setText(R.id.chronometer, "10:30:20");
+
 
             }
 
@@ -104,9 +108,12 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
             }
 
         };
-        rvFaultProcessing.setLayoutManager(new LinearLayoutManager(this));
+        manager = new LinearLayoutManager(this);
+        rvFaultProcessing.setLayoutManager(manager);
         rvFaultProcessing.setAdapter(mMyAdapter);
         mMyAdapter.setOnItemClickListener(this);
+
+
     }
 
 
@@ -134,7 +141,21 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
         // Log.e(TAG, "addSolution: " + falutMesages + falutMesages.size());
         datas.clear();
-        datas.addAll(falutMesage.getRows());
+        List<RowsBean> rows = falutMesage.getRows();
+//        for (RowsBean row : rows) {
+//            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+//            try {
+//                Date parse = format.parse(row.getCreateTime());
+//                long l = System.currentTimeMillis() - parse.getTime();
+//                String format1 = TimeUtils.format(format);
+//                Log.e(TAG, "getFalutMessgeSucess: "+f);
+//                row.setDurationTime(l);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+        datas.addAll(rows);
         mMyAdapter.notifyDataSetChanged();
     }
 
@@ -149,8 +170,8 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
 
         solutionDatas.clear();
-        solutionDatas.addAll(rowsBeen);
 
+        solutionDatas.addAll(rowsBeen);
         dialog_adapter.notifyDataSetChanged();
 
     }
@@ -181,11 +202,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
                 dialog.dismiss();
             }
         });
-//        ImageView iv_add = ViewUtils.findView(view, R.id.iv_add);
-//        iv_add.setOnClickListener(this);
         Log.e(TAG, "onItemClick: " + rv_ll.toString());
-
-
         dialog_adapter = new CommonBaseAdapter<SolutionMessage.RowsBean>(this, solutionDatas) {
             @Override
             protected void convert(CommonViewHolder holder, SolutionMessage.RowsBean item, int position) {
@@ -221,7 +238,51 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     @Override
     public void warningComing(String warningMessage) {
 
+
     }
 
+    private String getStringTime(Long cnt) {
+        long day = TimeUtils.toDays(cnt);
+        Long hour = TimeUtils.toHours(cnt);
+        Long min = TimeUtils.toMinutes(cnt);
+        Long second = TimeUtils.toSeconds(cnt);
+        return String.valueOf(second);
+        //return String.format(Locale.CHINA, "02d:%02d:%02d:%02", day, hour, min, second);
+    }
 
+    class MyThread extends Thread {
+
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                int firstVisible = manager.findFirstVisibleItemPosition();
+                int lastVisible = manager.findLastVisibleItemPosition();
+                for (int i = 0; i < datas.size(); i++) {
+                    datas.get(i).setDurationTime(datas.get(i).getDurationTime() + 1);
+                    if (i >= firstVisible && i <= lastVisible) {
+                        final CommonViewHolder vh = (CommonViewHolder) rvFaultProcessing.findViewHolderForPosition(i);
+                        //final String text = myList.get(i)+"";
+                        Long data3 = datas.get(i).getDurationTime();
+                        final String da = getStringTime(data3 + 1);
+
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                vh.setText(R.id.chronometer, da);
+                            }
+                        });
+
+                    }
+                }
+
+            }
+        }
+    }
 }
