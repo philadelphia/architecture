@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
@@ -149,7 +150,7 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
 
     @Override
     public void getFail() {
-
+        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
     }
 
     @Override

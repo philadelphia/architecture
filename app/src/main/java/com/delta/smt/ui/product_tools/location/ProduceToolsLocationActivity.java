@@ -97,9 +97,9 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         if (flag1 != 0) {
             try {
-
+                ProductToolsBarcode p= (ProductToolsBarcode) barCodeParseIpml.getEntity(barcode,BarCodeType.PRODUCT_TOOLS);
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("barcode", barcode);
+                jsonObject.put("barcode", p.getSource());
                 jsonObject.put("userID", ID);
                 String s = "[\'" + jsonObject.toString() + "\']";
                 getPresenter().getLocation(s);
@@ -107,6 +107,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(this, "治具二维码格式不对，请重新扫描！", Toast.LENGTH_SHORT).show();
             }
         } else {
 
@@ -120,6 +121,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
                 shift = barcode;
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(this, "架位二维码格式不对，请重新扫描！", Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -130,7 +132,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         if (param == 0) {
             mProductToolsBarCodeEditText.setText(tools);
         }else {
-            Toast.makeText(this, "次治具无法完成入架位操作!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "该治具无法完成入架位操作!", Toast.LENGTH_SHORT).show();
         }
         return flag1 = param;
     }
@@ -143,5 +145,10 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             finish();
         }
         return 0;
+    }
+
+    @Override
+    public void Fail() {
+        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
     }
 }

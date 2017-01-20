@@ -44,7 +44,7 @@ public class MantissaWarehouseReady implements Serializable {
         this.rows = rows;
     }
 
-    public static class MantissaWarehouse implements Serializable{
+    public static class MantissaWarehouse extends CountDownEntity implements Serializable{
         /**
          * work_order : 20171011
          * line : H-01
@@ -62,19 +62,14 @@ public class MantissaWarehouseReady implements Serializable {
         //状态
         private String status;
 
+        //private String remain_time;
+
         public MantissaWarehouse(String work_order, String line, String face, String status) {
             this.work_order = work_order;
             this.line = line;
             this.face = face;
             this.status = status;
-        }
 
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
         }
 
         public String getWork_order() {
@@ -99,6 +94,14 @@ public class MantissaWarehouseReady implements Serializable {
 
         public void setFace(String face) {
             this.face = face;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
         }
 
     }

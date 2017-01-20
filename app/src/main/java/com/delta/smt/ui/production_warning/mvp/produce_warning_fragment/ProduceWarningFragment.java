@@ -316,31 +316,31 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         //二维码识别和解析
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         Log.i("barcode", barcode);
-
-        switch (tag){
+        if(mPopupWindow!=null&&mPopupWindow.isShowing()){
+        switch (tag) {
             case 0:
                 try {
                     MaterialBlockBarCode mMaterialBlockBarCode =
                             (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    currentBarcode ="料盘："+mMaterialBlockBarCode.getDeltaMaterialNumber();
-                    materialPlate=currentBarcode;
+                    currentBarcode = "料盘：" + mMaterialBlockBarCode.getDeltaMaterialNumber();
+                    materialPlate = currentBarcode;
                     Log.i("barcode", currentBarcode);
                 } catch (EntityNotFountException e) {
-                    ToastUtils.showMessage(getContext(),"请扫描料盘！");
-                    currentBarcode=null;
+                    ToastUtils.showMessage(getContext(), "请扫描料盘！");
+                    currentBarcode = null;
                     e.printStackTrace();
                 }
                 break;
 
             case 1:
                 try {
-                    Feeder mFeeder=(Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
-                    currentBarcode ="FeederID："+mFeeder.getSource();
-                    feederId=currentBarcode;
+                    Feeder mFeeder = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
+                    currentBarcode = "FeederID：" + mFeeder.getSource();
+                    feederId = currentBarcode;
                     Log.i("barcode", currentBarcode);
                 } catch (EntityNotFountException e) {
-                    ToastUtils.showMessage(getContext(),"请扫描FeederID！");
-                    currentBarcode=null;
+                    ToastUtils.showMessage(getContext(), "请扫描FeederID！");
+                    currentBarcode = null;
                     e.printStackTrace();
                 }
                 break;
@@ -349,15 +349,15 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                 try {
                     MaterialStation mMaterialStation = (MaterialStation) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_STATION);
                     currentBarcode = "料站：" + mMaterialStation.getSource();
-                    materialStation=currentBarcode;
+                    materialStation = currentBarcode;
                     Log.i("barcode", currentBarcode);
                 } catch (EntityNotFountException e) {
-                    ToastUtils.showMessage(getContext(),"请扫描料站！");
-                    currentBarcode=null;
+                    ToastUtils.showMessage(getContext(), "请扫描料站！");
+                    currentBarcode = null;
                     e.printStackTrace();
                 }
                 break;
-
+            }
 
         }
 

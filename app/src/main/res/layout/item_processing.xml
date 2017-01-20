@@ -22,11 +22,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20px"
-            android:text="剩余时间："
+            android:text="故障持续时间："
             android:textColor="@color/c_111111"
             android:textSize="40px" />
 
-        <Chronometer
+        <TextView
             android:id="@+id/chronometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

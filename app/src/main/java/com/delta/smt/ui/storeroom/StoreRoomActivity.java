@@ -105,8 +105,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
            mBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     Log.e("barcode", mBarCode.getDeltaMaterialNumber());
                     storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
-                    storageVendored.setText(mBarCode.getBusinessCode());
-                    storageDatacodeed.setText(mBarCode.getDeltaMaterialNumber().substring(0,2));
+                    storageVendored.setText(mBarCode.getBusinessCode().substring(0,2));
+                    storageDatacodeed.setText(mBarCode.getDC());
                     if (materialBlockBarCodes.size() < 3) {
                         materialBlockBarCodes.add(mBarCode);
                     }
@@ -155,7 +155,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @Override
     public void lightSuccsee() {
-        ToastUtils.showMessage(this,"点灯操作成功");
+        ToastUtils.showMessage(this,"请放到固定架位");
         materialBlockBarCodes.clear();
         storageShow.setText("");
         stringBuffer=null;
@@ -177,12 +177,20 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @Override
     public void storageSuccsee() {
-
+        ToastUtils.showMessage(this,"入料成功");
+        materialBlockBarCodes.clear();
+        storageShow.setText("");
+        stringBuffer=null;
+        stringBuffer=new StringBuffer();
+        storagePcbed.setText(null);
+        storageVendored.setText(null);
+        storageDatacodeed.setText(null);
+        storageIded.setText(null);
     }
 
     @Override
     public void storagefaild() {
-
+        ToastUtils.showMessage(this,"入料失败");
     }
 
     @Override
@@ -203,13 +211,12 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
         switch (v.getId()) {
             case R.id.storage_clear:
-                if (isButtonOnclick) {
                 storagePcbed.setText(null);
                 storageVendored.setText(null);
                 storageDatacodeed.setText(null);
                 materialBlockBarCodes.clear();
                 storageShow.setText("");
-                }
+
                 break;
             case R.id.storage_submit:
                 final Dialog dialo = builder.create();

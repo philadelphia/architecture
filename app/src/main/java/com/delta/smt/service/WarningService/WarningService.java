@@ -87,7 +87,7 @@ public class WarningService extends IntentService implements WarningSocketClient
         Log.e(TAG, "onHandleIntent: ");
         /*try {
             warningSocketClient.connectBlocking();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }*/
     }

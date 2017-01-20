@@ -19,7 +19,7 @@ public class PcbNumber {
      * amount : 50
      */
 
-    private DataBean data;
+    private DataBean rows;
 
     public int getCode() {
         return code;
@@ -37,12 +37,12 @@ public class PcbNumber {
         this.msg = msg;
     }
 
-    public DataBean getData() {
-        return data;
+    public DataBean getRows() {
+        return rows;
     }
 
-    public void setData(DataBean data) {
-        this.data = data;
+    public void setRows(DataBean rows) {
+        this.rows = rows;
     }
 
     public static class DataBean {

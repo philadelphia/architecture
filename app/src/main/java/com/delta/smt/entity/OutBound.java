@@ -23,7 +23,7 @@ public class OutBound {
      * dateCode : 20045
      */
 
-    private List<DataBean> data;
+    private List<DataBean> rows;
 
     public String getCode() {
         return code;
@@ -41,12 +41,12 @@ public class OutBound {
         this.msg = msg;
     }
 
-    public List<DataBean> getData() {
-        return data;
+    public List<DataBean> getRows() {
+        return rows;
     }
 
-    public void setData(List<DataBean> data) {
-        this.data = data;
+    public void setRows(List<DataBean> rows) {
+        this.rows = rows;
     }
 
     public static class DataBean {
