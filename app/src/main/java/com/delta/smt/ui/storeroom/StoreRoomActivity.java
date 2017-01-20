@@ -105,8 +105,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
            mBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     Log.e("barcode", mBarCode.getDeltaMaterialNumber());
                     storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
-                    storageVendored.setText(mBarCode.getBusinessCode());
-                    storageDatacodeed.setText(mBarCode.getDeltaMaterialNumber().substring(0,2));
+                    storageVendored.setText(mBarCode.getBusinessCode().substring(0,2));
+                    storageDatacodeed.setText(mBarCode.getDC());
                     if (materialBlockBarCodes.size() < 3) {
                         materialBlockBarCodes.add(mBarCode);
                     }
