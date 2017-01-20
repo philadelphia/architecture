@@ -52,7 +52,10 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
                 holder.setText(R.id.tv_title, "产线: " + item.getLine());
                 holder.setText(R.id.tv_line, "工单号: " + item.getWork_order());
                 holder.setText(R.id.tv_material_station, "面别: " + item.getFace());
-                holder.setText(R.id.tv_add_count, "状态: " + item.getStatus());
+                if("1".equals(item.getStatus())){
+                    holder.setText(R.id.tv_add_count, "状态: " + "等待备料");
+                }
+
             }
 
             @Override

@@ -232,9 +232,7 @@ public class MantissaWarehousePutstorageFragment extends
                     materialNumber = materiaBar.getDeltaMaterialNumber();
                     serialNum = materiaBar.getStreamNumber();
                     flag = 2;
-                    Toast.makeText(baseActiviy, "已扫描料盘dddddddd", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(baseActiviy, materialNumber, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(baseActiviy, serialNum, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(baseActiviy, "已扫描料盘", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
 
                 }
@@ -252,7 +250,6 @@ public class MantissaWarehousePutstorageFragment extends
                     getPresenter().getBindingLabel(s);
                     flag = 1;
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(baseActiviy, lableBarCode, Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
                 }

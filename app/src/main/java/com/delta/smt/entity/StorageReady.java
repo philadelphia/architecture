@@ -16,7 +16,7 @@ public class StorageReady extends CountDownEntity {
     private String work_order;
     private String line;
     private String face;
-    private int status;
+    private String status;
 
     public String getWork_order() {
         return work_order;
@@ -42,11 +42,11 @@ public class StorageReady extends CountDownEntity {
         this.face = face;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

@@ -39,8 +39,7 @@
             app:suffixTextSize="20sp"
             app:timeTextColor="#000000"
             app:timeTextSize="20sp"
-            />
-    </LinearLayout>
+            />    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_linee"

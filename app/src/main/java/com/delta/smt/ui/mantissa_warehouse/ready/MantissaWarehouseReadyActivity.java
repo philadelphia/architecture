@@ -95,7 +95,9 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
                 holder.setText(R.id.tv_linee, "线别: " + item.getLine());
                 holder.setText(R.id.tv_number, "工单号: " + item.getWork_order());
                 holder.setText(R.id.tv_face, "面别: " + item.getFace());
-                holder.setText(R.id.tv_type, "状态: " + item.getStatus());
+                if("1".equals(item.getStatus())){
+                    holder.setText(R.id.tv_type, "状态: " + "等待备料");
+                }
             }
 
             @Override
