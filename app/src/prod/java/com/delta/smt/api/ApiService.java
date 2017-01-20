@@ -239,20 +239,20 @@ public interface ApiService {
    @GET("http://172.22.35.155:8081/smm/unplugmod/getProductionLines")
     Observable<ModuleDownWarningItem> getModuleDownWarningItems(@Query("workOrderNum") String content);*/
 
-    @GET("http://172.22.35.155:8081/smm/plugmod/getProductionLines")
+    @GET("http://172.17.52.29:8081/smm/plugmod/getProductionLines")
     Observable<ModuleUpWarningItem> getModuleUpWarningItems();
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/getProductionLines")
+    @GET("http://172.17.52.29:8081/smm/unplugmod/getProductionLines")
     Observable<ModuleDownWarningItem> getModuleDownWarningItems();
 
 
-    @GET("http://172.22.35.155:8081/smm/plugmod/getModsByWordOrder")
+    @GET("http://172.17.52.29:8081/smm/plugmod/getModsByWordOrder")
     Observable<ModuleUpBindingItem> getModuleUpBindingItems(@Query("workOrderNum") String content);
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/getVirtualLine")
+    @GET("http://172.17.52.29:8081/smm/unplugmod/getVirtualLine")
     Observable<VirtualLineBindingItem> getVirtualLineBindingItems(@Query("workOrderNum") String content);
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/getModsByWordOrder")
+    @GET("http://172.17.52.29:8081/smm/unplugmod/getModsByWordOrder")
     Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("workOrderNum")String content);
 
     //TODO shaoqiang,8Interfance
@@ -360,18 +360,18 @@ public interface ApiService {
     @GET("http://172.22.34.22:8081/SMM/ExcessManagement/delivery")
     Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
 
-    @GET("http://172.22.35.155:8081/SMM/WareHIssue/debit")
+    @GET("http://172.17.52.29:8081/SMM/WareHIssue/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
-    @GET("http://172.22.35.155:8081/smm/plugmod/updateMod")
+    @GET("http://172.17.52.29:8081/smm/plugmod/updateMod")
     Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(@Query("id")String id,@Query("feeder")String feederID);
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/updateMod")
+    @GET("http://172.17.52.29:8081/smm/unplugmod/updateMod")
     Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("ids")String content);
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/bindVirtualLine")
+    @GET("http://172.17.52.29:8081/smm/unplugmod/bindVirtualLine")
     Observable<VirtualBindingResult> getVirtualBindingResult(@Query("id")String id, @Query("vitualId")String vitualId);
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/getModNumByMaterial")
+    @GET("http://172.17.52.29:8081/smm/unplugmod/getModNumByMaterial")
     Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num);
 }
