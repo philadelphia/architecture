@@ -66,6 +66,11 @@ public class FaultMessage {
         private int isOk;
         private String createTime;
         private int id;
+        private Long durationTime;
+
+        public Long getDurationTime() {
+            return durationTime;
+        }
 
         public String getFaultType() {
             return faultType;
@@ -77,6 +82,10 @@ public class FaultMessage {
 
         public String getLine() {
             return line;
+        }
+
+        public void setDurationTime(Long durationTime) {
+            this.durationTime = durationTime;
         }
 
         public void setLine(String line) {
