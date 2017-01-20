@@ -196,9 +196,13 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         breakdown_number=titleNumber.getBreakdown_number();
         info_number=titleNumber.getInfo_number();
 
-        titles = new String[]{"预警(" + warning_number + ")",
-                "故障(" + breakdown_number + ")",
-                "消息(" + info_number + ")"};
+        if (warning_number == 0 && breakdown_number == 0 && info_number==0) {
+            titles = new String[]{"预警", "故障", "消息"};
+        } else {
+            titles = new String[]{"预警(" + warning_number + ")",
+                    "故障(" + breakdown_number + ")",
+                    "消息(" + info_number + ")"};
+        }
         initView();
     }
 
@@ -256,6 +260,10 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
             alertDialog = createDialog(lastWarningMessage);
             lastWarningMessage = null;
         }
+        if (Constant.initLine() != null) {
+            getPresenter().getTitileNumber(Constant.initLine());
+        }
+
         Log.e(TAG, "event5: ");
     }
 
