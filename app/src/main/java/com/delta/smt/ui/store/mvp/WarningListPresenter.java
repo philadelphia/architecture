@@ -2,26 +2,19 @@ package com.delta.smt.ui.store.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.smt.entity.AlarmInfoDetailed;
 import com.delta.smt.entity.OutBound;
-import com.delta.smt.entity.ParameterOutBound;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.Success;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.functions.Action1;
-
-import static android.R.attr.id;
-import static android.R.id.list;
 
 /**
  * Created by Lin.Hou on 2016-12-27.
@@ -39,9 +32,10 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(Success s) {
                 if ("0".equals(s.getCode())){
+                    if (s.getMsg().contains("Success")){
                     getView().onSucessState(s.getMsg());}else {
                     getView().onFailed(s.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -73,11 +67,12 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(OutBound outBound) {
                 if ("0".equals(outBound.getCode())){
+                    if (outBound.getMsg().contains("Success")){
             List<OutBound.DataBean> datalist = outBound.getData();
             getView().onOutSuccess(datalist);
             }else {
                 getView().onFailed(outBound.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -91,11 +86,12 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(OutBound outBound) {
                 if ("0".equals(outBound.getCode())){
+                    if (outBound.getMsg().contains("Success")){
                     List<OutBound.DataBean> datalist = outBound.getData();
                     getView().onOutSuccess(datalist);
                 }else {
                     getView().onFailed(outBound.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -110,10 +106,11 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(PcbNumber pcbNumber) {
             if ("0".equals(pcbNumber.getCode())){
+                if (pcbNumber.getMsg().contains("Success")){
                 getView().getNumberSucces(pcbNumber.getData());
             }else {
                 getView().onFailed(pcbNumber.getMsg());
-            }
+            }}
             }
         }, new Action1<Throwable>() {
             @Override
@@ -145,9 +142,10 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(Success success) {
                 if("0".equals(success.getCode())){
+                if (success.getMsg().contains("Success")){
                 getView().onSucessState(success.getMsg());}else {
                     getView().onFailed(success.getMsg());
-                }
+                }}
             }
         }, new Action1<Throwable>() {
             @Override

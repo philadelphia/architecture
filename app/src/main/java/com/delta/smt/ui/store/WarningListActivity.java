@@ -109,6 +109,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         edWork.setText(mWorkNumberString);
         edPcb.setText(mMachineString);
         edMachine.setText(mMaterialNumberString);
+        edPcbDemand.setText(""+mAmoutString);
         List<ListWarning> list = new ArrayList<>();
         list.add(new ListWarning("", "", "", "", ""));
 
@@ -139,7 +140,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 holder.setText(R.id.pcb_time, item.getPcbCode());
                 if (mMaterbarCode != null) {
                     if (mList.get(0).getPcbCode().equals(mMaterbarCode.getDeltaMaterialNumber())) {
-//                        getPresenter().fetchWarningNumber(); // TODO: 2017-01-15 网络请求操作
+                     //  getPresenter().fetchWarningNumber(); // TODO: 2017-01-15 网络请求操作
                     }
 
                 }

@@ -27,4 +27,5 @@
     <dimen name="px_360">360px</dimen>
     <dimen name="px_140">140px</dimen>
     <dimen name="px_240">240px</dimen>
+    <dimen name="px_180">180px</dimen>
 </resources>

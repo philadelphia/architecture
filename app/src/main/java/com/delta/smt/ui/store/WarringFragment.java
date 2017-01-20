@@ -87,8 +87,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
 
     @Subscribe
     public void event(StoreEmptyMessage message)
-    {
-        getPresenter().fatchWarning();
+    {getPresenter().fatchWarning();
         Log.e(TAG, "event: ");
     }
 
