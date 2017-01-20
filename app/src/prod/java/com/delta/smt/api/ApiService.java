@@ -18,7 +18,7 @@ import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.MantissaCar;
+import com.delta.smt.entity.MantissaCarResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
@@ -75,27 +75,27 @@ public interface ApiService {
     //  tao.zt.zhang
 
     //  获取feeder入库列表
-    @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     //获取feeder入库时间
-    @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/feederBuffStorage")
+    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/feederBuffStorage")
     Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
 
     //获取所有的Feeder备料工单列表
-    @GET("http://172.22.34.34:8081/SMM/Buffer/querySchedule")
+    @GET("http://172.17.52.29:8081/SMM/Buffer/querySchedule")
     Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
 
     //获取指定工单的Feeder备料列表
-    @GET("http://172.22.34.34:8081/SMM/Buffer/startBufferIssue")
+    @GET("http://172.17.52.29:8081/SMM/Buffer/startBufferIssue")
     Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("condition") String workID);
 
     //获取Feeder备料时间
-    @GET("http://172.22.34.34:8081/SMM/Buffer/bufferIssue")
+    @GET("http://172.17.52.29:8081/SMM/Buffer/bufferIssue")
     Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("condition") String condition);
 
     //上传feeder备料上模组结果
-    @GET("http://172.22.34.34:8081/SMM/Buffer/completeBufferIssue")
+    @GET("http://172.17.52.29:8081/SMM/Buffer/completeBufferIssue")
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
 
@@ -320,15 +320,15 @@ public interface ApiService {
 
 
     //尾数仓入库
-    @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMantissaStorageList")
+    @GET("http://172.22.34.24:8081/SMM/MantissaStorage/qMantissaStorageList")
     Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
 
     //尾数仓查询料盘的位置
-    @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMaterialPlace")
+    @GET("http://172.22.34.24:8081/SMM/MantissaStorage/qMaterialPlace")
     Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query( "condition") String bind);
 
    //尾数仓查料盘入库
-   @GET("http://172.22.34.22:8081/SMM/MantissaStorage/qMaterialPlace")
+   @GET("http://172.22.34.24:8081/SMM/MantissaStorage/qMaterialPlace")
    Observable<MantissaWarehouseReturnResult> getputinstrage(@Query( "condition") String bind);
 
     //尾数仓备料
@@ -345,11 +345,11 @@ public interface ApiService {
 
     //查询尾数仓备料车
     @GET("http://172.22.34.34:8081/SMM/WareHIssue/qPrepCarIDByWorkOrder")
-    Observable<MantissaCar> getFindCar(@Query("condition") String bind);
+    Observable<MantissaCarResult> getFindCar(@Query("condition") String bind);
 
     //绑定尾数仓备料车
     @GET("http://172.22.34.34:8081/SMM/WareHIssue/bindPrepCarIDByWorkOrder")
-    Observable<MantissaCar> getbingingCar(@Query("condition") String bind);
+    Observable<MantissaCarResult> getbingingCar(@Query("condition") String bind);
 
     //尾数仓发料
     @GET("http://172.22.34.34:8081/SMM/WareHIssue/mantissIssue")
