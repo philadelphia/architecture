@@ -67,6 +67,9 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     String workOrderID = "";
     List<String> status = new ArrayList<>();
 
+    @BindView(R.id.showNetState)
+    TextView showNetState;
+
 
 
 
@@ -143,6 +146,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
             dataList.addAll(rows);
             myAdapter.notifyDataSetChanged();
+            showNetState.setVisibility(View.GONE);
         }
 
     }

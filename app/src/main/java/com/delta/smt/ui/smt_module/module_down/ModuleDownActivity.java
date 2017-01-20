@@ -2,7 +2,9 @@ package com.delta.smt.ui.smt_module.module_down;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +34,7 @@ import com.delta.smt.ui.smt_module.module_down.di.DaggerModuleDownComponent;
 import com.delta.smt.ui.smt_module.module_down.di.ModuleDownModule;
 import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownContract;
 import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownPresenter;
+import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
 import com.delta.smt.ui.smt_module.virtual_line_binding.VirtualLineBindingActivity;
 
 import java.text.SimpleDateFormat;
@@ -65,6 +68,9 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     String workOrderID = "";
     SharedPreferences preferences=null;
+
+    @BindView(R.id.showNetState)
+            TextView showNetState;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -104,7 +110,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
                 holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine());
                 holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
                 holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFace());
-                if(moduleUpWarningItem.getEnd_time().equals("")){
+                if(moduleUpWarningItem.getEnd_time().equals("-")){
                     holder.setText(R.id.tv_status, "状态: " + "下模组完成");
                 }else{
                     holder.setText(R.id.tv_status, "状态: " + "等待下模组");
@@ -130,6 +136,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             List<ModuleDownWarningItem.RowsBean> rowsList = data.getRows();
             dataList.addAll(rowsList);
             myAdapter.notifyDataSetChanged();
+            showNetState.setVisibility(View.GONE);
         }
 
     }
@@ -156,7 +163,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             for(int i=0;i<dataList.size();i++){
                 if(dataList.get(i).getWork_order().equals(workOrderID)){
                     ModuleDownWarningItem.RowsBean rb = dataList.get(i);
-                    rb.setEnd_time("");
+                    rb.setEnd_time("-");
                     dataList.set(i,rb);
                 }
             }
@@ -218,7 +225,14 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("work_order",dataList.get(position).getWork_order());
         editor.commit();
-        IntentUtils.showIntent(this, VirtualLineBindingActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.WORK_ITEM_ID,dataList.get(position).getWork_order());
+        //Intent intent = new Intent(this, ModuleUpBindingActivity.class);
+        //intent.putExtras(bundle);
+        //this.startActivity(intent);
+        //startActivityForResult(intent, Constant.ACTIVITY_REQUEST_WORK_ITEM_ID);
+        IntentUtils.showIntent(this, VirtualLineBindingActivity.class,bundle);
     }
 
     @Override
