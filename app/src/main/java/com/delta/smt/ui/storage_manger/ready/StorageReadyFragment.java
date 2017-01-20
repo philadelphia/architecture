@@ -10,10 +10,10 @@ import android.widget.LinearLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
-import com.delta.smt.common.CommonBaseAdapter;
-import com.delta.smt.common.CommonViewHolder;
+import com.delta.smt.common.ItemOnclick;
+import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
+import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.ui.storage_manger.details.StorageDetailsActivity;
 import com.delta.smt.ui.storage_manger.ready.di.DaggerStorageReadyComponent;
@@ -29,26 +29,26 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-import static com.delta.smt.R.id.cargon_affirm;
 import static com.delta.smt.R.id.recyclerView;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/21.
  */
 
-public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> implements StorageReadyContract.View,CommonBaseAdapter.OnItemClickListener<StorageReady> {
+public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
+        implements StorageReadyContract.View, ItemOnclick {
     @BindView(recyclerView)
     RecyclerView mRecyclerView;
 
     private List<StorageReady> dataList = new ArrayList();
-    private CommonBaseAdapter<StorageReady> adapter;
+    private ItemCountdownViewAdapter<StorageReady> adapter;
 
     @Override
     protected void initView() {
 
-        adapter = new CommonBaseAdapter<StorageReady>(getContext(), dataList) {
+        adapter = new ItemCountdownViewAdapter<StorageReady>(getContext(), dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, StorageReady item, int position) {
+            protected void convert(ItemTimeViewHolder holder, StorageReady item, int position) {
                 holder.setText(R.id.tv_title, "产线: " + item.getLine());
                 holder.setText(R.id.tv_line, "工单号: " + item.getWork_order());
                 holder.setText(R.id.tv_material_station, "面别: " + item.getFace());
@@ -56,14 +56,14 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> im
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, StorageReady item) {
+            protected int getLayoutId() {
                 return R.layout.fragment_storage_ready;
             }
         };
 
 
 
-        adapter.setOnItemClickListener(this);
+        adapter.setOnItemTimeOnclck(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mRecyclerView.setAdapter(adapter);
 
@@ -109,15 +109,10 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter> im
     }
 
 
-
     @Override
-    public void onItemClick(View view, StorageReady item, int position) {
-
+    public void onItemClick(View item, int position) {
         Intent intent = new Intent(getActivity(), StorageDetailsActivity.class);
-        intent.putExtra("work_order",item.getWork_order());
+        intent.putExtra("work_order",dataList.get(position).getWork_order());
         startActivity(intent);
-
     }
-
-
 }

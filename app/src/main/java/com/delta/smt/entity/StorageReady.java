@@ -1,12 +1,10 @@
 package com.delta.smt.entity;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by Zhenyu.Liu on 2016/12/22.
  */
 
-public class StorageReady {
+public class StorageReady extends CountDownEntity {
     /**
      * work_order : 20171011
      * line : H-01
@@ -18,7 +16,6 @@ public class StorageReady {
     private String work_order;
     private String line;
     private String face;
-    private String remain_time;
     private int status;
 
     public String getWork_order() {
@@ -43,14 +40,6 @@ public class StorageReady {
 
     public void setFace(String face) {
         this.face = face;
-    }
-
-    public String getRemain_time() {
-        return remain_time;
-    }
-
-    public void setRemain_time(String remain_time) {
-        this.remain_time = remain_time;
     }
 
     public int getStatus() {
