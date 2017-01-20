@@ -30,8 +30,6 @@ import java.util.List;
 import butterknife.BindView;
 import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-
 /**
  * Created by Lin.Hou on 2016-12-26.
  */
@@ -70,7 +68,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
                     bundle.putString("workNumber", itemInfo.getWorkNumber());
                     bundle.putString("machine", itemInfo.getMaterialNumber());
                     bundle.putString("materialNumber", itemInfo.getMachine());
-                    bundle.putInt("amout", Integer.valueOf(itemInfo.getWorkNumber()));
+                    bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
                     bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
                     bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
                     Log.i("info ----", itemInfo.getWorkNumber());
@@ -103,12 +101,9 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
     @Override
     public void onSucess(List<ItemInfo> wareHouses) {
-        Log.e("info1","----------------------");
         mList.clear();
         mList.addAll(wareHouses);
-        Log.e("info2","----------------------");
         mAdapter.notifyDataSetChanged();
-        Log.e("info3","----------------------");
         EventBus.getDefault().post(new ArrangeInt(wareHouses.size()));
     }
 

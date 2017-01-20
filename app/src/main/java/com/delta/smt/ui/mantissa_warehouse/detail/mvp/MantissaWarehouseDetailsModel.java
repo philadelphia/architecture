@@ -39,4 +39,9 @@ public class MantissaWarehouseDetailsModel extends BaseModel<ApiService> impleme
         return getService().getMantissaWarehouseput(str).compose(RxsRxSchedulers.<MantissaWarehouseDetailsResult>io_main());
     }
 
+    @Override
+    public Observable<MantissaWarehouseDetailsResult> getMantissaWareOver() {
+        return getService().getMantissaWareOver().compose(RxsRxSchedulers.<MantissaWarehouseDetailsResult>io_main());
+    }
+
 }

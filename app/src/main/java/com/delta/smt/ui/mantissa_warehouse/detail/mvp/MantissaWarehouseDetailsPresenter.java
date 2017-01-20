@@ -121,5 +121,29 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
 
     }
 
+    public void getMantissaWareOver(){
+
+        getModel().getMantissaWareOver().subscribe(new Action1<MantissaWarehouseDetailsResult>() {
+            @Override
+            public void call(MantissaWarehouseDetailsResult mantissaWarehouseDetailses) {
+
+                if("Success".equals(mantissaWarehouseDetailses.getMsg())){
+                    getView().getMantissaWareOverSucess(mantissaWarehouseDetailses.getRows());
+                }else{
+                    getView().getMantissaWareOverFailed(mantissaWarehouseDetailses.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                getView().getMantissaWareOverFailed(throwable.getMessage());
+
+            }
+        });
+
+    }
+
 
 }

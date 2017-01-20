@@ -137,7 +137,13 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 holder.setText(R.id.tv_location, item.getShelves());
                 holder.setText(R.id.tv_needNumber, item.getRe_quantity());
                 holder.setText(R.id.tv_shipments, item.getSe_quantity());
-                holder.setText(R.id.tv_type, item.getStatus());
+                if("1".equals(item.getStatus())){
+                    holder.setText(R.id.tv_add_count, "状态: " + "发料中");
+                }else if("2".equals(item.getStatus())){
+                    holder.setText(R.id.tv_add_count, "状态: " + "完成");
+                }else {
+                    holder.setText(R.id.tv_add_count, "状态: " + "未开始");
+                }
             }
 
             @Override
@@ -189,10 +195,27 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         dataList2.addAll(mantissaWarehouseDetailses);
         adapter2.notifyDataSetChanged();
 
+//        for (int i = 0;i<=mantissaWarehouseDetailses.size();i++){
+//            if(mantissaWarehouseDetailses.get(i).getStatus().equals("2")){
+//                getPresenter().getMantissaWareOver();
+//            }
+//
+//        }
+
     }
 
     @Override
     public void getMantissaWarehouseputFailed(String message) {
+
+    }
+
+    @Override
+    public void getMantissaWareOverSucess(List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> mantissaWarehouseDetailses) {
+        Toast.makeText(this, "扣账成功", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getMantissaWareOverFailed(String message) {
 
     }
 
