@@ -23,6 +23,7 @@ public interface ProduceToolsLocationContract {
 
         int getLocation(int param);
         int getSubmitResoult(int param);
+        void Fail();
 
     }
 

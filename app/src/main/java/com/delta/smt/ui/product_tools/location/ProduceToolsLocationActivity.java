@@ -97,9 +97,9 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         if (flag1 != 0) {
             try {
-
+                ProductToolsBarcode p= (ProductToolsBarcode) barCodeParseIpml.getEntity(barcode,BarCodeType.PRODUCT_TOOLS);
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("barcode", barcode);
+                jsonObject.put("barcode", p.getSource());
                 jsonObject.put("userID", ID);
                 String s = "[\'" + jsonObject.toString() + "\']";
                 getPresenter().getLocation(s);
@@ -107,19 +107,22 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(this, "治具二维码格式不对，请重新扫描！", Toast.LENGTH_SHORT).show();
             }
         } else {
 
             try {
+                ProductToolsRoom p=(ProductToolsRoom)barCodeParseIpml.getEntity(barcode,BarCodeType.PRODECT_TOOLS_ROOM);
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("jigBarcode", tools);
-                jsonObject.put("shelfBarcode", barcode);
+                jsonObject.put("shelfBarcode", p.getSource());
                 jsonObject.put("userID", ID);
                 String s = "[\'" + jsonObject.toString() + "\']";
                 getPresenter().getSubmitResoult(s);
                 shift = barcode;
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(this, "架位二维码格式不对，请重新扫描！", Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -143,5 +146,10 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             finish();
         }
         return 0;
+    }
+
+    @Override
+    public void Fail() {
+        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
     }
 }

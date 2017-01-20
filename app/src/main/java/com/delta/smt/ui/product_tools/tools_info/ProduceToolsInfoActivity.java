@@ -198,6 +198,9 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getToolsInfo(List<ProductToolsInfo> ProductToolsItem) {
+        if(ProductToolsItem==null) {
+            Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+        }
         if (selectItem == null) {
             data.addAll(ProductToolsItem);
             adapter.notifyDataSetChanged();
@@ -222,7 +225,9 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getToolsVerfy(List<ProductToolsInfo> ProductToolsItem) {
-
+        if(ProductToolsItem==null) {
+            Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+        }
         int i = 0;
         for (ProductToolsInfo p : ProductToolsItem) {
             i++;
@@ -238,7 +243,9 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getToolsBorrowSubmit(JsonProductToolsLocation j) {
-
+        if(j==null) {
+            Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+        }
         Log.e("getToolsBorrowSubmit", j.toString());
         if (j.getCode() == 0) {
 
@@ -263,6 +270,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getFail() {
+
+        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
 
     }
 

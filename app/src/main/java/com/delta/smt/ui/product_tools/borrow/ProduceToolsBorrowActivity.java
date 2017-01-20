@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
@@ -76,7 +77,7 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
         data.add(0, new ProductWorkItem("工单号", "工单类型", "机种", "PCB code", "组合料号", "线别", "PWB料号", "面别", "计划上线时间", "治具状态"));
 
-        Log.e(">>>>>>>>>>>>>>>>>>>>>>",data.size()+"");
+        Log.e(">>>>>>>>>>>>>>>>>>>>>>", data.size() + "");
 
         adapter = new CommonBaseAdapter<ProductWorkItem>(getContext(), data) {
             @Override
@@ -191,6 +192,7 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
     @Override
     public void getFail() {
+        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
         this.data = new ArrayList<>();
     }
 
