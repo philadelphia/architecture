@@ -100,7 +100,13 @@ public class MantissaWarehousePutstorageFragment extends
                 holder.setText(R.id.tv_serialNumber, item.getSerial_num());
                 holder.setText(R.id.tv_location, item.getShelves());
                 holder.setText(R.id.tv_tag, item.getLabel());
-                holder.setText(R.id.tv_type, item.getStatus());
+                if("1".equals(item.getStatus())){
+                    holder.setText(R.id.tv_type, "状态: " + "开始退库");
+                }else if("0".equals(item.getStatus())){
+                    holder.setText(R.id.tv_type, "状态: " + "等待退入");
+                }else {
+                    holder.setText(R.id.tv_type, "状态: " + "完成");
+                }
 
             }
 
