@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="85px"
     android:id="@+id/item_product_borrow"
@@ -12,7 +12,7 @@
         android:gravity="center"
         android:text="@string/WordNumber"
         android:textColor="#333333"
-        android:textSize="40px"
+        android:textSize="30px"
         android:id="@+id/WorkNumber"/>
 
     <View
@@ -27,7 +27,7 @@
         android:gravity="center"
         android:text="@string/WordType"
         android:textColor="#333333"
-        android:textSize="40px"
+        android:textSize="30px"
         android:id="@+id/WorkType"/>
 
     <View
@@ -42,7 +42,7 @@
         android:gravity="center"
         android:text="@string/MachineType"
         android:textColor="#333333"
-        android:textSize="40px"
+        android:textSize="30px"
         android:id="@+id/MachineType"/>
 
     <View
@@ -57,7 +57,7 @@
         android:gravity="center"
         android:text="@string/PCB_Code"
         android:textColor="#333333"
-        android:textSize="40px"
+        android:textSize="30px"
         android:id="@+id/PCB_Code"/>
 
     <View
@@ -72,7 +72,7 @@
         android:gravity="center"
         android:text="@string/FormMaterialNumber"
         android:textColor="#333333"
-        android:textSize="40px"
+        android:textSize="30px"
         android:id="@+id/FormMaterialNumber"/>
 
     <View
@@ -87,7 +87,7 @@
         android:gravity="center"
         android:text="@string/Line"
         android:textColor="#333333"
-        android:textSize="40px"
+        android:textSize="30px"
         android:id="@+id/Line"/>
 
     <View
@@ -103,7 +103,7 @@
         android:gravity="center"
         android:text="@string/PWB_MaterialNumber"
         android:textColor="#333333"
-        android:textSize="40px"
+        android:textSize="30px"
         />
 
     <View
@@ -118,7 +118,7 @@
         android:gravity="center"
         android:text="@string/Cover"
         android:textColor="#333333"
-        android:textSize="40px"
+        android:textSize="30px"
         android:id="@+id/Cover"/>
 
     <View
@@ -133,7 +133,7 @@
         android:gravity="center"
         android:text="@string/PlanOnLineTime"
         android:textColor="#333333"
-        android:textSize="40px"
+        android:textSize="30px"
         android:id="@+id/PlanOnLineTime"/>
 
     <View
@@ -148,6 +148,6 @@
         android:gravity="center"
         android:text="@string/ProductToolsStatus"
         android:textColor="#333333"
-        android:textSize="40px"
+        android:textSize="30px"
         android:id="@+id/ProductToolsStatus"/>
-</LinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

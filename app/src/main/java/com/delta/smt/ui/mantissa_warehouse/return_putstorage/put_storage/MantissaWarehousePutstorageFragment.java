@@ -100,7 +100,13 @@ public class MantissaWarehousePutstorageFragment extends
                 holder.setText(R.id.tv_serialNumber, item.getSerial_num());
                 holder.setText(R.id.tv_location, item.getShelves());
                 holder.setText(R.id.tv_tag, item.getLabel());
-                holder.setText(R.id.tv_type, item.getStatus());
+                if("1".equals(item.getStatus())){
+                    holder.setText(R.id.tv_type, "开始退库");
+                }else if("0".equals(item.getStatus())){
+                    holder.setText(R.id.tv_type,  "等待退入");
+                }else {
+                    holder.setText(R.id.tv_type,  "完成");
+                }
 
             }
 
@@ -232,9 +238,7 @@ public class MantissaWarehousePutstorageFragment extends
                     materialNumber = materiaBar.getDeltaMaterialNumber();
                     serialNum = materiaBar.getStreamNumber();
                     flag = 2;
-                    Toast.makeText(baseActiviy, "已扫描料盘dddddddd", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(baseActiviy, materialNumber, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(baseActiviy, serialNum, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(baseActiviy, "已扫描料盘", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
 
                 }
@@ -252,7 +256,6 @@ public class MantissaWarehousePutstorageFragment extends
                     getPresenter().getBindingLabel(s);
                     flag = 1;
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(baseActiviy, lableBarCode, Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
                 }

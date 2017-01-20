@@ -22,7 +22,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaBingingCarBean;
-import com.delta.smt.entity.MantissaCar;
+import com.delta.smt.entity.MantissaCarResult;
 import com.delta.smt.entity.MantissaCarBean;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
@@ -137,7 +137,13 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 holder.setText(R.id.tv_location, item.getShelves());
                 holder.setText(R.id.tv_needNumber, item.getRe_quantity());
                 holder.setText(R.id.tv_shipments, item.getSe_quantity());
-                holder.setText(R.id.tv_type, item.getStatus());
+                if("1".equals(item.getStatus())){
+                    holder.setText(R.id.tv_type, "发料中");
+                }else if("2".equals(item.getStatus())){
+                    holder.setText(R.id.tv_type, "完成");
+                }else if("0".equals(item.getStatus())){
+                    holder.setText(R.id.tv_type, "未开始");
+                }
             }
 
             @Override
@@ -171,7 +177,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getBingingCarSucess(MantissaCar car) {
+    public void getBingingCarSucess(List<MantissaCarResult.MantissaCar> car) {
         mCar.setText("");
         mCar.setText(lastCar);
     }
@@ -214,10 +220,12 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getFindCarSucess(MantissaCar car) {
-        String rows = car.getRows();
-       // mCar.setText(rows);
+    public void getFindCarSucess(List<MantissaCarResult.MantissaCar> car) {
+        String rows =  car.get(0).getMsg();
+        mCar.setText(rows);
+        flag = 2;
     }
+
 
     @Override
     public void getFindCarFailed(String message) {
@@ -268,7 +276,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     Gson gson = new Gson();
                     String s = gson.toJson(bindBean);
                     getPresenter().getMantissaWarehouseput(s);
-                    flag = 1;
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();

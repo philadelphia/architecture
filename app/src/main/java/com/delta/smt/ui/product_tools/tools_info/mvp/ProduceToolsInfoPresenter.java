@@ -64,7 +64,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                 int size=0;
                 for(JsonProductToolsVerfyList j:rows){
                     size++;
-                    ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),"","更多",j.getStatName(),String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
+                    ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),"","更多",j.getStatID()==1?"待确认":"待取",String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
                     data.add(p);
 
                 }
