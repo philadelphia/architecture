@@ -57,6 +57,7 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     private String faultId;
     private String faultSolutionId;
     private String faultSolutionName;
+    private int size;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -81,14 +82,19 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("故障处理");
-        tvTitle.setText(faultSolutionName+":");
+        tvTitle.setText(faultSolutionName + ":");
         setSupportActionBar(toolbar);
         adapter = new CommonBaseAdapter<FaultSolutionMessage.RowsBean>(this, datas) {
             @Override
             protected void convert(CommonViewHolder holder, FaultSolutionMessage.RowsBean item, int position) {
 
+                if (size == 1) {
+                    holder.setText(R.id.tv_step_content, item.getContent());
+                } else {
 
-                holder.setText(R.id.tv_step_content, item.getOrderNum() + "." + item.getContent());
+                    holder.setText(R.id.tv_step_content, item.getOrderNum() + "." + item.getContent());
+                }
+
             }
 
             @Override
@@ -122,8 +128,7 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
 
     @Override
     public void getDetailSolutionMessage(List<FaultSolutionMessage.RowsBean> rowsBean) {
-
-
+        size = rowsBean.size();
         datas.clear();
         datas.addAll(rowsBean);
         adapter.notifyDataSetChanged();
@@ -137,6 +142,7 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     @Override
     public void resolveFaultSucess(String message) {
         ToastUtils.showMessage(this, message);
+        finish();
     }
 
 

@@ -3,12 +3,14 @@ package com.delta.smt.api;
 
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.BaseEntity;
+import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
@@ -24,6 +26,7 @@ import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.MaterialAndFeederBindingResult;
+import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.ModNumByMaterialResult;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
@@ -206,20 +209,33 @@ public interface ApiService {
     //Observable<List<MantissaWarehousePutstorage>> getBeginput();
 
     //故障处理预警
-    @GET("http://172.22.34.19:8081/lineAlarmFault/getSeriousFaultInfos")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/getSeriousFaultInfos")
     Observable<FaultMessage> getFalutMessages(@Query("condition") String s);
 
-    @GET("http://172.22.34.19:8081/lineAlarmFault/faultSolutionList")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/faultSolutionList")
     public Observable<SolutionMessage> getSolutionMessage(@Query("condition") String s);
 
-    @GET("http://172.22.34.19:8081/lineAlarmFault/faultSolutionDetailList")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/faultSolutionDetailList")
     public Observable<FaultSolutionMessage> getDetailSolutionMessage(@Query("condition") String s);
 
-    @GET("http://172.22.34.19:8081/lineAlarmFault/resolveFault")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/resolveFault")
     Observable<BaseEntity> resolveFault(@Query("condition") String content);
 
-    @GET("http://172.22.34.19:8081/lineAlarmFault/addFaultSolution")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/addFaultSolution")
     Observable<BaseEntity> addSolution(@Query("condition") String content);
+
+    //仓库房
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/qPrepCarIDByWorkOrder")
+    Observable<MaterialCar> queryMaterialCar(@Query("condition") String content);
+
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/bindPrepCarIDByWorkOrder")
+    Observable<BindPrepCarIDByWorkOrderResult> bindMaterialCar(@Query("condition") String content);
+
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/issureToWareh")
+    Observable<Result<StorageDetails>> issureToWareh(@Query("condition") String content);
+
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/issureToWarehFinish")
+    Observable<IssureToWarehFinishResult> issureToWarehFinish();
 
     //更新
     @GET(API.bundleJsonUrl)
@@ -358,13 +374,6 @@ public interface ApiService {
     //尾数仓发料完成
     @GET("http://172.22.34.36:8081/SMM/WareHIssue/completeMantissIssue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWareOver();
-
-
-
-
-
-
-
 
     @GET("http://172.22.34.22:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
