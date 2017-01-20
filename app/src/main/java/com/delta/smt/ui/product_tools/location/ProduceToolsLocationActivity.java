@@ -112,10 +112,9 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         } else {
 
             try {
-                ProductToolsRoom p=(ProductToolsRoom)new BarCodeParseIpml().getEntity(barcode,BarCodeType.PRODECT_TOOLS_ROOM);
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("jigBarcode", tools);
-                jsonObject.put("shelfBarcode", p.getSource());
+                jsonObject.put("shelfBarcode", barcode);
                 jsonObject.put("userID", ID);
                 String s = "[\'" + jsonObject.toString() + "\']";
                 getPresenter().getSubmitResoult(s);
