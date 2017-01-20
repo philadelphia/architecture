@@ -104,39 +104,39 @@ public interface ApiService {
     Observable<List<ItemProduceLine>> getLineDatas();
 
     //请求预警，故障，消息的item数量
-    @GET("http://172.22.34.19:8081/lineAlarmFault/alarmFaultInfos")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getTitleDatas(@Query("condition") String condition);
 
     //请求预警中item数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/alarmFaultInfos")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
     //请求故障中item数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/alarmFaultInfos")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
 
     //请求消息中item数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/alarmFaultInfos")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemInfoDatas(@Query("condition") String condition);
 
     //确认信息中item
-    @GET("http://172.22.34.19:8081/lineAlarmFault/confirmMessage")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/confirmMessage")
     Observable<Result> getItemInfoConfirm(@Query("condition") String condition);
 
     //确认预警中item
-    @GET("http://172.22.34.19:8081/lineAlarmFault/confirmAlarmMessage")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/confirmAlarmMessage")
     Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
 
     //提交预警中扫码数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/relayMaterial")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/relayMaterial")
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
 
     //请求手补件item数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/getPatchMaterial?condition={}")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/getPatchMaterial?condition={}")
     Observable<Result<ItemHandAdd>> getItemHandAddDatas();
 
     //确认手补件item数据
-    @GET("http://172.22.34.19:8081/lineAlarmFault/confirmPatchMaterial")
+    @GET("http://172.22.34.16:8081/lineAlarmFault/confirmPatchMaterial")
     Observable<Result> getItemHandAddConfirm(@Query("condition") String condition);
 
 
