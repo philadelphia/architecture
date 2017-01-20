@@ -173,7 +173,8 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void getBeginFailed(String message) {
-
+        dataList2.clear();
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -185,7 +186,7 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void getBingingLableFailed(String message) {
-
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -197,7 +198,7 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void getUpLocationFailed(String message) {
-
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
 
 
