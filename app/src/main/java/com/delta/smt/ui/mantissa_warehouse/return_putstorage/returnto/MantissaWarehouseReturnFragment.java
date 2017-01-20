@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
@@ -103,9 +102,9 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 holder.setText(R.id.tv_serialNumber, item.getSerial_num());
                 holder.setText(R.id.tv_location, item.getShelves());
                 if("1".equals(item.getStatus())){
-                    holder.setText(R.id.tv_type, "状态: " + "已入库");
+                    holder.setText(R.id.tv_type, "已入库");
                 }else {
-                    holder.setText(R.id.tv_type, "状态: " + "未入库");
+                    holder.setText(R.id.tv_type, "未入库");
                 }
             }
 
@@ -136,7 +135,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getFailed(String message) {
-
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -148,7 +147,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getMaterialLocationFailed(String message) {
-
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -167,7 +166,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getputinstrageFailed(String message) {
-
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
 
 

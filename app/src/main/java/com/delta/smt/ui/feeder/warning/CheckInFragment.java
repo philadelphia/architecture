@@ -7,10 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FeederBuffer;
-import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.smt.R;

@@ -1,78 +1,95 @@
 package com.delta.smt.entity;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by Zhenyu.Liu on 2016/12/28.
  */
 
 public class StorageDetails {
 
-    //料号
-    @SerializedName("material_num")
-    private String number;
 
-    //料号架位
-    @SerializedName("shelves")
-    private String location;
+    /**
+     * work_order : 20171011
+     * material_num : 4020108700
+     * shelves : A1D001
+     * re_quantity : 800
+     * se_quantity : 0
+     * status : 0
+     */
 
-    //需求量
-    @SerializedName("re_quantity")
-    private String needNumber;
 
-    //发料量
-    @SerializedName("se_quantity")
-    private String shipments;
+    private String work_order;
+    private String material_num;
+    private String shelves;
+    private String re_quantity;
+    private String se_quantity;
+    private String msg;
+    private int status;
 
-    //状态
-    @SerializedName("status")
-    private String type;
+    public StorageDetails(String material_num, String shelves, String re_quantity, String se_quantity, int status) {
 
-    public StorageDetails(String number, String location, String needNumber, String shipments, String type) {
-        this.number = number;
-        this.location = location;
-        this.needNumber = needNumber;
-        this.shipments = shipments;
-        this.type = type;
+        this.material_num = material_num;
+        this.shelves = shelves;
+        this.re_quantity = re_quantity;
+        this.se_quantity = se_quantity;
+        this.status = status;
     }
 
-    public String getNumber() {
-        return number;
+    public StorageDetails() {
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public String getWork_order() {
+        return work_order;
     }
 
-    public String getLocation() {
-        return location;
+    public void setWork_order(String work_order) {
+        this.work_order = work_order;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public String getMaterial_num() {
+        return material_num;
     }
 
-    public String getNeedNumber() {
-        return needNumber;
+    public void setMaterial_num(String material_num) {
+        this.material_num = material_num;
     }
 
-    public void setNeedNumber(String needNumber) {
-        this.needNumber = needNumber;
+    public String getShelves() {
+        return shelves;
     }
 
-    public String getShipments() {
-        return shipments;
+    public void setShelves(String shelves) {
+        this.shelves = shelves;
     }
 
-    public void setShipments(String shipments) {
-        this.shipments = shipments;
+    public String getRe_quantity() {
+        return re_quantity;
     }
 
-    public String getType() {
-        return type;
+    public void setRe_quantity(String re_quantity) {
+        this.re_quantity = re_quantity;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public String getSe_quantity() {
+        return se_quantity;
+    }
+
+    public void setSe_quantity(String se_quantity) {
+        this.se_quantity = se_quantity;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
