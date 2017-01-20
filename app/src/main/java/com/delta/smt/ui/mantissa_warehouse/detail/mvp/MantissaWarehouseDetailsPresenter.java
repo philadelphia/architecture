@@ -2,7 +2,7 @@ package com.delta.smt.ui.mantissa_warehouse.detail.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.smt.entity.MantissaCar;
+import com.delta.smt.entity.MantissaCarResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 
 import javax.inject.Inject;
@@ -49,12 +49,12 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
     public void getFindCar(String str){
 
 
-        getModel().getFindCar(str).subscribe(new Action1<MantissaCar>() {
+        getModel().getFindCar(str).subscribe(new Action1<MantissaCarResult>() {
             @Override
-            public void call(MantissaCar car) {
+            public void call(MantissaCarResult car) {
 
                 if("Success".equals(car.getMsg())){
-                    getView().getFindCarSucess(car);
+                    getView().getFindCarSucess(car.getRows());
                 }else{
                     getView().getFindCarFailed(car.getMsg());
                 }
@@ -74,12 +74,12 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
 
     public void getbingingCar(String str){
 
-        getModel().getBingingCar(str).subscribe(new Action1<MantissaCar>() {
+        getModel().getBingingCar(str).subscribe(new Action1<MantissaCarResult>() {
             @Override
-            public void call(MantissaCar car) {
+            public void call(MantissaCarResult car) {
 
                 if("Success".equals(car.getMsg())){
-                    getView().getBingingCarSucess(car);
+                    getView().getBingingCarSucess(car.getRows());
                 }else{
                     getView().getBingingCarFailed(car.getMsg());
                 }

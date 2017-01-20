@@ -18,7 +18,7 @@ import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.MantissaCar;
+import com.delta.smt.entity.MantissaCarResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
@@ -337,11 +337,11 @@ public interface ApiService {
 
     //查询尾数仓备料车
     @GET("http://172.22.34.34:8081/SMM/WareHIssue/qPrepCarIDByWorkOrder")
-    Observable<MantissaCar> getFindCar(@Query("condition") String bind);
+    Observable<MantissaCarResult> getFindCar(@Query("condition") String bind);
 
     //绑定尾数仓备料车
     @GET("http://172.22.34.34:8081/SMM/WareHIssue/bindPrepCarIDByWorkOrder")
-    Observable<MantissaCar> getbingingCar(@Query("condition") String bind);
+    Observable<MantissaCarResult> getbingingCar(@Query("condition") String bind);
 
     //尾数仓发料
     @GET("http://172.22.34.34:8081/SMM/WareHIssue/mantissIssue")
