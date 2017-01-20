@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
@@ -75,6 +76,8 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         toolbarTitle.setText("治具借出");
 
         data.add(0, new ProductWorkItem("工单号", "工单类型", "机种", "PCB code", "组合料号", "线别", "PWB料号", "面别", "计划上线时间", "治具状态"));
+
+        Log.e(">>>>>>>>>>>>>>>>>>>>>>", data.size() + "");
 
         adapter = new CommonBaseAdapter<ProductWorkItem>(getContext(), data) {
             @Override
@@ -174,6 +177,8 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         MyCompare myCompare = new MyCompare();
         Collections.sort(data, myCompare);
 
+        data.add(0, new ProductWorkItem("工单号", "工单类型", "机种", "PCB code", "组合料号", "线别", "PWB料号", "面别", "计划上线时间", "治具状态"));
+
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getProductStatus().equals(getString(R.string.AreReady))) {
                 ProductWorkItem productWorkItem = data.get(i);
@@ -181,13 +186,13 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
                 data.add(1, productWorkItem);
             }
         }
-
         adapter.notifyDataSetChanged();
 
     }
 
     @Override
     public void getFail() {
+        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
         this.data = new ArrayList<>();
     }
 
