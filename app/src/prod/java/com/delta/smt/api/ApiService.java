@@ -79,31 +79,39 @@ public interface ApiService {
 
     //  获取feeder入库列表
 //    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
-    @GET("http://172.22.34.5:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+    @GET("http://172.22.34.104:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     //获取feeder入库时间
-    @GET("http://172.22.34.5:8081/SMM/FeederBuffStorage/feederBuffStorage")
+    @GET("http://172.22.34.104:8081/SMM/FeederBuffStorage/feederBuffStorage")
     Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
 
     //获取所有的Feeder备料工单列表
-    @GET("http://172.22.34.6:8081/SMM/Buffer/querySchedule")
+    @GET("http://172.22.34.104:8081/SMM/Buffer/querySchedule")
     Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
 
     //获取指定工单的Feeder备料列表
-    @GET("http://172.22.34.6:8081/SMM/Buffer/startBufferIssue")
+    @GET("http://172.22.34.104:8081/SMM/Buffer/startBufferIssue")
     Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("condition") String workID);
 
     //获取Feeder备料时间
-    @GET("http://172.22.34.6:8081/SMM/Buffer/bufferIssue")
+    @GET("http://172.22.34.104:8081/SMM/Buffer/bufferIssue")
     Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("condition") String condition);
 
     //上传feeder备料上模组结果
-    @GET("http://172.22.34.6:8081/SMM/Buffer/completeBufferIssue")
+    @GET("http://172.22.34.104:8081/SMM/Buffer/completeBufferIssue")
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
 
-    /*Zhangfuxiang*/
+
+    /**
+     *@description :
+     * 1.生产中预警
+     * 2.手补件通知
+     *@author : Fuxiang.Zhang
+     *@date : 2017/1/21 14:41
+    */
     //请求产线列表数据
     Observable<List<ItemProduceLine>> getLineDatas();
 
@@ -145,8 +153,6 @@ public interface ApiService {
 
 
     //接口PCB库房发料
-
-
     Observable<List<ListWarning>> getListWarning();//获取发料列表
 
 

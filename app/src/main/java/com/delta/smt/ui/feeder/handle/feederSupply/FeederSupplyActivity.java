@@ -193,7 +193,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
         if (isAllHandleOVer) {
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
-            getPresenter().upLoadToMES();
+//            getPresenter().upLoadToMES();
         }
     }
 
