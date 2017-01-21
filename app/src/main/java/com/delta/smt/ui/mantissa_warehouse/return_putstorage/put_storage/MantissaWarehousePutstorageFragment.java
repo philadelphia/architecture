@@ -74,8 +74,8 @@ public class MantissaWarehousePutstorageFragment extends
     private String serialNum;
     private String count;
 
-    int position = 0;
-    boolean f= false;
+    private int position = 0;
+    private boolean f= false;
 
 
 
@@ -195,13 +195,15 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void getUpLocationSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
+        position = 0;
+        f= false;
+        flag = 3;
+
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
 
-        int position = 0;
-        boolean f= false;
-        flag = 3;
+
     }
     @Override
     public void getUpLocationFailed(String message) {
@@ -271,7 +273,6 @@ public class MantissaWarehousePutstorageFragment extends
                 break;
 
             case 3:
-
 
                 MaterialBlockBarCode lableBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                 count = lableBar.getCount();
