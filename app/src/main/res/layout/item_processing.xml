@@ -110,13 +110,13 @@
         <!--app:suffixSecond="秒"-->
         <!--app:suffixMillisecond="毫秒" />-->
 
-        <TextView
+        <Chronometer
             android:id="@+id/chronometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/time_remain"
             android:layout_below="@+id/time_remain"
             android:gravity="center"
-            android:textSize="30px" />
+            android:textSize="40px" />
     </LinearLayout>
 </RelativeLayout>
