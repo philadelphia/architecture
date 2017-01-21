@@ -37,6 +37,8 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static android.R.attr.type;
+
 
 /**
  * Created by Lin.Hou on 2016-12-27.
@@ -270,10 +272,16 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                         if (!"0".equals(String.valueOf(mAmout)) && !"0".equals(String.valueOf(mId))) {
                             if (mAmoutString <mAmout){
                                 Snackbar.make(activityMianview, "请拆箱取出"+mAmoutString+"片", Snackbar.LENGTH_INDEFINITE).show();
-                                getPresenter().fetchPcbSuccess(mAlarminfoId,mAmoutString, mId);
+                                if (mIsAlarmInfo){
+                                getPresenter().fetchPcbSuccess(mAlarminfoId,mAmoutString, mId,0);}else {
+                                    getPresenter().fetchPcbSuccess(mAlarminfoId,mAmoutString, mId,1);
+                                }
                             }
                             if (mAmoutString >mAmout){
-                                getPresenter().fetchPcbSuccess(mAlarminfoId,mAmout, mId);
+                                if (mIsAlarmInfo){
+                                    getPresenter().fetchPcbSuccess(mAlarminfoId,mAmoutString, mId,0);}else {
+                                    getPresenter().fetchPcbSuccess(mAlarminfoId,mAmoutString, mId,1);
+                                }
                             }
 
                         }

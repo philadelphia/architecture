@@ -121,7 +121,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
 
-    public void fetchPcbSuccess(int mAlarminfoId,int amout, int id){
+    public void fetchPcbSuccess(int mAlarminfoId,int amout, int id,int type){
 //        Gson gson=new Gson();
 //        List<ParameterOutBound> list=new ArrayList<>();
 //        ParameterOutBound parameterOutBound=new ParameterOutBound(id,amout);
@@ -133,6 +133,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             jsonObject.putOpt("billId",mAlarminfoId);
             jsonObject.putOpt("id",id);
             jsonObject.putOpt("amount",amout);
+            jsonObject.putOpt("type",type);
             jsonArray.put(jsonObject);
             json.putOpt("data",jsonArray);
         } catch (JSONException e) {

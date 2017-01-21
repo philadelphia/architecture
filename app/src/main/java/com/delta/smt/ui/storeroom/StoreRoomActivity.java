@@ -15,6 +15,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -33,6 +34,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.FRAME_LOCATION;
+import static com.delta.buletoothio.barcode.parse.BarCodeType.PCB_FRAME_LOCATION;
 
 /**
  * Created by Lin.Hou on 2016-12-26.
@@ -116,7 +118,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
             e.printStackTrace();
             try {
-                FrameLocation frameCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, FRAME_LOCATION);
+                PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
                 storageIded.setText(frameCode.getSource());
                 Log.e("info",frameCode.getSource());
                 if (materialBlockBarCodes.size() < 3) {

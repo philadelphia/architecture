@@ -35,8 +35,6 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
                         ItemInfo itemInfo=new ItemInfo();
                         itemInfo.setText("产线:" +itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "机种:" + itemInfos.getRows().get(i).getMachineType() + "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus());
                         //itemInfo.setEndTime(Long.valueOf(itemInfos.getRows().get(i).getEndTime()));
-                        itemInfo.setEndTime(9000);
-                        itemInfo.setCountdown("7:53:48");
                         itemInfo.setMaterialNumber(itemInfos.getRows().get(i).getMachineType());
                         itemInfo.setMachine(itemInfos.getRows().get(i).getPartNum());
                         Log.e("info",""+itemInfos.getRows().get(i).getPartNum());

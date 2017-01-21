@@ -225,11 +225,13 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     @Subscribe
     public void event(ArrangeInt message) {
         tlTitle.getTabAt(1).setText("排程(" + message.getAnInt() + ")");
+        tlTitle.addOnTabSelectedListener(this);
     }
 
     @Subscribe
     public void event(WarningInt message) {
         tlTitle.getTabAt(0).setText("预警(" +message.getWarnInt() + ")");
+        tlTitle.addOnTabSelectedListener(this);
     }
 
 

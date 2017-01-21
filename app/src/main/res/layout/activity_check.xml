@@ -41,6 +41,8 @@
             android:layout_toRightOf="@id/cargontv"
             android:layout_alignBottom="@id/cargontv"
             android:layout_alignTop="@id/cargontv"
+            android:singleLine="true"
+            android:inputType="number"
             android:layout_marginLeft="@dimen/px_20"
             />
         <Button

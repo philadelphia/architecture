@@ -103,13 +103,14 @@ public interface ApiService {
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
 
+
     /**
-     * @description :
+     *@description :
      * 1.生产中预警
      * 2.手补件通知
-     * @author : Fuxiang.Zhang
-     * @date : 2017/1/21 14:41
-     */
+     *@author : Fuxiang.Zhang
+     *@date : 2017/1/21 14:41
+    */
     //请求产线列表数据
     Observable<List<ItemProduceLine>> getLineDatas();
 
@@ -206,7 +207,6 @@ public interface ApiService {
     @GET("pcb/inventory/exception")
     Observable<Success> getException(@Query("subShelfSerial") String boxSerial);//盘点结果
 
-    Observable<Success> getException(@Query("subShelfCode") String boxSerial);//盘点结果
     @GET("pcb/inventory/submit")
     Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
 

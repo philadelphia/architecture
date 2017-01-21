@@ -5,8 +5,11 @@ import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,8 +17,8 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -71,9 +74,9 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     private TextView mResultContent;
     private MaterialBlockBarCode mMaterbarCode;
     private int status = 1;
-    private FrameLocation mFrameLocation;
+    private PcbFrameLocation mFrameLocation;
     private int mId;
-    private FrameLocation mFrameLocationSuccess;
+    private PcbFrameLocation mFrameLocationSuccess;
 
 
     @Override
@@ -126,27 +129,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 }
                 holder.setText(R.id.statistics_storenumber, item.getStatus());
 
-                if (mMaterbarCode != null) {
-                    for (int i = 0; i < dataList.size(); i++) {
-                        if (mMaterbarCode.getDeltaMaterialNumber().equals(dataList.get(i).getPartNum())) {
-                            if (Integer.valueOf(mMaterbarCode.getCount()) == dataList.get(i).getBoundCount()) {
-                                mId = dataList.get(i).getId();
-                                getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(mMaterbarCode.getCount()));
-                            } else {
-                                ToastUtils.showMessage(CheckStockActivity.this,"请查数后输入数量!");
-                                getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(cargoned.getText().toString()));
-                            }
-                        } else {
-                            mErrorDialog = builder.create();
-                            mErrorDialog.setContentView(R.layout.dialog_error);
-                            mErrorContent = (TextView) mErrorDialog.findViewById(R.id.error_content);
-                            mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
-                            mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
-                            mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
-                            mErrorDialog.show();
-                        }
-                    }
-                }
+
 
             }
 
@@ -169,7 +152,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         switch (status) {
             case 1:
                 try {
-                    mFrameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                    mFrameLocation = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
                     if (mFrameLocation!=null){
                     cargonTv.setText(mFrameLocation.getSource());
                     getPresenter().fetchCheckStock(mFrameLocation.getSource());
@@ -183,6 +166,29 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case 2:
                 try {
                     mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    if (mMaterbarCode != null) {
+                        for (int i = 0; i < dataList.size(); i++) {
+                            if (mMaterbarCode.getDeltaMaterialNumber().equals(dataList.get(i).getPartNum())) {
+                                if (Integer.valueOf(mMaterbarCode.getCount()) <=dataList.get(i).getBoundCount()) {
+                                    mId = dataList.get(i).getId();
+                                    getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(mMaterbarCode.getCount()));
+                                    break;
+                                } else {
+                                    mId = dataList.get(i).getId();
+                                    ToastUtils.showMessage(CheckStockActivity.this,"请查数后输入数量!");
+                                    break;
+                                }
+                            } else {
+                                mErrorDialog = builder.create();
+                                mErrorDialog.setContentView(R.layout.dialog_error);
+                                mErrorContent = (TextView) mErrorDialog.findViewById(R.id.error_content);
+                                mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
+                                mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
+                                mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
+                                mErrorDialog.show();
+                            }
+                        }
+                    }
                     status = 2;
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
@@ -192,7 +198,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 break;
             case 3:
                 try {
-                    mFrameLocationSuccess = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                    mFrameLocationSuccess = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
                     if (mFrameLocationSuccess.getSource().equals(mFrameLocation.getSource())) {
                         getPresenter().fetchException(mFrameLocationSuccess.getSource());
                     } else {
@@ -251,12 +257,12 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onCheckStockNumberSucess(String wareHouses) {
-
+        ToastUtils.showMessage(this, wareHouses);
     }
 
     @Override
     public void onErrorSucess(String wareHouses) {
-
+        ToastUtils.showMessage(this, wareHouses);
     }
 
     @Override
@@ -266,6 +272,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onSubmitSucess(String wareHouses) {
+        cargoned.setText("");
         ToastUtils.showMessage(this, "盘点成功");
     }
 
