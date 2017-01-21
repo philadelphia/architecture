@@ -83,7 +83,7 @@ public class MantissaWarehousePutstorageFragment extends
     @Override
     protected void initView() {
 
-        dataList.add(new MantissaWarehousePutstorageResult.MantissaWarehousePutstorage("", "", "", "", ""));
+        dataList.add(new MantissaWarehousePutstorageResult.MantissaWarehousePutstorage("", "", "", "", "",""));
         adapter = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item, int position) {
@@ -157,7 +157,7 @@ public class MantissaWarehousePutstorageFragment extends
         adapter2.notifyDataSetChanged();
     }
     @Override
-    public void getFailedUpdate(String message) {
+    public void getFailedUpdate(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
 
     }
 
@@ -170,7 +170,7 @@ public class MantissaWarehousePutstorageFragment extends
         adapter2.notifyDataSetChanged();
     }
     @Override
-    public void getFailed(String message) {
+    public void getFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
 
     }
 
@@ -182,9 +182,9 @@ public class MantissaWarehousePutstorageFragment extends
         adapter2.notifyDataSetChanged();
     }
     @Override
-    public void getBeginFailed(String message) {
+    public void getBeginFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
         dataList2.clear();
-        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), message.toString(), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -196,7 +196,7 @@ public class MantissaWarehousePutstorageFragment extends
     }
     @Override
     public void getBingingLableFailed(String message) {
-        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -213,8 +213,8 @@ public class MantissaWarehousePutstorageFragment extends
 
     }
     @Override
-    public void getUpLocationFailed(String message) {
-        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
+    public void getUpLocationFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
+        Toast.makeText(getActivity(), message.toString(), Toast.LENGTH_SHORT).show();
     }
 
 
