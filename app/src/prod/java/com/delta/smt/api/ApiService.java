@@ -53,6 +53,7 @@ import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.List;
+import java.util.jar.Attributes;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -62,6 +63,8 @@ import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
+
+import static android.R.attr.name;
 
 
 /**
@@ -104,7 +107,14 @@ public interface ApiService {
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
 
-    /*Zhangfuxiang*/
+
+    /**
+     *Fuxiang.Zhang
+     *Created 2017/1/21 14:23
+     *Desc:
+     * 生产中预警和手补件模块的接口
+    */
+
     //请求产线列表数据
     Observable<List<ItemProduceLine>> getLineDatas();
 
@@ -149,8 +159,6 @@ public interface ApiService {
 
 
     //接口PCB库房发料
-
-
     Observable<List<ListWarning>> getListWarning();//获取发料列表
 
 
