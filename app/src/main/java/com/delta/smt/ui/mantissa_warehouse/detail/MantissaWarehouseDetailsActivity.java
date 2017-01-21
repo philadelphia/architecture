@@ -219,6 +219,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getMantissaWarehouseputFailed(String message) {
 
+        ToastUtils.showMessage(this,message);
     }
 
     @Override
