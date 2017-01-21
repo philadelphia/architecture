@@ -45,7 +45,7 @@ public class ProduceWarningPresenter extends BasePresenter<ProduceWarningContrac
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-//                getView().getTitleDatasFailed(throwable.getMessage());
+                getView().getTitleDatasFailed(throwable.getMessage());
                 Log.i("aaa", throwable.getMessage());
             }
         });

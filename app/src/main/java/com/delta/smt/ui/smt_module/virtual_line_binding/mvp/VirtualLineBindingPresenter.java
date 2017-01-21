@@ -51,8 +51,8 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
         });
     }
 
-    public void getModNumByMaterial(String str){
-        getModel().getModNumByMaterial(str).subscribe(new Action1<ModNumByMaterialResult>() {
+    public void getModNumByMaterial(String str,String num){
+        getModel().getModNumByMaterial(str,num).subscribe(new Action1<ModNumByMaterialResult>() {
             @Override
             public void call(ModNumByMaterialResult modNumByMaterialResult) {
 
