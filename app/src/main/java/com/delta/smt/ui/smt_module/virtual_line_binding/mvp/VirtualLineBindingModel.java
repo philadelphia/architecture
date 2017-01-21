@@ -34,7 +34,7 @@ public class VirtualLineBindingModel extends BaseModel<ApiService> implements Vi
     }
 
     @Override
-    public Observable<ModNumByMaterialResult> getModNumByMaterial(String str) {
-        return getService().getModNumByMaterial(str).compose(RxsRxSchedulers.<ModNumByMaterialResult>io_main());
+    public Observable<ModNumByMaterialResult> getModNumByMaterial(String str,String num) {
+        return getService().getModNumByMaterial(str,num).compose(RxsRxSchedulers.<ModNumByMaterialResult>io_main());
     }
 }

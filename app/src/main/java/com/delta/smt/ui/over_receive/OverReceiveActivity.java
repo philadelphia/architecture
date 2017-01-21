@@ -80,8 +80,8 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     private List<OverReceiveWarning.RowsBean.DataBean> dataList = new ArrayList<>();
     private List<OverReceiveWarning.RowsBean.DataBean> dataSource = new ArrayList<>();
 
-    @BindView(R.id.testSend)
-    AppCompatButton testSend;
+    /*@BindView(R.id.testSend)
+    AppCompatButton testSend;*/
     @BindView(R.id.testSendArrive)
     AppCompatButton testSendArrive;
 
@@ -100,7 +100,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @Override
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
-        warningManger.addWarning(Constant.SAMPLEWARING, getClass());
+        warningManger.addWarning(Constant.EXCESS_ALARM_FLAG, getClass());
         //是否接收预警 可以控制预警时机
         warningManger.setRecieve(true);
         //关键 初始化预警接口
@@ -170,7 +170,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     public void onSuccess(OverReceiveWarning data) {
-        Toast.makeText(this,"onSuccess",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"onSuccess",Toast.LENGTH_SHORT).show();
         if(data.getMsg().toLowerCase().equals("success")){
             dataSource.clear();
             List<OverReceiveWarning.RowsBean.DataBean> rowsBeanList = data.getRows().getData();
@@ -191,10 +191,10 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     public void onSuccessOverReceiveDebit(OverReceiveDebitResult data) {
         if (data.getMsg().toLowerCase().equals("success")){
             //
-            Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
         }else{
             //
-            Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -203,22 +203,22 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     }
 
-    @OnClick({R.id.manual_debit,R.id.testSend,R.id.testSendArrive})
+    @OnClick({R.id.manual_debit,/*R.id.testSend,*/R.id.testSendArrive})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.manual_debit:
                 getPresenter().manualDebit();
                 break;
-            case R.id.testSend:
+            /*case R.id.testSend:
                 OverReceiveMaterialSend overReceiveMaterialSend = new OverReceiveMaterialSend(materialBlockNumber,serialNumber,count);
                 String strSend = gson.toJson(overReceiveMaterialSend);
                 getPresenter().getOverReceiveItemsAfterSend(strSend);
-                break;
+                break;*/
             case R.id.testSendArrive:
                 OverReceiveMaterialSendArrive overReceiveMaterialSendArrive = new OverReceiveMaterialSendArrive(materialBlockNumber,serialNumber);
                 String strSendArrive = gson.toJson(overReceiveMaterialSendArrive);
                 getPresenter().getOverReceiveItemsAfterSendArrive(strSendArrive);
-                getPresenter().getOverReceiveItemsAfterSendArrive(strSendArrive);
+                //getPresenter().getOverReceiveItemsAfterSendArrive(strSendArrive);
                 break;
         }
     }
@@ -303,25 +303,20 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     public void onScanSuccess(String barcode) {
-        Toast.makeText(this,barcode,Toast.LENGTH_SHORT).show();
+
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        switch (BarCodeUtils.barCodeType(barcode)) {
-            case MATERIAL_BLOCK_BARCODE:
-                try {
-                    MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                    serialNumber = materialBlockBarCode.getStreamNumber();
-                    count = materialBlockBarCode.getCount();
-                    OverReceiveMaterialSend overReceiveMaterialSend = new OverReceiveMaterialSend(materialBlockNumber,serialNumber,count);
-                    String str = gson.toJson(overReceiveMaterialSend);
-                    getPresenter().getOverReceiveItemsAfterSend(str);
-                } catch (EntityNotFountException e) {
-                    e.printStackTrace();
-                }
-                break;
-            default:
-                Toast.makeText(this, "此处不支持此类型码!", Toast.LENGTH_SHORT).show();
-                break;
+        try {
+            MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+            materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
+            serialNumber = materialBlockBarCode.getStreamNumber();
+            count = materialBlockBarCode.getCount();
+            OverReceiveMaterialSend overReceiveMaterialSend = new OverReceiveMaterialSend(materialBlockNumber,serialNumber,count);
+            String str = gson.toJson(overReceiveMaterialSend);
+            Toast.makeText(this,str,Toast.LENGTH_SHORT).show();
+            getPresenter().getOverReceiveItemsAfterSend(str);
+        } catch (EntityNotFountException e) {
+            Toast.makeText(this, "此处不支持此类型码!", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 

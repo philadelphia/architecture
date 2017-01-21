@@ -93,7 +93,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     List<String> data_tmp = null;
 
     String materialBlockNumber;
-
+    String workItemID;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -102,6 +102,9 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
     @Override
     protected void initData() {
+
+        Intent intent = this.getIntent();
+        workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         //假数据
         /*virtualData.clear();
         virtualData.add("0353104700");
@@ -277,7 +280,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                     MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
                     //通过料盘码获取模组编号
-                    getPresenter().getModNumByMaterial(materialBlockNumber);
+                    getPresenter().getModNumByMaterial(materialBlockNumber,workItemID);
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
                     Toast.makeText(this, "请扫描料盘码！", Toast.LENGTH_SHORT).show();
@@ -303,7 +306,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                             MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                             materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
                             //通过料盘码获取模组编号
-                            getPresenter().getModNumByMaterial(materialBlockNumber);
+                            getPresenter().getModNumByMaterial(materialBlockNumber,workItemID);
 
                         } catch (EntityNotFountException ee) {
                             ee.printStackTrace();

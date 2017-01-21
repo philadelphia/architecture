@@ -42,7 +42,8 @@
             android:layout_height="wrap_content"
             style="@style/waring_editext"
             android:layout_toRightOf="@id/tv_pcb"
-            android:layout_below="@id/tv_work"
+            android:layout_alignBottom="@id/tv_pcb"
+
             />
         <TextView
             android:id="@+id/tv_machine"
@@ -57,7 +58,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/waring_editext"
-            android:layout_below="@id/tv_pcb"
             android:layout_toRightOf="@id/tv_machine"
             android:layout_alignBottom="@id/tv_machine"
             />

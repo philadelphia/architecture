@@ -78,27 +78,29 @@ public interface ApiService {
     //  tao.zt.zhang
 
     //  获取feeder入库列表
-    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+//    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+    @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     //获取feeder入库时间
-    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/feederBuffStorage")
+    @GET("http://172.22.34.24:8081/SMM/FeederBuffStorage/feederBuffStorage")
     Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
 
     //获取所有的Feeder备料工单列表
-    @GET("http://172.17.52.29:8081/SMM/Buffer/querySchedule")
+    @GET("http://172.22.34.34:8081/SMM/Buffer/querySchedule")
     Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
 
     //获取指定工单的Feeder备料列表
-    @GET("http://172.17.52.29:8081/SMM/Buffer/startBufferIssue")
+    @GET("http://172.22.34.34:8081/SMM/Buffer/startBufferIssue")
     Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("condition") String workID);
 
     //获取Feeder备料时间
-    @GET("http://172.17.52.29:8081/SMM/Buffer/bufferIssue")
+    @GET("http://172.22.34.34:8081/SMM/Buffer/bufferIssue")
     Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("condition") String condition);
 
     //上传feeder备料上模组结果
-    @GET("http://172.17.52.29:8081/SMM/Buffer/completeBufferIssue")
+    @GET("http://172.22.34.34:8081/SMM/Buffer/completeBufferIssue")
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
 
@@ -224,7 +226,18 @@ public interface ApiService {
     @GET("http://172.22.34.16:8081/lineAlarmFault/addFaultSolution")
     Observable<BaseEntity> addSolution(@Query("condition") String content);
 
+    //仓库房
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/qPrepCarIDByWorkOrder")
+    Observable<MaterialCar> queryMaterialCar(@Query("condition") String content);
 
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/bindPrepCarIDByWorkOrder")
+    Observable<BindPrepCarIDByWorkOrderResult> bindMaterialCar(@Query("condition") String content);
+
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/issureToWareh")
+    Observable<Result<StorageDetails>> issureToWareh(@Query("condition") String content);
+
+    @GET("http://172.22.34.34:8081/SMM/WareHIssue/issureToWarehFinish")
+    Observable<IssureToWarehFinishResult> issureToWarehFinish();
 
     //更新
     @GET(API.bundleJsonUrl)
@@ -242,20 +255,20 @@ public interface ApiService {
    @GET("http://172.22.35.155:8081/smm/unplugmod/getProductionLines")
     Observable<ModuleDownWarningItem> getModuleDownWarningItems(@Query("workOrderNum") String content);*/
 
-    @GET("http://172.22.35.155:8081/smm/plugmod/getProductionLines")
+    @GET("http://172.22.35.75:8081/smm/plugmod/getProductionLines")
     Observable<ModuleUpWarningItem> getModuleUpWarningItems();
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/getProductionLines")
+    @GET("http://172.22.34.75:8081/smm/unplugmod/getProductionLines")
     Observable<ModuleDownWarningItem> getModuleDownWarningItems();
 
 
-    @GET("http://172.22.35.155:8081/smm/plugmod/getModsByWordOrder")
+    @GET("http://172.22.34.75:8081/smm/plugmod/getModsByWordOrder")
     Observable<ModuleUpBindingItem> getModuleUpBindingItems(@Query("workOrderNum") String content);
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/getVirtualLine")
+    @GET("http://172.22.34.75:8081/smm/unplugmod/getVirtualLine")
     Observable<VirtualLineBindingItem> getVirtualLineBindingItems(@Query("workOrderNum") String content);
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/getModsByWordOrder")
+    @GET("http://172.22.34.75:8081/smm/unplugmod/getModsByWordOrder")
     Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("workOrderNum")String content);
 
     //TODO shaoqiang,8Interfance
@@ -293,39 +306,39 @@ public interface ApiService {
 
     /*Zhangfuxiang*/
     //仓库房备料和尾数仓
-    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWarehousePart")
+    @GET("http://172.22.34.36:8081/SMM/IssueMana/queryWarehousePart")
     Observable<Result<String>> getStorageSelect();
 
 
-    @GET("http://172.22.34.6:8081/SMM/IssueMana/queryWorkOrder")
+    @GET("http://172.22.34.36:8081/SMM/IssueMana/queryWorkOrder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
 
-    @GET("http://172.22.34.6:8081/SMM/WareHIssue/startWareHIssure")
+    @GET("http://172.22.34.36:8081/SMM/WareHIssue/startWareHIssure")
     Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
 
 
 
     //liuzhenyu
     //尾数仓退入主仓库
-    @GET("http://cnxmdrcnb002:8081/SMM/ManToWareh/queryReturnedWarehList")
+    @GET("http://172.22.34.36:8081/SMM/ManToWareh/queryReturnedWarehList")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
 
     //点击清理按钮
-    @GET("http://172.22.34.6:8081/SMM/ManToWareh/triggerListUpdate")
+    @GET("http://172.22.34.36:8081/SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
     //尾数仓点击开始入库
-    @GET("http://172.22.34.6:8081/SMM/ManToWareh/startStorage")
+    @GET("http://172.22.34.36:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
     //尾数仓点击开始入库上架位完成
-    @GET("http://172.22.34.6:8081/SMM/ManToWareh/materToShel")
+    @GET("http://172.22.34.36:8081/SMM/ManToWareh/materToShel")
     Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query( "condition") String bind);
 
 
     //尾数仓入库
-    @GET("http://172.22.34.6:8081/SMM/MantissaStorage/qMantissaStorageList")
+    @GET("http://172.22.34.36:8081/SMM/MantissaStorage/qMantissaStorageList")
     Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
 
     //尾数仓查询料盘的位置
@@ -383,13 +396,13 @@ public interface ApiService {
     @GET("http://172.22.34.22:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
 
-    @GET("http://172.22.34.22:8081/SMM/ExcessManagement/execessIssure")
+    @GET("http://172.22.34.24:8081/SMM/ExcessManagement/execessIssure")
     Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
 
-    @GET("http://172.22.34.22:8081/SMM/ExcessManagement/delivery")
+    @GET("http://172.22.34.24:8081/SMM/ExcessManagement/delivery")
     Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
 
-    @GET("http://172.22.35.155:8081/SMM/WareHIssue/debit")
+    @GET("http://172.22.34.24:8081/SMM/WareHIssue/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     @GET("http://172.22.35.155:8081/smm/plugmod/updateMod")
