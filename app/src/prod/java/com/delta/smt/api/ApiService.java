@@ -53,6 +53,7 @@ import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.List;
+import java.util.jar.Attributes;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -62,6 +63,8 @@ import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
+
+import static android.R.attr.name;
 
 
 /**
@@ -103,7 +106,14 @@ public interface ApiService {
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
 
-    /*Zhangfuxiang*/
+
+    /**
+     *@description :
+     * 1.生产中预警
+     * 2.手补件通知
+     *@author : Fuxiang.Zhang
+     *@date : 2017/1/21 14:41
+    */
     //请求产线列表数据
     Observable<List<ItemProduceLine>> getLineDatas();
 
@@ -148,8 +158,6 @@ public interface ApiService {
 
 
     //接口PCB库房发料
-
-
     Observable<List<ListWarning>> getListWarning();//获取发料列表
 
 
@@ -280,37 +288,37 @@ public interface ApiService {
     Observable<MantissaWarehouseDetailsResult> getMantissaWareOver();
 
     //TODO shaoqiang,8Interfance
-    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/order/list/page")
-//    @GET(API.BASE_URL+"sms/jig/life/use/loan/order/list/page")
+//    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/order/list/page")
+    @GET(API.BASE_URL+"sms/jig/life/use/loan/order/list/page")
     Observable<JsonProductBorrowRoot> getProductWorkItem(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent);
 
-    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
-//    @GET(API.BASE_URL+"sms/jig/life/use/loan/jig")
+//    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
+    @GET(API.BASE_URL+"sms/jig/life/use/loan/jig")
     Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Query("condition") String condition);
 
-    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
-//    @GET(API.BASE_URL+"sms/jig/life/use/loan/jig")
+//    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
+    @GET(API.BASE_URL+"sms/jig/life/use/loan/jig")
     Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent, @Query("condition") String condition_and_jigTypeID);
 
-    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/verify")
-//    @GET(API.BASE_URL+"webapi/sms/jig/life/use/instore/verify")
-    Observable<JsonProductToolsLocation> getLocationVerify(@Query("param") String param);
+//    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/verify")
+    @GET(API.BASE_URL+"webapi/sms/jig/life/use/instore/verify")
+    Observable<JsonProductToolsLocation> getLocationVerify(@Query("param")String param);
 
-    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
-//    @GET(API.BASE_URL+"webapi/sms/jig/life/use/instore/submit")
-    Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param") String param);
+//    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
+    @GET(API.BASE_URL+"webapi/sms/jig/life/use/instore/submit")
+    Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param")String param);
 
-    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/back/submit")
-//    @GET(API.BASE_URL+"webapi/sms/jig/life/use/back/submit")
-    Observable<JsonProductBackRoot> getProductToolsBack(@Query("param") String param);
+//    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/back/submit")
+    @GET(API.BASE_URL+"webapi/sms/jig/life/use/back/submit")
+    Observable<JsonProductBackRoot> getProductToolsBack(@Query("param")String param);
 
-    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/verify")
-//    @GET(API.BASE_URL+"webapi/sms/jig/life/use/loan/verify")
-    Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(@Query(("param")) String param);
+//    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/verify")
+    @GET(API.BASE_URL+"webapi/sms/jig/life/use/loan/verify")
+    Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(@Query(("param"))String param);
 
-    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
-//    @GET(API.BASE_URL+"webapi/sms/jig/life/use/loan/submit")
-    Observable<JsonProductToolsLocation> getProductToolsBorrowSubmit(@Query("param") String param);
+//    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
+    @GET(API.BASE_URL+"webapi/sms/jig/life/use/loan/submit")
+    Observable<JsonProductToolsLocation> getProductToolsBorrowSubmit(@Query("param")String param);
 
     /*Zhangfuxiang*/
     //仓库房备料和尾数仓
