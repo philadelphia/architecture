@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -39,8 +38,6 @@ import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.DaggerProduceWarningFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWarningFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
-import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
-import com.delta.smt.utils.BarCodeUtils;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;

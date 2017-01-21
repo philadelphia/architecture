@@ -3,12 +3,7 @@ package com.delta.smt.ui.product_tools.mtools_info.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
-import com.delta.smt.entity.Product_mToolsInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 

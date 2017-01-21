@@ -4,8 +4,6 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.ui.over_receive.mvp.OverReceiveContract;
 import com.delta.smt.ui.over_receive.mvp.OverReceiveModel;
-import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpContract;
-import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpModel;
 
 import dagger.Module;
 import dagger.Provides;

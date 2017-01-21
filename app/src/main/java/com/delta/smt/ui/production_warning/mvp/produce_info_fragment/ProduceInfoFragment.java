@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.Constant;
@@ -19,11 +18,9 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
 import com.delta.smt.entity.ProduceWarningMessage;
-import com.delta.smt.ui.login.mvp.LoginPresenter;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.DaggerProduceInfoFragmentCompent;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.ProduceInfoFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
-import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;

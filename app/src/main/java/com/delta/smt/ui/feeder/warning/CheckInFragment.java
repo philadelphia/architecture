@@ -27,7 +27,6 @@ import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInPresenter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

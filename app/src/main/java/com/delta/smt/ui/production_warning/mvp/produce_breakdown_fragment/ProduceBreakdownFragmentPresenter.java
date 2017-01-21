@@ -5,9 +5,6 @@ import android.util.Log;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.ProduceWarning;
-import com.delta.smt.ui.production_warning.item.ItemBreakDown;
-
-import java.util.List;
 
 import javax.inject.Inject;
 

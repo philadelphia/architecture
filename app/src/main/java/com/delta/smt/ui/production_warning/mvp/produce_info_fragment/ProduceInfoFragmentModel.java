@@ -5,11 +5,6 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
-import com.delta.smt.ui.production_warning.item.ItemInfo;
-import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningContract;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 

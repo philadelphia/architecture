@@ -1,24 +1,19 @@
 package com.delta.smt.ui.smt_module.virtual_line_binding;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.VirtualModuleID;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
@@ -33,19 +28,14 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModNumByMaterialResult;
-import com.delta.smt.entity.ModuleDownMaintain;
-import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.VirtualLineBindingItemNative;
 import com.delta.smt.ui.smt_module.module_down_details.ModuleDownDetailsActivity;
-import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.DaggerVirtualLineBindingComponent;
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.VirtualLineBindingModule;
 import com.delta.smt.ui.smt_module.virtual_line_binding.mvp.VirtualLineBindingContract;
 import com.delta.smt.ui.smt_module.virtual_line_binding.mvp.VirtualLineBindingPresenter;
-import com.delta.smt.utils.BarCodeUtils;
-import com.delta.smt.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

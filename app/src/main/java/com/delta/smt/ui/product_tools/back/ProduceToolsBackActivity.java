@@ -1,6 +1,5 @@
 package com.delta.smt.ui.product_tools.back;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -18,7 +17,6 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.JsonProductBackList;
 import com.delta.smt.entity.JsonProductBackRoot;
-import com.delta.smt.entity.JsonProductToolsLocation;
 import com.delta.smt.entity.ProductToolsBack;
 import com.delta.smt.ui.product_tools.back.di.DaggerProduceToolsBackComponent;
 import com.delta.smt.ui.product_tools.back.di.ProduceToolsBackModule;

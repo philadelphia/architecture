@@ -8,8 +8,6 @@ import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
-import com.delta.smt.common.CommonBaseAdapter;
-import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
 import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -17,15 +15,11 @@ import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.DaggerProduceBreakdownFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.ProduceBreakdownFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
-import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 

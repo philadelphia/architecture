@@ -4,8 +4,6 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.ui.product_tools.back.mvp.ProduceToolsBackContract;
 import com.delta.smt.ui.product_tools.back.mvp.ProduceToolsBackModel;
-import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowContract;
-import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowModel;
 
 import dagger.Module;
 import dagger.Provides;

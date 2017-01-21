@@ -5,8 +5,6 @@ import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 
-import java.util.List;
-
 import rx.Observable;
 
 /**

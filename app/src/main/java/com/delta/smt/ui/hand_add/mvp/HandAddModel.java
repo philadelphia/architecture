@@ -6,9 +6,6 @@ import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import rx.Observable;
 
 /**

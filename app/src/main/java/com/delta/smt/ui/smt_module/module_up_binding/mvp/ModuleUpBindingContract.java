@@ -4,9 +4,6 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.ModuleUpBindingItem;
-import com.delta.smt.entity.ModuleUpWarningItem;
-
-import java.util.List;
 
 import rx.Observable;
 

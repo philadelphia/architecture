@@ -2,9 +2,6 @@ package com.delta.smt.ui.storage_manger.storage_select.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.Result;
-import com.delta.smt.entity.StorageSelect;
-
-import java.util.List;
 
 import javax.inject.Inject;
 

@@ -6,8 +6,6 @@ import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageReady;
 
-import java.util.List;
-
 import rx.Observable;
 
 /**

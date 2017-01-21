@@ -3,7 +3,6 @@ package com.delta.smt.ui.product_tools.mtools_info.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
-import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.Product_mToolsInfo;
 
 import java.util.List;

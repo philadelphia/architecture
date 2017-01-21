@@ -4,9 +4,6 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
-import com.delta.smt.entity.ModuleDownWarningItem;
-
-import java.util.List;
 
 import rx.Observable;
 

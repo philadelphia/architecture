@@ -2,11 +2,6 @@ package com.delta.smt;
 
 import org.junit.Test;
 
-import java.net.URI;
-import java.net.URL;
-import java.net.URLEncoder;
-
-import static android.R.attr.lines;
 import static org.junit.Assert.*;
 
 /**

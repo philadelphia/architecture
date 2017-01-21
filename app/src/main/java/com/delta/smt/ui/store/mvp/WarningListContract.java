@@ -8,7 +8,6 @@ import com.delta.smt.entity.Success;
 
 import java.util.List;
 
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**

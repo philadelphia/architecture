@@ -1,7 +1,5 @@
 package com.delta.smt.entity;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 /**

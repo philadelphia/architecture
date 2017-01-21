@@ -3,8 +3,6 @@ package com.delta.smt.ui.smt_module.module_up.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.ModuleUpWarningItem;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import rx.functions.Action1;

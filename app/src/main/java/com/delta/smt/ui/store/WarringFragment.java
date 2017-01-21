@@ -14,7 +14,6 @@ import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
 import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ItemInfo;
-import com.delta.smt.entity.ProductWorkItem;
 import com.delta.smt.entity.StoreEmptyMessage;
 import com.delta.smt.entity.WarningInt;
 import com.delta.smt.ui.store.di.DaggerWarningComponent;
@@ -30,8 +29,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
-
-import static android.R.attr.data;
 
 /**
  * Created by Lin.Hou on 2016-12-26.
