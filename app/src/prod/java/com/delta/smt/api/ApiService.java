@@ -361,31 +361,6 @@ public interface ApiService {
    @GET("http://172.22.34.104:8081/SMM/MantissaStorage/mantissaStorage")
    Observable<MantissaWarehouseReturnResult> getputinstrage(@Query( "condition") String bind);
 
-
-    //尾数仓备料详情
-    @GET("http://172.22.34.104:8081/SMM/IssueMana/queryMantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query("condition") String bind);
-
-    //料盘绑定标签
-    @GET("http://172.22.34.104:8081/SMM/ManToWareh/materBoundLabel")
-    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query("condition") String bind);
-
-    //查询尾数仓备料车
-    @GET("http://172.22.34.104:8081/SMM/WareHIssue/qPrepCarIDByWorkOrder")
-    Observable<MantissaCarResult> getFindCar(@Query("condition") String bind);
-
-    //绑定尾数仓备料车
-    @GET("http://172.22.34.104:8081/SMM/WareHIssue/bindPrepCarIDByWorkOrder")
-    Observable<MantissaCarResult> getbingingCar(@Query("condition") String bind);
-
-    //尾数仓发料
-    @GET("http://172.22.34.104:8081/SMM/WareHIssue/mantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(@Query("condition") String bind);
-
-    //尾数仓发料完成
-    @GET("http://172.22.34.104:8081/SMM/WareHIssue/completeMantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWareOver();
-
     @GET("http://172.22.34.22:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
 
