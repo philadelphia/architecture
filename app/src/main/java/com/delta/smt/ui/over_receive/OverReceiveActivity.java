@@ -170,7 +170,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     public void onSuccess(OverReceiveWarning data) {
-        //Toast.makeText(this,"onSuccess",Toast.LENGTH_SHORT).show();
         if(data.getMsg().toLowerCase().equals("success")){
             dataSource.clear();
             List<OverReceiveWarning.RowsBean.DataBean> rowsBeanList = data.getRows().getData();

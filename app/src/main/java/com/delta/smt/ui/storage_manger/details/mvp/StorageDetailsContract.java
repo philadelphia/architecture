@@ -48,6 +48,9 @@ public interface StorageDetailsContract {
         void queryMaterailCar(String rows);
 
         void queryMaterailCarFailed(String msg);
+
+
+        void bindMaterialCarFailed(String msg);
     }
 
 }

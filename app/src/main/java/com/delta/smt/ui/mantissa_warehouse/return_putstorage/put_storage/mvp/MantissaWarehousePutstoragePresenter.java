@@ -29,14 +29,13 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
                     getView().getSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
-                    getView().getFailed(mantissaWarehousePutstorageResult.getMsg());
+                    getView().getFailed(mantissaWarehousePutstorageResult.getrows().get(0));
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFailed(throwable.getMessage());
             }
         });
 
@@ -51,14 +50,13 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
                     getView().getSucessUpdate(mantissaWarehousePutstorageResult.getrows());
                 }else{
-                    getView().getFailedUpdate(mantissaWarehousePutstorageResult.getMsg());
+                    getView().getFailedUpdate(mantissaWarehousePutstorageResult.getrows().get(0));
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFailedUpdate(throwable.getMessage());
             }
         });
     }
@@ -72,14 +70,13 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
                     getView().getBeginSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
-                    getView().getBeginFailed(mantissaWarehousePutstorageResult.getMsg());
+                    getView().getBeginFailed(mantissaWarehousePutstorageResult.getrows().get(0));
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
 
-                getView().getBeginFailed(throwable.getMessage());
             }
         });
 
@@ -94,7 +91,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
                     getView().getBeginSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
-                    getView().getBeginFailed(mantissaWarehousePutstorageResult.getMsg());
+                    getView().getBeginFailed(mantissaWarehousePutstorageResult.getrows().get(0));
                 }
 
             }
@@ -102,7 +99,6 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             @Override
             public void call(Throwable throwable) {
 
-                getView().getBeginFailed(throwable.getMessage());
 
             }
         });
@@ -116,9 +112,9 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
-                    getView().getBeginSucess(mantissaWarehousePutstorageResult.getrows());
+                    getView().getUpLocationSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
-                    getView().getBeginFailed(mantissaWarehousePutstorageResult.getMsg());
+                    getView().getUpLocationFailed(mantissaWarehousePutstorageResult.getrows().get(0));
                 }
 
             }
@@ -126,7 +122,6 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             @Override
             public void call(Throwable throwable) {
 
-                getView().getBeginFailed(throwable.getMessage());
 
             }
         });

@@ -61,6 +61,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             }
         });
     }
+
     public void bindBoundPrepCar(String content) {
 
         getModel().bindMaterialCar(content).subscribe(new Action1<BindPrepCarIDByWorkOrderResult>() {
@@ -70,17 +71,18 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
                 if ("success".equalsIgnoreCase(result.getMsg())) {
                     getView().bindMaterialCarSucess(result.getData());
                 } else {
-                    getView().getFailed(result.getMsg());
+                    getView().bindMaterialCarFailed(result.getData().get(0).getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFailed(throwable.getMessage());
+               // getView().getFailed(throwable.getMessage());
             }
         });
     }
+
     public void issureToWareh(String content) {
         getModel().issureToWareh(content).subscribe(new Action1<Result<StorageDetails>>() {
             @Override
