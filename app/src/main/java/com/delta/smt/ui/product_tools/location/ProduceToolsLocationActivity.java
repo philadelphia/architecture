@@ -93,9 +93,8 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         if (flag1 != 0) {
             try {
-                ProductToolsBarcode p= (ProductToolsBarcode) barCodeParseIpml.getEntity(barcode,BarCodeType.PRODUCT_TOOLS);
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("barcode", p.getSource());
+                jsonObject.put("barcode", barcode);
                 jsonObject.put("userID", ID);
                 String s = "[\'" + jsonObject.toString() + "\']";
                 getPresenter().getLocation(s);
