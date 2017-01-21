@@ -201,6 +201,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void onFailed(String message) {
         Log.i(TAG, "onFailed: " + message);
+        ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
     @Override
