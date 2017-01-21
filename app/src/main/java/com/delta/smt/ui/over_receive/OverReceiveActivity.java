@@ -170,6 +170,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     public void onSuccess(OverReceiveWarning data) {
+        Toast.makeText(this,"onSuccess",Toast.LENGTH_SHORT).show();
         if(data.getMsg().toLowerCase().equals("success")){
             dataSource.clear();
             List<OverReceiveWarning.RowsBean.DataBean> rowsBeanList = data.getRows().getData();
@@ -311,7 +312,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             count = materialBlockBarCode.getCount();
             OverReceiveMaterialSend overReceiveMaterialSend = new OverReceiveMaterialSend(materialBlockNumber,serialNumber,count);
             String str = gson.toJson(overReceiveMaterialSend);
-            Toast.makeText(this,str,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,str,Toast.LENGTH_SHORT).show();
             getPresenter().getOverReceiveItemsAfterSend(str);
         } catch (EntityNotFountException e) {
             Toast.makeText(this, "此处不支持此类型码!", Toast.LENGTH_SHORT).show();
