@@ -114,7 +114,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 holder.setText(R.id.tv_location, item.getShelves());
                 if("1".equals(item.getStatus())){
                     holder.setText(R.id.tv_type, "已入库");
-                }else {
+                }else if("0".equals(item.getStatus())) {
                     holder.setText(R.id.tv_type, "未入库");
                 }
             }
@@ -154,6 +154,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         dataList2.clear();
         dataList2.addAll(mantissaWarehouseReturns);
         adapter2.notifyDataSetChanged();
+        flag = 2;
     }
 
     @Override
@@ -172,7 +173,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         dataList2.clear();
         dataList2.addAll(mantissaWarehouseReturns);
         adapter2.notifyDataSetChanged();
-
+        flag = 1;
     }
 
     @Override
@@ -204,7 +205,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         String s = gson.toJson(bindBean);
 
                         getPresenter().getMaterialLocation(s);
-                        flag = 2;
                         Log.i(TAG,flag+"aaaaaaaaaaaaaaa");
                     } catch (EntityNotFountException e) {
                         Log.i(TAG,e+"eeeeeeeeeeeeeee111111");
@@ -220,7 +220,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         String s = gson.toJson(bindBean);
 
                         getPresenter().getputinstrage(s);
-                        flag = 1;
                         Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
                     } catch (EntityNotFountException e) {
                         e.printStackTrace();

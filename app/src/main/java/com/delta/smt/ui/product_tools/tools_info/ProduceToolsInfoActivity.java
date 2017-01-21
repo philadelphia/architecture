@@ -63,9 +63,32 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     public void confirmData() {
 
         if (data.size() > 1) {
-            getPresenter().getToolsVerfy("[\"{\\\"workOrderID\\\":" + workNumber + ",\\\"stencil\\\":" + data.get(1).getJigID() + ",\\\"scraper\\\":" + data.get(2).getJigID() + ",\\\"plate\\\":" + data.get(3).getJigID() + ",\\\"ict\\\":" + data.get(4).getJigID() + "}\"]");
+            String d1;
+            String d2;
+            String d3;
+            String d4;
+            try {
+                d1 = data.get(1).getJigID();
+            }catch (Exception e){
+                d1 = "null";
+            }
+            try {
+                d2 = data.get(2).getJigID();
+            }catch (Exception e){
+                d2 = "null";
+            }
+            try {
+                d3 = data.get(3).getJigID();
+            }catch (Exception e){
+                d3 = "null";
+            }
+            try {
+                d4 = data.get(4).getJigID();
+            }catch (Exception e){
+                d4 = "null";
+            }
+                getPresenter().getToolsVerfy("[\"{\\\"workOrderID\\\":" + workNumber + ",\\\"stencil\\\":" + d1 + ",\\\"scraper\\\":" + d2 + ",\\\"plate\\\":" + d3 + ",\\\"ict\\\":" + d4 + "}\"]");
         }
-
     }
 
     List<ProductToolsInfo> data = new ArrayList<>();
@@ -198,7 +221,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getToolsInfo(List<ProductToolsInfo> ProductToolsItem) {
-        if(ProductToolsItem==null) {
+        if (ProductToolsItem == null) {
             Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
         }
         if (selectItem == null) {
@@ -208,7 +231,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
             for (ProductToolsInfo p : ProductToolsItem) {
 
-                Log.e("selectItem",selectItem.getProductToolsType()+666+selectItem.getProductToolsType());
+                Log.e("selectItem", selectItem.getProductToolsType() + 666 + selectItem.getProductToolsType());
 
                 if (selectItem.getProductToolsType().equals(p.getProduceToolsType())) {
                     p.setProductToolsBarCode(selectItem.getProductToolsBarCode());
@@ -225,7 +248,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getToolsVerfy(List<ProductToolsInfo> ProductToolsItem) {
-        if(ProductToolsItem==null) {
+        if (ProductToolsItem == null) {
             Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
         }
         int i = 0;
@@ -243,7 +266,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getToolsBorrowSubmit(JsonProductToolsLocation j) {
-        if(j==null) {
+        if (j == null) {
             Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
         }
         Log.e("getToolsBorrowSubmit", j.toString());
