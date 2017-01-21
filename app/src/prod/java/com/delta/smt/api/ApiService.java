@@ -80,7 +80,6 @@ public interface ApiService {
     //  获取feeder入库列表
 //    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     @GET("http://172.22.34.5:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
-
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     //获取feeder入库时间
@@ -293,23 +292,23 @@ public interface ApiService {
 
     @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/verify")
 //    @GET(API.BASE_URL+"webapi/sms/jig/life/use/instore/verify")
-    Observable<JsonProductToolsLocation> getLocationVerify(@Query("param")String param);
+    Observable<JsonProductToolsLocation> getLocationVerify(@Query("param") String param);
 
     @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
 //    @GET(API.BASE_URL+"webapi/sms/jig/life/use/instore/submit")
-    Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param")String param);
+    Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param") String param);
 
     @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/back/submit")
 //    @GET(API.BASE_URL+"webapi/sms/jig/life/use/back/submit")
-    Observable<JsonProductBackRoot> getProductToolsBack(@Query("param")String param);
+    Observable<JsonProductBackRoot> getProductToolsBack(@Query("param") String param);
 
     @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/verify")
 //    @GET(API.BASE_URL+"webapi/sms/jig/life/use/loan/verify")
-    Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(@Query(("param"))String param);
+    Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(@Query(("param")) String param);
 
     @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
 //    @GET(API.BASE_URL+"webapi/sms/jig/life/use/loan/submit")
-    Observable<JsonProductToolsLocation> getProductToolsBorrowSubmit(@Query("param")String param);
+    Observable<JsonProductToolsLocation> getProductToolsBorrowSubmit(@Query("param") String param);
 
     /*Zhangfuxiang*/
     //仓库房备料和尾数仓
@@ -319,11 +318,6 @@ public interface ApiService {
 
     @GET("http://172.22.34.104:8081/SMM/IssueMana/queryWorkOrder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
-
-
-    @GET("http://172.22.34.36:8081/SMM/WareHIssue/startWareHIssure")
-    Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
-
 
 
     //liuzhenyu
@@ -341,7 +335,7 @@ public interface ApiService {
 
     //尾数仓点击开始入库上架位完成
     @GET("http://172.22.34.36:8081/SMM/ManToWareh/materToShel")
-    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query( "condition") String bind);
+    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query("condition") String bind);
 
 
     //尾数仓入库
@@ -350,11 +344,11 @@ public interface ApiService {
 
     //尾数仓查询料盘的位置
     @GET("http://172.22.34.36:8081/SMM/MantissaStorage/qMaterialPlace")
-    Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query( "condition") String bind);
+    Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query("condition") String bind);
 
-   //尾数仓查料盘入库
-   @GET("http://172.22.34.36:8081/SMM/MantissaStorage/qMaterialPlace")
-   Observable<MantissaWarehouseReturnResult> getputinstrage(@Query( "condition") String bind);
+    //尾数仓查料盘入库
+    @GET("http://172.22.34.36:8081/SMM/MantissaStorage/qMaterialPlace")
+    Observable<MantissaWarehouseReturnResult> getputinstrage(@Query("condition") String bind);
 
 
     /**
