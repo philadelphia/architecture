@@ -14,6 +14,7 @@ import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.JsonProductToolsLocation;
 import com.delta.smt.ui.product_tools.location.di.DaggerProductToolsLocationComponent;
 import com.delta.smt.ui.product_tools.location.di.ProductToolsLocationModule;
 import com.delta.smt.ui.product_tools.location.mvp.ProduceToolsLocationContract;
@@ -128,13 +129,14 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     }
 
     @Override
-    public int getLocation(int param) {
-        if (param == 0) {
+    public int getLocation(JsonProductToolsLocation param) {
+        if (param.getCode()==0) {
             mProductToolsBarCodeEditText.setText(tools);
+            mShiftBarcodeCodeEditText.setText(param.getMessage());
         }else {
             Toast.makeText(this, "该治具无法完成入架位操作!", Toast.LENGTH_SHORT).show();
         }
-        return flag1 = param;
+        return flag1 = param.getCode();
     }
 
     @Override
