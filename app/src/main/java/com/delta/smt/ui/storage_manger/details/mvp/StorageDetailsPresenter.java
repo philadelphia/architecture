@@ -78,7 +78,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Throwable throwable) {
 
-               // getView().getFailed(throwable.getMessage());
+                // getView().getFailed(throwable.getMessage());
             }
         });
     }
@@ -91,7 +91,10 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
                 if ("success".equalsIgnoreCase(issureToWarehResult.getMessage())) {
                     getView().issureToWarehSuccess(issureToWarehResult.getRows());
                 } else {
-                    getView().getFailed(issureToWarehResult.getRows().get(0).getMsg() + "");
+                    if (issureToWarehResult.getRows() != null && issureToWarehResult.getRows().get(0) != null) {
+
+                        getView().getFailed(issureToWarehResult.getRows().get(0).getMsg() + "");
+                    }
                 }
             }
         }, new Action1<Throwable>() {

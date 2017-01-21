@@ -1,13 +1,9 @@
 package com.delta.smt.ui.store.mvp;
 
-import android.util.Log;
-
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ItemInfo;
-import com.delta.smt.entity.JsonProductBorrowList;
-import com.delta.smt.ui.product_tools.TimeSortUtils;
 
 import java.util.ArrayList;
 import java.util.List;

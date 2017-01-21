@@ -1,6 +1,5 @@
 package com.delta.smt.ui.feeder.warning;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +19,6 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.utils.ViewUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**

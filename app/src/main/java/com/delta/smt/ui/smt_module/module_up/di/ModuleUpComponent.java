@@ -1,7 +1,6 @@
 package com.delta.smt.ui.smt_module.module_up.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
 

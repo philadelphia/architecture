@@ -1,6 +1,5 @@
 package com.delta.smt.ui.feeder.wareSelect.mvp;
 
-import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.WareHouse;

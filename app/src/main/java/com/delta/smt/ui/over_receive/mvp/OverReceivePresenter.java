@@ -7,8 +7,6 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import rx.functions.Action1;

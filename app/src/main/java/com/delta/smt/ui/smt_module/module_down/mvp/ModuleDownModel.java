@@ -4,11 +4,6 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModuleDownWarningItem;
-import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpContract;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 

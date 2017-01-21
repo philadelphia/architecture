@@ -1,6 +1,5 @@
 package com.delta.smt.ui.product_tools.borrow.mvp;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;

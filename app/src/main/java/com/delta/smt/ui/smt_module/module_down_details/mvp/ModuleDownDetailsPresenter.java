@@ -3,9 +3,6 @@ package com.delta.smt.ui.smt_module.module_down_details.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
-import com.delta.smt.entity.ModuleDownWarningItem;
-
-import java.util.List;
 
 import javax.inject.Inject;
 

@@ -2,8 +2,6 @@ package com.delta.smt.ui.smt_module.virtual_line_binding.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.api.ApiService;
-import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
-import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingModel;
 import com.delta.smt.ui.smt_module.virtual_line_binding.mvp.VirtualLineBindingContract;
 import com.delta.smt.ui.smt_module.virtual_line_binding.mvp.VirtualLineBindingModel;
 

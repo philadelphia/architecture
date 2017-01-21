@@ -13,12 +13,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.entity.RBox;
 
-import java.util.IdentityHashMap;
-import java.util.IllegalFormatCodePointException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.delta.buletoothio.barcode.parse.BarCodeType.FRAME_LOCATION;
 
 
 /**

@@ -5,11 +5,6 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
-import com.delta.smt.entity.ModuleDownWarningItem;
-import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownContract;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 

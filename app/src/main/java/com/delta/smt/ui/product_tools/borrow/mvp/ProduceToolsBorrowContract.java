@@ -2,7 +2,6 @@ package com.delta.smt.ui.product_tools.borrow.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
-import com.delta.smt.entity.JsonProductBorrowList;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.ProductWorkItem;
 

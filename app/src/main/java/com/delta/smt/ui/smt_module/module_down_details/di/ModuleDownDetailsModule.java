@@ -2,8 +2,6 @@ package com.delta.smt.ui.smt_module.module_down_details.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.api.ApiService;
-import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownContract;
-import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownModel;
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsContract;
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsModel;
 

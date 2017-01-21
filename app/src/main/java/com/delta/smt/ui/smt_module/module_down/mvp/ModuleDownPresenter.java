@@ -2,10 +2,6 @@ package com.delta.smt.ui.smt_module.module_down.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.ModuleDownWarningItem;
-import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpContract;
-
-import java.util.List;
 
 import javax.inject.Inject;
 

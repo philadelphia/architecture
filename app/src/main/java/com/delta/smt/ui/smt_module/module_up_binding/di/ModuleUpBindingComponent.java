@@ -2,8 +2,6 @@ package com.delta.smt.ui.smt_module.module_up_binding.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
-import com.delta.smt.ui.smt_module.module_up.di.ModuleUpModule;
 import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
 
 import dagger.Component;

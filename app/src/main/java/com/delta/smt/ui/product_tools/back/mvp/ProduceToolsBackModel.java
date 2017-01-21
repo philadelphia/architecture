@@ -4,13 +4,7 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.JsonProductBackRoot;
-import com.delta.smt.entity.JsonProductToolsLocation;
-import com.delta.smt.entity.ProductToolsBack;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import dagger.Module;
 import rx.Observable;
 
 /**

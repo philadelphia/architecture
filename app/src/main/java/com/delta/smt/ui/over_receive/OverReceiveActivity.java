@@ -1,7 +1,6 @@
 package com.delta.smt.ui.over_receive;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -39,9 +37,6 @@ import com.delta.smt.ui.over_receive.di.DaggerOverReceiveComponent;
 import com.delta.smt.ui.over_receive.di.OverReceiveModule;
 import com.delta.smt.ui.over_receive.mvp.OverReceiveContract;
 import com.delta.smt.ui.over_receive.mvp.OverReceivePresenter;
-import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
-import com.delta.smt.utils.BarCodeUtils;
-import com.delta.smt.utils.StringUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

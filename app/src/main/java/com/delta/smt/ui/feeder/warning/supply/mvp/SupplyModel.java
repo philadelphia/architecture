@@ -6,9 +6,6 @@ import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.Result;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import rx.Observable;
 
 /**

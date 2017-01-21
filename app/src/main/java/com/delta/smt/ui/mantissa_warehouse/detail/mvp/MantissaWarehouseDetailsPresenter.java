@@ -106,7 +106,10 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
                 if ("Success".equals(mantissaWarehouseDetailses.getMsg())) {
                     getView().getMantissaWarehouseputSucess(mantissaWarehouseDetailses.getRows());
                 } else {
-                    getView().getMantissaWarehouseputFailed(mantissaWarehouseDetailses.getRows().get(0).getMsg());
+                    if (mantissaWarehouseDetailses.getRows() != null && mantissaWarehouseDetailses.getRows().get(0) != null) {
+                        getView().getMantissaWarehouseputFailed(mantissaWarehouseDetailses.getRows().get(0).getMsg());
+                    }
+
                 }
 
             }

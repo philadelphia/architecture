@@ -1,10 +1,7 @@
 package com.delta.smt.ui.smt_module.module_up.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.api.ApiService;
-import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
-import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyModel;
 import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpContract;
 import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpModel;
 

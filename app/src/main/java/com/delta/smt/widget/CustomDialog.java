@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.delta.smt.R;
-
 /**
  * @description :
  * @autHor :  V.Wenju.Tian

@@ -1,6 +1,7 @@
 package com.delta.smt.ui.fault_processing.processing;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
@@ -97,8 +99,9 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
                 holder.setText(R.id.tv_processing, "制程：" + falutMesage.getProcess());
                 holder.setText(R.id.tv_faultMessage, "故障信息：" + falutMesage.getFaultMessage());
                 holder.setText(R.id.tv_code, "故障代码：" + falutMesage.getFaultCode());
-                holder.setText(R.id.chronometer, "10:30:20");
-
+                Chronometer chronometer = holder.getView(R.id.chronometer);
+                chronometer.setBase(SystemClock.elapsedRealtime()-1000*60);
+                chronometer.start();
             }
 
             @Override

@@ -4,8 +4,6 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ProduceWarning;
-import com.delta.smt.entity.Result;
-import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import rx.Observable;
 
