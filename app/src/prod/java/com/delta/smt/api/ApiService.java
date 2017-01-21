@@ -80,6 +80,7 @@ public interface ApiService {
     //  获取feeder入库列表
 //    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     @GET("http://172.22.34.5:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
+
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     //获取feeder入库时间
@@ -312,7 +313,7 @@ public interface ApiService {
 
     /*Zhangfuxiang*/
     //仓库房备料和尾数仓
-    @GET("http://172.22.34.36:8081/SMM/IssueMana/queryWarehousePart")
+    @GET("http://172.22.34.104:8081/SMM/IssueMana/queryWarehousePart")
     Observable<Result<String>> getStorageSelect();
 
 
@@ -320,35 +321,40 @@ public interface ApiService {
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
 
+    @GET("http://172.22.34.104:8081/SMM/WareHIssue/startWareHIssure")
+    Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
+
+
+
     //liuzhenyu
     //尾数仓退入主仓库
-    @GET("http://172.22.34.36:8081/SMM/ManToWareh/queryReturnedWarehList")
+    @GET("http://172.22.34.104:8081/SMM/ManToWareh/queryReturnedWarehList")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
 
     //点击清理按钮
-    @GET("http://172.22.34.36:8081/SMM/ManToWareh/triggerListUpdate")
+    @GET("http://172.22.34.104:8081/SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
     //尾数仓点击开始入库
-    @GET("http://172.22.34.36:8081/SMM/ManToWareh/startStorage")
+    @GET("http://172.22.34.104:8081/SMM/ManToWareh/startStorage")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
     //尾数仓点击开始入库上架位完成
-    @GET("http://172.22.34.36:8081/SMM/ManToWareh/materToShel")
-    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query("condition") String bind);
+    @GET("http://172.22.34.104:8081/SMM/ManToWareh/materToShel")
+    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query( "condition") String bind);
 
 
     //尾数仓入库
-    @GET("http://172.22.34.36:8081/SMM/MantissaStorage/qMantissaStorageList")
+    @GET("http://172.22.34.104:8081/SMM/MantissaStorage/qMantissaStorageList")
     Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
 
     //尾数仓查询料盘的位置
-    @GET("http://172.22.34.36:8081/SMM/MantissaStorage/qMaterialPlace")
-    Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query("condition") String bind);
+    @GET("http://172.22.34.104:8081/SMM/MantissaStorage/qMaterialPlace")
+    Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query( "condition") String bind);
 
-    //尾数仓查料盘入库
-    @GET("http://172.22.34.36:8081/SMM/MantissaStorage/qMaterialPlace")
-    Observable<MantissaWarehouseReturnResult> getputinstrage(@Query("condition") String bind);
+   //尾数仓查料盘入库
+   @GET("http://172.22.34.104:8081/SMM/MantissaStorage/qMaterialPlace")
+   Observable<MantissaWarehouseReturnResult> getputinstrage(@Query( "condition") String bind);
 
 
     /**
