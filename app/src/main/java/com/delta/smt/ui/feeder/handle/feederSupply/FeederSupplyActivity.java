@@ -36,6 +36,7 @@ import com.delta.smt.ui.feeder.warning.CheckInFragment;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private String mCurrentSerinalNumber;
     private String mCurrentMaterialNumber;
     private String mCurrentquantity;
+    private  int index = -1;
 
     @Override
     protected int getContentViewId() {
@@ -135,6 +137,12 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_module, item.getModuleID());
                 holder.setText(R.id.tv_timestamp, item.getTimeStamp());
                 holder.setText(R.id.tv_status, item.getStatus()==0 ? "等待上模组" :" 上模组完成");
+
+                if (position == index) {
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                } else {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                }
             }
 
             @Override
@@ -221,6 +229,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                         Log.i(TAG, "对应的item: " + feederSupplyItem.toString());
                         tvModuleID.setText("模组料站: " + feederSupplyItem.getModuleID());
                         Log.i(TAG, "对应的模组料站是: " + feederSupplyItem.getModuleID());
+
+                        index = dataSource.indexOf(feederSupplyItem);
+                        Log.i(TAG, "当前扫描的数据index是: " + index);
+//                        Collections.swap(dataSource,index,0);
                         Map<String, String> map = new HashMap<>();
                         map.put("material_num", mCurrentMaterialNumber);
                         map.put("serial_num", mCurrentSerinalNumber);
