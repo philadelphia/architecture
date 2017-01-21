@@ -59,6 +59,15 @@ public class MantissaWarehouseDetailsResult {
         private String re_quantity;
         private String se_quantity;
         private String status;
+        private String msg;
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
 
         public MantissaWarehouseDetails(String work_order, String material_num, String shelves, String re_quantity, String se_quantity, String status) {
             this.work_order = work_order;

@@ -32,20 +32,20 @@ public interface MantissaWarehousePutstorageContract {
     public interface View extends IView {
 
         void getSucessUpdate(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getFailedUpdate(String message);
+        void getFailedUpdate(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
 
         void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getFailed(String message);
+        void getFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
 
 
         void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getBeginFailed(String message);
+        void getBeginFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
 
         void getBingingLableSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getBingingLableFailed(String message);
 
         void getUpLocationSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getUpLocationFailed(String message);
+        void getUpLocationFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
 
 
     }

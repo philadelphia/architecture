@@ -48,7 +48,16 @@ public class BindPrepCarIDByWorkOrderResult {
         private String shelves;
         private String demand;
         private String amount;
+        private String msg;
         private int status;
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
 
         public String getMaterial_num() {
             return material_num;

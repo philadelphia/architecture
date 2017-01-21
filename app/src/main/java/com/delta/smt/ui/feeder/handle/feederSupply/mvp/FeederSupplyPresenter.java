@@ -50,7 +50,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                 if (feederSupplyItems.getMessage().equalsIgnoreCase("success")){
                     getView().onSuccess(feederSupplyItems.getRows());
                 }else {
-                    getView().onFailed(feederSupplyItems.getMessage());
+                    getView().onFailed(feederSupplyItems.getRows().get(0).getMessage());
                 }
             }
         }, new Action1<Throwable>() {

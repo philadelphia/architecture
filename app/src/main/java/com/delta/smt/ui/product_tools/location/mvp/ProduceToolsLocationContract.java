@@ -21,7 +21,7 @@ public interface ProduceToolsLocationContract {
 
     interface View extends IView {
 
-        int getLocation(int param);
+        int getLocation(JsonProductToolsLocation param);
         int getSubmitResoult(int param);
         void Fail();
 

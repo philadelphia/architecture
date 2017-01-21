@@ -14,22 +14,22 @@ import rx.functions.Action1;
  */
 
 @ActivityScope
-public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWarehouseDetailsContract.Model,MantissaWarehouseDetailsContract.View> {
+public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWarehouseDetailsContract.Model, MantissaWarehouseDetailsContract.View> {
 
     @Inject
     public MantissaWarehouseDetailsPresenter(MantissaWarehouseDetailsContract.Model model, MantissaWarehouseDetailsContract.View mView) {
         super(model, mView);
     }
 
-    public void getMantissaWarehouseDetails(String str){
+    public void getMantissaWarehouseDetails(String str) {
 
         getModel().getMantissaWarehouseDetails(str).subscribe(new Action1<MantissaWarehouseDetailsResult>() {
             @Override
             public void call(MantissaWarehouseDetailsResult mantissaWarehouseDetailses) {
 
-                if("Success".equals(mantissaWarehouseDetailses.getMsg())){
+                if ("Success".equals(mantissaWarehouseDetailses.getMsg())) {
                     getView().getSucess(mantissaWarehouseDetailses.getRows());
-                }else{
+                } else {
                     getView().getFailed(mantissaWarehouseDetailses.getMsg());
                 }
 
@@ -46,16 +46,16 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
     }
 
 
-    public void getFindCar(String str){
+    public void getFindCar(String str) {
 
 
         getModel().getFindCar(str).subscribe(new Action1<MantissaCarResult>() {
             @Override
             public void call(MantissaCarResult car) {
 
-                if("Success".equals(car.getMsg())){
+                if ("Success".equals(car.getMsg())) {
                     getView().getFindCarSucess(car.getRows());
-                }else{
+                } else {
                     getView().getFindCarFailed(car.getMsg());
                 }
 
@@ -72,15 +72,15 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
 
     }
 
-    public void getbingingCar(String str){
+    public void getbingingCar(String str) {
 
         getModel().getBingingCar(str).subscribe(new Action1<MantissaCarResult>() {
             @Override
             public void call(MantissaCarResult car) {
 
-                if("Success".equals(car.getMsg())){
+                if ("Success".equals(car.getMsg())) {
                     getView().getBingingCarSucess(car.getRows());
-                }else{
+                } else {
                     getView().getBingingCarFailed(car.getMsg());
                 }
 
@@ -97,16 +97,16 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
     }
 
 
-    public void getMantissaWarehouseput(String str){
+    public void getMantissaWarehouseput(String str) {
 
         getModel().getMantissaWarehouseput(str).subscribe(new Action1<MantissaWarehouseDetailsResult>() {
             @Override
             public void call(MantissaWarehouseDetailsResult mantissaWarehouseDetailses) {
 
-                if("Success".equals(mantissaWarehouseDetailses.getMsg())){
+                if ("Success".equals(mantissaWarehouseDetailses.getMsg())) {
                     getView().getMantissaWarehouseputSucess(mantissaWarehouseDetailses.getRows());
-                }else{
-                    getView().getMantissaWarehouseputFailed(mantissaWarehouseDetailses.getMsg());
+                } else {
+                    getView().getMantissaWarehouseputFailed(mantissaWarehouseDetailses.getRows().get(0).getMsg());
                 }
 
             }
@@ -121,15 +121,15 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
 
     }
 
-    public void getMantissaWareOver(){
+    public void getMantissaWareOver() {
 
         getModel().getMantissaWareOver().subscribe(new Action1<MantissaWarehouseDetailsResult>() {
             @Override
             public void call(MantissaWarehouseDetailsResult mantissaWarehouseDetailses) {
 
-                if("Success".equals(mantissaWarehouseDetailses.getMsg())){
+                if ("Success".equals(mantissaWarehouseDetailses.getMsg())) {
                     getView().getMantissaWareOverSucess(mantissaWarehouseDetailses.getRows());
-                }else{
+                } else {
                     getView().getMantissaWareOverFailed(mantissaWarehouseDetailses.getMsg());
                 }
 

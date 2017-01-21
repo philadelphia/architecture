@@ -8,23 +8,19 @@ import android.widget.Toast;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.ProductToolsBarcode;
-import com.delta.buletoothio.barcode.parse.entity.ProductToolsRoom;
-import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.JsonProductToolsLocation;
 import com.delta.smt.ui.product_tools.location.di.DaggerProductToolsLocationComponent;
 import com.delta.smt.ui.product_tools.location.di.ProductToolsLocationModule;
 import com.delta.smt.ui.product_tools.location.mvp.ProduceToolsLocationContract;
 import com.delta.smt.ui.product_tools.location.mvp.ProduceToolsLocationPresenter;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Shaoqiang.Zhang on 2017/1/6.
@@ -97,9 +93,8 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         if (flag1 != 0) {
             try {
-                ProductToolsBarcode p= (ProductToolsBarcode) barCodeParseIpml.getEntity(barcode,BarCodeType.PRODUCT_TOOLS);
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("barcode", p.getSource());
+                jsonObject.put("barcode", barcode);
                 jsonObject.put("userID", ID);
                 String s = "[\'" + jsonObject.toString() + "\']";
                 getPresenter().getLocation(s);
@@ -128,13 +123,14 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     }
 
     @Override
-    public int getLocation(int param) {
-        if (param == 0) {
+    public int getLocation(JsonProductToolsLocation param) {
+        if (param.getCode()==0) {
             mProductToolsBarCodeEditText.setText(tools);
+            mShiftBarcodeCodeEditText.setText(param.getMessage());
         }else {
             Toast.makeText(this, "该治具无法完成入架位操作!", Toast.LENGTH_SHORT).show();
         }
-        return flag1 = param;
+        return flag1 = param.getCode();
     }
 
     @Override
