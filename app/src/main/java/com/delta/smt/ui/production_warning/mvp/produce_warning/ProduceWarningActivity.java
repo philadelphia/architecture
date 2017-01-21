@@ -200,7 +200,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                     "故障(" + breakdown_number + ")",
                     "消息(" + info_number + ")"};
         }
-        initView();
+        ViewUtils.setTabTitle(mTlTitle, titles);
     }
 
     @Override
