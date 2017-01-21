@@ -399,6 +399,7 @@ public interface ApiService {
     @GET("http://172.22.35.155:8081/smm/unplugmod/bindVirtualLine")
     Observable<VirtualBindingResult> getVirtualBindingResult(@Query("id")String id, @Query("vitualId")String vitualId);
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/getModNumByMaterial")
-    Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num);
+    @GET("http://172.22.34.75:8081/smm/unplugmod/getModNumByMaterial")
+    Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num,@Query("workOrderNum") String num);
+
 }
