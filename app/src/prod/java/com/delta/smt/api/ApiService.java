@@ -108,12 +108,12 @@ public interface ApiService {
 
 
     /**
-     *Fuxiang.Zhang
-     *Created 2017/1/21 14:23
-     *Desc:
-     * 生产中预警和手补件模块的接口
+     *@description :
+     * 1.生产中预警
+     * 2.手补件通知
+     *@author : Fuxiang.Zhang
+     *@date : 2017/1/21 14:41
     */
-
     //请求产线列表数据
     Observable<List<ItemProduceLine>> getLineDatas();
 
