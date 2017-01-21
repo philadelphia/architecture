@@ -23,11 +23,12 @@ public class CountDownEntity  {
     public long  countDownLong;
 
     public Long getCountDownLong(){
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         Date date ;
         try {
-            date = sdf.parse(countdown);
+            date = sdf.parse(countdown );
             long time = date.getTime();
+//            Date dateCu = new Date();
             Log.i("SupplyFragment", "time: " + time);
             return  date.getTime();
         } catch (ParseException e) {
