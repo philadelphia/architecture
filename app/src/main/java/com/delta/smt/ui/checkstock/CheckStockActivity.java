@@ -98,6 +98,9 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(this.getResources().getString(R.string.pcbcheck));
+        cargonTv.setFocusable(true);
+        cargoned.clearFocus();
+        cargoned.setFocusable(false);
         builder = new AlertDialog.Builder(this);
         List<CheckStockDemo> list = new ArrayList<>();
         list.add(new CheckStockDemo("", "", "", "", ""));
@@ -202,6 +205,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     if (mFrameLocationSuccess.getSource().equals(mFrameLocation.getSource())) {
                         getPresenter().fetchException(mFrameLocationSuccess.getSource());
                     } else {
+                        cargoned.setFocusable(true);
                         ToastUtils.showMessage(this, "两次扫描架位不一致");
                     }
 
@@ -226,6 +230,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 if (mId != 0) {
                     String ss = cargoned.getText().toString();
                     getPresenter().fetchCheckStockSuccessNumber(mId, Integer.valueOf(ss));
+                    cargoned.setFocusable(false);
+
                 }
             } else {
                 Toast toast = Toast.makeText(this, "请输入数量", Toast.LENGTH_SHORT);
@@ -248,6 +254,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         dataList.clear();
         dataList.addAll(wareHouses);
         mAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -258,6 +265,10 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public void onCheckStockNumberSucess(String wareHouses) {
         ToastUtils.showMessage(this, wareHouses);
+        if (mFrameLocation!=null){
+            cargonTv.setText(mFrameLocation.getSource());
+            getPresenter().fetchCheckStock(mFrameLocation.getSource());
+            }
     }
 
     @Override

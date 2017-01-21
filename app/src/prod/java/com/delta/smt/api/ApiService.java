@@ -196,7 +196,7 @@ public interface ApiService {
     @GET("pcb/management/outbound/alarm/submit")
     Observable<Success> getAlarmSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId,@Query("alarmId") int alarmId );//预警出库完成
     @GET("pcb/management/outbound/schedule/submit")
-    Observable<Success> getScheduleSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId);//预警出库完成
+    Observable<Success> getScheduleSuccessState(@Query("scheduleId") int scheduleId);//预警出库完成
     @GET("pcb/inventory/detail")
     Observable<CheckStock> getCheckStock(@Query("subShelfCode") String s);//获取盘点列表
      @GET("pcb/inventory/subinventory")

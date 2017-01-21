@@ -45,8 +45,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             }
         });
     }
-    public void getScheduleSuccessState(String sapWorkOrderId){
-        getModel().getScheduleSuccessState(sapWorkOrderId).subscribe(new Action1<Success>() {
+    public void getScheduleSuccessState( int scheduleId){
+        getModel().getScheduleSuccessState(scheduleId).subscribe(new Action1<Success>() {
             @Override
             public void call(Success s) {
                 if ("0".equals(s.getCode())){

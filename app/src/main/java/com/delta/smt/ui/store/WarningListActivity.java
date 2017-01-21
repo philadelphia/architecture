@@ -221,7 +221,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
             if (mIsAlarmInfo){
                 getPresenter().getAlarmSuccessfulState(mWorkNumberString,mAlarminfoId);
             }else {
-                getPresenter().getScheduleSuccessState(mWorkNumberString);
+                getPresenter().getScheduleSuccessState(mAlarminfoId);
             }
         }
 

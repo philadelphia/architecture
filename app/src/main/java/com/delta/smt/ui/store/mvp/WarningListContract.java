@@ -31,7 +31,7 @@ public class WarningListContract {
         Observable<PcbNumber>getPcbNumber(String s);
         Observable<Success>getPcbSuccess(String s);
         Observable<Success>getAlarmSuccessfulState (String sapWorkOrderId, int alarmId );
-        Observable<Success>getScheduleSuccessState (String sapWorkOrderId );
+        Observable<Success>getScheduleSuccessState (int scheduleId);
 
 
     }
