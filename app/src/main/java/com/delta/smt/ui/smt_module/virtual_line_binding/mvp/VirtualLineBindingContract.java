@@ -37,6 +37,6 @@ public interface VirtualLineBindingContract {
 
         public Observable<VirtualBindingResult>getVirtualBinding(String id, String virtualId);
 
-        public Observable<ModNumByMaterialResult>getModNumByMaterial(String str);
+        public Observable<ModNumByMaterialResult>getModNumByMaterial(String str,String num);
     }
 }

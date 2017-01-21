@@ -31,7 +31,10 @@
             android:layout_marginRight="40px"
             android:text="@string/setting"
             android:textColor="@color/c_ffffff"
-            android:textSize="@dimen/ProtectToolsTextSize" />
+            android:textSize="@dimen/ProtectToolsTextSize"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            />
     </com.delta.commonlibs.widget.autolayout.AutoToolbar>
 
 </com.delta.commonlibs.widget.autolayout.AutoAppBarLayout>

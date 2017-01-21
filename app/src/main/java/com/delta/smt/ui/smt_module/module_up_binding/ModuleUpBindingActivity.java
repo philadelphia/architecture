@@ -168,23 +168,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
             dataSource.addAll(rowsBeen);
             adapter.notifyDataSetChanged();
-
-        }
-
-    }
-
-    @Override
-    public void onFalied() {
-
-    }
-
-    @Override
-    public void onSuccessBinding(MaterialAndFeederBindingResult data) {
-        if(data.getMsg().toLowerCase().equals("success")){
-            getPresenter().getAllModuleUpBindingItems(workItemID);
-            scan_position = -1;
-            adapter.notifyDataSetChanged();
-            state = 1;
             if (isAllFeederScaned()) {
                 new AlertDialog.Builder(this)
                         .setTitle("上模组完成")
@@ -209,6 +192,23 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         .create()
                         .show();
             }
+        }
+
+    }
+
+    @Override
+    public void onFalied() {
+
+    }
+
+    @Override
+    public void onSuccessBinding(MaterialAndFeederBindingResult data) {
+        if(data.getMsg().toLowerCase().equals("success")){
+            getPresenter().getAllModuleUpBindingItems(workItemID);
+            scan_position = -1;
+            adapter.notifyDataSetChanged();
+            state = 1;
+
         }
     }
 
@@ -275,10 +275,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 if (materialBlockCodeCache != null && feederCodeCache == null) {
                     try {
                         Feeder feederCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
-                        if(isFeederExistInDataSource(feederCode.getSource(),dataSource)){
+                        if(isFeederExistInDataSource(barcode,dataSource)){
                             Toast.makeText(this, "此Feeder已经被绑定！", Toast.LENGTH_SHORT).show();
                         }else{
-                            feederCodeCache = feederCode.getSource();
+                            feederCodeCache = barcode;
                             getPresenter().getMaterialAndFeederBindingResult(dataSource.get(scan_position).getId()+"",feederCodeCache);
 
                         }
@@ -445,9 +445,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
 
     public boolean isFeederExistInDataSource(String item, List<ModuleUpBindingItem.RowsBean> list) {
+
         if (list.size() > 0) {
+
             for (ModuleUpBindingItem.RowsBean list_item : list) {
-                if (list_item.getFeeder_id().equals(item)) {
+
+                if (list_item.getFeeder_id()!=null&&list_item.getFeeder_id().equals(item)) {
                     return true;
                 }
             }
@@ -459,16 +462,21 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     public boolean isAllFeederScaned() {
+        boolean res = false;
+
         if (dataSource.size() > 0) {
             for (ModuleUpBindingItem.RowsBean listItem : dataSource) {
-                if (listItem.getFeeder_id().equals("")) {
-                    return false;
+                if (listItem.getCreate_time()!=null&&listItem.getCreate_time().length()>5) {
+                    res =  true;
+                }else{
+                    res = false;
+                    break;
                 }
             }
-            return true;
         } else {
-            return false;
+            res = false;
         }
+        return res;
     }
 
 

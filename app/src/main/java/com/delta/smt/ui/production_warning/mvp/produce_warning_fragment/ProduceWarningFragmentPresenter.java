@@ -46,7 +46,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
                     getView().getItemWarningDatas(itemWarningInfos.getRows().getAlarm());
                     Log.e("aaa", "fagment:预警数量"+String.valueOf(itemWarningInfos.getRows().getAlarm().size()) );
                 }else {
-//                    getView().getItemWarningDatasFailed(itemWarningInfos.getMsg());
+                    getView().getItemWarningDatasFailed(itemWarningInfos.getMsg());
                 }
             }
         }, new Action1<Throwable>() {

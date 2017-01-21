@@ -8,8 +8,6 @@ import android.widget.Toast;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.ProductToolsBarcode;
-import com.delta.buletoothio.barcode.parse.entity.ProductToolsRoom;
-import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -19,12 +17,9 @@ import com.delta.smt.ui.product_tools.location.di.ProductToolsLocationModule;
 import com.delta.smt.ui.product_tools.location.mvp.ProduceToolsLocationContract;
 import com.delta.smt.ui.product_tools.location.mvp.ProduceToolsLocationPresenter;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Shaoqiang.Zhang on 2017/1/6.
@@ -112,10 +107,9 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         } else {
 
             try {
-                ProductToolsRoom p=(ProductToolsRoom)new BarCodeParseIpml().getEntity(barcode,BarCodeType.PRODECT_TOOLS_ROOM);
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("jigBarcode", tools);
-                jsonObject.put("shelfBarcode", p.getSource());
+                jsonObject.put("shelfBarcode", barcode);
                 jsonObject.put("userID", ID);
                 String s = "[\'" + jsonObject.toString() + "\']";
                 getPresenter().getSubmitResoult(s);

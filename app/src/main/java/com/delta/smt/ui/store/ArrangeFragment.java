@@ -79,6 +79,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
                 }
             }
         });
+        getPresenter().fatchArrange();
     }
 
     @Override

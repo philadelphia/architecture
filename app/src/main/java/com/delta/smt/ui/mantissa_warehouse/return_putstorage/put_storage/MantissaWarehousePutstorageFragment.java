@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.LabelBarcode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
@@ -64,6 +65,7 @@ public class MantissaWarehousePutstorageFragment extends
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter;
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter2;
     private BaseActivity baseActiviy;
+    
 
     private int flag = 1;
 
@@ -71,6 +73,10 @@ public class MantissaWarehousePutstorageFragment extends
     private String lableBarCode;
     private String serialNum;
     private String count;
+
+    private int position = 0;
+    private boolean f= false;
+
 
 
     @Override
@@ -128,8 +134,6 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     protected void initData() {
-
-
         getPresenter().getMantissaWarehousePutstorage();
     }
 
@@ -145,11 +149,11 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
     }
-
     @Override
     public void getFailedUpdate(String message) {
 
     }
+
 
     @Override
     public void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
@@ -158,11 +162,11 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
     }
-
     @Override
     public void getFailed(String message) {
 
     }
+
 
     @Override
     public void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
@@ -170,11 +174,12 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
     }
-
     @Override
     public void getBeginFailed(String message) {
-
+        dataList2.clear();
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
+
 
     @Override
     public void getBingingLableSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
@@ -182,22 +187,27 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
     }
-
     @Override
     public void getBingingLableFailed(String message) {
-
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
+
 
     @Override
     public void getUpLocationSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
+        position = 0;
+        f= false;
+        flag = 3;
+
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
-    }
 
+
+    }
     @Override
     public void getUpLocationFailed(String message) {
-
+        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -219,6 +229,7 @@ public class MantissaWarehousePutstorageFragment extends
         }
     }
 
+
     @Override
     protected boolean UseEventBus() {
         return true;
@@ -226,7 +237,6 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Subscribe
     public void scanSucceses(PutBarCode putBarCode) throws EntityNotFountException {
-     //   mBound.setFocusable(true);
 
         String barcode =putBarCode.getBarCode();
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
@@ -236,6 +246,7 @@ public class MantissaWarehousePutstorageFragment extends
                 try {
                     MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
                     materialNumber = materiaBar.getDeltaMaterialNumber();
+                    serialNum = materiaBar.getStreamNumber();
                     serialNum = materiaBar.getStreamNumber();
                     flag = 2;
                     Toast.makeText(baseActiviy, "已扫描料盘", Toast.LENGTH_SHORT).show();
@@ -267,13 +278,39 @@ public class MantissaWarehousePutstorageFragment extends
                 count = lableBar.getCount();
                 materialNumber = lableBar.getDeltaMaterialNumber();
                 serialNum = lableBar.getStreamNumber();
-                Toast.makeText(baseActiviy, count, Toast.LENGTH_SHORT).show();
 
-                UpLocation bindBean = new UpLocation(materialNumber, serialNum, count);
-                Gson gson = new Gson();
-                String s = gson.toJson(bindBean);
+                for (int i = 0; i < dataList2.size(); i++) {
+                    if(materialNumber.equals(dataList2.get(i).getMaterial_num()) && serialNum.equals( dataList2.get(i).getSerial_num())){
+                        position = i;
+                        f = true;
+                        break;
+                    }else {
+                        Toast.makeText(getActivity(), "尾数仓暂无此料盘", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-                getPresenter().getUpLocation(s);
+                if(f = true){
+                    flag = 4;
+                    f = false;
+                }
+                break;
+
+            case 4:
+
+                FrameLocation frameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                String mainStore = frameLocation.getSource();
+
+                if(dataList2.get(position).getShelves().equals(mainStore)){
+
+                    UpLocation bindBean = new UpLocation(materialNumber, serialNum, count);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(bindBean);
+
+                    getPresenter().getUpLocation(s);
+
+                }else {
+                    Toast.makeText(getActivity(), "尾数仓暂无此架位", Toast.LENGTH_SHORT).show();
+                }
 
                 break;
 
