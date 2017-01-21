@@ -74,6 +74,9 @@ public class MantissaWarehousePutstorageFragment extends
     private String serialNum;
     private String count;
 
+    int position = 0;
+    boolean f= false;
+
 
 
     @Override
@@ -195,6 +198,10 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
+
+        int position = 0;
+        boolean f= false;
+        flag = 3;
     }
     @Override
     public void getUpLocationFailed(String message) {
@@ -265,8 +272,7 @@ public class MantissaWarehousePutstorageFragment extends
 
             case 3:
 
-                int position = 0;
-                boolean f= false;
+
                 MaterialBlockBarCode lableBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                 count = lableBar.getCount();
                 materialNumber = lableBar.getDeltaMaterialNumber();
@@ -276,30 +282,34 @@ public class MantissaWarehousePutstorageFragment extends
                     if(materialNumber.equals(dataList2.get(i).getMaterial_num()) && serialNum.equals( dataList2.get(i).getSerial_num())){
                         position = i;
                         f = true;
+                        break;
                     }else {
                         Toast.makeText(getActivity(), "尾数仓暂无此料盘", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 if(f = true){
-                    FrameLocation frameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
-                    String mainStore = frameLocation.getSource();
-
-                    if(dataList2.get(position).getShelves().equals(mainStore)){
-
-                        UpLocation bindBean = new UpLocation(materialNumber, serialNum, count);
-                        Gson gson = new Gson();
-                        String s = gson.toJson(bindBean);
-
-                        getPresenter().getUpLocation(s);
-
-                    }else {
-                        Toast.makeText(getActivity(), "尾数仓暂无此架位", Toast.LENGTH_SHORT).show();
-                    }
+                    flag = 4;
+                    f = false;
                 }
+                break;
 
+            case 4:
 
+                FrameLocation frameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
+                String mainStore = frameLocation.getSource();
 
+                if(dataList2.get(position).getShelves().equals(mainStore)){
+
+                    UpLocation bindBean = new UpLocation(materialNumber, serialNum, count);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(bindBean);
+
+                    getPresenter().getUpLocation(s);
+
+                }else {
+                    Toast.makeText(getActivity(), "尾数仓暂无此架位", Toast.LENGTH_SHORT).show();
+                }
 
                 break;
 
