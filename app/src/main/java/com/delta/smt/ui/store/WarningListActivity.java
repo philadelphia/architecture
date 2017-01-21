@@ -135,6 +135,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 holder.setText(R.id.pcb_price, item.getSubShelfSerial());
                 if (item.getAmount() == 0) {
                     holder.setText(R.id.pcb_thenumber, "");
+                }else {
+                    holder.setText(R.id.pcb_thenumber, ""+item.getAmount());
                 }
                 holder.setText(R.id.pcb_code, item.getPcbCode());
                 holder.setText(R.id.pcb_time, item.getPcbCode());
@@ -171,9 +173,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         recyContetn.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyContetn.setAdapter(mAdapter);
         if (mIsAlarmInfo){
-            getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAlarminfoId);
+            getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
         }else {
-            getPresenter().fetchScheduleOutBound(mWorkNumberString,mMaterialNumberString,mAlarminfoId);
+            getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
         }
 
     }
@@ -204,26 +206,37 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void onSucessState(String s) {
         Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_INDEFINITE).show();
-        if (mAmoutString!=0){
+        if (mAmoutString - mAmout>0){
         recyContetn.scrollToPosition(position + 1);//请求+1
         mList.get(position).setColor(false);
         mList.get(position + 1).setColor(true);
         mAdapter.notifyDataSetChanged();
         edPcbDemand.setText("" + (mAmoutString - mAmout));
-        }else {
+        }
+        if ((mAmoutString - mAmout)==0){
+            mList.get(position).setColor(false);
+            edPcbDemand.setText("0");
             if (mIsAlarmInfo){
-                getPresenter().getAlarmSuccessfulState(mWorkNumberString,mId);
+                getPresenter().getAlarmSuccessfulState(mWorkNumberString,mAlarminfoId);
             }else {
                 getPresenter().getScheduleSuccessState(mWorkNumberString);
             }
         }
 
+
+
+    }
+
+    @Override
+    public void onSucessStates(String s) {
+        Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_INDEFINITE).show();
     }
 
     @Override
     public void onOutSuccess(List<OutBound.DataBean> dataBeanList) {
         mList.clear();
         mList.addAll(dataBeanList);
+        mList.get(0).setColor(true);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -254,8 +267,15 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                         break;
                     case FRAME_LOCATION:
                         mFramebarCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
-                        if ("0".equals(String.valueOf(mAmout)) && "0".equals(String.valueOf(mId))) {
-                            getPresenter().fetchPcbSuccess(mAmout, mId);
+                        if (!"0".equals(String.valueOf(mAmout)) && !"0".equals(String.valueOf(mId))) {
+                            if (mAmoutString <mAmout){
+                                Snackbar.make(activityMianview, "请拆箱取出"+mAmoutString+"片", Snackbar.LENGTH_INDEFINITE).show();
+                                getPresenter().fetchPcbSuccess(mAlarminfoId,mAmoutString, mId);
+                            }
+                            if (mAmoutString >mAmout){
+                                getPresenter().fetchPcbSuccess(mAlarminfoId,mAmout, mId);
+                            }
+
                         }
                         break;
                 }

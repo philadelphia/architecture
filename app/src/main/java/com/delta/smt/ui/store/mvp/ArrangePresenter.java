@@ -39,6 +39,7 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
                         itemInfo.setCountdown("7:53:48");
                         itemInfo.setMaterialNumber(itemInfos.getRows().get(i).getMachineType());
                         itemInfo.setMachine(itemInfos.getRows().get(i).getPartNum());
+                        Log.e("info",""+itemInfos.getRows().get(i).getPartNum());
                         itemInfo.setWorkNumber(itemInfos.getRows().get(i).getSapWorkOrderId());
                         itemInfo.setAmount(itemInfos.getRows().get(i).getAmount());
                         itemInfo.setAlarminfoId(itemInfos.getRows().get(i).getId());

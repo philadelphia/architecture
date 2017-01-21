@@ -71,9 +71,6 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
                     bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
                     bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
                     bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
-                    Log.i("info ----", itemInfo.getWorkNumber());
-                    Log.i("info ----", itemInfo.getMachine());
-                    Log.i("info ----", itemInfo.getMaterialNumber());
                     Toast.makeText(getActivity(), "" + position, Toast.LENGTH_SHORT).show();
                     IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
                 }

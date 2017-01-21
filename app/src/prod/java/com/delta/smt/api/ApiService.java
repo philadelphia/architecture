@@ -177,14 +177,14 @@ public interface ApiService {
     @GET("pcb/management/outbound/alarm/bill")
     Observable<OutBound> outBound(@Query("id") int id,@Query("sapWorkOrderId") String sapWorkOrderId,@Query("partNum") String partNum,@Query("amount") int amount);//预警仓库发料清单
     @GET("pcb/management/outbound/schedule/bill")
-    Observable<OutBound> getScheduleDetailed(@Query("sapWorkOrderId") String sapWorkOrderId,@Query("partNum") String partNum,@Query("amount") int amount);//获取发料详情列表
+    Observable<OutBound> getScheduleDetailed(@Query("id") int id,@Query("sapWorkOrderId") String sapWorkOrderId,@Query("partNum") String partNum,@Query("amount") int amount);//获取发料详情列表
 
     @GET("pcb/management/outbound/bill")
     Observable<OutBound> outBound(@Query("param") String s);//仓库发料清单
 
     //Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
     @GET("pcb/management/capacity")
-    Observable<PcbNumber> getPcbNumber(@Query("param") String s);//获取实际数量
+    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
 
 //    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
     @GET("webapi/pcb/management/outbound")
@@ -194,15 +194,15 @@ public interface ApiService {
     @GET("pcb/management/outbound/schedule/submit")
     Observable<Success> getScheduleSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId);//预警出库完成
     @GET("pcb/inventory/detail")
-    Observable<CheckStock> getCheckStock(@Query("subShelfSerial") String s);//获取盘点列表
+    Observable<CheckStock> getCheckStock(@Query("subShelfCode") String s);//获取盘点列表
      @GET("pcb/inventory/subinventory")
     Observable<Success> getCheckNumber(@Query("id") int id,@Query("realCount") int realCount);//发送盘点数量
     @GET("pcb/inventory/alteration")
     Observable<Success> getError(@Query("boxSerial") String boxSerial,@Query("subShelfCode") String subShelfCode);//发送盘点异常
     @GET("pcb/inventory/exception")
-    Observable<Success> getException(@Query("subShelfSerial") String boxSerial);//盘点结果
+    Observable<Success> getException(@Query("subShelfCode") String boxSerial);//盘点结果
     @GET("pcb/inventory/submit")
-    Observable<Success> getSubmit(@Query("subShelfSerial") String boxSerial);//发送盘点结果
+    Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
 
 
 

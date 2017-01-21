@@ -96,9 +96,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(this.getResources().getString(R.string.pcbcheck));
         builder = new AlertDialog.Builder(this);
-        cargonTv.setFocusable(true);
-        cargoned.clearFocus();
-        cargoned.setFocusable(false);
         List<CheckStockDemo> list = new ArrayList<>();
         list.add(new CheckStockDemo("", "", "", "", ""));
         CommonBaseAdapter<CheckStockDemo> mAdapterTitle = new CommonBaseAdapter<CheckStockDemo>(getContext(), list) {
@@ -136,7 +133,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                 mId = dataList.get(i).getId();
                                 getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(mMaterbarCode.getCount()));
                             } else {
-                                cargoned.setFocusable(true);
+                                ToastUtils.showMessage(CheckStockActivity.this,"请查数后输入数量!");
+                                getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(cargoned.getText().toString()));
                             }
                         } else {
                             mErrorDialog = builder.create();

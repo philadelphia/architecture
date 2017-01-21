@@ -42,8 +42,8 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
         return getService().getPcbSuccess(s).compose(RxsRxSchedulers.<Success>io_main());
     }
     @Override
-    public Observable<OutBound> getScheduleDetailed(String sapWorkOrderId, String partNum, int amount) {
-        return getService().getScheduleDetailed(sapWorkOrderId,partNum,amount).compose(RxsRxSchedulers.<OutBound>io_main());
+    public Observable<OutBound> getScheduleDetailed(int id,String sapWorkOrderId, String partNum, int amount) {
+        return getService().getScheduleDetailed(id,sapWorkOrderId,partNum,amount).compose(RxsRxSchedulers.<OutBound>io_main());
     }
 
     @Override

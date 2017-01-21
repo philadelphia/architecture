@@ -19,6 +19,7 @@ public class WarningListContract {
     public interface View extends IView{
         void onFailed(String s);
         void onSucessState(String s);
+        void onSucessStates(String s);
         void onOutSuccess(List<OutBound.DataBean> dataBeanList);
         void getNumberSucces(PcbNumber.DataBean dataBean);
 
@@ -27,7 +28,7 @@ public class WarningListContract {
 
 
         Observable<OutBound>getOutbound(int id,String sapWorkOrderId,String partNum,int amount);
-        Observable<OutBound> getScheduleDetailed(String sapWorkOrderId, String partNum, int  amount);
+        Observable<OutBound> getScheduleDetailed(int id,String sapWorkOrderId, String partNum, int  amount);
         Observable<PcbNumber>getPcbNumber(String s);
         Observable<Success>getPcbSuccess(String s);
         Observable<Success>getAlarmSuccessfulState (String sapWorkOrderId, int alarmId );

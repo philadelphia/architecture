@@ -33,7 +33,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             public void call(Success s) {
                 if ("0".equals(s.getCode())){
                     if (s.getMsg().contains("Success")){
-                    getView().onSucessState(s.getMsg());}else {
+                    getView().onSucessStates(s.getMsg());
+                    }else {
                     getView().onFailed(s.getMsg());
                 }}
             }
@@ -49,7 +50,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(Success s) {
                 if ("0".equals(s.getCode())){
-                getView().onSucessState(s.getMsg());}else {
+                getView().onSucessStates(s.getMsg());}else {
                     getView().onFailed(s.getMsg());
                 }
             }
@@ -81,8 +82,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             }
         });
     }
-    public void fetchScheduleOutBound(String sapWorkOrderId,String partNum,int amount){
-        getModel().getScheduleDetailed(sapWorkOrderId,partNum,amount).subscribe(new Action1<OutBound>() {
+    public void fetchScheduleOutBound(int id,String sapWorkOrderId,String partNum,int amount){
+        getModel().getScheduleDetailed(id,sapWorkOrderId,partNum,amount).subscribe(new Action1<OutBound>() {
             @Override
             public void call(OutBound outBound) {
                 if ("0".equals(outBound.getCode())){
@@ -106,11 +107,11 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(PcbNumber pcbNumber) {
             if ("0".equals(pcbNumber.getCode())){
-                if (pcbNumber.getMsg().contains("Success")){
+
                 getView().getNumberSucces(pcbNumber.getRows());
             }else {
                 getView().onFailed(pcbNumber.getMsg());
-            }}
+            }
             }
         }, new Action1<Throwable>() {
             @Override
@@ -120,7 +121,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
 
-    public void fetchPcbSuccess(int amout, int id){
+    public void fetchPcbSuccess(int mAlarminfoId,int amout, int id){
 //        Gson gson=new Gson();
 //        List<ParameterOutBound> list=new ArrayList<>();
 //        ParameterOutBound parameterOutBound=new ParameterOutBound(id,amout);
@@ -129,6 +130,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         JSONArray jsonArray=new JSONArray();
         JSONObject jsonObject=new JSONObject();
         try {
+            jsonObject.putOpt("billId",mAlarminfoId);
             jsonObject.putOpt("id",id);
             jsonObject.putOpt("amount",amout);
             jsonArray.put(jsonObject);
@@ -142,10 +144,10 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(Success success) {
                 if("0".equals(success.getCode())){
-                if (success.getMsg().contains("Success")){
-                getView().onSucessState(success.getMsg());}else {
+                getView().onSucessState(success.getMsg());
+                }else {
                     getView().onFailed(success.getMsg());
-                }}
+                }
             }
         }, new Action1<Throwable>() {
             @Override
