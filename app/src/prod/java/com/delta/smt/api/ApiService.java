@@ -53,7 +53,6 @@ import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.List;
-import java.util.jar.Attributes;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -63,8 +62,6 @@ import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
-
-import static android.R.attr.name;
 
 
 /**
