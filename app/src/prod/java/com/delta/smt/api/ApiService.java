@@ -362,29 +362,7 @@ public interface ApiService {
    Observable<MantissaWarehouseReturnResult> getputinstrage(@Query( "condition") String bind);
 
 
-    //尾数仓备料详情
-    @GET("http://172.22.34.104:8081/SMM/IssueMana/queryMantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query("condition") String bind);
 
-    //料盘绑定标签
-    @GET("http://172.22.34.104:8081/SMM/ManToWareh/materBoundLabel")
-    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query("condition") String bind);
-
-    //查询尾数仓备料车
-    @GET("http://172.22.34.104:8081/SMM/WareHIssue/qPrepCarIDByWorkOrder")
-    Observable<MantissaCarResult> getFindCar(@Query("condition") String bind);
-
-    //绑定尾数仓备料车
-    @GET("http://172.22.34.104:8081/SMM/WareHIssue/bindPrepCarIDByWorkOrder")
-    Observable<MantissaCarResult> getbingingCar(@Query("condition") String bind);
-
-    //尾数仓发料
-    @GET("http://172.22.34.104:8081/SMM/WareHIssue/mantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(@Query("condition") String bind);
-
-    //尾数仓发料完成
-    @GET("http://172.22.34.104:8081/SMM/WareHIssue/completeMantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWareOver();
 
     @GET("http://172.22.34.22:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
@@ -392,21 +370,21 @@ public interface ApiService {
     @GET("http://172.22.34.22:8081/SMM/ExcessManagement/execessIssure")
     Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
 
-    @GET("http://172.22.34.22:8081/SMM/ExcessManagement/delivery")
+    @GET("http://172.22.34.104:8081/SMM/ExcessManagement/delivery")
     Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
 
-    @GET("http://172.22.35.155:8081/SMM/WareHIssue/debit")
+    @GET("http://172.22.35.104:8081/SMM/WareHIssue/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
-    @GET("http://172.22.35.155:8081/smm/plugmod/updateMod")
+    @GET("http://172.22.35.104:8081/smm/plugmod/updateMod")
     Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(@Query("id")String id,@Query("feeder")String feederID);
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/updateMod")
+    @GET("http://172.22.35.104:8081/smm/unplugmod/updateMod")
     Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("ids")String content);
 
-    @GET("http://172.22.35.155:8081/smm/unplugmod/bindVirtualLine")
+    @GET("http://172.22.35.104:8081/smm/unplugmod/bindVirtualLine")
     Observable<VirtualBindingResult> getVirtualBindingResult(@Query("id")String id, @Query("vitualId")String vitualId);
 
-    @GET("http://172.22.34.75:8081/smm/unplugmod/getModNumByMaterial")
+    @GET("http://172.22.34.104:8081/smm/unplugmod/getModNumByMaterial")
     Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num, @Query("workOrderNum") String num);
 }
