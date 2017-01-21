@@ -1,5 +1,6 @@
 package com.delta.smt.entity;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -58,7 +59,8 @@ public class ModuleDownWarningItem {
         @Override
         public Long getCountDownLong() {
             long res = 0;
-            if(end_time.length()!=0){
+
+            if(end_time != null && end_time.length()>0&&!end_time.equals("-")){
                 long getTime = Long.parseLong(date2TimeStamp(end_time, "yyyy-MM-dd HH:mm:ss"));
                 long nowTime = Long.parseLong(timeStamp());
                 if (nowTime > getTime) {
@@ -72,7 +74,6 @@ public class ModuleDownWarningItem {
 
             return res;
         }
-
 
         private String line;
         private String work_order;
