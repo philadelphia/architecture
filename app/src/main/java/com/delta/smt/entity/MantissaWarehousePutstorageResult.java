@@ -5,8 +5,8 @@ import java.util.List;
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
  */
-
 public class MantissaWarehousePutstorageResult {
+
     /**
      * msg : success
      * rows : [{"label":"11111","material_num":"4020108700","serial_num":"12344","shelves":"A1D001","status":1}]
