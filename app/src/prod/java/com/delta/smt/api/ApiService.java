@@ -80,7 +80,6 @@ public interface ApiService {
     //  获取feeder入库列表
 //    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     @GET("http://172.22.34.5:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
-
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     //获取feeder入库时间
@@ -316,15 +315,8 @@ public interface ApiService {
     @GET("http://172.22.34.104:8081/SMM/IssueMana/queryWarehousePart")
     Observable<Result<String>> getStorageSelect();
 
-
     @GET("http://172.22.34.104:8081/SMM/IssueMana/queryWorkOrder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
-
-
-    @GET("http://172.22.34.104:8081/SMM/WareHIssue/startWareHIssure")
-    Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
-
-
 
     //liuzhenyu
     //尾数仓退入主仓库
@@ -341,7 +333,7 @@ public interface ApiService {
 
     //尾数仓点击开始入库上架位完成
     @GET("http://172.22.34.104:8081/SMM/ManToWareh/materToShel")
-    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query( "condition") String bind);
+    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query("condition") String bind);
 
 
     //尾数仓入库
@@ -350,11 +342,11 @@ public interface ApiService {
 
     //尾数仓查询料盘的位置
     @GET("http://172.22.34.104:8081/SMM/MantissaStorage/qMaterialPlace")
-    Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query( "condition") String bind);
+    Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query("condition") String bind);
 
-   //尾数仓查料盘入库
-   @GET("http://172.22.34.104:8081/SMM/MantissaStorage/qMaterialPlace")
-   Observable<MantissaWarehouseReturnResult> getputinstrage(@Query( "condition") String bind);
+    //尾数仓查料盘入库
+    @GET("http://172.22.34.104:8081/SMM/MantissaStorage/qMaterialPlace")
+    Observable<MantissaWarehouseReturnResult> getputinstrage(@Query("condition") String bind);
 
 
     /**
