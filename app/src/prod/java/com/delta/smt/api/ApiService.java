@@ -255,7 +255,7 @@ public interface ApiService {
    @GET("http://172.22.35.155:8081/smm/unplugmod/getProductionLines")
     Observable<ModuleDownWarningItem> getModuleDownWarningItems(@Query("workOrderNum") String content);*/
 
-    @GET("http://172.22.35.75:8081/smm/plugmod/getProductionLines")
+    @GET("http://172.22.34.75:8081/smm/plugmod/getProductionLines")
     Observable<ModuleUpWarningItem> getModuleUpWarningItems();
 
     @GET("http://172.22.34.75:8081/smm/unplugmod/getProductionLines")
@@ -384,16 +384,16 @@ public interface ApiService {
 
 
 
-    @GET("http://172.22.34.24:8081/SMM/ExcessManagement/qExcessList")
+    @GET("http://172.22.34.5:8081/SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
 
-    @GET("http://172.22.34.24:8081/SMM/ExcessManagement/execessIssure")
+    @GET("http://172.22.34.5:8081/SMM/ExcessManagement/execessIssure")
     Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
 
-    @GET("http://172.22.34.24:8081/SMM/ExcessManagement/delivery")
+    @GET("http://172.22.34.5:8081/SMM/ExcessManagement/delivery")
     Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
 
-    @GET("http://172.22.34.24:8081/SMM/WareHIssue/debit")
+    @GET("http://172.22.34.5:8081/SMM/WareHIssue/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     @GET("http://172.22.34.75:8081/smm/plugmod/updateMod")
