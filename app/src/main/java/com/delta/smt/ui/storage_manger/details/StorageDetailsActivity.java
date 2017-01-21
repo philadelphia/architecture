@@ -5,7 +5,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -37,7 +36,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,15 +71,12 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private List<StorageDetails> dataList2 = new ArrayList();
     private CommonBaseAdapter<StorageDetails> adapter;
     private CommonBaseAdapter<StorageDetails> adapter2;
-    private View mInflate;
-    private BaseActivity baseActiviy;
-    private boolean isHaveMaterialCar = true;
-    private boolean isScanMateriCar;
     private BarCodeParseIpml barCodeImp;
     private String work_order;
     private String part;
     private MaterialBlockBarCode materialblockbarcode;
     private String currentDeltaMaterialNumber = "";
+    private int index = -1;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -114,7 +109,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("仓库备料");
-
         dataList.add(new StorageDetails("", "", "", "", 1));
         adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList) {
             @Override
@@ -179,24 +173,20 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void getSucess(List<StorageDetails> storageDetailses) {
         dataList2.clear();
         dataList2.addAll(storageDetailses);
-        Collections.sort(dataList2, new Comparator<StorageDetails>() {
-            @Override
-            public int compare(StorageDetails o1, StorageDetails o2) {
 
-                return o2.getStatus() - o1.getStatus();
-            }
-        });
         adapter2.notifyDataSetChanged();
     }
 
     @Override
     public void getFailed(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+//        Log.e(TAG, "getFailed: "+message);
+       Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void bindMaterialCarSucess(List<BindPrepCarIDByWorkOrderResult.DataBean> data) {
-
+        //绑定料车成功状态2
+        state = 2;
         dataList2.clear();
         for (BindPrepCarIDByWorkOrderResult.DataBean dataBean : data) {
             StorageDetails stroageDetail = new StorageDetails();
@@ -207,13 +197,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             stroageDetail.setStatus(dataBean.getStatus());
             dataList2.add(stroageDetail);
         }
-        Collections.sort(dataList2, new Comparator<StorageDetails>() {
-            @Override
-            public int compare(StorageDetails o1, StorageDetails o2) {
-
-                return o2.getStatus() - o1.getStatus();
-            }
-        });
         adapter2.notifyDataSetChanged();
     }
 
@@ -221,23 +204,21 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void issureToWarehSuccess(List<StorageDetails> rows) {
-
         dataList2.clear();
         dataList2.addAll(rows);
-        adapter2.notifyDataSetChanged();
-        for (int i = 0; i < rows.size(); i++) {
-            if (rows.get(i).equals(currentDeltaMaterialNumber)) {
+        int position = 0;
+        for (int i = 0; i < dataList2.size(); i++) {
+            if (dataList2.get(i).getMaterial_num().equals(currentDeltaMaterialNumber)) {
+                position = i;
                 mRecyContetn.scrollToPosition(i);
             }
-            if (rows.get(i).getStatus() != 2) {
+            if (dataList2.get(i).getStatus() != 2) {
                 isOver = false;
             }
-
         }
-//        if (isOver) {
-//            getPresenter().issureToWarehFinish();
-//            isOver = false;
-//        }
+
+        Collections.swap(dataList2,0,position);
+        adapter2.notifyDataSetChanged();
     }
 
     @Override
@@ -249,7 +230,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void queryMaterailCar(String rows) {
         mTextView2.setText(rows);
-        isHaveMaterialCar = true;
+        state = 2;
         Log.e(TAG, "queryMaterailCar: " + rows);
 
     }
@@ -257,8 +238,14 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void queryMaterailCarFailed(String msg) {
         ToastUtils.showMessage(this, msg);
-        isHaveMaterialCar = false;
+        state = 1;
         Log.e(TAG, "queryMaterailCarFailed: " + msg);
+    }
+
+    @Override
+    public void bindMaterialCarFailed(String msg) {
+        state = 1;
+        ToastUtils.showMessage(this, msg);
     }
 
 
@@ -271,30 +258,21 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             case 1:
                 Log.e(TAG, "onScanSuccess: " + state);
                 BackupMaterialCar car = null;
-                if (!isHaveMaterialCar) {
-                    //// TODO: 2017/1/19 扫描料车
-                    try {
-                        car = ((BackupMaterialCar) barCodeImp.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
-                        mTextView2.setText(car.getSource());
-                        state = 2;
+                try {
+                    car = ((BackupMaterialCar) barCodeImp.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
+                    mTextView2.setText(car.getSource());
+                    Map<String, String> maps = new HashMap<>();
+                    maps.put("work_order", work_order);
+                    maps.put("part", part);
+                    maps.put("pre_car", car.getSource());
+                    getPresenter().bindBoundPrepCar(GsonTools.createGsonString(maps));
 
-                        Map<String, String> maps = new HashMap<>();
-                        maps.put("work_order", work_order);
-                        maps.put("part", part);
-                        maps.put("pre_car", car.getSource());
-
-                        getPresenter().bindBoundPrepCar(GsonTools.createGsonString(maps));
-
-                    } catch (EntityNotFountException e) {
-                        e.printStackTrace();
-                        state = 1;
-                        ToastUtils.showMessage(this, "扫描料车格式不对");
-                        break;
-                    }
-
-                } else {
-                    state = 2;
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                    state = 1;
+                    ToastUtils.showMessage(this, "请扫描料车");
                 }
+                break;
             case 2:
                 Log.e(TAG, "onScanSuccess: " + state);
                 //扫描料盘
@@ -302,6 +280,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     materialblockbarcode = (MaterialBlockBarCode) barCodeImp.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     IssureToWarehBody issureToWarehBody = new IssureToWarehBody();
                     issureToWarehBody.setMaterial_num(materialblockbarcode.getDeltaMaterialNumber());
+                    issureToWarehBody.setSerial_num(materialblockbarcode.getStreamNumber());
                     issureToWarehBody.setUnit(materialblockbarcode.getUnit());
                     issureToWarehBody.setDc(materialblockbarcode.getDC());
                     issureToWarehBody.setLc(materialblockbarcode.getDC());
@@ -315,9 +294,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this, "扫描料盘格式不对");
+                    ToastUtils.showMessage(this, "请扫描料盘");
                 }
-
                 state = 2;
                 break;
             default:
@@ -341,7 +319,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @OnClick(R.id.button2)
     public void onClick() {
-        if(isOver){
+        if (isOver) {
             getPresenter().issureToWarehFinish();
         }
 
