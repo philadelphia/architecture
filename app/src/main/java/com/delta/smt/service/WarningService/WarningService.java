@@ -85,11 +85,11 @@ public class WarningService extends IntentService implements WarningSocketClient
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.e(TAG, "onHandleIntent: ");
-        try {
+        /*try {
             warningSocketClient.connectBlocking();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override

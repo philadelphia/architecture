@@ -1,5 +1,6 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto;
 
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -61,6 +62,8 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     private String lastCar;
     private String serialNum;
 
+    private int scan_position = -1;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
 
@@ -97,6 +100,14 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         adapter2 = new CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn>(getContext(), dataList2) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehouseReturnResult.MantissaWarehouseReturn item, int position) {
+                if (scan_position == -1) {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                } else if (scan_position == position) {
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                } else {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                }
+
                 holder.setText(R.id.tv_workOrder, item.getWork_order());
                 holder.setText(R.id.tv_number, item.getMaterial_num());
                 holder.setText(R.id.tv_serialNumber, item.getSerial_num());
@@ -185,7 +196,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         materialNumber = materiaBar.getDeltaMaterialNumber();
                         serialNum = materiaBar.getStreamNumber();
 
-
+                        setItemHighLightBasedOnMID(serialNum);
                         Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
 
                         MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
@@ -219,6 +230,17 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
             }
 
 
+    }
+
+
+    public void setItemHighLightBasedOnMID(String materialID) {
+        for (int i = 0; i < dataList2.size(); i++) {
+            if (dataList2.get(i).getSerial_num().equals(materialID)) {
+                scan_position = i;
+                break;
+            }
+        }
+        adapter2.notifyDataSetChanged();
     }
 
 }

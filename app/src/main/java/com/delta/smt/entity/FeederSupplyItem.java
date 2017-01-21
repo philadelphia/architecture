@@ -37,6 +37,10 @@ public class FeederSupplyItem {
     @SerializedName("serial_num")
     private String serialNumber;
 
+
+    @SerializedName("msg")
+    private String message;
+
     public FeederSupplyItem(String feederID, String materialID, String moduleID, String position, String serialNumber, int status, String timeStamp) {
         this.feederID = feederID;
         this.materialID = materialID;
@@ -45,6 +49,10 @@ public class FeederSupplyItem {
         this.serialNumber = serialNumber;
         this.status = status;
         this.timeStamp = timeStamp;
+    }
+
+    public FeederSupplyItem(String message) {
+        this.message = message;
     }
 
     public String getFeederID() {
@@ -91,8 +99,18 @@ public class FeederSupplyItem {
         return status;
     }
 
+
     public void setStatus(int status) {
         this.status = status;
+    }
+
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getTimeStamp() {

@@ -80,6 +80,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mantissa_warehouse.detail.MantissaWarehouseDetailsActivity"
+            android:configChanges="keyboard"
+
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity"

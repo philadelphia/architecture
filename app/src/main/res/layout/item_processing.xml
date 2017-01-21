@@ -7,33 +7,6 @@
     android:layout_margin="10px"
     android:background="@drawable/card_background">
     <!--这里右边的倒数计我是默认和左边的第三个和第四个高度保持一致的，数据少可自行更改-->
-    <LinearLayout
-        android:id="@+id/ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="50px"
-        android:orientation="vertical"
-        android:weightSum="1">
-
-        <TextView
-            android:id="@+id/time_remain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20px"
-            android:text="故障持续时间："
-            android:textColor="@color/c_111111"
-            android:textSize="40px" />
-
-        <TextView
-            android:id="@+id/chronometer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/time_remain"
-            android:layout_below="@+id/time_remain"
-            android:gravity="center" />
-    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_line"
@@ -93,4 +66,56 @@
         android:text="第四行数据"
         android:textColor="@color/c_111111"
         android:textSize="40px" />
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="26dp"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="26dp">
+
+        <TextView
+            android:id="@+id/time_remain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20px"
+            android:text="故障持续时间："
+            android:textColor="@color/c_111111"
+            android:textSize="40px" />
+        <com.delta.smt.widget.CountupView
+            android:id="@+id/countUpView"
+            android:layout_alignLeft="@+id/time_remain"
+            android:layout_below="@+id/time_remain"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:isHideTimeBackground="true"
+            app:isShowDay="true"
+            app:isShowHour="true"
+            app:isShowMinute="true"
+            app:isShowSecond="true"
+            app:timeTextColor="#000000"
+            app:timeTextSize="22sp"
+            app:isTimeTextBold="true"
+            app:suffixGravity="bottom"
+            app:suffixTextColor="#000000"
+            app:suffixTextSize="12sp"
+            app:suffixHour="时"
+            app:suffixMinute="分"
+            app:suffixSecond="秒"
+            app:suffixMillisecond="毫秒" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/chronometer"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignLeft="@+id/time_remain"-->
+            <!--android:layout_below="@+id/time_remain"-->
+            <!--android:gravity="center" />-->
+    </LinearLayout>
 </RelativeLayout>

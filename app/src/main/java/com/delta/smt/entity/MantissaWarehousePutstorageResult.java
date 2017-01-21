@@ -53,19 +53,22 @@ public class MantissaWarehousePutstorageResult {
         //状态
         private String status;
 
-        public MantissaWarehousePutstorage(String label, String material_num, String serial_num, String shelves, String status) {
+        private String msg;
+
+
+        public MantissaWarehousePutstorage(String label, String material_num, String serial_num, String shelves, String status, String msg) {
             this.label = label;
             this.material_num = material_num;
             this.serial_num = serial_num;
             this.shelves = shelves;
             this.status = status;
+            this.msg = msg;
         }
+
 
         public String getLabel() {
             return label;
         }
-
-
 
         public void setLabel(String label) {
             this.label = label;
@@ -101,6 +104,14 @@ public class MantissaWarehousePutstorageResult {
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
         }
     }
 }

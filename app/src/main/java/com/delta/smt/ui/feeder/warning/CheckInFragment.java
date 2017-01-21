@@ -27,6 +27,7 @@ import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInPresenter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
 
                 if (position == index) {
                     holder.itemView.setBackgroundColor(Color.YELLOW);
+                    Collections.swap(dataSource,0,index);
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
@@ -182,7 +184,8 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
                     if (mCurrentMaterialID.equalsIgnoreCase(feederCheckInItem.getMaterialID()) && mCurrentSerialNumber.equalsIgnoreCase(feederCheckInItem.getSerial_num()) ) {
                         index = dataSource.indexOf(feederCheckInItem);
                         Log.i(TAG, "对应的feederCheckInItem: " + feederCheckInItem.toString());
-                        dataSource.set(0, feederCheckInItem);
+                       Collections.swap(dataSource,index,0);
+                        index = 0;
                         adapter.notifyDataSetChanged();
                         Log.i(TAG, "onScanSuccess: " );
                         Map<String, String> map = new HashMap<>();
