@@ -347,7 +347,7 @@ public interface ApiService {
     Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query( "condition") String bind);
 
    //尾数仓查料盘入库
-   @GET("http://172.22.34.104:8081/SMM/MantissaStorage/qMaterialPlace")
+   @GET("http://172.22.34.104:8081/SMM/MantissaStorage/mantissaStorage")
    Observable<MantissaWarehouseReturnResult> getputinstrage(@Query( "condition") String bind);
 
     //尾数仓备料

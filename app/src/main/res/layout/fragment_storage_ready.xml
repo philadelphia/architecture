@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/time_remain"
             android:layout_below="@+id/time_remain"
+            android:layout_marginTop="22px"
             app:isShowDay="false"
             app:isShowHour="true"
             app:isShowMillisecond="false"
@@ -65,11 +66,9 @@
             app:isShowSecond="true"
             app:suffixGravity="center"
             app:suffixTextColor="#000000"
-            app:suffixTextSize="20sp"
-            app:timeTextColor="#000000"
-            app:timeTextSize="20sp"
-            />
-
+            app:suffixTextSize="40px"
+            app:timeTextColor="@color/c_333333"
+            app:timeTextSize="40px" />
     </LinearLayout>
 
     <TextView
