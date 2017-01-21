@@ -240,9 +240,6 @@ public interface ApiService {
     @GET("http://172.22.34.6:8081/SMM/WareHIssue/issureToWarehFinish")
     Observable<IssureToWarehFinishResult> issureToWarehFinish();
 
-    @GET("http://172.22.34.6:8081/SMM/WareHIssue/startWareHIssure")
-    Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
-
     //更新
     @GET(API.bundleJsonUrl)
     Observable<Update> getUpdate();
