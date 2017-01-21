@@ -395,11 +395,11 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                         mPopupWindow.dismiss();
                         ToastUtils.showMessage(getContext(),"绑定成功");
 
+                        tag=0;
                         //启动接受广播预警
                         EventBus.getDefault().post(new BroadcastBegin());
 
 
-                        tag=0;
                     }
 
                 }
