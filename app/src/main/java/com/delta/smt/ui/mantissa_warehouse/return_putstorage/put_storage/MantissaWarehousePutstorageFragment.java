@@ -23,6 +23,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.PutBarCode;
+import com.delta.smt.entity.UpLocation;
 import com.delta.smt.entity.WarehousePutstorageBean;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.DaggerMantissaWarehousePutstorageComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.MantissaWarehousePutstorageModule;
@@ -286,8 +287,14 @@ public class MantissaWarehousePutstorageFragment extends
 
                     if(dataList2.get(position).getShelves().equals(mainStore)){
 
+                        UpLocation bindBean = new UpLocation(materialNumber, serialNum, count);
+                        Gson gson = new Gson();
+                        String s = gson.toJson(bindBean);
 
+                        getPresenter().getUpLocation(s);
 
+                    }else {
+                        Toast.makeText(getActivity(), "尾数仓暂无此架位", Toast.LENGTH_SHORT).show();
                     }
                 }
 
