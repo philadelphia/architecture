@@ -15,6 +15,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -38,6 +39,9 @@ import java.util.List;
 import butterknife.BindView;
 
 import static android.R.attr.type;
+import static com.delta.buletoothio.barcode.parse.BarCodeType.FRAME_LOCATION;
+import static com.delta.buletoothio.barcode.parse.BarCodeType.PCB_FRAME_LOCATION;
+import static com.delta.smt.R.id.status;
 
 
 /**
@@ -75,7 +79,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     private String mMachineString;
     private String mMaterialNumberString;
     private MaterialBlockBarCode mMaterbarCode;
-    private FrameLocation mFramebarCode;
+    private PcbFrameLocation mFramebarCode;
     private int mAmout;
     private int mId;
     private int mAmoutString;
@@ -213,18 +217,32 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         mList.get(position).setColor(false);
         mList.get(position + 1).setColor(true);
         mAdapter.notifyDataSetChanged();
-        edPcbDemand.setText("" + (mAmoutString - mAmout));
+         mAmoutString=mAmoutString - mAmout;
+        edPcbDemand.setText("" + mAmoutString);
         }
         if ((mAmoutString - mAmout)==0){
             mList.get(position).setColor(false);
             edPcbDemand.setText("0");
             if (mIsAlarmInfo){
                 getPresenter().getAlarmSuccessfulState(mWorkNumberString,mAlarminfoId);
+//                getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
             }else {
                 getPresenter().getScheduleSuccessState(mAlarminfoId);
+//                getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
             }
         }
-
+        if(mAmoutString<mAmout){
+            mList.get(position).setColor(false);
+            mAmoutString=mAmout-mAmoutString;
+            edPcbDemand.setText(""+mAmoutString);
+            if (mIsAlarmInfo){
+                getPresenter().getAlarmSuccessfulState(mWorkNumberString,mAlarminfoId);
+//                getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
+            }else {
+                getPresenter().getScheduleSuccessState(mAlarminfoId);
+//                getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
+            }
+        }
 
 
     }
@@ -232,6 +250,12 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void onSucessStates(String s) {
         Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_INDEFINITE).show();
+        if ((mAmoutString - mAmout)==0){
+            mList.get(position).setColor(false);
+            mAmoutString=0;
+            edPcbDemand.setText("0");
+        }
+
     }
 
     @Override
@@ -256,45 +280,39 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void onScanSuccess(String barcode) {
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        try {
-            if (BarCodeUtils.barCodeType(barcode) != null) {
-                switch (BarCodeUtils.barCodeType(barcode)) {
-                    case MATERIAL_BLOCK_BARCODE:
-                        mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                        if (mMaterbarCode.getStreamNumber() != null) {
-                            getPresenter().fetchPcbNumber(mMaterbarCode.getStreamNumber());
-                        }
-                        break;
-                    case FRAME_LOCATION:
-                        mFramebarCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
-                        if (!"0".equals(String.valueOf(mAmout)) && !"0".equals(String.valueOf(mId))) {
-                            if (mAmoutString <mAmout){
-                                Snackbar.make(activityMianview, "请拆箱取出"+mAmoutString+"片", Snackbar.LENGTH_INDEFINITE).show();
-                                if (mIsAlarmInfo){
-                                getPresenter().fetchPcbSuccess(mAlarminfoId,mAmoutString, mId,0);}else {
-                                    getPresenter().fetchPcbSuccess(mAlarminfoId,mAmoutString, mId,1);
-                                }
-                            }
-                            if (mAmoutString >mAmout){
-                                if (mIsAlarmInfo){
-                                    getPresenter().fetchPcbSuccess(mAlarminfoId,mAmoutString, mId,0);}else {
-                                    getPresenter().fetchPcbSuccess(mAlarminfoId,mAmoutString, mId,1);
-                                }
-                            }
 
-                        }
-                        break;
+            try {
+                mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                if (mMaterbarCode.getStreamNumber() != null) {
+                    getPresenter().fetchPcbNumber(mMaterbarCode.getStreamNumber());
                 }
+            } catch (EntityNotFountException e) {
+                e.printStackTrace();
+                try {
+                    mFramebarCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
+                    if (mAmoutString <= mAmout) {
+                        ToastUtils.showMessage(WarningListActivity.this,"请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE);
+                        //Snackbar.make(activityMianview, "请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE).show();
+                        if (mIsAlarmInfo) {
+                            getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
+                        } else {
+                            getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 1);
+                        }
+                    }
+                    if (mAmoutString >= mAmout) {
+                        if (mIsAlarmInfo) {
+                            getPresenter().fetchPcbSuccess(mAlarminfoId, mAmout, mId, 0);
+                        } else {
+                            getPresenter().fetchPcbSuccess(mAlarminfoId, mAmout, mId, 1);
+                        }
+                    }
 
-            }
+            } catch (EntityNotFountException e1) {
+                e1.printStackTrace();
 
-        } catch (EntityNotFountException e) {
-
-            e.printStackTrace();
+        }
         }
 
+
     }
-
-
-
 }

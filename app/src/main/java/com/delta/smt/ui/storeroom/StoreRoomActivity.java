@@ -166,6 +166,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         storageVendored.setText(null);
         storageDatacodeed.setText(null);
         storageIded.setText(null);
+        storageSubmit.setBackgroundColor(Color.GRAY);
+        storageSubmit.setEnabled(false);
 
 
 
@@ -188,11 +190,23 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         storageVendored.setText(null);
         storageDatacodeed.setText(null);
         storageIded.setText(null);
+        storageSubmit.setBackgroundColor(Color.BLUE);
+        storageSubmit.setEnabled(true);
     }
 
     @Override
     public void storagefaild() {
         ToastUtils.showMessage(this,"入料失败");
+        materialBlockBarCodes.clear();
+        storageShow.setText("");
+        stringBuffer=null;
+        stringBuffer=new StringBuffer();
+        storagePcbed.setText(null);
+        storageVendored.setText(null);
+        storageDatacodeed.setText(null);
+        storageIded.setText(null);
+        storageSubmit.setBackgroundColor(Color.BLUE);
+        storageSubmit.setEnabled(true);
     }
 
     @Override
