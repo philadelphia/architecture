@@ -40,6 +40,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.delta.smt.R.id.fl_container;
 import static com.delta.smt.R.id.recy_contetn;
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -179,8 +180,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     if (mMaterbarCode != null) {
                         for (int i = 0; i < dataList.size(); i++) {
-                            if (dataList.get(i).isCheck()){}else {
-                            if (mMaterbarCode.getDeltaMaterialNumber().equals(dataList.get(i).getBoxSerial() )) {
+                            if (!dataList.get(i).isCheck()){
+                            if (mMaterbarCode.getStreamNumber().equals(dataList.get(i).getBoxSerial() )) {
                                 if (Integer.valueOf(mMaterbarCode.getCount()) <=dataList.get(i).getBoundCount()) {
                                     position=i;
                                     mId = dataList.get(i).getId();
@@ -275,6 +276,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         dataList.addAll(wareHouses);
         mAdapter.notifyDataSetChanged();
 
+
     }
 
     @Override
@@ -285,12 +287,12 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public void onCheckStockNumberSucess(String wareHouses) {
         ToastUtils.showMessage(this, wareHouses);
+        dataList.get(position).setColor(false);
         if (mFrameLocation!=null){
             cargonTv.setText(mFrameLocation.getSource());
             getPresenter().fetchCheckStock(mFrameLocation.getSource());
-            dataList.get(position).setColor(false);
-            mAdapter.notifyDataSetChanged();
-            }
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -304,6 +306,12 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         mResultDialog.findViewById(R.id.result_cancel).setOnClickListener(this);
         mResultDialog.findViewById(R.id.result_alteration).setOnClickListener(this);
 
+    }
+
+    @Override
+    public void onErrorsSucess(String wareHouses) {
+        ToastUtils.showMessage(this, wareHouses);
+        getPresenter().fetchCheckStock(mFrameLocation.getSource());
     }
 
     @Override
@@ -344,7 +352,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 if (mErrorDialog.isShowing()) {
                     isShowDialog=true;
                     mErrorDialog.dismiss();
-                getPresenter().fetchError(mMaterbarCode.getDeltaMaterialNumber(), mFrameLocation.getSource());}
+                getPresenter().fetchError(mMaterbarCode.getStreamNumber(), mFrameLocation.getSource());}
                 break;
             case R.id.result_cancel:
                 if (mErrorDialog.isShowing()) {

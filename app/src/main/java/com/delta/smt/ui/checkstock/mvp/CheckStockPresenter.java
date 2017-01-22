@@ -3,12 +3,14 @@ package com.delta.smt.ui.checkstock.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.CheckStock;
+import com.delta.smt.entity.ExceptionsBean;
 import com.delta.smt.entity.Success;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.exceptions.Exceptions;
 import rx.functions.Action1;
 
 /**
@@ -65,7 +67,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             public void call(Success success) {
             if ("0".equals(success.getCode())){
                 if (success.getMsg().contains("Success")){
-                getView().onErrorSucess(success.getMsg());
+                getView().onErrorsSucess(success.getMsg());
             }else {
                 getView().onFailed(success.getMsg());
             }}
@@ -78,9 +80,9 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         });
     }
     public void fetchException(String boxSerial){
-        getModel().getCheckStock(boxSerial).subscribe(new Action1<CheckStock>() {
+        getModel().getException(boxSerial).subscribe(new Action1<ExceptionsBean>() {
             @Override
-            public void call(CheckStock success) {
+            public void call(ExceptionsBean success) {
                 StringBuffer errorBuffer=new StringBuffer();
                 errorBuffer.append("误差 \n");
                 StringBuffer fewBuffer=new StringBuffer();
@@ -97,16 +99,16 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                                case 0:
                                case 1:
                                case 2:
-                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getRealCount()));
+                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
                                    break;
                                case 3:
-                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getRealCount()));
+                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
                                    break;
                                case 4:
-                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getRealCount()));
+                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
                                    break;
                                case 5:
-                                   changeBuffer.append("\n 新增"+success.getRows().get(i).getPartNum()+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getRealCount())+"片");
+                                   changeBuffer.append("\n "+success.getRows().get(i).getPartNum()+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount())+"片");
                                    break;
                                case 6:
                                    notBuffer.append("\n "+success.getRows().get(i).getPartNum()+"未盘点");
@@ -134,7 +136,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                 if ("0".equals(success.getCode())){
                     if (success.getMsg().contains("Success")){
 
-                    getView().onErrorSucess(success.getMsg());
+                    getView().onErrorsSucess(success.getMsg());
                 }else {
                     getView().onFailed(success.getMsg());
                 }}

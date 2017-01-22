@@ -5,6 +5,7 @@ import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
 import com.delta.smt.entity.CheckStock;
+import com.delta.smt.entity.ExceptionsBean;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.entity.FeederCheckInItem;
@@ -205,7 +206,7 @@ public interface ApiService {
     Observable<Success> getError(@Query("boxSerial") String boxSerial, @Query("subShelfCode") String subShelfCode);//发送盘点异常
 
     @GET("pcb/inventory/exception")
-    Observable<Success> getException(@Query("subShelfCode") String boxSerial);//盘点结果
+    Observable<ExceptionsBean> getException(@Query("subShelfCode") String boxSerial);//盘点结果
 
     @GET("pcb/inventory/submit")
     Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果

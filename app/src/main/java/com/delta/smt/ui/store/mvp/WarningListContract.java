@@ -34,5 +34,6 @@ public class WarningListContract {
         Observable<Success>getScheduleSuccessState (int scheduleId);
 
 
+
     }
 }

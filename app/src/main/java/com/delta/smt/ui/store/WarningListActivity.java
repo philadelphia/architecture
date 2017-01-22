@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
@@ -31,17 +29,13 @@ import com.delta.smt.ui.store.di.DaggerWarningListComponent;
 import com.delta.smt.ui.store.di.WarningListModule;
 import com.delta.smt.ui.store.mvp.WarningListContract;
 import com.delta.smt.ui.store.mvp.WarningListPresenter;
-import com.delta.smt.utils.BarCodeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-import static android.R.attr.type;
-import static com.delta.buletoothio.barcode.parse.BarCodeType.FRAME_LOCATION;
 import static com.delta.buletoothio.barcode.parse.BarCodeType.PCB_FRAME_LOCATION;
-import static com.delta.smt.R.id.status;
 
 
 /**
@@ -220,8 +214,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
          mAmoutString=mAmoutString - mAmout;
         edPcbDemand.setText("" + mAmoutString);
         }
-        if ((mAmoutString - mAmout)==0){
+        if ((mAmoutString - mAmout)<=0){
             mList.get(position).setColor(false);
+            mAmoutString=0;
             edPcbDemand.setText("0");
             if (mIsAlarmInfo){
                 getPresenter().getAlarmSuccessfulState(mWorkNumberString,mAlarminfoId);
@@ -231,9 +226,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 //                getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
             }
         }
-        if(mAmoutString<mAmout){
+        if((mAmoutString-mAmout)>0){
             mList.get(position).setColor(false);
-            mAmoutString=mAmout-mAmoutString;
+            mAmoutString=mAmoutString-mAmout;
             edPcbDemand.setText(""+mAmoutString);
             if (mIsAlarmInfo){
                 getPresenter().getAlarmSuccessfulState(mWorkNumberString,mAlarminfoId);
@@ -290,13 +285,14 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 e.printStackTrace();
                 try {
                     mFramebarCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
-                    if (mAmoutString <= mAmout) {
+                    if (mAmoutString < mAmout) {
                         ToastUtils.showMessage(WarningListActivity.this,"请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE);
                         //Snackbar.make(activityMianview, "请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE).show();
                         if (mIsAlarmInfo) {
                             getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
                         } else {
                             getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 1);
+
                         }
                     }
                     if (mAmoutString >= mAmout) {
