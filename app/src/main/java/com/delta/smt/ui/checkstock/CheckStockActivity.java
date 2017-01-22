@@ -76,7 +76,9 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     private int status = 1;
     private PcbFrameLocation mFrameLocation;
     private int mId;
+    private int position;
     private PcbFrameLocation mFrameLocationSuccess;
+    private boolean isShowDialog=true;
 
 
     @Override
@@ -131,7 +133,13 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     holder.setText(R.id.statistics_number, "" + item.getRealCount());
                 }
                 holder.setText(R.id.statistics_storenumber, item.getStatus());
-
+                if (item.isColor()){
+                   holder.setBackgroundColor(R.id.statistics, Color.YELLOW);
+                   holder.setBackgroundColor(R.id.statistics_id, Color.YELLOW);
+                   holder.setBackgroundColor(R.id.statistics_pcbnumber, Color.YELLOW);
+                   holder.setBackgroundColor(R.id.statistics_number, Color.YELLOW);
+                   holder.setBackgroundColor(R.id.statistics_storenumber, Color.YELLOW);
+                }
 
 
             }
@@ -171,25 +179,37 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     if (mMaterbarCode != null) {
                         for (int i = 0; i < dataList.size(); i++) {
-                            if (mMaterbarCode.getDeltaMaterialNumber().equals(dataList.get(i).getPartNum())) {
+                            if (dataList.get(i).isCheck()){}else {
+                            if (mMaterbarCode.getDeltaMaterialNumber().equals(dataList.get(i).getBoxSerial() )) {
                                 if (Integer.valueOf(mMaterbarCode.getCount()) <=dataList.get(i).getBoundCount()) {
+                                    position=i;
                                     mId = dataList.get(i).getId();
+                                    dataList.get(i).setColor(true);
+                                    dataList.get(i).setCheck(true);
+                                    mAdapter.notifyDataSetChanged();
                                     getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(mMaterbarCode.getCount()));
                                     break;
                                 } else {
                                     mId = dataList.get(i).getId();
+                                    position=i;
+                                    dataList.get(i).setColor(true);
+                                    dataList.get(i).setCheck(true);
+                                    mAdapter.notifyDataSetChanged();
                                     ToastUtils.showMessage(CheckStockActivity.this,"请查数后输入数量!");
                                     break;
                                 }
                             } else {
-                                mErrorDialog = builder.create();
-                                mErrorDialog.setContentView(R.layout.dialog_error);
-                                mErrorContent = (TextView) mErrorDialog.findViewById(R.id.error_content);
-                                mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
-                                mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
-                                mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
-                                mErrorDialog.show();
-                            }
+                                if (isShowDialog) {
+                                    isShowDialog=false;
+                                    mErrorDialog = builder.create();
+                                    mErrorDialog.show();
+                                    mErrorDialog.setContentView(R.layout.dialog_error);
+                                    mErrorContent = (TextView) mErrorDialog.findViewById(R.id.error_content);
+                                    mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
+                                    mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
+                                    mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
+                                }
+                            }}
                         }
                     }
                     status = 2;
@@ -268,12 +288,22 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         if (mFrameLocation!=null){
             cargonTv.setText(mFrameLocation.getSource());
             getPresenter().fetchCheckStock(mFrameLocation.getSource());
+            dataList.get(position).setColor(false);
+            mAdapter.notifyDataSetChanged();
             }
     }
 
     @Override
     public void onErrorSucess(String wareHouses) {
         ToastUtils.showMessage(this, wareHouses);
+        mResultDialog = builder.create();
+        mResultDialog.show();
+        mResultDialog.setContentView(R.layout.dialog_result);
+        mResultContent = (TextView) mResultDialog.findViewById(R.id.result_content);
+        mResultContent.setText(wareHouses);
+        mResultDialog.findViewById(R.id.result_cancel).setOnClickListener(this);
+        mResultDialog.findViewById(R.id.result_alteration).setOnClickListener(this);
+
     }
 
     @Override
@@ -296,12 +326,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 //        mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(this);
 //        mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(this);
 //        mErrorDialog.show();
-        mResultDialog = builder.create();
-        mResultDialog.setContentView(R.layout.dialog_result);
-        mResultContent = (TextView) mResultDialog.findViewById(R.id.result_content);
-        mResultDialog.findViewById(R.id.result_cancel).setOnClickListener(this);
-        mResultDialog.findViewById(R.id.result_alteration).setOnClickListener(this);
-        mResultDialog.show();
+
+
     }
 
 
@@ -310,10 +336,12 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         switch (v.getId()) {
             case R.id.error_cancel:
                 if (mErrorDialog.isShowing()) {
+                    isShowDialog=true;
                     mErrorDialog.dismiss();
                 }
                 break;
             case R.id.error_alteration:
+                isShowDialog=true;
                 getPresenter().fetchError(mMaterbarCode.getDeltaMaterialNumber(), mFrameLocation.getSource());
                 break;
             case R.id.result_cancel:
@@ -324,6 +352,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case R.id.result_alteration:
                 if (mResultDialog.isShowing()) {
                     mResultDialog.dismiss();
+                    getPresenter().fetchSubmit(mFrameLocationSuccess.getSource());
                 }
                 break;
         }

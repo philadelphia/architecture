@@ -255,8 +255,6 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     @Override
     public void onScanSuccess(String barcode) {
-        ToastUtils.showMessage(this, "--->" + barcode);
-        Log.i("BARCODE", "---->" + barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
             if (BarCodeUtils.barCodeType(barcode) != null) {

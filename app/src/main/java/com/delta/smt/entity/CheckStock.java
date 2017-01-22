@@ -70,6 +70,24 @@ public class CheckStock {
         private String userName;
         private String status;
         private String description;
+        private boolean isColor;
+        private boolean isCheck;
+
+        public boolean isCheck() {
+            return isCheck;
+        }
+
+        public void setCheck(boolean check) {
+            isCheck = check;
+        }
+
+        public boolean isColor() {
+            return isColor;
+        }
+
+        public void setColor(boolean color) {
+            isColor = color;
+        }
 
         public int getId() {
             return id;

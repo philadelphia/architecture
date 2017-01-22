@@ -14,6 +14,9 @@ public class Success {
     private String code;
     private String msg;
 
+
+
+
     public String getCode() {
         return code;
     }
