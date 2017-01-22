@@ -39,7 +39,15 @@ public class CheckInPresenter extends BasePresenter<CheckInContract.Model, Check
         getModel().getFeederCheckInTime(condition).subscribe(new Action1<Result<FeederCheckInItem>>() {
             @Override
             public void call(Result<FeederCheckInItem> feederCheckInItemResult) {
+                if("0".equals(feederCheckInItemResult.getCode())){
+
                     getView().onSuccess(feederCheckInItemResult.getRows());
+                }else {
+                    if (feederCheckInItemResult.getRows() != null&&feederCheckInItemResult.getRows().get(0)!=null) {
+                        getView().getFeederCheckInTimeFailed(feederCheckInItemResult.getRows().get(0).getMsg());
+                    }
+
+                }
             }
         }, new Action1<Throwable>() {
             @Override

@@ -19,6 +19,7 @@ public interface CheckInContract {
          void onSuccess(List<FeederCheckInItem> data);
          void onFailed(String message);
 
+        void getFeederCheckInTimeFailed(String msg);
     }
 
     interface  Model extends IModel{

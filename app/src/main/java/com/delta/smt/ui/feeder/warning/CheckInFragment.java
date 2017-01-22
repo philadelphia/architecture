@@ -13,6 +13,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FeederBuffer;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
@@ -40,7 +41,7 @@ import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BAR
  * Date:     2016/12/21.
  */
 
-public class CheckInFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View, BaseActivity.OnBarCodeSuccess{
+public class CheckInFragment extends BaseFragment<CheckInPresenter> implements CheckInContract.View, BaseActivity.OnBarCodeSuccess {
 
     private static final String TAG = "CheckInFragment";
     private BaseActivity baseActiviy;
@@ -75,12 +76,12 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
     @Override
     protected void initView() {
         Log.i(TAG, "initView: ");
-        dataList.add(new FeederCheckInItem(" ", " "," "," "," ", " ", 0, " ", " "));
+        dataList.add(new FeederCheckInItem(" ", " ", " ", " ", " ", " ", 0, " ", " "));
         CommonBaseAdapter<FeederCheckInItem> adapterTitle = new CommonBaseAdapter<FeederCheckInItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederCheckInItem item, int position) {
                 holder.itemView.setBackgroundColor(Color.GRAY);
-           }
+            }
 
             @Override
             protected int getItemViewLayoutId(int position, FeederCheckInItem item) {
@@ -101,7 +102,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
                 holder.setText(R.id.tv_location, item.getShelves());
                 holder.setText(R.id.tv_usedTime, item.getUsed_time());
                 holder.setText(R.id.tv_chkinTimestamp, item.getCheckInTimeStamp());
-                holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待入库" :"已经入库");
+                holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待入库" : "已经入库");
 
                 if (position == index) {
                     holder.itemView.setBackgroundColor(Color.YELLOW);
@@ -155,6 +156,11 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
     }
 
     @Override
+    public void getFeederCheckInTimeFailed(String msg) {
+        ToastUtils.showMessage(getActivity(), msg);
+    }
+
+    @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (hidden) {
@@ -170,21 +176,21 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
         Log.i(TAG, "onScanSuccess: ");
         Log.i(TAG, "barcode == " + barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        if (!flag1){
+        if (!flag1) {
             try {
                 MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
                 flag1 = true;
 
                 mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
                 mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
-                Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID) ;
-                Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber) ;
+                Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
+                Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
                 for (FeederCheckInItem feederCheckInItem : dataSource) {
-                    if (mCurrentMaterialID.equalsIgnoreCase(feederCheckInItem.getMaterialID()) && mCurrentSerialNumber.equalsIgnoreCase(feederCheckInItem.getSerial_num()) ) {
+                    if (mCurrentMaterialID.equalsIgnoreCase(feederCheckInItem.getMaterialID()) && mCurrentSerialNumber.equalsIgnoreCase(feederCheckInItem.getSerial_num())) {
                         index = dataSource.indexOf(feederCheckInItem);
                         Log.i(TAG, "对应的feederCheckInItem: " + feederCheckInItem.toString());
                         adapter.notifyDataSetChanged();
-                        Log.i(TAG, "onScanSuccess: " );
+                        Log.i(TAG, "onScanSuccess: ");
                         Map<String, String> map = new HashMap<>();
                         map.put("material_num", materialBlockBarCode.getDeltaMaterialNumber());
                         map.put("serial_num", materialBlockBarCode.getStreamNumber());
@@ -201,7 +207,7 @@ public class CheckInFragment extends BaseFragment<CheckInPresenter> implements C
             }
         }
 
-        if (!flag2){
+        if (!flag2) {
             try {
                 FeederBuffer frameLocation = (FeederBuffer) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER_BUFFER);
                 flag2 = true;
