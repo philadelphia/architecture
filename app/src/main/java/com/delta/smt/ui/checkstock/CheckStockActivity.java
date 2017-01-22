@@ -341,8 +341,10 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 }
                 break;
             case R.id.error_alteration:
-                isShowDialog=true;
-                getPresenter().fetchError(mMaterbarCode.getDeltaMaterialNumber(), mFrameLocation.getSource());
+                if (mErrorDialog.isShowing()) {
+                    isShowDialog=true;
+                    mErrorDialog.dismiss();
+                getPresenter().fetchError(mMaterbarCode.getDeltaMaterialNumber(), mFrameLocation.getSource());}
                 break;
             case R.id.result_cancel:
                 if (mErrorDialog.isShowing()) {
