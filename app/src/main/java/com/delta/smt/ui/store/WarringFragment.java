@@ -128,7 +128,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
          mList.clear();
          mList.addAll(wareHouses);
         EventBus.getDefault().post(new WarningInt(wareHouses.size()));
-//        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
         for (int i = 0; i < mList.size(); i++) {
             if (mList.get(i).getAlarminfoId()==1&&"2016980001".equals(mList.get(i).getWorkNumber())&&"50".equals(mList.get(i).getAmount())) {
                 ItemInfo productWorkItem = mList.get(i);
