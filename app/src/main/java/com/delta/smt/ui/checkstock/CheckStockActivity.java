@@ -195,6 +195,10 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                     break;
                                 } else {
                                     mId = dataList.get(i).getId();
+                                    cargoned.setFocusable(true);
+                                    cargoned.setFocusableInTouchMode(true);
+                                    cargoned.requestFocus();
+                                    cargoned.findFocus();
                                     position=i;
                                     dataList.get(i).setColor(true);
                                     dataList.get(i).setCheck(true);
@@ -262,6 +266,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 if (mId != 0) {
                     String ss = cargoned.getText().toString();
                     getPresenter().fetchCheckStockSuccessNumber(mId, Integer.valueOf(ss));
+                    cargoned.setText("");
+                    cargoned.clearFocus();
                     cargoned.setFocusable(false);
 
                 }
