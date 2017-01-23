@@ -80,6 +80,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     private int position;
     private PcbFrameLocation mFrameLocationSuccess;
     private boolean isShowDialog=true;
+    private int isChexNumber=0;
+    private boolean isChexs=true;
 
 
     @Override
@@ -180,7 +182,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     if (mMaterbarCode != null) {
                         for (int i = 0; i < dataList.size(); i++) {
-                            if (!dataList.get(i).isCheck()){
+                           if (!dataList.get(i).isCheck()){
+                           isChexNumber++;
                             if (mMaterbarCode.getStreamNumber().equals(dataList.get(i).getBoxSerial() )) {
                                 if (Integer.valueOf(mMaterbarCode.getCount()) <=dataList.get(i).getBoundCount()) {
                                     position=i;
@@ -200,6 +203,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                     break;
                                 }
                             } else {
+                                if (isChexNumber==dataList.size()){
                                 if (isShowDialog) {
                                     isShowDialog=false;
                                     mErrorDialog = builder.create();
@@ -209,10 +213,11 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                     mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
                                     mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
                                     mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
-                                }
+                                }}
                             }}
                         }
                     }
+                    isChexNumber=0;
                     status = 2;
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
@@ -227,7 +232,12 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                         getPresenter().fetchException(mFrameLocationSuccess.getSource());
                     } else {
                         cargoned.setFocusable(true);
-                        ToastUtils.showMessage(this, "两次扫描架位不一致");
+                        if (isChexs){
+                            ToastUtils.showMessage(this, "两次扫描架位不一致");
+                            isChexs=false;
+                        }else {
+                            status = 1;
+                        }
                     }
 
                 } catch (EntityNotFountException e) {
@@ -237,6 +247,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
                 break;
         }
+
     }
 
     @Override
@@ -272,6 +283,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onSucess(List<CheckStock.RowsBean> wareHouses) {
+        position=-1;
         dataList.clear();
         dataList.addAll(wareHouses);
         mAdapter.notifyDataSetChanged();
