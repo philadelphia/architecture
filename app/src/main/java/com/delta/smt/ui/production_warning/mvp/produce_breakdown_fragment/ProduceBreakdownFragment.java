@@ -15,6 +15,7 @@ import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.DaggerProduceBreakdownFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.ProduceBreakdownFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
+import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -40,10 +41,10 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
     protected void initData() {
 
 
-        Log.i("aaa", "argument== " + Constant.initLine());
+        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
 
-        if (Constant.initLine()!= null) {
-            getPresenter().getItemBreakdownDatas(Constant.initLine());
+        if (((ProduceWarningActivity) getmActivity()).initLine()!= null) {
+            getPresenter().getItemBreakdownDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
     }
 
@@ -110,8 +111,8 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
     //Activity预警广播触发事件处理
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage){
-        if (Constant.initLine() != null) {
-            getPresenter().getItemBreakdownDatas(Constant.initLine());
+        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
+            getPresenter().getItemBreakdownDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
         Log.e(TAG, "event2: ");
     }

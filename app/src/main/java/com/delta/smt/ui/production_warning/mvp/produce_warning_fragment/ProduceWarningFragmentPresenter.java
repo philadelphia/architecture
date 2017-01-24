@@ -51,8 +51,8 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
             @Override
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
-                    getView().getItemWarningDatasFailed(result.getMessage());
-                    getItemWarningDatas(Constant.initLine());
+                    getView().getItemWarningConfirmSuccess();
+
                 }else {
                     getView().getItemWarningDatasFailed(result.getMessage());
                 }
@@ -70,8 +70,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
             @Override
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
-                    getView().getItemWarningDatasFailed(result.getMessage());
-                    getItemWarningDatas(Constant.initLine());
+                    getView().getItemWarningConfirmSuccess();
                 }else {
                     getView().getItemWarningDatasFailed(result.getMessage());
                 }

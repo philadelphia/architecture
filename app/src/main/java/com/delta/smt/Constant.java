@@ -110,10 +110,10 @@ public class Constant {
     public static String PRODUCTIONLINE = "production_line";
     public static String CONDITION=null;
 
-    public static String initLine() {
+/*    public static String initLine() {
         Map<String, String> map = new HashMap<>();
         map.put("lines", Constant.CONDITION);
         String line = GsonTools.createGsonString(map);
         return line;
-    }
+    }*/
 }

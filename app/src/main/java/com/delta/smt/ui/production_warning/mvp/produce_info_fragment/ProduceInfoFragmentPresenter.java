@@ -49,8 +49,9 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
             @Override
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
+                    getView().getItemInfoConfirmSucess();
                     getView().getItemInfoDatasFailed(result.getMessage());
-                    getItemInfoDatas(Constant.initLine());
+
                 }else {
                     getView().getItemInfoDatasFailed(result.getMessage());
                 }
