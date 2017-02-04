@@ -126,7 +126,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
                 Log.i("aaa", String.valueOf(mStringBuffer));
                 Constant.CONDITION = mStringBuffer.toString();
-                Constant.initLine();
+//                Constant.initLine();
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.PRODUCTIONLINE, mStringBuffer.toString());
                 if (type == 0) {

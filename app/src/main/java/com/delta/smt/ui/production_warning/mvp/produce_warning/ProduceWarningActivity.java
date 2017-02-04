@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -33,6 +34,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -85,8 +88,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     protected void initData() {
 
         Log.i("aaa", "选择进入：" + Constant.CONDITION);
-        if (Constant.initLine() != null) {
-            getPresenter().getTitileNumber(Constant.initLine());
+        if (initLine() != null) {
+            getPresenter().getTitileNumber(initLine());
         }
         if (warning_number == 0 && breakdown_number == 0 && info_number==0) {
             titles = new String[]{"预警", "故障", "消息"};
@@ -257,8 +260,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
             alertDialog = createDialog(lastWarningMessage);
             lastWarningMessage = null;
         }
-        if (Constant.initLine() != null) {
-            getPresenter().getTitileNumber(Constant.initLine());
+        if (initLine() != null) {
+            getPresenter().getTitileNumber(initLine());
         }
 
         Log.e(TAG, "event5: ");
@@ -276,5 +279,12 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public String initLine() {
+        Map<String, String> map = new HashMap<>();
+        map.put("lines", Constant.CONDITION);
+        String line = GsonTools.createGsonString(map);
+        return line;
     }
 }

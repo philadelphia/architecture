@@ -19,6 +19,8 @@ public interface ProduceWarningFragmentContract{
     interface View extends IView {
         void getItemWarningDatas(List<ItemWarningInfo> itemWarningInfo);
         void getItemWarningDatasFailed(String message);
+
+        void getItemWarningConfirmSuccess();
     }
 
     interface Model extends IModel {

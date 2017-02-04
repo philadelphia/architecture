@@ -21,6 +21,7 @@ import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.DaggerProduceInfoFragmentCompent;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.ProduceInfoFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
+import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -55,10 +56,10 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     @Override
     protected void initData() {
 
-        Log.i("aaa", "argument== " + Constant.initLine());
+        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
 
-        if (Constant.initLine() != null) {
-            getPresenter().getItemInfoDatas(Constant.initLine());
+        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
+            getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
 
 
@@ -114,7 +115,10 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         ToastUtils.showMessage(getContext(),message);
     }
 
-
+    @Override
+    public void getItemInfoConfirmSucess() {
+        getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
+    }
 
 
     @Override
@@ -170,9 +174,10 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     //Activity预警广播触发事件处理
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage){
-        if (Constant.initLine() != null) {
-            getPresenter().getItemInfoDatas(Constant.initLine());
+        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
+            getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
+;
         Log.e(TAG, "event3: ");
     }
 }
