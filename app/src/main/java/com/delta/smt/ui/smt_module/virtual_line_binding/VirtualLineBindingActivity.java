@@ -208,7 +208,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
             moduleCodeCache = virtualID;
             state = 2;
         } else {
-            Toast.makeText(this, "列表中无与此模组对应料盘码!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "该料盘不属于此套工单，请确认工单及扫描是否正确!", Toast.LENGTH_SHORT).show();
         }
     }
 
