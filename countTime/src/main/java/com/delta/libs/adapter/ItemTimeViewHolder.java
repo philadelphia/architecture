@@ -1,11 +1,11 @@
-package com.delta.counttimelibrary.adapter;
+package com.delta.libs.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 
-import com.delta.counttimelibrary.CountTimeView;
+import com.delta.libs.CountTimeView;
 
 
 public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
@@ -41,13 +41,13 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
             return;
         }
         if (isCountUp) {
-            mCountdownViewTest.updateShow(curTimeMillis - mItemInfo.getCreateTime());
+            mCountdownViewTest.updateShow(curTimeMillis - mItemInfo.getCreat_time());
         } else {
-            if (mItemInfo.getEndTime() - curTimeMillis <= 0) {
+            if (mItemInfo.getEnd_time() - curTimeMillis <= 0) {
                 resetZero();
                 return;
             }
-            mCountdownViewTest.updateShow(mItemInfo.getEndTime() - curTimeMillis);
+            mCountdownViewTest.updateShow(mItemInfo.getEnd_time() - curTimeMillis);
         }
     }
 

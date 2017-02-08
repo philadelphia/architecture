@@ -1,4 +1,4 @@
-package com.delta.counttimelibrary.adapter;
+package com.delta.libs.adapter;
 
 /**
  * @description :其他的实体类继承该类
@@ -10,17 +10,17 @@ package com.delta.counttimelibrary.adapter;
 public class TimeEntity {
     protected int entityId;
     //结束时间主要用于倒计时
-    protected long endTime;
+    protected long end_time;
     //开始时间主要正计时
-    protected long createTime;
+    protected long creat_time;
 
     public TimeEntity() {
     }
 
     public TimeEntity(int id, long endTime, long createTime) {
         this.entityId = id;
-        this.endTime = endTime;
-        this.createTime = createTime;
+        this.end_time = endTime;
+        this.creat_time = createTime;
     }
 
     public int getEntityId() {
@@ -31,19 +31,19 @@ public class TimeEntity {
         this.entityId = entityId;
     }
 
-    public long getEndTime() {
-        return endTime;
+    public long getEnd_time() {
+        return end_time;
     }
 
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
+    public void setEnd_time(long end_time) {
+        this.end_time = end_time;
     }
 
-    public long getCreateTime() {
-        return createTime;
+    public long getCreat_time() {
+        return creat_time;
     }
 
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
+    public void setCreat_time(long creat_time) {
+        this.creat_time = creat_time;
     }
 }

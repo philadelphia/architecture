@@ -55,6 +55,9 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
 
     @Override
     protected String getBaseUrl() {
+
+
+
         return API.BASE_URL;
     }
 

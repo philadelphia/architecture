@@ -1,4 +1,4 @@
-package com.delta.counttimelibrary;
+package com.delta.libs;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,12 +7,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
- * Countdown View
- * Created by iWgang on 15/9/16.
- * https://github.com/iwgang/CountdownView
- */
-public class CountTimeView extends View {
+public class  CountTimeView extends View {
     private BaseCountdown mCountdown;
     private CustomCountDownTimer mCustomCountDownTimer;
     private CustomCountUpTimer mCustomCountUpTimer;

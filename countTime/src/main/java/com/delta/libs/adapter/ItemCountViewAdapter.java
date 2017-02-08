@@ -1,4 +1,4 @@
-package com.delta.counttimelibrary.adapter;
+package com.delta.libs.adapter;
 
 import android.content.Context;
 import android.os.Handler;
@@ -30,7 +30,7 @@ public abstract class ItemCountViewAdapter<T extends TimeEntity> extends Recycle
 
     private ItemOnclick itemTimeOnclck;
 
-    public void setOnItemTimeOnclck(ItemOnclick itemTimeOnclck) {
+    public void setOnItemTimeOnclick(ItemOnclick itemTimeOnclck) {
         this.itemTimeOnclck = itemTimeOnclck;
 
     }
@@ -89,7 +89,7 @@ public abstract class ItemCountViewAdapter<T extends TimeEntity> extends Recycle
         // 处理计时
 
         synchronized (mCountdownVHList) {
-            if (holder.isCountUp() || (!holder.isCountUp() && curItemInfo.getEndTime() - System.currentTimeMillis() > 0))
+            if (holder.isCountUp() || (!holder.isCountUp() && curItemInfo.getEnd_time() - System.currentTimeMillis() > 0))
             {
 
                 mCountdownVHList.put(curItemInfo.getEntityId(), holder);
@@ -100,7 +100,7 @@ public abstract class ItemCountViewAdapter<T extends TimeEntity> extends Recycle
             @Override
             public void onClick(View v) {
                 if (itemTimeOnclck != null) {
-                    itemTimeOnclck.onItemClick(holder.itemView, position);
+                    itemTimeOnclck.onItemClick(holder.itemView,mList.get(position), position);
                 }
             }
         });
@@ -139,7 +139,7 @@ public abstract class ItemCountViewAdapter<T extends TimeEntity> extends Recycle
                     ItemTimeViewHolder curMyViewHolder = mCountdownVHList.get(key);
 
                     if (!curMyViewHolder.isCountUp()) {
-                        if (currentTime >= curMyViewHolder.getBean().getEndTime()) {
+                        if (currentTime >= curMyViewHolder.getBean().getEnd_time()) {
                             // 倒计时结束
                             curMyViewHolder.resetZero();
                             mCountdownVHList.remove(key);

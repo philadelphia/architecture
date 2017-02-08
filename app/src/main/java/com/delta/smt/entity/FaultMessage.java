@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import com.delta.libs.adapter.TimeEntity;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class FaultMessage {
         this.rows = rows;
     }
 
-    public static class RowsBean implements Serializable{
+    public static class RowsBean extends TimeEntity implements Serializable {
         private String faultType;
         private String line;
         private String process;
