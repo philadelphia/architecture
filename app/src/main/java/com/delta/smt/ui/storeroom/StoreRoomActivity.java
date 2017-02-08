@@ -185,10 +185,6 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         ToastUtils.showMessage(this,"请放到固定架位");
         storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
         storageSubmit.setEnabled(false);
-
-
-
-
     }
 
     @Override
