@@ -47,7 +47,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener, CommonBaseAdapter.OnItemClickListener<ModuleUpBindingItem> {
+public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener/*, CommonBaseAdapter.OnItemClickListener<ModuleUpBindingItem.RowsBean> */{
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -147,7 +147,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         };
 
         recyContent.setAdapter(adapter);
-        adapter.setOnItemClickListener(this);
+        //adapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -405,10 +405,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     }
 
-    @Override
-    public void onItemClick(View view, ModuleUpBindingItem item, final int item_position) {
+    /*@Override
+    public void onItemClick(View view, ModuleUpBindingItem.RowsBean item, final int item_position) {
 
-    }
+    }*/
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
