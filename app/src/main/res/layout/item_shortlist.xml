@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="85px"
+    >
+    <TextView
+        android:id="@+id/shortList_statistics"
+        android:layout_width="@dimen/px_360"
+        android:layout_height="match_parent"
+        android:text="@string/storage_pcbtv"
+        style="@style/item_textstyle"
+
+        />
+    <TextView
+        android:id="@+id/shortList_pcbcode"
+        android:layout_width="@dimen/px_360"
+        android:layout_height="match_parent"
+        android:text="@string/pcb_code"
+        style="@style/item_textstyle"
+        />
+
+    <TextView
+        android:id="@+id/shortList_datacode"
+        android:layout_width="@dimen/px_360"
+        android:layout_height="match_parent"
+        android:text="@string/pcb_time"
+        style="@style/item_textstyle"
+
+        />
+
+
+</com.zhy.autolayout.AutoLinearLayout>

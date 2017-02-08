@@ -3,6 +3,7 @@ package com.delta.smt.ui.storeroom;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
@@ -21,7 +21,10 @@ import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
+import com.delta.smt.common.CommonBaseAdapter;
+import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.ThreeOfMaterial;
 import com.delta.smt.ui.storeroom.di.DaggerStoreRoomComponent;
 import com.delta.smt.ui.storeroom.di.StoreRoomModule;
 import com.delta.smt.ui.storeroom.mvp.StoreRoomContract;
@@ -33,7 +36,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.delta.buletoothio.barcode.parse.BarCodeType.FRAME_LOCATION;
 import static com.delta.buletoothio.barcode.parse.BarCodeType.PCB_FRAME_LOCATION;
 
 /**
@@ -51,7 +53,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     @BindView(R.id.storage_ided)
     EditText storageIded;
     @BindView(R.id.storage_show)
-    TextView storageShow;
+    RecyclerView storageShow;
     @BindView(R.id.storage_submit)
     Button storageSubmit;
     @BindView(R.id.storage_clear)
@@ -68,7 +70,9 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     private StringBuffer stringBuffer = new StringBuffer();
 
     private List<MaterialBlockBarCode> materialBlockBarCodes = new ArrayList<>();
+    private List<ThreeOfMaterial> materialsList=new ArrayList<>();
     private MaterialBlockBarCode mBarCode;
+    private CommonBaseAdapter<ThreeOfMaterial> mShortLisrAdapter;
 
 
     @Override
@@ -89,6 +93,22 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(getResources().getString(R.string.pcbku));
         builder= new AlertDialog.Builder(this);
+        ThreeOfMaterial threeOfMaterial=new ThreeOfMaterial("料号","PCB Code","Data Code");
+        materialsList.add(threeOfMaterial);
+        mShortLisrAdapter= new CommonBaseAdapter<ThreeOfMaterial>(getApplicationContext(), materialsList) {
+            @Override
+            protected void convert(CommonViewHolder holder, ThreeOfMaterial item, int position) {
+                holder.setText(R.id.shortList_statistics,item.getDeltaMaterialNumber());
+                holder.setText(R.id.shortList_pcbcode,item.getDeltaMaterialNumber().substring(0,2));
+                holder.setText(R.id.shortList_datacode,item.getDataCode());
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, ThreeOfMaterial item) {
+                return R.layout.item_shortlist;
+            }
+        };
+        storageShow.setAdapter(mShortLisrAdapter);
 
 
     }
@@ -102,17 +122,17 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     @Override
     public void onScanSuccess(String barcode) {
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        Log.i("info","-------------------------->"+barcode);
         try {
            mBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     Log.e("barcode", mBarCode.getDeltaMaterialNumber());
                     storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
-                    storageVendored.setText(mBarCode.getBusinessCode().substring(0,2));
+                    storageVendored.setText(mBarCode.getDeltaMaterialNumber().substring(0,2));
                     storageDatacodeed.setText(mBarCode.getDC());
                     if (materialBlockBarCodes.size() < 3) {
                         materialBlockBarCodes.add(mBarCode);
+                        setTextView();
                     }
-                    setTextView();
+
 
         } catch (EntityNotFountException e) {
 
@@ -135,8 +155,13 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     private void setTextView() {
         if(mBarCode!=null) {
-            stringBuffer.append("\n" + mBarCode.getDeltaMaterialNumber() + mBarCode.getBusinessCode() + mBarCode.getDeltaMaterialNumber().substring(0, 2));
-            storageShow.setText(stringBuffer);
+            if (materialsList.size()<4){
+            ThreeOfMaterial threeOfMaterial=new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(),mBarCode.getDeltaMaterialNumber().substring(0, 2),mBarCode.getDC());
+            materialsList.add(threeOfMaterial);
+            mShortLisrAdapter.notifyDataSetChanged();}else {
+
+            }
+
         }
 
     }
@@ -158,15 +183,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     @Override
     public void lightSuccsee() {
         ToastUtils.showMessage(this,"请放到固定架位");
-        materialBlockBarCodes.clear();
-        storageShow.setText("");
-        stringBuffer=null;
-        stringBuffer=new StringBuffer();
-        storagePcbed.setText(null);
-        storageVendored.setText(null);
-        storageDatacodeed.setText(null);
-        storageIded.setText(null);
-        storageSubmit.setBackgroundColor(Color.GRAY);
+        storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
         storageSubmit.setEnabled(false);
 
 
@@ -183,14 +200,13 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     public void storageSuccsee() {
         ToastUtils.showMessage(this,"入料成功");
         materialBlockBarCodes.clear();
-        storageShow.setText("");
         stringBuffer=null;
         stringBuffer=new StringBuffer();
         storagePcbed.setText(null);
         storageVendored.setText(null);
         storageDatacodeed.setText(null);
         storageIded.setText(null);
-        storageSubmit.setBackgroundColor(Color.BLUE);
+        storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
         storageSubmit.setEnabled(true);
     }
 
@@ -198,14 +214,14 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     public void storagefaild() {
         ToastUtils.showMessage(this,"入料失败");
         materialBlockBarCodes.clear();
-        storageShow.setText("");
+
         stringBuffer=null;
         stringBuffer=new StringBuffer();
         storagePcbed.setText(null);
         storageVendored.setText(null);
         storageDatacodeed.setText(null);
         storageIded.setText(null);
-        storageSubmit.setBackgroundColor(Color.BLUE);
+        storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
         storageSubmit.setEnabled(true);
     }
 
@@ -231,7 +247,6 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                 storageVendored.setText(null);
                 storageDatacodeed.setText(null);
                 materialBlockBarCodes.clear();
-                storageShow.setText("");
 
                 break;
             case R.id.storage_submit:

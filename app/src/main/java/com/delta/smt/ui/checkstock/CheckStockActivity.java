@@ -5,11 +5,8 @@ import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -40,7 +37,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.delta.smt.R.id.fl_container;
 import static com.delta.smt.R.id.recy_contetn;
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -173,7 +169,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     status = 2;}
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this, "扫描码有问题");
+                    ToastUtils.showMessage(this, "扫描的架位二维码错误，请重新扫描");
                     status = 1;
                 }
                 break;
@@ -246,7 +242,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this, "扫描码有问题");
+                    ToastUtils.showMessage(this, "扫描的架位二维码错误，请重新扫描");
                 }
 
                 break;
@@ -266,7 +262,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 if (mId != 0) {
                     String ss = cargoned.getText().toString();
                     getPresenter().fetchCheckStockSuccessNumber(mId, Integer.valueOf(ss));
-                    cargoned.setText("");
                     cargoned.clearFocus();
                     cargoned.setFocusable(false);
 
