@@ -44,6 +44,7 @@ import com.delta.smt.entity.ResultFeeder;
 import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
+import com.delta.smt.entity.StoreEntity;
 import com.delta.smt.entity.Success;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
@@ -284,9 +285,9 @@ public interface ApiService {
     @GET("SMM/WareHIssue/completeMantissIssue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWareOver();
 
-    //仓库房备料和尾数仓
+    //仓库房备料和尾数仓选择
     @GET("SMM/IssueMana/queryWarehousePart")
-    Observable<Result<String>> getStorageSelect();
+    Observable<Result<StoreEntity>> getStorageSelect();
 
     @GET("SMM/IssueMana/queryWorkOrder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
