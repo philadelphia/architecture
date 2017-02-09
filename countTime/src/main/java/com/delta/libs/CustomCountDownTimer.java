@@ -1,4 +1,4 @@
-package com.delta.counttimelibrary;
+package com.delta.libs;
 
 import android.os.Handler;
 import android.os.Message;

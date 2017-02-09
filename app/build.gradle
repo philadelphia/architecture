@@ -15,6 +15,7 @@ android {
     }
     buildTypes {
 
+
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             buildConfigField "boolean", "USE_CANARY", "true"
