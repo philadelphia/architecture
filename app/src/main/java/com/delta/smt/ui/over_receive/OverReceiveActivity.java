@@ -53,7 +53,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/15.
  */
 
-public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, ItemOnclick, WarningManger.OnWarning, BarCodeIpml.OnScanSuccessListener{
+public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, BarCodeIpml.OnScanSuccessListener{
 
     private BarCodeIpml barCodeIpml=new BarCodeIpml();
     private Gson gson = new Gson();
@@ -77,8 +77,8 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     /*@BindView(R.id.testSend)
     AppCompatButton testSend;*/
-    @BindView(R.id.testSendArrive)
-    AppCompatButton testSendArrive;
+    //@BindView(R.id.testSendArrive)
+    //AppCompatButton testSendArrive;
 
     @Inject
     WarningManger warningManger;
@@ -198,22 +198,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     }
 
-    @OnClick({R.id.manual_debit,/*R.id.testSend,*/R.id.testSendArrive})
+    @OnClick({R.id.manual_debit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.manual_debit:
                 getPresenter().manualDebit();
-                break;
-            /*case R.id.testSend:
-                OverReceiveMaterialSend overReceiveMaterialSend = new OverReceiveMaterialSend(materialBlockNumber,serialNumber,count);
-                String strSend = gson.toJson(overReceiveMaterialSend);
-                getPresenter().getOverReceiveItemsAfterSend(strSend);
-                break;*/
-            case R.id.testSendArrive:
-                OverReceiveMaterialSendArrive overReceiveMaterialSendArrive = new OverReceiveMaterialSendArrive(materialBlockNumber,serialNumber);
-                String strSendArrive = gson.toJson(overReceiveMaterialSendArrive);
-                getPresenter().getOverReceiveItemsAfterSendArrive(strSendArrive);
-                //getPresenter().getOverReceiveItemsAfterSendArrive(strSendArrive);
                 break;
         }
     }
@@ -230,10 +219,10 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    /*@Override
     public void onItemClick(View item, int position) {
 
-    }
+    }*/
 
     @Override
     public void warningComing(String warningMessage) {

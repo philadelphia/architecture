@@ -56,16 +56,11 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
         <!--<android.support.v7.widget.AppCompatButton
-            android:id="@+id/testSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="料盘发料测试"/>-->
-        <android.support.v7.widget.AppCompatButton
             android:id="@+id/testSendArrive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="超领料盘送达"/>
+            android:text="超领料盘送达"/>-->
     </LinearLayout>
 
 </RelativeLayout>
