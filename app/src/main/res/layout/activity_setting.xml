@@ -5,10 +5,29 @@
     <include layout="@layout/appbar"/>
 
     <TextView
+        android:id="@+id/setting_server_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px_50"
+        android:textSize="@dimen/px_40"
+        android:paddingLeft="@dimen/px_70"
+        android:paddingRight="@dimen/px_70"
+        android:gravity="center_vertical"
+        android:text="配置服务器地址"
+        android:textColor="@color/waring_editext"
+        android:drawableRight="@drawable/ic_settingback"
+        android:lineSpacingMultiplier="1.2"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_1"
+        android:background="@color/waring_editext"/>
+    <TextView
         android:id="@+id/setting_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/px_50"
+        android:layout_marginBottom="@dimen/px_50"
         android:textSize="@dimen/px_40"
         android:paddingLeft="@dimen/px_70"
         android:paddingRight="@dimen/px_70"
