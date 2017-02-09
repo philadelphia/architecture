@@ -177,7 +177,6 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
             getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
-;
         Log.e(TAG, "event3: ");
     }
 }

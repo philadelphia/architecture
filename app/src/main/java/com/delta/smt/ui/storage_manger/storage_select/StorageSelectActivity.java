@@ -75,7 +75,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
             @Override
             protected void convert(CommonViewHolder holder, String item, int position) {
                 holder.setText(R.id.chcekbox, item);
-                CheckBox box = (CheckBox) holder.getView(R.id.chcekbox);
+                CheckBox box = holder.getView(R.id.chcekbox);
                 box.setTag(position);
                 checkBoxMap.put(position, box);
             }

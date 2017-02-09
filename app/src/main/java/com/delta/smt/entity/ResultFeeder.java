@@ -32,11 +32,11 @@ public class ResultFeeder {
         this.msg = msg;
     }
 
-    public boolean isRows() {
-        return rows;
-    }
-
     public void setRows(boolean rows) {
         this.rows = rows;
+    }
+
+    public boolean isRows() {
+        return rows;
     }
 }

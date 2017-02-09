@@ -70,7 +70,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     }
 
     public static boolean isForeground() {
-        return getAppCount() > 0 ? true : false;
+        return getAppCount() > 0 ;
     }
 
     @Override
