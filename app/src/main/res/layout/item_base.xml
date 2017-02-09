@@ -35,6 +35,7 @@
             android:layout_height="@dimen/px_40"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/px_10"
+            app:isCountUp="false"
             app:isShowDay="false"
             app:isShowHour="true"
             app:isShowMillisecond="false"
