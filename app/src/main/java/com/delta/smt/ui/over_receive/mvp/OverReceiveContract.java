@@ -29,7 +29,7 @@ public interface OverReceiveContract {
 
         public Observable<OverReceiveWarning> getOverReceiveItemsAfterSend(String str);
 
-        public Observable<OverReceiveWarning> getOverReceiveItemsAfterSendArrive(String str);
+        /*public Observable<OverReceiveWarning> getOverReceiveItemsAfterSendArrive(String str);*/
 
         public Observable<OverReceiveDebitResult > getOverReceiveDebit();
 

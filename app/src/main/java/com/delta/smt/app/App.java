@@ -7,7 +7,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.smt.BuildConfig;
 import com.delta.smt.api.API;
 import com.delta.smt.base.BaseApplication;
@@ -25,7 +27,7 @@ import timber.log.Timber;
 
 public class App extends BaseApplication implements Application.ActivityLifecycleCallbacks {
 
-    private static AppComponent appComponent;
+    public static AppComponent appComponent;
     private static int appCount = 0;
     private static Handler mainHander;
 
@@ -54,9 +56,12 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     }
 
     @Override
-    protected String getBaseUrl() {
+    public String getBaseUrl() {
+        if(SpUtil.getStringSF(this,"server_address")==null||"".equals(SpUtil.getStringSF(this,"server_address"))){
 
-
+        }else{
+            API.BASE_URL = SpUtil.getStringSF(this,"server_address");
+        }
 
         return API.BASE_URL;
     }
