@@ -17,12 +17,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
+import com.delta.smt.app.App;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.di.component.DaggerAppComponent;
 import com.delta.smt.entity.Download;
 import com.delta.smt.entity.Update;
 import com.delta.smt.ui.main.di.DaggerMainComponent;
@@ -129,7 +132,39 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                                 settingServerAddress.setText("配置服务器地址"+"("+content_et+")");
                                 SpUtil.SetStringSF(SettingActivity.this,"server_address",content_et);
                                 BASE_URL = SpUtil.getStringSF(SettingActivity.this,"server_address");
+                                ClientModule mClientModule = ClientModule//用于提供okhttp和retrofit的单列
+                                        .buidler()
+                                        .baseurl(BASE_URL)
+                                        .globeHttpHandler(App.getHttpHandler())
+                                        .interceptors(App.getInterceptors())
+                                        .build();
+                                App.appComponent = DaggerAppComponent.builder().clientModule(mClientModule).appModule(App.getAppModule()).serviceModule(App.getServiceModule()).build();
                                 dialogInterface.dismiss();
+
+                                /*final EditText et_restart_info = new EditText(SettingActivity.this);
+                                et_restart_info.setText("服务器地址已更改，请重启应用生效！");
+                                new AlertDialog.Builder(SettingActivity.this)
+                                        .setTitle("提示")
+                                        .setView(et_restart_info)
+                                        .setCancelable(false)
+                                        .setPositiveButton("重启", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                dialogInterface.dismiss();
+
+
+                                            }
+                                        })
+                                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .create()
+                                        .show();*/
+
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
