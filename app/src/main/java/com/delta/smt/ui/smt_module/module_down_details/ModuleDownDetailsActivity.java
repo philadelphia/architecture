@@ -84,18 +84,17 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
 
-        dataList.add(new ModuleDownDetailsItem.RowsBean(1,"料号","流水码","Feeder号", "模组料站", "归属", "下模组时间"));
+        dataList.add(new ModuleDownDetailsItem.RowsBean("料号","流水码","FeederID", "模组料站", "归属", "下模组时间"));
         adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_ID,item.getId()+"");
-                holder.setText(R.id.tv_materialID, item.getMaterial_num());
-                holder.setText(R.id.tv_serialID, item.getSerial_num());
+                holder.setText(R.id.tv_materialID, item.getMaterial_no());
+                holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_ownership, item.getBelong());
-                holder.setText(R.id.tv_moduleDownTime, item.getEnd_time());
+                holder.setText(R.id.tv_ownership, item.getDest());
+                holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
 
             }
 
@@ -110,13 +109,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(Color.WHITE);
-                holder.setText(R.id.tv_ID,item.getId()+"");
-                holder.setText(R.id.tv_materialID, item.getMaterial_num());
-                holder.setText(R.id.tv_serialID, item.getSerial_num());
+                holder.setText(R.id.tv_materialID, item.getMaterial_no());
+                holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_ownership, item.getBelong());
-                holder.setText(R.id.tv_moduleDownTime, item.getEnd_time());
+                holder.setText(R.id.tv_ownership, item.getDest());
+                holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
             }
 
             @Override
@@ -210,7 +208,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         switch (view.getId()) {
             case R.id.btn_feederMaintain:
 
-                if(dataSource.size()>0){
+                /*if(dataSource.size()>0){
                     String res ="";
                     for (int i=0;i<dataSource.size()-1;i++){
                         res += dataSource.get(i).getId()+",";
@@ -218,7 +216,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     res += dataSource.get(dataSource.size()-1).getId();
                     Toast.makeText(this,res,Toast.LENGTH_SHORT).show();
                     getPresenter().getAllModuleDownMaintainResult(res);
-                }
+                }*/
 
                 break;
         }
