@@ -27,7 +27,7 @@ import timber.log.Timber;
 
 public class App extends BaseApplication implements Application.ActivityLifecycleCallbacks {
 
-    private static AppComponent appComponent;
+    public static AppComponent appComponent;
     private static int appCount = 0;
     private static Handler mainHander;
 
@@ -56,7 +56,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     }
 
     @Override
-    protected String getBaseUrl() {
+    public String getBaseUrl() {
         if(SpUtil.getStringSF(this,"server_address")==null||"".equals(SpUtil.getStringSF(this,"server_address"))){
 
         }else{
