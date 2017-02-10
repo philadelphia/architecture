@@ -74,7 +74,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     private String mMaterialNumberString;
     private MaterialBlockBarCode mMaterbarCode;
     private PcbFrameLocation mFramebarCode;
-    private int mAmout;
+    private int mAmout=0;
     private int mId;
     private int mAmoutString;
     private int mAlarminfoId;
@@ -263,11 +263,18 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     @Override
     public void getNumberSucces(PcbNumber.DataBean dataBean) {
+        mAmout+= dataBean.getAmount();
         mList.get(position).setAmount(dataBean.getAmount());
         mList.get(position).setId(dataBean.getId());
         mAdapter.notifyDataSetChanged();
-        mAmout = dataBean.getAmount();
         mId = dataBean.getId();
+        if (mAmoutString < mAmout) {
+            ToastUtils.showMessage(WarningListActivity.this,"请拆箱取出" + (mAmout-mAmoutString) + "片", Snackbar.LENGTH_INDEFINITE);
+        }
+        if (mAmoutString >= mAmout) {
+
+        }
+
     }
 
 
@@ -285,23 +292,13 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 e.printStackTrace();
                 try {
                     mFramebarCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
-                    if (mAmoutString < mAmout) {
-                        ToastUtils.showMessage(WarningListActivity.this,"请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE);
-                        //Snackbar.make(activityMianview, "请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE).show();
+                    //Snackbar.make(activityMianview, "请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE).show();
                         if (mIsAlarmInfo) {
                             getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
                         } else {
                             getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 1);
 
                         }
-                    }
-                    if (mAmoutString >= mAmout) {
-                        if (mIsAlarmInfo) {
-                            getPresenter().fetchPcbSuccess(mAlarminfoId, mAmout, mId, 0);
-                        } else {
-                            getPresenter().fetchPcbSuccess(mAlarminfoId, mAmout, mId, 1);
-                        }
-                    }
 
             } catch (EntityNotFountException e1) {
                 e1.printStackTrace();
