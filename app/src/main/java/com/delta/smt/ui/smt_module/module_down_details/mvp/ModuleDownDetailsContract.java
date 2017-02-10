@@ -2,8 +2,10 @@ package com.delta.smt.ui.smt_module.module_down_details.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
+import com.delta.smt.entity.Result;
 
 import rx.Observable;
 
@@ -25,8 +27,8 @@ public interface ModuleDownDetailsContract {
     }
 
     interface Model extends IModel {
-        public Observable<ModuleDownDetailsItem> getAllModuleDownDetailsItems(String str);
-
-        public Observable<ModuleDownMaintain> getModuleDownMaintainResult(String str);
+         Observable<ModuleDownDetailsItem> getAllModuleDownDetailsItems(String str);
+         Observable<ModuleDownMaintain> getModuleDownMaintainResult(String str);
+        Observable<ModuleDownDetailsItem> getDownModuleList(String condition);
     }
 }

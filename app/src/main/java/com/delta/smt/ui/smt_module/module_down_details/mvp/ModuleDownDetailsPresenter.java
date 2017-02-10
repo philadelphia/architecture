@@ -1,8 +1,10 @@
 package com.delta.smt.ui.smt_module.module_down_details.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
+import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
@@ -42,6 +44,20 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void call(Throwable throwable) {
                 getView().onFalied();
+            }
+        });
+    }
+
+    public  void getDownModuleList(String condition){
+        getModel().getDownModuleList(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
+            @Override
+            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
+                getView().onSuccess(moduleDownDetailsItem);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
             }
         });
     }
