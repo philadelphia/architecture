@@ -31,7 +31,6 @@ public class Produce_mToolsPresenter extends BasePresenter<Produce_mToolsContrac
              @Override
              public void call(JsonProduct_mToolsRoot jsonProduct_mToolsRoot) {
 
-                 Log.e("Produce_mToolsPresenter","fail----------------------------------->"+jsonProduct_mToolsRoot.toString());
 
                  List<JsonProduct_mToolsList> rows=jsonProduct_mToolsRoot.getRows();
                  List<Product_mToolsInfo> data=new ArrayList<>();

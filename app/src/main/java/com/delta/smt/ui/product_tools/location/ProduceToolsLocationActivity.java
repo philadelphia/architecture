@@ -5,9 +5,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
-import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.ProductToolsBarcode;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -90,7 +87,6 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
-        BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         if (flag1 != 0) {
             try {
                 JSONObject jsonObject = new JSONObject();

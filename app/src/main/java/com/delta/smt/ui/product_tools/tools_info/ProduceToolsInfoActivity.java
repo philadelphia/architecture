@@ -70,22 +70,22 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             try {
                 d1 = data.get(1).getJigID();
             }catch (Exception e){
-                d1 = "null";
+                d1 = "0";
             }
             try {
                 d2 = data.get(2).getJigID();
             }catch (Exception e){
-                d2 = "null";
+                d2 = "0";
             }
             try {
                 d3 = data.get(3).getJigID();
             }catch (Exception e){
-                d3 = "null";
+                d3 = "0";
             }
             try {
                 d4 = data.get(4).getJigID();
             }catch (Exception e){
-                d4 = "null";
+                d4 = "0";
             }
                 getPresenter().getToolsVerfy("[\"{\\\"workOrderID\\\":" + workNumber + ",\\\"stencil\\\":" + d1 + ",\\\"scraper\\\":" + d2 + ",\\\"plate\\\":" + d3 + ",\\\"ict\\\":" + d4 + "}\"]");
         }

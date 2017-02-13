@@ -1,5 +1,7 @@
 package com.delta.smt.ui.product_tools.tools_info.mvp;
 
+import android.util.Log;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.JsonProductRequestToolsList;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
@@ -39,6 +41,9 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                     size++;
                     ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName(),"更多",j.getLoanStatus()==1?"待确认":"待取",String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
                     data.add(p);
+
+                    Log.e("-------===-------->>>",j.toString());
+
                 }
                 getView().getToolsInfo(data);
             }
@@ -46,6 +51,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             @Override
             public void call(Throwable throwable) {
                 getView().getFail();
+                Log.e("-------===-------->>>","cuocuocuocuco!!!!!!!!!!!!!!!!!!");
             }
         });
 
@@ -77,7 +83,6 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             public void call(Throwable throwable) {
 
                 getView().getFail();
-
             }
         });
 

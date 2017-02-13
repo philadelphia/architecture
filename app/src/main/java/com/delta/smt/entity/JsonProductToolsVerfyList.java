@@ -79,5 +79,18 @@ public class JsonProductToolsVerfyList {
         return this.jigTypeName;
     }
 
-
+    @Override
+    public String toString() {
+        return "JsonProductToolsVerfyList{" +
+                "loanStatus=" + loanStatus +
+                ", jigID=" + jigID +
+                ", barcode='" + barcode + '\'' +
+                ", mainBoard='" + mainBoard + '\'' +
+                ", subBoard='" + subBoard + '\'' +
+                ", statID=" + statID +
+                ", statName='" + statName + '\'' +
+                ", jigTypeID=" + jigTypeID +
+                ", jigTypeName='" + jigTypeName + '\'' +
+                '}';
+    }
 }
