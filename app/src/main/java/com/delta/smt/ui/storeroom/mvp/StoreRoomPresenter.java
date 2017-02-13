@@ -32,10 +32,12 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             @Override
             public void call(String s) {
                 getView().storeSuccess(s);
+                Log.e("info","test成功");
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                Log.e("info","test失败");
                 getView().storeFaild(throwable.getMessage().toString());
             }
         });

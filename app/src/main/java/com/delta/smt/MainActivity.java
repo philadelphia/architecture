@@ -293,7 +293,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                     //如果权限请求不通过
                 } else {
                 }
-                return;
             }
         }
     }
