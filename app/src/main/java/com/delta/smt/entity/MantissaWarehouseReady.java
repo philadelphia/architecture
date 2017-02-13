@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import com.delta.libs.adapter.TimeEntity;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,16 +11,23 @@ import java.util.List;
 
 public class MantissaWarehouseReady implements Serializable {
 
-
     /**
      * code : 0
      * msg : Success
-     * rows : [{"work_order":"20171011","line":"H-01","face":"A","material_num":"3460016900","remain_time":"11:21:27"}]
+     * rows : [{"line_name":"T15","work_order":"2311700546","side":"A","status":1,"remain_time":129357}]
      */
 
     private String code;
     private String msg;
-    private List<MantissaWarehouse> rows;
+    /**
+     * line_name : T15
+     * work_order : 2311700546
+     * side : A
+     * status : 1
+     * remain_time : 129357
+     */
+
+    private List<RowsBean> rows;
 
     public String getCode() {
         return code;
@@ -36,40 +45,27 @@ public class MantissaWarehouseReady implements Serializable {
         this.msg = msg;
     }
 
-    public List<MantissaWarehouse> getRows() {
+    public List<RowsBean> getRows() {
         return rows;
     }
 
-    public void setRows(List<MantissaWarehouse> rows) {
+    public void setRows(List<RowsBean> rows) {
         this.rows = rows;
     }
 
-    public static class MantissaWarehouse extends CountDownEntity implements Serializable{
-        /**
-         * work_order : 20171011
-         * line : H-01
-         * face : A
-         * material_num : 3460016900
-         * remain_time : 11:21:27
-         */
-
-        //工单
+    public static class RowsBean extends TimeEntity implements Serializable {
+        private String line_name;
         private String work_order;
-        //产线
-        private String line;
-        //面别
-        private String face;
-        //状态
-        private String status;
+        private String side;
+        private int status;
+        private int remain_time;
 
-        //private String remain_time;
+        public String getLine_name() {
+            return line_name;
+        }
 
-        public MantissaWarehouse(String work_order, String line, String face, String status) {
-            this.work_order = work_order;
-            this.line = line;
-            this.face = face;
-            this.status = status;
-
+        public void setLine_name(String line_name) {
+            this.line_name = line_name;
         }
 
         public String getWork_order() {
@@ -80,29 +76,28 @@ public class MantissaWarehouseReady implements Serializable {
             this.work_order = work_order;
         }
 
-        public String getLine() {
-            return line;
+        public String getSide() {
+            return side;
         }
 
-        public void setLine(String line) {
-            this.line = line;
+        public void setSide(String side) {
+            this.side = side;
         }
 
-        public String getFace() {
-            return face;
-        }
-
-        public void setFace(String face) {
-            this.face = face;
-        }
-
-        public String getStatus() {
+        public int getStatus() {
             return status;
         }
 
-        public void setStatus(String status) {
+        public void setStatus(int status) {
             this.status = status;
         }
 
+        public int getRemain_time() {
+            return remain_time;
+        }
+
+        public void setRemain_time(int remain_time) {
+            this.remain_time = remain_time;
+        }
     }
 }

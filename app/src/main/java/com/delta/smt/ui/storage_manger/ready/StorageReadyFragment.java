@@ -7,12 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
-import com.delta.smt.common.ItemOnclick;
-import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
-import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.ui.storage_manger.details.StorageDetailsActivity;
@@ -36,37 +35,42 @@ import static com.delta.smt.R.id.recyclerView;
  */
 
 public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
-        implements StorageReadyContract.View, ItemOnclick {
+        implements StorageReadyContract.View, com.delta.libs.adapter.ItemOnclick {
     @BindView(recyclerView)
     RecyclerView mRecyclerView;
 
     private List<StorageReady> dataList = new ArrayList();
-    private ItemCountdownViewAdapter<StorageReady> adapter;
+    private ItemCountViewAdapter<StorageReady> adapter;
+    private String wareHosueName;
 
     @Override
     protected void initView() {
 
-        adapter = new ItemCountdownViewAdapter<StorageReady>(getContext(), dataList) {
-            @Override
-            protected void convert(ItemTimeViewHolder holder, StorageReady item, int position) {
-                holder.setText(R.id.tv_title, "产线: " + item.getLine());
-                holder.setText(R.id.tv_line, "工单号: " + item.getWork_order());
-                holder.setText(R.id.tv_material_station, "面别: " + item.getFace());
-                if("1".equals(item.getStatus())){
-                    holder.setText(R.id.tv_add_count, "状态: " + "等待备料");
-                }
+        adapter = new ItemCountViewAdapter<StorageReady>(getContext(), dataList) {
 
+            @Override
+            protected int getCountViewId() {
+                return R.id.cv_countView;
             }
 
             @Override
             protected int getLayoutId() {
                 return R.layout.fragment_storage_ready;
             }
+
+            @Override
+            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, StorageReady item, int position) {
+                holder.setText(R.id.tv_title, "产线: " + item.getLine_name());
+                holder.setText(R.id.tv_line, "工单号: " + item.getWork_order());
+                holder.setText(R.id.tv_material_station, "面别: " + item.getSide());
+                if (item.getStatus() == 1) {
+                    holder.setText(R.id.tv_add_count, "状态：未开始发料");
+                } else {
+                    holder.setText(R.id.tv_add_count, "状态：正在发料");
+                }
+            }
         };
-
-
-
-        adapter.setOnItemTimeOnclck(this);
+        adapter.setOnItemTimeOnclick(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mRecyclerView.setAdapter(adapter);
 
@@ -82,9 +86,9 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
     @Override
     protected void initData() {
 
-//        String wareHosueName = getArguments().getString(Constant.WARE_HOUSE_NAME);
-        Map<String, String > map = new HashMap<>();
-        map.put("part",Constant.WARE_HOUSE_NAME);
+        wareHosueName = getArguments().getString(Constant.WARE_HOUSE_NAME);
+        Map<String, String> map = new HashMap<>();
+        map.put("part", wareHosueName);
         Gson gson = new Gson();
         String mS = gson.toJson(map);
         Log.i("aaa", "argument== " + mS);
@@ -102,20 +106,25 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
     @Override
     public void getStorageReadySucess(List<StorageReady> storageReadies) {
         dataList.clear();
+        for (StorageReady storageReady : storageReadies) {
+            storageReady.setEnd_time(storageReady.getRemain_time() + System.currentTimeMillis());
+        }
         dataList.addAll(storageReadies);
+
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void getStorageReadyFailed(String message) {
 
+        ToastUtils.showMessage(getActivity(), message);
     }
 
-
     @Override
-    public void onItemClick(View item, int position) {
+    public void onItemClick(View item, Object o, int position) {
         Intent intent = new Intent(getActivity(), StorageDetailsActivity.class);
-        intent.putExtra("work_order",dataList.get(position).getWork_order());
+        intent.putExtra("work_order", dataList.get(position).getWork_order());
+        intent.putExtra(Constant.WARE_HOUSE_NAME,wareHosueName);
         startActivity(intent);
     }
 }

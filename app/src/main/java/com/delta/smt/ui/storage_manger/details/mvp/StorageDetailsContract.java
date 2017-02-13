@@ -39,18 +39,20 @@ public interface StorageDetailsContract {
 
         void getFailed(String message);
 
-        void bindMaterialCarSucess(List<BindPrepCarIDByWorkOrderResult.DataBean> data);
+        void bindMaterialCarSucess(List<BindPrepCarIDByWorkOrderResult.RowsBean> data);
 
         void issureToWarehSuccess(List<StorageDetails> rows);
 
         void issureToWarehFinishSuccess(String msg);
 
-        void queryMaterailCar(String rows);
+        void queryMaterailCar(List<MaterialCar.RowsBean> rows);
 
         void queryMaterailCarFailed(String msg);
 
 
         void bindMaterialCarFailed(String msg);
+
+        void issureToWarehFailed(String message);
     }
 
 }

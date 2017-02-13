@@ -2,6 +2,7 @@ package com.delta.smt.ui.storage_manger.storage_select.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.StoreEntity;
 
 import javax.inject.Inject;
 
@@ -17,14 +18,13 @@ public class StorageSelectPresenter extends BasePresenter<StorageSelectContract.
     }
 
     public void getStorageSelect(){
-        getModel().getStorageSelect().subscribe(new Action1<Result<String>>() {
+        getModel().getStorageSelect().subscribe(new Action1<Result<StoreEntity>>() {
             @Override
-            public void call(Result<String> storageSelect) {
+            public void call(Result<StoreEntity> storageSelect) {
                 if ("0".equals(storageSelect.getCode())) {
                     getView().onSucess(storageSelect.getRows());
                 } else {
                     getView().onFailed(storageSelect.getMessage());
-
                 }
             }
         }, new Action1<Throwable>() {

@@ -7,7 +7,7 @@ import android.os.SystemClock;
 /**
  * 改成SystemClock.elapsedRealtime()计算时间，即使放在listview或者recyclerview中被回收了始终也不会停止
  * listview的demo等着有空改进下。
- * Created by hanjiahu on 16/5/11.
+ *
  */
 public abstract class CustomCountUpTimer {
   private static final int MSG = 1;

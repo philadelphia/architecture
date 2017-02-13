@@ -1,22 +1,35 @@
 package com.delta.smt.entity;
 
+import com.delta.libs.adapter.TimeEntity;
+
 /**
  * Created by Zhenyu.Liu on 2016/12/22.
  */
 
-public class StorageReady extends CountDownEntity {
+public class StorageReady extends TimeEntity {
+
+
     /**
-     * work_order : 20171011
-     * line : H-01
-     * face : A
-     * remain_time : 10:11:09
-     * status : 1
+     * line_name : T14
+     * work_order : 19617008336
+     * side : A
+     * status : 0
+     * remain_time : -21645
      */
 
+    private String line_name;
     private String work_order;
-    private String line;
-    private String face;
-    private String status;
+    private String side;
+    private int status;
+    private Long remain_time=0l;
+
+    public String getLine_name() {
+        return line_name;
+    }
+
+    public void setLine_name(String line_name) {
+        this.line_name = line_name;
+    }
 
     public String getWork_order() {
         return work_order;
@@ -26,86 +39,27 @@ public class StorageReady extends CountDownEntity {
         this.work_order = work_order;
     }
 
-    public String getLine() {
-        return line;
+    public String getSide() {
+        return side;
     }
 
-    public void setLine(String line) {
-        this.line = line;
+    public void setSide(String side) {
+        this.side = side;
     }
 
-    public String getFace() {
-        return face;
-    }
-
-    public void setFace(String face) {
-        this.face = face;
-    }
-
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-
-/*    private String line;
-    private String face;
-    @SerializedName("status")
-    private String type;
-    @SerializedName("work_order")
-    private String number;
-    @SerializedName("remain_time")
-    private String time;
-
-    public StorageReady(String line, String face, String type, String number, String time) {
-        this.line = line;
-        this.face = face;
-        this.type = type;
-        this.number = number;
-        this.time = time;
+    public Long getRemain_time() {
+        return remain_time;
     }
 
-
-    public String getLine() {
-        return line;
+    public void setRemain_time(Long remain_time) {
+        this.remain_time = remain_time;
     }
-
-    public void setLine(String line) {
-        this.line = line;
-    }
-
-    public String getFace() {
-        return face;
-    }
-
-    public void setFace(String face) {
-        this.face = face;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }*/
 }

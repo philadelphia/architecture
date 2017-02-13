@@ -1,10 +1,5 @@
 package com.delta.smt;
 
-import com.delta.commonlibs.utils.GsonTools;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -46,7 +41,7 @@ public class Constant {
     public static final int ACTIVITY_REQUEST_WORK_ITEM_ID = 1;
     public static final int ACTIVITY_RESULT_WORK_ITEM_ID = 10;
 
-    public static String WARE_HOUSE_NAME = "wareHouseName";
+    public static final String WARE_HOUSE_NAME = "wareHouseName";
 
     //预警
     public static final Integer PCB_WAREH_ISSUE_ALARM_FLAG = 0;
