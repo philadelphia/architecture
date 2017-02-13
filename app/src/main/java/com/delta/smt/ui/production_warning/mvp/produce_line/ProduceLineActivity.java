@@ -107,7 +107,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     }
 
 
-    @OnClick({R.id.btn_confirm, R.id.btn_all_select, R.id.btn_all_cancel})
+    @OnClick({R.id.btn_confirm, R.id.btn_all_select, R.id.btn_all_cancel, R.id.btn_un_select})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_confirm:
@@ -144,9 +144,10 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                     for (ItemProduceLine data : datas) {
                         data.setChecked(true);
                     }
+                    mAdapter.notifyDataSetChanged();
                 }
                 Log.e(TAG, "onClick: " + datas.toString());
-                mAdapter.notifyDataSetChanged();
+
                 break;
             case R.id.btn_all_cancel:
                 if (datas.size() != 0) {
@@ -156,6 +157,15 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 }
                 Log.e(TAG, "onClick: " + datas.toString());
                 mAdapter.notifyDataSetChanged();
+                break;
+            case R.id.btn_un_select:
+
+                if (datas.size() != 0) {
+                    for (ItemProduceLine data : datas) {
+                        data.setChecked(!data.isChecked());
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
                 break;
         }
     }

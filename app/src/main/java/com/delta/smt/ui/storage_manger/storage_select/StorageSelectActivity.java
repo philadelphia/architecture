@@ -1,9 +1,9 @@
 package com.delta.smt.ui.storage_manger.storage_select;
 
+import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -19,6 +19,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.StoreEntity;
+import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 import com.delta.smt.ui.storage_manger.storage_select.di.DaggerStorageSelectComponent;
 import com.delta.smt.ui.storage_manger.storage_select.di.StorageSelectModule;
@@ -48,7 +49,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
     private List<StoreEntity> mDataList = new ArrayList<>();
     private CommonBaseAdapter<StoreEntity> adapter;
     private Map<Integer, CheckBox> checkBoxMap = new HashMap<>();
-    private  int index = 0;
+    private int index = 0;
 
     @Override
     protected int getContentViewId() {
@@ -96,6 +97,11 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
     @Override
     public void onSucess(List<StoreEntity> StorageSelect) {
         mDataList.clear();
+        for (int i = 0; i < StorageSelect.size(); i++) {
+            if ("FeederBuffer".equals(StorageSelect.get(i).getName())) {
+                StorageSelect.remove(i);
+            }
+        }
         mDataList.addAll(StorageSelect);
         adapter.notifyDataSetChanged();
 
@@ -106,20 +112,26 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
 
     }
 
-    @OnClick({ R.id.btn_storage_select})
+    @OnClick({R.id.btn_storage_select})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_storage_select:
                 CheckBox mCheckBox = checkBoxMap.get(index);
-                if (mCheckBox.getText().toString().trim()!=null){
-                    Constant.WARE_HOUSE_NAME = mCheckBox.getText().toString().trim();
-//                Log.i("aaa", wareHouseName);
-//                Bundle bundle = new Bundle();
-//                bundle.putString(Constant.WARE_HOUSE_NAME, wareHouseName);
-                    Log.i("aaa", Constant.WARE_HOUSE_NAME);
-                    IntentUtils.showIntent(this, StorageWarningActivity.class);
-                }else{
-                    Toast.makeText(this,"请选择仓库",Toast.LENGTH_SHORT).show();
+                if (mCheckBox.getText().toString().trim() != null) {
+                    String store_name = mCheckBox.getText().toString().trim();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constant.WARE_HOUSE_NAME, store_name);
+                    if ("Mantissa".equals(store_name)) {
+                        IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class, bundle);
+                    } else {
+
+                        IntentUtils.showIntent(this, StorageWarningActivity.class, bundle);
+                    }
+
+
+                } else {
+                    Toast.makeText(this, "请选择仓库", Toast.LENGTH_SHORT).show();
                 }
 
                 break;

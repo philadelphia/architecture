@@ -10,8 +10,8 @@ package com.delta.smt.entity;
 public class IssureToWarehBody {
 
     /**
-     * serial_num : 12343
-     * material_num : 4020108700
+     * serial_no : 12343
+     * material_no : 4020108700
      * unit : PCS
      * vendor : 10X124
      * dc : 1515
@@ -21,8 +21,8 @@ public class IssureToWarehBody {
      * quantity : 100
      */
 
-    private String serial_num;
-    private String material_num;
+    private String serial_no;
+    private String material_no;
     private String unit;
     private String vendor;
     private String dc;
@@ -31,20 +31,20 @@ public class IssureToWarehBody {
     private String po;
     private String quantity;
 
-    public String getSerial_num() {
-        return serial_num;
+    public String getSerial_no() {
+        return serial_no;
     }
 
-    public void setSerial_num(String serial_num) {
-        this.serial_num = serial_num;
+    public void setSerial_no(String serial_no) {
+        this.serial_no = serial_no;
     }
 
-    public String getMaterial_num() {
-        return material_num;
+    public String getMaterial_no() {
+        return material_no;
     }
 
-    public void setMaterial_num(String material_num) {
-        this.material_num = material_num;
+    public void setMaterial_no(String material_no) {
+        this.material_no = material_no;
     }
 
     public String getUnit() {

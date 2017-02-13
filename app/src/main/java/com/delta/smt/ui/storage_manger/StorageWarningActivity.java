@@ -1,6 +1,7 @@
 package com.delta.smt.ui.storage_manger;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -60,19 +61,9 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
                     mStorageReadyFragment = new StorageReadyFragment();
                     mFragmentTransaction.add(R.id.fl_container, mStorageReadyFragment, "备料");
                 }
-
                 mFragmentTransaction.show(mStorageReadyFragment).hide(currentFragment).commit();
                 currentFragment = mStorageReadyFragment;
-
                 break;
-//            case 1:
-//                if (mStorageReturnFragment == null) {
-//                    mStorageReturnFragment = new StorageReturnFragment();
-//                    mFragmentTransaction.add(R.id.fl_container, mStorageReturnFragment, "入库");
-//                }
-//                mFragmentTransaction.show(mStorageReturnFragment).hide(currentFragment).commit();
-//                currentFragment = mStorageReturnFragment;
-//                break;
             default:
                 break;
         }
@@ -92,10 +83,13 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
     @Override
     protected void initCView() {
         mToolbar.setTitle("");
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        mToolbarTitle.setText("仓库A备料");
+        Bundle extras = getIntent().getExtras();
+        String name = extras.getString(Constant.WARE_HOUSE_NAME);
+        mToolbarTitle.setText("仓库" + name);
         for (int i = 0; i < titles.length; i++) {
             mTlTitle.addTab(mTlTitle.newTab());
         }
@@ -103,6 +97,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
         mTlTitle.addOnTabSelectedListener(this);
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         mStorageReadyFragment = new StorageReadyFragment();
+        mStorageReadyFragment.setArguments(extras);
         mFragmentTransaction.add(R.id.fl_container, mStorageReadyFragment, "备料");
         mFragmentTransaction.show(mStorageReadyFragment).commit();
         // setDispathchKeyEvent(mStorageReadyFragment);
@@ -113,7 +108,6 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
     protected void initCData() {
         //此处的Title应该是 从网络获取的数量
         titles = new String[]{"备料"};
-
 
 
         //接收那种预警，没有的话自己定义常量

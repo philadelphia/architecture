@@ -74,7 +74,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> adapter;
     private CommonBaseAdapter<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> adapter2;
-    private MantissaWarehouseReady.MantissaWarehouse mMantissaWarehouse;
+    private MantissaWarehouseReady.RowsBean mMantissaWarehouse;
     private String workorder;
     private String name;
 
@@ -93,7 +93,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     protected void initData() {
 
         Intent intent = this.getIntent();
-        mMantissaWarehouse = (MantissaWarehouseReady.MantissaWarehouse) intent.getSerializableExtra("item");
+        mMantissaWarehouse = (MantissaWarehouseReady.RowsBean) intent.getSerializableExtra("item");
 
         workorder = mMantissaWarehouse.getWork_order();
         WarehouseDetailBean bindBean = new WarehouseDetailBean(workorder);

@@ -9,11 +9,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.View;
 
-/**
- * Background Countdown
- * Created by iWgang on 16/6/19.
- * https://github.com/iwgang/CountdownView
- */
 class BackgroundCountdown extends BaseCountdown {
     private static final float DEFAULT_TIME_BG_DIVISION_LINE_SIZE = 0.5f; // dp
     private static final float DEFAULT_TIME_BG_BORDER_SIZE = 1f; // dp

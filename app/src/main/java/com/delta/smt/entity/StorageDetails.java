@@ -7,86 +7,71 @@ package com.delta.smt.entity;
 public class StorageDetails {
 
 
+    public StorageDetails(String material_no, String slot, int amount, int issue_amount) {
+        this.material_no = material_no;
+        this.slot = slot;
+        this.amount = amount;
+        this.issue_amount = issue_amount;
+    }
+
     /**
-     * work_order : 20171011
-     * material_num : 4020108700
-     * shelves : A1D001
-     * re_quantity : 800
-     * se_quantity : 0
+     * material_no : 1511542032
+     * slot : N4-10
+     * amount : 1000
+     * issue_amount : 0
+     * shelf_no : D2JD2
      * status : 0
      */
 
-
-    private String work_order;
-    private String material_num;
-    private String shelves;
-    private String re_quantity;
-    private String se_quantity;
-    private String msg;
+    private String material_no;
+    private String slot;
+    private int amount;
+    private int issue_amount;
+    private String shelf_no;
     private int status;
 
-    public StorageDetails(String material_num, String shelves, String re_quantity, String se_quantity, int status) {
-
-        this.material_num = material_num;
-        this.shelves = shelves;
-        this.re_quantity = re_quantity;
-        this.se_quantity = se_quantity;
-        this.status = status;
+    public String getMaterial_no() {
+        return material_no;
     }
 
-    public StorageDetails() {
+    public void setMaterial_no(String material_no) {
+        this.material_no = material_no;
     }
 
-    public String getWork_order() {
-        return work_order;
+    public String getSlot() {
+        return slot;
     }
 
-    public void setWork_order(String work_order) {
-        this.work_order = work_order;
+    public void setSlot(String slot) {
+        this.slot = slot;
     }
 
-    public String getMaterial_num() {
-        return material_num;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setMaterial_num(String material_num) {
-        this.material_num = material_num;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
-    public String getShelves() {
-        return shelves;
+    public int getIssue_amount() {
+        return issue_amount;
     }
 
-    public void setShelves(String shelves) {
-        this.shelves = shelves;
+    public void setIssue_amount(int issue_amount) {
+        this.issue_amount = issue_amount;
     }
 
-    public String getRe_quantity() {
-        return re_quantity;
+    public String getShelf_no() {
+        return shelf_no;
     }
 
-    public void setRe_quantity(String re_quantity) {
-        this.re_quantity = re_quantity;
-    }
-
-    public String getSe_quantity() {
-        return se_quantity;
-    }
-
-    public void setSe_quantity(String se_quantity) {
-        this.se_quantity = se_quantity;
+    public void setShelf_no(String shelf_no) {
+        this.shelf_no = shelf_no;
     }
 
     public int getStatus() {
         return status;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public String getMsg() {
-        return msg;
     }
 
     public void setStatus(int status) {
