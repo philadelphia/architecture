@@ -26,6 +26,7 @@ import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 import com.delta.smt.ui.production_warning.di.produce_line.DaggerProduceLineCompnent;
 import com.delta.smt.ui.production_warning.di.produce_line.ProduceLineModule;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
+import com.delta.smt.ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 
 import java.util.ArrayList;
@@ -133,7 +134,8 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.PRODUCTIONLINE, mStringBuffer.toString());
                 if (type == 0) {
-                    IntentUtils.showIntent(this, ProduceWarningActivity.class, bundle);
+//                    IntentUtils.showIntent(this, ProduceWarningActivity.class, bundle);
+                    IntentUtils.showIntent(this, AcceptMaterialsActivity.class);
 
                 }
 

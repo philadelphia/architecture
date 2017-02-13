@@ -21,9 +21,9 @@
             android:textSize="40px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textew3"/>
+            android:id="@+id/tv_line_type"/>
         <TextView
-            android:text="带接料料站："
+            android:text="待接料料站："
             android:textSize="40px"
             android:layout_marginLeft="100px"
             android:layout_width="wrap_content"
@@ -34,10 +34,30 @@
             android:textSize="40px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/xtView3"/>
+            android:id="@+id/tv_material_station_num"/>
     </LinearLayout>
 
+    <HorizontalScrollView
+        android:id="@+id/hr_scrow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recy_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recy_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </HorizontalScrollView>
 
 
 </LinearLayout>
