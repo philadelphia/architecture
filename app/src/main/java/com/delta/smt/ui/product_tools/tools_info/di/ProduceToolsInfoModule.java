@@ -4,7 +4,6 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoContract;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoModel;
-import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoPresenter;
 
 import dagger.Module;
 import dagger.Provides;

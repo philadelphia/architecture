@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/style_storageedi"
+            android:singleLine="true"
             android:layout_marginLeft="@dimen/px_80"
             android:layout_toRightOf="@id/storage_pcbtv"
             android:layout_alignBottom="@id/storage_pcbtv"
@@ -46,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/style_storageedi"
+            android:singleLine="true"
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_toRightOf="@id/storage_vendortv"
              android:layout_alignBottom="@id/storage_vendortv"
@@ -64,6 +66,7 @@
             android:id="@+id/storage_datacodeed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             style="@style/style_storageedi"
             android:layout_toRightOf="@id/storage_datacodetv"
             android:layout_alignLeft="@id/storage_pcbed"
@@ -84,13 +87,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/style_storageedi"
+            android:singleLine="true"
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_toRightOf="@id/storage_idtv"
             android:layout_alignBottom="@id/storage_idtv"
             />
 
     </RelativeLayout>
-    <TextView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/storage_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

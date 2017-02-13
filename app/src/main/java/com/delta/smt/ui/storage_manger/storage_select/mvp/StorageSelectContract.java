@@ -3,7 +3,6 @@ package com.delta.smt.ui.storage_manger.storage_select.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.Result;
-import com.delta.smt.entity.StorageSelect;
 
 import java.util.List;
 

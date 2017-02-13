@@ -6,12 +6,7 @@ import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.AllQuery;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import rx.Observable;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 /**
  * Created by Lin.Hou on 2016-12-26.

@@ -3,18 +3,11 @@ package com.delta.smt.ui.store.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.AlarmInfoDetailed;
-import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.OutBound;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.Success;
 
-import java.util.List;
-
 import rx.Observable;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-import static com.delta.commonlibs.utils.RxsRxSchedulers.io_main;
 
 /**
  * Created by Lin.Hou on 2016-12-27.
@@ -42,8 +35,8 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
         return getService().getPcbSuccess(s).compose(RxsRxSchedulers.<Success>io_main());
     }
     @Override
-    public Observable<OutBound> getScheduleDetailed(String sapWorkOrderId, String partNum, int amount) {
-        return getService().getScheduleDetailed(sapWorkOrderId,partNum,amount).compose(RxsRxSchedulers.<OutBound>io_main());
+    public Observable<OutBound> getScheduleDetailed(int id,String sapWorkOrderId, String partNum, int amount) {
+        return getService().getScheduleDetailed(id,sapWorkOrderId,partNum,amount).compose(RxsRxSchedulers.<OutBound>io_main());
     }
 
     @Override
@@ -52,7 +45,7 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
     }
 
     @Override
-    public Observable<Success> getScheduleSuccessState(String sapWorkOrderId) {
-        return getService().getScheduleSuccessState(sapWorkOrderId).compose(RxsRxSchedulers.<Success>io_main());
+    public Observable<Success> getScheduleSuccessState(int scheduleId) {
+        return getService().getScheduleSuccessState(scheduleId).compose(RxsRxSchedulers.<Success>io_main());
     }
 }

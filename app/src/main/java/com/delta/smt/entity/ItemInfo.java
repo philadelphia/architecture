@@ -15,6 +15,10 @@ public class ItemInfo extends CountDownEntity {
     private boolean isAlarminfo;
 
 
+    @Override
+    public Long getCountDownLong() {
+        return 100000l;
+    }
 
     public boolean isAlarminfo() {
         return isAlarminfo;

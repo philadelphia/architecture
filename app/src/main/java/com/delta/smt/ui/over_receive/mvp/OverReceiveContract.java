@@ -5,8 +5,6 @@ import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 
-import java.util.List;
-
 import rx.Observable;
 
 /**
@@ -31,7 +29,7 @@ public interface OverReceiveContract {
 
         public Observable<OverReceiveWarning> getOverReceiveItemsAfterSend(String str);
 
-        public Observable<OverReceiveWarning> getOverReceiveItemsAfterSendArrive(String str);
+        /*public Observable<OverReceiveWarning> getOverReceiveItemsAfterSendArrive(String str);*/
 
         public Observable<OverReceiveDebitResult > getOverReceiveDebit();
 

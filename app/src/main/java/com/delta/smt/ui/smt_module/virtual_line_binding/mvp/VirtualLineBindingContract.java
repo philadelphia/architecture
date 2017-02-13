@@ -3,11 +3,8 @@ package com.delta.smt.ui.smt_module.virtual_line_binding.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.ModNumByMaterialResult;
-import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
-
-import java.util.List;
 
 import rx.Observable;
 

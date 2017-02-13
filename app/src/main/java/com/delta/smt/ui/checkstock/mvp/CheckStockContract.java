@@ -3,6 +3,7 @@ package com.delta.smt.ui.checkstock.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.CheckStock;
+import com.delta.smt.entity.ExceptionsBean;
 import com.delta.smt.entity.Success;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class CheckStockContract {
         void onFailed(String s);
         void onCheckStockNumberSucess(String wareHouses);
         void onErrorSucess(String wareHouses);
+        void onErrorsSucess(String wareHouses);
         void onExceptionSucess(String wareHouses);
         void onSubmitSucess(String wareHouses);
         void onCheckStockSucess(String wareHouses);
@@ -28,7 +30,7 @@ public class CheckStockContract {
         Observable<CheckStock>getCheckStock(String s);
         Observable<Success>getCheckStockNumber(int id, int realCount);
         Observable<Success>getError(String boxSerial,String subShelfSerial);
-        Observable<Success>getException(String subShelfCode);
+        Observable<ExceptionsBean>getException(String subShelfCode);
         Observable<Success>getSubmit(String subShelfCode);
         Observable<String>getCheckStockSuccess();
     }

@@ -4,13 +4,8 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModNumByMaterialResult;
-import com.delta.smt.entity.ModuleDownMaintain;
-import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 

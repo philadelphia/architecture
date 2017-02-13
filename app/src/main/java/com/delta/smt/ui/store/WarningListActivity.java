@@ -6,15 +6,14 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -30,12 +29,13 @@ import com.delta.smt.ui.store.di.DaggerWarningListComponent;
 import com.delta.smt.ui.store.di.WarningListModule;
 import com.delta.smt.ui.store.mvp.WarningListContract;
 import com.delta.smt.ui.store.mvp.WarningListPresenter;
-import com.delta.smt.utils.BarCodeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static com.delta.buletoothio.barcode.parse.BarCodeType.PCB_FRAME_LOCATION;
 
 
 /**
@@ -73,8 +73,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     private String mMachineString;
     private String mMaterialNumberString;
     private MaterialBlockBarCode mMaterbarCode;
-    private FrameLocation mFramebarCode;
-    private int mAmout;
+    private PcbFrameLocation mFramebarCode;
+    private int mAmout=0;
     private int mId;
     private int mAmoutString;
     private int mAlarminfoId;
@@ -135,6 +135,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 holder.setText(R.id.pcb_price, item.getSubShelfSerial());
                 if (item.getAmount() == 0) {
                     holder.setText(R.id.pcb_thenumber, "");
+                }else {
+                    holder.setText(R.id.pcb_thenumber, ""+item.getAmount());
                 }
                 holder.setText(R.id.pcb_code, item.getPcbCode());
                 holder.setText(R.id.pcb_time, item.getPcbCode());
@@ -171,9 +173,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         recyContetn.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyContetn.setAdapter(mAdapter);
         if (mIsAlarmInfo){
-            getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAlarminfoId);
+            getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
         }else {
-            getPresenter().fetchScheduleOutBound(mWorkNumberString,mMaterialNumberString,mAlarminfoId);
+            getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
         }
 
     }
@@ -204,18 +206,49 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void onSucessState(String s) {
         Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_INDEFINITE).show();
-        if (mAmoutString!=0){
+        if (mAmoutString - mAmout>0){
         recyContetn.scrollToPosition(position + 1);//请求+1
         mList.get(position).setColor(false);
         mList.get(position + 1).setColor(true);
         mAdapter.notifyDataSetChanged();
-        edPcbDemand.setText("" + (mAmoutString - mAmout));
-        }else {
+         mAmoutString=mAmoutString - mAmout;
+        edPcbDemand.setText("" + mAmoutString);
+        }
+        if ((mAmoutString - mAmout)<=0){
+            mList.get(position).setColor(false);
+            mAmoutString=0;
+            edPcbDemand.setText("0");
             if (mIsAlarmInfo){
-                getPresenter().getAlarmSuccessfulState(mWorkNumberString,mId);
+                getPresenter().getAlarmSuccessfulState(mWorkNumberString,mAlarminfoId);
+//                getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
             }else {
-                getPresenter().getScheduleSuccessState(mWorkNumberString);
+                getPresenter().getScheduleSuccessState(mAlarminfoId);
+//                getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
             }
+        }
+        if((mAmoutString-mAmout)>0){
+            mList.get(position).setColor(false);
+            mAmoutString=mAmoutString-mAmout;
+            edPcbDemand.setText(""+mAmoutString);
+            if (mIsAlarmInfo){
+                getPresenter().getAlarmSuccessfulState(mWorkNumberString,mAlarminfoId);
+//                getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
+            }else {
+                getPresenter().getScheduleSuccessState(mAlarminfoId);
+//                getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onSucessStates(String s) {
+        Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_INDEFINITE).show();
+        if ((mAmoutString - mAmout)==0){
+            mList.get(position).setColor(false);
+            mAmoutString=0;
+            edPcbDemand.setText("0");
         }
 
     }
@@ -224,51 +257,55 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     public void onOutSuccess(List<OutBound.DataBean> dataBeanList) {
         mList.clear();
         mList.addAll(dataBeanList);
+        mList.get(0).setColor(true);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void getNumberSucces(PcbNumber.DataBean dataBean) {
+        mAmout+= dataBean.getAmount();
         mList.get(position).setAmount(dataBean.getAmount());
         mList.get(position).setId(dataBean.getId());
         mAdapter.notifyDataSetChanged();
-        mAmout = dataBean.getAmount();
         mId = dataBean.getId();
-    }
+        if (mAmoutString < mAmout) {
+            ToastUtils.showMessage(WarningListActivity.this,"请拆箱取出" + (mAmout-mAmoutString) + "片", Snackbar.LENGTH_INDEFINITE);
+        }
+        if (mAmoutString >= mAmout) {
 
-
-
-    @Override
-    public void onScanSuccess(String barcode) {
-        ToastUtils.showMessage(this, "--->" + barcode);
-        Log.i("BARCODE", "---->" + barcode);
-        BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        try {
-            if (BarCodeUtils.barCodeType(barcode) != null) {
-                switch (BarCodeUtils.barCodeType(barcode)) {
-                    case MATERIAL_BLOCK_BARCODE:
-                        mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                        if (mMaterbarCode.getStreamNumber() != null) {
-                            getPresenter().fetchPcbNumber(mMaterbarCode.getStreamNumber());
-                        }
-                        break;
-                    case FRAME_LOCATION:
-                        mFramebarCode = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
-                        if ("0".equals(String.valueOf(mAmout)) && "0".equals(String.valueOf(mId))) {
-                            getPresenter().fetchPcbSuccess(mAmout, mId);
-                        }
-                        break;
-                }
-
-            }
-
-        } catch (EntityNotFountException e) {
-
-            e.printStackTrace();
         }
 
     }
 
 
 
+    @Override
+    public void onScanSuccess(String barcode) {
+        BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+
+            try {
+                mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                if (mMaterbarCode.getStreamNumber() != null) {
+                    getPresenter().fetchPcbNumber(mMaterbarCode.getStreamNumber());
+                }
+            } catch (EntityNotFountException e) {
+                e.printStackTrace();
+                try {
+                    mFramebarCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
+                    //Snackbar.make(activityMianview, "请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE).show();
+                        if (mIsAlarmInfo) {
+                            getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
+                        } else {
+                            getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 1);
+
+                        }
+
+            } catch (EntityNotFountException e1) {
+                e1.printStackTrace();
+
+        }
+        }
+
+
+    }
 }

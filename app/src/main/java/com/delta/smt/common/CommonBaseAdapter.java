@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 
 import com.delta.commonlibs.animation.AnimationType;
 import com.delta.commonlibs.utils.AnimationUtil;
-import com.zhy.autolayout.config.AutoLayoutConifg;
 
 import java.util.ArrayList;
 import java.util.HashMap;

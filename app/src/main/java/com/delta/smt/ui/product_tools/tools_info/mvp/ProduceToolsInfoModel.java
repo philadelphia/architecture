@@ -3,14 +3,9 @@ package com.delta.smt.ui.product_tools.tools_info.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsLocation;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
-import com.delta.smt.entity.ProductToolsInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 

@@ -17,7 +17,7 @@
     <string name="option_storage">入库</string>
     <string name="option_check">盘点</string>
     <string name="tv_work">工单号:</string>
-    <string name="tv_machine">机种:</string>
+    <string name="tv_machine">主板和小板:</string>
     <string name="tv_pcb">PCB料号:</string>
     <string name="waring_buttom">点亮对应位置的灯</string>
     <string name="storage_enterbtn">手动键入</string>
@@ -38,7 +38,7 @@
     <string name="back">返回</string>
     <string name="setting">设置</string>
     <string name="storetitle">PCB库房发料</string>
-    <string name="timetext">剩余发料时间：</string>
+    <string name="timetext">距离上线时长：</string>
     <string name="warning_pcbnumber">PCB料号</string>
     <string name="warning_pcbid">PCB流水号</string>
     <string name="pcb_number">PCB料号</string>

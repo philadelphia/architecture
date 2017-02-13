@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 
-import com.zhy.autolayout.AutoFrameLayout;
-import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.utils.AutoLayoutHelper;
 
 /**

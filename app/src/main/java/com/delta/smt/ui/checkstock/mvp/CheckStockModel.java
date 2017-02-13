@@ -4,6 +4,7 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.CheckStock;
+import com.delta.smt.entity.ExceptionsBean;
 import com.delta.smt.entity.Success;
 
 import rx.Observable;
@@ -34,8 +35,8 @@ public class CheckStockModel extends BaseModel<ApiService> implements CheckStock
     }
 
     @Override
-    public Observable<Success> getException(String subShelfCode) {
-        return getService().getException(subShelfCode).compose(RxsRxSchedulers.<Success>io_main());
+    public Observable<ExceptionsBean> getException(String subShelfCode) {
+        return getService().getException(subShelfCode).compose(RxsRxSchedulers.<ExceptionsBean>io_main());
     }
 
     @Override

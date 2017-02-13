@@ -3,12 +3,14 @@ package com.delta.smt.ui.checkstock.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.CheckStock;
+import com.delta.smt.entity.ExceptionsBean;
 import com.delta.smt.entity.Success;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.exceptions.Exceptions;
 import rx.functions.Action1;
 
 /**
@@ -22,8 +24,8 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
     }
     public void fetchCheckStock(String s){
         getModel().getCheckStock(s).subscribe(new Action1<CheckStock>() {
-            @Override
-            public void call(CheckStock rowsBeen) {
+                @Override
+                public void call(CheckStock rowsBeen) {
                 if ("0".equals(rowsBeen.getCode())) {
                     if (rowsBeen.getMsg().contains("Success")){
                     List<CheckStock.RowsBean> rows = rowsBeen.getRows();
@@ -35,7 +37,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
@@ -54,7 +56,8 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+               // 無法連接到服務器，請確認是否處於聯網狀態，服務器是否開啟，如果一直有問題請聯繫管理員
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
@@ -65,7 +68,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             public void call(Success success) {
             if ("0".equals(success.getCode())){
                 if (success.getMsg().contains("Success")){
-                getView().onErrorSucess(success.getMsg());
+                getView().onErrorsSucess(success.getMsg());
             }else {
                 getView().onFailed(success.getMsg());
             }}
@@ -73,17 +76,49 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
     public void fetchException(String boxSerial){
-        getModel().getException(boxSerial).subscribe(new Action1<Success>() {
+        getModel().getException(boxSerial).subscribe(new Action1<ExceptionsBean>() {
             @Override
-            public void call(Success success) {
+            public void call(ExceptionsBean success) {
+                StringBuffer errorBuffer=new StringBuffer();
+                errorBuffer.append("误差 \n");
+                StringBuffer fewBuffer=new StringBuffer();
+
+                StringBuffer moreBuffer=new StringBuffer();
+                StringBuffer changeBuffer=new StringBuffer();
+                changeBuffer.append("变更 \n");
+                StringBuffer notBuffer=new StringBuffer();
+                notBuffer.append("未盘点 \n");
                 if ("0".equals(success.getCode())){
                     if (success.getMsg().contains("Success")){
-                    getView().onErrorSucess(success.getMsg());
+                        for (int i=0;i<success.getRows().size();i++){
+                           switch (Integer.valueOf(success.getRows().get(i).getStatus())){
+                               case 0:
+                               case 1:
+                               case 2:
+                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                   break;
+                               case 3:
+                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                   break;
+                               case 4:
+                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                   break;
+                               case 5:
+                                   changeBuffer.append("\n "+success.getRows().get(i).getPartNum()+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount())+"片");
+                                   break;
+                               case 6:
+                                   notBuffer.append("\n "+success.getRows().get(i).getPartNum()+"未盘点");
+                                   break;
+
+                           }
+                        }
+                        fewBuffer.append(errorBuffer.toString()+changeBuffer.toString()+notBuffer.toString());
+                        getView().onErrorSucess(fewBuffer.toString());
                 }else {
                     getView().onFailed(success.getMsg());
                 }}
@@ -91,7 +126,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
@@ -101,7 +136,8 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             public void call(Success success) {
                 if ("0".equals(success.getCode())){
                     if (success.getMsg().contains("Success")){
-                    getView().onErrorSucess(success.getMsg());
+
+                    getView().onErrorsSucess(success.getMsg());
                 }else {
                     getView().onFailed(success.getMsg());
                 }}
@@ -109,7 +145,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
@@ -126,7 +162,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }

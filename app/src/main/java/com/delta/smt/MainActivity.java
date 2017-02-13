@@ -125,11 +125,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
 
         fuctions = new ArrayList<>();
-        fuctions.add(new Fuction("PCB库房入库", R.drawable.ic_warehouseroompreparation));
-        fuctions.add(new Fuction("PCB库房盘点", R.drawable.ic_warehouseinventory));
-        fuctions.add(new Fuction("PCB库房发料", R.drawable.ic_warehouseforsending));
-        fuctions.add(new Fuction("仓库房备料", R.drawable.ic_warehousestorage));
-        fuctions.add(new Fuction("仓库房超领", R.drawable.ic_warehouseroomchaoling));
+        fuctions.add(new Fuction("PCB入库", R.drawable.ic_warehouseroompreparation));
+        fuctions.add(new Fuction("PCB盘点", R.drawable.ic_warehouseinventory));
+        fuctions.add(new Fuction("PCB发料", R.drawable.ic_warehouseforsending));
+        fuctions.add(new Fuction("仓库备料", R.drawable.ic_warehousestorage));
+        fuctions.add(new Fuction("仓库超领", R.drawable.ic_warehouseroomchaoling));
         fuctions.add(new Fuction("Feeder缓冲区", R.drawable.ic_feederbuffer));
         fuctions.add(new Fuction("尾数仓备料", R.drawable.ic_mantissawarehousestock));
         fuctions.add(new Fuction("上模组", R.drawable.ic_onthemodule));
@@ -141,7 +141,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("治具借出", R.drawable.ic_lend));
         fuctions.add(new Fuction("治具归还", R.drawable.ic_thereturn));
         fuctions.add(new Fuction("手补件", R.drawable.ic_handpatch));
-        fuctions.add(new Fuction("warningSample", R.drawable.title));
+       // fuctions.add(new Fuction("warningSample", R.drawable.title));
     }
 
 
@@ -158,19 +158,19 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "Feeder缓冲区":
                 IntentUtils.showIntent(this, WareSelectActivity.class);
                 break;
-            case "仓库房备料":
+            case "仓库备料":
                 IntentUtils.showIntent(this, StorageSelectActivity.class);
                 break;
-            case "仓库房超领":
+            case "仓库超领":
                 IntentUtils.showIntent(this, OverReceiveActivity.class);
                 break;
-            case "PCB库房发料":
+            case "PCB发料":
                 IntentUtils.showIntent(this, StoreIssueActivity.class);
                 break;
-            case "PCB库房入库":
+            case "PCB入库":
                 IntentUtils.showIntent(this, StoreRoomActivity.class);
                 break;
-            case "PCB库房盘点":
+            case "PCB盘点":
                 IntentUtils.showIntent(this, CheckStockActivity.class);
                 break;
             case "生产中预警":
@@ -298,7 +298,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                     //如果权限请求不通过
                 } else {
                 }
-                return;
             }
         }
     }

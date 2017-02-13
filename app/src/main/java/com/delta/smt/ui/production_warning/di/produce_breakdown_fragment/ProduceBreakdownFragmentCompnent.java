@@ -5,7 +5,6 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.ProduceBreakdownFragment;
 
 import dagger.Component;
-import dagger.Module;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/27.

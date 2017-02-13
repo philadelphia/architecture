@@ -13,8 +13,6 @@ import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
-import com.delta.smt.common.CommonBaseAdapter;
-import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
@@ -22,15 +20,12 @@ import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 
-import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.feeder.warning.supply.di.DaggerSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.FeederSupplyActivity;
 import com.delta.smt.ui.feeder.warning.supply.di.SupplyModule;
 import com.delta.smt.ui.feeder.warning.supply.mvp.SupplyContract;
 import com.delta.smt.ui.feeder.warning.supply.mvp.SupplyPresenter;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;

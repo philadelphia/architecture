@@ -2,8 +2,6 @@ package com.delta.smt.ui.production_warning.di.produce_breakdown_fragment;
 
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.api.ApiService;
-import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWarningFragmentModule;
-import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.ProduceBreakdownFragment;
 import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.ProduceBreakdownFragmentContract;
 import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.ProduceBreakdownFragmentModel;
 

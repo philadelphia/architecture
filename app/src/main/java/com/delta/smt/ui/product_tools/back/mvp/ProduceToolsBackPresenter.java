@@ -2,10 +2,6 @@ package com.delta.smt.ui.product_tools.back.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.JsonProductBackRoot;
-import com.delta.smt.entity.JsonProductToolsLocation;
-import com.delta.smt.entity.ProductToolsBack;
-
-import java.util.List;
 
 import javax.inject.Inject;
 

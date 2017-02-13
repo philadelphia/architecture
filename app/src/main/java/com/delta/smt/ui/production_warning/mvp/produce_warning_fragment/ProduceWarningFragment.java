@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -40,7 +39,6 @@ import com.delta.smt.ui.production_warning.di.produce_warning_fragment.DaggerPro
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWarningFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
-import com.delta.smt.utils.BarCodeUtils;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -197,10 +195,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     @Override
     protected void initData() {
-        Log.i("aaa", "argument== " + Constant.initLine());
+        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
 
-        if (Constant.initLine() != null) {
-            getPresenter().getItemWarningDatas(Constant.initLine());
+        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
+            getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
     }
 
@@ -221,6 +219,11 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void getItemWarningDatasFailed(String message) {
         ToastUtils.showMessage(getContext(),message);
+    }
+
+    @Override
+    public void getItemWarningConfirmSuccess() {
+        getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
     }
 
 
@@ -395,14 +398,15 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                         String mS=mGson.toJson(mMap);
                         Log.i("barcode", mS);
                         getPresenter().getBarcodeInfo(mS);
+                        //启动接受广播预警
+                        EventBus.getDefault().post(new BroadcastBegin());
                         mPopupWindow.dismiss();
                         ToastUtils.showMessage(getContext(),"绑定成功");
 
-                        //启动接受广播预警
-                        EventBus.getDefault().post(new BroadcastBegin());
-
-
                         tag=0;
+
+
+
                     }
 
                 }
@@ -428,8 +432,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     //Activity预警广播触发事件处理
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage){
-        if (Constant.initLine()!= null) {
-            getPresenter().getItemWarningDatas(Constant.initLine());
+        if (((ProduceWarningActivity) getmActivity()).initLine()!= null) {
+            getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
         Log.e(TAG, "event1: ");
     }

@@ -33,30 +33,31 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             public void call(Success s) {
                 if ("0".equals(s.getCode())){
                     if (s.getMsg().contains("Success")){
-                    getView().onSucessState(s.getMsg());}else {
+                    getView().onSucessStates(s.getMsg());
+                    }else {
                     getView().onFailed(s.getMsg());
                 }}
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
-    public void getScheduleSuccessState(String sapWorkOrderId){
-        getModel().getScheduleSuccessState(sapWorkOrderId).subscribe(new Action1<Success>() {
+    public void getScheduleSuccessState( int scheduleId){
+        getModel().getScheduleSuccessState(scheduleId).subscribe(new Action1<Success>() {
             @Override
             public void call(Success s) {
                 if ("0".equals(s.getCode())){
-                getView().onSucessState(s.getMsg());}else {
+                getView().onSucessStates(s.getMsg());}else {
                     getView().onFailed(s.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
@@ -77,12 +78,12 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
-    public void fetchScheduleOutBound(String sapWorkOrderId,String partNum,int amount){
-        getModel().getScheduleDetailed(sapWorkOrderId,partNum,amount).subscribe(new Action1<OutBound>() {
+    public void fetchScheduleOutBound(int id,String sapWorkOrderId,String partNum,int amount){
+        getModel().getScheduleDetailed(id,sapWorkOrderId,partNum,amount).subscribe(new Action1<OutBound>() {
             @Override
             public void call(OutBound outBound) {
                 if ("0".equals(outBound.getCode())){
@@ -96,7 +97,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
@@ -106,21 +107,21 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(PcbNumber pcbNumber) {
             if ("0".equals(pcbNumber.getCode())){
-                if (pcbNumber.getMsg().contains("Success")){
+
                 getView().getNumberSucces(pcbNumber.getRows());
             }else {
                 getView().onFailed(pcbNumber.getMsg());
-            }}
+            }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
 
-    public void fetchPcbSuccess(int amout, int id){
+    public void fetchPcbSuccess(int mAlarminfoId,int amout, int id,int type){
 //        Gson gson=new Gson();
 //        List<ParameterOutBound> list=new ArrayList<>();
 //        ParameterOutBound parameterOutBound=new ParameterOutBound(id,amout);
@@ -129,8 +130,10 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         JSONArray jsonArray=new JSONArray();
         JSONObject jsonObject=new JSONObject();
         try {
+            jsonObject.putOpt("billId",mAlarminfoId);
             jsonObject.putOpt("id",id);
             jsonObject.putOpt("amount",amout);
+            jsonObject.putOpt("type",type);
             jsonArray.put(jsonObject);
             json.putOpt("data",jsonArray);
         } catch (JSONException e) {
@@ -142,15 +145,15 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             @Override
             public void call(Success success) {
                 if("0".equals(success.getCode())){
-                if (success.getMsg().contains("Success")){
-                getView().onSucessState(success.getMsg());}else {
+                getView().onSucessState(success.getMsg());
+                }else {
                     getView().onFailed(success.getMsg());
-                }}
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }

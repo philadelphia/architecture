@@ -12,7 +12,7 @@ public class PcbNumber {
      * data : {"id":1,"amount":50}
      */
 
-    private int code;
+    private String code;
     private String msg;
     /**
      * id : 1
@@ -21,11 +21,11 @@ public class PcbNumber {
 
     private DataBean rows;
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

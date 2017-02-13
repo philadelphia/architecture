@@ -11,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +23,6 @@ import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
-import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -32,14 +30,10 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.ModuleUpBindingItem;
-import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.ui.smt_module.module_up_binding.di.DaggerModuleUpBindingComponent;
 import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingPresenter;
-import com.delta.smt.utils.BarCodeUtils;
-import com.delta.smt.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +47,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener, CommonBaseAdapter.OnItemClickListener<ModuleUpBindingItem> {
+public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener/*, CommonBaseAdapter.OnItemClickListener<ModuleUpBindingItem.RowsBean> */{
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -153,7 +147,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         };
 
         recyContent.setAdapter(adapter);
-        adapter.setOnItemClickListener(this);
+        //adapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -411,10 +405,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     }
 
-    @Override
-    public void onItemClick(View view, ModuleUpBindingItem item, final int item_position) {
+    /*@Override
+    public void onItemClick(View view, ModuleUpBindingItem.RowsBean item, final int item_position) {
 
-    }
+    }*/
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

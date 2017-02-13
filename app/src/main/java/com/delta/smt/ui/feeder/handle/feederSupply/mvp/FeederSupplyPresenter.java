@@ -6,8 +6,6 @@ import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import rx.functions.Action1;

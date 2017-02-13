@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.Constant;
@@ -19,7 +18,6 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
 import com.delta.smt.entity.ProduceWarningMessage;
-import com.delta.smt.ui.login.mvp.LoginPresenter;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.DaggerProduceInfoFragmentCompent;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.ProduceInfoFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
@@ -58,10 +56,10 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     @Override
     protected void initData() {
 
-        Log.i("aaa", "argument== " + Constant.initLine());
+        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
 
-        if (Constant.initLine() != null) {
-            getPresenter().getItemInfoDatas(Constant.initLine());
+        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
+            getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
 
 
@@ -117,7 +115,10 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         ToastUtils.showMessage(getContext(),message);
     }
 
-
+    @Override
+    public void getItemInfoConfirmSucess() {
+        getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
+    }
 
 
     @Override
@@ -173,8 +174,8 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     //Activity预警广播触发事件处理
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage){
-        if (Constant.initLine() != null) {
-            getPresenter().getItemInfoDatas(Constant.initLine());
+        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
+            getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
         Log.e(TAG, "event3: ");
     }

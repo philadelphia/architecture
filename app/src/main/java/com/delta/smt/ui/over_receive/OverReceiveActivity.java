@@ -1,24 +1,25 @@
 package com.delta.smt.ui.over_receive;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
@@ -39,9 +40,6 @@ import com.delta.smt.ui.over_receive.di.DaggerOverReceiveComponent;
 import com.delta.smt.ui.over_receive.di.OverReceiveModule;
 import com.delta.smt.ui.over_receive.mvp.OverReceiveContract;
 import com.delta.smt.ui.over_receive.mvp.OverReceivePresenter;
-import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
-import com.delta.smt.utils.BarCodeUtils;
-import com.delta.smt.utils.StringUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -58,9 +56,9 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/15.
  */
 
-public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, ItemOnclick, WarningManger.OnWarning, BarCodeIpml.OnScanSuccessListener{
+public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, BarCodeIpml.OnScanSuccessListener,CompoundButton.OnCheckedChangeListener {
 
-    private BarCodeIpml barCodeIpml=new BarCodeIpml();
+    private BarCodeIpml barCodeIpml = new BarCodeIpml();
     private Gson gson = new Gson();
 
     @BindView(R.id.toolbar)
@@ -74,6 +72,8 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     RecyclerView recyContent;
     @BindView(R.id.manual_debit)
     AppCompatButton manualDebit;
+    @BindView(R.id.automatic_debit)
+    AppCompatCheckBox automaticDebit;
 
     private CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean> adapterTitle;
     private CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean> adapter;
@@ -82,8 +82,8 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     /*@BindView(R.id.testSend)
     AppCompatButton testSend;*/
-    @BindView(R.id.testSendArrive)
-    AppCompatButton testSendArrive;
+    //@BindView(R.id.testSendArrive)
+    //AppCompatButton testSendArrive;
 
     @Inject
     WarningManger warningManger;
@@ -92,6 +92,8 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     String serialNumber = "12344";
     String count = "2000";
 
+    public String overReceiveAutomaticDebit = null;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerOverReceiveComponent.builder().appComponent(appComponent).overReceiveModule(new OverReceiveModule(this)).build().inject(this);
@@ -99,6 +101,8 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     protected void initData() {
+        automaticDebit.setOnCheckedChangeListener(this);
+        overReceiveAutomaticDebit = SpUtil.getStringSF(OverReceiveActivity.this, "over_receive_automatic_debit");
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.EXCESS_ALARM_FLAG, getClass());
         //是否接收预警 可以控制预警时机
@@ -111,6 +115,15 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     protected void initView() {
+        if (overReceiveAutomaticDebit == null) {
+            SpUtil.SetStringSF(OverReceiveActivity.this, "over_receive_automatic_debit", "false");
+            overReceiveAutomaticDebit = "false";
+            automaticDebit.setChecked(false);
+        } else if ("false".equals(overReceiveAutomaticDebit)) {
+            automaticDebit.setChecked(false);
+        } else {
+            automaticDebit.setChecked(true);
+        }
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -119,17 +132,17 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
         recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        dataList.add(new OverReceiveWarning.RowsBean.DataBean("线别", "料号", "架位", "需求量", "剩余料使用时间","状态"));
+        dataList.add(new OverReceiveWarning.RowsBean.DataBean("线别", "料号", "架位", "需求量", "剩余料使用时间", "状态"));
         adapterTitle = new CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, OverReceiveWarning.RowsBean.DataBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_lineID,item.getLine());
-                holder.setText(R.id.tv_materialID,item.getMaterial_num());
-                holder.setText(R.id.tv_shelfPositionID,item.getShevles());
-                holder.setText(R.id.tv_demandAmount,item.getRe_quantity());
-                holder.setText(R.id.tv_materialRemainingUsageTime,item.getRest_time());
-                holder.setText(R.id.tv_state,item.getStatus());
+                holder.setText(R.id.tv_lineID, item.getLine());
+                holder.setText(R.id.tv_materialID, item.getMaterial_num());
+                holder.setText(R.id.tv_shelfPositionID, item.getShevles());
+                holder.setText(R.id.tv_demandAmount, item.getRe_quantity());
+                holder.setText(R.id.tv_materialRemainingUsageTime, item.getRest_time());
+                holder.setText(R.id.tv_state, item.getStatus());
 
             }
 
@@ -145,12 +158,12 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             @Override
             protected void convert(CommonViewHolder holder, OverReceiveWarning.RowsBean.DataBean item, int position) {
                 holder.itemView.setBackgroundColor(Color.WHITE);
-                holder.setText(R.id.tv_lineID,item.getLine());
-                holder.setText(R.id.tv_materialID,item.getMaterial_num());
-                holder.setText(R.id.tv_shelfPositionID,item.getShevles());
-                holder.setText(R.id.tv_demandAmount,item.getRe_quantity());
-                holder.setText(R.id.tv_materialRemainingUsageTime,item.getRest_time());
-                holder.setText(R.id.tv_state,item.getStatus());
+                holder.setText(R.id.tv_lineID, item.getLine());
+                holder.setText(R.id.tv_materialID, item.getMaterial_num());
+                holder.setText(R.id.tv_shelfPositionID, item.getShevles());
+                holder.setText(R.id.tv_demandAmount, item.getRe_quantity());
+                holder.setText(R.id.tv_materialRemainingUsageTime, item.getRest_time());
+                holder.setText(R.id.tv_state, item.getStatus());
             }
 
             @Override
@@ -170,29 +183,29 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     public void onSuccess(OverReceiveWarning data) {
-        Toast.makeText(this,"onSuccess",Toast.LENGTH_SHORT).show();
-        if(data.getMsg().toLowerCase().equals("success")){
+        Toast.makeText(this, "onSuccess", Toast.LENGTH_SHORT).show();
+        if (data.getMsg().toLowerCase().equals("success")) {
             dataSource.clear();
             List<OverReceiveWarning.RowsBean.DataBean> rowsBeanList = data.getRows().getData();
             dataSource.addAll(rowsBeanList);
             adapter.notifyDataSetChanged();
-        }else{
-            Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, data.getMsg(), Toast.LENGTH_SHORT).show();
         }
 
     }
 
     @Override
     public void onFalied() {
-        Toast.makeText(this,"onFalied",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "onFalied", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSuccessOverReceiveDebit(OverReceiveDebitResult data) {
-        if (data.getMsg().toLowerCase().equals("success")){
+        if (data.getMsg().toLowerCase().equals("success")) {
             //
             //Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             //
             //Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
         }
@@ -203,22 +216,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     }
 
-    @OnClick({R.id.manual_debit,/*R.id.testSend,*/R.id.testSendArrive})
+    @OnClick({R.id.manual_debit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.manual_debit:
                 getPresenter().manualDebit();
-                break;
-            /*case R.id.testSend:
-                OverReceiveMaterialSend overReceiveMaterialSend = new OverReceiveMaterialSend(materialBlockNumber,serialNumber,count);
-                String strSend = gson.toJson(overReceiveMaterialSend);
-                getPresenter().getOverReceiveItemsAfterSend(strSend);
-                break;*/
-            case R.id.testSendArrive:
-                OverReceiveMaterialSendArrive overReceiveMaterialSendArrive = new OverReceiveMaterialSendArrive(materialBlockNumber,serialNumber);
-                String strSendArrive = gson.toJson(overReceiveMaterialSendArrive);
-                getPresenter().getOverReceiveItemsAfterSendArrive(strSendArrive);
-                //getPresenter().getOverReceiveItemsAfterSendArrive(strSendArrive);
                 break;
         }
     }
@@ -235,10 +237,10 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    /*@Override
     public void onItemClick(View item, int position) {
 
-    }
+    }*/
 
     @Override
     public void warningComing(String warningMessage) {
@@ -266,7 +268,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         }
     }
 
-    public void showDialog(String message){
+    public void showDialog(String message) {
         //1.创建这个DialogRelativelayout
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
@@ -310,7 +312,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
             serialNumber = materialBlockBarCode.getStreamNumber();
             count = materialBlockBarCode.getCount();
-            OverReceiveMaterialSend overReceiveMaterialSend = new OverReceiveMaterialSend(materialBlockNumber,serialNumber,count);
+            OverReceiveMaterialSend overReceiveMaterialSend = new OverReceiveMaterialSend(materialBlockNumber, serialNumber, count);
             String str = gson.toJson(overReceiveMaterialSend);
             //Toast.makeText(this,str,Toast.LENGTH_SHORT).show();
             getPresenter().getOverReceiveItemsAfterSend(str);
@@ -321,4 +323,14 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     }
 
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(buttonView==automaticDebit){
+            if(isChecked){
+                SpUtil.SetStringSF(OverReceiveActivity.this, "over_receive_automatic_debit", "true");
+            }else{
+                SpUtil.SetStringSF(OverReceiveActivity.this, "over_receive_automatic_debit", "false");
+            }
+        }
+    }
 }

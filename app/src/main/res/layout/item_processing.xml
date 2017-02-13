@@ -71,13 +71,13 @@
         android:id="@+id/ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="26dp"
         android:layout_marginRight="26dp"
         android:orientation="vertical"
-        android:weightSum="1"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="26dp">
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/time_remain"
@@ -87,35 +87,28 @@
             android:text="故障持续时间："
             android:textColor="@color/c_111111"
             android:textSize="40px" />
-        <com.delta.smt.widget.CountupView
-            android:id="@+id/countUpView"
-            android:layout_alignLeft="@+id/time_remain"
-            android:layout_below="@+id/time_remain"
-            android:gravity="center"
+
+        <com.delta.libs.CountTimeView
+            android:id="@+id/cv_countView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:isHideTimeBackground="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20px"
+            app:isCountUp="true"
             app:isShowDay="true"
             app:isShowHour="true"
+            app:isShowMillisecond="false"
             app:isShowMinute="true"
             app:isShowSecond="true"
-            app:timeTextColor="#000000"
-            app:timeTextSize="22sp"
-            app:isTimeTextBold="true"
-            app:suffixGravity="bottom"
-            app:suffixTextColor="#000000"
-            app:suffixTextSize="12sp"
-            app:suffixHour="时"
-            app:suffixMinute="分"
-            app:suffixSecond="秒"
-            app:suffixMillisecond="毫秒" />
-
-        <!--<TextView-->
-            <!--android:id="@+id/chronometer"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignLeft="@+id/time_remain"-->
-            <!--android:layout_below="@+id/time_remain"-->
-            <!--android:gravity="center" />-->
+            app:suffixDay="天"
+            app:suffixDayRightMargin="10px"
+            app:suffixGravity="center"
+            app:suffixHour=":"
+            app:suffixMinute=":"
+            app:suffixTextColor="#e61010"
+            app:suffixTextSize="17px"
+            app:timeTextColor="#e60b0b"
+            app:timeTextSize="20px" />
     </LinearLayout>
 </RelativeLayout>

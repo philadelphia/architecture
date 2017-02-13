@@ -1,13 +1,9 @@
 package com.delta.smt.ui.store.mvp;
 
-import android.util.Log;
-
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ItemInfo;
-import com.delta.smt.entity.JsonProductBorrowList;
-import com.delta.smt.ui.product_tools.TimeSortUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +31,7 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
                         List<ItemInfo> itemInfoList = new ArrayList<ItemInfo>();
                         for (int i = 0; i < itemInfos.getRows().size(); i++) {
                             ItemInfo itemInfo = new ItemInfo();
-                            itemInfo.setText("产线:" + itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "机种:" + itemInfos.getRows().get(i).getMachineType() + "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus());
+                            itemInfo.setText("线别:" + itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "主板和小板:" + itemInfos.getRows().get(i).getMachineType() + "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus());
                             itemInfo.setEndTime(9000);
 //                            JsonProductBorrowList jsonProductBorrowList=new JsonProductBorrowList();
 //                            jsonProductBorrowList.setPlanPrdTime(itemInfos.getRows().get(i).getEndTime());
@@ -62,7 +58,7 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("请确认后台服务正常启动");
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }

@@ -1,24 +1,12 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning_fragment;
 
-import android.graphics.Color;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.ViewGroup;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.Constant;
-import com.delta.smt.common.DialogRelativelayout;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
-import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
-import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -63,8 +51,8 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
             @Override
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
-                    getView().getItemWarningDatasFailed(result.getMessage());
-                    getItemWarningDatas(Constant.initLine());
+                    getView().getItemWarningConfirmSuccess();
+
                 }else {
                     getView().getItemWarningDatasFailed(result.getMessage());
                 }
@@ -82,8 +70,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
             @Override
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
-                    getView().getItemWarningDatasFailed(result.getMessage());
-                    getItemWarningDatas(Constant.initLine());
+                    getView().getItemWarningConfirmSuccess();
                 }else {
                     getView().getItemWarningDatasFailed(result.getMessage());
                 }

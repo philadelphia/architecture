@@ -1,7 +1,5 @@
 package com.delta.smt.entity;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 /**
@@ -13,7 +11,7 @@ public class ModuleDownDetailsItem {
     /**
      * code : 0
      * msg : Success
-     * rows : [{"id":1,"material_num":"4020108700","serial_num":"2016082500","feeder_id":"562632","slot":"03T0128","belong":"Feeder缓冲区","end_time":""},{"id":2,"material_num":"4020112600","serial_num":"2016082501","feeder_id":"KT8BD30661","slot":"03T0229","belong":"尾数仓","end_time":""},{"id":3,"material_num":"0341236301","serial_num":"2016082502","feeder_id":"KT8BD30663","slot":"03T0330","end_time":""}]
+     * rows : [{"material_no":"4020246000","serial_no":" D201611261521452449 ","feeder_id":"KT8BD30662","slot":"03T028","dest":"Feeder缓冲区","unbind_time":1200}]
      */
 
     private String code;
@@ -46,55 +44,44 @@ public class ModuleDownDetailsItem {
 
     public static class RowsBean {
         /**
-         * id : 1
-         * material_num : 4020108700
-         * serial_num : 2016082500
-         * feeder_id : 562632
-         * slot : 03T0128
-         * belong : Feeder缓冲区
-         * end_time :
+         * material_no : 4020246000
+         * serial_no :  D201611261521452449
+         * feeder_id : KT8BD30662
+         * slot : 03T028
+         * dest : Feeder缓冲区
+         * unbind_time : 1200
          */
 
-        private int id;
-        private String material_num;
-        private String serial_num;
+        private String material_no;
+        private String serial_no;
         private String feeder_id;
         private String slot;
-        private String belong;
-        private String end_time;
+        private String dest;
+        private String unbind_time;
 
-        public RowsBean(int id, String material_num, String serial_num, String feeder_id, String slot, String belong, String end_time) {
-            this.belong = belong;
-            this.end_time = end_time;
-            this.feeder_id = feeder_id;
-            this.id = id;
-            this.material_num = material_num;
-            this.serial_num = serial_num;
+        public RowsBean(String material_no,String serial_no,   String feeder_id, String slot,String dest, String unbind_time) {
+            this.dest = dest;
+            this.unbind_time = unbind_time;
             this.slot = slot;
+            this.serial_no = serial_no;
+            this.material_no = material_no;
+            this.feeder_id = feeder_id;
         }
 
-        public int getId() {
-            return id;
+        public String getMaterial_no() {
+            return material_no;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setMaterial_no(String material_no) {
+            this.material_no = material_no;
         }
 
-        public String getMaterial_num() {
-            return material_num;
+        public String getSerial_no() {
+            return serial_no;
         }
 
-        public void setMaterial_num(String material_num) {
-            this.material_num = material_num;
-        }
-
-        public String getSerial_num() {
-            return serial_num;
-        }
-
-        public void setSerial_num(String serial_num) {
-            this.serial_num = serial_num;
+        public void setSerial_no(String serial_no) {
+            this.serial_no = serial_no;
         }
 
         public String getFeeder_id() {
@@ -113,20 +100,29 @@ public class ModuleDownDetailsItem {
             this.slot = slot;
         }
 
-        public String getBelong() {
-            return belong;
+        public String getDest() {
+            return dest;
         }
 
-        public void setBelong(String belong) {
-            this.belong = belong;
+        public void setDest(String dest) {
+            this.dest = dest;
         }
 
-        public String getEnd_time() {
-            return end_time;
+        public String getUnbind_time() {
+            return unbind_time;
         }
 
-        public void setEnd_time(String end_time) {
-            this.end_time = end_time;
+        public void setUnbind_time(String unbind_time) {
+            this.unbind_time = unbind_time;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ModuleDownDetailsItem{" +
+                "code='" + code + '\'' +
+                ", msg='" + msg + '\'' +
+                ", rows=" + rows +
+                '}';
     }
 }

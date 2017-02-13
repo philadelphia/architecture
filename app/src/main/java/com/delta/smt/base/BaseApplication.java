@@ -29,9 +29,9 @@ import timber.log.Timber;
 public abstract class BaseApplication extends Application {
     static private BaseApplication mApplication;
     public LinkedList<BaseCommonActivity> mActivityList;
-    private ClientModule mClientModule;
-    private AppModule mAppModule;
-    private ServiceModule serviceModule;
+    private static ClientModule mClientModule;
+    private static AppModule mAppModule;
+    private static ServiceModule serviceModule;
     protected final String TAG = this.getClass().getSimpleName();
 
 
@@ -62,15 +62,15 @@ public abstract class BaseApplication extends Application {
     protected abstract String getBaseUrl();
 
 
-    public ServiceModule getServiceModule() {
+    public static ServiceModule getServiceModule() {
         return serviceModule;
     }
 
-    public ClientModule getClientModule() {
+    public static ClientModule getClientModule() {
         return mClientModule;
     }
 
-    public AppModule getAppModule() {
+    public static AppModule getAppModule() {
         return mAppModule;
     }
 
@@ -82,7 +82,7 @@ public abstract class BaseApplication extends Application {
      * @return
      */
 
-    public GlobeHttpHandler getHttpHandler() {
+    public static GlobeHttpHandler getHttpHandler() {
         return new GlobeHttpHandler() {
             @Override
             public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
@@ -134,7 +134,7 @@ public abstract class BaseApplication extends Application {
      *
      * @return
      */
-    protected Interceptor[] getInterceptors() {
+    public static Interceptor[] getInterceptors() {
         return null;
     }
 

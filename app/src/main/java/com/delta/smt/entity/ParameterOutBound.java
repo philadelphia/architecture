@@ -1,7 +1,5 @@
 package com.delta.smt.entity;
 
-import java.util.IdentityHashMap;
-
 /**
  * Created by Lin.Hou on 2017-01-15.
  */

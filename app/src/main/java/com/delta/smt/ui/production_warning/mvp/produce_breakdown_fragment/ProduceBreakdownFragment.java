@@ -8,8 +8,6 @@ import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
-import com.delta.smt.common.CommonBaseAdapter;
-import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
 import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -18,14 +16,11 @@ import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.DaggerP
 import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.ProduceBreakdownFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 
@@ -46,10 +41,10 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
     protected void initData() {
 
 
-        Log.i("aaa", "argument== " + Constant.initLine());
+        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
 
-        if (Constant.initLine()!= null) {
-            getPresenter().getItemBreakdownDatas(Constant.initLine());
+        if (((ProduceWarningActivity) getmActivity()).initLine()!= null) {
+            getPresenter().getItemBreakdownDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
     }
 
@@ -116,8 +111,8 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
     //Activity预警广播触发事件处理
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage){
-        if (Constant.initLine() != null) {
-            getPresenter().getItemBreakdownDatas(Constant.initLine());
+        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
+            getPresenter().getItemBreakdownDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
         Log.e(TAG, "event2: ");
     }

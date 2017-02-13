@@ -8,24 +8,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.delta.commonlibs.di.module.ClientModule;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
-import com.delta.smt.MainActivity;
 import com.delta.smt.R;
+import com.delta.smt.app.App;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.di.component.DaggerAppComponent;
 import com.delta.smt.entity.Download;
 import com.delta.smt.entity.Update;
 import com.delta.smt.ui.main.di.DaggerMainComponent;
@@ -38,6 +38,8 @@ import com.delta.smt.utils.StringUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.delta.smt.api.API.BASE_URL;
 
 /**
  * Created by Lin.Hou on 2017-01-09.
@@ -52,6 +54,8 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
 
     @BindView(R.id.setting_update)
     TextView checkUpdateButton;
+    @BindView(R.id.setting_server_address)
+    TextView settingServerAddress;
 
     //更新
     private static ProgressDialog progressDialog = null;
@@ -77,13 +81,20 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     @Override
     protected void initView() {
         toolbar.setTitle("");
+        if(SpUtil.getStringSF(SettingActivity.this,"server_address")==null){
+            settingServerAddress.setText("配置服务器地址"+"("+ BASE_URL+")");
+        }else if("".equals(SpUtil.getStringSF(SettingActivity.this,"server_address"))){
+            settingServerAddress.setText("配置服务器地址"+"()");
+        }else{
+            settingServerAddress.setText("配置服务器地址"+"("+SpUtil.getStringSF(SettingActivity.this,"server_address")+")");
+        }
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("设置");
     }
 
-    @OnClick({R.id.setting_update})
+    @OnClick({R.id.setting_update,R.id.setting_server_address})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setting_update:
@@ -97,6 +108,74 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                 } else {
                     getPresenter().checkUpdate();
                 }
+                break;
+            case R.id.setting_server_address:
+
+                final EditText et = new EditText(this);
+                if(SpUtil.getStringSF(SettingActivity.this,"server_address")!=null&&!"".equals(SpUtil.getStringSF(SettingActivity.this,"server_address"))){
+                    et.setText(SpUtil.getStringSF(SettingActivity.this,"server_address"));
+
+                }else if(SpUtil.getStringSF(SettingActivity.this,"server_address")==null){
+                    et.setText(BASE_URL);
+                }else{
+                    et.setText("");
+                }
+                et.setHint("请输入服务器IP或域名！");
+                new AlertDialog.Builder(this)
+                        .setTitle("配置服务器地址")
+                        .setView(et)
+                        .setCancelable(false)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String content_et = et.getText().toString();
+                                settingServerAddress.setText("配置服务器地址"+"("+content_et+")");
+                                SpUtil.SetStringSF(SettingActivity.this,"server_address",content_et);
+                                BASE_URL = SpUtil.getStringSF(SettingActivity.this,"server_address");
+                                ClientModule mClientModule = ClientModule//用于提供okhttp和retrofit的单列
+                                        .buidler()
+                                        .baseurl(BASE_URL)
+                                        .globeHttpHandler(App.getHttpHandler())
+                                        .interceptors(App.getInterceptors())
+                                        .build();
+                                App.appComponent = DaggerAppComponent.builder().clientModule(mClientModule).appModule(App.getAppModule()).serviceModule(App.getServiceModule()).build();
+                                dialogInterface.dismiss();
+
+                                /*final EditText et_restart_info = new EditText(SettingActivity.this);
+                                et_restart_info.setText("服务器地址已更改，请重启应用生效！");
+                                new AlertDialog.Builder(SettingActivity.this)
+                                        .setTitle("提示")
+                                        .setView(et_restart_info)
+                                        .setCancelable(false)
+                                        .setPositiveButton("重启", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                dialogInterface.dismiss();
+
+
+                                            }
+                                        })
+                                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .create()
+                                        .show();*/
+
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+
                 break;
         }
     }

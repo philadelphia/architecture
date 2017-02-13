@@ -15,7 +15,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px_10"
+            android:layout_marginBottom="@dimen/px_10">
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/manual_debit"
@@ -23,7 +25,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
-                android:text="手动扣账"/>
+                android:text="手动扣账"
+                android:textSize="@dimen/px_40"
+                android:layout_marginRight="@dimen/px_20"/>
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/automatic_debit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/manual_debit"
+                android:layout_marginRight="@dimen/px_40"
+                android:layout_alignBaseline="@id/manual_debit"
+                android:checked="false"
+                android:text="自动扣账"
+                android:textSize="@dimen/px_40"/>
         </RelativeLayout>
 
         <HorizontalScrollView
@@ -56,16 +70,11 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
         <!--<android.support.v7.widget.AppCompatButton
-            android:id="@+id/testSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="料盘发料测试"/>-->
-        <android.support.v7.widget.AppCompatButton
             android:id="@+id/testSendArrive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="超领料盘送达"/>
+            android:text="超领料盘送达"/>-->
     </LinearLayout>
 
 </RelativeLayout>

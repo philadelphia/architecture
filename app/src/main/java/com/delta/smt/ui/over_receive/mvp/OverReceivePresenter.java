@@ -7,8 +7,6 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import rx.functions.Action1;
@@ -52,7 +50,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
         });
     }
 
-    public void getOverReceiveItemsAfterSendArrive(String str){
+    /*public void getOverReceiveItemsAfterSendArrive(String str){
         getModel().getOverReceiveItemsAfterSendArrive(str).subscribe(new Action1<OverReceiveWarning>() {
             @Override
             public void call(OverReceiveWarning overReceiveWarning) {
@@ -64,7 +62,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
                 getView().onFalied();
             }
         });
-    }
+    }*/
 
     public void manualDebit(){
         Toast.makeText((Context) getView(),"手动扣账",Toast.LENGTH_SHORT).show();

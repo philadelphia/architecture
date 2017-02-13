@@ -5,8 +5,6 @@ import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.Result;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import rx.functions.Action1;

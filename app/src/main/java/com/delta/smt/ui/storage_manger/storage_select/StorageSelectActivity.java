@@ -1,6 +1,5 @@
 package com.delta.smt.ui.storage_manger.storage_select;
 
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +18,6 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.Result;
-import com.delta.smt.entity.StorageSelect;
 import com.delta.smt.ui.storage_manger.StorageWarningActivity;
 import com.delta.smt.ui.storage_manger.storage_select.di.DaggerStorageSelectComponent;
 import com.delta.smt.ui.storage_manger.storage_select.di.StorageSelectModule;
@@ -78,7 +75,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
             @Override
             protected void convert(CommonViewHolder holder, String item, int position) {
                 holder.setText(R.id.chcekbox, item);
-                CheckBox box = (CheckBox) holder.getView(R.id.chcekbox);
+                CheckBox box = holder.getView(R.id.chcekbox);
                 box.setTag(position);
                 checkBoxMap.put(position, box);
             }

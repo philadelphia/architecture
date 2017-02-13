@@ -6,15 +6,12 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.Light;
-import com.delta.smt.entity.ParameterLight;
 import com.delta.smt.entity.Success;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,10 +32,12 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             @Override
             public void call(String s) {
                 getView().storeSuccess(s);
+                Log.e("info","test成功");
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                Log.e("info","test失败");
                 getView().storeFaild(throwable.getMessage().toString());
             }
         });
@@ -93,7 +92,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().storeFaild("请确认后台服务正常启动");
+                getView().storeFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
@@ -151,7 +150,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().storeFaild("请确认后台服务正常启动");
+                getView().storeFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }

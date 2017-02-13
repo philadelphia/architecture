@@ -121,7 +121,8 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 }else{
                     holder.setText(R.id.tv_status, "状态: " + "仓库物料正在上模组");
                 }
-                //Toast.makeText(ModuleUpActivity.this, moduleUpWarningItem.getStart_time_plan()+"", Toast.LENGTH_SHORT).show();
+                holder.setText(R.id.tv_product_name_main,"主板:");
+                holder.setText(R.id.tv_product_name,"小板:");
             }
         };
         myAdapter.setOnItemTimeOnclck(this);

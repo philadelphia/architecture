@@ -88,8 +88,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     protected void initData() {
 
         Log.i("aaa", "选择进入：" + Constant.CONDITION);
-        if (Constant.initLine() != null) {
-            getPresenter().getTitileNumber(Constant.initLine());
+        if (initLine() != null) {
+            getPresenter().getTitileNumber(initLine());
         }
         if (warning_number == 0 && breakdown_number == 0 && info_number==0) {
             titles = new String[]{"预警", "故障", "消息"};
@@ -203,7 +203,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                     "故障(" + breakdown_number + ")",
                     "消息(" + info_number + ")"};
         }
-        initView();
+        ViewUtils.setTabTitle(mTlTitle, titles);
     }
 
     @Override
@@ -260,8 +260,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
             alertDialog = createDialog(lastWarningMessage);
             lastWarningMessage = null;
         }
-        if (Constant.initLine() != null) {
-            getPresenter().getTitileNumber(Constant.initLine());
+        if (initLine() != null) {
+            getPresenter().getTitileNumber(initLine());
         }
 
         Log.e(TAG, "event5: ");
@@ -279,5 +279,12 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public String initLine() {
+        Map<String, String> map = new HashMap<>();
+        map.put("lines", Constant.CONDITION);
+        String line = GsonTools.createGsonString(map);
+        return line;
     }
 }

@@ -27,9 +27,6 @@ import com.delta.smt.ui.product_tools.tools_info.di.ProduceToolsInfoModule;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoContract;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoPresenter;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 

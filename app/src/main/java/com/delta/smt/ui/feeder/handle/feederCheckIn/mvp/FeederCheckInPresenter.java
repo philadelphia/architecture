@@ -3,11 +3,8 @@ package com.delta.smt.ui.feeder.handle.feederCheckIn.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.FeederCheckInItem;
-import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.feeder.warning.checkin.mvp.CheckInContract;
-
-import java.util.List;
 
 import javax.inject.Inject;
 

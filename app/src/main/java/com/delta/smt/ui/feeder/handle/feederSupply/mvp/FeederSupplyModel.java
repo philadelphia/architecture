@@ -8,8 +8,6 @@ import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
 
 
-import java.util.List;
-
 import rx.Observable;
 
 /**
