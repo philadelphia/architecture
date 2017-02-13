@@ -82,11 +82,11 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     protected void initView() {
         toolbar.setTitle("");
         if(SpUtil.getStringSF(SettingActivity.this,"server_address")==null){
-            settingServerAddress.setText("配置服务器地址"+"("+ BASE_URL+")");
+            settingServerAddress.setText("配置服务器地址"+"\n("+ BASE_URL+")");
         }else if("".equals(SpUtil.getStringSF(SettingActivity.this,"server_address"))){
             settingServerAddress.setText("配置服务器地址"+"()");
         }else{
-            settingServerAddress.setText("配置服务器地址"+"("+SpUtil.getStringSF(SettingActivity.this,"server_address")+")");
+            settingServerAddress.setText("配置服务器地址"+"\n("+SpUtil.getStringSF(SettingActivity.this,"server_address")+")");
         }
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -129,7 +129,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String content_et = et.getText().toString();
-                                settingServerAddress.setText("配置服务器地址"+"("+content_et+")");
+                                settingServerAddress.setText("配置服务器地址"+"\n("+content_et+")");
                                 SpUtil.SetStringSF(SettingActivity.this,"server_address",content_et);
                                 BASE_URL = SpUtil.getStringSF(SettingActivity.this,"server_address");
                                 ClientModule mClientModule = ClientModule//用于提供okhttp和retrofit的单列
