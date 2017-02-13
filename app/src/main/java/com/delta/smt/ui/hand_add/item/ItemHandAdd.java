@@ -43,7 +43,8 @@ public class ItemHandAdd extends CountDownEntity{
     public ItemHandAdd() {
     }
 
-    public ItemHandAdd(String title, String produce_line, String material_station, int realAmount, String info,String countdown,Long endTime) {
+    public ItemHandAdd(String title, String produce_line, String material_station,
+                       int realAmount, String info,String countdown,Long endTime) {
         this.title = title;
         this.produce_line = produce_line;
         this.material_station = material_station;
