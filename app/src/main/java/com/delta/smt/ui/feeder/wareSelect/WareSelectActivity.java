@@ -72,6 +72,7 @@ public class WareSelectActivity extends BaseActivity<WareSelectPresenter> implem
     protected void initView() {
         Log.i(TAG, "initView: ");
         toolbar.setTitle("");
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.GONE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
