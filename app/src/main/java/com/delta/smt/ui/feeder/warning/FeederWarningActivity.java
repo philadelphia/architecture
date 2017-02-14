@@ -104,6 +104,7 @@ public class FeederWarningActivity extends BaseActivity implements TabLayout.OnT
     @Override
     protected void initView() {
         toolbar.setTitle("");
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.GONE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
