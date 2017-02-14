@@ -40,7 +40,7 @@ import butterknife.BindView;
  */
 
 public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
-        ModuleUpContract.View, ItemOnclick, WarningManger.OnWarning{
+        ModuleUpContract.View, ItemOnclick, WarningManger.OnWarning {
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -53,7 +53,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     private List<ModuleUpWarningItem.RowsBean> dataList = new ArrayList<>();
-    private ItemCountdownViewAdapter <ModuleUpWarningItem.RowsBean> myAdapter;
+    private ItemCountdownViewAdapter<ModuleUpWarningItem.RowsBean> myAdapter;
 
     @Inject
     WarningManger warningManger;
@@ -64,8 +64,6 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @BindView(R.id.showNetState)
     TextView showNetState;
-
-
 
 
     @Override
@@ -116,12 +114,13 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine());
                 holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
                 holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFace());
-                if(moduleUpWarningItem.getStart_time_plan().equals("")){
+                if (moduleUpWarningItem.getStart_time_plan().equals("")) {
                     holder.setText(R.id.tv_status, "状态: " + "上模组完成");
-                }else{
+                } else {
                     holder.setText(R.id.tv_status, "状态: " + "仓库物料正在上模组");
                 }
-                //Toast.makeText(ModuleUpActivity.this, moduleUpWarningItem.getStart_time_plan()+"", Toast.LENGTH_SHORT).show();
+                holder.setText(R.id.tv_product_name_main, "主板:");
+                holder.setText(R.id.tv_product_name, "小板:");
             }
         };
         myAdapter.setOnItemTimeOnclck(this);
@@ -136,14 +135,13 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     public void onSuccess(ModuleUpWarningItem data) {
-        if (data.getMsg().toLowerCase().equals("success")){
+        if (data.getMsg().toLowerCase().equals("success")) {
             dataList.clear();
             List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
             dataList.addAll(rows);
             myAdapter.notifyDataSetChanged();
             showNetState.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -174,7 +172,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         showDialog(warningMessage);
     }
 
-    public void showDialog(String message){
+    public void showDialog(String message) {
         //1.创建这个DialogRelativelayout
         DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
         //2.传入的是红色字体的标题
@@ -190,13 +188,13 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 .setCancelable(false)
                 .setView(dialogRelativelayout)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //if (workOrderID.length()!=0){
-                getPresenter().getAllModuleUpWarningItems();
-                //}
-            }
-        }).show();
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //if (workOrderID.length()!=0){
+                        getPresenter().getAllModuleUpWarningItems();
+                        //}
+                    }
+                }).show();
     }
 
     @Override
@@ -218,7 +216,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Override
     public void onItemClick(View item, int position) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constant.WORK_ITEM_ID,dataList.get(position).getWork_order());
+        bundle.putString(Constant.WORK_ITEM_ID, dataList.get(position).getWork_order());
         Intent intent = new Intent(this, ModuleUpBindingActivity.class);
         intent.putExtras(bundle);
         //this.startActivity(intent);
@@ -239,15 +237,15 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==Constant.ACTIVITY_REQUEST_WORK_ITEM_ID) {
-            if(resultCode==Constant.ACTIVITY_RESULT_WORK_ITEM_ID) {
-                String result=data.getStringExtra(Constant.WORK_ITEM_ID);
+        if (requestCode == Constant.ACTIVITY_REQUEST_WORK_ITEM_ID) {
+            if (resultCode == Constant.ACTIVITY_RESULT_WORK_ITEM_ID) {
+                String result = data.getStringExtra(Constant.WORK_ITEM_ID);
 
-                for(int i=0;i<dataList.size();i++){
-                    if(dataList.get(i).getWork_order().equals(result)){
+                for (int i = 0; i < dataList.size(); i++) {
+                    if (dataList.get(i).getWork_order().equals(result)) {
                         ModuleUpWarningItem.RowsBean rb = dataList.get(i);
                         rb.setStart_time_plan("");
-                        dataList.set(i,rb);
+                        dataList.set(i, rb);
                     }
                 }
                 myAdapter.notifyDataSetChanged();
@@ -277,13 +275,13 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         }
     }*/
 
-    public String getWorkOrderIDCacheStr(List<String> workOrderIDCacheList){
+    public String getWorkOrderIDCacheStr(List<String> workOrderIDCacheList) {
         String res = "";
-        if(workOrderIDCacheList.size()>0){
-            for (int i=0;i<workOrderIDCacheList.size()-1;i++){
-                res+=workOrderIDCacheList.get(i)+",";
+        if (workOrderIDCacheList.size() > 0) {
+            for (int i = 0; i < workOrderIDCacheList.size() - 1; i++) {
+                res += workOrderIDCacheList.get(i) + ",";
             }
-            res+=workOrderIDCacheList.get(workOrderIDCacheList.size()-1);
+            res += workOrderIDCacheList.get(workOrderIDCacheList.size() - 1);
         }
         return res;
     }

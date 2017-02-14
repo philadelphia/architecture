@@ -1,9 +1,11 @@
 package com.delta.smt.ui.fault_processing.processing;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,7 +13,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
-import com.delta.commonlibs.utils.TimeUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.libs.adapter.ItemCountViewAdapter;
@@ -67,7 +68,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     WarningManger warningManger;
     private List<RowsBean> datas = new ArrayList<>();
     List<SolutionMessage.RowsBean> solutionDatas = new ArrayList<>();
-   // private CommonBaseAdapter<RowsBean> mMyAdapter;
+    // private CommonBaseAdapter<RowsBean> mMyAdapter;
     CommonBaseAdapter<SolutionMessage.RowsBean> dialog_adapter;
     private String lines;
     private LinearLayoutManager manager;
@@ -204,74 +205,10 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     public void onClick() {
     }
 
-//    @Override
-//    public void onItemClick(View Itemview, final RowsBean item, int position) {
-//        getPresenter().getSolution(item.getFaultCode());
-//        solutionDatas.clear();
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.mystyle);
-//        View view = LayoutInflater.from(this).inflate(R.layout.dialogview_fault_processing, null);
-//        builder.setView(view);
-//        TextView textView = ViewUtils.findView(view, R.id.tv_title);
-//        RecyclerView rv_ll = ViewUtils.findView(view, R.id.rv_processing_dialog);
-//        TextView tv_add = ViewUtils.findView(view, R.id.tv_add);
-//        textView.setText(item.getFaultType() + " " + item.getFaultCode());
-//        final AlertDialog dialog = builder.show();
-//        tv_add.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putString(Constant.FAULTCODE, item.getFaultCode());
-//                IntentUtils.showIntent(FalutProcessingActivity.this, FaultProcessingAddActivity.class, bundle);
-//                dialog.dismiss();
-//            }
-//        });
-//        Log.e(TAG, "onItemClick: " + rv_ll.toString());
-//        dialog_adapter = new CommonBaseAdapter<SolutionMessage.RowsBean>(this, solutionDatas) {
-//            @Override
-//            protected void convert(CommonViewHolder holder, SolutionMessage.RowsBean item, int position) {
-//
-//                holder.setText(R.id.tv_content, item.getName());
-//            }
-//
-//            @Override
-//            protected int getItemViewLayoutId(int position, SolutionMessage.RowsBean item) {
-//                return R.layout.item_fault_processing_dialog;
-//            }
-//        };
-//
-//        rv_ll.setLayoutManager(new LinearLayoutManager(this));
-//        rv_ll.setAdapter(dialog_adapter);
-//        rv_ll.setVerticalScrollBarEnabled(true);
-//        dialog_adapter.setOnItemClickListener(new CommonBaseAdapter.OnItemClickListener<SolutionMessage.RowsBean>() {
-//            @Override
-//            public void onItemClick(View view, SolutionMessage.RowsBean rowsBean, int position) {
-//                Bundle bundle = new Bundle();
-//                bundle.putString(Constant.FAULTID, String.valueOf(item.getId()));
-//                bundle.putString(Constant.FAULTCODE, rowsBean.getFaultCode());
-//                bundle.putString(Constant.FAULTSOLUTIONID, String.valueOf(rowsBean.getId()));
-//                bundle.putString(Constant.FAULTSOLUTIONNAME, rowsBean.getName());
-//                IntentUtils.showIntent(FalutProcessingActivity.this, FaultSolutionDetailActivity.class, bundle);
-//                dialog.dismiss();
-//
-//            }
-//        });
-//
-//    }
-
     @Override
     public void warningComing(String warningMessage) {
 
 
-    }
-
-    private String getStringTime(Long cnt) {
-        long day = TimeUtils.toDays(cnt);
-        Long hour = TimeUtils.toHours(cnt);
-        Long min = TimeUtils.toMinutes(cnt);
-        Long second = TimeUtils.toSeconds(cnt);
-        return String.valueOf(second);
-        //return String.format(Locale.CHINA, "02d:%02d:%02d:%02", day, hour, min, second);
     }
 
 
@@ -286,6 +223,8 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         TextView textView = ViewUtils.findView(view, R.id.tv_title);
         RecyclerView rv_ll = ViewUtils.findView(view, R.id.rv_processing_dialog);
         TextView tv_add = ViewUtils.findView(view, R.id.tv_add);
+        tv_add.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        tv_add.getPaint().setAntiAlias(true);//抗锯齿
         textView.setText(item.getFaultType() + " " + item.getFaultCode());
         final AlertDialog dialog = builder.show();
         tv_add.setOnClickListener(new View.OnClickListener() {
@@ -303,7 +242,11 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
             @Override
             protected void convert(CommonViewHolder holder, SolutionMessage.RowsBean item, int position) {
 
-                holder.setText(R.id.tv_content, item.getName());
+                TextView textView = holder.getView(R.id.tv_content);
+                textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+                textView.getPaint().setAntiAlias(true);//抗锯齿
+                textView.setText(Html.fromHtml(item.getName()));
+                //holder.setText(R.id.tv_content, item.getName());
             }
 
             @Override

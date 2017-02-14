@@ -1,9 +1,16 @@
 package com.delta.smt.ui.hand_add.mvp;
 
+import android.support.v7.widget.LinearSmoothScroller;
+import android.util.Log;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -20,7 +27,14 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
         super(model, mView);
     }
 
-    public void getItemHandAddDatas(){
+    public void getItemHandAddDatas(String producelines){
+
+        Map<String,String> maps=new HashMap<>();
+        maps.put("lines",producelines);
+        producelines=new Gson().toJson(maps);
+        Log.e("aaa", "getItemHandAddDatas: "+producelines );
+
+
         getModel().getItemHandAddDatas().subscribe(new Action1<Result<ItemHandAdd>>() {
             @Override
             public void call(Result<ItemHandAdd> itemHandAdds) {

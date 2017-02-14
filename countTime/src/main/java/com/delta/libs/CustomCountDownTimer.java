@@ -4,13 +4,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 
-/**
- * 使用android.os.CountDownTimer的源码
- * 1. 对回调onTick做了细小调整，已解决最后1秒不会倒计时到0，要等待2秒才回调onFinish
- * 2. 添加了一些自定义方法
- * Created by iWgang on 15/10/18.
- * https://github.com/iwgang/CountdownView
- */
 public abstract class CustomCountDownTimer {
     private static final int MSG = 1;
     private final long mMillisInFuture;

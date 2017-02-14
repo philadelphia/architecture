@@ -24,8 +24,8 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
     }
     public void fetchCheckStock(String s){
         getModel().getCheckStock(s).subscribe(new Action1<CheckStock>() {
-            @Override
-            public void call(CheckStock rowsBeen) {
+                @Override
+                public void call(CheckStock rowsBeen) {
                 if ("0".equals(rowsBeen.getCode())) {
                     if (rowsBeen.getMsg().contains("Success")){
                     List<CheckStock.RowsBean> rows = rowsBeen.getRows();

@@ -61,7 +61,6 @@
                 android:id="@+id/tv_step"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:text="故障排除步骤："
                 android:textColor="@color/C_333333"
                 android:textSize="40px" />
@@ -70,6 +69,8 @@
 
         <EditText
             android:id="@+id/et_step"
+            android:padding="10px"
+            android:hint="提示：可以在电脑端进行详细编辑。"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30px"

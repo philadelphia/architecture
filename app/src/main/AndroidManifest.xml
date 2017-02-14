@@ -101,6 +101,9 @@
             android:name=".ui.hand_add.mvp.HandAddActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity"
+            android:screenOrientation="portrait"/>
 
         <!--lin-->
         <activity

@@ -42,13 +42,33 @@
         android:textColor="@color/c_333333"/>
 
     <TextView
-        android:id="@+id/tv_status"
+        android:id="@+id/tv_product_name_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_faceID"
         android:layout_marginTop="30px"
-        android:layout_marginBottom="50px"
         android:text="第四行数据"
+        android:textSize="40px"
+        android:textColor="@color/c_333333"/>
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_product_name_main"
+        android:layout_marginTop="30px"
+        android:text="第五行数据"
+        android:textSize="40px"
+        android:textColor="@color/c_333333"/>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_product_name"
+        android:layout_marginTop="30px"
+        android:layout_marginBottom="30px"
+        android:text="第六行数据"
         android:textSize="40px"
         android:textColor="@color/c_333333"/>
 
@@ -63,11 +83,24 @@
         android:layout_marginRight="50px"
         android:orientation="vertical">
 
+        <!--<TextView
+            android:
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="预计上线时间:"
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />-->
+
         <TextView
             android:id="@+id/time_remain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="上线剩余时间"
+            android:layout_marginTop="22px"
+            android:text="距离上线时长:"
             android:textColor="@color/c_333333"
             android:textSize="40px" />
 
@@ -76,7 +109,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/time_remain"
-            android:layout_below="@+id/time_remain"
             android:layout_marginTop="22px"
             app:isShowDay="false"
             app:isShowHour="true"
@@ -88,5 +120,6 @@
             app:suffixTextSize="40px"
             app:timeTextColor="@color/c_333333"
             app:timeTextSize="40px" />
+
     </LinearLayout>
 </RelativeLayout>

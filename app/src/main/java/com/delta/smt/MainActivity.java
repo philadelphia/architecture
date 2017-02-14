@@ -38,7 +38,6 @@ import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
 import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.main.update.DownloadService;
-import com.delta.smt.ui.mantissa_warehouse.ready.MantissaWarehouseReadyActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
 import com.delta.smt.ui.over_receive.OverReceiveActivity;
 import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
@@ -122,8 +121,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         } else {
             getPresenter().checkUpdate();
         }
-
-
         fuctions = new ArrayList<>();
         fuctions.add(new Fuction("PCB入库", R.drawable.ic_warehouseroompreparation));
         fuctions.add(new Fuction("PCB盘点", R.drawable.ic_warehouseinventory));
@@ -131,7 +128,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("仓库备料", R.drawable.ic_warehousestorage));
         fuctions.add(new Fuction("仓库超领", R.drawable.ic_warehouseroomchaoling));
         fuctions.add(new Fuction("Feeder缓冲区", R.drawable.ic_feederbuffer));
-        fuctions.add(new Fuction("尾数仓备料", R.drawable.ic_mantissawarehousestock));
+        //fuctions.add(new Fuction("尾数仓备料", R.drawable.ic_mantissawarehousestock));
         fuctions.add(new Fuction("上模组", R.drawable.ic_onthemodule));
         fuctions.add(new Fuction("下模组", R.drawable.ic_themodule));
         fuctions.add(new Fuction("故障处理", R.drawable.ic_faulthandling));
@@ -178,12 +175,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 bundle.putInt(Constant.SELECTTYPE, 0);
                 IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
                 break;
+
             case "手补件":
-                IntentUtils.showIntent(this, HandAddActivity.class);
+                bundle=new Bundle();
+                bundle.putInt(Constant.SELECTTYPE,2);
+                IntentUtils.showIntent(this,ProduceLineActivity.class,bundle);
+//                IntentUtils.showIntent(this, HandAddActivity.class);
                 break;
-            case "尾数仓备料":
-                IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class);
-                break;
+
             case "尾数仓入库及退料":
                 IntentUtils.showIntent(this, MantissaWarehouseReturnAndPutStorageActivity.class);
                 break;

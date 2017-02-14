@@ -14,14 +14,16 @@ public class MaterialCar {
 
     /**
      * code : 0
-     * msg : Error
-     * rows : [{"msg":"需要绑定备料车"}]
+     * msg : Success
+     * rows : [{"id":1,"car_name":"SMT-01","type":0}]
      */
 
     private String code;
     private String msg;
     /**
-     * msg : 需要绑定备料车
+     * id : 1
+     * car_name : SMT-01
+     * type : 0
      */
 
     private List<RowsBean> rows;
@@ -51,14 +53,32 @@ public class MaterialCar {
     }
 
     public static class RowsBean {
-        private String msg;
+        private int id;
+        private String car_name;
+        private int type;
 
-        public String getMsg() {
-            return msg;
+        public int getId() {
+            return id;
         }
 
-        public void setMsg(String msg) {
-            this.msg = msg;
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getCar_name() {
+            return car_name;
+        }
+
+        public void setCar_name(String car_name) {
+            this.car_name = car_name;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
         }
     }
 }

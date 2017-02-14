@@ -63,6 +63,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     DialogRelativelayout mDialogRelativelayout;
     private boolean tag = false;
     private String dialogwarningMessage;
+    private String producelines;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -73,7 +74,8 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     protected void initData() {
 
-
+        producelines=getIntent().getExtras().getString(Constant.PRODUCTIONLINE);
+        Log.e("aaa", producelines);
         //设置接收哪种预警
         mWarningManger.addWarning(Constant.HAND_ADD, getClass());
         //是否接收预警 可以控制预警时机
@@ -81,7 +83,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
         mWarningManger.setOnWarning(this);
 
-        getPresenter().getItemHandAddDatas();
+        getPresenter().getItemHandAddDatas(producelines);
     }
 
     @Override
@@ -229,7 +231,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         return new AlertDialog.Builder(this).setCancelable(false).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getPresenter().getItemHandAddDatas();
+                getPresenter().getItemHandAddDatas(producelines);
                 dialog.dismiss();
             }
         }).show();
@@ -266,7 +268,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                             String mS=mGson.toJson(mMap);
                             Log.i("HandAddActivity", mS);
                             getPresenter().getItemHandAddConfirm(mS);
-                            getPresenter().getItemHandAddDatas();
+                            getPresenter().getItemHandAddDatas(producelines);
                             mAdapter.notifyDataSetChanged();
 
                             if (tag) {
