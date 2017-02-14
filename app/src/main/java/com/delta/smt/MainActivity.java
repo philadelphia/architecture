@@ -30,7 +30,7 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.Download;
 import com.delta.smt.entity.Fuction;
 import com.delta.smt.entity.Update;
-import com.delta.smt.ui.checkstock.CheckStockActivity;
+import com.delta.smt.ui.checkstock.StartWorkAndStopWorkActivity;
 import com.delta.smt.ui.feeder.wareSelect.WareSelectActivity;
 import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 import com.delta.smt.ui.main.di.DaggerMainComponent;
@@ -168,7 +168,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 IntentUtils.showIntent(this, StoreRoomActivity.class);
                 break;
             case "PCB盘点":
-                IntentUtils.showIntent(this, CheckStockActivity.class);
+                IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
                 break;
             case "生产中预警":
                 bundle = new Bundle();

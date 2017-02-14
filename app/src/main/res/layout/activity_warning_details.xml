@@ -72,14 +72,32 @@
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_alignBottom="@id/storage_datacodetv"
             />
-
+        <TextView
+            android:id="@+id/storage_counttv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/style_storagetv"
+            android:text="@string/storage_counttv"
+            android:layout_below="@id/storage_datacodeed"
+            android:layout_alignLeft="@id/storage_pcbtv"
+            />
+        <EditText
+            android:id="@+id/storage_counted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            style="@style/style_storageedi"
+            android:layout_toRightOf="@id/storage_counttv"
+            android:layout_alignLeft="@id/storage_pcbed"
+            android:layout_alignBottom="@id/storage_counttv"
+            />
         <TextView
             android:id="@+id/storage_idtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/style_storagetv"
             android:text="@string/storage_idtv"
-            android:layout_below="@id/storage_datacodeed"
+            android:layout_below="@id/storage_counttv"
             android:layout_alignLeft="@id/storage_pcbtv"
             />
         <EditText
@@ -104,7 +122,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_marginTop="@dimen/px_30"
         >
 
         <Button

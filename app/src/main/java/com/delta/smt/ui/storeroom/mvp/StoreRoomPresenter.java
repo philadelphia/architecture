@@ -108,7 +108,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
 //            data.setPcbCode(materialBlockBarCodes.get(i).getBusinessCode());
 //            data.setDateCode(materialBlockBarCodes.get(i).getDC());
 //            data.setCount(materialBlockBarCodes.get(i).getCount());
-//            data.setSubShelfCode(s);
+//
 //            listData.add(data);
 //        }
 //        pa.setData(listData);
@@ -122,6 +122,9 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
                 jsonObject1.putOpt("dateCode",materialBlockBarCodes.get(i).getDC());
                 jsonObject1.putOpt("serial",materialBlockBarCodes.get(i).getStreamNumber());
                 jsonObject1.putOpt("count",materialBlockBarCodes.get(i).getCount());
+                jsonObject1.putOpt("unit",materialBlockBarCodes.get(i).getUnit());
+                jsonObject1.putOpt("vender",materialBlockBarCodes.get(i).getVendor());
+                jsonObject1.putOpt("invoiceNum",materialBlockBarCodes.get(i).getInvNo());
                 jsonObject1.putOpt("subShelfCode",s);
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -17,8 +17,10 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -124,7 +126,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             @Override
             protected void convert(CommonViewHolder holder, CheckStock.RowsBean item, int position) {
                 holder.setText(R.id.statistics, item.getPartNum());
-                holder.setText(R.id.statistics_id, item.getBoxSerial());
                 holder.setText(R.id.statistics_pcbnumber, "" + item.getBoundCount());
                 if (item.getRealCount() == 0) {
                     holder.setText(R.id.statistics_number, "");
@@ -134,7 +135,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 holder.setText(R.id.statistics_storenumber, item.getStatus());
                 if (item.isColor()){
                    holder.setBackgroundColor(R.id.statistics, Color.YELLOW);
-                   holder.setBackgroundColor(R.id.statistics_id, Color.YELLOW);
                    holder.setBackgroundColor(R.id.statistics_pcbnumber, Color.YELLOW);
                    holder.setBackgroundColor(R.id.statistics_number, Color.YELLOW);
                    holder.setBackgroundColor(R.id.statistics_storenumber, Color.YELLOW);
@@ -216,6 +216,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                 }}
                             }}
                         }
+                        ToastUtils.showMessage(this,"料号："+mMaterbarCode.getDeltaMaterialNumber()+"\n数量："+mMaterbarCode.getCount()+"\n单位："+mMaterbarCode.getUnit()+"\nVendor："+mMaterbarCode.getVendor()+"\n Data Code："+mMaterbarCode.getDC()+"\n PCB Code："+mMaterbarCode.getStreamNumber().substring(0,2)+"\n 流水号"+mMaterbarCode.getStreamNumber());
                     }
                     isChexNumber=0;
                     status = 2;
@@ -365,7 +366,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 if (mErrorDialog.isShowing()) {
                     isShowDialog=true;
                     mErrorDialog.dismiss();
-                getPresenter().fetchError(mMaterbarCode.getStreamNumber(), mFrameLocation.getSource());}
+                getPresenter().fetchError(mMaterbarCode.getStreamNumber(), mFrameLocation.getSource());
+                getPresenter().fetchCheckStock(mFrameLocation.getSource());}
                 break;
             case R.id.result_cancel:
                 if (mErrorDialog.isShowing()) {
@@ -385,7 +387,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                IntentUtils.showIntent(this, MainActivity.class);
                 break;
             default:
                 break;
