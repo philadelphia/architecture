@@ -55,4 +55,15 @@ public class JsonProductRequestToolsList {
         return this.jigTypeName;
     }
 
+    @Override
+    public String toString() {
+        return "JsonProductRequestToolsList{" +
+                "jigID=" + jigID +
+                ", barcode='" + barcode + '\'' +
+                ", loanStatus=" + loanStatus +
+                ", shelfName='" + shelfName + '\'' +
+                ", jigTypeID=" + jigTypeID +
+                ", jigTypeName='" + jigTypeName + '\'' +
+                '}';
+    }
 }

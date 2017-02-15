@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="80px"
-    android:orientation="horizontal">
-
+              android:orientation="horizontal"
+              android:layout_width="wrap_content"
+              android:layout_height="80px">
     <TextView
-        android:id="@+id/tv_number"
+        android:id="@+id/tv_material_id"
         android:layout_width="270px"
         android:layout_height="match_parent"
         android:background="@drawable/textview_border"
@@ -16,32 +15,42 @@
         android:textSize="12dp" />
 
     <TextView
+        android:id="@+id/tv_material_station"
+        android:layout_width="270px"
+        android:layout_height="match_parent"
+        android:background="@drawable/textview_border"
+        android:gravity="center"
+        android:text="模组料站"
+        android:textColor="#333333"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/tv_remain_num"
+        android:layout_width="270px"
+        android:layout_height="match_parent"
+        android:background="@drawable/textview_border"
+        android:gravity="center"
+        android:text="剩余料量"
+        android:textColor="#333333"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/tv_unit"
+        android:layout_width="270px"
+        android:layout_height="match_parent"
+        android:background="@drawable/textview_border"
+        android:gravity="center"
+        android:text="单位"
+        android:textColor="#333333"
+        android:textSize="12dp" />
+
+    <TextView
         android:id="@+id/tv_location"
         android:layout_width="270px"
         android:layout_height="match_parent"
         android:background="@drawable/textview_border"
         android:gravity="center"
-        android:text="架位"
-        android:textColor="#333333"
-        android:textSize="12dp" />
-
-    <TextView
-        android:id="@+id/tv_needNumber"
-        android:layout_width="270px"
-        android:layout_height="match_parent"
-        android:background="@drawable/textview_border"
-        android:gravity="center"
-        android:text="需求量"
-        android:textColor="#333333"
-        android:textSize="12dp" />
-
-    <TextView
-        android:id="@+id/tv_shipments"
-        android:layout_width="270px"
-        android:layout_height="match_parent"
-        android:background="@drawable/textview_border"
-        android:gravity="center"
-        android:text="已发料量"
+        android:text="余料车位置"
         android:textColor="#333333"
         android:textSize="12dp" />
 </com.zhy.autolayout.AutoLinearLayout>

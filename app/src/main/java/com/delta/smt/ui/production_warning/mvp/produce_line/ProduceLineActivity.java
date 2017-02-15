@@ -22,9 +22,11 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.fault_processing.processing.FalutProcessingActivity;
+import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 import com.delta.smt.ui.production_warning.di.produce_line.DaggerProduceLineCompnent;
 import com.delta.smt.ui.production_warning.di.produce_line.ProduceLineModule;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
+import com.delta.smt.ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 
 import java.util.ArrayList;
@@ -58,6 +60,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
     @Override
     protected void initData() {
+        //初始请求的产线
         getPresenter().getProductionLineDatas();
         Intent intent = getIntent();
         type = intent.getExtras().getInt(Constant.SELECTTYPE, -1);
@@ -71,6 +74,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("产线选择");
+
 
 
         //设置Recyleview的adapter
@@ -130,14 +134,22 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.PRODUCTIONLINE, mStringBuffer.toString());
                 if (type == 0) {
-                    IntentUtils.showIntent(this, ProduceWarningActivity.class, bundle);
+//                    IntentUtils.showIntent(this, ProduceWarningActivity.class, bundle);
+                    IntentUtils.showIntent(this, AcceptMaterialsActivity.class);
 
                 }
+
                 if (type == 1) {
                     IntentUtils.showIntent(this, FalutProcessingActivity.class, bundle);
 
                 }
+
+                if (type == 2) {
+                    IntentUtils.showIntent(this, HandAddActivity.class, bundle);
+
+                }
                 break;
+
             case R.id.btn_all_select:
 
                 if (datas.size() != 0) {
@@ -149,6 +161,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 Log.e(TAG, "onClick: " + datas.toString());
 
                 break;
+
             case R.id.btn_all_cancel:
                 if (datas.size() != 0) {
                     for (ItemProduceLine data : datas) {

@@ -175,8 +175,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 bundle.putInt(Constant.SELECTTYPE, 0);
                 IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
                 break;
+
             case "手补件":
-                IntentUtils.showIntent(this, HandAddActivity.class);
+                bundle=new Bundle();
+                bundle.putInt(Constant.SELECTTYPE,2);
+                IntentUtils.showIntent(this,ProduceLineActivity.class,bundle);
+//                IntentUtils.showIntent(this, HandAddActivity.class);
                 break;
 
             case "尾数仓入库及退料":
