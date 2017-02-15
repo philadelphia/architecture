@@ -390,31 +390,33 @@ public interface ApiService {
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     //上模组
-    @GET("smm/plugmod/getProductionLines")
+    @GET("SMM/plugmod/getProductionLines")
     Observable<ModuleUpWarningItem> getModuleUpWarningItems();
 
-    @GET("smm/plugmod/getModsByWordOrder")
-    Observable<ModuleUpBindingItem> getModuleUpBindingItems(@Query("workOrderNum") String content);
+    @GET("SMM/plugmod/getModsByWordOrder")
+    Observable<ModuleUpBindingItem> getModuleUpBindingItems(@Query("condition") String condition);
 
-    @GET("smm/plugmod/updateMod")
-    Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(@Query("id") String id, @Query("feeder") String feederID);
+    @GET("SMM/plugmod/updateMod")
+    Observable<ModuleUpBindingItem> getMaterialAndFeederBindingResult(@Query("condition") String condition);
 
     //下模组
-    @GET("smm/unplugmod/getProductionLines")
+    @GET("SMM/unplugmod/getProductionLines")
     Observable<ModuleDownWarningItem> getModuleDownWarningItems();
 
-    @GET("smm/unplugmod/getVirtualLine")
-    Observable<VirtualLineBindingItem> getVirtualLineBindingItems(@Query("workOrderNum") String content);
+    //smm/unplugmod/getModelList?condition={"work_order":"1","side":"A"}
+    //@GET("smm/unplugmod/getVirtualLine")
+    @GET("SMM/unplugmod/getModelList")
+    Observable<VirtualLineBindingItem> getVirtualLineBindingItems(@Query("condition") String condition);
 
-    @GET("smm/unplugmod/getModsByWordOrder")
-    Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("workOrderNum") String content);
+    @GET("SMM/unplugmod/getModsByWordOrder")
+    Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("condition") String condition);
 
-    @GET("smm/unplugmod/updateMod")
+    @GET("SMM/unplugmod/updateMod")
     Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("ids") String content);
 
-    @GET("smm/unplugmod/bindVirtualLine")
-    Observable<VirtualBindingResult> getVirtualBindingResult(@Query("id") String id, @Query("vitualId") String vitualId);
+    @GET("SMM/unplugmod/bindVirtualLine")
+    Observable<VirtualLineBindingItem> getVirtualBindingResult(@Query("condition") String condition);
 
-    @GET("smm/unplugmod/getModNumByMaterial")
-    Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num, @Query("workOrderNum") String num);
+    //@GET("SMM/unplugmod/getModNumByMaterial")
+    //Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num, @Query("workOrderNum") String num);
 }

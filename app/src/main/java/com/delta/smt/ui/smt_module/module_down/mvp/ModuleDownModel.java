@@ -5,6 +5,9 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModuleDownWarningItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import rx.Observable;
 
 /**
@@ -22,10 +25,13 @@ public class ModuleDownModel extends BaseModel<ApiService> implements ModuleDown
         /*ModuleDownWarningItem mi = new ModuleDownWarningItem();
         List<ModuleDownWarningItem.RowsBean> l = new ArrayList<>();
         ModuleDownWarningItem.RowsBean rb = new ModuleDownWarningItem.RowsBean();
-        rb.setEnd_time("");
-        rb.setFace("A");
-        rb.setLine("1");
         rb.setWork_order("1234");
+        rb.setProduct_name_main("A");
+        rb.setProduct_name("a");
+        rb.setLine_name("H1");
+        rb.setSide("B");
+        rb.setStatus("等待下模组");
+        rb.setUnplug_mod_actual_finish_time("120000");
         l.add(rb);
         mi.setRows(l);
         return Observable.just(mi);*/

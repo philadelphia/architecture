@@ -90,4 +90,6 @@
     <string name="startAndstop_startwork">开始盘点</string>
     <string name="startAndstop_stopwork">结束盘点</string>
     <string name="storage_counttv">数量：</string>
+    <string name="MainBoard">主板</string>
+    <string name="LittleBoard">小板</string>
 </resources>

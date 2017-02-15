@@ -3,6 +3,9 @@ package com.delta.smt.ui.smt_module.module_up_binding;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +22,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
@@ -30,13 +34,18 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.ui.smt_module.module_down_details.ModuleDownDetailsActivity;
 import com.delta.smt.ui.smt_module.module_up_binding.di.DaggerModuleUpBindingComponent;
 import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingPresenter;
+import com.delta.smt.ui.smt_module.virtual_line_binding.VirtualLineBindingActivity;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -60,8 +69,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     RecyclerView recyContent;
     @BindView(R.id.btn_upload)
     AppCompatButton btnUpload;
-    @BindView(R.id.tv_moduleStationID)
-    TextView tvModuleID;
+    @BindView(R.id.container)
+    CoordinatorLayout container;
 
     private CommonBaseAdapter<ModuleUpBindingItem.RowsBean> adapterTitle;
     private CommonBaseAdapter<ModuleUpBindingItem.RowsBean> adapter;
@@ -77,6 +86,13 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String feederCodeCache = null;
 
     private String workItemID;
+    private String side;
+    private String productNameMain;
+    private String productName;
+    private String linName;
+
+    private String materialBlockNumber;
+    private String serialNo;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -87,7 +103,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     protected void initData() {
         Intent intent = ModuleUpBindingActivity.this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
-        getPresenter().getAllModuleUpBindingItems(workItemID);
+        side = intent.getStringExtra(Constant.SIDE);
+        linName = intent.getStringExtra(Constant.LINE_NAME);
+        productName = intent.getStringExtra(Constant.PRODUCT_NAME);
+        productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("work_order", workItemID);
+        Gson gson = new Gson();
+        String argument = gson.toJson(map);
+        getPresenter().getAllModuleUpBindingItems(argument);
         barCodeIpml.setOnGunKeyPressListener(this);
     }
 
@@ -101,17 +126,14 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
         recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        dataList.add(new ModuleUpBindingItem.RowsBean(1, "料号", "流水码", "Feeder号", "模组料站", "上模组时间"));
+        dataList.add(new ModuleUpBindingItem.RowsBean("工单","料号", "流水码", "FeederID", "模组料站", "",""));
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_ID, item.getId() + "");
-                holder.setText(R.id.tv_materialID, item.getMaterial_num());
-                holder.setText(R.id.tv_serialID, item.getSerial_num());
+                holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_moduleUpTime, item.getCreate_time());
             }
 
             @Override
@@ -131,12 +153,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
-                holder.setText(R.id.tv_ID, item.getId() + "");
-                holder.setText(R.id.tv_materialID, item.getMaterial_num());
-                holder.setText(R.id.tv_serialID, item.getSerial_num());
+                holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_moduleUpTime, item.getCreate_time());
             }
 
             @Override
@@ -162,46 +181,70 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
             dataSource.addAll(rowsBeen);
             adapter.notifyDataSetChanged();
-            if (isAllFeederScaned()) {
+
+            /*if(isAllFeederBinded()){
                 new AlertDialog.Builder(this)
-                        .setTitle("上模组完成")
-                        .setMessage("工单" + workItemID + "上模组完成！")
+                        .setTitle("提示")
+                        .setMessage("工单"+workItemID+"上模组完成！")
                         .setCancelable(false)
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent();
-                                intent.putExtra(Constant.WORK_ITEM_ID, workItemID);
-                                setResult(Constant.ACTIVITY_RESULT_WORK_ITEM_ID, intent);
-                                dialogInterface.dismiss();
                                 ModuleUpBindingActivity.this.finish();
+                                dialogInterface.dismiss();
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                            public void onClick(DialogInterface dialogInterface, int which) {
+                                dialogInterface.dismiss();
                             }
                         })
                         .create()
                         .show();
-            }
+            }*/
         }
 
     }
 
     @Override
     public void onFalied() {
-
+        Toast.makeText(this, "上模组产线列表网络请求失败！", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onSuccessBinding(MaterialAndFeederBindingResult data) {
+    public void onSuccessBinding(ModuleUpBindingItem data) {
         if(data.getMsg().toLowerCase().equals("success")){
-            getPresenter().getAllModuleUpBindingItems(workItemID);
+            Snackbar.make(container,dataSource.get(scan_position).getSlot()+"绑定成功！",Snackbar.LENGTH_INDEFINITE).show();
+            dataSource.clear();
+            List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
+            dataSource.addAll(rowsBeen);
             scan_position = -1;
             adapter.notifyDataSetChanged();
+
             state = 1;
+            if(isAllFeederBinded()){
+                new AlertDialog.Builder(this)
+                        .setTitle("提示")
+                        .setMessage("工单"+workItemID+"上模组完成！")
+                        .setCancelable(false)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ModuleUpBindingActivity.this.finish();
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int which) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+        }else{
 
         }
     }
@@ -223,6 +266,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     protected void onResume() {
         super.onResume();
+
         try {
             barCodeIpml.hasConnectBarcode();
         } catch (DevicePairedNotFoundException e) {
@@ -241,124 +285,59 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onScanSuccess(String barcode) {
-
+        Toast.makeText(this, barcode, Toast.LENGTH_SHORT).show();
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:
                 try {
                     MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    String materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                    if (isExistInDataSource(materialBlockNumber, dataSource)) {
-                        if (feederCodeCache != null) {
-                            materialBlockCodeCache = null;
-                            feederCodeCache = null;
-                        }
-                        setItemHighLightBasedOnMID(materialBlockNumber);
-                        materialBlockCodeCache = materialBlockNumber;
+                    materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
+                    serialNo = materialBlockBarCode.getStreamNumber();
+                    if(!isExistInDataSourceAndHighLight(materialBlockNumber,serialNo,dataSource)){
+                        Snackbar.make(container,"该料盘不属于此套工单，请确认工单及扫描是否正确！",Snackbar.LENGTH_INDEFINITE).show();
+                    }else{
                         state = 2;
-                    } else {
-                        Toast.makeText(this, "列表中不包含此料盘码!", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (EntityNotFountException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "请扫描料盘码！", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(container,"请先扫描料盘码！",Snackbar.LENGTH_INDEFINITE).show();
                 }
                 break;
             case 2:
-                if (materialBlockCodeCache != null && feederCodeCache == null) {
                     try {
                         Feeder feederCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
                         if(isFeederExistInDataSource(barcode,dataSource)){
-                            Toast.makeText(this, "此Feeder已经被绑定！", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(container,"此Feeder已经被绑定！",Snackbar.LENGTH_INDEFINITE).show();
                         }else{
-                            feederCodeCache = barcode;
-                            getPresenter().getMaterialAndFeederBindingResult(dataSource.get(scan_position).getId()+"",feederCodeCache);
-
+                            Map<String, String> map = new HashMap<>();
+                            map.put("work_order", workItemID);
+                            map.put("material_no", materialBlockNumber);
+                            map.put("feeder_id", barcode);
+                            map.put("serial_no", serialNo);
+                            Gson gson = new Gson();
+                            String argument = gson.toJson(map);
+                            getPresenter().getMaterialAndFeederBindingResult(argument);
                         }
                     } catch (EntityNotFountException e) {
                         try {
                             MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                            String materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                            if (isExistInDataSource(materialBlockNumber, dataSource)) {
-                                if (feederCodeCache != null) {
-                                    materialBlockCodeCache = null;
-                                    feederCodeCache = null;
-                                }
-                                setItemHighLightBasedOnMID(materialBlockNumber);
-                                materialBlockCodeCache = materialBlockNumber;
+                            materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
+                            serialNo = materialBlockBarCode.getStreamNumber();
+                            if(!isExistInDataSourceAndHighLight(materialBlockNumber,serialNo,dataSource)){
+
+                                Snackbar.make(container,"该料盘不属于此套工单，请确认工单及扫描是否正确！",Snackbar.LENGTH_INDEFINITE).show();
+                            }else{
                                 state = 2;
-                            } else {
-                                Toast.makeText(this, "此处不支持此码!", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (EntityNotFountException ee) {
                             ee.printStackTrace();
-                            Toast.makeText(this, "请扫描料盘码！", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(container,"请先扫描料盘码！",Snackbar.LENGTH_INDEFINITE).show();
                         }
                         e.printStackTrace();
                     }
-                }else{
-                    Toast.makeText(this, "请扫描料盘码！", Toast.LENGTH_SHORT).show();
-                }
                 break;
         }
-        /*BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        switch (BarCodeUtils.barCodeType(barcode)) {
-            case FEEDER:
-                try {
-                    if (materialBlockCodeCache != null && feederCodeCache == null) {
-                        Feeder feederCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
-                        setItemFeederNumber(feederCode.getSource(), materialBlockCodeCache);
-                        setItemModuleUpDateAndTime(StringUtils.getNowDateAndTime(), materialBlockCodeCache);
-                        feederCodeCache = feederCode.getSource();
-                        if (isAllFeederScaned()) {
-                            new AlertDialog.Builder(this)
-                                    .setTitle("上模组完成")
-                                    .setMessage("工单" + workItemID + "上模组完成！")
-                                    .setCancelable(false)
-                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            Intent intent = new Intent();
-                                            intent.putExtra(Constant.WORK_ITEM_ID, workItemID);
-                                            setResult(Constant.ACTIVITY_RESULT_WORK_ITEM_ID, intent);
-                                            dialogInterface.dismiss();
-                                            ModuleUpBindingActivity.this.finish();
-                                        }
-                                    })
-                                    .create()
-                                    .show();
-                        }
-                    } else {
-                        Toast.makeText(this, "请首先扫描料盘码!", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (EntityNotFountException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case MATERIAL_BLOCK_BARCODE:
-                try {
-                    MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    String materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                    if (isExistInDataSource(materialBlockNumber, dataSource)) {
-                        if (feederCodeCache != null) {
-                            materialBlockCodeCache = null;
-                            feederCodeCache = null;
-                        }
-                        setItemHighLightBasedOnMID(materialBlockNumber);
-                        materialBlockCodeCache = materialBlockNumber;
-                    } else {
-                        Toast.makeText(this, "列表中不包含此码!", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (EntityNotFountException e) {
-                    e.printStackTrace();
-                }
-                break;
-            default:
-                Toast.makeText(this, "此处不支持此类型码!", Toast.LENGTH_SHORT).show();
-                break;
-        }*/
     }
 
     @Override
@@ -371,44 +350,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
 
-    public void setItemHighLightBasedOnMID(String materialID) {
-        for (int i = 0; i < dataSource.size(); i++) {
-            if (dataSource.get(i).getMaterial_num().equals(materialID)) {
-                scan_position = i;
-                break;
-            }
-        }
+    public void setItemHighLightBasedOnMID(int position) {
+        scan_position = position;
         adapter.notifyDataSetChanged();
     }
-
-    public void setItemFeederNumber(String feederNumber, String materialBlockCode) {
-        if (dataSource.size() > 0) {
-            for (ModuleUpBindingItem.RowsBean listItem : dataSource) {
-                if (listItem.getMaterial_num().equals(materialBlockCode)) {
-                    listItem.setFeeder_id(feederNumber);
-                }
-            }
-            adapter.notifyDataSetChanged();
-        }
-
-    }
-
-    public void setItemModuleUpDateAndTime(String upTime, String materialBlockCode) {
-        if (dataSource.size() > 0) {
-            for (ModuleUpBindingItem.RowsBean listItem : dataSource) {
-                if (listItem.getMaterial_num().equals(materialBlockCode)) {
-                    listItem.setCreate_time(upTime);
-                }
-            }
-            adapter.notifyDataSetChanged();
-        }
-
-    }
-
-    /*@Override
-    public void onItemClick(View view, ModuleUpBindingItem.RowsBean item, final int item_position) {
-
-    }*/
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -422,10 +367,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean isExistInDataSource(String item, List<ModuleUpBindingItem.RowsBean> list) {
+    public boolean isExistInDataSourceAndHighLight(String item_m,String item_s, List<ModuleUpBindingItem.RowsBean> list) {
         if (list.size() > 0) {
-            for (ModuleUpBindingItem.RowsBean list_item : list) {
-                if (list_item.getMaterial_num().equals(item)) {
+            for (int i=0;i<list.size();i++) {
+                if(list.get(i).getMaterial_no().equals(item_m)&&list.get(i).getSerial_no().equals(item_s)){
+                    setItemHighLightBasedOnMID(i);
                     return true;
                 }
             }
@@ -455,13 +401,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     }
 
-    public boolean isAllFeederScaned() {
-        boolean res = false;
+    public boolean isAllFeederBinded() {
+        boolean res = true;
 
         if (dataSource.size() > 0) {
             for (ModuleUpBindingItem.RowsBean listItem : dataSource) {
-                if (listItem.getCreate_time()!=null&&listItem.getCreate_time().length()>5) {
-                    res =  true;
+                if (listItem.getFeeder_id()!=null&&listItem.getFeeder_id().length()>0) {
                 }else{
                     res = false;
                     break;

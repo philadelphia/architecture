@@ -30,6 +30,10 @@ public class Constant {
 
     //工单ID
     public static final String WORK_ITEM_ID = "WorkItemID";
+    public static final String PRODUCT_NAME_MAIN = "product_name_main";
+    public static final String PRODUCT_NAME = "product_name";
+    public static final String LINE_NAME="line_name";
+    public static final String SIDE = "side";
 
 
     //更新状态
