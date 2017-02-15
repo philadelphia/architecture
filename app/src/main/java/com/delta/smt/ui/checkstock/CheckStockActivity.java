@@ -34,6 +34,7 @@ import com.delta.smt.ui.checkstock.di.CheckStockModule;
 import com.delta.smt.ui.checkstock.di.DaggerCheckStockComponent;
 import com.delta.smt.ui.checkstock.mvp.CheckStockContract;
 import com.delta.smt.ui.checkstock.mvp.CheckStockPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,12 +171,16 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case 1:
                 try {
                     mFrameLocation = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
+                    VibratorAndVoiceUtils.correctVibrator (this);
+                    VibratorAndVoiceUtils.correctVoice(this);
                     if (mFrameLocation!=null){
                     cargonTv.setText(mFrameLocation.getSource());
                     getPresenter().fetchCheckStock(mFrameLocation.getSource());
                     status = 2;}
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
+                    VibratorAndVoiceUtils. wrongVibrator (this);
+                    VibratorAndVoiceUtils. wrongVoice (this);
                     SnackbarUtil.showMassage(mianCheckStockActivityView,"扫描的架位二维码错误，请重新扫描");
                     //ToastUtils.showMessage(this, "扫描的架位二维码错误，请重新扫描");
                     status = 1;
@@ -184,6 +189,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case 2:
                 try {
                     mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    VibratorAndVoiceUtils.correctVibrator (this);
+                    VibratorAndVoiceUtils.correctVoice(this);
                     if (mMaterbarCode != null) {
                         for (int i = 0; i < dataList.size(); i++) {
                            if (!dataList.get(i).isCheck()){
@@ -231,6 +238,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     status = 2;
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
+                    VibratorAndVoiceUtils. wrongVibrator (this);
+                    VibratorAndVoiceUtils. wrongVoice (this);
                     SnackbarUtil.showMassage(mianCheckStockActivityView,"请重新扫描架位");
                     //ToastUtils.showMessage(this, "请重新扫描架位");
                     status = 3;
@@ -239,6 +248,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case 3:
                 try {
                     mFrameLocationSuccess = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
+                    VibratorAndVoiceUtils.correctVibrator (this);
+                    VibratorAndVoiceUtils.correctVoice(this);
                     if (mFrameLocationSuccess.getSource().equals(mFrameLocation.getSource())) {
                         getPresenter().fetchException(mFrameLocationSuccess.getSource());
                     } else {
@@ -253,7 +264,9 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    SnackbarUtil.showMassage(mianCheckStockActivityView,"请输入数量");
+                    VibratorAndVoiceUtils. wrongVibrator (this);
+                    VibratorAndVoiceUtils. wrongVoice (this);
+                    //SnackbarUtil.showMassage(mianCheckStockActivityView,"请输入数量");
                     ToastUtils.showMessageLong(this, "扫描的架位二维码错误，请重新扫描");
                 }
 

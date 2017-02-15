@@ -32,6 +32,7 @@ import com.delta.smt.ui.storeroom.di.DaggerStoreRoomComponent;
 import com.delta.smt.ui.storeroom.di.StoreRoomModule;
 import com.delta.smt.ui.storeroom.mvp.StoreRoomContract;
 import com.delta.smt.ui.storeroom.mvp.StoreRoomPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +139,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
             mBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+            VibratorAndVoiceUtils.correctVibrator (this);
+            VibratorAndVoiceUtils.correctVoice(this);
             Log.e("barcode", mBarCode.getDeltaMaterialNumber());
             storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
             storageVendored.setText(mBarCode.getDeltaMaterialNumber().substring(0, 2));
@@ -154,6 +157,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
             e.printStackTrace();
             try {
                 PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
+                VibratorAndVoiceUtils.correctVibrator (this);
+                VibratorAndVoiceUtils.correctVoice(this);
                 storageIded.setText(frameCode.getSource());
                 Log.e("info", frameCode.getSource());
                 if (materialBlockBarCodes.size() < 4) {
@@ -161,7 +166,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                         getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
                 }
             } catch (EntityNotFountException e1) {
-
+                VibratorAndVoiceUtils. wrongVibrator (this);
+                VibratorAndVoiceUtils. wrongVoice (this);
                 e1.printStackTrace();
             }
 

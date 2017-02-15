@@ -30,6 +30,7 @@ import com.delta.smt.ui.store.di.DaggerWarningListComponent;
 import com.delta.smt.ui.store.di.WarningListModule;
 import com.delta.smt.ui.store.mvp.WarningListContract;
 import com.delta.smt.ui.store.mvp.WarningListPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -289,6 +290,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
             try {
                 mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                VibratorAndVoiceUtils.correctVibrator (this);
+                VibratorAndVoiceUtils.correctVoice(this);
                 if (mMaterbarCode.getStreamNumber() != null) {
                     getPresenter().fetchPcbNumber(mMaterbarCode.getStreamNumber());
                 }
@@ -296,6 +299,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 e.printStackTrace();
                 try {
                     mFramebarCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
+                    VibratorAndVoiceUtils.correctVibrator (this);
+                    VibratorAndVoiceUtils.correctVoice(this);
                     //Snackbar.make(activityMianview, "请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE).show();
                         if (mIsAlarmInfo) {
                             getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
@@ -305,6 +310,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                         }
 
             } catch (EntityNotFountException e1) {
+                    VibratorAndVoiceUtils. wrongVibrator (this);
+                    VibratorAndVoiceUtils. wrongVoice (this);
                 e1.printStackTrace();
 
         }
