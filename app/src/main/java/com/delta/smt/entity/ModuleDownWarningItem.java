@@ -8,14 +8,139 @@ import java.util.List;
  */
 
 public class ModuleDownWarningItem {
-
     /**
      * code : 0
      * msg : Success
-     * rows : [{"line":"H3","work_order":"1","face":"A","end_time":"Jan 9, 2017 2:36:53 PM"}]
+     * rows : [{"line":"H3","work_order":"1","side":"A","Product_Name":"A","Product_Name_Main":"A","offline_time":"01-18 12:49"}]
      */
 
     private String code;
+    private String msg;
+    private List<RowsBean> rows;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public List<RowsBean> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<RowsBean> rows) {
+        this.rows = rows;
+    }
+
+    public static class RowsBean extends CountDownEntity{
+        /**
+         * line : H3
+         * work_order : 1
+         * side : A
+         * Product_Name : A
+         * Product_Name_Main : A
+         * offline_time : 01-18 12:49
+         */
+
+        private String line_name;
+        private String work_order;
+        private String side;
+        private String product_name;
+        private String product_name_main;
+        private String status;
+        private String unplug_mod_actual_finish_time;
+
+        @Override
+        public Long getCountDownLong() {
+            //long time_s = Long.parseLong(unplug_mod_actual_finish_time);
+            return 0L;
+        }
+
+        public String getLine_name() {
+            return line_name;
+        }
+
+        public void setLine_name(String line_name) {
+            this.line_name = line_name;
+        }
+
+        public String getProduct_name() {
+            return product_name;
+        }
+
+        public void setProduct_name(String product_name) {
+            this.product_name = product_name;
+        }
+
+        public String getProduct_name_main() {
+            return product_name_main;
+        }
+
+        public void setProduct_name_main(String product_name_main) {
+            this.product_name_main = product_name_main;
+        }
+
+        public String getUnplug_mod_actual_finish_time() {
+            return unplug_mod_actual_finish_time;
+        }
+
+        public void setUnplug_mod_actual_finish_time(String unplug_mod_actual_finish_time) {
+            this.unplug_mod_actual_finish_time = unplug_mod_actual_finish_time;
+        }
+
+        public String getWork_order() {
+            return work_order;
+        }
+
+        public void setWork_order(String work_order) {
+            this.work_order = work_order;
+        }
+
+        public String getSide() {
+            return side;
+        }
+
+        public void setSide(String side) {
+            this.side = side;
+        }
+
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String date2TimeStamp(String date_str, String format) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(format);
+                return String.valueOf(sdf.parse(date_str).getTime());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+        public String timeStamp() {
+            long time = System.currentTimeMillis();
+            String t = String.valueOf(time);
+            return t;
+        }
+    }
+
+    /*private String code;
     private String msg;
     private List<RowsBean> rows;
 
@@ -45,12 +170,6 @@ public class ModuleDownWarningItem {
     }
 
     public static class RowsBean extends CountDownEntity {
-        /**
-         * line : H3
-         * work_order : 1
-         * face : A
-         * end_time : Jan 9, 2017 2:36:53 PM
-         */
 
         @Override
         public Long getCountDownLong() {
@@ -108,20 +227,8 @@ public class ModuleDownWarningItem {
             this.end_time = end_time;
         }
 
-        public String date2TimeStamp(String date_str, String format) {
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat(format);
-                return String.valueOf(sdf.parse(date_str).getTime());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return "";
-        }
 
-        public String timeStamp() {
-            long time = System.currentTimeMillis();
-            String t = String.valueOf(time);
-            return t;
-        }
-    }
+    }*/
+
+
 }

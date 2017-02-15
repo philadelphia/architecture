@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30px"
-        android:text="第一行数据"
+        android:text="线别"
         android:textSize="40px"
         android:textColor="@color/c_333333"/>
 
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_lineID"
         android:layout_marginTop="30px"
-        android:text="第二行数据"
+        android:text="工单号"
         android:textSize="40px"
         android:textColor="@color/c_333333"/>
 
@@ -37,7 +37,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tv_workID"
         android:layout_marginTop="30px"
-        android:text="第三行数据"
+        android:text="面别"
         android:textSize="40px"
         android:textColor="@color/c_333333"/>
 
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_faceID"
         android:layout_marginTop="30px"
-        android:text="第四行数据"
+        android:text="主板"
         android:textSize="40px"
         android:textColor="@color/c_333333"/>
 
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_product_name_main"
         android:layout_marginTop="30px"
-        android:text="第五行数据"
+        android:text="小板"
         android:textSize="40px"
         android:textColor="@color/c_333333"/>
 
@@ -68,7 +68,7 @@
         android:layout_below="@+id/tv_product_name"
         android:layout_marginTop="30px"
         android:layout_marginBottom="30px"
-        android:text="第六行数据"
+        android:text="状态"
         android:textSize="40px"
         android:textColor="@color/c_333333"/>
 

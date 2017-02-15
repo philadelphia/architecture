@@ -19,21 +19,21 @@ public interface VirtualLineBindingContract {
 
         public void onFalied();
 
-        public void onSuccessBinding(VirtualBindingResult data);
+        /*public void onSuccessBinding(VirtualLineBindingItem data);
 
-        public void onFailBinding();
+        public void onFailBinding();*/
 
-        public void onSuccessGetModByMate(ModNumByMaterialResult data);
+        //public void onSuccessGetModByMate(ModNumByMaterialResult data);
 
-        public void onFailGetModByMate();
+        //public void onFailGetModByMate();
 
     }
 
     interface Model extends IModel {
         public Observable<VirtualLineBindingItem> getAllVirtualLineBindingItems(String str);
 
-        public Observable<VirtualBindingResult>getVirtualBinding(String id, String virtualId);
+        public Observable<VirtualLineBindingItem>getVirtualBinding(String str);
 
-        public Observable<ModNumByMaterialResult>getModNumByMaterial(String str,String num);
+        //public Observable<ModNumByMaterialResult>getModNumByMaterial(String str,String num);
     }
 }

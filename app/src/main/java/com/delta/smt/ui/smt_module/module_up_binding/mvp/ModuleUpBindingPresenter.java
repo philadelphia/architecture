@@ -36,14 +36,14 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
     }
 
     public void upLoadToMES(){
-        Toast.makeText((Context) getView(),"上传到MES",Toast.LENGTH_SHORT).show();
+        Toast.makeText((Context) getView(),"“上传到MES”功能待添加！",Toast.LENGTH_SHORT).show();
     }
 
-    public void getMaterialAndFeederBindingResult(String id,String feederID){
-        getModel().getMaterialAndFeederBindingResult(id,feederID).subscribe(new Action1<MaterialAndFeederBindingResult>() {
+    public void getMaterialAndFeederBindingResult(String str){
+        getModel().getMaterialAndFeederBindingResult(str).subscribe(new Action1<ModuleUpBindingItem>() {
             @Override
-            public void call(MaterialAndFeederBindingResult materialAndFeederBindingResult) {
-                getView().onSuccessBinding(materialAndFeederBindingResult);
+            public void call(ModuleUpBindingItem moduleUpBindingItem) {
+                getView().onSuccessBinding(moduleUpBindingItem);
             }
         }, new Action1<Throwable>() {
             @Override

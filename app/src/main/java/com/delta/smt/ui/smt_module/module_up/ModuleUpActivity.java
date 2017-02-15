@@ -73,22 +73,13 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     protected void initData() {
-        //通过预警获得工单号
-        //workOrderIDCacheList.add("1");
-        //workOrderIDCacheList.add("2");
-
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.MODULE_UP_WARNING, getClass());
         //是否接收预警 可以控制预警时机
         warningManger.setRecieve(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-
-
-        //workOrderID = getWorkOrderIDCacheStr(workOrderIDCacheList);
-        //if (workOrderID.length()!=0){
-        getPresenter().getAllModuleUpWarningItems();
-        //}
+        //getPresenter().getAllModuleUpWarningItems();
 
 
     }
@@ -111,16 +102,17 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             @Override
             protected void convert(ItemTimeViewHolder holder, ModuleUpWarningItem.RowsBean moduleUpWarningItem, int position) {
 
-                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine());
+                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine_name());
                 holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
-                holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFace());
-                if (moduleUpWarningItem.getStart_time_plan().equals("")) {
-                    holder.setText(R.id.tv_status, "状态: " + "上模组完成");
-                } else {
-                    holder.setText(R.id.tv_status, "状态: " + "仓库物料正在上模组");
+                holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getSide());
+                holder.setText(R.id.tv_product_name_main, "主板: "+moduleUpWarningItem.getProduct_name_main());
+                holder.setText(R.id.tv_product_name, "小板: "+moduleUpWarningItem.getProduct_name());
+                if("204".equals(moduleUpWarningItem.getStatus())){
+                    holder.setText(R.id.tv_status,"状态: "+"正在上模组");
+                }else if("205".equals(moduleUpWarningItem.getStatus())){
+                    holder.setText(R.id.tv_status,"状态: "+"上模组完成");
                 }
-                holder.setText(R.id.tv_product_name_main, "主板:");
-                holder.setText(R.id.tv_product_name, "小板:");
+                //holder.setText(R.id.tv_status,"状态: "+moduleUpWarningItem.getStatus());
             }
         };
         myAdapter.setOnItemTimeOnclck(this);
@@ -164,6 +156,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         }
 
         super.onResume();
+        getPresenter().getAllModuleUpWarningItems();
     }
 
     //预警
@@ -235,7 +228,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constant.ACTIVITY_REQUEST_WORK_ITEM_ID) {
             if (resultCode == Constant.ACTIVITY_RESULT_WORK_ITEM_ID) {
@@ -254,7 +247,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 
     /*public void deleteItemByWorkItemID(String workItemID){
         for(ModuleUpWarningItem.RowsBean list_item:dataList){
