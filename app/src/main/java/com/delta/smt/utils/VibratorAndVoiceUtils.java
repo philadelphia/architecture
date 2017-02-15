@@ -28,6 +28,14 @@ public class VibratorAndVoiceUtils {
         vibrator.vibrate(pattern, -1); //重复两次上面的pattern 如果只想震动一次，index设为-1
     }
 
+    //自定义时常的震动模式
+    public static void myStyleVibrator(Context context, long[] pattern) {
+
+        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(pattern, -1); //重复两次上面的pattern 如果只想震动一次，index设为-1
+
+    }
+
     public static void correctVoice(Context context) {
 
         music = MediaPlayer.create(context, R.raw.scansuccess);

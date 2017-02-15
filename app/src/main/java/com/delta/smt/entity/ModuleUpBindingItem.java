@@ -44,15 +44,91 @@ public class ModuleUpBindingItem {
 
     public static class RowsBean {
         /**
-         * id : 3
-         * part_id : 0351234709
-         * feeder_id :
-         * create_time :
-         * serial_num : 5432
-         * solt : 03T028
+         * work_order : 2016
+         * material_no : 111111111
+         * serial_no : 222
+         * feeder_id : 1
+         * slot : 03T01
+         * qty : 0
+         * id : 0
          */
 
-        private int id;
+        private String work_order;
+        private String material_no;
+        private String serial_no;
+        private String feeder_id;
+        private String slot;
+        private String qty;
+        private String id;
+
+        public RowsBean(String work_order, String material_no, String serial_no, String feeder_id, String slot, String qty, String id) {
+            this.feeder_id = feeder_id;
+            this.work_order = work_order;
+            this.slot = slot;
+            this.serial_no = serial_no;
+            this.qty = qty;
+            this.material_no = material_no;
+            this.id = id;
+        }
+
+        public String getWork_order() {
+            return work_order;
+        }
+
+        public void setWork_order(String work_order) {
+            this.work_order = work_order;
+        }
+
+        public String getMaterial_no() {
+            return material_no;
+        }
+
+        public void setMaterial_no(String material_no) {
+            this.material_no = material_no;
+        }
+
+        public String getSerial_no() {
+            return serial_no;
+        }
+
+        public void setSerial_no(String serial_no) {
+            this.serial_no = serial_no;
+        }
+
+        public String getFeeder_id() {
+            return feeder_id;
+        }
+
+        public void setFeeder_id(String feeder_id) {
+            this.feeder_id = feeder_id;
+        }
+
+        public String getSlot() {
+            return slot;
+        }
+
+        public void setSlot(String slot) {
+            this.slot = slot;
+        }
+
+        public String getQty() {
+            return qty;
+        }
+
+        public void setQty(String qty) {
+            this.qty = qty;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+
+        /*private int id;
         private String material_num;
         private String serial_num;
         private String feeder_id;
@@ -114,6 +190,6 @@ public class ModuleUpBindingItem {
 
         public void setMaterial_num(String material_num) {
             this.material_num = material_num;
-        }
+        }*/
     }
 }

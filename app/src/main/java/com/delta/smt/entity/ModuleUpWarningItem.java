@@ -54,8 +54,8 @@ public class ModuleUpWarningItem {
         @Override
         public Long getCountDownLong() {
             long res = 0;
-            if(start_time_plan.length()!=0){
-                long getTime = Long.parseLong(date2TimeStamp(start_time_plan, "yyyy-MM-dd HH:mm:ss"));
+            if(online_plan_start_time.length()!=0){
+                long getTime = Long.parseLong(date2TimeStamp(online_plan_start_time, "yyyy-MM-dd HH:mm:ss"));
                 long nowTime = Long.parseLong(timeStamp());
                 if (nowTime < getTime) {
                     res = getTime - nowTime;
@@ -69,17 +69,60 @@ public class ModuleUpWarningItem {
             return res;
         }
 
-        private String line;
+        private String line_name;
         private String work_order;
-        private String face;
-        private String start_time_plan;
+        private String side;
+        private String product_name_main;
+        private String product_name;
+        private String status;
+        private String online_plan_start_time;
 
-        public String getLine() {
-            return line;
+        public String getStatus() {
+            return status;
         }
 
-        public void setLine(String line) {
-            this.line = line;
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getLine_name() {
+            return line_name;
+        }
+
+        public void setLine_name(String line_name) {
+            this.line_name = line_name;
+        }
+
+        public String getSide() {
+            return side;
+        }
+
+        public void setSide(String side) {
+            this.side = side;
+        }
+
+        public String getProduct_name_main() {
+            return product_name_main;
+        }
+
+        public void setProduct_name_main(String product_name_main) {
+            this.product_name_main = product_name_main;
+        }
+
+        public String getProduct_name() {
+            return product_name;
+        }
+
+        public void setProduct_name(String product_name) {
+            this.product_name = product_name;
+        }
+
+        public String getOnline_plan_start_time() {
+            return online_plan_start_time;
+        }
+
+        public void setOnline_plan_start_time(String online_plan_start_time) {
+            this.online_plan_start_time = online_plan_start_time;
         }
 
         public String getWork_order() {
@@ -88,22 +131,6 @@ public class ModuleUpWarningItem {
 
         public void setWork_order(String work_order) {
             this.work_order = work_order;
-        }
-
-        public String getFace() {
-            return face;
-        }
-
-        public void setFace(String face) {
-            this.face = face;
-        }
-
-        public String getStart_time_plan() {
-            return start_time_plan;
-        }
-
-        public void setStart_time_plan(String start_time_plan) {
-            this.start_time_plan = start_time_plan;
         }
 
         public String date2TimeStamp(String date_str, String format) {

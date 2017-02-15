@@ -25,7 +25,7 @@ public class ModuleUpBindingModel extends BaseModel<ApiService> implements Modul
     }
 
     @Override
-    public Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(String id,String feederID) {
-        return getService().getMaterialAndFeederBindingResult(id,feederID).compose(RxsRxSchedulers.<MaterialAndFeederBindingResult>io_main());
+    public Observable<ModuleUpBindingItem> getMaterialAndFeederBindingResult(String str) {
+        return getService().getMaterialAndFeederBindingResult(str).compose(RxsRxSchedulers.<ModuleUpBindingItem>io_main());
     }
 }

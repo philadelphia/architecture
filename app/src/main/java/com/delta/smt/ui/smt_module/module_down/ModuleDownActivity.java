@@ -59,7 +59,6 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     WarningManger warningManger;
 
     String workOrderID = "";
-    SharedPreferences preferences=null;
 
     @BindView(R.id.showNetState)
             TextView showNetState;
@@ -71,7 +70,6 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @Override
     protected void initData() {
-        preferences=getSharedPreferences("module_down", Context.MODE_PRIVATE);
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.MODULE_DOWN_WARNING, getClass());
         //是否接收预警 可以控制预警时机
@@ -99,15 +97,13 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             @Override
             protected void convert(ItemTimeViewHolder holder, ModuleDownWarningItem.RowsBean moduleUpWarningItem, int position) {
 
-                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine());
+                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine_name());
                 holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
-                holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getFace());
-                if(moduleUpWarningItem.getEnd_time().equals("-")){
-                    holder.setText(R.id.tv_status, "状态: " + "下模组完成");
-                }else{
-                    holder.setText(R.id.tv_status, "状态: " + "等待下模组");
-                }
-                //holder.setText(R.id.tv_status, "状态: " + "等待下模组");
+                holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getSide());
+                holder.setText(R.id.tv_product_name_main,"主板: "+moduleUpWarningItem.getProduct_name_main());
+                holder.setText(R.id.tv_product_name,"小板: "+moduleUpWarningItem.getProduct_name());
+                //holder.setText(R.id.tv_status,"状态: "+moduleUpWarningItem.getStatus());
+                holder.setText(R.id.tv_status, "状态: " + "等待下模组");
             }
         };
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
@@ -150,20 +146,6 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             myAdapter.startRefreshTime();
         }
         warningManger.registerWReceiver(this);
-        workOrderID=preferences.getString("work_order","");
-        if(!workOrderID.equals("")){
-            for(int i=0;i<dataList.size();i++){
-                if(dataList.get(i).getWork_order().equals(workOrderID)){
-                    ModuleDownWarningItem.RowsBean rb = dataList.get(i);
-                    rb.setEnd_time("-");
-                    dataList.set(i,rb);
-                }
-            }
-            myAdapter.notifyDataSetChanged();
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("work_order","");
-            editor.commit();
-        }
 
     }
 
@@ -214,12 +196,14 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @Override
     public void onItemClick(View item, int position) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("work_order",dataList.get(position).getWork_order());
-        editor.commit();
 
         Bundle bundle = new Bundle();
         bundle.putString(Constant.WORK_ITEM_ID,dataList.get(position).getWork_order());
+        bundle.putString(Constant.PRODUCT_NAME_MAIN,dataList.get(position).getProduct_name_main());
+        bundle.putString(Constant.PRODUCT_NAME,dataList.get(position).getProduct_name());
+        bundle.putString(Constant.SIDE,dataList.get(position).getSide());
+        bundle.putString(Constant.LINE_NAME,dataList.get(position).getLine_name());
+
         //Intent intent = new Intent(this, ModuleUpBindingActivity.class);
         //intent.putExtras(bundle);
         //this.startActivity(intent);

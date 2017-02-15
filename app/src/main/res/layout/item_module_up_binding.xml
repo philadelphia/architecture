@@ -1,28 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="85px">
-
-        <TextView
-            android:id="@+id/tv_ID"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/textview_border"
-            android:gravity="center"
-            android:text="id"
-            android:textColor="#333333"
-            android:textSize="40px"
-            android:visibility="gone"/>
+        android:layout_height="85px"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_materialID"
-            android:layout_width="90dp"
+            android:layout_width="0dip"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/textview_border"
             android:gravity="center"
             android:text="料号"
@@ -30,42 +21,24 @@
             android:textSize="40px" />
 
         <TextView
-            android:id="@+id/tv_serialID"
-            android:layout_width="90dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/textview_border"
-            android:gravity="center"
-            android:text="流水码"
-            android:textColor="#333333"
-            android:textSize="40px" />
-
-        <TextView
             android:id="@+id/tv_feederID"
-            android:layout_width="150dp"
+            android:layout_width="0dip"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/textview_border"
             android:gravity="center"
-            android:text="Feeder号"
+            android:text="FeederID"
             android:textColor="#333333"
             android:textSize="40px" />
 
         <TextView
             android:id="@+id/tv_moduleMaterialStationID"
-            android:layout_width="70dp"
+            android:layout_width="0dip"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/textview_border"
             android:gravity="center"
             android:text="模组料站"
-            android:textColor="#333333"
-            android:textSize="40px" />
-
-        <TextView
-            android:id="@+id/tv_moduleUpTime"
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/textview_border"
-            android:gravity="center"
-            android:text="上模组时间"
             android:textColor="#333333"
             android:textSize="40px" />
 

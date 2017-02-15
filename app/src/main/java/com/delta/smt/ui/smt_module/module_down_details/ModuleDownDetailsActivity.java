@@ -1,6 +1,7 @@
 package com.delta.smt.ui.smt_module.module_down_details;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.widget.AppCompatButton;
@@ -22,6 +23,7 @@ import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -80,7 +82,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     //二维码
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
-    SharedPreferences preferences=null;
+    //SharedPreferences preferences=null;
+
+    String workItemID;
+    String side;
+    String productNameMain;
+    String productName;
+    String linName;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -89,11 +97,23 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     protected void initData() {
-        preferences=getSharedPreferences("module_down", Context.MODE_PRIVATE);
-        getPresenter().getAllModuleDownDetailsItems(preferences.getString("work_order",""));
+
+        Intent intent = this.getIntent();
+        workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
+        side = intent.getStringExtra(Constant.SIDE);
+        linName = intent.getStringExtra(Constant.LINE_NAME);
+        productName = intent.getStringExtra(Constant.PRODUCT_NAME);
+        productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("work_order", workItemID);
+        Gson gson = new Gson();
+        String argument = gson.toJson(map);
+
+        getPresenter().getAllModuleDownDetailsItems(argument);
         barCodeIpml.setOnGunKeyPressListener(this);
 //        // TODO: 2017/2/10
-//        mCurrentWorkOrder =
+        mCurrentWorkOrder = workItemID;
     }
 
     @Override
@@ -105,11 +125,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
 
-        dataList.add(new ModuleDownDetailsItem.RowsBean("料号","流水码","FeederID", "模组料站", "归属", "下模组时间"));
+        dataList.add(new ModuleDownDetailsItem.RowsBean("工单","面别","料号","流水码","Feeder ID", "模组料站", "归属", "下模组时间"));
         adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
+                holder.setText(R.id.tv_work_order,item.getWork_order());
+                holder.setText(R.id.tv_side,item.getSide());
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
@@ -130,6 +152,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(Color.WHITE);
+                holder.setText(R.id.tv_work_order,item.getWork_order());
+                holder.setText(R.id.tv_side,item.getSide());
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
@@ -168,9 +192,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     public void onSuccessMaintain(ModuleDownMaintain maintain) {
-        if(maintain.getMsg().toLowerCase().equals("success")){
+        /*if(maintain.getMsg().toLowerCase().equals("success")){
             getPresenter().getAllModuleDownDetailsItems(preferences.getString("work_order",""));
-        }
+        }*/
     }
 
     @Override

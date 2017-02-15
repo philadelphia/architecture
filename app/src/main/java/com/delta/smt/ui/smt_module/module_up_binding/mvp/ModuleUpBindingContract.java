@@ -18,7 +18,7 @@ public interface ModuleUpBindingContract {
 
         public void onFalied();
 
-        public void onSuccessBinding(MaterialAndFeederBindingResult data);
+        public void onSuccessBinding(ModuleUpBindingItem data);
 
         public void onFailedBinding();
 
@@ -27,6 +27,6 @@ public interface ModuleUpBindingContract {
     interface Model extends IModel {
         public Observable<ModuleUpBindingItem> getAllModuleUpBindingItems(String str);
 
-        public Observable<MaterialAndFeederBindingResult> getMaterialAndFeederBindingResult(String id,String feederID);
+        public Observable<ModuleUpBindingItem> getMaterialAndFeederBindingResult(String str);
     }
 }
