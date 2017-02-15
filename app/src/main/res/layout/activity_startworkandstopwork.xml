@@ -4,7 +4,11 @@
     android:layout_height="match_parent"
     >
     <include layout="@layout/appbar" />
-
+    <com.delta.commonlibs.widget.statusLayout.StatusLayout
+        android:id="@+id/statusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <com.zhy.autolayout.AutoLinearLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,4 +31,5 @@
         android:layout_marginTop="@dimen/px_80"
         />
     </com.zhy.autolayout.AutoLinearLayout>
+    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 </com.zhy.autolayout.AutoLinearLayout>

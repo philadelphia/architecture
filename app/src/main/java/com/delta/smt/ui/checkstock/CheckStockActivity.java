@@ -9,8 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -18,8 +18,10 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.MainActivity;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -50,6 +52,10 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @BindView(R.id.cargoned)
     EditText cargoned;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
+    @BindView(R.id.activity_check_main)
+    LinearLayout mianCheckStockActivityView;
     @BindView(R.id.cargon_affirm)
     Button cargonAffirm;
     @BindView(R.id.recy_title)
@@ -110,7 +116,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         CommonBaseAdapter<CheckStockDemo> mAdapterTitle = new CommonBaseAdapter<CheckStockDemo>(getContext(), list) {
             @Override
             protected void convert(CommonViewHolder holder, CheckStockDemo item, int position) {
-                holder.itemView.setBackgroundColor(getResources().getColor(R.color.waring_editext));
+                holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
             }
 
             @Override
@@ -125,6 +131,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         mAdapter = new CommonBaseAdapter<CheckStock.RowsBean>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, CheckStock.RowsBean item, int position) {
+                holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.statistics, item.getPartNum());
                 holder.setText(R.id.statistics_pcbnumber, "" + item.getBoundCount());
                 if (item.getRealCount() == 0) {
@@ -169,7 +176,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     status = 2;}
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this, "扫描的架位二维码错误，请重新扫描");
+                    SnackbarUtil.showMassage(mianCheckStockActivityView,"扫描的架位二维码错误，请重新扫描");
+                    //ToastUtils.showMessage(this, "扫描的架位二维码错误，请重新扫描");
                     status = 1;
                 }
                 break;
@@ -199,7 +207,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                     dataList.get(i).setColor(true);
                                     dataList.get(i).setCheck(true);
                                     mAdapter.notifyDataSetChanged();
-                                    ToastUtils.showMessage(CheckStockActivity.this,"请查数后输入数量!");
+                                    SnackbarUtil.showMassage(mianCheckStockActivityView,"请查数后输入数量!");
+                                    //ToastUtils.showMessage(CheckStockActivity.this,"请查数后输入数量!");
                                     break;
                                 }
                             } else {
@@ -222,7 +231,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     status = 2;
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this, "请重新扫描架位");
+                    SnackbarUtil.showMassage(mianCheckStockActivityView,"请重新扫描架位");
+                    //ToastUtils.showMessage(this, "请重新扫描架位");
                     status = 3;
                 }
                 break;
@@ -243,7 +253,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this, "扫描的架位二维码错误，请重新扫描");
+                    SnackbarUtil.showMassage(mianCheckStockActivityView,"请输入数量");
+                    ToastUtils.showMessageLong(this, "扫描的架位二维码错误，请重新扫描");
                 }
 
                 break;
@@ -268,18 +279,12 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
                 }
             } else {
-                Toast toast = Toast.makeText(this, "请输入数量", Toast.LENGTH_SHORT);
-                View view = toast.getView();
-                view.setBackgroundColor(Color.WHITE);
-                toast.setView(view);
-                toast.show();
+                SnackbarUtil.showMassage(mianCheckStockActivityView,"请输入数量");
+               // ToastUtils.showMessage(this,"请输入数量");
             }
         } else {
-            Toast toast = Toast.makeText(this, "请先扫描外箱条码", Toast.LENGTH_SHORT);
-            View view = toast.getView();
-            view.setBackgroundColor(Color.WHITE);
-            toast.setView(view);
-            toast.show();
+            SnackbarUtil.showMassage(mianCheckStockActivityView,"请先扫描外箱条码");
+            //ToastUtils.showMessage(this,"请先扫描外箱条码");
         }
     }
 
@@ -324,7 +329,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onErrorsSucess(String wareHouses) {
-        ToastUtils.showMessage(this, wareHouses);
+        SnackbarUtil.showMassage(mianCheckStockActivityView,wareHouses);
+        //ToastUtils.showMessage(this, wareHouses);
         getPresenter().fetchCheckStock(mFrameLocation.getSource());
     }
 
@@ -336,7 +342,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public void onSubmitSucess(String wareHouses) {
         cargoned.setText("");
-        ToastUtils.showMessage(this, "盘点成功");
+        ToastUtils.showMessageLong(this, "盘点成功");
     }
 
 
@@ -350,6 +356,26 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 //        mErrorDialog.show();
 
 
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
     }
 
 

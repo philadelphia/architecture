@@ -2,10 +2,8 @@ package com.delta.smt.ui.storeroom;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,8 +18,10 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.PCB_FRAME_LOCATION;
@@ -50,6 +49,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @BindView(R.id.storage_pcbed)
     EditText storagePcbed;
+    @BindView(R.id.activity_warning_main)
+    LinearLayout warningActivityMain;
     @BindView(R.id.storage_vendored)
     EditText storageVendored;
     @BindView(R.id.storage_datacodeed)
@@ -70,6 +71,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     AutoToolbar toolbar;
     @BindView(R.id.storage_counted)
     EditText storageCounted;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
     AlertDialog.Builder builder;
 
@@ -105,6 +108,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         mShortLisrAdapter = new CommonBaseAdapter<ThreeOfMaterial>(getApplicationContext(), materialsList) {
             @Override
             protected void convert(CommonViewHolder holder, ThreeOfMaterial item, int position) {
+                holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.shortList_statistics, item.getDeltaMaterialNumber());
                 holder.setText(R.id.shortList_pcbcode, item.getDeltaMaterialNumber().substring(0, 2));
                 holder.setText(R.id.shortList_datacode, item.getDataCode());
@@ -152,7 +156,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                 PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
                 storageIded.setText(frameCode.getSource());
                 Log.e("info", frameCode.getSource());
-                if (materialBlockBarCodes.size() < 3) {
+                if (materialBlockBarCodes.size() < 4) {
                     if (!TextUtils.isEmpty(storageIded.getText()))
                         getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
                 }
@@ -171,7 +175,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                 materialsList.add(threeOfMaterial);
                 mShortLisrAdapter.notifyDataSetChanged();
             }else {
-                ToastUtils.showMessage(this,"请确实是否有扫错的条码或者确认箱子上有几个条码!");
+                SnackbarUtil.showMassage(warningActivityMain,"请确实是否有扫错的条码或者确认箱子上有几个条码!");
+                //ToastUtils.showMessage(this,"请确实是否有扫错的条码或者确认箱子上有几个条码!");
             }
 
         }
@@ -201,19 +206,22 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @Override
     public void lightSuccsee() {
-        ToastUtils.showMessage(this, "请放到固定架位");
+        SnackbarUtil.showMassage(warningActivityMain,"点灯成功,请放到固定架位!");
+        //ToastUtils.showMessage(this, "请放到固定架位");
         storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
         storageSubmit.setEnabled(false);
     }
 
     @Override
     public void lightfaild() {
-        ToastUtils.showMessage(this, "点灯操作失败");
+        SnackbarUtil.showMassage(warningActivityMain,"点灯操作失败!");
+       // ToastUtils.showMessage(this, "点灯操作失败");
     }
 
     @Override
     public void storageSuccsee() {
-        ToastUtils.showMessage(this, "入料成功");
+        SnackbarUtil.showMassage(warningActivityMain,"入料成功!");
+        //ToastUtils.showMessage(this, "入料成功");
         materialBlockBarCodes.clear();
         materialsList.clear();
 //        ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial("料号", "PCB Code", "Data Code","数量");
@@ -225,13 +233,18 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         storageVendored.setText(null);
         storageDatacodeed.setText(null);
         storageIded.setText(null);
+        storageCounted.setText(null);
         storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
         storageSubmit.setEnabled(true);
+        storageClear.setBackgroundColor(this.getResources().getColor(R.color.background));
+        storageClear.setEnabled(true);
+
     }
 
     @Override
     public void storagefaild() {
-        ToastUtils.showMessage(this, "入料失败");
+        SnackbarUtil.showMassage(warningActivityMain,"入料失败!");
+       // ToastUtils.showMessage(this, "入料失败");
         materialBlockBarCodes.clear();
         materialsList.clear();
 //        ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial("料号", "PCB Code", "Data Code","数量");
@@ -246,6 +259,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         storageIded.setText(null);
         storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
         storageSubmit.setEnabled(true);
+        storageClear.setBackgroundColor(this.getResources().getColor(R.color.background));
+        storageClear.setEnabled(true);
     }
 
     @Override
@@ -279,6 +294,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                 break;
             case R.id.storage_submit:
                 if (materialBlockBarCodes.size() != 0) {
+                    storageSubmit.setBackgroundColor(Color.GRAY);
+                    storageSubmit.setEnabled(false);
                     storageClear.setBackgroundColor(Color.GRAY);
                     storageClear.setEnabled(false);
                     getPresenter().fatchOnLight(materialBlockBarCodes);
@@ -288,5 +305,23 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                 break;
         }
     }
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
 
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
+    }
 }

@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -28,9 +29,15 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         super(model, mView);
     }
     public void fatchStoreRoomSuccess(){
-        getModel().getStoreRoomSuccess().subscribe(new Action1<String>() {
+        getModel().getStoreRoomSuccess().doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
+                getView().showContentView();
                 getView().storeSuccess(s);
                 Log.e("info","test成功");
             }
@@ -38,6 +45,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             @Override
             public void call(Throwable throwable) {
                 Log.e("info","test失败");
+                getView().showErrorView();
                 getView().storeFaild(throwable.getMessage().toString());
             }
         });
@@ -78,10 +86,16 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
 //                //.replace("\"","\\\"`");
         String jsonString="[\'"+jsonObject.toString()+"\']";
         Log.e("info",jsonString);
-        getModel().OnLight(jsonString).subscribe(new Action1<Light>() {
+        getModel().OnLight(jsonString).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<Light>() {
             @Override
             public void call(Light light) {
             if ("0".equals(light.getCode())){
+                getView().showContentView();
               getView().lightSuccsee();
                 }else {
              getView().storeFaild(light.getMsg());
@@ -92,6 +106,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
                 getView().storeFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
@@ -139,10 +154,16 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
 //        String jsonString=gson.toJson(pa).toString();
         String jsonString="[\'"+jsonObject.toString()+"\']";
         Log.e("info",jsonString);
-        getModel().PutInStorage(jsonString).subscribe(new Action1<Success>() {
+        getModel().PutInStorage(jsonString).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<Success>() {
             @Override
             public void call(Success storageSuccess) {
                 if (storageSuccess.getCode().equals("0")) {
+                    getView().showContentView();
                     if (storageSuccess.getMsg().contains("Success")){
                     getView().storageSuccsee();
                 }else {
@@ -153,6 +174,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
                 getView().storeFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });

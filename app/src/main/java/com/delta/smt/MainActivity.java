@@ -32,7 +32,6 @@ import com.delta.smt.entity.Fuction;
 import com.delta.smt.entity.Update;
 import com.delta.smt.ui.checkstock.StartWorkAndStopWorkActivity;
 import com.delta.smt.ui.feeder.wareSelect.WareSelectActivity;
-import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 import com.delta.smt.ui.main.di.DaggerMainComponent;
 import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
@@ -74,6 +73,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     TextView tvSetting;
     @BindView(R.id.drawer_layout)
     LinearLayout drawerLayout;
+
     private List<Fuction> fuctions;
     //更新
     private static ProgressDialog progressDialog = null;
@@ -90,6 +90,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     @Override
     protected void initView() {
         toolbarTitle.setText("首页");
+
         CommonBaseAdapter<Fuction> adapter = new CommonBaseAdapter<Fuction>(this, fuctions) {
             @Override
             protected void convert(CommonViewHolder holder, Fuction item, int position) {

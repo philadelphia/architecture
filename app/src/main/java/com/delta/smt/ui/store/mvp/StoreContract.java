@@ -9,6 +9,7 @@ import com.delta.commonlibs.base.mvp.IView;
 
 public class StoreContract {
     public interface View extends IView {
+
     }
 
     public interface Model extends IModel {

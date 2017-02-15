@@ -6,9 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
-import com.delta.smt.MainActivity;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
@@ -31,6 +30,8 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -79,5 +80,24 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
 
                 break;
         }
+    }
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
     }
 }

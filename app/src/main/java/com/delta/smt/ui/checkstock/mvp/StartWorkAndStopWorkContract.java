@@ -9,6 +9,10 @@ import com.delta.commonlibs.base.mvp.IView;
 
 public class StartWorkAndStopWorkContract {
     public  interface  View extends IView{
+        void showLoadingView();
+        void showContentView();
+        void showErrorView();
+        void showEmptyView();
 
     }
     public interface Model extends IModel {}

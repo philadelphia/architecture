@@ -11,6 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.exceptions.Exceptions;
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -23,10 +24,16 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         super(model, mView);
     }
     public void fetchCheckStock(String s){
-        getModel().getCheckStock(s).subscribe(new Action1<CheckStock>() {
+        getModel().getCheckStock(s).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<CheckStock>() {
                 @Override
                 public void call(CheckStock rowsBeen) {
                 if ("0".equals(rowsBeen.getCode())) {
+                    getView().showContentView();
                     if (rowsBeen.getMsg().contains("Success")){
                     List<CheckStock.RowsBean> rows = rowsBeen.getRows();
                     getView().onSucess(rows);
@@ -37,6 +44,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
                 getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
