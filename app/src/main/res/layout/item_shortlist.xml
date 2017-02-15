@@ -15,7 +15,7 @@
         />
     <TextView
         android:id="@+id/shortList_pcbcode"
-        android:layout_width="@dimen/px_360"
+        android:layout_width="@dimen/px_240"
         android:layout_height="match_parent"
         android:text="@string/pcb_code"
         style="@style/item_textstyle"
@@ -23,9 +23,17 @@
 
     <TextView
         android:id="@+id/shortList_datacode"
-        android:layout_width="@dimen/px_360"
+        android:layout_width="@dimen/px_240"
         android:layout_height="match_parent"
         android:text="@string/pcb_time"
+        style="@style/item_textstyle"
+
+        />
+    <TextView
+        android:id="@+id/shortList_count"
+        android:layout_width="@dimen/px_240"
+        android:layout_height="match_parent"
+        android:text="@string/pcb_count"
         style="@style/item_textstyle"
 
         />

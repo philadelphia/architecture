@@ -17,6 +17,7 @@ import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -29,6 +30,7 @@ import com.delta.smt.ui.store.di.DaggerWarningListComponent;
 import com.delta.smt.ui.store.di.WarningListModule;
 import com.delta.smt.ui.store.mvp.WarningListContract;
 import com.delta.smt.ui.store.mvp.WarningListPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +68,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     TextView tvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
     private CommonBaseAdapter<OutBound.DataBean> mAdapter;
     private int position = 0;
@@ -116,7 +120,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         CommonBaseAdapter<ListWarning> AdapterTitle = new CommonBaseAdapter<ListWarning>(this, list) {
             @Override
             protected void convert(CommonViewHolder holder, ListWarning item, int position) {
-                holder.itemView.setBackgroundColor(getResources().getColor(R.color.waring_editext));
+                holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
             }
 
             @Override
@@ -131,6 +135,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
             @Override
             protected void convert(CommonViewHolder holder, OutBound.DataBean item, int position) {
+                holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.pcb_number, item.getPartNum());
                 holder.setText(R.id.pcb_price, item.getSubShelfSerial());
                 if (item.getAmount() == 0) {
@@ -269,7 +274,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         mAdapter.notifyDataSetChanged();
         mId = dataBean.getId();
         if (mAmoutString < mAmout) {
-            ToastUtils.showMessage(WarningListActivity.this,"请拆箱取出" + (mAmout-mAmoutString) + "片", Snackbar.LENGTH_INDEFINITE);
+            ToastUtils.showMessage(WarningListActivity.this,"请拆箱取出" + (mAmout-mAmoutString) + "片");
         }
         if (mAmoutString >= mAmout) {
 
@@ -285,6 +290,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
             try {
                 mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                VibratorAndVoiceUtils.correctVibrator (this);
+                VibratorAndVoiceUtils.correctVoice(this);
                 if (mMaterbarCode.getStreamNumber() != null) {
                     getPresenter().fetchPcbNumber(mMaterbarCode.getStreamNumber());
                 }
@@ -292,6 +299,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 e.printStackTrace();
                 try {
                     mFramebarCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
+                    VibratorAndVoiceUtils.correctVibrator (this);
+                    VibratorAndVoiceUtils.correctVoice(this);
                     //Snackbar.make(activityMianview, "请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE).show();
                         if (mIsAlarmInfo) {
                             getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
@@ -301,11 +310,32 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                         }
 
             } catch (EntityNotFountException e1) {
+                    VibratorAndVoiceUtils. wrongVibrator (this);
+                    VibratorAndVoiceUtils. wrongVoice (this);
                 e1.printStackTrace();
 
         }
         }
 
 
+    }
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
     }
 }

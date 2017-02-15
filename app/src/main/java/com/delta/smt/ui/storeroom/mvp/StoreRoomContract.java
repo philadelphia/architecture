@@ -19,6 +19,10 @@ public class StoreRoomContract {
         void lightfaild();
         void storageSuccsee();
         void storagefaild();
+        void showLoadingView();
+        void showContentView();
+        void showErrorView();
+        void showEmptyView();
 
     }
     public interface Model extends IModel{
