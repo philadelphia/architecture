@@ -1,6 +1,7 @@
 package com.delta.smt.ui.production_warning.mvp.accept_materials_detail;
 
 import android.graphics.Color;
+import android.net.http.LoggingEventHandler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.demacia.barcode.BarCodeIpml;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -59,7 +61,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
     private final String TAG="AcceptMaterialsActivity";
 
-
+    private String lines;
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerAcceptMaterialsCompnent.builder().appComponent(appComponent)
@@ -68,7 +70,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
     @Override
     protected void initData() {
-
+        lines=getIntent().getExtras().getString(Constant.ACCEPTMATERIALSLINES);
+        Log.e(TAG, "initData: "+lines );
 
     }
 

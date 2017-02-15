@@ -3,6 +3,7 @@ package com.delta.smt.ui.production_warning.mvp.produce_warning_fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,7 +23,9 @@ import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -38,13 +41,17 @@ import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.DaggerProduceWarningFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWarningFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
+import com.delta.smt.ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +64,7 @@ import butterknife.BindView;
 
 public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentPresenter>
         implements ProduceWarningFragmentContract.View,
-        BaseActivity.OnBarCodeSuccess, View.OnClickListener, ItemOnclick {
+        BaseActivity.OnBarCodeSuccess, View.OnClickListener, com.delta.libs.adapter.ItemOnclick {
 
 
     @BindView(R.id.ryv_produce_warning)
@@ -65,7 +72,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @BindView(R.id.tv_content)
     TextView mTvContent;
 
-    private ItemCountdownViewAdapter<ItemWarningInfo> mAdapter;
+    private ItemCountViewAdapter<ItemWarningInfo> mAdapter;
     private List<ItemWarningInfo> datas = new ArrayList<>();
 
     private DialogRelativelayout mDialogRelativelayout;
@@ -83,22 +90,28 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     protected void initView() {
         Log.i(TAG, "initView: ");
 
-        mAdapter = new ItemCountdownViewAdapter<ItemWarningInfo>(getContext(), datas) {
+        mAdapter = new ItemCountViewAdapter<ItemWarningInfo>(getContext(), datas) {
+            @Override
+            protected int getCountViewId() {
+                return R.id.cv_countView;
+            }
+
             @Override
             protected int getLayoutId() {
                 return R.layout.item_produce_warning;
             }
 
             @Override
-            protected void convert(ItemTimeViewHolder holder, ItemWarningInfo itemWarningInfo, int position) {
+            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, ItemWarningInfo itemWarningInfo, int position) {
                 if ("接料预警".equals(itemWarningInfo.getTitle())) {
                     holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
                     holder.setText(R.id.tv_produce_line, "产线："+itemWarningInfo.getProductionline());
                     holder.setText(R.id.tv_word_code, "工单号："+itemWarningInfo.getWorkcode());
                     holder.setText(R.id.tv_face, "面别："+itemWarningInfo.getFace());
-                    holder.setText(R.id.tv_unused_materials,"备料车未使用料量："+itemWarningInfo.getUnusedmaterials());
+                    holder.setText(R.id.tv_unused_materials,"剩余料量："+itemWarningInfo.getUnusedmaterials());
                     holder.setText(R.id.tv_material_station,"模组料站："+itemWarningInfo.getMaterialstation());
                     holder.setText(R.id.tv_status,"状态："+itemWarningInfo.getStatus());
+                    holder.setText(R.id.tv_unaccept_materials_num,"该线别待接料数："+itemWarningInfo.getConnectMaterialCount());
 
                     holder.getView(R.id.tv_make_process).setVisibility(View.GONE);
                     holder.getView(R.id.tv_warning_message).setVisibility(View.GONE);
@@ -108,6 +121,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     holder.getView(R.id.tv_unused_materials).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_material_station).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_status).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.tv_unaccept_materials_num).setVisibility(View.VISIBLE);
                 }else {
                     holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
                     holder.setText(R.id.tv_produce_line, "产线："+itemWarningInfo.getProductionline());
@@ -119,20 +133,21 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     holder.getView(R.id.tv_unused_materials).setVisibility(View.GONE);
                     holder.getView(R.id.tv_material_station).setVisibility(View.GONE);
                     holder.getView(R.id.tv_status).setVisibility(View.GONE);
+                    holder.getView(R.id.tv_unaccept_materials_num).setVisibility(View.GONE);
 
                     holder.getView(R.id.tv_make_process).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_warning_message).setVisibility(View.VISIBLE);
 
                 }
-
-
             }
+
+
 
         };
         mRyvProduceWarning.setLayoutManager(new LinearLayoutManager(getContext()));
         mRyvProduceWarning.setAdapter(mAdapter);
-//        mAdapter.setOnItemClickListener(this);
-        mAdapter.setOnItemTimeOnclck(this);
+        mAdapter.setOnItemTimeOnclick(this);
+
     }
 
     @Override
@@ -212,6 +227,19 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void getItemWarningDatas(List<ItemWarningInfo> itemWarningInfo) {
         datas.clear();
+
+        for (int i = 0; i < itemWarningInfo.size(); i++) {
+            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+            try {
+                Date parse = format.parse(itemWarningInfo.get(i).getTime());
+                Log.e("aaa", "getItemWarningDatas: "+parse.getTime() );
+                itemWarningInfo.get(i).setEnd_time(parse.getTime());
+                itemWarningInfo.get(i).setEntityId(i);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         datas.addAll(itemWarningInfo);
         //对adapter刷新改变
         mAdapter.notifyDataSetChanged();
@@ -227,13 +255,12 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
     }
 
-
     //item点击事件处理
     @Override
-    public void onItemClick(View item, int position) {
-        if(mPopupWindow!=null&&mPopupWindow.isShowing()){
+    public void onItemClick(View item, Object o, int position) {
+/*        if(mPopupWindow!=null&&mPopupWindow.isShowing()){
 
-        }else {
+        }else {*/
             EventBus.getDefault().post(new BroadcastCancel());
             mDialogRelativelayout = new DialogRelativelayout(getContext());
             barcodedatas.clear();
@@ -241,7 +268,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
             if (mItemWarningInfo.getTitle().equals("接料预警")) {
 
-                makePopupWindow();
+//                makePopupWindow();
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.ACCEPTMATERIALSLINES, mItemWarningInfo.getProductionline());
+                IntentUtils.showIntent(getmActivity(), AcceptMaterialsActivity.class,bundle);
                 id= String.valueOf(mItemWarningInfo.getId());
 
             } else {
@@ -276,7 +306,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                         }).show();
             }
         }
-    }
+//    }
+
+
+
 
 
     private void makePopupWindow() {

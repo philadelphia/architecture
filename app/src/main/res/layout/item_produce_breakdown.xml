@@ -70,12 +70,13 @@
         <TextView
             android:id="@+id/time_remain"
             android:text="故障持续时间："
+            android:singleLine="true"
             android:textColor="#ff0000"
-            android:textSize="12sp"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content" />
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
 
-        <cn.iwgang.countdownview.CountdownView
+<!--        <cn.iwgang.countdownview.CountdownView
             android:id="@+id/cv_countdownViewTest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,7 +92,29 @@
             app:suffixTextSize="20sp"
             app:timeTextColor="#ff0000"
             app:timeTextSize="20sp"
-            />
+            />-->
+        <com.delta.libs.CountTimeView
+            android:id="@+id/cv_countView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20px"
+            app:isCountUp="true"
+            app:isShowDay="true"
+            app:isShowHour="true"
+            app:isShowMillisecond="false"
+            app:isShowMinute="true"
+            app:isShowSecond="true"
+            app:suffixDay="天"
+            app:suffixDayRightMargin="10px"
+            app:suffixGravity="center"
+            app:suffixHour=":"
+            app:suffixMinute=":"
+            app:suffixTextColor="#e61010"
+            app:suffixTextSize="20sp"
+            app:timeTextColor="#e60b0b"
+            app:timeTextSize="20sp" />
     </LinearLayout>
 
 </RelativeLayout>

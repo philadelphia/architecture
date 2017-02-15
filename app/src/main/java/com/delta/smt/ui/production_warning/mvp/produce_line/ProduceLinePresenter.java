@@ -38,7 +38,11 @@ public class ProduceLinePresenter extends BasePresenter<ProduceLineContract.Mode
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getFailed(throwable.getMessage());
+                try {
+                    getView().getFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
