@@ -135,6 +135,14 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mAdapter.setOnItemTimeOnclck(this);
     }
 
+    @Override
+    protected void initData() {
+        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
+
+        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
+            getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -193,14 +201,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                 produceWarningFragmentModule(new ProduceWarningFragmentModule(this)).build().inject(this);
     }
 
-    @Override
-    protected void initData() {
-        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
 
-        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
-            getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
-        }
-    }
 
     @Override
     protected int getContentViewId() {
@@ -299,13 +300,6 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         parm.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         layout.addView(textView,parm);
         mDialogRelativelayout.addView(layout);
-
-/*        ColorDrawable mColorDrawable = new ColorDrawable(0x000000);
-        mPopupWindow.setBackgroundDrawable(mColorDrawable);
-        WindowManager.LayoutParams mLayoutParams=getmActivity().getWindow().getAttributes();
-        mLayoutParams.alpha=0.4f;
-        getmActivity().getWindow().setAttributes(mLayoutParams);
-        mPopupWindow.update();*/
 
         //展示popupwindow
         mPopupWindow.showAtLocation(getView(), Gravity.CENTER,0,0);

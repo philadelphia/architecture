@@ -1,26 +1,30 @@
 package com.delta.smt.ui.production_warning.mvp.accept_materials_detail;
 
-import android.os.Bundle;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.MantissaWarehouseDetailsResult;
+import com.delta.smt.ui.production_warning.di.accept_materials_detail.AcceptMaterialsModule;
+import com.delta.smt.ui.production_warning.di.accept_materials_detail.DaggerAcceptMaterialsCompnent;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -29,7 +33,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  */
 
 public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresenter>
-        implements AcceptMaterialsContract.View {
+        implements AcceptMaterialsContract.View{
 
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -53,9 +57,13 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     private List<ItemAcceptMaterialDetail> dataList=new ArrayList();
     private List<ItemAcceptMaterialDetail> dataList1=new ArrayList();
 
+    private final String TAG="AcceptMaterialsActivity";
+
+
     @Override
     protected void componentInject(AppComponent appComponent) {
-
+        DaggerAcceptMaterialsCompnent.builder().appComponent(appComponent)
+                .acceptMaterialsModule(new AcceptMaterialsModule(this)).build().inject(this);
     }
 
     @Override
@@ -66,6 +74,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
     @Override
     protected void initView() {
+
         //初始化titile
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
@@ -73,6 +82,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("贴片机接料");
 
+        //初始化item标题栏的适配器
         dataList.add(new ItemAcceptMaterialDetail());
         adapter = new CommonBaseAdapter<ItemAcceptMaterialDetail>(getContext(), dataList) {
             @Override
@@ -88,8 +98,9 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         mRecyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         mRecyTitle.setAdapter(adapter);
 
-
-        dataList1.add(new ItemAcceptMaterialDetail("fdsf","df","0","dsf","rtr"));
+        //初始化item的适配器
+        dataList1.add(new ItemAcceptMaterialDetail("250000501","06T021","0","pcs","RP1201"));
+        dataList1.add(new ItemAcceptMaterialDetail("250000501","03T002","200","pcs","RP1205"));
         adapter1=new CommonBaseAdapter<ItemAcceptMaterialDetail>(getContext(),dataList1) {
             @Override
             protected void convert(CommonViewHolder holder, ItemAcceptMaterialDetail item, int position) {
@@ -98,6 +109,11 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 holder.setText(R.id.tv_remain_num,item.getRemain());
                 holder.setText(R.id.tv_unit,item.getUnit());
                 holder.setText(R.id.tv_location,item.getLocation());
+
+                if (item.getRemain().equals("0")){
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                }
+
             }
 
             @Override
@@ -105,7 +121,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 return R.layout.accept_material_detail_item;
             }
         };
-        mRecyContent.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        mRecyContent.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         mRecyContent.setAdapter(adapter1);
 
 
@@ -115,6 +131,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     protected int getContentViewId() {
         return R.layout.activity_produce_warning_details;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -128,4 +145,30 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         }
         return super.onOptionsItemSelected(item);
     }
+
+    //扫码成功处理
+    @Override
+    public void onScanSuccess(String barcode) {
+        Log.e(TAG, "onScanSuccess: "+barcode);
+    }
+
+    //请求item列表数据
+    @Override
+    public void getItemDatas(List<ItemAcceptMaterialDetail> itemAcceptMaterialDetails) {
+
+    }
+
+    //网络请求失败
+    @Override
+    public void getItemDatasFailed(String message) {
+        ToastUtils.showMessage(this,message);
+    }
+
+    //扫码数据提交成功的操作
+    @Override
+    public void commitBarcodeSucess() {
+
+    }
+
+
 }

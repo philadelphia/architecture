@@ -1,12 +1,14 @@
 package com.delta.smt.ui.hand_add.mvp;
 
 import android.content.DialogInterface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.ToastUtils;
@@ -199,7 +201,8 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
     @Override
     public void getItemHandAddDatasFailed(String message) {
-        ToastUtils.showMessage(this,message);
+        //ToastUtils.showMessage(this,message);
+        Snackbar.make(getCurrentFocus(),message,Snackbar.LENGTH_INDEFINITE).show();
     }
 
 

@@ -117,7 +117,8 @@ public interface ApiService {
      * @date : 2017/1/21 14:41
      */
     //请求产线列表数据
-    Observable<List<ItemProduceLine>> getLineDatas();
+    @GET("SMM/LineManage/queryLines")
+    Observable<Result<ItemProduceLine>> getLineDatas();
 
     //请求预警，故障，消息的item数量
     @GET("lineAlarmFault/alarmFaultInfos")
@@ -148,11 +149,11 @@ public interface ApiService {
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
 
     //请求手补件item数据
-    @GET("lineAlarmFault/getPatchMaterial?condition={}")
+    @GET("http://172.22.35.236:8081/lineAlarmFault/getPatchMaterial?condition={}")
     Observable<Result<ItemHandAdd>> getItemHandAddDatas();
 
     //确认手补件item数据
-    @GET("lineAlarmFault/confirmPatchMaterial")
+    @GET("http://172.22.35.236:8081/lineAlarmFault/confirmPatchMaterial")
     Observable<Result> getItemHandAddConfirm(@Query("condition") String condition);
 
 
