@@ -18,6 +18,14 @@ public interface SupplyContract {
     interface View extends IView{
          void onSuccess(List<FeederSupplyWarningItem> data);
          void onFailed(String message);
+
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
     }
 
     interface Model extends IModel{
