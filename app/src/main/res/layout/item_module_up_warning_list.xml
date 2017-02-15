@@ -83,10 +83,23 @@
         android:layout_marginRight="50px"
         android:orientation="vertical">
 
+        <!--<TextView
+            android:
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="预计上线时间:"
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />-->
+
         <TextView
             android:id="@+id/time_remain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="22px"
             android:text="距离上线时长:"
             android:textColor="@color/c_333333"
             android:textSize="40px" />
@@ -96,7 +109,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/time_remain"
-            android:layout_below="@+id/time_remain"
             android:layout_marginTop="22px"
             app:isShowDay="false"
             app:isShowHour="true"
@@ -108,5 +120,6 @@
             app:suffixTextSize="40px"
             app:timeTextColor="@color/c_333333"
             app:timeTextSize="40px" />
+
     </LinearLayout>
 </RelativeLayout>

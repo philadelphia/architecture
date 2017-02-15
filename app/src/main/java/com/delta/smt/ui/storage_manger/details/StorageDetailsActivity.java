@@ -27,6 +27,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
 import com.delta.smt.entity.IssureToWarehBody;
+import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.ui.storage_manger.details.di.DaggerStorageDetailsComponent;
 import com.delta.smt.ui.storage_manger.details.di.StorageDetailsModule;
@@ -35,7 +36,6 @@ import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsPresenter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +67,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     Button mButton2;
     @BindView(R.id.textView2)
     TextView mTextView2;
+    @BindView(R.id.tv_hint)
+    TextView tv_hint;
     private List<StorageDetails> dataList = new ArrayList();
     private List<StorageDetails> dataList2 = new ArrayList();
     private CommonBaseAdapter<StorageDetails> adapter;
@@ -76,7 +78,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private String part;
     private MaterialBlockBarCode materialblockbarcode;
     private String currentDeltaMaterialNumber = "";
-    private int index = -1;
+    private int currentPostion = -1;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -89,10 +91,10 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     protected void initData() {
         barCodeImp = new BarCodeParseIpml();
         work_order = getIntent().getStringExtra("work_order");
-        part = Constant.WARE_HOUSE_NAME;
+        part = getIntent().getStringExtra(Constant.WARE_HOUSE_NAME);
         Map<String, String> mMap = new HashMap<>();
-        mMap.put("part", Constant.WARE_HOUSE_NAME);
-        mMap.put("work_order", work_order);
+        mMap.put("part", part);
+        mMap.put("workorder", work_order);
         Gson mGson = new Gson();
         String mS = mGson.toJson(mMap);
         Log.i("aaa", mS);
@@ -109,7 +111,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("仓库备料");
-        dataList.add(new StorageDetails("", "", "", "", 1));
+        dataList.add(new StorageDetails("", "", 0, 0));
         adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
@@ -128,31 +130,24 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         adapter2 = new CommonBaseAdapter<StorageDetails>(getContext(), dataList2) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
-                holder.setText(R.id.tv_number, item.getMaterial_num());
-                holder.setText(R.id.tv_location, item.getShelves());
-                holder.setText(R.id.tv_needNumber, item.getRe_quantity());
-                holder.setText(R.id.tv_shipments, item.getSe_quantity());
-                if (item.getMaterial_num().equals(currentDeltaMaterialNumber)) {
-                    holder.itemView.setBackgroundColor(Color.YELLOW);
-                } else {
-                    holder.itemView.setBackgroundColor(Color.WHITE);
-                }
+                holder.setText(R.id.tv_number, item.getMaterial_no());
+                holder.setText(R.id.tv_location, item.getShelf_no());
+                holder.setText(R.id.tv_needNumber, String.valueOf(item.getAmount()));
+                holder.setText(R.id.tv_shipments, String.valueOf(item.getIssue_amount()));
                 switch (item.getStatus()) {
                     case 0:
-                        holder.setText(R.id.tv_type, "未发料");
+                        holder.itemView.setBackgroundColor(Color.YELLOW);
                         break;
                     case 1:
-                        holder.setText(R.id.tv_type, "正在发料");
+                        holder.itemView.setBackgroundColor(Color.WHITE);
                         break;
                     case 2:
-                        holder.setText(R.id.tv_type, "完成发料");
-                        break;
-                    default:
+                        holder.itemView.setBackgroundColor(Color.GREEN);
+                    case 3:
+                        holder.itemView.setBackgroundColor(Color.RED);
                         break;
                 }
             }
-
-
             @Override
             protected int getItemViewLayoutId(int position, StorageDetails item) {
                 return R.layout.details_item;
@@ -173,31 +168,24 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void getSucess(List<StorageDetails> storageDetailses) {
         dataList2.clear();
         dataList2.addAll(storageDetailses);
-
         adapter2.notifyDataSetChanged();
     }
 
     @Override
     public void getFailed(String message) {
 //        Log.e(TAG, "getFailed: "+message);
-       Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        tv_hint.setText(message);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void bindMaterialCarSucess(List<BindPrepCarIDByWorkOrderResult.DataBean> data) {
+    public void bindMaterialCarSucess(List<BindPrepCarIDByWorkOrderResult.RowsBean> data) {
         //绑定料车成功状态2
         state = 2;
-        dataList2.clear();
-        for (BindPrepCarIDByWorkOrderResult.DataBean dataBean : data) {
-            StorageDetails stroageDetail = new StorageDetails();
-            stroageDetail.setMaterial_num(dataBean.getMaterial_num());
-            stroageDetail.setRe_quantity(dataBean.getAmount());
-            stroageDetail.setSe_quantity(dataBean.getDemand());
-            stroageDetail.setShelves(dataBean.getShelves());
-            stroageDetail.setStatus(dataBean.getStatus());
-            dataList2.add(stroageDetail);
+        if (data.size() != 0) {
+            mTextView2.setText(data.get(0).getCar_name());
         }
-        adapter2.notifyDataSetChanged();
+
     }
 
     private boolean isOver;
@@ -207,17 +195,21 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         dataList2.clear();
         dataList2.addAll(rows);
         int position = 0;
+        boolean isFirstUndo = true;
         for (int i = 0; i < dataList2.size(); i++) {
-            if (dataList2.get(i).getMaterial_num().equals(currentDeltaMaterialNumber)) {
-                position = i;
-                mRecyContetn.scrollToPosition(i);
+            if (dataList2.get(i).getStatus() == 1) {
+                if (isFirstUndo) {
+                    position = i;
+                    isFirstUndo = false;
+                }
             }
             if (dataList2.get(i).getStatus() != 2) {
                 isOver = false;
             }
         }
-
-        Collections.swap(dataList2,0,position);
+        tv_hint.setText("当前价位：" + rows.get(position).getSlot());
+        mRecyContetn.scrollToPosition(position);
+        //Collections.swap(dataList2, 0, position);
         adapter2.notifyDataSetChanged();
     }
 
@@ -228,24 +220,34 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     @Override
-    public void queryMaterailCar(String rows) {
-        mTextView2.setText(rows);
+    public void queryMaterailCar(List<MaterialCar.RowsBean> rows) {
+        if (rows.size() != 0) {
+            mTextView2.setText(rows.get(0).getCar_name());
+        }
         state = 2;
-        Log.e(TAG, "queryMaterailCar: " + rows);
 
     }
 
     @Override
     public void queryMaterailCarFailed(String msg) {
         ToastUtils.showMessage(this, msg);
+        tv_hint.setText(msg);
         state = 1;
-        Log.e(TAG, "queryMaterailCarFailed: " + msg);
     }
 
     @Override
     public void bindMaterialCarFailed(String msg) {
         state = 1;
+        mTextView2.setText("无");
+        tv_hint.setText(msg);
         ToastUtils.showMessage(this, msg);
+    }
+
+    @Override
+    public void issureToWarehFailed(String message) {
+        state = 2;
+        ToastUtils.showMessage(this, message);
+        tv_hint.setText(message);
     }
 
 
@@ -262,7 +264,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     car = ((BackupMaterialCar) barCodeImp.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
                     mTextView2.setText(car.getSource());
                     Map<String, String> maps = new HashMap<>();
-                    maps.put("work_order", work_order);
+                    maps.put("workorder", work_order);
                     maps.put("part", part);
                     maps.put("pre_car", car.getSource());
                     getPresenter().bindBoundPrepCar(GsonTools.createGsonString(maps));
@@ -271,6 +273,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     e.printStackTrace();
                     state = 1;
                     ToastUtils.showMessage(this, "请扫描料车");
+                    tv_hint.setText("请扫描料车");
                 }
                 break;
             case 2:
@@ -279,8 +282,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 try {
                     materialblockbarcode = (MaterialBlockBarCode) barCodeImp.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     IssureToWarehBody issureToWarehBody = new IssureToWarehBody();
-                    issureToWarehBody.setMaterial_num(materialblockbarcode.getDeltaMaterialNumber());
-                    issureToWarehBody.setSerial_num(materialblockbarcode.getStreamNumber());
+                    issureToWarehBody.setMaterial_no(materialblockbarcode.getDeltaMaterialNumber());
+                    issureToWarehBody.setSerial_no(materialblockbarcode.getStreamNumber());
                     issureToWarehBody.setUnit(materialblockbarcode.getUnit());
                     issureToWarehBody.setDc(materialblockbarcode.getDC());
                     issureToWarehBody.setLc(materialblockbarcode.getDC());
@@ -294,7 +297,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this, "请扫描料盘");
+                    ToastUtils.showMessage(this, "请扫描对应价位的料盘");
+                    tv_hint.setText("请扫描对应价位的料盘");
                 }
                 state = 2;
                 break;

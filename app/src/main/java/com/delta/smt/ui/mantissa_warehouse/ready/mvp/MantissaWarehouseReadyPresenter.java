@@ -26,7 +26,7 @@ public class MantissaWarehouseReadyPresenter extends BasePresenter<MantissaWareh
           @Override
           public void call(MantissaWarehouseReady mantissaWarehouseReady) {
 
-              if("Success".equals(mantissaWarehouseReady.getMsg())){
+              if("0".equals(mantissaWarehouseReady.getCode())){
                   getView().getSucess(mantissaWarehouseReady.getRows());
               }else{
                   getView().getFailed(mantissaWarehouseReady.getMsg());

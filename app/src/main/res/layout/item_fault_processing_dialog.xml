@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="1px"
+    android:layout_marginTop="20px"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autoLink="all"
         android:paddingLeft="150px"
         android:text="测试"
         android:textColor="@color/c_428bca"
         android:textSize="40px" />
-
 
 </LinearLayout>

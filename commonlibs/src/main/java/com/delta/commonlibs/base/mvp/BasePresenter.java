@@ -2,9 +2,7 @@ package com.delta.commonlibs.base.mvp;
 
 import java.lang.ref.WeakReference;
 
-/**
- * Created by jess on 16/4/28.
- */
+
 public class BasePresenter<M extends IModel, V extends IView> implements Ipresenter {
     protected final String TAG = this.getClass().getSimpleName();
     protected M mModel;

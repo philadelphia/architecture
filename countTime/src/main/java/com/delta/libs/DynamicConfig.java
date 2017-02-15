@@ -1,10 +1,6 @@
 package com.delta.libs;
 
-/**
- * Dynamic configuration
- * Created by iWgang on 16/6/18.
- * https://github.com/iwgang/CountdownView
- */
+
 public class DynamicConfig {
     private Builder mBuilder;
 

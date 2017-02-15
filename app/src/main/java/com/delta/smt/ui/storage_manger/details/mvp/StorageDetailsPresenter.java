@@ -48,11 +48,12 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(MaterialCar materialCar) {
 
-                if ("success".equalsIgnoreCase(materialCar.getMsg())) {
-                    getView().queryMaterailCar(materialCar.getRows().get(0).getMsg());
-                } else {
-                    getView().queryMaterailCarFailed(materialCar.getRows().get(0).getMsg());
+                if("0".equals(materialCar.getCode())){
+                    getView().queryMaterailCar(materialCar.getRows());
+                }else{
+                   getView().queryMaterailCarFailed(materialCar.getMsg());
                 }
+
             }
         }, new Action1<Throwable>() {
             @Override
@@ -68,17 +69,17 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(BindPrepCarIDByWorkOrderResult result) {
 
-                if ("success".equalsIgnoreCase(result.getMsg())) {
-                    getView().bindMaterialCarSucess(result.getData());
+                if ("0".equalsIgnoreCase(result.getCode())) {
+                    getView().bindMaterialCarSucess(result.getRows());
                 } else {
-                    getView().bindMaterialCarFailed(result.getData().get(0).getMsg());
+                    getView().bindMaterialCarFailed(result.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
 
-                // getView().getFailed(throwable.getMessage());
+                 getView().getFailed(throwable.getMessage());
             }
         });
     }
@@ -88,13 +89,10 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result<StorageDetails> issureToWarehResult) {
 
-                if ("success".equalsIgnoreCase(issureToWarehResult.getMessage())) {
+                if ("0".equalsIgnoreCase(issureToWarehResult.getCode())) {
                     getView().issureToWarehSuccess(issureToWarehResult.getRows());
                 } else {
-                    if (issureToWarehResult.getRows() != null && issureToWarehResult.getRows().get(0) != null) {
-
-                        getView().getFailed(issureToWarehResult.getRows().get(0).getMsg() + "");
-                    }
+                    getView().issureToWarehFailed(issureToWarehResult.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
