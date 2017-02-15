@@ -33,22 +33,22 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
         });
     }
 
-    public void getAllVirtualBindingResult(String id,String virtualID){
-        getModel().getVirtualBinding(id,virtualID).subscribe(new Action1<VirtualBindingResult>() {
+    public void getAllVirtualBindingResult(String str){
+        getModel().getVirtualBinding(str).subscribe(new Action1<VirtualLineBindingItem>() {
             @Override
-            public void call(VirtualBindingResult virtualBindingResult) {
+            public void call(VirtualLineBindingItem virtualLineBindingItem) {
 
-                getView().onSuccessBinding(virtualBindingResult);
+                getView().onSuccess(virtualLineBindingItem);
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailBinding();
+                getView().onFalied();
             }
         });
     }
 
-    public void getModNumByMaterial(String str,String num){
+    /*public void getModNumByMaterial(String str,String num){
         getModel().getModNumByMaterial(str,num).subscribe(new Action1<ModNumByMaterialResult>() {
             @Override
             public void call(ModNumByMaterialResult modNumByMaterialResult) {
@@ -61,6 +61,6 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
                 getView().onFailGetModByMate();
             }
         });
-    }
+    }*/
 
 }

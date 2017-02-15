@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -53,7 +52,6 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
     List<ProductWorkItem> data = new ArrayList<>();
     CommonBaseAdapter<ProductWorkItem> adapter;
 
-
     @Override
     protected void componentInject(AppComponent appComponent) {
 
@@ -75,9 +73,7 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具借出");
 
-        data.add(0, new ProductWorkItem("工单号", "工单类型", "机种", "PCB code", "组合料号", "线别", "PWB料号", "面别", "计划上线时间", "治具状态"));
-
-        Log.e(">>>>>>>>>>>>>>>>>>>>>>", data.size() + "");
+        data.add(0, new ProductWorkItem("工单号", "工单类型", "机种", "PCB code", "组合料号", "线别", "PWB料号", "面别", "计划上线时间", "状态"));
 
         adapter = new CommonBaseAdapter<ProductWorkItem>(getContext(), data) {
             @Override
@@ -177,7 +173,7 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         MyCompare myCompare = new MyCompare();
         Collections.sort(data, myCompare);
 
-        data.add(0, new ProductWorkItem("工单号", "工单类型", "机种", "PCB code", "组合料号", "线别", "PWB料号", "面别", "计划上线时间", "治具状态"));
+        data.add(0, new ProductWorkItem("工单号", "工单类型", "机种", "PCB code", "组合料号", "线别", "PWB料号", "面别", "计划上线时间", "状态"));
 
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getProductStatus().equals(getString(R.string.AreReady))) {

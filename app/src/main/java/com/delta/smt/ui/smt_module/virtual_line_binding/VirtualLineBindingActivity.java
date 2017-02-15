@@ -1,7 +1,10 @@
 package com.delta.smt.ui.smt_module.virtual_line_binding;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,34 +17,45 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.VirtualModuleID;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
+import com.delta.smt.app.App;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.di.component.DaggerAppComponent;
 import com.delta.smt.entity.ModNumByMaterialResult;
 import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.VirtualLineBindingItemNative;
+import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.smt_module.module_down_details.ModuleDownDetailsActivity;
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.DaggerVirtualLineBindingComponent;
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.VirtualLineBindingModule;
 import com.delta.smt.ui.smt_module.virtual_line_binding.mvp.VirtualLineBindingContract;
 import com.delta.smt.ui.smt_module.virtual_line_binding.mvp.VirtualLineBindingPresenter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.delta.smt.api.API.BASE_URL;
 
 /**
  * Created by Shufeng.Wu on 2017/1/4.
@@ -57,33 +71,47 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
     RecyclerView recyContent;
-    @BindView(R.id.btn_virtualLineBindingFinish)
-    AppCompatButton btnVirtualLineBindingFinish;
+    //@BindView(R.id.btn_virtualLineBindingFinish)
+    //AppCompatButton btnVirtualLineBindingFinish;
 
-    private CommonBaseAdapter<VirtualLineBindingItemNative> adapterTitle;
-    private CommonBaseAdapter<VirtualLineBindingItemNative> adapter;
-    private List<VirtualLineBindingItemNative> dataList = new ArrayList<>();
-    private List<VirtualLineBindingItemNative> dataSource = new ArrayList<>();
-
-    //假数据
-    //private List<String> virtualData = new ArrayList<>();
+    private CommonBaseAdapter<VirtualLineBindingItem.RowsBean> adapterTitle;
+    private CommonBaseAdapter<VirtualLineBindingItem.RowsBean> adapter;
+    private List<VirtualLineBindingItem.RowsBean> dataList = new ArrayList<>();
+    private List<VirtualLineBindingItem.RowsBean> dataSource = new ArrayList<>();
 
     //二维码
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
 
-/*
-    private String moduleIDCache = null;
-    private String virtualModuleIDCache = null;
-*/
-
     private int scan_position = -1;
-
-    private String moduleCodeCache = null;
-    private String virtualModuleCodeCache = null;
-    List<String> data_tmp = null;
+    List<VirtualLineBindingItem.RowsBean> data_tmp = null;
 
     String materialBlockNumber;
+    String feederNumber;
+    String virtualModuleID;
+    String serialNo;
+
+    @BindView(R.id.tv_showWorkOrder)
+    TextView tv_showWorkOrder;
+    @BindView(R.id.tv_showProductNameMain)
+    TextView tv_showProductNameMain;
+    @BindView(R.id.tv_showProductName)
+    TextView tv_showProductName;
+    @BindView(R.id.tv_showLineName)
+    TextView tv_showLineName;
+    @BindView(R.id.tv_showSide)
+    TextView tv_showSide;
+    @BindView(R.id.tv_showScan_1)
+    TextView tv_showScan_1;
+    @BindView(R.id.tv_showScan_2)
+    TextView tv_showScan_2;
+
     String workItemID;
+    String side;
+    String productNameMain;
+    String productName;
+    String linName;
+
+    String scan1_label = null;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -95,14 +123,16 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
         Intent intent = this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
-        //假数据
-        /*virtualData.clear();
-        virtualData.add("0353104700");
-        virtualData.add("1512445A00");
-        virtualData.add("15D2067A00");*/
-
-
-        getPresenter().getAllVirtualLineBindingItems("1");
+        side = intent.getStringExtra(Constant.SIDE);
+        linName = intent.getStringExtra(Constant.LINE_NAME);
+        productName = intent.getStringExtra(Constant.PRODUCT_NAME);
+        productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
+        Map<String, String> map = new HashMap<>();
+        map.put("work_order", workItemID);
+        map.put("side", side);
+        Gson gson = new Gson();
+        String argument = gson.toJson(map);
+        getPresenter().getAllVirtualLineBindingItems(argument);
         barCodeIpml.setOnGunKeyPressListener(this);
     }
 
@@ -114,25 +144,31 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("虚拟线体绑定");
 
-        dataList.add(new VirtualLineBindingItemNative("模组编号", "虚拟模组ID"));
-        adapterTitle = new CommonBaseAdapter<VirtualLineBindingItemNative>(this, dataList) {
+        tv_showWorkOrder.setText("工单号: "+workItemID);
+        tv_showProductNameMain.setText("主板: "+productNameMain);
+        tv_showProductName.setText("小板: "+productName);
+        tv_showLineName.setText("线别："+linName);
+        tv_showSide.setText("面别: "+side);
+
+        dataList.add(new VirtualLineBindingItem.RowsBean("序号", "虚拟模组ID"));
+        adapterTitle = new CommonBaseAdapter<VirtualLineBindingItem.RowsBean>(this, dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, VirtualLineBindingItemNative item, int position) {
+            protected void convert(CommonViewHolder holder, VirtualLineBindingItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_moduleID, item.getModule_id());
-                holder.setText(R.id.tv_virtualModuleID, item.getVirtual_module_id());
+                holder.setText(R.id.tv_moduleID, item.getModel_id());
+                holder.setText(R.id.tv_virtualModuleID, item.getVitual_id());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, VirtualLineBindingItemNative item) {
+            protected int getItemViewLayoutId(int position, VirtualLineBindingItem.RowsBean item) {
                 return R.layout.item_virtual_line_binding;
             }
         };
         recyTitle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyTitle.setAdapter(adapterTitle);
-        adapter = new CommonBaseAdapter<VirtualLineBindingItemNative>(this, dataSource) {
+        adapter = new CommonBaseAdapter<VirtualLineBindingItem.RowsBean>(this, dataSource) {
             @Override
-            protected void convert(CommonViewHolder holder, VirtualLineBindingItemNative item, int position) {
+            protected void convert(CommonViewHolder holder, VirtualLineBindingItem.RowsBean item, int position) {
                 if (scan_position == -1) {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 } else if (scan_position == position) {
@@ -140,12 +176,12 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
-                holder.setText(R.id.tv_moduleID, item.getModule_id());
-                holder.setText(R.id.tv_virtualModuleID, item.getVirtual_module_id());
+                holder.setText(R.id.tv_moduleID, item.getModel_id());
+                holder.setText(R.id.tv_virtualModuleID, item.getVitual_id());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, VirtualLineBindingItemNative item) {
+            protected int getItemViewLayoutId(int position, VirtualLineBindingItem.RowsBean item) {
                 return R.layout.item_virtual_line_binding;
             }
 
@@ -162,14 +198,45 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     public void onSuccess(VirtualLineBindingItem data) {
         if(data.getMsg().toLowerCase().equals("success")){
+            Toast.makeText(this, "onSuccess", Toast.LENGTH_SHORT).show();
             dataSource.clear();
             data_tmp = data.getRows();
-            for(int i=0;i<data_tmp.size();i++){
-                VirtualLineBindingItemNative virtualLineBindingItemNative = new VirtualLineBindingItemNative(data_tmp.get(i),"");
-                dataSource.add(virtualLineBindingItemNative);
-            }
+            /*for(int i=0;i<data_tmp.size();i++){
+                VirtualLineBindingItem.RowsBean rowsBean = new VirtualLineBindingItem.RowsBean(data_tmp,"");
+                dataSource.add(rowsBean);
+            }*/
+            dataSource.addAll(data_tmp);
             adapter.notifyDataSetChanged();
             adapterTitle.notifyDataSetChanged();
+            if(isAllModuleBinded(dataSource)){
+                new AlertDialog.Builder(this)
+                        .setTitle("提示")
+                        .setMessage("虚拟模组绑定完成，是否立即跳转到下模组界面？")
+                        .setCancelable(false)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString(Constant.WORK_ITEM_ID,workItemID);
+                                bundle.putString(Constant.PRODUCT_NAME_MAIN,productNameMain);
+                                bundle.putString(Constant.PRODUCT_NAME,productName);
+                                bundle.putString(Constant.SIDE,side);
+                                bundle.putString(Constant.LINE_NAME,linName);
+                                IntentUtils.showIntent(VirtualLineBindingActivity.this, ModuleDownDetailsActivity.class,bundle);
+                                dialogInterface.dismiss();
+                                VirtualLineBindingActivity.this.finish();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int which) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
         }
 
     }
@@ -177,68 +244,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     public void onFalied() {
 
-    }
-
-    @Override
-    public void onSuccessBinding(VirtualBindingResult data) {
-
-        if(data.getMsg().toLowerCase().equals("success")){
-            Toast.makeText(this,"虚拟线体绑定完成！",Toast.LENGTH_SHORT).show();
-            IntentUtils.showIntent(this, ModuleDownDetailsActivity.class);
-            this.finish();
-        }else{
-
-        }
-    }
-
-    @Override
-    public void onFailBinding() {
-
-    }
-
-    @Override
-    public void onSuccessGetModByMate(ModNumByMaterialResult data) {
-        String virtualID = data.getRows();
-        if (isExistInDataSource(virtualID, data_tmp)) {
-            if (virtualModuleCodeCache != null) {
-                moduleCodeCache = null;
-                virtualModuleCodeCache = null;
-            }
-            setItemHighLightBasedOnMID(virtualID);
-            moduleCodeCache = virtualID;
-            state = 2;
-        } else {
-            Toast.makeText(this, "该料盘不属于此套工单，请确认工单及扫描是否正确!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onFailGetModByMate() {
-
-    }
-
-    @OnClick({R.id.btn_virtualLineBindingFinish})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_virtualLineBindingFinish:
-                if(dataSource.size()>0){
-                    Toast.makeText(this,dataSource.size()+"",Toast.LENGTH_SHORT).show();
-                    String res_id = "";
-                    String res_virtual_id = "";
-                    for (int i=0;i<dataSource.size()-1;i++){
-                        res_id+=dataSource.get(i).getModule_id()+",";
-                        res_virtual_id+=dataSource.get(i).getVirtual_module_id()+",";
-                    }
-                    res_id+=dataSource.get(dataSource.size()-1).getModule_id();
-                    System.out.println(res_id);
-                    res_virtual_id+=dataSource.get(dataSource.size()-1).getVirtual_module_id();
-                    System.out.println(res_virtual_id);
-                    getPresenter().getAllVirtualBindingResult(res_id,res_virtual_id);
-
-                }
-                break;
-
-        }
     }
 
     @Override
@@ -263,89 +268,110 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
     @Override
     public void onScanSuccess(String barcode) {
+        Toast.makeText(this, barcode, Toast.LENGTH_SHORT).show();
+        //System.out.println(barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:
                 try {
                     MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                    //通过料盘码获取模组编号
-                    getPresenter().getModNumByMaterial(materialBlockNumber,workItemID);
+                    serialNo = materialBlockBarCode.getStreamNumber();
+                    scan1_label = "material";
+                    tv_showScan_1.setText(materialBlockNumber);
+                    state = 2;
+                    //System.out.println(materialBlockNumber);
                 } catch (EntityNotFountException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "请扫描料盘码！", Toast.LENGTH_SHORT).show();
+                    try{
+                        Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
+                        feederNumber = barcode;
+                        scan1_label="feeder";
+                        tv_showScan_1.setText(feederNumber);
+                        state = 2;
+                    }catch (EntityNotFountException ee) {
+                        new AlertDialog.Builder(this)
+                                .setTitle("提示")
+                                .setMessage("请扫描料盘或feederID！")
+                                .setCancelable(false)
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .create()
+                                .show();
+                    }
                 }
                 break;
             case 2:
-                if (moduleCodeCache != null && virtualModuleCodeCache == null) {
-                    try {
-                        VirtualModuleID virtualModuleID = (VirtualModuleID) barCodeParseIpml.getEntity(barcode,BarCodeType.VIRTUALMODULE_ID);
-                        if(isVirtualExistInDataSource(virtualModuleID.getSource(),dataSource)){
-                            Toast.makeText(this, "此虚拟模组已经被绑定！", Toast.LENGTH_SHORT).show();
-                        }else{
-                            virtualModuleCodeCache = virtualModuleID.getSource();
-                            setItemVirtualModuleID(virtualModuleCodeCache,moduleCodeCache);
-                            updateBindingFinishButtonState();
-                            //getPresenter().
-                            /*getMaterialAndFeederBindingResult(dataSource.get(scan_position).getId()+"",feederCodeCache);*/
-                            state = 1;
-                        }
-                    } catch (EntityNotFountException e) {
-                        //Toast.makeText(this, "请扫描虚拟模组ID码！", Toast.LENGTH_SHORT).show();
-                        try {
-                            MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                            materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                            //通过料盘码获取模组编号
-                            getPresenter().getModNumByMaterial(materialBlockNumber,workItemID);
+                try {
+                    VirtualModuleID virtualModuleID = (VirtualModuleID) barCodeParseIpml.getEntity(barcode, BarCodeType.VIRTUALMODULE_ID);
+                    tv_showScan_2.setText(virtualModuleID.getSource());
+                    //检查此模组是否被绑定
 
-                        } catch (EntityNotFountException ee) {
-                            ee.printStackTrace();
-                            Toast.makeText(this, "不支持此码！", Toast.LENGTH_SHORT).show();
-                        }
-                        e.printStackTrace();
+
+                    if("material".equals(scan1_label)){
+                        Map<String, String> map = new HashMap<>();
+                        map.put("work_order", workItemID);
+                        map.put("side", side);
+                        map.put("material_no",materialBlockNumber);
+                        map.put("serial_no",serialNo);
+                        map.put("vitual_id",virtualModuleID.getSource());
+                        Gson gson = new Gson();
+                        String argument = gson.toJson(map);
+
+                        getPresenter().getAllVirtualBindingResult(argument);
+                        scan1_label = null;
+                        state = 1;
+                    }else if("feeder".equals(scan1_label)){
+                        Map<String, String> map = new HashMap<>();
+                        map.put("work_order", workItemID);
+                        map.put("side", side);
+                        map.put("feeder_id",feederNumber);
+                        map.put("vitual_id",virtualModuleID.getSource());
+                        Gson gson = new Gson();
+                        String argument = gson.toJson(map);
+                        getPresenter().getAllVirtualBindingResult(argument);
+                        scan1_label = null;
+                        state = 1;
+                    }else{
+
                     }
-                }else{
-                    Toast.makeText(this, "请扫描料盘码！", Toast.LENGTH_SHORT).show();
+
+                } catch (EntityNotFountException e) {
+                    try {
+                        MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                        materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
+                        serialNo = materialBlockBarCode.getStreamNumber();
+                        scan1_label = "material";
+                        tv_showScan_1.setText(materialBlockNumber);
+                        state = 2;
+                    } catch (EntityNotFountException ee) {
+                        try{
+                            Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
+                            feederNumber = barcode;
+                            scan1_label="feeder";
+                            tv_showScan_1.setText(feederNumber);
+                            state = 2;
+                        }catch (EntityNotFountException eee) {
+                            new AlertDialog.Builder(this)
+                                    .setTitle("提示")
+                                    .setMessage("请扫描虚拟模组！")
+                                    .setCancelable(false)
+                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    })
+                                    .create()
+                                    .show();
+                        }
+                    }
                 }
                 break;
         }
-        /*switch (state)
-        if (BarCodeUtils.barCodeType(barcode) != null) {
-            switch (BarCodeUtils.barCodeType(barcode)) {
-                case MATERIAL_BLOCK_BARCODE:
-                    try {
-                        MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                        String materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                        int index = getModuleIndex(materialBlockNumber);
-                        if (index != -1) {
-                            if (virtualModuleIDCache != null) {
-                                moduleIDCache = null;
-                                virtualModuleIDCache = null;
-                            }
-                            //设置高亮
-                            moduleIDCache = index + "";
-                            setItemHighLightBasedOnMID(moduleIDCache);
-                        } else {
-                            Toast.makeText(this, "列表中不包含此码!", Toast.LENGTH_SHORT).show();
-                        }
-
-                    } catch (EntityNotFountException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    Toast.makeText(this, "此处不支持此类型码!", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        } else {
-            //Toast.makeText(this, "虚拟模组!", Toast.LENGTH_SHORT).show();
-            if (moduleIDCache != null && virtualModuleIDCache == null) {
-                setItemVirtualModuleID(barcode, moduleIDCache);
-                updateBindingFinishButtonState();
-            } else {
-                Toast.makeText(this, "请首先扫描料盘码!", Toast.LENGTH_SHORT).show();
-            }
-        }*/
 
     }
 
@@ -371,7 +397,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         return super.onOptionsItemSelected(item);
     }
 
-    public void updateBindingFinishButtonState() {
+    /*public void updateBindingFinishButtonState() {
         boolean temp = false;
         if (dataSource.size() > 0) {
             for (VirtualLineBindingItemNative list_item : dataSource) {
@@ -386,7 +412,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                 btnVirtualLineBindingFinish.setEnabled(true);
             }
         }
-    }
+    }*/
 
     /*public int getModuleIndex(String materialBlockNum) {
         for (int i = 0; i < virtualData.size(); i++) {
@@ -398,31 +424,49 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     }*/
 
     public void setItemVirtualModuleID(String virtualModuleID, String moduleID) {
-        if (dataSource.size() > 0) {
+        /*if (dataSource.size() > 0) {
             for (VirtualLineBindingItemNative listItem : dataSource) {
                 if (listItem.getModule_id().equals(moduleID)) {
                     listItem.setVirtual_module_id(virtualModuleID);
                 }
             }
             adapter.notifyDataSetChanged();
-        }
+        }*/
 
     }
 
     public void setItemHighLightBasedOnMID(String moduleID) {
-        for (int i = 0; i < dataSource.size(); i++) {
+        /*for (int i = 0; i < dataSource.size(); i++) {
             if (dataSource.get(i).getModule_id().equals(moduleID)) {
                 scan_position = i;
                 break;
             }
         }
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
     }
 
-    public boolean isExistInDataSource(String item,List<String> data_tmp) {
+    //判断是否所有的模组被绑定
+    public boolean isAllModuleBinded(List<VirtualLineBindingItem.RowsBean> rb){
+        boolean res = true;
+        if (rb.size()>0){
+            for(int i=0;i<rb.size();i++){
+                VirtualLineBindingItem.RowsBean rowsBean = rb.get(i);
+                if(rowsBean.getVitual_id()==null||"".equals(rowsBean.getVitual_id())){
+                    res = false;
+                    break;
+                }
+            }
+        }else{
+            res = false;
+        }
+
+        return res;
+    }
+
+    /*public boolean isExistInDataSource(String item,List<VirtualLineBindingItem.RowsBean> data_tmp) {
         if (data_tmp.size() > 0) {
-            for (String list_item : data_tmp) {
-                if (list_item.equals(item)) {
+            for (VirtualLineBindingItem.RowsBean list_item : data_tmp) {
+                if (list_item.getVitual_id().equals(item)) {
                     return true;
                 }
             }
@@ -445,5 +489,5 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
             return false;
         }
 
-    }
+    }*/
 }

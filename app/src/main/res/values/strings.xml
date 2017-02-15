@@ -86,4 +86,6 @@
     <string name="title_storehint">提示</string>
     <string name="storehint">您确认要进行点灯操作吗？</string>
     <string name="hasComplete">已完成</string>
+    <string name="MainBoard">主板</string>
+    <string name="LittleBoard">小板</string>
 </resources>

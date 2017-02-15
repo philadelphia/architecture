@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:layout_weight="10"
         android:gravity="center"
-        android:text="@string/WordType"
+        android:text="@string/MainBoard"
         android:textColor="#333333"
         android:textSize="30px"
         android:id="@+id/WorkType"/>
@@ -40,35 +40,25 @@
         android:layout_height="match_parent"
         android:layout_weight="10"
         android:gravity="center"
-        android:text="@string/MachineType"
+        android:text="@string/LittleBoard"
         android:textColor="#333333"
         android:textSize="30px"
         android:id="@+id/MachineType"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
-
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="0"
         android:gravity="center"
         android:text="@string/PCB_Code"
         android:textColor="#333333"
         android:textSize="30px"
         android:id="@+id/PCB_Code"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
-
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="0"
         android:gravity="center"
         android:text="@string/FormMaterialNumber"
         android:textColor="#333333"
@@ -83,23 +73,18 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="10"
         android:gravity="center"
         android:text="@string/Line"
         android:textColor="#333333"
         android:textSize="30px"
         android:id="@+id/Line"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
-
     <TextView
         android:id="@+id/PWB_MaterialNumber"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="0"
         android:gravity="center"
         android:text="@string/PWB_MaterialNumber"
         android:textColor="#333333"
@@ -114,7 +99,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="10"
         android:gravity="center"
         android:text="@string/Cover"
         android:textColor="#333333"
@@ -146,7 +131,7 @@
         android:layout_height="match_parent"
         android:layout_weight="10"
         android:gravity="center"
-        android:text="@string/ProductToolsStatus"
+        android:text="@string/Status"
         android:textColor="#333333"
         android:textSize="30px"
         android:id="@+id/ProductToolsStatus"/>

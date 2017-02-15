@@ -24,16 +24,10 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:text="上传到MES"/>
-        </RelativeLayout>
-
-        <HorizontalScrollView
-            android:id="@+id/hr_scrow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/btn_upload"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.RecyclerView
@@ -46,11 +40,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
-        </HorizontalScrollView>
+        </RelativeLayout>
+
+        <!--<HorizontalScrollView
+            android:id="@+id/hr_scrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">-->
+
+
+        <!--</HorizontalScrollView>-->
 
     </LinearLayout>
 
-    <TextView
+    <!--<TextView
         android:id="@+id/tv_moduleStationID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,7 +61,17 @@
         android:background="@android:color/black"
         android:alpha="10"
         android:gravity="center"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:textSize="50px"
+        android:text="1111"
+        android:textStyle="bold"
+        android:paddingTop="@dimen/px_20"
+        android:paddingBottom="@dimen/px_20"/>-->
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
     <!--<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
