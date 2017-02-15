@@ -39,7 +39,17 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                 int size=0;
                 for(JsonProductRequestToolsList j:rows){
                     size++;
-                    ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName(),"更多",j.getLoanStatus()==1?"待确认":"待取",String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
+                    String toolsStatus="";
+                    switch (j.getLoanStatus()){
+                        case 0:toolsStatus="已發";
+                            break;
+                        case 1:toolsStatus="待發";
+                            break;
+                        case 3:toolsStatus="待确定";
+                            break;
+                        default:toolsStatus="状态未知";
+                    }
+                    ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName(),"更多",toolsStatus,String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
                     data.add(p);
 
                     Log.e("-------===-------->>>",j.toString());
