@@ -24,12 +24,12 @@ public class VirtualLineBindingModel extends BaseModel<ApiService> implements Vi
     }
 
     @Override
-    public Observable<VirtualBindingResult> getVirtualBinding(String id, String virtualId) {
-        return getService().getVirtualBindingResult(id,virtualId).compose(RxsRxSchedulers.<VirtualBindingResult>io_main());
+    public Observable<VirtualLineBindingItem> getVirtualBinding(String str) {
+        return getService().getVirtualBindingResult(str).compose(RxsRxSchedulers.<VirtualLineBindingItem>io_main());
     }
 
-    @Override
+    /*@Override
     public Observable<ModNumByMaterialResult> getModNumByMaterial(String str,String num) {
         return getService().getModNumByMaterial(str,num).compose(RxsRxSchedulers.<ModNumByMaterialResult>io_main());
-    }
+    }*/
 }

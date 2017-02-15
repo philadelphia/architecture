@@ -141,30 +141,6 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                                 App.appComponent = DaggerAppComponent.builder().clientModule(mClientModule).appModule(App.getAppModule()).serviceModule(App.getServiceModule()).build();
                                 dialogInterface.dismiss();
 
-                                /*final EditText et_restart_info = new EditText(SettingActivity.this);
-                                et_restart_info.setText("服务器地址已更改，请重启应用生效！");
-                                new AlertDialog.Builder(SettingActivity.this)
-                                        .setTitle("提示")
-                                        .setView(et_restart_info)
-                                        .setCancelable(false)
-                                        .setPositiveButton("重启", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                dialogInterface.dismiss();
-
-
-                                            }
-                                        })
-                                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        })
-                                        .create()
-                                        .show();*/
-
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
