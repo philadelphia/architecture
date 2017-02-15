@@ -1,5 +1,7 @@
 package com.delta.smt.ui.product_tools.tools_info.mvp;
 
+import android.util.Log;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.JsonProductRequestToolsList;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
@@ -37,8 +39,21 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                 int size=0;
                 for(JsonProductRequestToolsList j:rows){
                     size++;
-                    ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName(),"更多",j.getLoanStatus()==1?"待确认":"待取",String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
+                    String toolsStatus="";
+                    switch (j.getLoanStatus()){
+                        case 0:toolsStatus="已發";
+                            break;
+                        case 1:toolsStatus="待發";
+                            break;
+                        case 3:toolsStatus="待确定";
+                            break;
+                        default:toolsStatus="状态未知";
+                    }
+                    ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName(),"更多",toolsStatus,String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
                     data.add(p);
+
+                    Log.e("-------===-------->>>",j.toString());
+
                 }
                 getView().getToolsInfo(data);
             }
@@ -46,6 +61,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             @Override
             public void call(Throwable throwable) {
                 getView().getFail();
+                Log.e("-------===-------->>>","cuocuocuocuco!!!!!!!!!!!!!!!!!!");
             }
         });
 
@@ -77,7 +93,6 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             public void call(Throwable throwable) {
 
                 getView().getFail();
-
             }
         });
 
