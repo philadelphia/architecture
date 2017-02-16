@@ -24,6 +24,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
@@ -95,14 +96,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String materialBlockNumber;
     private String serialNo;
 
-    @BindView(R.id.showDataContent)
-    TextView showDataContent;
-
-    @BindView(R.id.showLoading)
-    TextView showLoading;
-
-    @BindView(R.id.showError)
-    TextView showError;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -267,34 +262,22 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void showLoadingView() {
-        showLoading.setVisibility(View.VISIBLE);
-        showError.setVisibility(View.GONE);
-        showDataContent.setVisibility(View.GONE);
-        recyContent.setVisibility(View.GONE);
+        statusLayout.showLoadingView();
     }
 
     @Override
     public void showContentView() {
-        showLoading.setVisibility(View.GONE);
-        showError.setVisibility(View.GONE);
-        showDataContent.setVisibility(View.GONE);
-        recyContent.setVisibility(View.VISIBLE);
+        statusLayout.showContentView();
     }
 
     @Override
     public void showErrorView() {
-        showLoading.setVisibility(View.GONE);
-        showError.setVisibility(View.VISIBLE);
-        showDataContent.setVisibility(View.GONE);
-        recyContent.setVisibility(View.GONE);
+        statusLayout.showErrorView();
     }
 
     @Override
     public void showEmptyView() {
-        showLoading.setVisibility(View.GONE);
-        showError.setVisibility(View.GONE);
-        showDataContent.setVisibility(View.VISIBLE);
-        recyContent.setVisibility(View.GONE);
+        statusLayout.showEmptyView();
     }
 
     @OnClick({R.id.btn_upload})
