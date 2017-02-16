@@ -2,6 +2,7 @@ package com.delta.smt.ui.production_warning.mvp.produce_line;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.List;
@@ -24,16 +25,24 @@ public class ProduceLinePresenter extends BasePresenter<ProduceLineContract.Mode
 
     public void getProductionLineDatas(){
 
-        getModel().getProductionLineDatas().subscribe(new Action1<List<ItemProduceLine>>() {
+        getModel().getProductionLineDatas().subscribe(new Action1<Result<ItemProduceLine>>() {
             @Override
-            public void call(List<ItemProduceLine> itemProduceLines) {
+            public void call(Result<ItemProduceLine> itemProduceLines) {
+                if (itemProduceLines.getCode().equals("0")) {
+                    getView().getDataLineDatas(itemProduceLines.getRows());
+                }else{
+                    getView().getFailed(itemProduceLines.getMessage());
+                }
 
-                getView().getDataLineDatas(itemProduceLines);
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getFailed();
+                try {
+                    getView().getFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

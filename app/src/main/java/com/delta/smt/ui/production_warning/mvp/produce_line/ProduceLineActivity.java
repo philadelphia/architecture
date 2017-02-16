@@ -2,6 +2,7 @@ package com.delta.smt.ui.production_warning.mvp.produce_line;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -134,8 +135,8 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.PRODUCTIONLINE, mStringBuffer.toString());
                 if (type == 0) {
-//                    IntentUtils.showIntent(this, ProduceWarningActivity.class, bundle);
-                    IntentUtils.showIntent(this, AcceptMaterialsActivity.class);
+                    IntentUtils.showIntent(this, ProduceWarningActivity.class, bundle);
+//                    IntentUtils.showIntent(this, AcceptMaterialsActivity.class);
 
                 }
 
@@ -191,15 +192,10 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
-    }
 
     @Override
-    public void getFailed() {
-
+    public void getFailed(String message) {
+        Snackbar.make(getCurrentFocus(),message,Snackbar.LENGTH_INDEFINITE).show();
     }
 
     @Override

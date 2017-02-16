@@ -21,6 +21,10 @@ public class WarningListContract {
         void onSucessStates(String s);
         void onOutSuccess(List<OutBound.DataBean> dataBeanList);
         void getNumberSucces(PcbNumber.DataBean dataBean);
+        void showLoadingView();
+        void showContentView();
+        void showErrorView();
+        void showEmptyView();
 
     }
     public interface Model extends IModel{

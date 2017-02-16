@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
@@ -40,6 +41,9 @@ import butterknife.BindView;
  */
 
 public class SupplyFragment extends BaseFragment<SupplyPresenter> implements SupplyContract.View, ItemOnclick, WarningManger.OnWarning {
+
+   @BindView(R.id.statusLayout)
+   StatusLayout statusLayout;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     private List<FeederSupplyWarningItem> dataList = new ArrayList<>();
@@ -111,6 +115,26 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
     @Override
     public void onFailed(String message) {
         Log.i(TAG, "onFailed: " + message);
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
     }
 
 

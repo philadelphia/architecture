@@ -24,6 +24,10 @@ public class CheckStockContract {
         void onExceptionSucess(String wareHouses);
         void onSubmitSucess(String wareHouses);
         void onCheckStockSucess(String wareHouses);
+        void showLoadingView();
+        void showContentView();
+        void showErrorView();
+        void showEmptyView();
 
     }
     public interface Model extends IModel{

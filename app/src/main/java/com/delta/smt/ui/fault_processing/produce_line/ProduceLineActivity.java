@@ -121,13 +121,10 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter> impl
         mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void showToast(String message) {
 
-    }
 
     @Override
-    public void getFailed() {
+    public void getFailed(String message) {
 
     }
 

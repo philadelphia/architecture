@@ -1,11 +1,14 @@
 package com.delta.smt.ui.production_warning.item;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
 public class ItemProduceLine {
 
+    @SerializedName("production_line_name")
     private String linename;
     private boolean checked;
 

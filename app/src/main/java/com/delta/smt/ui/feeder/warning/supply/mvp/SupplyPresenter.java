@@ -7,6 +7,7 @@ import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -22,15 +23,29 @@ public class SupplyPresenter extends BasePresenter<SupplyContract.Model, SupplyC
     }
 
     public void getAllSupplyWorkItems(){
-        getModel().getAllSupplyWorkItems().subscribe(new Action1<Result<FeederSupplyWarningItem>>() {
+        getModel().getAllSupplyWorkItems().doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<Result<FeederSupplyWarningItem>>() {
             @Override
             public void call(Result<FeederSupplyWarningItem> feederSupplyWorkItems) {
-                getView().onSuccess(feederSupplyWorkItems.getRows());
+                if ("0".equals(feederSupplyWorkItems.getCode())) {
+                    if (feederSupplyWorkItems.getRows().size() == 0) {
+                        getView().showEmptyView();
+                    } else {
+                        getView().showContentView();
+                        getView().onSuccess(feederSupplyWorkItems.getRows());
+                    }
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 getView().onFailed(throwable.getMessage());
+                getView().showErrorView();
+
             }
         });
     }

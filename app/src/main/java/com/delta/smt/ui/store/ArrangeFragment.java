@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.ItemOnclick;
@@ -38,6 +39,8 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
     @BindView(R.id.time_recycler)
     FamiliarRecyclerView timeRecycler;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
     private ItemCountdownViewAdapter mAdapter;
     private List<ItemInfo> mList = new ArrayList<>();
 
@@ -143,6 +146,25 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
         if (null != mAdapter) {
             mAdapter.cancelRefreshTime();
         }
+    }
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
     }
 
 }

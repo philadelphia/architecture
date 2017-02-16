@@ -2,6 +2,7 @@ package com.delta.smt.ui.production_warning.item;
 
 import android.util.Log;
 
+import com.delta.libs.adapter.TimeEntity;
 import com.delta.smt.entity.CountDownEntity;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,7 +14,7 @@ import java.util.Date;
  * Created by Fuxiang.Zhang on 2016/12/23.
  */
 
-public class ItemWarningInfo extends CountDownEntity{
+public class ItemWarningInfo extends TimeEntity {
 
     @SerializedName("alarmType")
     private String title;
@@ -36,7 +37,7 @@ public class ItemWarningInfo extends CountDownEntity{
     @SerializedName("state")
     private String status;
 
-    @SerializedName("unusedMaterials")
+    @SerializedName("quantity")
     private String unusedmaterials;
 
     @SerializedName("slot")
@@ -44,6 +45,8 @@ public class ItemWarningInfo extends CountDownEntity{
 
     @SerializedName("executeTime")
     private String time;
+
+    private String connectMaterialCount;
 
     private int id;
 
@@ -57,8 +60,6 @@ public class ItemWarningInfo extends CountDownEntity{
         this.productionline=productionline;
         this.makeprocess=makeprocess;
         this.warninginfo=warninginfo;
-        this.countdown=countdown;
-        this.endTime=endtime;
         this.id=id;
     }
 
@@ -70,36 +71,30 @@ public class ItemWarningInfo extends CountDownEntity{
         this.time = time;
     }
 
-    public Long getCountDownLong(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-        Date date ;
-        try {
-            date = sdf.parse(time);
-            long time = date.getTime();
 
-            Log.i("ItemWarningInfo", "time: " + time);
-            return  date.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public ItemWarningInfo(String title, String productionline, String workcode,
                            String face, String unusedmaterials,
-                           String materialstation,String countdown,Long endtime,int id) {
+                           String materialstation,String countdown,Long endtime,int id,
+                           String connectMaterialCount) {
         this.title = title;
         this.productionline = productionline;
         this.workcode = workcode;
         this.face = face;
         this.unusedmaterials = unusedmaterials;
         this.materialstation = materialstation;
-        this.countdown=countdown;
-        this.endTime=endtime;
         this.id=id;
+        this.connectMaterialCount=connectMaterialCount;
     }
 
 
+    public String getConnectMaterialCount() {
+        return connectMaterialCount;
+    }
+
+    public void setConnectMaterialCount(String connectMaterialCount) {
+        this.connectMaterialCount = connectMaterialCount;
+    }
 
     public int getId() {
         return id;

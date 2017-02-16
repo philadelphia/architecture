@@ -107,6 +107,7 @@ public class Constant {
     public static String FAULTCODE = "fault_code";
     public static String FAULTID = "fault_id";
     public static String PRODUCTIONLINE = "production_line";
+    public static String ACCEPTMATERIALSLINES="accept_materials_line";
     public static String CONDITION=null;
 
 /*    public static String initLine() {

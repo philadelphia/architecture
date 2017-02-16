@@ -2,6 +2,7 @@ package com.delta.smt.ui.production_warning.mvp.produce_line;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.List;
@@ -18,13 +19,13 @@ import rx.Observable;
 public interface ProduceLineContract {
     interface View extends IView {
         void getDataLineDatas(List<ItemProduceLine> itemProduceLine);
-        void showToast(String message);
-        void getFailed();
+
+        void getFailed(String message);
 }
 
     interface Model extends IModel {
 
-        Observable<List<ItemProduceLine>> getProductionLineDatas();
+        Observable<Result<ItemProduceLine>> getProductionLineDatas();
 
 
     }

@@ -18,6 +18,10 @@ public class WarningContract {
     public  interface View extends IView{
         void onSucess(List<ItemInfo> wareHouses);
         void onFailed(String s);
+        void showLoadingView();
+        void showContentView();
+        void showErrorView();
+        void showEmptyView();
     }
      public interface Model extends IModel{
          Observable<AllQuery> getWarning();

@@ -2,6 +2,7 @@ package com.delta.smt.ui.production_warning.item;
 
 import android.util.Log;
 
+import com.delta.libs.adapter.TimeEntity;
 import com.delta.smt.entity.CountDownEntity;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,7 +14,7 @@ import java.util.Date;
  * Created by Fuxiang.Zhang on 2016/12/26.
  */
 
-public class ItemBreakDown extends CountDownEntity {
+public class ItemBreakDown extends TimeEntity {
 
     @SerializedName("faultType")
     private String title;
@@ -43,20 +44,7 @@ public class ItemBreakDown extends CountDownEntity {
         this.breakdown_info = breakdown_info;
     }
 
-    public Long getCountDownLong(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-        Date date ;
-        try {
-            date = sdf.parse(createTime);
-            long time = date.getTime();
 
-            Log.i("ItemWarningInfo", "time: " + time);
-            return  date.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
     public String getCreateTime() {
