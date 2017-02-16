@@ -9,11 +9,21 @@ public class ThreeOfMaterial {
     private String deltaMaterialNumber;
     private String pcbCode;
     private String dataCode;
+    private String count;
 
-    public ThreeOfMaterial(String deltaMaterialNumber, String pcbCode, String dataCode) {
+    public ThreeOfMaterial(String deltaMaterialNumber, String pcbCode, String dataCode, String count) {
         this.deltaMaterialNumber = deltaMaterialNumber;
         this.pcbCode = pcbCode;
         this.dataCode = dataCode;
+        this.count = count;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
     }
 
     public String getDeltaMaterialNumber() {

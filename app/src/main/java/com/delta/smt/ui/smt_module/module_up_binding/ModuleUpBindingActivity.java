@@ -40,6 +40,7 @@ import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingPresenter;
 import com.delta.smt.ui.smt_module.virtual_line_binding.VirtualLineBindingActivity;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -94,6 +95,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String materialBlockNumber;
     private String serialNo;
 
+    @BindView(R.id.showDataContent)
+    TextView showDataContent;
+
+    @BindView(R.id.showLoading)
+    TextView showLoading;
+
+    @BindView(R.id.showError)
+    TextView showError;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerModuleUpBindingComponent.builder().appComponent(appComponent).moduleUpBindingModule(new ModuleUpBindingModule(this)).build().inject(this);
@@ -119,6 +129,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     protected void initView() {
         toolbar.setTitle("");
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -254,6 +265,38 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     }
 
+    @Override
+    public void showLoadingView() {
+        showLoading.setVisibility(View.VISIBLE);
+        showError.setVisibility(View.GONE);
+        showDataContent.setVisibility(View.GONE);
+        recyContent.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showContentView() {
+        showLoading.setVisibility(View.GONE);
+        showError.setVisibility(View.GONE);
+        showDataContent.setVisibility(View.GONE);
+        recyContent.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showErrorView() {
+        showLoading.setVisibility(View.GONE);
+        showError.setVisibility(View.VISIBLE);
+        showDataContent.setVisibility(View.GONE);
+        recyContent.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEmptyView() {
+        showLoading.setVisibility(View.GONE);
+        showError.setVisibility(View.GONE);
+        showDataContent.setVisibility(View.VISIBLE);
+        recyContent.setVisibility(View.GONE);
+    }
+
     @OnClick({R.id.btn_upload})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -290,16 +333,23 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         switch (state) {
             case 1:
                 try {
+                    //ArrayIndexOutOfBoundsException
                     MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
                     serialNo = materialBlockBarCode.getStreamNumber();
                     if(!isExistInDataSourceAndHighLight(materialBlockNumber,serialNo,dataSource)){
+                        VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                        VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                         Snackbar.make(container,"该料盘不属于此套工单，请确认工单及扫描是否正确！",Snackbar.LENGTH_INDEFINITE).show();
                     }else{
+                        VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
+                        VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
                         state = 2;
                     }
 
                 } catch (EntityNotFountException e) {
+                    Snackbar.make(container,"请先扫描料盘码！",Snackbar.LENGTH_INDEFINITE).show();
+                } catch (ArrayIndexOutOfBoundsException e){
                     Snackbar.make(container,"请先扫描料盘码！",Snackbar.LENGTH_INDEFINITE).show();
                 }
                 break;
@@ -324,9 +374,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                             materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
                             serialNo = materialBlockBarCode.getStreamNumber();
                             if(!isExistInDataSourceAndHighLight(materialBlockNumber,serialNo,dataSource)){
-
+                                VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                                VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                                 Snackbar.make(container,"该料盘不属于此套工单，请确认工单及扫描是否正确！",Snackbar.LENGTH_INDEFINITE).show();
                             }else{
+                                VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
+                                VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
                                 state = 2;
                             }
 
@@ -335,6 +388,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                             Snackbar.make(container,"请先扫描料盘码！",Snackbar.LENGTH_INDEFINITE).show();
                         }
                         e.printStackTrace();
+                    } catch (ArrayIndexOutOfBoundsException e){
+                        Snackbar.make(container,"请先扫描料盘码！",Snackbar.LENGTH_INDEFINITE).show();
                     }
                 break;
         }

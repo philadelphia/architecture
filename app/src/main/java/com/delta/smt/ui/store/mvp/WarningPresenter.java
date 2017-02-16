@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -23,10 +24,16 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
     }
 
     public  void fatchWarning(){
-        getModel().getWarning().subscribe(new Action1<AllQuery>() {
+        getModel().getWarning().doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<AllQuery>() {
             @Override
             public void call(AllQuery itemInfos) {
                 if ("0".equals(itemInfos.getCode())) {
+                    getView().showContentView();
                     if (itemInfos.getMsg().contains("Success")) {
                         List<ItemInfo> itemInfoList = new ArrayList<ItemInfo>();
                         for (int i = 0; i < itemInfos.getRows().size(); i++) {
@@ -58,6 +65,7 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
                 getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });

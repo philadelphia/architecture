@@ -22,6 +22,14 @@ public interface ModuleUpBindingContract {
 
         public void onFailedBinding();
 
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
+
     }
 
     interface Model extends IModel {

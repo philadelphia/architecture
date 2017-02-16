@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <include layout="@layout/appbar" />
+    <com.delta.commonlibs.widget.statusLayout.StatusLayout
+        android:id="@+id/statusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/px_20"
+        android:layout_marginRight="@dimen/px_20"
+        android:gravity="center">
+    <Button
+        android:id="@+id/startAndstop_startwork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:text="@string/startAndstop_startwork"
+        />
+    <Button
+        android:id="@+id/startAndstop_stopwork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:text="@string/startAndstop_stopwork"
+        android:layout_marginTop="@dimen/px_80"
+        />
+    </com.zhy.autolayout.AutoLinearLayout>
+    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
+</com.zhy.autolayout.AutoLinearLayout>

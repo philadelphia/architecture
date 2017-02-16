@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cn.iwgang.familiarrecyclerview.FamiliarRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.delta.commonlibs.widget.statusLayout.StatusLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/statusLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/time_recycler"
@@ -8,4 +14,4 @@
     app:frv_dividerHeight="0.5dp"
     app:frv_layoutManager="linear">
 
-</cn.iwgang.familiarrecyclerview.FamiliarRecyclerView>
+</cn.iwgang.familiarrecyclerview.FamiliarRecyclerView></com.delta.commonlibs.widget.statusLayout.StatusLayout>

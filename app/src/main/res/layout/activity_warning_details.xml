@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/activity_warning_main">
     <include layout="@layout/appbar"/>
+    <com.delta.commonlibs.widget.statusLayout.StatusLayout
+        android:id="@+id/statusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,14 +81,32 @@
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_alignBottom="@id/storage_datacodetv"
             />
-
+        <TextView
+            android:id="@+id/storage_counttv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/style_storagetv"
+            android:text="@string/storage_counttv"
+            android:layout_below="@id/storage_datacodeed"
+            android:layout_alignLeft="@id/storage_pcbtv"
+            />
+        <EditText
+            android:id="@+id/storage_counted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            style="@style/style_storageedi"
+            android:layout_toRightOf="@id/storage_counttv"
+            android:layout_alignLeft="@id/storage_pcbed"
+            android:layout_alignBottom="@id/storage_counttv"
+            />
         <TextView
             android:id="@+id/storage_idtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/style_storagetv"
             android:text="@string/storage_idtv"
-            android:layout_below="@id/storage_datacodeed"
+            android:layout_below="@id/storage_counttv"
             android:layout_alignLeft="@id/storage_pcbtv"
             />
         <EditText
@@ -104,7 +131,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_marginTop="@dimen/px_30"
         >
 
         <Button
@@ -125,5 +152,6 @@
             android:layout_marginRight="@dimen/px_70"
             />
     </LinearLayout>
-
+        </LinearLayout>
+</com.delta.commonlibs.widget.statusLayout.StatusLayout>
 </LinearLayout>

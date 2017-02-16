@@ -47,6 +47,7 @@
     <string name="pcb_demand">需求量</string>
     <string name="pcb_code">PCBCode</string>
     <string name="pcb_time">D/C</string>
+    <string name="pcb_count">数量</string>
     <string name="statistics_id">PCB流水号</string>
     <string name="statistics_pcbnumber">在库数量</string>
     <string name="statistics_number">盘点数量</string>
@@ -81,11 +82,14 @@
     <string name="Status">状态</string>
     <string name="TurnNumber">序号</string>
     <string name="AreReady">准备就绪</string>
-    <string name="storage_submit">提交</string>
-    <string name="storage_clear">清空</string>
+    <string name="storage_submit">确认点灯</string>
+    <string name="storage_clear">取消</string>
     <string name="title_storehint">提示</string>
     <string name="storehint">您确认要进行点灯操作吗？</string>
     <string name="hasComplete">已完成</string>
+    <string name="startAndstop_startwork">开始盘点</string>
+    <string name="startAndstop_stopwork">结束盘点</string>
+    <string name="storage_counttv">数量：</string>
     <string name="MainBoard">主板</string>
     <string name="LittleBoard">小板</string>
 </resources>

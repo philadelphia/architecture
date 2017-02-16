@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
@@ -19,7 +20,10 @@ import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningAct
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,7 +37,7 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
 
     @BindView(R.id.ryv_produce_breakdown)
     RecyclerView mRyvProduceBreakdown;
-    private ItemCountdownViewAdapter<ItemBreakDown> mAdapter;
+    private ItemCountViewAdapter<ItemBreakDown> mAdapter;
     private List<ItemBreakDown> datas=new ArrayList<>();
 
 
@@ -50,14 +54,19 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
 
     @Override
     protected void initView() {
-        mAdapter=new ItemCountdownViewAdapter<ItemBreakDown>(getContext(),datas) {
+        mAdapter=new ItemCountViewAdapter<ItemBreakDown>(getContext(),datas) {
+            @Override
+            protected int getCountViewId() {
+                return R.id.cv_countView;
+            }
+
             @Override
             protected int getLayoutId() {
                 return R.layout.item_produce_breakdown;
             }
 
             @Override
-            protected void convert(ItemTimeViewHolder holder, ItemBreakDown itemBreakDown, int position) {
+            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, ItemBreakDown itemBreakDown, int position) {
                 holder.setText(R.id.tv_title,itemBreakDown.getTitle());
                 holder.setText(R.id.tv_produce_line,"产线："+itemBreakDown.getProduce_line());
                 holder.setText(R.id.tv_word_code,"制程："+itemBreakDown.getMake_process());
@@ -91,6 +100,18 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
     @Override
     public void getItemBreakdownDatas(List<ItemBreakDown> itemBreakDown) {
         datas.clear();
+
+        for (int i = 0; i < itemBreakDown.size(); i++) {
+            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+            try {
+                Date parse = format.parse(itemBreakDown.get(i).getCreateTime());
+                itemBreakDown.get(i).setCreat_time(parse.getTime());
+                itemBreakDown.get(i).setEntityId(i);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         datas.addAll(itemBreakDown);
         //对adapter刷新改变
         mAdapter.notifyDataSetChanged();
@@ -115,5 +136,29 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
             getPresenter().getItemBreakdownDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
         Log.e(TAG, "event2: ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdapter!=null){
+            mAdapter.startRefreshTime();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mAdapter!=null){
+            mAdapter.cancelRefreshTime();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mAdapter!=null){
+            mAdapter.cancelRefreshTime();
+        }
     }
 }

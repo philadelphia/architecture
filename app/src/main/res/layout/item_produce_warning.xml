@@ -45,7 +45,7 @@
         <TextView
             android:id="@+id/tv_unused_materials"
             android:textColor="@android:color/black"
-            android:text="备料车未使用料量：9000"
+            android:text="剩余料量：9000"
             android:layout_below="@+id/tv_face"
             android:textSize="12sp"
             android:padding="1dp"
@@ -67,14 +67,22 @@
         android:layout_below="@+id/tv_material_station"
         android:textSize="12sp"
         android:padding="1dp"
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_unaccept_materials_num"
+        android:textColor="#e61010"
+        android:text="该线别待接料数：2"
+        android:layout_below="@+id/tv_status"
+        android:textSize="12sp"
+        android:padding="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/tv_make_process"
         android:textColor="@android:color/black"
         android:text="制程：是否"
-        android:layout_below="@+id/tv_status"
+        android:layout_below="@+id/tv_unaccept_materials_num"
         android:textSize="12sp"
         android:padding="1dp"
         android:layout_width="match_parent"
@@ -98,11 +106,13 @@
         <TextView
             android:id="@+id/time_remain"
             android:text="剩余时间："
-            android:textSize="12sp"
-            android:layout_width="90dp"
+            android:singleLine="true"
+            android:textColor="@color/c_000000"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <cn.iwgang.countdownview.CountdownView
+<!--        <cn.iwgang.countdownview.CountdownView
             android:id="@+id/cv_countdownViewTest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,6 +128,27 @@
             app:suffixTextSize="20sp"
             app:timeTextColor="#000000"
             app:timeTextSize="20sp"
-            />
+            />-->
+        <com.delta.libs.CountTimeView
+            android:id="@+id/cv_countView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20px"
+            app:isCountUp="false"
+            app:isShowHour="true"
+            app:isShowDay="false"
+            app:isShowMillisecond="false"
+            app:isShowMinute="true"
+            app:isShowSecond="true"
+            app:suffixDayRightMargin="10px"
+            app:suffixGravity="center"
+            app:suffixHour=":"
+            app:suffixMinute=":"
+            app:suffixTextColor="#000000"
+            app:suffixTextSize="20sp"
+            app:timeTextColor="#000000"
+            app:timeTextSize="20sp" />
     </LinearLayout>
 </RelativeLayout>

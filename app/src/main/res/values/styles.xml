@@ -93,9 +93,9 @@
 
     <style name="item_textstyle">
         <item name="android:textSize">@dimen/px_40</item>
-        <item name="android:textColor">@color/waring_text</item>
+        <item name="android:textColor">@color/waring_editext</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:background">@drawable/option_frame</item>
+        <item name="android:background">@drawable/textview_border</item>
         <item name="android:paddingBottom">@dimen/px_16</item>
         <item name="android:paddingTop">@dimen/px_16</item>
 
