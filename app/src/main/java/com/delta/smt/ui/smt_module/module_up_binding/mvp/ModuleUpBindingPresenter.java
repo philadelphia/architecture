@@ -9,6 +9,7 @@ import com.delta.smt.entity.ModuleUpBindingItem;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -22,15 +23,48 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
     }
 
     public void getAllModuleUpBindingItems(String str){
-        getModel().getAllModuleUpBindingItems(str).subscribe(new Action1<ModuleUpBindingItem>() {
+        getModel().getAllModuleUpBindingItems(str).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                try{
+                    getView().showLoadingView();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        }).subscribe(new Action1<ModuleUpBindingItem>() {
             @Override
             public void call(ModuleUpBindingItem moduleUpBindingItems) {
-                getView().onSuccess(moduleUpBindingItems);
+                //getView().onSuccess(moduleUpBindingItems);
+                try{
+                    if ("0".equals(moduleUpBindingItems.getCode())) {
+
+                        if (moduleUpBindingItems.getRows().size() == 0) {
+                            getView().showEmptyView();
+                        }else {
+                            getView().showContentView();
+                            getView().onSuccess(moduleUpBindingItems);
+                        }
+
+                    } else {
+                        getView().onFalied();
+                        getView().showErrorView();
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFalied();
+                try {
+                    getView().onFalied();
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -40,15 +74,44 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
     }
 
     public void getMaterialAndFeederBindingResult(String str){
-        getModel().getMaterialAndFeederBindingResult(str).subscribe(new Action1<ModuleUpBindingItem>() {
+        getModel().getMaterialAndFeederBindingResult(str).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<ModuleUpBindingItem>() {
             @Override
             public void call(ModuleUpBindingItem moduleUpBindingItem) {
-                getView().onSuccessBinding(moduleUpBindingItem);
+                //getView().onSuccessBinding(moduleUpBindingItem);
+                try{
+                    if ("0".equals(moduleUpBindingItem.getCode())) {
+
+                        if (moduleUpBindingItem.getRows().size() == 0) {
+                            getView().showEmptyView();
+                        }else {
+                            getView().showContentView();
+                            getView().onSuccessBinding(moduleUpBindingItem);
+                        }
+
+                    } else {
+                        getView().onFailedBinding();
+                        getView().showErrorView();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailedBinding();
+                try{
+                    getView().onFailedBinding();
+                    getView().showErrorView();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
         });
     }

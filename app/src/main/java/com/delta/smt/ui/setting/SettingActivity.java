@@ -81,6 +81,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     @Override
     protected void initView() {
         toolbar.setTitle("");
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         if(SpUtil.getStringSF(SettingActivity.this,"server_address")==null){
             settingServerAddress.setText("配置服务器地址"+"\n("+ BASE_URL+")");
         }else if("".equals(SpUtil.getStringSF(SettingActivity.this,"server_address"))){

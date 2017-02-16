@@ -139,6 +139,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     protected void initView() {
         toolbar.setTitle("");
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);

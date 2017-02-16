@@ -125,6 +125,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             automaticDebit.setChecked(true);
         }
         toolbar.setTitle("");
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);

@@ -90,6 +90,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     String productName;
     String linName;
 
+    private static final String TAG = "ModuleDownDetailsActivi";
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerModuleDownDetailsComponent.builder().appComponent(appComponent).moduleDownDetailsModule(new ModuleDownDetailsModule(this)).build().inject(this);
@@ -120,6 +122,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     protected void initView() {
         //headerTitle.setText("下模组");
         toolbar.setTitle("");
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
