@@ -9,17 +9,10 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/px_50">
-
-        <ImageView
-            android:layout_width="26px"
-            android:layout_height="46px"
-            android:layout_marginTop="50px"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="40px"
-            android:src="@drawable/ic_settingback"
-            android:id="@+id/imageView" />
+        android:layout_marginTop="@dimen/px_50"
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="10px"
+        >
 
         <TextView
             android:id="@+id/setting_server_address"
@@ -31,18 +24,7 @@
             android:text="配置服务器地址"
             android:textColor="@color/waring_editext"
             android:background="@drawable/selector_setting_button"
-            android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/imageView"
-            android:layout_alignEnd="@+id/imageView" />
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1px"
-        android:background="@color/waring_editext"/>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+            android:layout_alignParentTop="true"/>
 
         <ImageView
             android:layout_width="26px"
@@ -51,7 +33,19 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_marginRight="40px"
-            android:src="@drawable/ic_settingback"/>
+            android:src="@drawable/ic_settingback"
+            android:id="@+id/imageView" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="10px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
 
         <TextView
             android:id="@+id/setting_update"
@@ -68,13 +62,25 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
+        <ImageView
+            android:layout_width="26px"
+            android:layout_height="46px"
+            android:layout_marginTop="50px"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="40px"
+            android:src="@drawable/ic_settingback"/>
+
     </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/px_1"
-        android:background="@color/waring_editext"/>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/px_1"-->
+        <!--android:background="@color/waring_editext"/>-->
 
     <RelativeLayout
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="10px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     <TextView
@@ -100,9 +106,5 @@
             android:src="@drawable/ic_settingback"/>
 
     </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1px"
-        android:background="@color/waring_editext"/>
 
 </LinearLayout>
