@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -62,14 +63,8 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     String workOrderID = "";
     List<String> status = new ArrayList<>();
 
-    @BindView(R.id.showNetState)
-    TextView showNetState;
-
-    @BindView(R.id.showLoading)
-    TextView showLoading;
-
-    @BindView(R.id.showError)
-    TextView showError;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
 
     @Override
@@ -139,7 +134,6 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
             dataList.addAll(rows);
             myAdapter.notifyDataSetChanged();
-            showNetState.setVisibility(View.GONE);
         }
     }
 
@@ -150,34 +144,38 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     public void showLoadingView() {
-        showLoading.setVisibility(View.VISIBLE);
+        statusLayout.showLoadingView();
+        /*showLoading.setVisibility(View.VISIBLE);
         showError.setVisibility(View.GONE);
         showNetState.setVisibility(View.GONE);
-        recyclerview.setVisibility(View.GONE);
+        recyclerview.setVisibility(View.GONE);*/
     }
 
     @Override
     public void showContentView() {
-        showLoading.setVisibility(View.GONE);
+        statusLayout.showContentView();
+        /*showLoading.setVisibility(View.GONE);
         showError.setVisibility(View.GONE);
         showNetState.setVisibility(View.GONE);
-        recyclerview.setVisibility(View.VISIBLE);
+        recyclerview.setVisibility(View.VISIBLE);*/
     }
 
     @Override
     public void showErrorView() {
-        showLoading.setVisibility(View.GONE);
+        statusLayout.showErrorView();
+        /*showLoading.setVisibility(View.GONE);
         showError.setVisibility(View.VISIBLE);
         showNetState.setVisibility(View.GONE);
-        recyclerview.setVisibility(View.GONE);
+        recyclerview.setVisibility(View.GONE);*/
     }
 
     @Override
     public void showEmptyView() {
-        showLoading.setVisibility(View.GONE);
+        statusLayout.showEmptyView();
+        /*showLoading.setVisibility(View.GONE);
         showError.setVisibility(View.GONE);
         showNetState.setVisibility(View.VISIBLE);
-        recyclerview.setVisibility(View.GONE);
+        recyclerview.setVisibility(View.GONE);*/
     }
 
 

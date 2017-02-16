@@ -25,6 +25,7 @@ import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
@@ -112,6 +113,9 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     String linName;
 
     String scan1_label = null;
+
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -225,7 +229,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                                 bundle.putString(Constant.LINE_NAME,linName);
                                 IntentUtils.showIntent(VirtualLineBindingActivity.this, ModuleDownDetailsActivity.class,bundle);
                                 dialogInterface.dismiss();
-                                VirtualLineBindingActivity.this.finish();
+                                //VirtualLineBindingActivity.this.finish();
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -245,6 +249,26 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     public void onFalied() {
 
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
     }
 
     @Override

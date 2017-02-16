@@ -26,6 +26,13 @@ public interface VirtualLineBindingContract {
         //public void onSuccessGetModByMate(ModNumByMaterialResult data);
 
         //public void onFailGetModByMate();
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
 
     }
 

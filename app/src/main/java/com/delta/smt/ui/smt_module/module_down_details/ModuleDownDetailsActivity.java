@@ -21,6 +21,7 @@ import com.delta.buletoothio.barcode.parse.entity.FeederBuffer;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
@@ -89,6 +90,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     String productNameMain;
     String productName;
     String linName;
+
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
     private static final String TAG = "ModuleDownDetailsActivi";
 
@@ -203,6 +207,27 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onFailMaintain() {
 
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
     }
 
     @Override

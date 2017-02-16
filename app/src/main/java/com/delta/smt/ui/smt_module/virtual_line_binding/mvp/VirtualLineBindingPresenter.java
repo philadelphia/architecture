@@ -7,6 +7,7 @@ import com.delta.smt.entity.VirtualLineBindingItem;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -20,30 +21,88 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
     }
 
     public void getAllVirtualLineBindingItems(String str){
-        getModel().getAllVirtualLineBindingItems(str).subscribe(new Action1<VirtualLineBindingItem>() {
+        getModel().getAllVirtualLineBindingItems(str).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                try{
+                    getView().showLoadingView();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).subscribe(new Action1<VirtualLineBindingItem>() {
             @Override
             public void call(VirtualLineBindingItem virtualLineBindingItems) {
-                getView().onSuccess(virtualLineBindingItems);
+                //getView().onSuccess(virtualLineBindingItems);
+                try{
+                    if ("0".equals(virtualLineBindingItems.getCode())) {
+                        if (virtualLineBindingItems.getRows().size() == 0) {
+                            getView().showEmptyView();
+                        }else {
+                            getView().showContentView();
+                            getView().onSuccess(virtualLineBindingItems);
+                        }
+                    } else {
+                        getView().onFalied();
+                        getView().showErrorView();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFalied();
+                try{
+                    getView().onFalied();
+                    getView().showErrorView();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
         });
     }
 
     public void getAllVirtualBindingResult(String str){
-        getModel().getVirtualBinding(str).subscribe(new Action1<VirtualLineBindingItem>() {
+        getModel().getVirtualBinding(str).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                try{
+                    getView().showLoadingView();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).subscribe(new Action1<VirtualLineBindingItem>() {
             @Override
             public void call(VirtualLineBindingItem virtualLineBindingItem) {
-
-                getView().onSuccess(virtualLineBindingItem);
+                //getView().onSuccess(virtualLineBindingItem);
+                try{
+                    if ("0".equals(virtualLineBindingItem.getCode())) {
+                        if (virtualLineBindingItem.getRows().size() == 0) {
+                            getView().showEmptyView();
+                        }else {
+                            getView().showContentView();
+                            getView().onSuccess(virtualLineBindingItem);
+                        }
+                    } else {
+                        getView().onFalied();
+                        getView().showErrorView();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFalied();
+                try{
+                    getView().onFalied();
+                    getView().showErrorView();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }
