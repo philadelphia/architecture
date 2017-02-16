@@ -60,8 +60,14 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     String workOrderID = "";
 
-    @BindView(R.id.showNetState)
-            TextView showNetState;
+    @BindView(R.id.showDataContent)
+    TextView showDataContent;
+
+    @BindView(R.id.showLoading)
+    TextView showLoading;
+
+    @BindView(R.id.showError)
+    TextView showError;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -83,6 +89,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @Override
     protected void initView() {
         toolbar.setTitle("");
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -124,13 +131,45 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             List<ModuleDownWarningItem.RowsBean> rowsList = data.getRows();
             dataList.addAll(rowsList);
             myAdapter.notifyDataSetChanged();
-            showNetState.setVisibility(View.GONE);
+            //showNetState.setVisibility(View.GONE);
         }
 
     }
 
     @Override
     public void onFalied() {
+    }
+
+    @Override
+    public void showLoadingView() {
+        showLoading.setVisibility(View.VISIBLE);
+        showError.setVisibility(View.GONE);
+        showDataContent.setVisibility(View.GONE);
+        recyclerview.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showContentView() {
+        showLoading.setVisibility(View.GONE);
+        showError.setVisibility(View.GONE);
+        showDataContent.setVisibility(View.GONE);
+        recyclerview.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showErrorView() {
+        showLoading.setVisibility(View.GONE);
+        showError.setVisibility(View.VISIBLE);
+        showDataContent.setVisibility(View.GONE);
+        recyclerview.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEmptyView() {
+        showLoading.setVisibility(View.GONE);
+        showError.setVisibility(View.GONE);
+        showDataContent.setVisibility(View.VISIBLE);
+        recyclerview.setVisibility(View.GONE);
     }
 
     @Override

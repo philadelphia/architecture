@@ -5,6 +5,7 @@ import com.delta.smt.entity.ModuleDownWarningItem;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -19,15 +20,34 @@ public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,
     }
 
     public void getAllModuleDownWarningItems(){
-        getModel().getAllModuleDownWarningItems().subscribe(new Action1<ModuleDownWarningItem>() {
+        getModel().getAllModuleDownWarningItems().doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<ModuleDownWarningItem>() {
             @Override
             public void call(ModuleDownWarningItem moduleDownWarningItems) {
-                getView().onSuccess(moduleDownWarningItems);
+                //getView().onSuccess(moduleDownWarningItems);
+                if ("0".equals(moduleDownWarningItems.getCode())) {
+
+                    if (moduleDownWarningItems.getRows().size() == 0) {
+                        getView().showEmptyView();
+                    }else {
+                        getView().showContentView();
+                        getView().onSuccess(moduleDownWarningItems);
+                    }
+
+                } else {
+                    getView().onFalied();
+                    getView().showErrorView();
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 getView().onFalied();
+                getView().showErrorView();
             }
         });
     }

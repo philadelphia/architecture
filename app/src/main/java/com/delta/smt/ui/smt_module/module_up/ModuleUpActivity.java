@@ -65,6 +65,12 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @BindView(R.id.showNetState)
     TextView showNetState;
 
+    @BindView(R.id.showLoading)
+    TextView showLoading;
+
+    @BindView(R.id.showError)
+    TextView showError;
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -88,6 +94,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     protected void initView() {
         //headerTitle.setText("上模组");
         toolbar.setTitle("");
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -139,6 +146,38 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Override
     public void onFalied() {
 
+    }
+
+    @Override
+    public void showLoadingView() {
+        showLoading.setVisibility(View.VISIBLE);
+        showError.setVisibility(View.GONE);
+        showNetState.setVisibility(View.GONE);
+        recyclerview.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showContentView() {
+        showLoading.setVisibility(View.GONE);
+        showError.setVisibility(View.GONE);
+        showNetState.setVisibility(View.GONE);
+        recyclerview.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showErrorView() {
+        showLoading.setVisibility(View.GONE);
+        showError.setVisibility(View.VISIBLE);
+        showNetState.setVisibility(View.GONE);
+        recyclerview.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEmptyView() {
+        showLoading.setVisibility(View.GONE);
+        showError.setVisibility(View.GONE);
+        showNetState.setVisibility(View.VISIBLE);
+        recyclerview.setVisibility(View.GONE);
     }
 
 
