@@ -41,7 +41,7 @@
     </style>
 
     <style name="dialogStyle" parent="AlertDialogCustom">
-        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/waring_editext</item>
         <item name="android:padding">@dimen/dp_5</item>
 
