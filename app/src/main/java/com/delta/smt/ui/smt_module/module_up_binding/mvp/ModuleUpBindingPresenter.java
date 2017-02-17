@@ -77,7 +77,12 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
         getModel().getMaterialAndFeederBindingResult(str).doOnSubscribe(new Action0() {
             @Override
             public void call() {
-                getView().showLoadingView();
+                try{
+                    getView().showLoadingView();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
         }).subscribe(new Action1<ModuleUpBindingItem>() {
             @Override
