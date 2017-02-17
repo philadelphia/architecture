@@ -22,12 +22,17 @@ public class ModuleUpModel extends BaseModel<ApiService> implements ModuleUpCont
     @Override
     public Observable<ModuleUpWarningItem> getAllModuleUpWarningItems() {
         /*ModuleUpWarningItem mi = new ModuleUpWarningItem();
+        mi.setCode("0");
+        mi.setMsg("success");
         List<ModuleUpWarningItem.RowsBean> l = new ArrayList<>();
         ModuleUpWarningItem.RowsBean r = new ModuleUpWarningItem.RowsBean();
         r.setWork_order("100");
-        r.setLine("1");
-        r.setFace("A");
-        r.setStart_time_plan("2017-01-19 15:00:00");
+        r.setStatus("204");
+        r.setSide("B");
+        r.setProduct_name_main("A");
+        r.setProduct_name("A");
+        r.setLine_name("H111");
+        r.setOnline_plan_start_time("2017-02-19 15:00:00");
         l.add(r);
         mi.setRows(l);
         return Observable.just(mi);*/
