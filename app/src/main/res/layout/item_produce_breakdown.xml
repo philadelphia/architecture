@@ -112,7 +112,7 @@
             app:suffixHour=":"
             app:suffixMinute=":"
             app:suffixTextColor="#e61010"
-            app:suffixTextSize="20sp"
+            app:suffixTextSize="15sp"
             app:timeTextColor="#e60b0b"
             app:timeTextSize="20sp" />
     </LinearLayout>

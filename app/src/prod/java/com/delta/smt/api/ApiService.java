@@ -26,9 +26,7 @@ import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
-import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.MaterialCar;
-import com.delta.smt.entity.ModNumByMaterialResult;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.ModuleDownWarningItem;
@@ -48,17 +46,20 @@ import com.delta.smt.entity.StoreEntity;
 import com.delta.smt.entity.Success;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
-import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
+import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
@@ -128,6 +129,22 @@ public interface ApiService {
     @GET("lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
+    //请求接料预警详情页面item数据
+    @GET("lineAlarmFault/lineMaterialConnectDetail")
+    Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(@Query("condition") String condition);
+
+    //提交新旧流水号
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("lineAlarmFault/connectMaterial")
+    Observable<Result> commitSerialNumber(@Field("condition") String condition);
+
+    //请求关灯
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("lineAlarmFault/offMaterialLight")
+    Observable<Result> requestCloseLight(@Field("condition") String condition);
+
     //请求故障中item数据
     @GET("lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
@@ -149,11 +166,11 @@ public interface ApiService {
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
 
     //请求手补件item数据
-    @GET("http://172.22.35.236:8081/lineAlarmFault/getPatchMaterial?condition={}")
+    @GET("lineAlarmFault/getPatchMaterial?condition={}")
     Observable<Result<ItemHandAdd>> getItemHandAddDatas();
 
     //确认手补件item数据
-    @GET("http://172.22.35.236:8081/lineAlarmFault/confirmPatchMaterial")
+    @GET("lineAlarmFault/confirmPatchMaterial")
     Observable<Result> getItemHandAddConfirm(@Query("condition") String condition);
 
 

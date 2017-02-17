@@ -1,6 +1,7 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,7 @@ import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -40,6 +42,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
@@ -60,6 +63,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     AutoTabLayout mTlTitle;
     @BindView(R.id.fl_container)
     FrameLayout mFlContainer;
+    @BindView(R.id.statusLayout)
+    StatusLayout mStatusLayout;
     private ProduceWarningFragment mProduceWarningFragment;
     private ProduceBreakdownFragment mProduceBreakdownFragment;
     private ProduceInfoFragment mProduceInfoFragment;
@@ -73,7 +78,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     private boolean item_run_tag = false;
     private String lastWarningMessage;
 
-    private int warning_number,breakdown_number,info_number;
+    private int warning_number, breakdown_number, info_number;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerTitleNumberCompent.builder().appComponent(appComponent).titleNumberModule(new TitleNumberModule(this)).build().inject(this);
@@ -91,7 +97,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         if (initLine() != null) {
             getPresenter().getTitileNumber(initLine());
         }
-        if (warning_number == 0 && breakdown_number == 0 && info_number==0) {
+        if (warning_number == 0 && breakdown_number == 0 && info_number == 0) {
             titles = new String[]{"预警", "故障", "消息"};
         } else {
             titles = new String[]{"预警(" + warning_number + ")",
@@ -103,13 +109,11 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         Constant.CONDITION = getIntent().getExtras().getString(Constant.PRODUCTIONLINE);*/
 
 
-
         //注册广播初始化
         warningManger.addWarning(Constant.PRODUCE_WARNING, getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
     }
-
 
 
     @Override
@@ -121,7 +125,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("生产中预警");
 
-        if(titles!=null){
+        if (titles != null) {
             for (int i = 0; i < titles.length; i++) {
                 mTlTitle.addTab(mTlTitle.newTab());
             }
@@ -144,12 +148,20 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     @Override
     protected void onResume() {
+        Log.e(TAG, "onResume: ");
         warningManger.registerWReceiver(this);
         super.onResume();
     }
 
     @Override
+    protected void onPause() {
+        Log.e(TAG, "onPause: ");
+        super.onPause();
+    }
+
+    @Override
     protected void onStop() {
+        Log.e(TAG, "onStop: ");
         warningManger.unregisterWReceriver(this);
         super.onStop();
     }
@@ -192,11 +204,11 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     @Override
     public void getTitleDatas(TitleNumber titleNumber) {
 
-        warning_number=titleNumber.getWarning_number();
-        breakdown_number=titleNumber.getBreakdown_number();
-        info_number=titleNumber.getInfo_number();
+        warning_number = titleNumber.getWarning_number();
+        breakdown_number = titleNumber.getBreakdown_number();
+        info_number = titleNumber.getInfo_number();
 
-        if (warning_number == 0 && breakdown_number == 0 && info_number==0) {
+        if (warning_number == 0 && breakdown_number == 0 && info_number == 0) {
             titles = new String[]{"预警", "故障", "消息"};
         } else {
             titles = new String[]{"预警(" + warning_number + ")",
@@ -208,9 +220,10 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     @Override
     public void getTitleDatasFailed(String message) {
-        ToastUtils.showMessage(this,message);
+        ToastUtils.showMessage(this, message);
         titles = new String[]{"预警", "故障", "消息"};
     }
+
 
     //收到预警广播触发的方法
     @Override
@@ -287,4 +300,29 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         String line = GsonTools.createGsonString(map);
         return line;
     }
+
+    /**
+     * @description :根据不同的数据状态显示不同的view
+     */
+    @Override
+    public void showLoadingView() {
+        mStatusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        mStatusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        mStatusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        mStatusLayout.showEmptyView();
+    }
+
+
 }
