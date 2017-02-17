@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -48,8 +47,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
     RecyclerView mRecyContetn;
-    @BindView(R.id.hr_scrow)
-    HorizontalScrollView mHrScrow;
     private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList = new ArrayList();
     private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter;
@@ -108,15 +105,15 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
 
-                holder.setText(R.id.tv_workOrder, item.getWork_order());
+               // holder.setText(R.id.tv_workOrder, item.getWork_order());
                 holder.setText(R.id.tv_number, item.getMaterial_num());
                 holder.setText(R.id.tv_serialNumber, item.getSerial_num());
-                holder.setText(R.id.tv_location, item.getShelves());
-                if("1".equals(item.getStatus())){
-                    holder.setText(R.id.tv_type, "已入库");
-                }else if("0".equals(item.getStatus())) {
-                    holder.setText(R.id.tv_type, "未入库");
-                }
+               // holder.setText(R.id.tv_location, item.getShelves());
+               // if("1".equals(item.getStatus())){
+                  //  holder.setText(R.id.tv_type, "已入库");
+                //}else if("0".equals(item.getStatus())) {
+                  //  holder.setText(R.id.tv_type, "未入库");
+               // }
             }
 
             @Override

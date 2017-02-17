@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.utils.SpUtil;
@@ -36,10 +37,14 @@ import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.utils.PkgInfoUtils;
 import com.delta.smt.utils.StringUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.delta.smt.api.API.BASE_URL;
+import static android.util.Patterns.GOOD_IRI_CHAR;
 
 /**
  * Created by Lin.Hou on 2017-01-09.
@@ -62,6 +67,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     private LocalBroadcastManager bManager;
     private String downloadStr = null;
     private AlertDialog retryAlertDialog = null;
+    Pattern sAddressPattern;
 
     @Override
     protected int getContentViewId() {
@@ -76,17 +82,21 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     @Override
     protected void initData() {
         checkUpdateButton.setText("检查更新 (" + PkgInfoUtils.getVersionName(this) + ")");
+        sAddressPattern = Pattern.compile(
+                "((http|ftp|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?", Pattern.CASE_INSENSITIVE
+            );
     }
 
     @Override
     protected void initView() {
         toolbar.setTitle("");
-        if(SpUtil.getStringSF(SettingActivity.this,"server_address")==null){
-            settingServerAddress.setText("配置服务器地址"+"\n("+ BASE_URL+")");
-        }else if("".equals(SpUtil.getStringSF(SettingActivity.this,"server_address"))){
-            settingServerAddress.setText("配置服务器地址"+"()");
-        }else{
-            settingServerAddress.setText("配置服务器地址"+"\n("+SpUtil.getStringSF(SettingActivity.this,"server_address")+")");
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
+        if (SpUtil.getStringSF(SettingActivity.this, "server_address") == null) {
+            settingServerAddress.setText("配置服务器地址" + "\n(" + BASE_URL + ")");
+        } else if ("".equals(SpUtil.getStringSF(SettingActivity.this, "server_address"))) {
+            settingServerAddress.setText("配置服务器地址" + "()");
+        } else {
+            settingServerAddress.setText("配置服务器地址" + "\n(" + SpUtil.getStringSF(SettingActivity.this, "server_address") + ")");
         }
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -94,7 +104,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         toolbarTitle.setText("设置");
     }
 
-    @OnClick({R.id.setting_update,R.id.setting_server_address})
+    @OnClick({R.id.setting_update, R.id.setting_server_address})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setting_update:
@@ -112,12 +122,12 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
             case R.id.setting_server_address:
 
                 final EditText et = new EditText(this);
-                if(SpUtil.getStringSF(SettingActivity.this,"server_address")!=null&&!"".equals(SpUtil.getStringSF(SettingActivity.this,"server_address"))){
-                    et.setText(SpUtil.getStringSF(SettingActivity.this,"server_address"));
+                if (SpUtil.getStringSF(SettingActivity.this, "server_address") != null && !"".equals(SpUtil.getStringSF(SettingActivity.this, "server_address"))) {
+                    et.setText(SpUtil.getStringSF(SettingActivity.this, "server_address"));
 
-                }else if(SpUtil.getStringSF(SettingActivity.this,"server_address")==null){
+                } else if (SpUtil.getStringSF(SettingActivity.this, "server_address") == null) {
                     et.setText(BASE_URL);
-                }else{
+                } else {
                     et.setText("");
                 }
                 et.setHint("请输入服务器IP或域名！");
@@ -128,18 +138,29 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+
+
                                 String content_et = et.getText().toString();
-                                settingServerAddress.setText("配置服务器地址"+"\n("+content_et+")");
-                                SpUtil.SetStringSF(SettingActivity.this,"server_address",content_et);
-                                BASE_URL = SpUtil.getStringSF(SettingActivity.this,"server_address");
-                                ClientModule mClientModule = ClientModule//用于提供okhttp和retrofit的单列
-                                        .buidler()
-                                        .baseurl(BASE_URL)
-                                        .globeHttpHandler(App.getHttpHandler())
-                                        .interceptors(App.getInterceptors())
-                                        .build();
-                                App.appComponent = DaggerAppComponent.builder().clientModule(mClientModule).appModule(App.getAppModule()).serviceModule(App.getServiceModule()).build();
-                                dialogInterface.dismiss();
+                                Matcher m = sAddressPattern.matcher(content_et);
+                                if(m.matches()){
+                                    if(!content_et.endsWith("/")){
+                                        content_et+="/";
+                                    }
+                                    settingServerAddress.setText("配置服务器地址" + "\n(" + content_et + ")");
+                                    SpUtil.SetStringSF(SettingActivity.this, "server_address", content_et);
+                                    BASE_URL = SpUtil.getStringSF(SettingActivity.this, "server_address");
+                                    ClientModule mClientModule = ClientModule//用于提供okhttp和retrofit的单列
+                                            .buidler()
+                                            .baseurl(BASE_URL)
+                                            .globeHttpHandler(App.getHttpHandler())
+                                            .interceptors(App.getInterceptors())
+                                            .build();
+                                    App.appComponent = DaggerAppComponent.builder().clientModule(mClientModule).appModule(App.getAppModule()).serviceModule(App.getServiceModule()).build();
+                                    dialogInterface.dismiss();
+                                }else{
+                                    Toast.makeText(SettingActivity.this, "此地址无效！", Toast.LENGTH_SHORT).show();
+                                }
+
 
                             }
                         })
@@ -238,7 +259,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
             } else if (intent.getAction().equals(Constant.MESSAGE_FAILED)) {
                 progressDialog.setMessage("下载失败");
                 progressDialog.setCancelable(true);
-                if(retryAlertDialog==null){
+                if (retryAlertDialog == null) {
                     retryAlertDialog = new AlertDialog.Builder(SettingActivity.this)
                             .setTitle("提示")
                             .setMessage("下载失败，请重试或取消更新！")

@@ -50,7 +50,7 @@ public class VirtualLineBindingItem {
         private String vitual_id;
         private String model_id;
 
-        public RowsBean(String vitual_id,String model_id ) {
+        public RowsBean(String model_id,String vitual_id ) {
             this.vitual_id = vitual_id;
             this.model_id = model_id;
 
