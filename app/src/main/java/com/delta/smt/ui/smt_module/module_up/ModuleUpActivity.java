@@ -124,6 +124,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 }else if("205".equals(moduleUpWarningItem.getStatus())){
                     holder.setText(R.id.tv_status,"状态: "+"上模组完成");
                 }
+                holder.setText(R.id.tv_forecast_time,"预计上线时间: "+moduleUpWarningItem.getOnline_plan_start_time());
                 //holder.setText(R.id.tv_status,"状态: "+moduleUpWarningItem.getStatus());
             }
         };

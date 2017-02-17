@@ -19,7 +19,7 @@
             android:id="@+id/tv_lineID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
+            android:layout_marginTop="25px"
             android:text="线别"
             android:textSize="40px"
             android:textColor="@color/c_333333"/>
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_lineID"
-            android:layout_marginTop="30px"
+            android:layout_marginTop="25px"
             android:text="工单号"
             android:textSize="40px"
             android:textColor="@color/c_333333"/>
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/tv_workID"
-            android:layout_marginTop="30px"
+            android:layout_marginTop="25px"
             android:text="面别"
             android:textSize="40px"
             android:textColor="@color/c_333333"/>
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_faceID"
-            android:layout_marginTop="30px"
+            android:layout_marginTop="25px"
             android:text="主板"
             android:textSize="40px"
             android:textColor="@color/c_333333"/>
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_product_name_main"
-            android:layout_marginTop="30px"
+            android:layout_marginTop="25px"
             android:text="小板"
             android:textSize="40px"
             android:textColor="@color/c_333333"/>
@@ -70,9 +70,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_product_name"
-            android:layout_marginTop="30px"
-            android:layout_marginBottom="30px"
+            android:layout_marginTop="25px"
             android:text="状态"
+            android:textSize="40px"
+            android:textColor="@color/c_333333"/>
+        <TextView
+            android:id="@+id/tv_forecast_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_status"
+            android:layout_marginTop="25px"
+            android:layout_marginBottom="25px"
+            android:text="预计上线时间"
             android:textSize="40px"
             android:textColor="@color/c_333333"/>
 
