@@ -188,6 +188,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void onResume() {
         super.onResume();
+        Log.e(TAG, "onResume: ");
         if (null != mAdapter) {
             mAdapter.startRefreshTime();
         }
@@ -196,6 +197,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void onPause() {
         super.onPause();
+        Log.e(TAG, "onPause: " );
         if (null != mAdapter) {
             mAdapter.cancelRefreshTime();
         }
@@ -204,6 +206,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.e(TAG, "onDestroy: " );
         if (null != mAdapter) {
             mAdapter.cancelRefreshTime();
         }

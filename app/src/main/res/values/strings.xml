@@ -90,6 +90,13 @@
     <string name="startAndstop_startwork">开始盘点</string>
     <string name="startAndstop_stopwork">结束盘点</string>
     <string name="storage_counttv">数量：</string>
+    <string name="MainBoard">主板</string>
+    <string name="LittleBoard">小板</string>
+    <string name="continues">继续</string>
+    <string name="affirm">确认</string>
+    <string name="dialog_stopwork_content">请确认是否结束盘点！</string>
+    <string name="dialog_rollback_content">请确认是否回退到上一个界面！</string>
+
     <string name="MainBoard">主板:</string>
     <string name="LittleBoard">小板:</string>
 </resources>

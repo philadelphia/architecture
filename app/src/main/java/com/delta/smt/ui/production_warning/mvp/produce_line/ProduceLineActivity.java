@@ -11,11 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -27,13 +27,13 @@ import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 import com.delta.smt.ui.production_warning.di.produce_line.DaggerProduceLineCompnent;
 import com.delta.smt.ui.production_warning.di.produce_line.ProduceLineModule;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
-import com.delta.smt.ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -45,13 +45,14 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
     @BindView(R.id.ryv_production_line)
     RecyclerView ryvProductionLine;
-
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
     @BindView(R.id.tv_setting)
     TextView mTvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar mToolbar;
+    @BindView(R.id.statusLayout)
+    StatusLayout mStatusLayout;
 
 
     private CommonBaseAdapter<ItemProduceLine> mAdapter;
@@ -75,7 +76,6 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("产线选择");
-
 
 
         //设置Recyleview的adapter
@@ -195,8 +195,11 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
     @Override
     public void getFailed(String message) {
-        Snackbar.make(getCurrentFocus(),message,Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_INDEFINITE).show();
     }
+
+
+
 
     @Override
     public void onItemClick(View view, ItemProduceLine item, int position) {
@@ -218,5 +221,26 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * @description :根据不同的数据状态显示不同的view
+     */
+    @Override
+    public void showLoadingView() {
+        mStatusLayout.showLoadingView();
+    }
 
+    @Override
+    public void showContentView() {
+        mStatusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        mStatusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        mStatusLayout.showEmptyView();
+    }
 }

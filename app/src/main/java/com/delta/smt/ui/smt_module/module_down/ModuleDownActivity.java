@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
+import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -30,8 +32,10 @@ import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownContract;
 import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownPresenter;
 import com.delta.smt.ui.smt_module.virtual_line_binding.VirtualLineBindingActivity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,7 +46,7 @@ import butterknife.BindView;
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implements ModuleDownContract.View,WarningManger.OnWarning,ItemOnclick{
+public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implements ModuleDownContract.View,WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleDownWarningItem.RowsBean>{
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -53,21 +57,15 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     private List<ModuleDownWarningItem.RowsBean> dataList = new ArrayList<>();
-    private ItemCountdownViewAdapter<ModuleDownWarningItem.RowsBean> myAdapter;
+    private ItemCountViewAdapter<ModuleDownWarningItem.RowsBean> myAdapter;
 
     @Inject
     WarningManger warningManger;
 
     String workOrderID = "";
 
-    @BindView(R.id.showDataContent)
-    TextView showDataContent;
-
-    @BindView(R.id.showLoading)
-    TextView showLoading;
-
-    @BindView(R.id.showError)
-    TextView showError;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -95,27 +93,31 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
 
-        myAdapter = new ItemCountdownViewAdapter<ModuleDownWarningItem.RowsBean>(this, dataList) {
+        myAdapter = new ItemCountViewAdapter<ModuleDownWarningItem.RowsBean>(this, dataList) {
+            @Override
+            protected int getCountViewId() {
+                return R.id.cv_countView;
+            }
+
             @Override
             protected int getLayoutId() {
                 return R.layout.item_module_down_warning_list;
             }
 
             @Override
-            protected void convert(ItemTimeViewHolder holder, ModuleDownWarningItem.RowsBean moduleUpWarningItem, int position) {
+            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, ModuleDownWarningItem.RowsBean moduleUpWarningItem, int position) {
 
                 holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine_name());
                 holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
                 holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getSide());
                 holder.setText(R.id.tv_product_name_main,"主板: "+moduleUpWarningItem.getProduct_name_main());
                 holder.setText(R.id.tv_product_name,"小板: "+moduleUpWarningItem.getProduct_name());
-                //holder.setText(R.id.tv_status,"状态: "+moduleUpWarningItem.getStatus());
                 holder.setText(R.id.tv_status, "状态: " + "等待下模组");
             }
         };
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(myAdapter);
-        myAdapter.setOnItemTimeOnclck(this);
+        myAdapter.setOnItemTimeOnclick(this);
 
     }
 
@@ -129,6 +131,16 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         if (data.getMsg().toLowerCase().equals("success")){
             dataList.clear();
             List<ModuleDownWarningItem.RowsBean> rowsList = data.getRows();
+            for (int i = 0; i < rowsList.size(); i++) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date parse = format.parse(rowsList.get(i).getUnplug_mod_actual_finish_time());
+                    rowsList.get(i).setCreat_time(parse.getTime());
+                    rowsList.get(i).setEntityId(i);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
             dataList.addAll(rowsList);
             myAdapter.notifyDataSetChanged();
             //showNetState.setVisibility(View.GONE);
@@ -142,34 +154,22 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @Override
     public void showLoadingView() {
-        showLoading.setVisibility(View.VISIBLE);
-        showError.setVisibility(View.GONE);
-        showDataContent.setVisibility(View.GONE);
-        recyclerview.setVisibility(View.GONE);
+        statusLayout.showLoadingView();
     }
 
     @Override
     public void showContentView() {
-        showLoading.setVisibility(View.GONE);
-        showError.setVisibility(View.GONE);
-        showDataContent.setVisibility(View.GONE);
-        recyclerview.setVisibility(View.VISIBLE);
+        statusLayout.showContentView();
     }
 
     @Override
     public void showErrorView() {
-        showLoading.setVisibility(View.GONE);
-        showError.setVisibility(View.VISIBLE);
-        showDataContent.setVisibility(View.GONE);
-        recyclerview.setVisibility(View.GONE);
+        statusLayout.showErrorView();
     }
 
     @Override
     public void showEmptyView() {
-        showLoading.setVisibility(View.GONE);
-        showError.setVisibility(View.GONE);
-        showDataContent.setVisibility(View.VISIBLE);
-        recyclerview.setVisibility(View.GONE);
+        statusLayout.showEmptyView();
     }
 
     @Override
@@ -234,8 +234,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     }
 
     @Override
-    public void onItemClick(View item, int position) {
-
+    public void onItemClick(View item, ModuleDownWarningItem.RowsBean rowsBean, int position) {
         Bundle bundle = new Bundle();
         bundle.putString(Constant.WORK_ITEM_ID,dataList.get(position).getWork_order());
         bundle.putString(Constant.PRODUCT_NAME_MAIN,dataList.get(position).getProduct_name_main());
@@ -278,4 +277,6 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         String t = String.valueOf(time);
         return t;
     }
+
+
 }
