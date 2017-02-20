@@ -2,6 +2,7 @@ package com.delta.smt.ui.product_tools.tools_info;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -56,6 +58,24 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @BindView(R.id.ProductToolsWorkItem)
     TextView mProductToolsWorkItemTextView;
 
+    @BindView(R.id.MainBroad)
+    TextView mainBroadTextView;
+
+    @BindView(R.id.LittleBroad)
+    TextView littleBroadTextView;
+
+    @BindView(R.id.Cover)
+    TextView coverTextView;
+
+    @BindView(R.id.Line)
+    TextView lineTextView;
+
+    @BindView(R.id.PWB_Code)
+    TextView mPWB_CodeTextView;
+
+    @BindView(R.id.PCBCODE)
+    TextView mPCBCODETextView;
+
     @OnClick(R.id.confirm)
     public void confirmData() {
 
@@ -66,25 +86,26 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             String d4;
             try {
                 d1 = data.get(1).getJigID();
-            }catch (Exception e){
+            } catch (Exception e) {
                 d1 = "0";
             }
             try {
                 d2 = data.get(2).getJigID();
-            }catch (Exception e){
+            } catch (Exception e) {
                 d2 = "0";
             }
             try {
                 d3 = data.get(3).getJigID();
-            }catch (Exception e){
+            } catch (Exception e) {
                 d3 = "0";
             }
             try {
                 d4 = data.get(4).getJigID();
-            }catch (Exception e){
+            } catch (Exception e) {
                 d4 = "0";
             }
-                getPresenter().getToolsVerfy("[\"{\\\"workOrderID\\\":" + workNumber + ",\\\"stencil\\\":" + d1 + ",\\\"scraper\\\":" + d2 + ",\\\"plate\\\":" + d3 + ",\\\"ict\\\":" + d4 + "}\"]");
+            getPresenter().getToolsVerfy("[\"{\\\"workOrderID\\\":" + workNumber + ",\\\"stencil\\\":" + d1 + ",\\\"scraper\\\":" + d2 + ",\\\"plate\\\":" + d3 + ",\\\"ict\\\":" + d4 + "}\"]");
+            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),"test");
         }
     }
 
@@ -131,6 +152,12 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
         toolbarTitle.setText("治具信息");
 
         mProductToolsWorkItemTextView.setText(workNumber);
+        mainBroadTextView.setText(this.getIntent().getExtras().getString("MainBroad"));
+        littleBroadTextView.setText(this.getIntent().getExtras().getString("LittleBroad"));
+        coverTextView.setText(this.getIntent().getExtras().getString("Cover"));
+        lineTextView.setText(this.getIntent().getExtras().getString("Line"));
+        mPWB_CodeTextView.setText(this.getIntent().getExtras().getString("PWB"));
+        mPCBCODETextView.setText(this.getIntent().getExtras().getString("PCB"));
 
         data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态", "", ""));
 
@@ -219,7 +246,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void getToolsInfo(List<ProductToolsInfo> ProductToolsItem) {
         if (ProductToolsItem == null) {
-            Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),"请求的数据不存在");
         }
         if (selectItem == null) {
             data.addAll(ProductToolsItem);
@@ -246,7 +273,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void getToolsVerfy(List<ProductToolsInfo> ProductToolsItem) {
         if (ProductToolsItem == null) {
-            Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),"请求的数据不存在");
         }
         int i = 0;
         for (ProductToolsInfo p : ProductToolsItem) {
@@ -264,7 +291,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void getToolsBorrowSubmit(JsonProductToolsLocation j) {
         if (j == null) {
-            Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+            Snackbar.make(ProduceToolsInfoActivity.this.getWindow().getDecorView(), "请求的数据不存在!", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Action", null).show();
         }
         Log.e("getToolsBorrowSubmit", j.toString());
         if (j.getCode() == 0) {
@@ -282,7 +310,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             }
         } else {
 
-            Toast.makeText(this, j.getMessage(), Toast.LENGTH_SHORT).show();
+            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),j.getMessage());
 
         }
 
@@ -291,7 +319,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void getFail() {
 
-        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),"请求的数据不存在");
 
     }
 
@@ -304,4 +332,5 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
         this.barcode = barcode;
 
     }
+
 }

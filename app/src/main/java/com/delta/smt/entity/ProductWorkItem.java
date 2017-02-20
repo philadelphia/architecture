@@ -9,8 +9,8 @@ import com.delta.smt.ui.product_tools.TimeSortUtils;
 
 public class ProductWorkItem implements Comparable{
     private String workNumber;
-    private String workItemType;
-    private String machineType;
+    private String mainBroad;
+    private String littleBroad;
     private String PCB_Code;
     private String formMaterialNumber;
     private String line;
@@ -19,10 +19,10 @@ public class ProductWorkItem implements Comparable{
     private String playOnLineTime;
     private String productStatus;
 
-    public ProductWorkItem(String workNumber, String workItemType, String machineType, String PCB_Code, String formMaterialNumber, String line, String PWB_Number, String cover, String playOnLineTime, String productStatus) {
+    public ProductWorkItem(String workNumber, String MainBroad, String LittleBroad, String PCB_Code, String formMaterialNumber, String line, String PWB_Number, String cover, String playOnLineTime, String productStatus) {
         this.workNumber = workNumber;
-        this.workItemType = workItemType;
-        this.machineType = machineType;
+        this.mainBroad = MainBroad;
+        this.littleBroad = LittleBroad;
         this.PCB_Code = PCB_Code;
         this.formMaterialNumber = formMaterialNumber;
         this.line = line;
@@ -40,20 +40,20 @@ public class ProductWorkItem implements Comparable{
         this.workNumber = workNumber;
     }
 
-    public String getWorkItemType() {
-        return workItemType;
+    public String getMainBroad() {
+        return mainBroad;
     }
 
-    public void setWorkItemType(String workItemType) {
-        this.workItemType = workItemType;
+    public void setMainBroad(String mainBroad) {
+        this.mainBroad = mainBroad;
     }
 
-    public String getMachineType() {
-        return machineType;
+    public String getLittleBroad() {
+        return littleBroad;
     }
 
-    public void setMachineType(String machineType) {
-        this.machineType = machineType;
+    public void setLittleBroad(String littleBroad) {
+        this.littleBroad = littleBroad;
     }
 
     public String getPCB_Code() {
