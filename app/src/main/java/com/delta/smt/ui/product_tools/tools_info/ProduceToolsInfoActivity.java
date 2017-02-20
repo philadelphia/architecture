@@ -23,6 +23,7 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.JsonProductToolsLocation;
 import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.Product_mToolsInfo;
+import com.delta.smt.ui.product_tools.SharedPreferencesUtils;
 import com.delta.smt.ui.product_tools.mtools_info.Produce_mToolsActivity;
 import com.delta.smt.ui.product_tools.tools_info.di.DaggerProduceToolsInfoCompoent;
 import com.delta.smt.ui.product_tools.tools_info.di.ProduceToolsInfoModule;
@@ -105,7 +106,6 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                 d4 = "0";
             }
             getPresenter().getToolsVerfy("[\"{\\\"workOrderID\\\":" + workNumber + ",\\\"stencil\\\":" + d1 + ",\\\"scraper\\\":" + d2 + ",\\\"plate\\\":" + d3 + ",\\\"ict\\\":" + d4 + "}\"]");
-            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),"test");
         }
     }
 
@@ -152,12 +152,29 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
         toolbarTitle.setText("治具信息");
 
         mProductToolsWorkItemTextView.setText(workNumber);
-        mainBroadTextView.setText(this.getIntent().getExtras().getString("MainBroad"));
-        littleBroadTextView.setText(this.getIntent().getExtras().getString("LittleBroad"));
-        coverTextView.setText(this.getIntent().getExtras().getString("Cover"));
-        lineTextView.setText(this.getIntent().getExtras().getString("Line"));
-        mPWB_CodeTextView.setText(this.getIntent().getExtras().getString("PWB"));
-        mPCBCODETextView.setText(this.getIntent().getExtras().getString("PCB"));
+
+        if(this.getIntent().getExtras().getString("MainBroad")!=null) {
+            mainBroadTextView.setText(this.getIntent().getExtras().getString("MainBroad"));
+            littleBroadTextView.setText(this.getIntent().getExtras().getString("LittleBroad"));
+            coverTextView.setText(this.getIntent().getExtras().getString("Cover"));
+            lineTextView.setText(this.getIntent().getExtras().getString("Line"));
+            mPWB_CodeTextView.setText(this.getIntent().getExtras().getString("PWB"));
+            mPCBCODETextView.setText(this.getIntent().getExtras().getString("PCB"));
+
+            SharedPreferencesUtils.putData(this,"MainBroad",this.getIntent().getExtras().getString("MainBroad"));
+            SharedPreferencesUtils.putData(this,"LittleBroad",this.getIntent().getExtras().getString("LittleBroad"));
+            SharedPreferencesUtils.putData(this,"Cover",this.getIntent().getExtras().getString("Cover"));
+            SharedPreferencesUtils.putData(this,"Line",this.getIntent().getExtras().getString("Line"));
+            SharedPreferencesUtils.putData(this,"PWB",this.getIntent().getExtras().getString("PWB"));
+            SharedPreferencesUtils.putData(this,"PCB",this.getIntent().getExtras().getString("PCB"));
+        }else {
+            mainBroadTextView.setText(SharedPreferencesUtils.getData(this,"MainBroad"));
+            littleBroadTextView.setText(SharedPreferencesUtils.getData(this,"LittleBroad"));
+            coverTextView.setText(SharedPreferencesUtils.getData(this,"Cover"));
+            lineTextView.setText(SharedPreferencesUtils.getData(this,"Line"));
+            mPWB_CodeTextView.setText(SharedPreferencesUtils.getData(this,"PWB"));
+            mPCBCODETextView.setText(SharedPreferencesUtils.getData(this,"PCB"));
+        }
 
         data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态", "", ""));
 
