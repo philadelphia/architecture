@@ -145,6 +145,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     @Override
     protected void onResume() {
         warningManger.registerWReceiver(this);
+        getPresenter().getTitileNumber(initLine());
         super.onResume();
     }
 

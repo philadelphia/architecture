@@ -20,7 +20,7 @@ public interface HandAddContract {
     }
 
     interface Model extends IModel {
-        Observable<Result<ItemHandAdd>> getItemHandAddDatas();
+        Observable<Result<ItemHandAdd>> getItemHandAddDatas(String condition);
 
         Observable<Result> getItemHandAddConfirm(String condition);
     }

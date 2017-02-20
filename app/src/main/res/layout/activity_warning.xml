@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     >
 
-    <include layout="@layout/appbar"
-       />
     <com.delta.commonlibs.widget.statusLayout.StatusLayout
         android:id="@+id/statusLayout"
         android:layout_width="match_parent"
@@ -103,9 +101,27 @@
             style="@style/waring_editext"
             />
     </RelativeLayout>
-
-    <include layout="@layout/main_recyclerview"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <include layout="@layout/main_recyclerview"
         />
+            <Button
+                android:id="@+id/warning_sum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/background"
+                android:layout_marginBottom="@dimen/px_20"
+                android:layout_marginLeft="@dimen/px_20"
+                android:layout_marginRight="@dimen/px_20"
+                android:text="发料"
+                />
+        </RelativeLayout>
         </LinearLayout>
    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
+
+    <include layout="@layout/appbar"
+       />
 </LinearLayout>

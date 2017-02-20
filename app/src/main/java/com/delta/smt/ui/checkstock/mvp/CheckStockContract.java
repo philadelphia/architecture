@@ -24,6 +24,8 @@ public class CheckStockContract {
         void onExceptionSucess(String wareHouses);
         void onSubmitSucess(String wareHouses);
         void onCheckStockSucess(String wareHouses);
+        void onEndSucess();
+        void onInventoryException(String s);
         void showLoadingView();
         void showContentView();
         void showErrorView();
@@ -37,5 +39,7 @@ public class CheckStockContract {
         Observable<ExceptionsBean>getException(String subShelfCode);
         Observable<Success>getSubmit(String subShelfCode);
         Observable<String>getCheckStockSuccess();
+        Observable<Success>OnEnd();
+        Observable<ExceptionsBean>getInventoryException();
     }
 }
