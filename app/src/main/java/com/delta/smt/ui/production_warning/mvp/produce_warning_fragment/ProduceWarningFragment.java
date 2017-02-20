@@ -192,6 +192,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         if (null != mAdapter) {
             mAdapter.startRefreshTime();
         }
+        getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
     }
 
     @Override

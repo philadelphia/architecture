@@ -36,7 +36,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
         Log.e("aaa", "getItemHandAddDatas: "+producelines );
 
 
-        getModel().getItemHandAddDatas().doOnSubscribe(new Action0() {
+        getModel().getItemHandAddDatas(producelines).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();

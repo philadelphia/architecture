@@ -166,8 +166,8 @@ public interface ApiService {
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
 
     //请求手补件item数据
-    @GET("lineAlarmFault/getPatchMaterial?condition={}")
-    Observable<Result<ItemHandAdd>> getItemHandAddDatas();
+    @GET("lineAlarmFault/getPatchMaterial")
+    Observable<Result<ItemHandAdd>> getItemHandAddDatas(@Query("condition") String condition);
 
     //确认手补件item数据
     @GET("lineAlarmFault/confirmPatchMaterial")

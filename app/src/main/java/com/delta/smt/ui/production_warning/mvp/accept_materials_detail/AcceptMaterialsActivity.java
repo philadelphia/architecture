@@ -121,9 +121,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 holder.setText(R.id.tv_unit,item.getUnit());
                 holder.setText(R.id.tv_location,item.getLocation());
 
-/*                if (item.getRemain().equals("0")){
-                    holder.itemView.setBackgroundColor(Color.YELLOW);
-                }*/
+                holder.itemView.setBackgroundColor(Color.YELLOW);
 
             }
 

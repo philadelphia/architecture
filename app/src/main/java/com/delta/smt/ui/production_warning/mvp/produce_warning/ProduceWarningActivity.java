@@ -150,6 +150,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     protected void onResume() {
         Log.e(TAG, "onResume: ");
         warningManger.registerWReceiver(this);
+        getPresenter().getTitileNumber(initLine());
         super.onResume();
     }
 
