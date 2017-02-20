@@ -9,7 +9,6 @@ import com.delta.smt.ui.production_warning.item.TitleNumber;
 
 import javax.inject.Inject;
 
-import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -26,28 +25,16 @@ public class ProduceWarningPresenter extends BasePresenter<ProduceWarningContrac
 
     public void getTitileNumber(String condition){
 
-        getModel().getTitleDatas(condition).doOnSubscribe(new Action0() {
-            @Override
-            public void call() {
-                getView().showLoadingView();
-            }
-        }).subscribe(new Action1<ProduceWarning>() {
+        getModel().getTitleDatas(condition).subscribe(new Action1<ProduceWarning>() {
             @Override
             public void call(ProduceWarning produceWarning) {
-
-                if ("0".equals(produceWarning.getCode())) {
-
-                    if (produceWarning.getRows()==null) {
-                        getView().showEmptyView();
-                    }else {
-                        getView().showContentView();
-                        getView().getTitleDatas(new TitleNumber(produceWarning.getRows().getAlarm().size(),
-                                produceWarning.getRows().getFault().size(),
-                                produceWarning.getRows().getMessage().size()));
-                        Log.e("aaa", "预警数量："+String.valueOf(produceWarning.getRows().getAlarm().size()) );
-                        Log.e("aaa", "故障数量："+String.valueOf(produceWarning.getRows().getFault().size()) );
-                        Log.e("aaa", "信息数量："+String.valueOf(produceWarning.getRows().getMessage().size()) );
-                    }
+                if (produceWarning.getCode().equals("0")) {
+                    getView().getTitleDatas(new TitleNumber(produceWarning.getRows().getAlarm().size(),
+                            produceWarning.getRows().getFault().size(),
+                            produceWarning.getRows().getMessage().size()));
+                    Log.e("aaa", "预警数量："+String.valueOf(produceWarning.getRows().getAlarm().size()) );
+                    Log.e("aaa", "故障数量："+String.valueOf(produceWarning.getRows().getFault().size()) );
+                    Log.e("aaa", "信息数量："+String.valueOf(produceWarning.getRows().getMessage().size()) );
 
                 }else {
                     getView().getTitleDatasFailed(produceWarning.getMsg());
@@ -58,8 +45,6 @@ public class ProduceWarningPresenter extends BasePresenter<ProduceWarningContrac
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
-                getView().showErrorView();
                 getView().getTitleDatasFailed(throwable.getMessage());
                 Log.i("aaa", throwable.getMessage());
             }

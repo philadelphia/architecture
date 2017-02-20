@@ -1,7 +1,6 @@
 package com.delta.smt.ui.hand_add.mvp;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,17 +8,18 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
-import com.delta.commonlibs.widget.statusLayout.StatusLayout;
-import com.delta.libs.adapter.ItemCountViewAdapter;
-import com.delta.libs.adapter.ItemOnclick;
-import com.delta.libs.adapter.ItemTimeViewHolder;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.common.ItemOnclick;
+import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
+import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.hand_add.di.DaggerHandAddCompent;
@@ -27,10 +27,7 @@ import com.delta.smt.ui.hand_add.di.HandAddModule;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.google.gson.Gson;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +35,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/27.
@@ -46,6 +42,7 @@ import butterknife.ButterKnife;
 
 public class HandAddActivity extends BaseActivity<HandAddPresenter>
         implements HandAddContract.View, WarningManger.OnWarning, ItemOnclick {
+
 
 
     @Inject
@@ -58,13 +55,11 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     AutoToolbar mToolbar;
     @BindView(R.id.ryv_hand_add)
     RecyclerView mRyvHandAdd;
-    @BindView(R.id.statusLayout)
-    StatusLayout mStatusLayout;
 
     private AlertDialog alertDialog;
     private AlertDialog mItemDialog;
 
-    private ItemCountViewAdapter<ItemHandAdd> mAdapter;
+    private ItemCountdownViewAdapter<ItemHandAdd> mAdapter;
     private List<ItemHandAdd> datas = new ArrayList<>();
 
     DialogRelativelayout mDialogRelativelayout;
@@ -81,7 +76,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     protected void initData() {
 
-        producelines = getIntent().getExtras().getString(Constant.PRODUCTIONLINE);
+        producelines=getIntent().getExtras().getString(Constant.PRODUCTIONLINE);
         Log.e("aaa", producelines);
         //设置接收哪种预警
         mWarningManger.addWarning(Constant.HAND_ADD, getClass());
@@ -101,12 +96,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("线外人员");
 
-        mAdapter = new ItemCountViewAdapter<ItemHandAdd>(this, datas) {
-            @Override
-            protected int getCountViewId() {
-                return R.id.cv_countView;
-            }
-
+        mAdapter = new ItemCountdownViewAdapter<ItemHandAdd>(this, datas) {
             @Override
             protected int getLayoutId() {
                 return R.layout.item_hand_add;
@@ -114,27 +104,29 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
             @Override
             protected void convert(ItemTimeViewHolder holder, ItemHandAdd itemHandAdd, int position) {
-                if (itemHandAdd.getState() == 1) {
+                if(itemHandAdd.getState()==1){
                     holder.setText(R.id.tv_title, itemHandAdd.getTitle());
-                    holder.setText(R.id.tv_line, "产线：" + itemHandAdd.getProduce_line());
-                    holder.setText(R.id.tv_material_station, "模组料站：" + itemHandAdd.getMaterial_station());
-                    holder.setText(R.id.tv_realAmount, "手补件数量：" + String.valueOf(itemHandAdd.getRealAmount()));
-                    holder.setText(R.id.tv_message, "信息：" + itemHandAdd.getInfo());
+                    holder.setText(R.id.tv_line,"产线：" +itemHandAdd.getProduce_line());
+                    holder.setText(R.id.tv_material_station, "模组料站："+itemHandAdd.getMaterial_station());
+                    holder.setText(R.id.tv_realAmount,"手补件数量："+String.valueOf(itemHandAdd.getRealAmount()));
+                    holder.setText(R.id.tv_message, "信息："+itemHandAdd.getInfo());
 
                     holder.getView(R.id.tv_realAmount).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_expectedAmount).setVisibility(View.GONE);
-                } else {
+                }else {
 
                     holder.setText(R.id.tv_title, itemHandAdd.getTitle());
-                    holder.setText(R.id.tv_line, "产线：" + itemHandAdd.getProduce_line());
-                    holder.setText(R.id.tv_material_station, "模组料站：" + itemHandAdd.getMaterial_station());
-                    holder.setText(R.id.tv_expectedAmount, "预计Pass数量：" + String.valueOf(itemHandAdd.getExpectedAmount()));
-                    holder.setText(R.id.tv_message, "信息：" + itemHandAdd.getInfo());
+                    holder.setText(R.id.tv_line, "产线：" +itemHandAdd.getProduce_line());
+                    holder.setText(R.id.tv_material_station, "模组料站："+itemHandAdd.getMaterial_station());
+                    holder.setText(R.id.tv_expectedAmount,"预计Pass数量："+String.valueOf(itemHandAdd.getExpectedAmount()));
+                    holder.setText(R.id.tv_message,  "信息："+itemHandAdd.getInfo());
 
                     holder.getView(R.id.tv_expectedAmount).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_realAmount).setVisibility(View.GONE);
 
                 }
+
+
             }
 
 
@@ -142,7 +134,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         mRyvHandAdd.setLayoutManager(new LinearLayoutManager(this));
         mRyvHandAdd.setAdapter(mAdapter);
 //        mAdapter.setOnItemClickListener(this);
-        mAdapter.setOnItemTimeOnclick(this);
+        mAdapter.setOnItemTimeOnclck(this);
 
     }
 
@@ -201,21 +193,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
     @Override
     public void getItemHandAddDatas(List<ItemHandAdd> itemHandAdds) {
-
         datas.clear();
-
-        for (int i = 0; i < itemHandAdds.size(); i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-            try {
-                Date parse = format.parse(itemHandAdds.get(i).getTime());
-                Log.e("aaa", "getItemWarningDatas: " + parse.getTime());
-                itemHandAdds.get(i).setEnd_time(parse.getTime());
-                itemHandAdds.get(i).setEntityId(i);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
         datas.addAll(itemHandAdds);
         //对adapter刷新改变
         mAdapter.notifyDataSetChanged();
@@ -224,7 +202,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     public void getItemHandAddDatasFailed(String message) {
         //ToastUtils.showMessage(this,message);
-        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(getCurrentFocus(),message,Snackbar.LENGTH_INDEFINITE).show();
     }
 
 
@@ -262,11 +240,10 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         }).show();
     }
 
-
     @Override
-    public void onItemClick(View item, Object o, int position) {
+    public void onItemClick(final View item, int position) {
         final ItemHandAdd mItemHandAdd = datas.get(position);
-        if (mItemHandAdd.getState() != 1) {
+        if (mItemHandAdd.getState()!=1){
             mDialogRelativelayout = new DialogRelativelayout(this);
             mDialogRelativelayout.setStrSecondTitle("请求确认");
             final ArrayList<String> datas = new ArrayList<>();
@@ -288,10 +265,10 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                         public void onClick(DialogInterface dialog, int which) {
 //                            mItemHandAdd.setInfo("手补件完成，等待品管确认");
 //                            mAdapter.notifyDataSetChanged();
-                            Map<String, String> mMap = new HashMap<>();
-                            mMap.put("id", String.valueOf(mItemHandAdd.getId()));
-                            Gson mGson = new Gson();
-                            String mS = mGson.toJson(mMap);
+                            Map<String,String> mMap=new HashMap<>();
+                            mMap.put("id",String.valueOf(mItemHandAdd.getId()));
+                            Gson mGson=new Gson();
+                            String mS=mGson.toJson(mMap);
                             Log.i("HandAddActivity", mS);
                             getPresenter().getItemHandAddConfirm(mS);
                             getPresenter().getItemHandAddDatas(producelines);
@@ -305,29 +282,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                     }).create();
             mItemDialog.show();
         }
-    }
 
-    /**
-     *@description :根据不同的数据状态显示不同的view
-    */
-    @Override
-    public void showLoadingView() {
-        mStatusLayout.showLoadingView();
-    }
-
-    @Override
-    public void showContentView() {
-        mStatusLayout.showContentView();
-    }
-
-    @Override
-    public void showErrorView() {
-        mStatusLayout.showErrorView();
-    }
-
-    @Override
-    public void showEmptyView() {
-        mStatusLayout.showEmptyView();
     }
 
 }

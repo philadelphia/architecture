@@ -100,6 +100,10 @@ public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonAc
         super.onDestroy();
     }
 
+    @Override
+    protected void handError() {
+
+    }
 
     @Override
     public void onScanSuccess(String barcode) {

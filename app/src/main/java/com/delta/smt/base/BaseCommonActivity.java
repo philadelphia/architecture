@@ -81,10 +81,8 @@ public abstract class BaseCommonActivity extends SupportActivity {
         if (UseEventBus()) {
             EventBus.getDefault().register(this);
         }
-
         setContentView(getContentViewId());
         bind = ButterKnife.bind(this);
-
         initCData();
         initCView();
     }
@@ -198,7 +196,12 @@ public abstract class BaseCommonActivity extends SupportActivity {
                         String text = intent.getStringExtra("content");
                         boolean isLong = intent.getBooleanExtra("long", false);
                         View view = BaseCommonActivity.this.getWindow().getDecorView().findViewById(android.R.id.content);
+
                         Snackbar.make(view, text, isLong ? Snackbar.LENGTH_LONG : Snackbar.LENGTH_SHORT).show();
+                        break;
+                    case "handError"://处理错误
+                        String contents = intent.getStringExtra("content");
+                        handError();
                         break;
                     case "killAll":
                         LinkedList<BaseCommonActivity> copy;
@@ -213,6 +216,11 @@ public abstract class BaseCommonActivity extends SupportActivity {
                 }
             }
         }
+    }
+
+    // 处理错误
+    protected void handError() {
+
     }
 
 

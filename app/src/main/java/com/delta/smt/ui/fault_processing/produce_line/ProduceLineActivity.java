@@ -128,26 +128,6 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter> impl
 
     }
 
-    @Override
-    public void showLoadingView() {
-
-    }
-
-    @Override
-    public void showContentView() {
-
-    }
-
-    @Override
-    public void showErrorView() {
-
-    }
-
-    @Override
-    public void showEmptyView() {
-
-    }
-
 
     @Override
     public void onItemClick(View view, ItemProduceLine item, int position) {

@@ -1,138 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
     android:id="@+id/rl_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background"
+    android:layout_marginLeft="50px"
+    android:layout_marginRight="50px"
+    android:layout_marginTop="53px"
+    android:layout_marginBottom="5px"
+    android:paddingLeft="50px">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/tv_lineID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50px"
-        android:layout_marginRight="50px"
-        android:layout_marginTop="53px"
-        android:layout_marginBottom="5px"
-        android:paddingLeft="50px"
-        android:background="@drawable/card_background">
-        <TextView
-            android:id="@+id/tv_lineID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
-            android:text="线别"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
+        android:layout_marginTop="30px"
+        android:text="线别"
+        android:textSize="40px"
+        android:textColor="@color/c_333333"/>
+
+    <TextView
+        android:id="@+id/tv_workID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30px"
+        android:layout_below="@+id/tv_lineID"
+        android:text="工单号"
+        android:textSize="40px"
+        android:textColor="@color/c_333333"/>
+
+    <TextView
+        android:id="@+id/tv_faceID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30px"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_workID"
+        android:text="面别"
+        android:textSize="40px"
+        android:textColor="@color/c_333333"/>
+
+    <TextView
+        android:id="@+id/tv_product_name_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_faceID"
+        android:layout_marginTop="30px"
+        android:text="主板"
+        android:textSize="40px"
+        android:textColor="@color/c_333333"/>
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_product_name_main"
+        android:layout_marginTop="30px"
+        android:text="小板"
+        android:textSize="40px"
+        android:textColor="@color/c_333333"/>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30px"
+        android:layout_marginBottom="30px"
+        android:layout_below="@+id/tv_product_name"
+        android:text="状态"
+        android:textSize="40px"
+        android:textColor="@color/c_333333"/>
+
+
+    <!--这里右边的倒数计我是默认和左边的第三个和第四个高度保持一致的，数据少可自行更改-->
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_workID"
-            android:layout_width="match_parent"
+            android:id="@+id/time_remain"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
-            android:layout_below="@+id/tv_lineID"
-            android:text="工单号"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
+            android:text="已下线时长："
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
 
-        <TextView
-            android:id="@+id/tv_faceID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tv_workID"
-            android:text="面别"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
-
-        <TextView
-            android:id="@+id/tv_product_name_main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_faceID"
-            android:layout_marginTop="30px"
-            android:text="主板"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
-
-        <TextView
-            android:id="@+id/tv_product_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_product_name_main"
-            android:layout_marginTop="30px"
-            android:text="小板"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
-
-        <TextView
-            android:id="@+id/tv_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
-            android:layout_marginBottom="30px"
-            android:layout_below="@+id/tv_product_name"
-            android:text="状态"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
-
-
-        <!--这里右边的倒数计我是默认和左边的第三个和第四个高度保持一致的，数据少可自行更改-->
-        <LinearLayout
-            android:id="@+id/ll"
+        <cn.iwgang.countdownview.CountdownView
+            android:id="@+id/cv_countdownViewTest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/time_remain"
-                android:layout_width="90dp"
-                android:layout_height="wrap_content"
-                android:text="已下线时长："
-                android:textColor="@color/c_333333"
-                android:textSize="40px" />
-
-            <!--<cn.iwgang.countdownview.CountdownView
-                android:id="@+id/cv_countdownViewTest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/time_remain"
-                android:layout_below="@+id/time_remain"
-                android:layout_marginTop="22px"
-                app:isShowDay="false"
-                app:isShowHour="true"
-                app:isShowMillisecond="false"
-                app:isShowMinute="true"
-                app:isShowSecond="true"
-                app:suffixGravity="center"
-                app:suffixTextColor="#000000"
-                app:suffixTextSize="40px"
-                app:timeTextColor="@color/c_333333"
-                app:timeTextSize="40px" />-->
-            <com.delta.libs.CountTimeView
-                android:id="@+id/cv_countView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                app:isCountUp="true"
-                app:isShowDay="true"
-                app:isShowHour="true"
-                app:isShowMillisecond="false"
-                app:isShowMinute="true"
-                app:isShowSecond="true"
-                app:suffixDay="天"
-                app:suffixDayRightMargin="10dp"
-                app:suffixGravity="center"
-                app:suffixHour=":"
-                app:suffixMinute=":"
-                app:suffixTextColor="#e61010"
-                app:suffixTextSize="12sp"
-                app:timeTextColor="#e60b0b"
-                app:timeTextSize="15sp" />
-        </LinearLayout>
-    </RelativeLayout>
-
-</com.zhy.autolayout.AutoRelativeLayout>
+            android:layout_alignLeft="@+id/time_remain"
+            android:layout_below="@+id/time_remain"
+            android:layout_marginTop="22px"
+            app:isShowDay="false"
+            app:isShowHour="true"
+            app:isShowMillisecond="false"
+            app:isShowMinute="true"
+            app:isShowSecond="true"
+            app:suffixGravity="center"
+            app:suffixTextColor="#000000"
+            app:suffixTextSize="40px"
+            app:timeTextColor="@color/c_333333"
+            app:timeTextSize="40px" />
+    </LinearLayout>
+</RelativeLayout>

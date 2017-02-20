@@ -21,14 +21,6 @@ public interface ProduceLineContract {
         void getDataLineDatas(List<ItemProduceLine> itemProduceLine);
 
         void getFailed(String message);
-
-        void showLoadingView();
-
-        void showContentView();
-
-        void showErrorView();
-
-        void showEmptyView();
 }
 
     interface Model extends IModel {

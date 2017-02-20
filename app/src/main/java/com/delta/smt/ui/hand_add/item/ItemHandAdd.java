@@ -2,7 +2,6 @@ package com.delta.smt.ui.hand_add.item;
 
 import android.util.Log;
 
-import com.delta.libs.adapter.TimeEntity;
 import com.delta.smt.entity.CountDownEntity;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,7 +13,7 @@ import java.util.Date;
  * Created by Fuxiang.Zhang on 2016/12/27.
  */
 
-public class ItemHandAdd extends TimeEntity {
+public class ItemHandAdd extends CountDownEntity{
 
 
     private String title;
@@ -51,10 +50,11 @@ public class ItemHandAdd extends TimeEntity {
         this.material_station = material_station;
         this.realAmount = realAmount;
         this.info = info;
-
+        this.countdown=countdown;
+        this.endTime=endTime;
     }
 
-/*    public Long getCountDownLong(){
+    public Long getCountDownLong(){
         SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
         Date date ;
         try {
@@ -67,7 +67,7 @@ public class ItemHandAdd extends TimeEntity {
             e.printStackTrace();
         }
         return null;
-    }*/
+    }
 
     public int getState() {
         return state;

@@ -21,7 +21,6 @@ import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.MantissaCarResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
@@ -49,17 +48,13 @@ import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
-import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
@@ -129,22 +124,6 @@ public interface ApiService {
     @GET("lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
-    //请求接料预警详情页面item数据
-    @GET("lineAlarmFault/lineMaterialConnectDetail")
-    Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(@Query("condition") String condition);
-
-    //提交新旧流水号
-    @Headers({"Content-Type: application/x-www-form-urlencoded"})
-    @FormUrlEncoded
-    @POST("lineAlarmFault/connectMaterial")
-    Observable<Result> commitSerialNumber(@Field("condition") String condition);
-
-    //请求关灯
-    @Headers({"Content-Type: application/x-www-form-urlencoded"})
-    @FormUrlEncoded
-    @POST("lineAlarmFault/offMaterialLight")
-    Observable<Result> requestCloseLight(@Field("condition") String condition);
-
     //请求故障中item数据
     @GET("lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
@@ -166,11 +145,11 @@ public interface ApiService {
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
 
     //请求手补件item数据
-    @GET("lineAlarmFault/getPatchMaterial?condition={}")
+    @GET("http://172.22.35.236:8081/lineAlarmFault/getPatchMaterial?condition={}")
     Observable<Result<ItemHandAdd>> getItemHandAddDatas();
 
     //确认手补件item数据
-    @GET("lineAlarmFault/confirmPatchMaterial")
+    @GET("http://172.22.35.236:8081/lineAlarmFault/confirmPatchMaterial")
     Observable<Result> getItemHandAddConfirm(@Query("condition") String condition);
 
 
@@ -278,6 +257,12 @@ public interface ApiService {
     @GET("SMM/WareHIssue/startWareHIssure")
     Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
 
+    @GET("SMM/WareHIssue/jumpMaterials")
+    Observable<Result<StorageDetails>> jumpMaterials();
+
+    @GET("SMM/WareHIssue/sureCompleteIssue")
+    Observable<IssureToWarehFinishResult> sureCompleteIssue();
+
     //尾数仓备料
     @GET("SMM/IssueMana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
@@ -292,11 +277,11 @@ public interface ApiService {
 
     //查询尾数仓备料车
     @GET("SMM/WareHIssue/qPrepCarIDByWorkOrder")
-    Observable<MantissaCarResult> getFindCar(@Query("condition") String bind);
+    Observable<MaterialCar> getFindCar(@Query("condition") String bind);
 
     //绑定尾数仓备料车
     @GET("SMM/WareHIssue/bindPrepCarIDByWorkOrder")
-    Observable<MantissaCarResult> getbingingCar(@Query("condition") String bind);
+    Observable<MaterialCar> getbingingCar(@Query("condition") String bind);
 
     //尾数仓发料
     @GET("SMM/WareHIssue/mantissIssue")
@@ -304,7 +289,7 @@ public interface ApiService {
 
     //尾数仓发料完成
     @GET("SMM/WareHIssue/completeMantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWareOver();
+    Observable<IssureToWarehFinishResult> getMantissaWareOver();
 
     //仓库房备料和尾数仓选择
     @GET("SMM/IssueMana/queryWarehousePart")

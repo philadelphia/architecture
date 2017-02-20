@@ -4,14 +4,17 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -45,11 +48,14 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
     TextView mTvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar mToolbar;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
     private List<StoreEntity> mDataList = new ArrayList<>();
     private CommonBaseAdapter<StoreEntity> adapter;
     private Map<Integer, CheckBox> checkBoxMap = new HashMap<>();
     private int index = 0;
+    private String storeName;
 
     @Override
     protected int getContentViewId() {
@@ -63,6 +69,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
 
     @Override
     protected void initData() {
+        storeName = SpUtil.getStringSF(this, Constant.STORAGENAME);
         getPresenter().getStorageSelect();
     }
 
@@ -79,9 +86,12 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
                 holder.setText(R.id.chcekbox, item.getName());
                 CheckBox box = (CheckBox) holder.getView(R.id.chcekbox);
                 box.setTag(position);
+                if (item.getName().equals(storeName)) {
+                    box.setChecked(true);
+                    index = position;
+                }
                 checkBoxMap.put(position, box);
             }
-
 
             @Override
             protected int getItemViewLayoutId(int position, StoreEntity item) {
@@ -95,14 +105,15 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
     }
 
     @Override
-    public void onSucess(List<StoreEntity> StorageSelect) {
+    public void onSucess(List<StoreEntity> storageSelect) {
+
         mDataList.clear();
-        for (int i = 0; i < StorageSelect.size(); i++) {
-            if ("FeederBuffer".equals(StorageSelect.get(i).getName())) {
-                StorageSelect.remove(i);
+        for (int i = 0; i < storageSelect.size(); i++) {
+            if ("FeederBuffer".equals(storageSelect.get(i).getName())) {
+                storageSelect.remove(i);
             }
         }
-        mDataList.addAll(StorageSelect);
+        mDataList.addAll(storageSelect);
         adapter.notifyDataSetChanged();
 
     }
@@ -112,27 +123,57 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
 
     }
 
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+
+        statusLayout.showEmptyView();
+    }
+
     @OnClick({R.id.btn_storage_select})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_storage_select:
-                CheckBox mCheckBox = checkBoxMap.get(index);
-                if (mCheckBox.getText().toString().trim() != null) {
-                    String store_name = mCheckBox.getText().toString().trim();
-
+                if (TextUtils.isEmpty(storeName)) {
+                    SnackbarUtil.showMassage(statusLayout, "请选择仓库");
+                } else {
                     Bundle bundle = new Bundle();
-                    bundle.putString(Constant.WARE_HOUSE_NAME, store_name);
-                    if ("Mantissa".equals(store_name)) {
+                    bundle.putString(Constant.WARE_HOUSE_NAME, storeName);
+                    if ("Mantissa".equals(storeName)) {
                         IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class, bundle);
                     } else {
-
                         IntentUtils.showIntent(this, StorageWarningActivity.class, bundle);
                     }
-
-
-                } else {
-                    Toast.makeText(this, "请选择仓库", Toast.LENGTH_SHORT).show();
                 }
+//                CheckBox mCheckBox = checkBoxMap.get(index);
+//                if (mCheckBox.getText().toString().trim() != null) {
+//                    String store_name = mCheckBox.getText().toString().trim();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString(Constant.WARE_HOUSE_NAME, store_name);
+//                    if ("Mantissa".equals(store_name)) {
+//                        IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class, bundle);
+//                    } else {
+//                        IntentUtils.showIntent(this, StorageWarningActivity.class, bundle);
+//                    }
+//                } else {
+//                    Toast.makeText(this, "请选择仓库", Toast.LENGTH_SHORT).show();
+//                }
 
                 break;
             default:
@@ -140,23 +181,27 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
         }
     }
 
-
     @Override
     public void onItemClick(View view, StoreEntity item, int position) {
         CheckBox checkBox = checkBoxMap.get(position);
         index = position;
         if (checkBox.isChecked()) {
             checkBox.setChecked(false);
+            item.setCheck(false);
+            SpUtil.SetStringSF(this, Constant.STORAGENAME, "");
             for (CheckBox box : checkBoxMap.values()) {
                 box.setFocusable(true);
             }
+            storeName = null;
 
         } else {
             for (CheckBox box : checkBoxMap.values()) {
                 box.setChecked(false);
             }
             checkBox.setChecked(true);
-
+            SpUtil.SetStringSF(this, Constant.STORAGENAME, item.getName());
+            item.setCheck(true);
+            storeName = item.getName();
         }
 
     }
@@ -168,7 +213,6 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
             case android.R.id.home:
                 finish();
                 break;
-
             default:
                 break;
         }

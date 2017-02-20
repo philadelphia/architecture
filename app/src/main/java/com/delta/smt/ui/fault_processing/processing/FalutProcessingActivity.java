@@ -46,7 +46,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 
 /**
  * @description :
@@ -57,7 +56,7 @@ import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 
 public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresenter> implements FalutProcessingContract.View, WarningManger.OnWarning, ItemOnclick<RowsBean> {
     @BindView(R.id.rv_faultProcessing)
-    FamiliarRecyclerView rvFaultProcessing;
+    RecyclerView rvFaultProcessing;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
@@ -86,36 +85,22 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         warningManger.addWarning(Constant.ENGINEER_FAULT_ALARM_FLAG, this.getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getPresenter().getFaultProcessingMessages(lines);
     }
 
     @Override
     protected void initView() {
-
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("故障处理预警");
-//        mMyAdapter = new CommonBaseAdapter<RowsBean>(this, datas) {
-//            @Override
-//            protected void convert(CommonViewHolder holder, RowsBean falutMesage, int position) {
-//                holder.setText(R.id.tv_line, "产线：" + falutMesage.getLine());
-//                holder.setText(R.id.tv_name, falutMesage.getProcess() + "-" + falutMesage.getFaultMessage());
-//                holder.setText(R.id.tv_processing, "制程：" + falutMesage.getProcess());
-//                holder.setText(R.id.tv_faultMessage, "故障信息：" + falutMesage.getFaultMessage());
-//                holder.setText(R.id.tv_code, "故障代码：" + falutMesage.getFaultCode());
-//                Chronometer chronometer = holder.getView(R.id.chronometer);
-//                chronometer.setBase(SystemClock.elapsedRealtime() - 1000 * 60);
-//                chronometer.start();
-//            }
-//
-//            @Override
-//            protected int getItemViewLayoutId(int position, RowsBean item) {
-//                return R.layout.item_processing;
-//            }
-//
-//        };
         mMyAdapter = new ItemCountViewAdapter<RowsBean>(this, datas) {
             @Override
             protected int getCountViewId() {
