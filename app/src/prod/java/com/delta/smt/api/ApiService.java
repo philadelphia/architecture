@@ -32,6 +32,7 @@ import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.OnGoing;
 import com.delta.smt.entity.OutBound;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
@@ -212,12 +213,29 @@ public interface ApiService {
     //    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
     @GET("webapi/pcb/management/outbound")
     Observable<Success> getPcbSuccess(@Query("param") String s);//出料操作
+    @GET("pcb/management/outbound/light/close")
+    Observable<Success> closeLight(@Query("subShelfCode") String s);//关灯操作
+
+    @GET("pcb/management/outbound/alarm/submit")
+    Observable<Success> getAlarmOutSubmit(@Query("scheduleId") int scheduleId,@Query("amount")int amount);//提交
+
+    @GET("pcb/management/outbound/schedule/submit")
+    Observable<Success> getOutSubmit(@Query("scheduleId") int scheduleId,@Query("amount")int amount);//提交
 
     @GET("pcb/management/outbound/alarm/submit")
     Observable<Success> getAlarmSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId, @Query("alarmId") int alarmId);//预警出库完成
 
     @GET("pcb/management/outbound/schedule/submit")
     Observable<Success> getScheduleSuccessState(@Query("scheduleId") int scheduleId);//预警出库完成
+
+    @GET("pcb/inventory/start")
+    Observable<Success> onStartWork();//开始盘点
+
+    @GET("pcb/inventory/ongoing")
+    Observable<OnGoing> onGoing();//盘点界面判断
+
+    @GET("pcb/inventory/end")
+    Observable<Success> onEnd();//结束盘点
 
     @GET("pcb/inventory/detail")
     Observable<CheckStock> getCheckStock(@Query("subShelfCode") String s);//获取盘点列表
@@ -228,8 +246,11 @@ public interface ApiService {
     @GET("pcb/inventory/alteration")
     Observable<Success> getError(@Query("boxSerial") String boxSerial, @Query("subShelfCode") String subShelfCode);//发送盘点异常
 
-    @GET("pcb/inventory/exception")
+    @GET("pcb/inventory/sub/exception")
     Observable<ExceptionsBean> getException(@Query("subShelfCode") String boxSerial);//盘点结果
+
+    @GET("pcb/inventory/exception")
+    Observable<ExceptionsBean> getInventoryException();//获取总结
 
     @GET("pcb/inventory/submit")
     Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果

@@ -48,4 +48,19 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
     public Observable<Success> getScheduleSuccessState(int scheduleId) {
         return getService().getScheduleSuccessState(scheduleId).compose(RxsRxSchedulers.<Success>io_main());
     }
+
+    @Override
+    public Observable<Success> Closelighting(String subShelfCode) {
+        return getService().closeLight(subShelfCode).compose(RxsRxSchedulers.<Success>io_main());
+    }
+
+    @Override
+    public Observable<Success> getOutSubmit(int scheduleId, int amount) {
+        return getService().getOutSubmit(scheduleId,amount).compose(RxsRxSchedulers.<Success>io_main());
+    }
+
+    @Override
+    public Observable<Success> getAlarmOutSubmit(int scheduleId, int amount) {
+        return getService().getAlarmOutSubmit(scheduleId,amount).compose(RxsRxSchedulers.<Success>io_main());
+    }
 }

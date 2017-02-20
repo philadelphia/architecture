@@ -361,6 +361,21 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     }
 
     @Override
+    public void onEndSucess() {
+
+    }
+
+    @Override
+    public void onInventoryException(String s) {
+        mSummarizeDialog = builder.create();
+        mSummarizeDialog.show();
+        mSummarizeDialog.setContentView(R.layout.dialog_summarize);
+        TextView textView= (TextView) mSummarizeDialog.findViewById(R.id.dialog_summarize_content);
+        textView.setText(s);
+        mSummarizeDialog.findViewById(R.id.dialog_summarize_cancel).setOnClickListener(this);
+    }
+
+    @Override
     public void showLoadingView() {
         statusLayout.showLoadingView();
     }
@@ -418,11 +433,17 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 }
                 break;
             case R.id.stopwork_affirm:
-               //// TODO: 2017-02-16 请求API
+                getPresenter().onEndSuccess();
+                getPresenter().fetchInventoryException();
                 break;
             case R.id.stopwork_cancel:
                 if (mStopWorkDialog.isShowing()) {
                     mStopWorkDialog.dismiss();
+                }
+                break;
+            case R.id.dialog_summarize_cancel:
+                if (mSummarizeDialog.isShowing()) {
+                    mSummarizeDialog.dismiss();
                 }
                 break;
             
