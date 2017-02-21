@@ -92,9 +92,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Log.i(TAG, "initData: ");
         Intent intent = getIntent();
         String workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
+        String side = intent.getStringExtra(Constant.SIDE);
         Log.i(TAG, "workId==: " + workId);
+        Log.i(TAG, "side==: " + side);
         Map<String,String> map = new HashMap<>();
         map.put("work_order", workId);
+        map.put("side", side);
+
+
         String argument = new Gson().toJson(map);
         Log.i(TAG, "argument==: " + argument);
         getPresenter().getAllToBeSuppliedFeeders(argument);
@@ -108,7 +113,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("备料");
-        dataList.add(new FeederSupplyItem(" ", " ", " "," "," ",  0," "));
+        dataList.add(new FeederSupplyItem(" ", " ", "  "," ","", 0));
         CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
@@ -127,11 +132,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         adapter = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
-                holder.setText(R.id.tv_location, item.getPosition());
+//                holder.setText(R.id.tv_location, item.getPosition());
                 holder.setText(R.id.tv_feederID, item.getFeederID());
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
-                holder.setText(R.id.tv_module, item.getModuleID());
-                holder.setText(R.id.tv_timestamp, item.getTimeStamp());
+                holder.setText(R.id.tv_module, item.getSlot());
+                holder.setText(R.id.tv_timestamp, item.getBindTime());
                 holder.setText(R.id.tv_status, item.getStatus()==0 ? "等待上模组" :" 上模组完成");
 
                 if (position == index) {
@@ -171,12 +176,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
         dataSource.clear();
         dataSource.addAll(data);
-        for (FeederSupplyItem feederSupplyItem : dataSource) {
-            Log.i(TAG, "模组ID: " + feederSupplyItem.getModuleID());
-            Log.i(TAG, "料号: " + feederSupplyItem.getMaterialID());
-            Log.i(TAG, "流水号: " + feederSupplyItem.getSerialNumber());
-            Log.i(TAG, "上模组时间: " + feederSupplyItem.getTimeStamp());
-        }
         adapter.notifyDataSetChanged();
         for (FeederSupplyItem item : dataSource) {
             if (item.getStatus() == 0) {
@@ -224,8 +223,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             for (FeederSupplyItem feederSupplyItem : dataSource) {
                     if (mCurrentMaterialNumber.equalsIgnoreCase(feederSupplyItem.getMaterialID()) && mCurrentSerinalNumber.equalsIgnoreCase(feederSupplyItem.getSerialNumber())) {
                         Log.i(TAG, "对应的item: " + feederSupplyItem.toString());
-                        tvModuleID.setText("模组料站: " + feederSupplyItem.getModuleID());
-                        Log.i(TAG, "对应的模组料站是: " + feederSupplyItem.getModuleID());
+                        tvModuleID.setText("模组料站: " + feederSupplyItem.getSlot());
+                        Log.i(TAG, "对应的模组料站是: " + feederSupplyItem.getSlot());
 
                         index = dataSource.indexOf(feederSupplyItem);
                         Log.i(TAG, "当前扫描的数据index是: " + index);
