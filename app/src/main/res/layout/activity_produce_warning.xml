@@ -6,8 +6,17 @@
     <include layout="@layout/appbar"/>
 
     <include layout="@layout/tab_layout_title"/>
+
+    <com.delta.commonlibs.widget.statusLayout.StatusLayout
+        android:id="@+id/statusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <FrameLayout
         android:id="@+id/fl_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent">
+    </FrameLayout>
+
+    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 </LinearLayout>
