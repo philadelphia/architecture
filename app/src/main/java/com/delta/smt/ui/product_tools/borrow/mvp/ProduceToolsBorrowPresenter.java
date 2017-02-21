@@ -29,13 +29,14 @@ public class ProduceToolsBorrowPresenter extends BasePresenter<ProduceToolsBorro
     }
 
     public void getData(){
+        getView().showLoadingView();
         //TODO 修改输入的参数
         getModel().getProductWorkItem(1000000000,1).subscribe(new Action1<JsonProductBorrowRoot>() {
 
             List<ProductWorkItem> data=new ArrayList<>();
             @Override
             public void call(JsonProductBorrowRoot jsonProductBorrowRoot) {
-
+                getView().showContentView();
                 if (jsonProductBorrowRoot.getCode() == 0) {
                     List<JsonProductBorrowList> rows = jsonProductBorrowRoot.getRows();
                     for (JsonProductBorrowList j : rows) {
@@ -56,6 +57,7 @@ public class ProduceToolsBorrowPresenter extends BasePresenter<ProduceToolsBorro
             public void call(Throwable throwable) {
                 Log.e("getfail","fail");
                 getView().getFail();
+                getView().showErrorView();
             }
         });
     }
