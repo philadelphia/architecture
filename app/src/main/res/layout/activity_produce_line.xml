@@ -65,6 +65,7 @@
                     android:text="取消" />
 
             </LinearLayout>
+
         </RelativeLayout>
 
     </com.delta.commonlibs.widget.statusLayout.StatusLayout>
