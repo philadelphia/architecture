@@ -47,10 +47,10 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
                         getView().showEmptyView();
                     } else {
 
+                        getView().showContentView();
                         getView().getFalutMessgeSucess(falutMesages);
                     }
                 } else {
-
                     getView().showContentView();
                     getView().getFalutMessageFailed(falutMesages.getMsg());
                 }

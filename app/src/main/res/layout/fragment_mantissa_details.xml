@@ -63,5 +63,5 @@
         android:layout_height="100px"
         android:background="@color/C_333333"
         android:gravity="center"
-        android:textColor="@color/c_428bca" />
+        android:textColor="@color/c_ffffff" />
 </LinearLayout>

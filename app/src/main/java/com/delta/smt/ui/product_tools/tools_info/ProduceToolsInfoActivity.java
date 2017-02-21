@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -76,6 +77,9 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @BindView(R.id.PCBCODE)
     TextView mPCBCODETextView;
+
+    @BindView(R.id.ProductToolStatusLayout)
+    StatusLayout statusLayout;
 
     @OnClick(R.id.confirm)
     public void confirmData() {
@@ -333,6 +337,21 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void getFail() {
 
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
     }
 
     @Override

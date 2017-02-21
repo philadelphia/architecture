@@ -26,6 +26,12 @@ public interface ProduceToolsBorrowContract {
         void getFormData(List<ProductWorkItem> ProductWorkItem);
 
         void getFail();
+
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
     }
     
 }

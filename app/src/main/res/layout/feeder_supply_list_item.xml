@@ -61,23 +61,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <cn.iwgang.countdownview.CountdownView
-            android:id="@+id/cv_countdownViewTest"
-            android:layout_width="100px"
+        <com.delta.libs.CountTimeView
+            android:id="@+id/cv_countView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/time_remain"
-            android:layout_marginTop="20px"
-            android:layout_below="@+id/time_remain"
-            app:isShowDay="false"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            app:isCountUp="false"
+            app:isShowDay="true"
             app:isShowHour="true"
-            app:isTimeTextBold="true"
             app:isShowMillisecond="false"
             app:isShowMinute="true"
             app:isShowSecond="true"
+            app:suffixDay="天"
+            app:suffixDayRightMargin="10dp"
             app:suffixGravity="center"
-            app:suffixTextColor="#000000"
-            app:timeTextColor="#000000"
-            app:timeTextSize="20sp"
-            />
+            app:suffixHour=":"
+            app:suffixMinute=":"
+            app:suffixTextColor="#e61010"
+            app:suffixTextSize="17sp"
+            app:timeTextColor="#e60b0b"
+            app:timeTextSize="20sp" />
+
     </LinearLayout>
 </RelativeLayout>
