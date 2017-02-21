@@ -54,15 +54,24 @@ public class OutBound {
         private String subShelfSerial;
         private String pcbCode;
         private String dateCode;
-        private int amount;
+        private String boxSerial;
+        private int count;
         private int  id;
 
-        public int getAmount() {
-            return amount;
+        public String getBoxSerial() {
+            return boxSerial;
         }
 
-        public void setAmount(int amount) {
-            this.amount = amount;
+        public void setBoxSerial(String boxSerial) {
+            this.boxSerial = boxSerial;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
         }
 
         public int getId() {
@@ -73,14 +82,14 @@ public class OutBound {
             this.id = id;
         }
 
-        private boolean isColor;
+        private int isColor=0;
 
-        public boolean isColor() {
+        public int getIsColor() {
             return isColor;
         }
 
-        public void setColor(boolean color) {
-            isColor = color;
+        public void setIsColor(int isColor) {
+            this.isColor = isColor;
         }
 
         public String getPartNum() {

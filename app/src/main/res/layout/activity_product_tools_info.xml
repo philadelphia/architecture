@@ -1,198 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include layout="@layout/appbar" />
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/WorkNumberPlus"
-        android:layout_marginTop="80px"
-        android:layout_marginLeft="60px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-
-
-    <TextView
-        android:id="@+id/ProductToolsWorkItem"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="2314123"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="200px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/MainBoard"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="400px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:id="@+id/MainBroad"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="2314123"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="500px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/LittleBoard"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="720px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:id="@+id/LittleBroad"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="2314123"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="820px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="面别:"
-        android:layout_marginTop="30px"
-        android:layout_marginLeft="60px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:id="@+id/Cover"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="1234"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="160px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="线别:"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="400px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:id="@+id/Line"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="1234"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="500px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="PWB料號:"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="720px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:id="@+id/PWB_Code"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="2314123"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="900px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="PCBCODE:"
-        android:layout_marginTop="30px"
-        android:layout_marginLeft="60px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:id="@+id/PCBCODE"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="1234"
-        android:layout_marginTop="-45px"
-        android:layout_marginLeft="250px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="治具二维码:"
-        android:layout_marginTop="30px"
-        android:layout_marginLeft="60px"
-        android:textColor="#333333"
-        android:textSize="40px"
-        />
-
-    <EditText
-        android:id="@+id/ProductInfoBarCode"
-        android:layout_height="55px"
-        android:layout_width="600px"
-        android:layout_marginLeft="310px"
-        android:layout_marginTop="-50px"
-        android:background="@drawable/ed_back_white"
-        android:focusable="false"
-
-        />
-
-    <android.support.v7.widget.RecyclerView
-
-        android:layout_marginTop="80px"
-        android:id="@+id/ProductInfoRecyclerView"
+    <com.delta.commonlibs.widget.statusLayout.StatusLayout
+        android:id="@+id/ProductToolStatusLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60px"
+            android:layout_marginTop="80px"
+            android:text="@string/WorkNumberPlus"
+            android:textColor="#333333"
+            android:textSize="40px" />
 
-    <Button
-        android:layout_marginTop="80px"
-        android:layout_width="199px"
-        android:layout_height="100px"
-        android:textSize="40px"
-        android:textColor="#ffffff"
-        android:layout_gravity="center"
-        android:text="@string/confirm"
-        android:background="#00B2EE"
-        android:id="@+id/confirm"
-        />
+
+        <TextView
+            android:id="@+id/ProductToolsWorkItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200px"
+            android:layout_marginTop="-45px"
+            android:text="2314123"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="400px"
+            android:layout_marginTop="-45px"
+            android:text="@string/MainBoard"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/MainBroad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="500px"
+            android:layout_marginTop="-45px"
+            android:text="2314123"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="720px"
+            android:layout_marginTop="-45px"
+            android:text="@string/LittleBoard"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/LittleBroad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="820px"
+            android:layout_marginTop="-45px"
+            android:text="2314123"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60px"
+            android:layout_marginTop="30px"
+            android:text="面别:"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/Cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="160px"
+            android:layout_marginTop="-45px"
+            android:text="1234"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="400px"
+            android:layout_marginTop="-45px"
+            android:text="线别:"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/Line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="500px"
+            android:layout_marginTop="-45px"
+            android:text="1234"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="720px"
+            android:layout_marginTop="-45px"
+            android:text="PWB料號:"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/PWB_Code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="900px"
+            android:layout_marginTop="-45px"
+            android:text="2314123"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60px"
+            android:layout_marginTop="30px"
+            android:text="PCBCODE:"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/PCBCODE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="250px"
+            android:layout_marginTop="-45px"
+            android:text="1234"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60px"
+            android:layout_marginTop="30px"
+            android:text="治具二维码:"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <EditText
+            android:id="@+id/ProductInfoBarCode"
+            android:layout_width="600px"
+            android:layout_height="55px"
+            android:layout_marginLeft="310px"
+            android:layout_marginTop="-50px"
+            android:background="@drawable/ed_back_white"
+            android:focusable="false"
+
+            />
+
+        <android.support.v7.widget.RecyclerView
+
+            android:id="@+id/ProductInfoRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80px">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/confirm"
+            android:layout_width="199px"
+            android:layout_height="100px"
+            android:layout_gravity="center"
+            android:layout_marginTop="80px"
+            android:background="#00B2EE"
+            android:text="@string/confirm"
+            android:textColor="#ffffff"
+            android:textSize="40px" />
+        </LinearLayout>
+    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 </LinearLayout>
