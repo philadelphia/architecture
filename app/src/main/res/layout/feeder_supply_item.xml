@@ -31,7 +31,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_materialID"
-            android:layout_width="250dp"
+            android:layout_width="250px"
             android:gravity="center"
             android:text="料号"
             android:textColor="#333333"
