@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.libs.adapter.ItemOnclick;
 import com.delta.libs.adapter.ItemTimeViewHolder;
@@ -46,7 +47,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 
 /**
  * @description :
@@ -57,13 +57,13 @@ import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
 
 public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresenter> implements FalutProcessingContract.View, WarningManger.OnWarning, ItemOnclick<RowsBean> {
     @BindView(R.id.rv_faultProcessing)
-    FamiliarRecyclerView rvFaultProcessing;
+    RecyclerView rvFaultProcessing;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @BindView(R.id.tv_setting)
-    TextView tvSetting;
+    @BindView(R.id.statusLayouts)
+    StatusLayout statusLayout;
     @Inject
     WarningManger warningManger;
     private List<RowsBean> datas = new ArrayList<>();
@@ -86,36 +86,22 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         warningManger.addWarning(Constant.ENGINEER_FAULT_ALARM_FLAG, this.getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getPresenter().getFaultProcessingMessages(lines);
     }
 
     @Override
     protected void initView() {
-
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("故障处理预警");
-//        mMyAdapter = new CommonBaseAdapter<RowsBean>(this, datas) {
-//            @Override
-//            protected void convert(CommonViewHolder holder, RowsBean falutMesage, int position) {
-//                holder.setText(R.id.tv_line, "产线：" + falutMesage.getLine());
-//                holder.setText(R.id.tv_name, falutMesage.getProcess() + "-" + falutMesage.getFaultMessage());
-//                holder.setText(R.id.tv_processing, "制程：" + falutMesage.getProcess());
-//                holder.setText(R.id.tv_faultMessage, "故障信息：" + falutMesage.getFaultMessage());
-//                holder.setText(R.id.tv_code, "故障代码：" + falutMesage.getFaultCode());
-//                Chronometer chronometer = holder.getView(R.id.chronometer);
-//                chronometer.setBase(SystemClock.elapsedRealtime() - 1000 * 60);
-//                chronometer.start();
-//            }
-//
-//            @Override
-//            protected int getItemViewLayoutId(int position, RowsBean item) {
-//                return R.layout.item_processing;
-//            }
-//
-//        };
         mMyAdapter = new ItemCountViewAdapter<RowsBean>(this, datas) {
             @Override
             protected int getCountViewId() {
@@ -201,6 +187,29 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     }
 
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+
+        statusLayout.showEmptyView();
+    }
+
     @OnClick({R.id.tv_setting})
     public void onClick() {
     }
@@ -246,7 +255,6 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
                 textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                 textView.getPaint().setAntiAlias(true);//抗锯齿
                 textView.setText(Html.fromHtml(item.getName()));
-                //holder.setText(R.id.tv_content, item.getName());
             }
 
             @Override
@@ -274,4 +282,5 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
 
     }
+
 }

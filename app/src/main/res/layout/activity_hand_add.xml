@@ -6,17 +6,10 @@
 
     <include layout="@layout/appbar"/>
 
-    <com.delta.commonlibs.widget.statusLayout.StatusLayout
-        android:id="@+id/statusLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ryv_hand_add"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"/>
-
-    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 </LinearLayout>

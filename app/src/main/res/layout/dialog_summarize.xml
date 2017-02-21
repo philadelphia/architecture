@@ -26,6 +26,7 @@
             android:layout_weight="2"
             />
         <Button
+            android:id="@+id/dialog_summarize_cancel"
             android:layout_width="@dimen/px_0"
             android:layout_height="wrap_content"
             android:layout_weight="1"

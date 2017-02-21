@@ -24,7 +24,16 @@ public interface MantissaWarehouseReadyContract {
     interface View extends IView {
 
         void getSucess(List<MantissaWarehouseReady.RowsBean> mantissaWarehouseReadies);
+
         void getFailed(String message);
+
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
 
     }
 

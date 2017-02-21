@@ -6,8 +6,17 @@
 
     <include layout="@layout/appbar" />
 
-    <cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
-        android:id="@+id/rv_faultProcessing"
+    <com.delta.commonlibs.widget.statusLayout.StatusLayout
+        android:id="@+id/statusLayouts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></cn.iwgang.familiarrecyclerview.FamiliarRecyclerView>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_faultProcessing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
+
 </LinearLayout>

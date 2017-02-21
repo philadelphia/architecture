@@ -5,6 +5,7 @@ package com.delta.smt.entity;
  */
 
 public class JsonProductBorrowList {
+
     private int orderID;
 
     private String orderName;
@@ -15,7 +16,9 @@ public class JsonProductBorrowList {
 
     private int orderStatus;
 
-    private String model;
+    private String mainBoard;
+
+    private String subBoard;
 
     private String compositeMaterial;
 
@@ -63,11 +66,17 @@ public class JsonProductBorrowList {
     public int getOrderStatus(){
         return this.orderStatus;
     }
-    public void setModel(String model){
-        this.model = model;
+    public void setMainBoard(String mainBoard){
+        this.mainBoard = mainBoard;
     }
-    public String getModel(){
-        return this.model;
+    public String getMainBoard(){
+        return this.mainBoard;
+    }
+    public void setSubBoard(String subBoard){
+        this.subBoard = subBoard;
+    }
+    public String getSubBoard(){
+        return this.subBoard;
     }
     public void setCompositeMaterial(String compositeMaterial){
         this.compositeMaterial = compositeMaterial;
@@ -118,4 +127,24 @@ public class JsonProductBorrowList {
         return this.updateTime;
     }
 
+    @Override
+    public String toString() {
+        return "JsonProductBorrowList{" +
+                "orderID=" + orderID +
+                ", orderName='" + orderName + '\'' +
+                ", orderCount=" + orderCount +
+                ", orderType=" + orderType +
+                ", orderStatus=" + orderStatus +
+                ", mainBoard='" + mainBoard + '\'' +
+                ", subBoard='" + subBoard + '\'' +
+                ", compositeMaterial='" + compositeMaterial + '\'' +
+                ", pcbMaterial='" + pcbMaterial + '\'' +
+                ", side='" + side + '\'' +
+                ", lineName='" + lineName + '\'' +
+                ", pcbCode='" + pcbCode + '\'' +
+                ", planPrdTime='" + planPrdTime + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                '}';
+    }
 }

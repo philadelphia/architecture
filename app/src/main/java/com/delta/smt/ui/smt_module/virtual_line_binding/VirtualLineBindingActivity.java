@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,6 +74,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
     RecyclerView recyContent;
+    @BindView(R.id.container)
+    CoordinatorLayout container;
     //@BindView(R.id.btn_virtualLineBindingFinish)
     //AppCompatButton btnVirtualLineBindingFinish;
 
@@ -155,7 +159,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         tv_showLineName.setText("线别："+linName);
         tv_showSide.setText("面别: "+side);
 
-        dataList.add(new VirtualLineBindingItem.RowsBean("模组序号", "虚拟模组ID"));
+        dataList.add(new VirtualLineBindingItem.RowsBean("序号", "虚拟模组ID"));
         adapterTitle = new CommonBaseAdapter<VirtualLineBindingItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, VirtualLineBindingItem.RowsBean item, int position) {
@@ -206,10 +210,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
             Toast.makeText(this, "onSuccess", Toast.LENGTH_SHORT).show();
             dataSource.clear();
             data_tmp = data.getRows();
-            /*for(int i=0;i<data_tmp.size();i++){
-                VirtualLineBindingItem.RowsBean rowsBean = new VirtualLineBindingItem.RowsBean(data_tmp,"");
-                dataSource.add(rowsBean);
-            }*/
             dataSource.addAll(data_tmp);
             adapter.notifyDataSetChanged();
             adapterTitle.notifyDataSetChanged();
@@ -305,7 +305,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                     scan1_label = "material";
                     tv_showScan_1.setText(materialBlockNumber);
                     state = 2;
-                    //System.out.println(materialBlockNumber);
                 } catch (EntityNotFountException e) {
                     try{
                         Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
@@ -327,6 +326,20 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                                 .create()
                                 .show();
                     }
+                } catch (ArrayIndexOutOfBoundsException e){
+                    new AlertDialog.Builder(this)
+                            .setTitle("提示")
+                            .setMessage("请扫描料盘或feederID！")
+                            .setCancelable(false)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
+
                 }
                 break;
             case 2:
@@ -393,6 +406,19 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                                     .create()
                                     .show();
                         }
+                    }catch (ArrayIndexOutOfBoundsException ee){
+                        new AlertDialog.Builder(this)
+                                .setTitle("提示")
+                                .setMessage("请扫描虚拟模组！")
+                                .setCancelable(false)
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .create()
+                                .show();
                     }
                 }
                 break;
@@ -448,27 +474,27 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         return -1;
     }*/
 
-    public void setItemVirtualModuleID(String virtualModuleID, String moduleID) {
-        /*if (dataSource.size() > 0) {
+    /*public void setItemVirtualModuleID(String virtualModuleID, String moduleID) {
+        *//*if (dataSource.size() > 0) {
             for (VirtualLineBindingItemNative listItem : dataSource) {
                 if (listItem.getModule_id().equals(moduleID)) {
                     listItem.setVirtual_module_id(virtualModuleID);
                 }
             }
             adapter.notifyDataSetChanged();
-        }*/
+        }*//*
 
     }
 
     public void setItemHighLightBasedOnMID(String moduleID) {
-        /*for (int i = 0; i < dataSource.size(); i++) {
+        *//*for (int i = 0; i < dataSource.size(); i++) {
             if (dataSource.get(i).getModule_id().equals(moduleID)) {
                 scan_position = i;
                 break;
             }
         }
-        adapter.notifyDataSetChanged();*/
-    }
+        adapter.notifyDataSetChanged();*//*
+    }*/
 
     //判断是否所有的模组被绑定
     public boolean isAllModuleBinded(List<VirtualLineBindingItem.RowsBean> rb){

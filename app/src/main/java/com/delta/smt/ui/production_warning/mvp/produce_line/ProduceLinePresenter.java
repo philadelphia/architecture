@@ -5,8 +5,6 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import rx.functions.Action0;

@@ -11,7 +11,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
+import com.delta.libs.adapter.ItemOnclick;
+import com.delta.libs.adapter.ItemTimeViewHolder;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -38,7 +41,7 @@ import butterknife.BindView;
 
 public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehouseReadyPresenter>
         implements MantissaWarehouseReadyContract.View,
-        WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<MantissaWarehouseReady.RowsBean> {
+        WarningManger.OnWarning, ItemOnclick<MantissaWarehouseReady.RowsBean> {
 
     @Inject
     WarningManger warningManger;
@@ -50,6 +53,8 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     AutoToolbar mToolbar;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
 
     private List<MantissaWarehouseReady.RowsBean> dataList = new ArrayList();
@@ -73,23 +78,20 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
         //关键 初始化预警接口
         WarningManger.getInstance().setOnWarning(this);
 
-        getPresenter().getMantissaWarehouseReadies();
     }
+
 
     @Override
     protected void initView() {
-
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("尾数仓备料");
-
-
         adapter = new ItemCountViewAdapter<MantissaWarehouseReady.RowsBean>(this, dataList) {
             @Override
             protected int getCountViewId() {
-                return 0;
+                return R.id.cv_countView;
             }
 
             @Override
@@ -98,16 +100,17 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
             }
 
             @Override
-            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, MantissaWarehouseReady.RowsBean item, int position) {
-                holder.setText(R.id.tv_linee, "线别: " + item.getLine_name());
-                holder.setText(R.id.tv_number, "工单号: " + item.getWork_order());
-                holder.setText(R.id.tv_face, "面别: " + item.getSide());
-                if("1".equals(item.getStatus())){
-                    holder.setText(R.id.tv_type, "状态: " + "等待备料");
+            protected void convert(ItemTimeViewHolder holder, MantissaWarehouseReady.RowsBean item, int position) {
+                holder.setText(R.id.tv_line_name, "线别: " + item.getLine_name());
+                holder.setText(R.id.tv_order, "工单号: " + item.getWork_order());
+                holder.setText(R.id.tv_sides, "面别: " + item.getSide());
+                if (1 == item.getStatus()) {
+                    holder.setText(R.id.tv_states, "状态: " + "等待备料");
+                } else {
+                    holder.setText(R.id.tv_states, "状态：正在发料");
                 }
             }
         };
-
         adapter.setOnItemTimeOnclick(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(adapter);
@@ -124,14 +127,40 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     public void getSucess(List<MantissaWarehouseReady.RowsBean> mantissaWarehouseReadies) {
 
         dataList.clear();
+        for (int i = 0; i < mantissaWarehouseReadies.size(); i++) {
+            mantissaWarehouseReadies.get(i).setEnd_time(System.currentTimeMillis() + mantissaWarehouseReadies.get(i).getRemain_time() * 1000);
+            mantissaWarehouseReadies.get(i).setEntityId(i);
+        }
         dataList.addAll(mantissaWarehouseReadies);
-        adapter.notifyDataSetChanged();
 
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void getFailed(String message) {
+    }
 
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+
+        statusLayout.showEmptyView();
     }
 
     @Override
@@ -159,8 +188,10 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     @Override
     protected void onResume() {
         WarningManger.getInstance().registerWReceiver(this);
+        getPresenter().getMantissaWarehouseReadies();
         super.onResume();
     }
+
     @Override
     protected void onStop() {
         WarningManger.getInstance().unregisterWReceriver(this);
@@ -189,4 +220,5 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
         intent.putExtras(bundle);
         this.startActivity(intent);
     }
+
 }

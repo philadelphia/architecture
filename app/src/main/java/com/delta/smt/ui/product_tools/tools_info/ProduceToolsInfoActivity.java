@@ -127,7 +127,6 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     protected void initData() {
 
-
         workNumber = this.getIntent().getExtras().getString(sourceActivity);
 
         if (workNumber == null) {
@@ -263,7 +262,6 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void getToolsInfo(List<ProductToolsInfo> ProductToolsItem) {
         if (ProductToolsItem == null) {
-            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),"请求的数据不存在");
         }
         if (selectItem == null) {
             data.addAll(ProductToolsItem);
@@ -308,8 +306,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void getToolsBorrowSubmit(JsonProductToolsLocation j) {
         if (j == null) {
-            Snackbar.make(ProduceToolsInfoActivity.this.getWindow().getDecorView(), "请求的数据不存在!", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Action", null).show();
+            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),"请求的数据不存在");
         }
         Log.e("getToolsBorrowSubmit", j.toString());
         if (j.getCode() == 0) {
@@ -335,8 +332,6 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getFail() {
-
-        SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),"请求的数据不存在");
 
     }
 
