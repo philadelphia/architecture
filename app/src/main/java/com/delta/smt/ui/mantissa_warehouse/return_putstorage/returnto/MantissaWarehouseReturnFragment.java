@@ -78,7 +78,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     @Override
     protected void initView() {
 
-        dataList.add(new MantissaWarehouseReturnResult.MantissaWarehouseReturn("", "", "", "",""));
+        dataList.add(new MantissaWarehouseReturnResult.MantissaWarehouseReturn("", "", ""));
         adapter = new CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehouseReturnResult.MantissaWarehouseReturn item, int position) {
@@ -106,9 +106,9 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 }
 
                // holder.setText(R.id.tv_workOrder, item.getWork_order());
-                holder.setText(R.id.tv_number, item.getMaterial_num());
-                holder.setText(R.id.tv_serialNumber, item.getSerial_num());
-               // holder.setText(R.id.tv_location, item.getShelves());
+                holder.setText(R.id.tv_number, item.getMaterial_no());
+               // holder.setText(R.id.tv_serialNumber, item.getSerial_num());
+                holder.setText(R.id.tv_location, item.getShelf_no());
                // if("1".equals(item.getStatus())){
                   //  holder.setText(R.id.tv_type, "已入库");
                 //}else if("0".equals(item.getStatus())) {
@@ -143,7 +143,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getFailed(String message) {
-        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "数据...异常", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -231,7 +231,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     public void setItemHighLightBasedOnMID(String materialID) {
         for (int i = 0; i < dataList2.size(); i++) {
-            if (dataList2.get(i).getSerial_num().equals(materialID)) {
+            if (dataList2.get(i).getSerial_no().equals(materialID)) {
                 scan_position = i;
                 break;
             }
