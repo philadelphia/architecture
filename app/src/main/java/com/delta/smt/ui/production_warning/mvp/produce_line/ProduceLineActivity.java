@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -51,8 +52,8 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     TextView mTvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar mToolbar;
-    @BindView(R.id.statusLayout)
-    StatusLayout mStatusLayout;
+    @BindView(R.id.layout_statusLayout1)
+    StatusLayout mLayoutStatusLayout1;
 
 
     private CommonBaseAdapter<ItemProduceLine> mAdapter;
@@ -70,14 +71,14 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         switch (type) {
             case 0:
                 lineNames = SpUtil.getStringSF(this, Constant.PRODUCEWARNINGLINE_NAME);
-                 break;
+                break;
             case 1:
                 lineNames = SpUtil.getStringSF(this, Constant.FALUTPROCESSINGLINE_NAME);
-                 break;
+                break;
             case 2:
                 lineNames = SpUtil.getStringSF(this, Constant.HANDADDLINE_NAME);
-                 break;
-                }
+                break;
+        }
     }
 
     @Override
@@ -144,7 +145,6 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
                 Log.i("aaa", String.valueOf(mStringBuffer));
                 Constant.CONDITION = mStringBuffer.toString();
-//                Constant.initLine();
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.PRODUCTIONLINE, mStringBuffer.toString());
                 switch (type) {
@@ -253,21 +253,24 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
      */
     @Override
     public void showLoadingView() {
-        mStatusLayout.showLoadingView();
+        mLayoutStatusLayout1.showLoadingView();
     }
 
     @Override
     public void showContentView() {
-        mStatusLayout.showContentView();
+        mLayoutStatusLayout1.showContentView();
     }
 
     @Override
     public void showErrorView() {
-        mStatusLayout.showErrorView();
+        mLayoutStatusLayout1.showErrorView();
     }
 
     @Override
     public void showEmptyView() {
-        mStatusLayout.showEmptyView();
+        mLayoutStatusLayout1.showEmptyView();
     }
+
+
+
 }

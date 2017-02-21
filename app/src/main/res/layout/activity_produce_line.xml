@@ -7,10 +7,9 @@
     <include layout="@layout/appbar" />
 
     <com.delta.commonlibs.widget.statusLayout.StatusLayout
-        android:id="@+id/statusLayout"
+        android:id="@+id/layout_statusLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <RelativeLayout
             android:layout_width="match_parent"
