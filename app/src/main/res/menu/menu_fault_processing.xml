@@ -1,0 +1,36 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/action_all"
+        android:orderInCategory="80"
+        android:title="无过滤"
+
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_chip"
+        android:orderInCategory="80"
+        android:title="贴片机故障过滤"
+
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_reflow"
+        android:orderInCategory="90"
+        android:title="回焊炉故障过滤"
+
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_aoi"
+        android:orderInCategory="100"
+        android:title="AOI故障过滤"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_ict"
+        android:orderInCategory="100"
+        android:title="ICT故障过滤"
+        app:showAsAction="never" />
+</menu>

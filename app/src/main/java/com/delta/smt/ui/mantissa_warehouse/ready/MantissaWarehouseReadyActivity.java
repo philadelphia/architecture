@@ -55,8 +55,6 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     RecyclerView mRecyclerView;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-
-
     private List<MantissaWarehouseReady.RowsBean> dataList = new ArrayList();
 
     private ItemCountViewAdapter<MantissaWarehouseReady.RowsBean> adapter;
@@ -78,8 +76,8 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
         //关键 初始化预警接口
         WarningManger.getInstance().setOnWarning(this);
 
-        getPresenter().getMantissaWarehouseReadies();
     }
+
 
     @Override
     protected void initView() {
@@ -126,11 +124,6 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     @Override
     public void getSucess(List<MantissaWarehouseReady.RowsBean> mantissaWarehouseReadies) {
 
-        if (mantissaWarehouseReadies.size() == 0) {
-            statusLayout.showErrorView();
-        } else {
-            statusLayout.showContentView();
-        }
         dataList.clear();
         for (int i = 0; i < mantissaWarehouseReadies.size(); i++) {
             mantissaWarehouseReadies.get(i).setEnd_time(System.currentTimeMillis() + mantissaWarehouseReadies.get(i).getRemain_time() * 1000);
@@ -143,8 +136,29 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
 
     @Override
     public void getFailed(String message) {
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
 
         statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+
+        statusLayout.showEmptyView();
     }
 
     @Override
@@ -172,6 +186,7 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     @Override
     protected void onResume() {
         WarningManger.getInstance().registerWReceiver(this);
+        getPresenter().getMantissaWarehouseReadies();
         super.onResume();
     }
 

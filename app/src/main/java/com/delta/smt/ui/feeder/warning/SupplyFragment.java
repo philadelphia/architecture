@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
+import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
@@ -21,6 +22,7 @@ import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 
+import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.feeder.warning.supply.di.DaggerSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.FeederSupplyActivity;
@@ -40,14 +42,14 @@ import butterknife.BindView;
  * Date:     2016/12/21.
  */
 
-public class SupplyFragment extends BaseFragment<SupplyPresenter> implements SupplyContract.View, ItemOnclick, WarningManger.OnWarning {
+public class SupplyFragment extends BaseFragment<SupplyPresenter> implements SupplyContract.View, com.delta.libs.adapter.ItemOnclick,  WarningManger.OnWarning {
 
    @BindView(R.id.statusLayout)
    StatusLayout statusLayout;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     private List<FeederSupplyWarningItem> dataList = new ArrayList<>();
-    private ItemCountdownViewAdapter<FeederSupplyWarningItem> adapter;
+    private ItemCountViewAdapter<FeederSupplyWarningItem> adapter;
     private static final String TAG = "SupplyFragment";
     private AlertDialog alertDialog;
 
@@ -56,25 +58,32 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
 
     @Override
     protected void initView() {
-        adapter = new ItemCountdownViewAdapter<FeederSupplyWarningItem>(getContext(), dataList) {
+        adapter = new ItemCountViewAdapter<FeederSupplyWarningItem>(getContext(), dataList) {
+            @Override
+            protected int getCountViewId() {
+                return R.id.cv_countView;
+            }
+
             @Override
             protected int getLayoutId() {
                 return R.layout.feeder_supply_list_item;
             }
 
             @Override
-            protected void convert(ItemTimeViewHolder holder, FeederSupplyWarningItem item, int position) {
-                holder.setText(R.id.tv_title, "线别: " + item.getLineNumber());
-                holder.setText(R.id.tv_line, "工单号: " + item.getWorkItemID());
-                holder.setText(R.id.tv_material_station, "面别: " + item.getFaceID());
-                holder.setText(R.id.tv_add_count, "状态: " + item.getStatus());
+            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, FeederSupplyWarningItem feederSupplyWarningItem, int position) {
+                holder.setText(R.id.tv_title, "线别: " + feederSupplyWarningItem.getLineName());
+                holder.setText(R.id.tv_line, "工单号: " + feederSupplyWarningItem.getWorkOrder());
+                holder.setText(R.id.tv_material_station, "面别: " + feederSupplyWarningItem.getSide());
+                holder.setText(R.id.tv_add_count, "状态: " + (feederSupplyWarningItem.getStatus() ==2 ? "未开始备料" : "备料已经完成"));
             }
+//
+
 
         };
 
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         recyclerview.setAdapter(adapter);
-        adapter.setOnItemTimeOnclck(this);
+        adapter.setOnItemTimeOnclick(this);
     }
 
     @Override
@@ -104,10 +113,17 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
         Log.i(TAG, "onSuccess: ");
         Log.i(TAG, "后台返回的数据长度为: " + data.size());
         dataList.clear();
-        dataList.addAll(data);
+        for (int i = 0; i< data.size(); i++) {
+                FeederSupplyWarningItem entity = data.get(i);
+                entity.setEntityId(i);
+                long time = System.currentTimeMillis();
+                entity.setEnd_time(time + entity.getRemainTime());
+            dataList.add(entity);
+
+        }
+
         adapter.notifyDataSetChanged();
-        Log.i(TAG, "后台返回的数据长度为: " + dataList.get(0).getCountDownLong());
-        Log.i(TAG, "后台返回的数据长度为: " + dataList.get(0).getCountdown());
+        Log.i(TAG, "后台返回的数据长度为: " + dataList.get(0).getRemainTime());
         Log.i(TAG, "onSuccess: " + dataList.size());
         
     }
@@ -149,15 +165,6 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
         }
     }
 
-    @Override
-    public void onItemClick(View item, int position) {
-        FeederSupplyWarningItem feederSupplyWarningItem = dataList.get(position);
-        String workItemID = feederSupplyWarningItem.getWorkItemID();
-        Bundle bundle = new Bundle();
-        bundle.putString(Constant.WORK_ITEM_ID,workItemID);
-        IntentUtils.showIntent(getmActivity(), FeederSupplyActivity.class,bundle);
-
-    }
 
     @Override
     public void warningComing(String warningMessage) {
@@ -204,5 +211,16 @@ public class SupplyFragment extends BaseFragment<SupplyPresenter> implements Sup
         Log.i(TAG, "onResume: ");
         warningManger.unregisterWReceriver(getContext());
         super.onStop();
+    }
+
+    @Override
+    public void onItemClick(View item, Object o, int position) {
+        FeederSupplyWarningItem feederSupplyWarningItem = dataList.get(position);
+        String workItemID = feederSupplyWarningItem.getWorkOrder();
+        String side = feederSupplyWarningItem.getSide();
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.WORK_ITEM_ID,workItemID);
+        bundle.putString(Constant.SIDE,side);
+        IntentUtils.showIntent(getmActivity(), FeederSupplyActivity.class,bundle);
     }
 }

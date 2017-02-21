@@ -6,13 +6,14 @@ import com.delta.smt.entity.MantissaWarehouseReady;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/27.
  */
 @ActivityScope
-public class MantissaWarehouseReadyPresenter extends BasePresenter<MantissaWarehouseReadyContract.Model , MantissaWarehouseReadyContract.View> {
+public class MantissaWarehouseReadyPresenter extends BasePresenter<MantissaWarehouseReadyContract.Model, MantissaWarehouseReadyContract.View> {
 
 
     @Inject
@@ -20,25 +21,41 @@ public class MantissaWarehouseReadyPresenter extends BasePresenter<MantissaWareh
         super(model, mView);
     }
 
-  public void getMantissaWarehouseReadies(){
+    public void getMantissaWarehouseReadies() {
 
-      getModel().getMantissaWarehouseReadies().subscribe(new Action1<MantissaWarehouseReady>() {
-          @Override
-          public void call(MantissaWarehouseReady mantissaWarehouseReady) {
+        getModel().getMantissaWarehouseReadies().doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<MantissaWarehouseReady>() {
+            @Override
+            public void call(MantissaWarehouseReady mantissaWarehouseReady) {
 
-              if("0".equals(mantissaWarehouseReady.getCode())){
-                  getView().getSucess(mantissaWarehouseReady.getRows());
-              }else{
-                  getView().getFailed(mantissaWarehouseReady.getMsg());
-              }
+                if ("0".equals(mantissaWarehouseReady.getCode())) {
+                    if (mantissaWarehouseReady.getRows().size() == 0) {
+                        getView().showEmptyView();
+                    } else {
+                        getView().showContentView();
+                        getView().getSucess(mantissaWarehouseReady.getRows());
+                    }
+                } else {
+                    getView().showContentView();
+                    getView().getFailed(mantissaWarehouseReady.getMsg());
+                }
 
-          }
-      }, new Action1<Throwable>() {
-          @Override
-          public void call(Throwable throwable) {
-              getView().getFailed(throwable.getMessage());
-          }
-      });
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().getFailed(throwable.getMessage());
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-  }
+    }
 }

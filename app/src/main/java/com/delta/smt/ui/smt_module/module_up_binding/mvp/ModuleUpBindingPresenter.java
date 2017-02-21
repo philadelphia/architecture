@@ -82,7 +82,6 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
         }).subscribe(new Action1<ModuleUpBindingItem>() {
             @Override
             public void call(ModuleUpBindingItem moduleUpBindingItem) {
-                //getView().onSuccessBinding(moduleUpBindingItem);
                 try{
                     if ("0".equals(moduleUpBindingItem.getCode())) {
 
