@@ -80,7 +80,7 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         return R.layout.activity_startworkandstopwork;
     }
 
-    @OnClick({R.id.startAndstop_startwork, R.id.startAndstop_stopwork})
+    @OnClick({R.id.startAndstop_startwork})
     public void onClick(View view) {
 
         switch (view.getId()) {

@@ -216,7 +216,7 @@ public interface ApiService {
     Observable<Success> closeLight(@Query("subShelfCode") String s);//关灯操作
 
     @GET("pcb/management/outbound/alarm/submit")
-    Observable<Success> getAlarmOutSubmit(@Query("scheduleId") int scheduleId,@Query("amount")int amount);//提交
+    Observable<Success> getAlarmOutSubmit(@Query("alarmId") int scheduleId,@Query("amount")int amount);//提交
 
     @GET("pcb/management/outbound/schedule/submit")
     Observable<Success> getOutSubmit(@Query("scheduleId") int scheduleId,@Query("amount")int amount);//提交
