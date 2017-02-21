@@ -10,7 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.commonlibs.base.mvp.IView;
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -30,6 +33,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.delta.smt.R.id.statusLayout;
 import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
@@ -48,6 +52,9 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
+
+    @BindView(R.id.ProductToolStatusLayout)
+    StatusLayout statusLayout;
 
     List<ProductWorkItem> data = new ArrayList<>();
     CommonBaseAdapter<ProductWorkItem> adapter;
@@ -188,8 +195,23 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
     @Override
     public void getFail() {
-        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(ProduceToolsBorrowActivity.this.getWindow().getCurrentFocus(), "请求的数据不存在");
         this.data = new ArrayList<>();
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
     }
 
     @Override

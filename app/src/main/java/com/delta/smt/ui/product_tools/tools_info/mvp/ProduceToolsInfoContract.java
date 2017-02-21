@@ -35,6 +35,12 @@ public interface ProduceToolsInfoContract {
         void getToolsBorrowSubmit(JsonProductToolsLocation j);
 
         void getFail();
+
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
     }
 
 }

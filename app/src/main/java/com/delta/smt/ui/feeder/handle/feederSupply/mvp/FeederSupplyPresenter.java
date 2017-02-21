@@ -30,17 +30,19 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
                     getView().onSuccess(feederSupplyItems.getRows());
                 }else {
-                    getView().onFailed(feederSupplyItems.getMessage());
+//                    getView().onFailed(feederSupplyItems.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.getMessage());
+//                getView().onFailed(throwable.getMessage());
             }
         });
     }
 
+
+    //获取feeder上模组时间
     public void getFeederInsertionToSlotTimeStamp(String condition){
         getModel().getFeederInsertionToSlotTimeStamp(condition).subscribe(new Action1<Result<FeederSupplyItem>>() {
             @Override
@@ -48,13 +50,13 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                 if (feederSupplyItems.getMessage().equalsIgnoreCase("success")){
                     getView().onSuccess(feederSupplyItems.getRows());
                 }else {
-                    getView().onFailed(feederSupplyItems.getRows().get(0).getMessage());
+//                    getView().onFailed(feederSupplyItems.getRows().get(0).getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.getMessage());
+//                getView().onFailed(throwable.getMessage());
             }
         });
     }

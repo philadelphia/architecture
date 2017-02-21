@@ -30,10 +30,13 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
 
     public void getToolsInfo(String condition){
 
+        getView().showLoadingView();
+
         getModel().getProductToolsInfoItem(1000000000,1,condition).subscribe(new Action1<JsonProductRequestToolsRoot>() {
             @Override
             public void call(JsonProductRequestToolsRoot jsonProductRequestToolsRoot) {
                 //getView().getToolsInfo();
+                getView().showContentView();
                 List<JsonProductRequestToolsList> rows=jsonProductRequestToolsRoot.getRows();
                 List<ProductToolsInfo> data=new ArrayList<>();
                 int size=0;
@@ -61,13 +64,14 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             @Override
             public void call(Throwable throwable) {
                 getView().getFail();
+                getView().showErrorView();
             }
         });
 
     }
 
     public void getToolsVerfy(String condition){
-
+        getView().showLoadingView();
         getModel().getProductToolsVerfy(condition).subscribe(new Action1<JsonProductToolsVerfyRoot>() {
             @Override
             public void call(JsonProductToolsVerfyRoot jsonProductToolsVerfyRoot) {
@@ -75,7 +79,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                 List<JsonProductToolsVerfyList> rows=jsonProductToolsVerfyRoot.getRows();
 
                 List<ProductToolsInfo> data=new ArrayList<>();
-
+                getView().showContentView();
                 int size=0;
                 for(JsonProductToolsVerfyList j:rows){
                     size++;
@@ -90,7 +94,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                getView().showErrorView();
                 getView().getFail();
             }
         });
@@ -98,11 +102,11 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
     }
 
     public void getToolsBorrowSubmit(String param){
-
+        getView().showLoadingView();
         getModel().getProductToolsBorrowSubmit(param).subscribe(new Action1<JsonProductToolsLocation>() {
             @Override
             public void call(JsonProductToolsLocation jsonProductToolsLocation) {
-
+                getView().showContentView();
                 getView().getToolsBorrowSubmit(jsonProductToolsLocation);
 
             }
@@ -111,6 +115,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             public void call(Throwable throwable) {
 
                 getView().getFail();
+                getView().showErrorView();
 
             }
         });

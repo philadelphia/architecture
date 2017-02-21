@@ -1,62 +1,78 @@
 package com.delta.smt.entity;
 
+import com.delta.libs.adapter.TimeEntity;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Tao.ZT.Zhang on 2016/12/26.
  */
 
-public class FeederSupplyWarningItem extends CountDownEntity{
-    @SerializedName("line")
-    private String lineNumber;
+public class FeederSupplyWarningItem extends TimeEntity{
+    @SerializedName("line_name")
+    private String lineName;
     @SerializedName("work_order")
-    private String workItemID;
+    private String workOrder;
+    private String side;
+    private int status;
+    @SerializedName("remain_time")
+    private long remainTime;
 
-    @SerializedName("face")
-    private String faceID;
-    private String status;
-
-    public FeederSupplyWarningItem(String lineNumber, String workItemID, String faceID, String status,String countDown) {
-        this.lineNumber = lineNumber;
-        this.workItemID = workItemID;
-        this.faceID = faceID;
+    public FeederSupplyWarningItem( String lineName, long remainTime, String side, int status, String workOrder) {
+        this.lineName = lineName;
+        this.remainTime = remainTime;
+        this.side = side;
         this.status = status;
-        this.countdown = countDown;
-
+        this.workOrder = workOrder;
     }
 
-    public String getFaceID() {
-        return faceID;
+    public String getLineName() {
+        return lineName;
     }
 
-    public void setFaceID(String faceID) {
-        this.faceID = faceID;
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
     }
 
-    public String getLineNumber() {
-        return lineNumber;
+    public long getRemainTime() {
+        return remainTime;
     }
 
-    public void setLineNumber(String lineNumber) {
-        this.lineNumber = lineNumber;
+    public void setRemainTime(long remainTime) {
+        this.remainTime = remainTime;
     }
 
-    public String getStatus() {
+    public String getSide() {
+        return side;
+    }
+
+    public void setSide(String side) {
+        this.side = side;
+    }
+
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public String getWorkItemID() {
-        return workItemID;
+    public String getWorkOrder() {
+        return workOrder;
     }
 
-    public void setWorkItemID(String workItemID) {
-        this.workItemID = workItemID;
+    public void setWorkOrder(String workOrder) {
+        this.workOrder = workOrder;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "FeederSupplyWarningItem{" +
+                "lineName='" + lineName + '\'' +
+                ", workOrder='" + workOrder + '\'' +
+                ", side='" + side + '\'' +
+                ", status='" + status + '\'' +
+                ", remainTime=" + remainTime +
+                '}';
+    }
 }
