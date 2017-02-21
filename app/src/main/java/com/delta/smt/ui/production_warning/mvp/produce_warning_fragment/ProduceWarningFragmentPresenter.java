@@ -10,6 +10,7 @@ import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -25,14 +26,26 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
 
 
     public void getItemWarningDatas(String condition){
-        getModel().getItemWarningDatas(condition).subscribe(new Action1<ProduceWarning>() {
+        getModel().getItemWarningDatas(condition).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<ProduceWarning>() {
 
             @Override
             public void call(ProduceWarning itemWarningInfos) {
-                //getView().getItemWarningDatas(itemWarningInfos);
+
                 if (itemWarningInfos.getCode().equals("0")) {
-                    getView().getItemWarningDatas(itemWarningInfos.getRows().getAlarm());
-                    Log.e("aaa", "fagment:预警数量"+String.valueOf(itemWarningInfos.getRows().getAlarm().size()) );
+
+                    if (itemWarningInfos.getRows().getAlarm().size()==0){
+                        getView().showEmptyView();
+                    }else {
+                        getView().showContentView();
+                        getView().getItemWarningDatas(itemWarningInfos.getRows().getAlarm());
+                        Log.e("aaa", "fagment:预警数量"+String.valueOf(itemWarningInfos.getRows().getAlarm().size()) );
+                    }
+
                 }else {
                     getView().getItemWarningDatasFailed(itemWarningInfos.getMsg());
                 }
@@ -40,6 +53,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
                 getView().getItemWarningDatasFailed(throwable.getMessage());
             }
         });

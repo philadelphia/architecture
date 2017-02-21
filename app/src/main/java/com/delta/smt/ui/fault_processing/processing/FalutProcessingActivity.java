@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -27,6 +30,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.FaultMessage.RowsBean;
+import com.delta.smt.entity.FaultParameter;
 import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.fault_processing.fault_add.FaultProcessingAddActivity;
@@ -55,7 +59,7 @@ import butterknife.OnClick;
  */
 
 
-public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresenter> implements FalutProcessingContract.View, WarningManger.OnWarning, ItemOnclick<RowsBean> {
+public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresenter> implements FalutProcessingContract.View, WarningManger.OnWarning, ItemOnclick<RowsBean>, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.rv_faultProcessing)
     RecyclerView rvFaultProcessing;
     @BindView(R.id.toolbar)
@@ -73,6 +77,8 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     private String lines;
     private LinearLayoutManager manager;
     private ItemCountViewAdapter<RowsBean> mMyAdapter;
+    private FaultParameter faultParameter;
+    private String paramter;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -83,6 +89,9 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     @Override
     protected void initData() {
         lines = getIntent().getExtras().getString(Constant.PRODUCTIONLINE);
+        faultParameter = new FaultParameter();
+        faultParameter.setLines(lines);
+        paramter = GsonTools.createGsonString(faultParameter);
         warningManger.addWarning(Constant.ENGINEER_FAULT_ALARM_FLAG, this.getClass());
         warningManger.setRecieve(true);
         warningManger.setOnWarning(this);
@@ -92,7 +101,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     @Override
     protected void onResume() {
         super.onResume();
-        getPresenter().getFaultProcessingMessages(lines);
+        getPresenter().getFaultProcessingMessages(paramter);
     }
 
     @Override
@@ -102,6 +111,8 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("故障处理预警");
+        toolbar.setOnMenuItemClickListener(this);
+
         mMyAdapter = new ItemCountViewAdapter<RowsBean>(this, datas) {
             @Override
             protected int getCountViewId() {
@@ -130,9 +141,15 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_fault_processing, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -283,4 +300,29 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_all:
+                faultParameter.setProcesses("");
+                break;
+            case R.id.action_chip:
+                faultParameter.setProcesses("贴片机");
+                break;
+            case R.id.action_reflow:
+                faultParameter.setProcesses("回焊炉");
+                break;
+            case R.id.action_aoi:
+                faultParameter.setProcesses("AOI");
+                break;
+            case R.id.action_ict:
+                faultParameter.setProcesses("ICT");
+                break;
+            default:
+                break;
+        }
+        paramter = GsonTools.createGsonString(faultParameter);
+        getPresenter().getFaultProcessingMessages(paramter);
+        return true;
+    }
 }

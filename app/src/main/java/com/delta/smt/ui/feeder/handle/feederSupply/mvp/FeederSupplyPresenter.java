@@ -47,16 +47,16 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         getModel().getFeederInsertionToSlotTimeStamp(condition).subscribe(new Action1<Result<FeederSupplyItem>>() {
             @Override
             public void call(Result<FeederSupplyItem> feederSupplyItems) {
-                if (feederSupplyItems.getMessage().equalsIgnoreCase("success")){
+                if (feederSupplyItems.getCode().equalsIgnoreCase("0")){
                     getView().onSuccess(feederSupplyItems.getRows());
                 }else {
-//                    getView().onFailed(feederSupplyItems.getRows().get(0).getMessage());
+                    getView().onFailed(feederSupplyItems.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-//                getView().onFailed(throwable.getMessage());
+                getView().onFailed(throwable.getMessage());
             }
         });
     }
