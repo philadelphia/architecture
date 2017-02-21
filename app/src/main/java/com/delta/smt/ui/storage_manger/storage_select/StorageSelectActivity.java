@@ -161,20 +161,6 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
                         IntentUtils.showIntent(this, StorageWarningActivity.class, bundle);
                     }
                 }
-//                CheckBox mCheckBox = checkBoxMap.get(index);
-//                if (mCheckBox.getText().toString().trim() != null) {
-//                    String store_name = mCheckBox.getText().toString().trim();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString(Constant.WARE_HOUSE_NAME, store_name);
-//                    if ("Mantissa".equals(store_name)) {
-//                        IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class, bundle);
-//                    } else {
-//                        IntentUtils.showIntent(this, StorageWarningActivity.class, bundle);
-//                    }
-//                } else {
-//                    Toast.makeText(this, "请选择仓库", Toast.LENGTH_SHORT).show();
-//                }
-
                 break;
             default:
                 break;

@@ -1,66 +1,176 @@
 package com.delta.smt.ui.production_warning.item;
 
+import java.util.List;
+
 /**
  * Created by Fuxiang.Zhang on 2017/2/13.
  */
 
 public class ItemAcceptMaterialDetail {
 
-    private String material_id;
-    private String material_station;
-    private String remain;
-    private String unit;
-    private String location;
+    /**
+     * code : 0
+     * msg : Success
+     * rows : {"line":"T13","connectMaterialCount":2,"lineMaterialEntities":[{"line":"T13","partNumber":"PN001","slot":"050","quantity":0,"serialNumber":"SN001","unit":"PCS","location":"RP1301","status":1,"id":1},{"line":"T13","partNumber":"PN002","slot":"060","quantity":200,"serialNumber":"SN002","unit":"PCS","location":"RP1305","status":1,"id":2}]}
+     */
 
-    public ItemAcceptMaterialDetail() {
+    private String code;
+    private String msg;
+    private RowsBean rows;
+
+    public String getCode() {
+        return code;
     }
 
-    public ItemAcceptMaterialDetail(String material_id, String material_station, String remain, String unit, String location) {
-        this.material_id = material_id;
-        this.material_station = material_station;
-        this.remain = remain;
-        this.unit = unit;
-        this.location = location;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-
-    public String getMaterial_id() {
-        return material_id;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMaterial_id(String material_id) {
-        this.material_id = material_id;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getMaterial_station() {
-        return material_station;
+    public RowsBean getRows() {
+        return rows;
     }
 
-    public void setMaterial_station(String material_station) {
-        this.material_station = material_station;
+    public void setRows(RowsBean rows) {
+        this.rows = rows;
     }
 
-    public String getRemain() {
-        return remain;
-    }
+    public static class RowsBean {
+        /**
+         * line : T13
+         * connectMaterialCount : 2
+         * lineMaterialEntities : [{"line":"T13","partNumber":"PN001","slot":"050","quantity":0,"serialNumber":"SN001","unit":"PCS","location":"RP1301","status":1,"id":1},{"line":"T13","partNumber":"PN002","slot":"060","quantity":200,"serialNumber":"SN002","unit":"PCS","location":"RP1305","status":1,"id":2}]
+         */
 
-    public void setRemain(String  remain) {
-        this.remain = remain;
-    }
+        private String line;
+        private int connectMaterialCount;
+        private List<LineMaterialEntitiesBean> lineMaterialEntities;
 
-    public String getUnit() {
-        return unit;
-    }
+        public String getLine() {
+            return line;
+        }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
+        public void setLine(String line) {
+            this.line = line;
+        }
 
-    public String getLocation() {
-        return location;
-    }
+        public int getConnectMaterialCount() {
+            return connectMaterialCount;
+        }
 
-    public void setLocation(String location) {
-        this.location = location;
+        public void setConnectMaterialCount(int connectMaterialCount) {
+            this.connectMaterialCount = connectMaterialCount;
+        }
+
+        public List<LineMaterialEntitiesBean> getLineMaterialEntities() {
+            return lineMaterialEntities;
+        }
+
+        public void setLineMaterialEntities(List<LineMaterialEntitiesBean> lineMaterialEntities) {
+            this.lineMaterialEntities = lineMaterialEntities;
+        }
+
+        public static class LineMaterialEntitiesBean {
+            /**
+             * line : T13
+             * partNumber : PN001
+             * slot : 050
+             * quantity : 0
+             * serialNumber : SN001
+             * unit : PCS
+             * location : RP1301
+             * status : 1
+             * id : 1
+             */
+
+            private String line;
+            private String partNumber;
+            private String slot;
+            private int quantity;
+            private String serialNumber;
+            private String unit;
+            private String location;
+            private int status;
+            private int id;
+
+            public String getLine() {
+                return line;
+            }
+
+            public void setLine(String line) {
+                this.line = line;
+            }
+
+            public String getPartNumber() {
+                return partNumber;
+            }
+
+            public void setPartNumber(String partNumber) {
+                this.partNumber = partNumber;
+            }
+
+            public String getSlot() {
+                return slot;
+            }
+
+            public void setSlot(String slot) {
+                this.slot = slot;
+            }
+
+            public int getQuantity() {
+                return quantity;
+            }
+
+            public void setQuantity(int quantity) {
+                this.quantity = quantity;
+            }
+
+            public String getSerialNumber() {
+                return serialNumber;
+            }
+
+            public void setSerialNumber(String serialNumber) {
+                this.serialNumber = serialNumber;
+            }
+
+            public String getUnit() {
+                return unit;
+            }
+
+            public void setUnit(String unit) {
+                this.unit = unit;
+            }
+
+            public String getLocation() {
+                return location;
+            }
+
+            public void setLocation(String location) {
+                this.location = location;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+        }
     }
 }

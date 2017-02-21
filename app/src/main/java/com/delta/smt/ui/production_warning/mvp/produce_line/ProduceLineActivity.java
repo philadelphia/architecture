@@ -16,6 +16,7 @@ import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -44,15 +45,19 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
     @BindView(R.id.ryv_production_line)
     RecyclerView ryvProductionLine;
-
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
     @BindView(R.id.tv_setting)
     TextView mTvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar mToolbar;
+    @BindView(R.id.statusLayout)
+    StatusLayout mStatusLayout;
+
+
     private CommonBaseAdapter<ItemProduceLine> mAdapter;
     private List<ItemProduceLine> datas = new ArrayList<>();
+
     private int type;
     private String lineNames;
 
@@ -60,7 +65,6 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     protected void initData() {
         //初始请求的产线
         getPresenter().getProductionLineDatas();
-
         Intent intent = getIntent();
         type = intent.getExtras().getInt(Constant.SELECTTYPE, -1);
         switch (type) {
@@ -137,8 +141,10 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                     Constant.CONDITION = null;
                     return;
                 }
+
                 Log.i("aaa", String.valueOf(mStringBuffer));
                 Constant.CONDITION = mStringBuffer.toString();
+//                Constant.initLine();
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.PRODUCTIONLINE, mStringBuffer.toString());
                 switch (type) {
@@ -242,5 +248,26 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * @description :根据不同的数据状态显示不同的view
+     */
+    @Override
+    public void showLoadingView() {
+        mStatusLayout.showLoadingView();
+    }
 
+    @Override
+    public void showContentView() {
+        mStatusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        mStatusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        mStatusLayout.showEmptyView();
+    }
 }

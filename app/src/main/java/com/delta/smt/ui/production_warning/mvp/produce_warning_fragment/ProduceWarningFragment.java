@@ -188,6 +188,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void onResume() {
         super.onResume();
+        Log.e(TAG, "onResume: ");
         if (null != mAdapter) {
             mAdapter.startRefreshTime();
         }
@@ -197,6 +198,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void onPause() {
         super.onPause();
+        Log.e(TAG, "onPause: " );
         if (null != mAdapter) {
             mAdapter.cancelRefreshTime();
         }
@@ -205,6 +207,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.e(TAG, "onDestroy: " );
         if (null != mAdapter) {
             mAdapter.cancelRefreshTime();
         }
@@ -262,51 +265,51 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 /*        if(mPopupWindow!=null&&mPopupWindow.isShowing()){
 
         }else {*/
-            EventBus.getDefault().post(new BroadcastCancel());
-            mDialogRelativelayout = new DialogRelativelayout(getContext());
-            barcodedatas.clear();
-            final ItemWarningInfo mItemWarningInfo = datas.get(position);
+        EventBus.getDefault().post(new BroadcastCancel());
+        mDialogRelativelayout = new DialogRelativelayout(getContext());
+        barcodedatas.clear();
+        final ItemWarningInfo mItemWarningInfo = datas.get(position);
 
-            if (mItemWarningInfo.getTitle().equals("接料预警")) {
+        if (mItemWarningInfo.getTitle().equals("接料预警")) {
 
 //                makePopupWindow();
-                Bundle bundle = new Bundle();
-                bundle.putString(Constant.ACCEPTMATERIALSLINES, mItemWarningInfo.getProductionline());
-                IntentUtils.showIntent(getmActivity(), AcceptMaterialsActivity.class,bundle);
-                id= String.valueOf(mItemWarningInfo.getId());
+            Bundle bundle = new Bundle();
+            bundle.putString(Constant.ACCEPTMATERIALSLINES, mItemWarningInfo.getProductionline());
+            IntentUtils.showIntent(getmActivity(), AcceptMaterialsActivity.class,bundle);
+            id= String.valueOf(mItemWarningInfo.getId());
 
-            } else {
+        } else {
 
-                final ArrayList<String> dialogDatas = new ArrayList<>();
-                mDialogRelativelayout.setStrSecondTitle("请求确认");
-                dialogDatas.add("是否已经完成？");
-                mDialogRelativelayout.setStrContent(dialogDatas);
-                new AlertDialog.Builder(getContext()).setCancelable(false).setView(mDialogRelativelayout)
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                EventBus.getDefault().post(new BroadcastBegin());
-                            }
-                        })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+            final ArrayList<String> dialogDatas = new ArrayList<>();
+            mDialogRelativelayout.setStrSecondTitle("请求确认");
+            dialogDatas.add("是否已经完成？");
+            mDialogRelativelayout.setStrContent(dialogDatas);
+            new AlertDialog.Builder(getContext()).setCancelable(false).setView(mDialogRelativelayout)
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            EventBus.getDefault().post(new BroadcastBegin());
+                        }
+                    })
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                                Map<String, String > map = new HashMap<>();
-                                map.put("id", String.valueOf(mItemWarningInfo.getId()));
-                                Gson gson = new Gson();
-                                String id = gson.toJson(map);
-                                Log.i("ProduceWarningFragment",id);
+                            Map<String, String > map = new HashMap<>();
+                            map.put("id", String.valueOf(mItemWarningInfo.getId()));
+                            Gson gson = new Gson();
+                            String id = gson.toJson(map);
+                            Log.i("ProduceWarningFragment",id);
 
-                                getPresenter().getItemWarningConfirm(id);
-                                mItemWarningInfo.setWarninginfo("操作完成");
-                                mAdapter.notifyDataSetChanged();
-                                EventBus.getDefault().post(new BroadcastBegin());
-                            }
-                        }).show();
-            }
+                            getPresenter().getItemWarningConfirm(id);
+                            mItemWarningInfo.setWarninginfo("操作完成");
+                            mAdapter.notifyDataSetChanged();
+                            EventBus.getDefault().post(new BroadcastBegin());
+                        }
+                    }).show();
         }
+    }
 //    }
 
 
@@ -348,46 +351,46 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         Log.i("barcode", barcode);
         if(mPopupWindow!=null&&mPopupWindow.isShowing()){
-        switch (tag) {
-            case 0:
-                try {
-                    MaterialBlockBarCode mMaterialBlockBarCode =
-                            (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    currentBarcode = "料盘：" + mMaterialBlockBarCode.getDeltaMaterialNumber();
-                    materialPlate = currentBarcode;
-                    Log.i("barcode", currentBarcode);
-                } catch (EntityNotFountException e) {
-                    ToastUtils.showMessage(getContext(), "请扫描料盘！");
-                    currentBarcode = null;
-                    e.printStackTrace();
-                }
-                break;
+            switch (tag) {
+                case 0:
+                    try {
+                        MaterialBlockBarCode mMaterialBlockBarCode =
+                                (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                        currentBarcode = "料盘：" + mMaterialBlockBarCode.getDeltaMaterialNumber();
+                        materialPlate = currentBarcode;
+                        Log.i("barcode", currentBarcode);
+                    } catch (EntityNotFountException e) {
+                        ToastUtils.showMessage(getContext(), "请扫描料盘！");
+                        currentBarcode = null;
+                        e.printStackTrace();
+                    }
+                    break;
 
-            case 1:
-                try {
-                    Feeder mFeeder = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
-                    currentBarcode = "FeederID：" + mFeeder.getSource();
-                    feederId = currentBarcode;
-                    Log.i("barcode", currentBarcode);
-                } catch (EntityNotFountException e) {
-                    ToastUtils.showMessage(getContext(), "请扫描FeederID！");
-                    currentBarcode = null;
-                    e.printStackTrace();
-                }
-                break;
+                case 1:
+                    try {
+                        Feeder mFeeder = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
+                        currentBarcode = "FeederID：" + mFeeder.getSource();
+                        feederId = currentBarcode;
+                        Log.i("barcode", currentBarcode);
+                    } catch (EntityNotFountException e) {
+                        ToastUtils.showMessage(getContext(), "请扫描FeederID！");
+                        currentBarcode = null;
+                        e.printStackTrace();
+                    }
+                    break;
 
-            case 2:
-                try {
-                    MaterialStation mMaterialStation = (MaterialStation) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_STATION);
-                    currentBarcode = "料站：" + mMaterialStation.getSource();
-                    materialStation = currentBarcode;
-                    Log.i("barcode", currentBarcode);
-                } catch (EntityNotFountException e) {
-                    ToastUtils.showMessage(getContext(), "请扫描料站！");
-                    currentBarcode = null;
-                    e.printStackTrace();
-                }
-                break;
+                case 2:
+                    try {
+                        MaterialStation mMaterialStation = (MaterialStation) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_STATION);
+                        currentBarcode = "料站：" + mMaterialStation.getSource();
+                        materialStation = currentBarcode;
+                        Log.i("barcode", currentBarcode);
+                    } catch (EntityNotFountException e) {
+                        ToastUtils.showMessage(getContext(), "请扫描料站！");
+                        currentBarcode = null;
+                        e.printStackTrace();
+                    }
+                    break;
             }
 
         }

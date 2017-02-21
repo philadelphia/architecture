@@ -103,7 +103,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         side = getIntent().getStringExtra(Constant.SIDE);
         Map<String, String> mMap = new HashMap<>();
         mMap.put("part", part);
-        mMap.put("workorder", work_order);
+        mMap.put("work_order", work_order);
         mMap.put("side", side);
         Gson mGson = new Gson();
         String mS = mGson.toJson(mMap);
@@ -389,7 +389,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     car = ((BackupMaterialCar) barCodeImp.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
                     mTextView2.setText(car.getSource());
                     Map<String, String> maps = new HashMap<>();
-                    maps.put("workorder", work_order);
+                    maps.put("work_order", work_order);
                     maps.put("part", part);
                     maps.put("side", side);
                     maps.put("pre_car", car.getSource());

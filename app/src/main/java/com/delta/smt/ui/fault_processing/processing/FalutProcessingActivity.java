@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.libs.adapter.ItemOnclick;
 import com.delta.libs.adapter.ItemTimeViewHolder;
@@ -61,8 +62,8 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @BindView(R.id.tv_setting)
-    TextView tvSetting;
+    @BindView(R.id.statusLayouts)
+    StatusLayout statusLayout;
     @Inject
     WarningManger warningManger;
     private List<RowsBean> datas = new ArrayList<>();
@@ -186,6 +187,29 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     }
 
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+
+        statusLayout.showEmptyView();
+    }
+
     @OnClick({R.id.tv_setting})
     public void onClick() {
     }
@@ -259,4 +283,5 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
 
     }
+
 }

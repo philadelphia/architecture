@@ -6,17 +6,26 @@
 
     <include layout="@layout/appbar" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/ryv_production_line"
+
+        <com.delta.commonlibs.widget.statusLayout.StatusLayout
+            android:id="@+id/statusLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/ll"
-            android:layout_marginBottom="32px"
-            android:layout_marginTop="120px" />
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/ryv_production_line"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/ll"
+                android:layout_marginBottom="32px"
+                android:layout_marginTop="120px" />
+
+        </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 
         <LinearLayout
             android:id="@+id/ll"
@@ -59,4 +68,7 @@
 
         </LinearLayout>
     </RelativeLayout>
+
+
+
 </LinearLayout>

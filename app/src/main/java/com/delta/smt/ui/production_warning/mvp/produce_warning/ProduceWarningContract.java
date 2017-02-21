@@ -15,6 +15,14 @@ public interface ProduceWarningContract {
     interface View extends IView {
         void getTitleDatas(TitleNumber titleNumber);
         void getTitleDatasFailed(String message);
+
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
     }
 
     interface Model extends IModel {
