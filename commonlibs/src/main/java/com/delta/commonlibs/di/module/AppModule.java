@@ -1,6 +1,7 @@
 package com.delta.commonlibs.di.module;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.google.gson.Gson;
 
@@ -27,7 +28,11 @@ public class AppModule {
     public Application provideApplication() {
         return mApplication;
     }
-
+    @Singleton
+    @Provides
+    public Context provideContext() {
+        return mApplication;
+    }
     @Singleton
     @Provides
     public Gson provideGson(){return new Gson();}

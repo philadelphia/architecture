@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -90,8 +90,8 @@
 
         <com.delta.libs.CountTimeView
             android:id="@+id/cv_countView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="146dp"
+            android:layout_height="30px"
             android:layout_alignParentRight="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20px"
@@ -107,8 +107,8 @@
             app:suffixHour=":"
             app:suffixMinute=":"
             app:suffixTextColor="#e61010"
-            app:suffixTextSize="17px"
+            app:suffixTextSize="15sp"
             app:timeTextColor="#e60b0b"
-            app:timeTextSize="20px" />
+            app:timeTextSize="18sp" />
     </LinearLayout>
 </RelativeLayout>

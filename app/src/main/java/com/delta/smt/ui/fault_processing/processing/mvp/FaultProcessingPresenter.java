@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -32,21 +33,37 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
         Map<String, String> maps = new HashMap<>();
         maps.put("lines", producelines);
         producelines = new Gson().toJson(maps);
-        getModel().getFalutMessages(producelines).subscribe(new Action1<FaultMessage>() {
+        getModel().getFalutMessages(producelines).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<FaultMessage>() {
             @Override
             public void call(FaultMessage falutMesages) {
 
                 if ("0".equals(falutMesages.getCode())) {
-                    getView().getFalutMessgeSucess(falutMesages);
+                    if (falutMesages.getRows().size() == 0) {
+                        getView().showEmptyView();
+                    } else {
+
+                        getView().getFalutMessgeSucess(falutMesages);
+                    }
                 } else {
 
+                    getView().showContentView();
                     getView().getFalutMessageFailed(falutMesages.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getFalutMessageFailed(throwable.getMessage());
+                try {
+                    getView().showErrorView();
+                    getView().getFalutMessageFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

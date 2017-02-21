@@ -19,6 +19,7 @@ public class WarningListContract {
         void onFailed(String s);
         void onSucessState(String s);
         void onSucessStates(String s);
+        void onOutSubmit(String s);
         void onOutSuccess(List<OutBound.DataBean> dataBeanList);
         void getNumberSucces(PcbNumber.DataBean dataBean);
         void showLoadingView();
@@ -36,6 +37,10 @@ public class WarningListContract {
         Observable<Success>getPcbSuccess(String s);
         Observable<Success>getAlarmSuccessfulState (String sapWorkOrderId, int alarmId );
         Observable<Success>getScheduleSuccessState (int scheduleId);
+        Observable<Success>Closelighting(String subShelfCode);
+        Observable<Success>getOutSubmit(int scheduleId,int amount);
+        Observable<Success>getAlarmOutSubmit(int scheduleId,int amount);
+
 
 
 

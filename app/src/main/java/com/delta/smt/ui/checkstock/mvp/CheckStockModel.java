@@ -9,6 +9,8 @@ import com.delta.smt.entity.Success;
 
 import rx.Observable;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 /**
  * Created by Lin.Hou on 2016-12-26.
  */
@@ -49,5 +51,15 @@ public class CheckStockModel extends BaseModel<ApiService> implements CheckStock
     @Override
     public Observable<String> getCheckStockSuccess() {
         return getService().getCheckStockSuccess().compose(RxsRxSchedulers.<String>io_main());
+    }
+
+    @Override
+    public Observable<Success> OnEnd() {
+        return getService().onEnd().compose(RxsRxSchedulers.<Success>io_main());
+    }
+
+    @Override
+    public Observable<ExceptionsBean> getInventoryException() {
+        return getService().getInventoryException().compose(RxsRxSchedulers.<ExceptionsBean>io_main());
     }
 }

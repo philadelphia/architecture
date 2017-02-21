@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -65,7 +66,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.rv)
+    @Nullable
+    @BindView(R.id.rv_main)
     RecyclerView rv;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;

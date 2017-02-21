@@ -2,6 +2,7 @@ package com.delta.smt.ui.storage_manger.details.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.smt.Constant;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MaterialCar;
@@ -10,6 +11,7 @@ import com.delta.smt.entity.StorageDetails;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -25,20 +27,39 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
 
     public void getStorageDetails(String content) {
 
-        getModel().getStorageDetails(content).subscribe(new Action1<Result<StorageDetails>>() {
+        getModel().getStorageDetails(content).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<Result<StorageDetails>>() {
             @Override
             public void call(Result<StorageDetails> storageDetailses) {
+
                 if ("0".equals(storageDetailses.getCode())) {
-                    getView().getSucess(storageDetailses.getRows());
+
+                    if (storageDetailses.getRows().size() == 0) {
+                        getView().showEmptyView();
+                    } else {
+                        getView().showContentView();
+                        getView().getSucess(storageDetailses);
+                    }
+
                 } else {
                     getView().getFailed(storageDetailses.getMessage());
+                    getView().showContentView();
 
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getFailed(throwable.getMessage());
+                try {
+                    getView().showErrorView();
+                    getView().getFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -48,17 +69,21 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(MaterialCar materialCar) {
 
-                if("0".equals(materialCar.getCode())){
+                if ("0".equals(materialCar.getCode())) {
                     getView().queryMaterailCar(materialCar.getRows());
-                }else{
-                   getView().queryMaterailCarFailed(materialCar.getMsg());
+                } else {
+                    getView().queryMaterailCarFailed(materialCar.getMsg());
                 }
 
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getFailed(throwable.getMessage());
+                try {
+                    getView().getFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -79,26 +104,47 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Throwable throwable) {
 
-                 getView().getFailed(throwable.getMessage());
+                getView().getFailed(throwable.getMessage());
             }
         });
     }
 
     public void issureToWareh(String content) {
-        getModel().issureToWareh(content).subscribe(new Action1<Result<StorageDetails>>() {
+        getModel().issureToWareh(content).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<Result<StorageDetails>>() {
             @Override
             public void call(Result<StorageDetails> issureToWarehResult) {
 
                 if ("0".equalsIgnoreCase(issureToWarehResult.getCode())) {
-                    getView().issureToWarehSuccess(issureToWarehResult.getRows());
+
+                    if (issureToWarehResult.getRows().size() == 0) {
+                        getView().showEmptyView();
+                    } else {
+                        getView().showContentView();
+                    }
+                    getView().issureToWarehSuccess(issureToWarehResult);
                 } else {
-                    getView().issureToWarehFailed(issureToWarehResult.getMessage());
+
+                    getView().showContentView();
+                    if (Constant.JUMP_MATERIALS_STRING.equals(issureToWarehResult.getMessage())) {
+                        getView().issureToWarehFailedWithjumpMaterials(issureToWarehResult.getMessage());
+                    } else {
+                        getView().issureToWarehFailedWithoutJumpMaterials(issureToWarehResult.getMessage());
+                    }
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getFailed(throwable.getMessage());
+                try {
+                    getView().getFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -109,19 +155,73 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(IssureToWarehFinishResult issureToWarehFinishResult) {
 
-                if ("success".equalsIgnoreCase(issureToWarehFinishResult.getMsg())) {
+                if ("0".equalsIgnoreCase(issureToWarehFinishResult.getCode())) {
                     getView().issureToWarehFinishSuccess(issureToWarehFinishResult.getMsg());
                 } else {
-                    getView().getFailed(issureToWarehFinishResult.getMsg());
+                    if (Constant.SURE_END_ISSUE_STRING.equalsIgnoreCase(issureToWarehFinishResult.getMsg())) {
+                        getView().issureToWarehFinishFaildSure(issureToWarehFinishResult.getMsg());
+                    } else {
+                        getView().issureToWarehFinishFailedWithoutSure(issureToWarehFinishResult.getMsg());
+                    }
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFailed(throwable.getMessage());
+                try {
+                    getView().getFailed(throwable.getMessage());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
+    public void jumpMaterials() {
+        getModel().jumpMaterials().subscribe(new Action1<Result<StorageDetails>>() {
+            @Override
+            public void call(Result<StorageDetails> storageDetailsResult) {
+                if ("0".equalsIgnoreCase(storageDetailsResult.getCode())) {
+                    getView().jumpMaterialsSucess(storageDetailsResult);
+                } else {
+                    getView().jumpMaterialsFailed(storageDetailsResult.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().getFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    public void sureCompleteIssue() {
+        getModel().sureCompleteIssue().subscribe(new Action1<IssureToWarehFinishResult>() {
+            @Override
+            public void call(IssureToWarehFinishResult issureToWarehFinishResult) {
+
+                if ("0".equalsIgnoreCase(issureToWarehFinishResult.getCode())) {
+                    getView().sureCompleteIssueSucess(issureToWarehFinishResult.getMsg());
+                } else {
+                    getView().sureCompleteIssueFailed(issureToWarehFinishResult.getMsg());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().getFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }

@@ -5,8 +5,6 @@ import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 
-import java.util.List;
-
 import rx.Observable;
 
 /**
@@ -14,14 +12,15 @@ import rx.Observable;
  */
 
 public interface AcceptMaterialsContract {
-     interface View extends IView {
-         void getItemDatas(List<ItemAcceptMaterialDetail> itemAcceptMaterialDetails);
-         void getItemDatasFailed(String message);
-         void commitBarcodeSucess();
+    interface View extends IView {
+        void getAcceptMaterialsItemDatas(ItemAcceptMaterialDetail itemAcceptMaterialDetail);
+        void getItemDatasFailed(String message);
+        void commitSerialNumberSucess();
     }
 
     interface Model extends IModel {
-        Observable<Result<ItemAcceptMaterialDetail>> getItemDatas();
-        Observable<Result> commitBarode();
+        Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(String codition);
+        Observable<Result> commitSerialNumber(String condition);
+        Observable<Result> requestCloseLight(String condition);
     }
 }

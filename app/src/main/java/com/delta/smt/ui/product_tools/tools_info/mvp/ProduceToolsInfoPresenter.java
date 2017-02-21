@@ -61,7 +61,6 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             @Override
             public void call(Throwable throwable) {
                 getView().getFail();
-                Log.e("-------===-------->>>","cuocuocuocuco!!!!!!!!!!!!!!!!!!");
             }
         });
 

@@ -1,7 +1,5 @@
 package com.delta.smt.ui.product_tools.mtools_info.mvp;
 
-import android.util.Log;
-
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.JsonProduct_mToolsList;

@@ -8,13 +8,21 @@ package com.delta.smt.entity;
 
 
 public class IssureToWarehFinishResult {
-
-
     /**
-     * msg : success
+     * code : 0
+     * msg : Success
      */
 
+    private String code;
     private String msg;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getMsg() {
         return msg;

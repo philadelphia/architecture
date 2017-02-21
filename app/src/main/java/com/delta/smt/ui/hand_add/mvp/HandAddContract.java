@@ -17,10 +17,19 @@ public interface HandAddContract {
     interface View extends IView {
         void getItemHandAddDatas(List<ItemHandAdd> itemHandAdds);
         void getItemHandAddDatasFailed( String message);
+
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
+
     }
 
     interface Model extends IModel {
-        Observable<Result<ItemHandAdd>> getItemHandAddDatas();
+        Observable<Result<ItemHandAdd>> getItemHandAddDatas(String condition);
 
         Observable<Result> getItemHandAddConfirm(String condition);
     }

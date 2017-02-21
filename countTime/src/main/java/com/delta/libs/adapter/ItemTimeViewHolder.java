@@ -6,14 +6,17 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.delta.libs.CountTimeView;
+import com.zhy.autolayout.utils.AutoUtils;
 
 
 public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
-    private SparseArray<View> mViews;
+    private SparseArray<View> mViews = new SparseArray<>();
+    ;
     public CountTimeView mCountdownViewTest;
 
     private TimeEntity mItemInfo;
     private boolean isCountUp;
+    protected View itemView ;
 
     public boolean isCountUp() {
         return isCountUp;
@@ -25,9 +28,10 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
 
     public ItemTimeViewHolder(View itemView, int countViewId) {
         super(itemView);
-        mViews = new SparseArray<>();
+        AutoUtils.auto(itemView);
+        this.itemView =itemView;
         //AutoUtils.autoSize(itemView);
-        mCountdownViewTest = (CountTimeView) itemView.findViewById(countViewId);
+        mCountdownViewTest = getView(countViewId);
         isCountUp = mCountdownViewTest.isCountUp();
     }
 
@@ -66,7 +70,7 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
 
     public ItemTimeViewHolder setText(int viewId, CharSequence value) {
         TextView view = getView(viewId);
-        view.setText(value);
+        view.setText(value+"");
 
         return this;
     }

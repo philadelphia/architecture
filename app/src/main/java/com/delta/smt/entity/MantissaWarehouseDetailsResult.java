@@ -12,12 +12,22 @@ public class MantissaWarehouseDetailsResult {
     /**
      * code : 0
      * msg : Success
-     * rows : [{"work_order":"20171011","material_num":"4020108400","shelves":"A1D001","re_quantity":"100","se_quantity":"0","status":0},{"work_order":"20171011","material_num":"4020108700","shelves":"A1D001","re_quantity":"10","se_quantity":"0","status":0}]
+     * rows : [{"id":42,"material_no":"0341299332","slot":"N1-06","amount":7,"issue_amount":0,"shelf_no":"M1T1","status":1},{"id":43,"material_no":"210532000105","slot":"N4-12","amount":8,"issue_amount":0,"shelf_no":"M1T2","status":1}]
      */
 
     private String code;
     private String msg;
-    private List<MantissaWarehouseDetails> rows;
+    /**
+     * id : 42
+     * material_no : 0341299332
+     * slot : N1-06
+     * amount : 7
+     * issue_amount : 0
+     * shelf_no : M1T1
+     * status : 1
+     */
+
+    private List<RowsBean> rows;
 
     public String getCode() {
         return code;
@@ -35,94 +45,83 @@ public class MantissaWarehouseDetailsResult {
         this.msg = msg;
     }
 
-    public List<MantissaWarehouseDetails> getRows() {
+    public List<RowsBean> getRows() {
         return rows;
     }
 
-    public void setRows(List<MantissaWarehouseDetails> rows) {
+    public void setRows(List<RowsBean> rows) {
         this.rows = rows;
     }
 
-    public static class MantissaWarehouseDetails {
-        /**
-         * work_order : 20171011
-         * material_num : 4020108400
-         * shelves : A1D001
-         * re_quantity : 100
-         * se_quantity : 0
-         * status : 0
-         */
+    public static class RowsBean {
+        private int id;
+        private String material_no;
+        private String slot;
+        private int amount;
+        private int issue_amount;
+        private String shelf_no;
+        private int status;
 
-        private String work_order;
-        private String material_num;
-        private String shelves;
-        private String re_quantity;
-        private String se_quantity;
-        private String status;
-        private String msg;
-
-        public void setMsg(String msg) {
-            this.msg = msg;
+        public RowsBean(int id, String material_no, String slot, int amount) {
+            this.id = id;
+            this.material_no = material_no;
+            this.slot = slot;
+            this.amount = amount;
         }
 
-        public String getMsg() {
-            return msg;
+        public int getId() {
+            return id;
         }
 
-        public MantissaWarehouseDetails(String work_order, String material_num, String shelves, String re_quantity, String se_quantity, String status) {
-            this.work_order = work_order;
-            this.material_num = material_num;
-            this.shelves = shelves;
-            this.re_quantity = re_quantity;
-            this.se_quantity = se_quantity;
-            this.status = status;
+        public void setId(int id) {
+            this.id = id;
         }
 
-        public String getWork_order() {
-            return work_order;
+        public String getMaterial_no() {
+            return material_no;
         }
 
-        public void setWork_order(String work_order) {
-            this.work_order = work_order;
+        public void setMaterial_no(String material_no) {
+            this.material_no = material_no;
         }
 
-        public String getMaterial_num() {
-            return material_num;
+        public String getSlot() {
+            return slot;
         }
 
-        public void setMaterial_num(String material_num) {
-            this.material_num = material_num;
+        public void setSlot(String slot) {
+            this.slot = slot;
         }
 
-        public String getShelves() {
-            return shelves;
+        public int getAmount() {
+            return amount;
         }
 
-        public void setShelves(String shelves) {
-            this.shelves = shelves;
+        public void setAmount(int amount) {
+            this.amount = amount;
         }
 
-        public String getRe_quantity() {
-            return re_quantity;
+        public int getIssue_amount() {
+            return issue_amount;
         }
 
-        public void setRe_quantity(String re_quantity) {
-            this.re_quantity = re_quantity;
+        public void setIssue_amount(int issue_amount) {
+            this.issue_amount = issue_amount;
         }
 
-        public String getSe_quantity() {
-            return se_quantity;
+        public String getShelf_no() {
+            return shelf_no;
         }
 
-        public void setSe_quantity(String se_quantity) {
-            this.se_quantity = se_quantity;
+        public void setShelf_no(String shelf_no) {
+            this.shelf_no = shelf_no;
         }
 
-        public String getStatus() {
+        public int getStatus() {
             return status;
         }
 
-        public void setStatus(String status) {
+        public void setStatus(int status) {
             this.status = status;
         }
     }

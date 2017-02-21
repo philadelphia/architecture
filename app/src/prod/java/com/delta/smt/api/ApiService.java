@@ -21,19 +21,17 @@ import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.MantissaCarResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
-import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.MaterialCar;
-import com.delta.smt.entity.ModNumByMaterialResult;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.OnGoing;
 import com.delta.smt.entity.OutBound;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
@@ -48,17 +46,20 @@ import com.delta.smt.entity.StoreEntity;
 import com.delta.smt.entity.Success;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
-import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
+import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
@@ -128,6 +129,22 @@ public interface ApiService {
     @GET("lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
+    //请求接料预警详情页面item数据
+    @GET("lineAlarmFault/lineMaterialConnectDetail")
+    Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(@Query("condition") String condition);
+
+    //提交新旧流水号
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("lineAlarmFault/connectMaterial")
+    Observable<Result> commitSerialNumber(@Field("condition") String condition);
+
+    //请求关灯
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("lineAlarmFault/offMaterialLight")
+    Observable<Result> requestCloseLight(@Field("condition") String condition);
+
     //请求故障中item数据
     @GET("lineAlarmFault/alarmFaultInfos")
     Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
@@ -149,11 +166,11 @@ public interface ApiService {
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
 
     //请求手补件item数据
-    @GET("http://172.22.35.236:8081/lineAlarmFault/getPatchMaterial?condition={}")
-    Observable<Result<ItemHandAdd>> getItemHandAddDatas();
+    @GET("lineAlarmFault/getPatchMaterial")
+    Observable<Result<ItemHandAdd>> getItemHandAddDatas(@Query("condition") String condition);
 
     //确认手补件item数据
-    @GET("http://172.22.35.236:8081/lineAlarmFault/confirmPatchMaterial")
+    @GET("lineAlarmFault/confirmPatchMaterial")
     Observable<Result> getItemHandAddConfirm(@Query("condition") String condition);
 
 
@@ -195,12 +212,29 @@ public interface ApiService {
     //    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
     @GET("webapi/pcb/management/outbound")
     Observable<Success> getPcbSuccess(@Query("param") String s);//出料操作
+    @GET("pcb/management/outbound/light/close")
+    Observable<Success> closeLight(@Query("subShelfCode") String s);//关灯操作
+
+    @GET("pcb/management/outbound/alarm/submit")
+    Observable<Success> getAlarmOutSubmit(@Query("scheduleId") int scheduleId,@Query("amount")int amount);//提交
+
+    @GET("pcb/management/outbound/schedule/submit")
+    Observable<Success> getOutSubmit(@Query("scheduleId") int scheduleId,@Query("amount")int amount);//提交
 
     @GET("pcb/management/outbound/alarm/submit")
     Observable<Success> getAlarmSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId, @Query("alarmId") int alarmId);//预警出库完成
 
     @GET("pcb/management/outbound/schedule/submit")
     Observable<Success> getScheduleSuccessState(@Query("scheduleId") int scheduleId);//预警出库完成
+
+    @GET("pcb/inventory/start")
+    Observable<Success> onStartWork();//开始盘点
+
+    @GET("pcb/inventory/ongoing")
+    Observable<OnGoing> onGoing();//盘点界面判断
+
+    @GET("pcb/inventory/end")
+    Observable<Success> onEnd();//结束盘点
 
     @GET("pcb/inventory/detail")
     Observable<CheckStock> getCheckStock(@Query("subShelfCode") String s);//获取盘点列表
@@ -211,8 +245,11 @@ public interface ApiService {
     @GET("pcb/inventory/alteration")
     Observable<Success> getError(@Query("boxSerial") String boxSerial, @Query("subShelfCode") String subShelfCode);//发送盘点异常
 
-    @GET("pcb/inventory/exception")
+    @GET("pcb/inventory/sub/exception")
     Observable<ExceptionsBean> getException(@Query("subShelfCode") String boxSerial);//盘点结果
+
+    @GET("pcb/inventory/exception")
+    Observable<ExceptionsBean> getInventoryException();//获取总结
 
     @GET("pcb/inventory/submit")
     Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
@@ -261,6 +298,12 @@ public interface ApiService {
     @GET("SMM/WareHIssue/startWareHIssure")
     Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
 
+    @GET("SMM/WareHIssue/jumpMaterials")
+    Observable<Result<StorageDetails>> jumpMaterials();
+
+    @GET("SMM/WareHIssue/sureCompleteIssue")
+    Observable<IssureToWarehFinishResult> sureCompleteIssue();
+
     //尾数仓备料
     @GET("SMM/IssueMana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
@@ -275,11 +318,11 @@ public interface ApiService {
 
     //查询尾数仓备料车
     @GET("SMM/WareHIssue/qPrepCarIDByWorkOrder")
-    Observable<MantissaCarResult> getFindCar(@Query("condition") String bind);
+    Observable<MaterialCar> getFindCar(@Query("condition") String bind);
 
     //绑定尾数仓备料车
     @GET("SMM/WareHIssue/bindPrepCarIDByWorkOrder")
-    Observable<MantissaCarResult> getbingingCar(@Query("condition") String bind);
+    Observable<MaterialCar> getbingingCar(@Query("condition") String bind);
 
     //尾数仓发料
     @GET("SMM/WareHIssue/mantissIssue")
@@ -287,7 +330,7 @@ public interface ApiService {
 
     //尾数仓发料完成
     @GET("SMM/WareHIssue/completeMantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWareOver();
+    Observable<IssureToWarehFinishResult> getMantissaWareOver();
 
     //仓库房备料和尾数仓选择
     @GET("SMM/IssueMana/queryWarehousePart")
