@@ -8,10 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.delta.commonlibs.base.mvp.IView;
-import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
@@ -195,7 +192,6 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
     @Override
     public void getFail() {
-        SnackbarUtil.showMassage(ProduceToolsBorrowActivity.this.getWindow().getCurrentFocus(), "请求的数据不存在");
         this.data = new ArrayList<>();
     }
 
