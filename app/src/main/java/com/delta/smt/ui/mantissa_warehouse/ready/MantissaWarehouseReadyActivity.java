@@ -55,8 +55,6 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     RecyclerView mRecyclerView;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-
-
     private List<MantissaWarehouseReady.RowsBean> dataList = new ArrayList();
 
     private ItemCountViewAdapter<MantissaWarehouseReady.RowsBean> adapter;
