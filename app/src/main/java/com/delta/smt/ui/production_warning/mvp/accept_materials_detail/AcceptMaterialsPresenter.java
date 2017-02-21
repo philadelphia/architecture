@@ -101,7 +101,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
             @Override
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
-                   getView().getItemDatasFailed("已关灯");
+                    getView().getItemDatasFailed("已关灯");
                 }else{
                     getView().getItemDatasFailed(result.getMessage());
                 }

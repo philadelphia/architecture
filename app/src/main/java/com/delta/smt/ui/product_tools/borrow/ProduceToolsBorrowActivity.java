@@ -83,11 +83,11 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
                     holder.setBackgroundColor(R.id.WorkNumber, 0xFFf2f2f2);
 
-                    holder.setBackgroundColor(R.id.WorkType, 0xFFf2f2f2);
+                    holder.setBackgroundColor(R.id.MainBroad, 0xFFf2f2f2);
 
-                    holder.setBackgroundColor(R.id.MachineType, 0xFFf2f2f2);
+                    holder.setBackgroundColor(R.id.LittleBroad, 0xFFf2f2f2);
 
-                    holder.setBackgroundColor(R.id.PCB_Code, 0xFFf2f2f2);
+                    holder.setBackgroundColor(R.id.PWB_Code, 0xFFf2f2f2);
 
                     holder.setBackgroundColor(R.id.FormMaterialNumber, 0xFFf2f2f2);
 
@@ -105,11 +105,11 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
                     holder.setText(R.id.WorkNumber, item.getWorkNumber());
 
-                    holder.setText(R.id.WorkType, item.getWorkItemType());
+                    holder.setText(R.id.MainBroad, item.getMainBroad());
 
-                    holder.setText(R.id.MachineType, item.getMachineType());
+                    holder.setText(R.id.LittleBroad, item.getLittleBroad());
 
-                    holder.setText(R.id.PCB_Code, item.getPCB_Code());
+                    holder.setText(R.id.PWB_Code, item.getPCB_Code());
 
                     holder.setText(R.id.FormMaterialNumber, item.getFormMaterialNumber());
 
@@ -127,11 +127,11 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
                         holder.setBackgroundColor(R.id.WorkNumber, 0xFF3B9D43);
 
-                        holder.setBackgroundColor(R.id.WorkType, 0xFF3B9D43);
+                        holder.setBackgroundColor(R.id.MainBroad, 0xFF3B9D43);
 
-                        holder.setBackgroundColor(R.id.MachineType, 0xFF3B9D43);
+                        holder.setBackgroundColor(R.id.LittleBroad, 0xFF3B9D43);
 
-                        holder.setBackgroundColor(R.id.PCB_Code, 0xFF3B9D43);
+                        holder.setBackgroundColor(R.id.PWB_Code, 0xFF3B9D43);
 
                         holder.setBackgroundColor(R.id.FormMaterialNumber, 0xFF3B9D43);
 
@@ -197,7 +197,16 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         if (item.getProductStatus().equals(getString(R.string.AreReady))) {
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
+
             bundle.putString(TAG, item.getWorkNumber());
+            bundle.putString("MainBroad", item.getMainBroad());
+            bundle.putString("LittleBroad", item.getLittleBroad());
+            bundle.putString("Cover", item.getCover());
+            bundle.putString("Line", item.getLine());
+            bundle.putString("PCB", item.getPCB_Code());
+            bundle.putString("PWB", item.getPWB_Number());
+
+
             intent.putExtras(bundle);
             intent.setClass(this, ProduceToolsInfoActivity.class);
             startActivity(intent);

@@ -5,6 +5,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -98,7 +99,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this, "治具二维码格式不对，请重新扫描！", Toast.LENGTH_SHORT).show();
+                SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"治具二维码格式不对，请重新扫描！");
             }
         } else {
 
@@ -112,7 +113,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
                 shift = barcode;
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this, "架位二维码格式不对，请重新扫描！", Toast.LENGTH_SHORT).show();
+                SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"架位二维码格式不对，请重新扫描！");
             }
 
         }
@@ -124,7 +125,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             mProductToolsBarCodeEditText.setText(tools);
             mShiftBarcodeCodeEditText.setText(param.getMessage());
         }else {
-            Toast.makeText(this, "该治具无法完成入架位操作!", Toast.LENGTH_SHORT).show();
+            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"该治具无法完成入架位操作!");
         }
         return flag1 = param.getCode();
     }
@@ -133,7 +134,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     public int getSubmitResoult(int param) {
         if (param == 0) {
             mShiftBarcodeCodeEditText.setText(shift);
-            Toast.makeText(this, "治具入架位完成！", Toast.LENGTH_SHORT).show();
+            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"治具入架位完成！");
             finish();
         }
         return 0;
@@ -141,6 +142,6 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
     @Override
     public void Fail() {
-        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"请求的数据不存在!");
     }
 }

@@ -25,7 +25,7 @@ public class ItemHandAdd extends TimeEntity {
     @SerializedName("slot")
     private String material_station;
 
-    
+
     private int expectedAmount;
 
     private int realAmount;

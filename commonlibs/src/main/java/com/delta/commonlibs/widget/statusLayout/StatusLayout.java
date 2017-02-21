@@ -10,11 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.RelativeLayout;
 
 import com.delta.commonlibs.R;
+import com.zhy.autolayout.AutoRelativeLayout;
 
-public class StatusLayout extends RelativeLayout {
+public class StatusLayout extends AutoRelativeLayout {
 
 
     private final int StateContent = -1, StateLoading = 0, StateError = 1, StateEmpty = 2, StateNoNet = 3;

@@ -27,21 +27,24 @@ public interface StorageDetailsContract {
 
         Observable<BindPrepCarIDByWorkOrderResult> bindMaterialCar(String content);
 
-        Observable<Result<StorageDetails>>issureToWareh(String content);
+        Observable<Result<StorageDetails>> issureToWareh(String content);
 
         Observable<IssureToWarehFinishResult> issureToWarehFinish();
 
+        Observable<Result<StorageDetails>> jumpMaterials();
+
+        Observable<IssureToWarehFinishResult> sureCompleteIssue();
     }
 
     interface View extends IView {
 
-        void getSucess(List<StorageDetails> storageDetailses);
+        void getSucess(Result<StorageDetails> storageDetailses);
 
         void getFailed(String message);
 
         void bindMaterialCarSucess(List<BindPrepCarIDByWorkOrderResult.RowsBean> data);
 
-        void issureToWarehSuccess(List<StorageDetails> rows);
+        void issureToWarehSuccess(Result<StorageDetails> rows);
 
         void issureToWarehFinishSuccess(String msg);
 
@@ -52,7 +55,30 @@ public interface StorageDetailsContract {
 
         void bindMaterialCarFailed(String msg);
 
-        void issureToWarehFailed(String message);
+
+        void jumpMaterialsSucess(Result<StorageDetails> result);
+
+        void jumpMaterialsFailed(String message);
+
+        void issureToWarehFailedWithoutJumpMaterials(String message);
+
+        void issureToWarehFailedWithjumpMaterials(String message);
+
+        void issureToWarehFinishFaildSure(String msg);
+
+        void issureToWarehFinishFailedWithoutSure(String msg);
+
+        void sureCompleteIssueSucess(String msg);
+
+        void sureCompleteIssueFailed(String msg);
+
+        void showLoadingView();
+        
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
     }
 
 }

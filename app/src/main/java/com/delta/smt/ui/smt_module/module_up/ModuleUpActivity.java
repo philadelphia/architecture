@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
-import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -22,7 +21,6 @@ import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
 import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.smt_module.module_up.di.DaggerModuleUpComponent;
@@ -31,10 +29,7 @@ import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpContract;
 import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpPresenter;
 import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,7 +41,7 @@ import butterknife.BindView;
  */
 
 public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
-        ModuleUpContract.View, WarningManger.OnWarning , com.delta.libs.adapter.ItemOnclick<ModuleUpWarningItem.RowsBean> {
+        ModuleUpContract.View, ItemOnclick, WarningManger.OnWarning {
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -59,7 +54,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     private List<ModuleUpWarningItem.RowsBean> dataList = new ArrayList<>();
-    private ItemCountViewAdapter<ModuleUpWarningItem.RowsBean> myAdapter;
+    private ItemCountdownViewAdapter<ModuleUpWarningItem.RowsBean> myAdapter;
 
     @Inject
     WarningManger warningManger;
@@ -100,19 +95,14 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("上模组");
 
-        myAdapter = new ItemCountViewAdapter<ModuleUpWarningItem.RowsBean>(this, dataList) {
-            @Override
-            protected int getCountViewId() {
-                return R.id.cv_countView;
-            }
-
+        myAdapter = new ItemCountdownViewAdapter<ModuleUpWarningItem.RowsBean>(this, dataList) {
             @Override
             protected int getLayoutId() {
                 return R.layout.item_module_up_warning_list;
             }
 
             @Override
-            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, ModuleUpWarningItem.RowsBean moduleUpWarningItem, int position) {
+            protected void convert(ItemTimeViewHolder holder, ModuleUpWarningItem.RowsBean moduleUpWarningItem, int position) {
 
                 holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine_name());
                 holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
@@ -124,11 +114,10 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 }else if("205".equals(moduleUpWarningItem.getStatus())){
                     holder.setText(R.id.tv_status,"状态: "+"上模组完成");
                 }
-                holder.setText(R.id.tv_forecast_time,"预计上线时间: "+moduleUpWarningItem.getOnline_plan_start_time());
                 //holder.setText(R.id.tv_status,"状态: "+moduleUpWarningItem.getStatus());
             }
         };
-        myAdapter.setOnItemTimeOnclick(this);
+        myAdapter.setOnItemTimeOnclck(this);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(myAdapter);
     }
@@ -143,16 +132,6 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         if (data.getMsg().toLowerCase().equals("success")) {
             dataList.clear();
             List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
-            for (int i = 0; i < rows.size(); i++) {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    Date parse = format.parse(rows.get(i).getOnline_plan_start_time());
-                    rows.get(i).setEnd_time(parse.getTime());
-                    rows.get(i).setEntityId(i);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
             dataList.addAll(rows);
             myAdapter.notifyDataSetChanged();
         }
@@ -265,7 +244,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     }
 
     @Override
-    public void onItemClick(View item, ModuleUpWarningItem.RowsBean rowsBean, int position) {
+    public void onItemClick(View item, int position) {
         Bundle bundle = new Bundle();
         bundle.putString(Constant.WORK_ITEM_ID, dataList.get(position).getWork_order());
         Intent intent = new Intent(this, ModuleUpBindingActivity.class);
@@ -336,7 +315,6 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         }
         return res;
     }
-
 
 
 }

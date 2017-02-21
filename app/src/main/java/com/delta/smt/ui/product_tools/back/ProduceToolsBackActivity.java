@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -162,10 +163,9 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
             editText.setText(barCode);
             data.addAll(p);
             adapter.notifyDataSetChanged();
-            Toast.makeText(this, list.getMessage(), Toast.LENGTH_SHORT).show();
+            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),list.getMessage());
         } else {
-
-            Toast.makeText(this, list.getMessage(), Toast.LENGTH_SHORT).show();
+            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),list.getMessage());
 
         }
 
@@ -174,7 +174,7 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
     @Override
     public void getFail() {
 
-        Toast.makeText(this, "请求的数据不存在!", Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"请求的数据不存在");
 
     }
 

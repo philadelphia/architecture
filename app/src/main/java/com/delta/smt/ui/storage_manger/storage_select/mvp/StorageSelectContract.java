@@ -15,6 +15,13 @@ public interface StorageSelectContract {
     interface View extends IView{
         void onSucess(List<StoreEntity> wareHouses);
         void onFailed(String message);
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
     }
     interface Model extends IModel{
         Observable<Result<StoreEntity>> getStorageSelect();

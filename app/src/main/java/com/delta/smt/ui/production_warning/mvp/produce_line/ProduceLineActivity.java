@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -33,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -59,6 +59,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     private List<ItemProduceLine> datas = new ArrayList<>();
 
     private int type;
+    private String lineNames;
 
     @Override
     protected void initData() {
@@ -66,6 +67,17 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         getPresenter().getProductionLineDatas();
         Intent intent = getIntent();
         type = intent.getExtras().getInt(Constant.SELECTTYPE, -1);
+        switch (type) {
+            case 0:
+                lineNames = SpUtil.getStringSF(this, Constant.PRODUCEWARNINGLINE_NAME);
+                 break;
+            case 1:
+                lineNames = SpUtil.getStringSF(this, Constant.FALUTPROCESSINGLINE_NAME);
+                 break;
+            case 2:
+                lineNames = SpUtil.getStringSF(this, Constant.HANDADDLINE_NAME);
+                 break;
+                }
     }
 
     @Override
@@ -116,6 +128,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_confirm:
+
                 Log.e(TAG, "onClick: " + type);
                 StringBuffer mStringBuffer = new StringBuffer();
                 for (int mI = 0; mI < datas.size(); mI++) {
@@ -134,20 +147,19 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 //                Constant.initLine();
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.PRODUCTIONLINE, mStringBuffer.toString());
-                if (type == 0) {
-                    IntentUtils.showIntent(this, ProduceWarningActivity.class, bundle);
-//                    IntentUtils.showIntent(this, AcceptMaterialsActivity.class);
-
-                }
-
-                if (type == 1) {
-                    IntentUtils.showIntent(this, FalutProcessingActivity.class, bundle);
-
-                }
-
-                if (type == 2) {
-                    IntentUtils.showIntent(this, HandAddActivity.class, bundle);
-
+                switch (type) {
+                    case 0:
+                        SpUtil.SetStringSF(this, Constant.PRODUCEWARNINGLINE_NAME, mStringBuffer.toString());
+                        IntentUtils.showIntent(this, ProduceWarningActivity.class, bundle);
+                        break;
+                    case 1:
+                        SpUtil.SetStringSF(this, Constant.FALUTPROCESSINGLINE_NAME, mStringBuffer.toString());
+                        IntentUtils.showIntent(this, FalutProcessingActivity.class, bundle);
+                        break;
+                    case 2:
+                        SpUtil.SetStringSF(this, Constant.HANDADDLINE_NAME, mStringBuffer.toString());
+                        IntentUtils.showIntent(this, HandAddActivity.class, bundle);
+                        break;
                 }
                 break;
 
@@ -186,20 +198,35 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
     @Override
     public void getDataLineDatas(List<ItemProduceLine> itemProduceLines) {
+        if (lineNames != null) {
+            String[] split = lineNames.split(",");
+
+            for (ItemProduceLine itemProduceLine : itemProduceLines) {
+
+                if (useLoop(split, itemProduceLine.getLinename())) {
+                    itemProduceLine.setChecked(true);
+                }
+            }
+        }
         datas.clear();
         datas.addAll(itemProduceLines);
         //对adapter刷新改变
         mAdapter.notifyDataSetChanged();
+
     }
 
+    public boolean useLoop(String[] arr, String targetValue) {
+        for (String s : arr) {
+            if (s.equals(targetValue))
+                return true;
+        }
+        return false;
+    }
 
     @Override
     public void getFailed(String message) {
         Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_INDEFINITE).show();
     }
-
-
-
 
     @Override
     public void onItemClick(View view, ItemProduceLine item, int position) {

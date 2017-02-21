@@ -19,9 +19,9 @@ public class HandAddModel extends BaseModel<ApiService> implements HandAddContra
     }
 
     @Override
-    public Observable<Result<ItemHandAdd>> getItemHandAddDatas() {
+    public Observable<Result<ItemHandAdd>> getItemHandAddDatas(String condition) {
 
-        return getService().getItemHandAddDatas().compose(RxsRxSchedulers.<Result<ItemHandAdd>>io_main());
+        return getService().getItemHandAddDatas(condition).compose(RxsRxSchedulers.<Result<ItemHandAdd>>io_main());
     }
 
     @Override

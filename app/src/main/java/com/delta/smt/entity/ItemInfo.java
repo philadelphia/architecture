@@ -9,11 +9,37 @@ public class ItemInfo extends CountDownEntity {
     private int alarminfoId;
     private String text;
     private String workNumber;
+    private String mainBoard;
+    private String subBoard;
+    private String side;
     private String machine;
     private String materialNumber;
     private String amount;
     private boolean isAlarminfo;
 
+    public String getMainBoard() {
+        return mainBoard;
+    }
+
+    public void setMainBoard(String mainBoard) {
+        this.mainBoard = mainBoard;
+    }
+
+    public String getSubBoard() {
+        return subBoard;
+    }
+
+    public void setSubBoard(String subBoard) {
+        this.subBoard = subBoard;
+    }
+
+    public String getSide() {
+        return side;
+    }
+
+    public void setSide(String side) {
+        this.side = side;
+    }
 
     @Override
     public Long getCountDownLong() {
