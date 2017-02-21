@@ -26,6 +26,7 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.production_warning.di.accept_materials_detail.AcceptMaterialsModule;
 import com.delta.smt.ui.production_warning.di.accept_materials_detail.DaggerAcceptMaterialsCompnent;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -190,8 +191,16 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                             ){
                         tag++;
                         oldSerialNumber=streamNumber;
+
+                        //扫码正确时调用的声音和震动
+                        VibratorAndVoiceUtils.correctVibrator(this);
+                        VibratorAndVoiceUtils. correctVoice (this);
                         ToastUtils.showMessage(getContext(), "旧料盘匹配正确，请扫新料盘！");
                     }else{
+
+                        //扫码错误时调用的声音和震动
+                        VibratorAndVoiceUtils. wrongVibrator (this);
+                        VibratorAndVoiceUtils. wrongVibrator (this);
                         ToastUtils.showMessage(getContext(), "旧料盘匹配错误！");
                     }
                 }else{
@@ -199,9 +208,18 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                             &&!dataList1.get(0).getSerialNumber().equals(streamNumber)){
                         tag=0;
                         newSerialNumber=streamNumber;
+
+                        //扫码正确时调用的声音和震动
+                        VibratorAndVoiceUtils.correctVibrator(this);
+                        VibratorAndVoiceUtils. correctVoice (this);
+
                         getPresenter().commitSerialNumber(oldSerialNumber,newSerialNumber);
-//                        ToastUtils.showMessage(getContext(), "新料盘匹配正确，接料完成！");
+
                     }else {
+
+                        //扫码错误时调用的声音和震动
+                        VibratorAndVoiceUtils. wrongVibrator (this);
+                        VibratorAndVoiceUtils. wrongVibrator (this);
                         ToastUtils.showMessage(getContext(), "新料盘匹配错误！");
                     }
                 }
@@ -210,6 +228,11 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             }
 
         } catch (EntityNotFountException e) {
+
+            //扫码错误时调用的声音和震动
+            VibratorAndVoiceUtils. wrongVibrator (this);
+            VibratorAndVoiceUtils. wrongVibrator (this);
+
             ToastUtils.showMessage(getContext(), "请扫描正确的料盘！");
             materialNumber = null;
             streamNumber=null;
