@@ -64,7 +64,6 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             @Override
             public void call(Throwable throwable) {
                 getView().getFail();
-                getView().showErrorView();
             }
         });
 
@@ -94,7 +93,6 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
                 getView().getFail();
             }
         });
@@ -115,7 +113,6 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             public void call(Throwable throwable) {
 
                 getView().getFail();
-                getView().showErrorView();
 
             }
         });
