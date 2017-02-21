@@ -6,16 +6,16 @@
 
     <include layout="@layout/appbar" />
 
-
-    <RelativeLayout
+    <com.delta.commonlibs.widget.statusLayout.StatusLayout
+        android:id="@+id/statusLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-        <com.delta.commonlibs.widget.statusLayout.StatusLayout
-            android:id="@+id/statusLayout"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/ryv_production_line"
@@ -25,50 +25,49 @@
                 android:layout_marginBottom="32px"
                 android:layout_marginTop="120px" />
 
-        </com.delta.commonlibs.widget.statusLayout.StatusLayout>
+            <LinearLayout
+                android:id="@+id/ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="130px"
+                android:layout_marginRight="70px"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/ll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="130px"
-            android:layout_marginRight="70px"
-            android:orientation="horizontal">
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_confirm"
+                    style="@style/button_style"
+                    android:layout_width="250px"
+                    android:layout_height="120px"
+                    android:text="确定" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_confirm"
-                style="@style/button_style"
-                android:layout_width="250px"
-                android:layout_height="120px"
-                android:text="确定" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_un_select"
+                    style="@style/button_style"
+                    android:layout_width="250px"
+                    android:layout_height="120px"
+                    android:text="反选" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_un_select"
-                style="@style/button_style"
-                android:layout_width="250px"
-                android:layout_height="120px"
-                android:text="反选" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_all_select"
+                    style="@style/button_style"
+                    android:layout_width="250px"
+                    android:layout_height="120px"
+                    android:text="全选" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_all_select"
-                style="@style/button_style"
-                android:layout_width="250px"
-                android:layout_height="120px"
-                android:text="全选" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_all_cancel"
+                    style="@style/button_style"
+                    android:layout_width="250px"
+                    android:layout_height="120px"
+                    android:text="取消" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_all_cancel"
-                style="@style/button_style"
-                android:layout_width="250px"
-                android:layout_height="120px"
-                android:text="取消" />
+            </LinearLayout>
 
-        </LinearLayout>
-    </RelativeLayout>
+        </RelativeLayout>
 
-
+    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 
 </LinearLayout>

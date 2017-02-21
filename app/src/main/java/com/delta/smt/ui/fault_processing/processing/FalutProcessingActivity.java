@@ -255,7 +255,6 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
                 textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                 textView.getPaint().setAntiAlias(true);//抗锯齿
                 textView.setText(Html.fromHtml(item.getName()));
-                //holder.setText(R.id.tv_content, item.getName());
             }
 
             @Override

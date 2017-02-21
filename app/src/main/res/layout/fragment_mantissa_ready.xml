@@ -58,7 +58,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
         android:orientation="vertical">
 
         <TextView

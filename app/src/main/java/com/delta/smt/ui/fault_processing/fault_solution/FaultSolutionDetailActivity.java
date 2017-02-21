@@ -125,7 +125,6 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
         return R.layout.activity_fault_solution;
     }
 
-
     @Override
     public void getDetailSolutionMessage(List<FaultSolutionMessage.RowsBean> rowsBean) {
         size = rowsBean.size();
