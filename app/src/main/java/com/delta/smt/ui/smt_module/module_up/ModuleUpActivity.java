@@ -268,6 +268,11 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     public void onItemClick(View item, ModuleUpWarningItem.RowsBean rowsBean, int position) {
         Bundle bundle = new Bundle();
         bundle.putString(Constant.WORK_ITEM_ID, dataList.get(position).getWork_order());
+        bundle.putString(Constant.SIDE,dataList.get(position).getSide());
+        bundle.putString(Constant.PRODUCT_NAME_MAIN,dataList.get(position).getProduct_name_main());
+        bundle.putString(Constant.PRODUCT_NAME,dataList.get(position).getProduct_name());
+        bundle.putString(Constant.LINE_NAME,dataList.get(position).getLine_name());
+
         Intent intent = new Intent(this, ModuleUpBindingActivity.class);
         intent.putExtras(bundle);
         //this.startActivity(intent);

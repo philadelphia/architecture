@@ -11,6 +11,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,6 +64,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  */
 
 public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener,CompoundButton.OnCheckedChangeListener{
+
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -126,6 +128,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
+        map.put("side",side);
         Gson gson = new Gson();
         String argument = gson.toJson(map);
         getPresenter().getAllModuleUpBindingItems(argument);
@@ -207,28 +210,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
             dataSource.addAll(rowsBeen);
             adapter.notifyDataSetChanged();
-
-            /*if(isAllFeederBinded()){
-                new AlertDialog.Builder(this)
-                        .setTitle("提示")
-                        .setMessage("工单"+workItemID+"上模组完成！")
-                        .setCancelable(false)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                ModuleUpBindingActivity.this.finish();
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int which) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create()
-                        .show();
-            }*/
         }
 
     }
@@ -367,6 +348,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                             map.put("material_no", materialBlockNumber);
                             map.put("feeder_id", barcode);
                             map.put("serial_no", serialNo);
+                            map.put("side",side);
                             Gson gson = new Gson();
                             String argument = gson.toJson(map);
                             getPresenter().getMaterialAndFeederBindingResult(argument);
@@ -388,7 +370,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
                         } catch (EntityNotFountException ee) {
                             ee.printStackTrace();
-                            Snackbar.make(container,"请先扫描料盘码！",Snackbar.LENGTH_INDEFINITE).show();
+                            Snackbar.make(container,"请扫描feeder ID！",Snackbar.LENGTH_INDEFINITE).show();
+                        } catch (ArrayIndexOutOfBoundsException ee){
+                            ee.printStackTrace();
+                            Snackbar.make(container,"请扫描feeder ID！",Snackbar.LENGTH_INDEFINITE).show();
                         }
                         e.printStackTrace();
                     } catch (ArrayIndexOutOfBoundsException e){

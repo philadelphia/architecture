@@ -102,7 +102,7 @@
                     android:layout_margin="@dimen/px_5"
                     android:text="请扫描"
                     android:textSize="@dimen/px_40"
-                    android:textColor="#aaaaaa"
+                    android:textColor="#0000FF"
                     android:textStyle="italic"
                     android:background="@drawable/style_tv_scan"/>
             </LinearLayout>
@@ -127,7 +127,7 @@
                     android:layout_margin="@dimen/px_5"
                     android:text="请扫描"
                     android:textSize="@dimen/px_40"
-                    android:textColor="#aaaaaa"
+                    android:textColor="#0000FF"
                     android:textStyle="italic"
                     android:background="@drawable/style_tv_scan"/>
             </LinearLayout>
@@ -182,4 +182,9 @@
 
 
     </LinearLayout>
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
