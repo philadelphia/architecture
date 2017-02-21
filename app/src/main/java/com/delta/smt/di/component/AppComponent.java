@@ -1,14 +1,15 @@
 package com.delta.smt.di.component;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.delta.commonlibs.di.module.AppModule;
 import com.delta.commonlibs.di.module.ClientModule;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.di.module.MangerModule;
 import com.delta.smt.di.module.ServiceModule;
 import com.delta.smt.manager.WarningManger;
-
 
 import javax.inject.Singleton;
 
@@ -23,7 +24,12 @@ public interface AppComponent {
 
     Application Application();
 
+    Context context();
+
     ApiService apiService();
 
     WarningManger warningManger();
+
+    //Rxjava错误处理管理类
+    RxErrorHandler rxErrorHandler();
 }

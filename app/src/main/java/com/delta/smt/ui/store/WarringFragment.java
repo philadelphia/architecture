@@ -74,7 +74,8 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
                     bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
                     bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
                     bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
-                    Toast.makeText(getActivity(), "" + position, Toast.LENGTH_SHORT).show();
+                    bundle.putString("mainBoard", itemInfo.getMainBoard());
+                    bundle.putString("subBoard", itemInfo.getSubBoard());
                     IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
                 }
             }

@@ -27,6 +27,7 @@ public class DialogUtils {
     public static Dialog showCommonDialog(Context context, String message,
                                           DialogInterface.OnClickListener listener) {
         return new AlertDialog.Builder(context)
+                .setTitle("提示")
                 .setMessage(message)
                 .setPositiveButton("确定", listener)
                 .setNegativeButton("取消", null)
@@ -36,6 +37,7 @@ public class DialogUtils {
     public static Dialog showConfirmDialog(Context context, String message,
                                            DialogInterface.OnClickListener listener) {
         return new AlertDialog.Builder(context)
+                .setTitle("提示")
                 .setMessage(message)
                 .setPositiveButton("确定", listener)
                 .show();

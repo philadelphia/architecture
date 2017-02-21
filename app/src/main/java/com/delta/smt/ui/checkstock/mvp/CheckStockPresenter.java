@@ -51,9 +51,15 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
     }
 
     public void fetchCheckStockSuccessNumber(int id,int realCount){
-        getModel().getCheckStockNumber(id,realCount).subscribe(new Action1<Success>() {
+        getModel().getCheckStockNumber(id,realCount).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<Success>() {
             @Override
             public void call(Success success) {
+                getView().showContentView();
                 if ("0".equals(success.getCode())){
                     if (success.getMsg().contains("Success")){
                     getView().onCheckStockNumberSucess(success.getMsg());
@@ -64,6 +70,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
                // 無法連接到服務器，請確認是否處於聯網狀態，服務器是否開啟，如果一直有問題請聯繫管理員
                 getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
@@ -75,6 +82,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(Success success) {
             if ("0".equals(success.getCode())){
+                getView().showContentView();
                 if (success.getMsg().contains("Success")){
                 getView().onErrorsSucess(success.getMsg());
             }else {
@@ -84,14 +92,21 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
                 getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
     public void fetchException(String boxSerial){
-        getModel().getException(boxSerial).subscribe(new Action1<ExceptionsBean>() {
+        getModel().getException(boxSerial).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<ExceptionsBean>() {
             @Override
             public void call(ExceptionsBean success) {
+                getView().showContentView();
                 StringBuffer errorBuffer=new StringBuffer();
                 errorBuffer.append("误差 \n");
                 StringBuffer fewBuffer=new StringBuffer();
@@ -134,14 +149,21 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
                 getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
     }
     public void fetchSubmit(String boxSerial){
-        getModel().getSubmit(boxSerial).subscribe(new Action1<Success>() {
+        getModel().getSubmit(boxSerial).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<Success>() {
             @Override
             public void call(Success success) {
+                getView().showContentView();
                 if ("0".equals(success.getCode())){
                     if (success.getMsg().contains("Success")){
 
@@ -153,6 +175,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
                 getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });
@@ -170,6 +193,76 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+            }
+        });
+    }
+    public void onEndSuccess(){
+        getModel().OnEnd().doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<Success>() {
+            @Override
+            public void call(Success success) {
+            if ("0".equals(success.getCode())){
+                getView().showContentView();
+                getView().onEndSucess();
+            }else {
+                getView().onFailed(success.getMsg());
+            }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().showErrorView();
+                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+            }
+        });
+    }
+    public void fetchInventoryException(){
+        getModel().getInventoryException().doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<ExceptionsBean>() {
+            @Override
+            public void call(ExceptionsBean success) {
+                getView().showContentView();
+                StringBuffer errorBuffer=new StringBuffer();
+                errorBuffer.append("误差 \n");
+                StringBuffer fewBuffer=new StringBuffer();
+                if ("0".equals(success.getCode())){
+                    if (success.getMsg().contains("Success")){
+                        for (int i=0;i<success.getRows().size();i++){
+                            switch (Integer.valueOf(success.getRows().get(i).getStatus())){
+                                case 0:
+                                case 1:
+                                case 2:
+                                    errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                    break;
+                                case 3:
+                                    errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                    break;
+                                case 4:
+                                    errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                    break;
+
+                            }
+                        }
+                        fewBuffer.append(errorBuffer.toString());
+                        getView().onInventoryException(fewBuffer.toString());
+                    }else {
+                        getView().onFailed(success.getMsg());
+                    }}
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().showErrorView();
                 getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }
         });

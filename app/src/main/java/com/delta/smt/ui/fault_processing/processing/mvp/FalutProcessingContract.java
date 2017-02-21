@@ -32,5 +32,13 @@ public interface FalutProcessingContract {
         void getFalutMessageFailed(String message);
 
         void getSolutionMessageSucess(List<SolutionMessage.RowsBean> rowsBeen);
+
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
     }
 }

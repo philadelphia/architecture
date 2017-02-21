@@ -29,7 +29,7 @@ public interface ProduceLineContract {
         void showErrorView();
 
         void showEmptyView();
-}
+    }
 
     interface Model extends IModel {
 

@@ -89,6 +89,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         Bundle extras = getIntent().getExtras();
         String name = extras.getString(Constant.WARE_HOUSE_NAME);
+
         mToolbarTitle.setText("仓库" + name);
         for (int i = 0; i < titles.length; i++) {
             mTlTitle.addTab(mTlTitle.newTab());
@@ -108,8 +109,6 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
     protected void initCData() {
         //此处的Title应该是 从网络获取的数量
         titles = new String[]{"备料"};
-
-
         //接收那种预警，没有的话自己定义常量
         WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
         //是否接收预警 可以控制预警时机

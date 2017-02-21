@@ -12,10 +12,10 @@ import rx.Observable;
  */
 
 public interface AcceptMaterialsContract {
-     interface View extends IView {
-         void getAcceptMaterialsItemDatas(ItemAcceptMaterialDetail itemAcceptMaterialDetail);
-         void getItemDatasFailed(String message);
-         void commitSerialNumberSucess();
+    interface View extends IView {
+        void getAcceptMaterialsItemDatas(ItemAcceptMaterialDetail itemAcceptMaterialDetail);
+        void getItemDatasFailed(String message);
+        void commitSerialNumberSucess();
     }
 
     interface Model extends IModel {

@@ -7,8 +7,10 @@ import android.content.Intent;
 import com.delta.commonlibs.di.module.AppModule;
 import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.http.GlobeHttpHandler;
+import com.delta.commonlibs.rx.rxerrorhandler.ResponseErrorListener;
 import com.delta.smt.BuildConfig;
 import com.delta.smt.di.module.ServiceModule;
+import com.delta.smt.utils.UiUtils;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
 import java.util.LinkedList;
@@ -26,7 +28,7 @@ import timber.log.Timber;
  * +rxjava
  * +butterknife组成
  */
-public abstract class BaseApplication extends Application {
+public abstract class BaseApplication extends Application implements ResponseErrorListener {
     static private BaseApplication mApplication;
     public LinkedList<BaseCommonActivity> mActivityList;
     private static ClientModule mClientModule;
@@ -48,6 +50,7 @@ public abstract class BaseApplication extends Application {
                 .baseurl(getBaseUrl())
                 .globeHttpHandler(getHttpHandler())
                 .interceptors(getInterceptors())
+                .responseErroListener(this)
                 .build();
         this.mAppModule = new AppModule(this);//提供application
         this.serviceModule = new ServiceModule();
@@ -166,5 +169,12 @@ public abstract class BaseApplication extends Application {
         Intent intent = new Intent(BaseCommonActivity.ACTION_RECEIVER_ACTIVITY);
         intent.putExtra("type", "killAll");
         getContext().sendBroadcast(intent);
+    }
+
+    @Override
+    public void hanlderResponseError(Context context, Exception e) {
+        Timber.tag(TAG).w("------------>" + e.getMessage());
+//        UiUtils.SnackbarText("net error");
+        UiUtils.HandError("net error");
     }
 }

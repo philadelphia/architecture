@@ -6,43 +6,43 @@ package com.delta.smt.entity;
 
 public class MantissaWarehouseputBean {
 
-        private String serial_num;
-        private String material_num;
-        private String unit;
-        private String vendor;
-        private String dc;
-        private String lc;
-        private String trasaction_code;
-        private String po;
-        private String quantity;
+    private String serial_no;
+    private String material_no;
+    private String unit;
+    private String vendor;
+    private String dc;
+    private String lc;
+    private String tc;
+    private String po;
+    private String qty;
 
 
     public MantissaWarehouseputBean(String serial_num, String material_num, String unit, String vendor, String dc, String lc, String trasaction_code, String po, String quantity) {
-        this.serial_num = serial_num;
-        this.material_num = material_num;
+        this.serial_no = serial_num;
+        this.material_no = material_num;
         this.unit = unit;
         this.vendor = vendor;
         this.dc = dc;
         this.lc = lc;
-        this.trasaction_code = trasaction_code;
+        this.tc = trasaction_code;
         this.po = po;
-        this.quantity = quantity;
+        this.qty = quantity;
     }
 
-    public String getSerial_num() {
-        return serial_num;
+    public String getSerial_no() {
+        return serial_no;
     }
 
-    public void setSerial_num(String serial_num) {
-        this.serial_num = serial_num;
+    public void setSerial_no(String serial_no) {
+        this.serial_no = serial_no;
     }
 
-    public String getMaterial_num() {
-        return material_num;
+    public String getMaterial_no() {
+        return material_no;
     }
 
-    public void setMaterial_num(String material_num) {
-        this.material_num = material_num;
+    public void setMaterial_no(String material_no) {
+        this.material_no = material_no;
     }
 
     public String getUnit() {
@@ -77,12 +77,12 @@ public class MantissaWarehouseputBean {
         this.lc = lc;
     }
 
-    public String getTrasaction_code() {
-        return trasaction_code;
+    public String getTc() {
+        return tc;
     }
 
-    public void setTrasaction_code(String trasaction_code) {
-        this.trasaction_code = trasaction_code;
+    public void setTc(String tc) {
+        this.tc = tc;
     }
 
     public String getPo() {
@@ -93,11 +93,11 @@ public class MantissaWarehouseputBean {
         this.po = po;
     }
 
-    public String getQuantity() {
-        return quantity;
+    public String getQty() {
+        return qty;
     }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
+    public void setQty(String qty) {
+        this.qty = qty;
     }
 }

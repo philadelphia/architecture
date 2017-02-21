@@ -32,7 +32,7 @@ public class Constant {
     public static final String WORK_ITEM_ID = "WorkItemID";
     public static final String PRODUCT_NAME_MAIN = "product_name_main";
     public static final String PRODUCT_NAME = "product_name";
-    public static final String LINE_NAME="line_name";
+    public static final String LINE_NAME = "line_name";
     public static final String SIDE = "side";
 
 
@@ -97,6 +97,11 @@ public class Constant {
      * 进行Feeder缓存区入库预警
      */
     public static final Integer FEEDER_BUFF_TO_WAREH_ALARM_FLAG = 12;
+    public static final String PRODUCEWARNINGLINE_NAME = "producewarningline_name";
+    public static final String FALUTPROCESSINGLINE_NAME = "falutprocessingline_name";
+    public static final String HANDADDLINE_NAME = "handaddline_name";
+    public static final String STORAGENAME = "storagename";
+    public static final String WORK_ORDER = "work_order";
 
     public static String FAULTSOLUTIONID = "fault_solutionid";
     /**
@@ -107,13 +112,33 @@ public class Constant {
     public static String FAULTCODE = "fault_code";
     public static String FAULTID = "fault_id";
     public static String PRODUCTIONLINE = "production_line";
-    public static String ACCEPTMATERIALSLINES="accept_materials_line";
-    public static String CONDITION=null;
+    public static String ACCEPTMATERIALSLINES = "accept_materials_line";
+    public static String CONDITION = null;
 
-/*    public static String initLine() {
-        Map<String, String> map = new HashMap<>();
-        map.put("lines", Constant.CONDITION);
-        String line = GsonTools.createGsonString(map);
-        return line;
-    }*/
+    /*    public static String initLine() {
+            Map<String, String> map = new HashMap<>();
+            map.put("lines", Constant.CONDITION);
+            String line = GsonTools.createGsonString(map);
+            return line;
+        }*/
+    //后台需要判断的字段
+    public static final String NEED_BIND_PRECAR_STRING = "需要绑定备料车";
+    public static final String FAILURE_BIND_PRECAR_STRING = "绑定备料车失败，请重试";
+    public static final String PRECAR_WAREHOUSE_STRING = "小仓库只能绑定备料车";
+    public static final String PRECAR_MANTISS_STRING = "尾数仓只能绑定余料车";
+    public static final String NO_WORKORDER_MATERIALS_LIST_STRING = "暂无工单发料列表";
+    public static final String CAR_HAD_BIND_STRING = "该料车已经被绑定过，请重新选择";
+    public static final String FAILURE_STARTISSUE_STRING = "请求发料失败，请退出重试";
+    public static final String FAILURE_STARTISSUE_STRING2 = "当前工单已有发料人，不允许同时操作";
+    public static final String NO_WORKORDER_STRING = "当前没有发料工单，请确认";
+    public static final String FAILURE_MATERIALS_STRING = "当前所发料号错误，请确认";
+    public static final String FAILURE_TRAYS_STRING = "该料盘已经发过，请换新的料盘";
+    public static final String ADD_PRE_CAR_STRING = "该备料车已用完，请绑定新的备料车";
+    public static final String SURE_END_ISSUE_STRING = "发料没有完成，确定要结束本次发料么？";
+    public static final String JUMP_MATERIALS_STRING = "上一个料没有发完，确定要跳过上一个料么？";
+    public static final String NO_ISSUE_MATERIALS_STRING = "没有要发的料了，请确认";
+    public static final String FAILURE_MANTISS_TRAYS_STRING = "该料盘不属于该工单，请确认";
+    public static final String CAN_NOT_END_ISSUE_STRING = "发料没有完成，不能完成发料";
+    public static final String FAILURE_START_ISSUE_STRING = "有未完成的发料工单，不允许再次开始发料";
+
 }

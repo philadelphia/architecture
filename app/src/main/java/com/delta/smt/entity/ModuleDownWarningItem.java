@@ -1,7 +1,5 @@
 package com.delta.smt.entity;
 
-import com.delta.libs.adapter.TimeEntity;
-
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -44,7 +42,7 @@ public class ModuleDownWarningItem {
         this.rows = rows;
     }
 
-    public static class RowsBean extends TimeEntity {
+    public static class RowsBean extends CountDownEntity{
         /**
          * line : H3
          * work_order : 1
@@ -62,11 +60,11 @@ public class ModuleDownWarningItem {
         private String status;
         private String unplug_mod_actual_finish_time;
 
-        /*@Override
+        @Override
         public Long getCountDownLong() {
             //long time_s = Long.parseLong(unplug_mod_actual_finish_time);
             return 0L;
-        }*/
+        }
 
         public String getLine_name() {
             return line_name;

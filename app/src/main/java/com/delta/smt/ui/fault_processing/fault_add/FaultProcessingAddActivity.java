@@ -54,6 +54,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     @BindView(R.id.bt_save)
     Button btSave;
     private String faultCode;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
 
@@ -62,7 +63,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
     @Override
     protected void initData() {
-        faultCode=getIntent().getExtras().getString(Constant.FAULTCODE);
+        faultCode = getIntent().getExtras().getString(Constant.FAULTCODE);
         etCode.setText(faultCode);
     }
 
@@ -98,7 +99,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     public void onClick() {
 
         String faultName = etTitle.getText().toString();
-        String content = etCode.getText().toString();
+        String content = etStep.getText().toString();
 
 
         if (TextUtils.isEmpty(faultName)) {
