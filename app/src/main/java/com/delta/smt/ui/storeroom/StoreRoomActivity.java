@@ -214,8 +214,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     public void lightSuccsee() {
         SnackbarUtil.showMassage(warningActivityMain,"点灯成功,请放到固定架位!");
         //ToastUtils.showMessage(this, "请放到固定架位");
-        storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
-        storageSubmit.setEnabled(false);
+//        storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
+//        storageSubmit.setEnabled(false);
     }
 
     @Override

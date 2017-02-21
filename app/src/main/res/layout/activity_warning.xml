@@ -4,7 +4,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
+    <include layout="@layout/appbar"
+        />
     <com.delta.commonlibs.widget.statusLayout.StatusLayout
         android:id="@+id/statusLayout"
         android:layout_width="match_parent"
@@ -116,12 +117,11 @@
                 android:layout_marginBottom="@dimen/px_20"
                 android:layout_marginLeft="@dimen/px_20"
                 android:layout_marginRight="@dimen/px_20"
-                android:text="发料"
+                android:text="结束发料"
                 />
         </RelativeLayout>
         </LinearLayout>
    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 
-    <include layout="@layout/appbar"
-       />
+
 </LinearLayout>

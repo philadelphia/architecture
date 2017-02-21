@@ -152,13 +152,11 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.pcb_number, item.getPartNum());
                 holder.setText(R.id.pcb_price, item.getSubShelfSerial());
-                if (item.getAmount() == 0) {
-                    holder.setText(R.id.pcb_thenumber, "");
-                } else {
-                    holder.setText(R.id.pcb_thenumber, "" + item.getAmount());
-                    mSingleAmout = item.getAmount();
-                    mSunAmout += item.getAmount();
-                    Log.e("info", mAmout + "");
+                holder.setText(R.id.pcb_thenumber, "" +item.getCount() );
+                if (item.getCount()!=0){
+                mSingleAmout = item.getCount();
+
+                Log.e("info", mAmout + "");
                 }
                 holder.setText(R.id.pcb_code, item.getPcbCode());
                 holder.setText(R.id.pcb_time, item.getPcbCode());
@@ -170,13 +168,20 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 //                        }
 //                    }
 //                }
-                if (item.isColor()) {
+                if (item.getIsColor()==1) {
                     holder.setBackgroundColor(R.id.pcb_number, Color.YELLOW);
                     holder.setBackgroundColor(R.id.pcb_price, Color.YELLOW);
                     holder.setBackgroundColor(R.id.pcb_thenumber, Color.YELLOW);
                     //           holder.setBackgroundColor(R.id.pcb_demand, Color.YELLOW);
                     holder.setBackgroundColor(R.id.pcb_code, Color.YELLOW);
                     holder.setBackgroundColor(R.id.pcb_time, Color.YELLOW);
+                }else if (item.getIsColor()==2){
+                    holder.setBackgroundColor(R.id.pcb_number, Color.GRAY);
+                    holder.setBackgroundColor(R.id.pcb_price, Color.GRAY);
+                    holder.setBackgroundColor(R.id.pcb_thenumber, Color.GRAY);
+                    //           holder.setBackgroundColor(R.id.pcb_demand, Color.YELLOW);
+                    holder.setBackgroundColor(R.id.pcb_code, Color.GRAY);
+                    holder.setBackgroundColor(R.id.pcb_time, Color.GRAY);
                 }
 
             }
@@ -223,35 +228,24 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     @Override
     public void onSucessState(String s) {
-        Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_INDEFINITE).show();
-        mList.get(mAdapterposition).setColor(false);
+        Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_LONG).show();
+        Log.e("info","------------------");
+        mList.get(mAdapterposition).setIsColor(2);
         mAdapter.notifyDataSetChanged();
-        if (mAmoutString - mAmout > 0) {
-            mAmoutString = mAmoutString - mAmout;
+        mSunAmout += mList.get(mAdapterposition).getCount();
+        if ((mAmoutString - mList.get(mAdapterposition).getCount()) > 0) {
+            mAmoutString = mAmoutString - mList.get(mAdapterposition).getCount();
             edPcbDemand.setText("" + mAmoutString);
-        }
-        if ((mAmoutString - mAmout) <= 0) {
+        }else if ((mAmoutString - mList.get(mAdapterposition).getCount()) <= 0) {
             mAmoutString = 0;
             edPcbDemand.setText("0");
-            if (mIsAlarmInfo) {
-                getPresenter().getAlarmSuccessfulState(mWorkNumberString, mAlarminfoId);
-//                getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
-            } else {
-                getPresenter().getScheduleSuccessState(mAlarminfoId);
-//                getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
-            }
-        }
-        if ((mAmoutString - mAmout) > 0) {
-            mList.get(position).setColor(false);
-            mAmoutString = mAmoutString - mAmout;
-            edPcbDemand.setText("" + mAmoutString);
-            if (mIsAlarmInfo) {
-                getPresenter().getAlarmSuccessfulState(mWorkNumberString, mAlarminfoId);
-//                getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
-            } else {
-                getPresenter().getScheduleSuccessState(mAlarminfoId);
-//                getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
-            }
+//            if (mIsAlarmInfo) {
+//                getPresenter().getAlarmSuccessfulState(mWorkNumberString, mAlarminfoId);
+////                getPresenter().fetchAlarminfoOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
+//            } else {
+//                getPresenter().getScheduleSuccessState(mAlarminfoId);
+////                getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
+//            }
         }
 
 
@@ -259,9 +253,10 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     @Override
     public void onSucessStates(String s) {
-        Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_LONG).show();
+        Log.e("info","----------111111--------");
         if ((mAmoutString - mAmout) == 0) {
-            mList.get(position).setColor(false);
+            mList.get(position).setIsColor(2);
             mAdapter.notifyDataSetChanged();
             mAmoutString = 0;
             edPcbDemand.setText("0");
@@ -272,6 +267,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void onOutSubmit(String s) {
         SnackbarUtil.show(activityMianview,"成功");
+        finish();
     }
 
     @Override
@@ -284,7 +280,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void getNumberSucces(PcbNumber.DataBean dataBean) {
         mAmout += dataBean.getAmount();
-        mList.get(position).setAmount(dataBean.getAmount());
+        mList.get(position).setCount(dataBean.getAmount());
         mList.get(position).setId(dataBean.getId());
         mAdapter.notifyDataSetChanged();
         mId = dataBean.getId();
@@ -310,21 +306,30 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 //                    getPresenter().fetchPcbNumber(mMaterbarCode.getStreamNumber());
                 if (mList != null) {
                     for (int i = 0; i < mList.size(); i++) {
-                        if (mList.get(i).getSubShelfSerial().equals(mMaterbarCode.getStreamNumber())) {
+                        if (mList.get(i).getBoxSerial().equals(mMaterbarCode.getStreamNumber())) {
+                            mId=mList.get(i).getId();
                             mAdapterposition = i;
-                            if (mList.get(i).getAmount() > mAmoutString) {
-                                ToastUtils.showMessage(this, mList.get(i).getAmount() - mAmoutString);
+                            if (mList.get(i).getCount() > mAmoutString) {
+                                ToastUtils.showMessage(this, mList.get(i).getCount() - mAmoutString);
+                                if (mIsAlarmInfo) {
+                                    getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
+                                } else {
+                                    getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 1);
+
+                                }
+                            }else {
+                            if (mIsAlarmInfo) {
+                                getPresenter().fetchPcbSuccess(mAlarminfoId, mList.get(i).getCount(), mId, 0);
+                            } else {
+                                getPresenter().fetchPcbSuccess(mAlarminfoId, mList.get(i).getCount(), mId, 1);
+
                             }
-                            mList.get(i).setColor(true);
+                            }
+                            mList.get(i).setIsColor(1);
                             mAdapter.notifyDataSetChanged();
                         }
                     }
-                    if (mIsAlarmInfo) {
-                        getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
-                    } else {
-                        getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 1);
 
-                    }
                 }
             }
         } catch (EntityNotFountException e) {
@@ -334,7 +339,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 VibratorAndVoiceUtils.correctVibrator(this);
                 VibratorAndVoiceUtils.correctVoice(this);
                 //Snackbar.make(activityMianview, "请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE).show();
-
+                getPresenter().closeLight(mFramebarCode.getSource());
 
             } catch (EntityNotFountException e1) {
                 VibratorAndVoiceUtils.wrongVibrator(this);
@@ -372,9 +377,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @OnClick(R.id.warning_sum)
     public void onClick() {
         if (mIsAlarmInfo) {
-            getPresenter().getAlarmOutSumbit(mId, mSunAmout);
+            getPresenter().getAlarmOutSumbit(mAlarminfoId, mSunAmout);
         } else {
-            getPresenter().getOutSumbit(mId,mSunAmout);
+            getPresenter().getOutSumbit(mAlarminfoId,mSunAmout);
         }
     }
 }
