@@ -11,7 +11,6 @@ import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
-//import com.delta.smt.entity.MantissaWarehouseReturn;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
@@ -48,6 +47,8 @@ import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.Url;
 import rx.Observable;
+
+//import com.delta.smt.entity.MantissaWarehouseReturn;
 
 
 @Module

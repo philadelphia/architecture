@@ -140,6 +140,8 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
                 jsonObject1.putOpt("unit",materialBlockBarCodes.get(i).getUnit());
                 jsonObject1.putOpt("vender",materialBlockBarCodes.get(i).getVendor());
                 jsonObject1.putOpt("invoiceNum",materialBlockBarCodes.get(i).getInvNo());
+                jsonObject1.putOpt("purchaseOrder",materialBlockBarCodes.get(i).getPO());
+                jsonObject1.putOpt("tradingNum",materialBlockBarCodes.get(i).getBusinessCode());
                 jsonObject1.putOpt("subShelfCode",s);
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -23,47 +23,31 @@ public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,
         getModel().getAllModuleDownWarningItems().doOnSubscribe(new Action0() {
             @Override
             public void call() {
-                try{
-                    getView().showLoadingView();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
+                getView().showLoadingView();
             }
         }).subscribe(new Action1<ModuleDownWarningItem>() {
             @Override
             public void call(ModuleDownWarningItem moduleDownWarningItems) {
                 //getView().onSuccess(moduleDownWarningItems);
-                try{
-                    if ("0".equals(moduleDownWarningItems.getCode())) {
+                if ("0".equals(moduleDownWarningItems.getCode())) {
 
-                        if (moduleDownWarningItems.getRows().size() == 0) {
-                            getView().showEmptyView();
-                        }else {
-                            getView().showContentView();
-                            getView().onSuccess(moduleDownWarningItems);
-                        }
-
-                    } else {
-                        getView().onFalied();
-                        getView().showErrorView();
+                    if (moduleDownWarningItems.getRows().size() == 0) {
+                        getView().showEmptyView();
+                    }else {
+                        getView().showContentView();
+                        getView().onSuccess(moduleDownWarningItems);
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
 
+                } else {
+                    getView().onFalied();
+                    getView().showErrorView();
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
-                try{
-                    getView().onFalied();
-                    getView().showErrorView();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
+                getView().onFalied();
+                getView().showErrorView();
             }
         });
     }

@@ -10,6 +10,16 @@ package com.delta.smt.entity;
 public class StoreEntity {
     private String name;
 
+    private boolean isCheck;
+
+    public void setCheck(boolean check) {
+        isCheck = check;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
     public StoreEntity() {
     }
 

@@ -40,8 +40,9 @@
     </RelativeLayout>
     <HorizontalScrollView
         android:id="@+id/hr_scrow"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -56,4 +57,11 @@
                 android:layout_height="match_parent"/>
         </LinearLayout>
     </HorizontalScrollView>
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:background="@color/C_333333"
+        android:gravity="center"
+        android:textColor="@color/c_428bca" />
 </LinearLayout>

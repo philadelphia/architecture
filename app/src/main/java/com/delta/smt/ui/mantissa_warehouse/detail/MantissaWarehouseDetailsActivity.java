@@ -1,5 +1,6 @@
 package com.delta.smt.ui.mantissa_warehouse.detail;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,31 +19,36 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.DialogUtils;
+import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MantissaBingingCarBean;
-import com.delta.smt.entity.MantissaCarResult;
 import com.delta.smt.entity.MantissaCarBean;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseputBean;
+import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.WarehouseDetailBean;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.DaggerMantissaWarehouseDetailsComponent;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsModule;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsContract;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
 import static com.delta.smt.base.BaseApplication.getContext;
@@ -67,20 +74,23 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @BindView(R.id.button2)
     Button mButton2;
     @BindView(R.id.textView2)
-    TextView mTextView2;
-    @BindView(R.id.car)
     TextView mCar;
-    private List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> dataList = new ArrayList();
-    private List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> dataList2 = new ArrayList();
-    private CommonBaseAdapter<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> adapter;
-    private CommonBaseAdapter<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> adapter2;
+    @BindView(R.id.tv_hint)
+    TextView tv_hint;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
+    @BindView(R.id.btn_switch)
+    CheckBox btnSwitch;
+    private List<MantissaWarehouseDetailsResult.RowsBean> dataList = new ArrayList();
+    private List<MantissaWarehouseDetailsResult.RowsBean> dataList2 = new ArrayList();
+    private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> adapter;
+    private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> adapter2;
     private MantissaWarehouseReady.RowsBean mMantissaWarehouse;
     private String workorder;
     private String name;
-
     private String lastCar;
-
     private int flag = 1;
+    private String side;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -94,15 +104,15 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
         Intent intent = this.getIntent();
         mMantissaWarehouse = (MantissaWarehouseReady.RowsBean) intent.getSerializableExtra("item");
-
         workorder = mMantissaWarehouse.getWork_order();
-        WarehouseDetailBean bindBean = new WarehouseDetailBean(workorder);
+        side = mMantissaWarehouse.getSide();
+        WarehouseDetailBean bindBean = new WarehouseDetailBean(side, workorder);
         Gson gson = new Gson();
         String s = gson.toJson(bindBean);
         getPresenter().getMantissaWarehouseDetails(s);
         mCar.setText("");
         //备料车
-        MantissaCarBean car = new MantissaCarBean(workorder, "Mantiss");
+        MantissaCarBean car = new MantissaCarBean(workorder, "Mantissa", side);
         String carbean = gson.toJson(car);
         getPresenter().getFindCar(carbean);
 
@@ -117,15 +127,15 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("尾数仓备料");
 
-        dataList.add(new MantissaWarehouseDetailsResult.MantissaWarehouseDetails("", "", "", "", "", ""));
-        adapter = new CommonBaseAdapter<MantissaWarehouseDetailsResult.MantissaWarehouseDetails>(getContext(), dataList) {
+        dataList.add(new MantissaWarehouseDetailsResult.RowsBean(1, "", "", 0));
+        adapter = new CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean>(getContext(), dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, MantissaWarehouseDetailsResult.MantissaWarehouseDetails item, int position) {
+            protected void convert(CommonViewHolder holder, MantissaWarehouseDetailsResult.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, MantissaWarehouseDetailsResult.MantissaWarehouseDetails item) {
+            protected int getItemViewLayoutId(int position, MantissaWarehouseDetailsResult.RowsBean item) {
                 return R.layout.details_item;
             }
         };
@@ -133,29 +143,31 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         mRecyTitle.setAdapter(adapter);
 
 
-        adapter2 = new CommonBaseAdapter<MantissaWarehouseDetailsResult.MantissaWarehouseDetails>(getContext(), dataList2) {
+        adapter2 = new CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean>(getContext(), dataList2) {
             @Override
-            protected void convert(CommonViewHolder holder, MantissaWarehouseDetailsResult.MantissaWarehouseDetails item, int position) {
-                holder.setText(R.id.tv_number, item.getMaterial_num());
-                holder.setText(R.id.tv_location, item.getShelves());
-                holder.setText(R.id.tv_needNumber, item.getRe_quantity());
-                holder.setText(R.id.tv_shipments, item.getSe_quantity());
-                if (item.getMaterial_num().equals(name)) {
-                    holder.itemView.setBackgroundColor(Color.YELLOW);
-                } else {
-                    holder.itemView.setBackgroundColor(Color.WHITE);
-                }
-                if ("1".equals(item.getStatus())) {
-                    holder.setText(R.id.tv_type, "发料中");
-                } else if ("2".equals(item.getStatus())) {
-                    holder.setText(R.id.tv_type, "完成");
-                } else if ("0".equals(item.getStatus())) {
-                    holder.setText(R.id.tv_type, "未开始");
+            protected void convert(CommonViewHolder holder, MantissaWarehouseDetailsResult.RowsBean item, int position) {
+                holder.setText(R.id.tv_number, item.getMaterial_no());
+                holder.setText(R.id.tv_location, item.getShelf_no());
+                holder.setText(R.id.tv_needNumber, String.valueOf(item.getAmount()));
+                holder.setText(R.id.tv_shipments, String.valueOf(item.getIssue_amount()));
+                switch (item.getStatus()) {
+                    case 0:
+                        holder.itemView.setBackgroundColor(Color.YELLOW);
+                        break;
+                    case 1:
+                        holder.itemView.setBackgroundColor(Color.WHITE);
+                        break;
+                    case 2:
+                        holder.itemView.setBackgroundColor(Color.GREEN);
+                        break;
+                    case 3:
+                        holder.itemView.setBackgroundColor(Color.RED);
+                        break;
                 }
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, MantissaWarehouseDetailsResult.MantissaWarehouseDetails item) {
+            protected int getItemViewLayoutId(int position, MantissaWarehouseDetailsResult.RowsBean item) {
                 return R.layout.details_item;
             }
 
@@ -167,76 +179,115 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     protected int getContentViewId() {
-        return R.layout.fragment_mantissa_details;
+        return R.layout.fragment_storage_details;
     }
 
-    @Override
-    public void getSucess(List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> mantissaWarehouseDetailses) {
-
-        dataList2.clear();
-        dataList2.addAll(mantissaWarehouseDetailses);
-        adapter2.notifyDataSetChanged();
-
-    }
 
     @Override
     public void getFailed(String message) {
-
+        ToastUtils.showMessage(this, message);
+        tv_hint.setText(message);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override
-    public void getBingingCarSucess(List<MantissaCarResult.MantissaCar> car) {
+    public void getBingingCarSucess(MaterialCar car) {
         mCar.setText("");
-        mCar.setText(lastCar);
+        mCar.setText(car.getRows().get(0).getCar_name());
         flag = 2;
+        tv_hint.setText(car.getRows().get(0).getCar_name());
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
     }
 
 
     @Override
     public void getBingingCarFailed(String message) {
         flag = 1;
+        tv_hint.setText(message);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
+
     @Override
-    public void getMantissaWarehouseputSucess(List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> mantissaWarehouseDetailses) {
+    public void getMantissaWarehouseputSucess(MantissaWarehouseDetailsResult rows) {
 
+        issureToWareh(rows);
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
+    }
+
+    private void issureToWareh(MantissaWarehouseDetailsResult rows) {
+
+        boolean isOver = true;
         dataList2.clear();
-        dataList2.addAll(mantissaWarehouseDetailses);
-
+        dataList2.addAll(rows.getRows());
         int position = 0;
+        boolean isFirstUndo = true;
         for (int i = 0; i < dataList2.size(); i++) {
-            if (dataList2.get(i).getMaterial_num().equals(name)) {
-                position = i;
-                mRecyContetn.scrollToPosition(i);
+            if (dataList2.get(i).getStatus() == 1) {
+                if (isFirstUndo) {
+                    position = i;
+                    isFirstUndo = false;
+                }
+            }
+            if (dataList2.get(i).getStatus() == 0 || dataList2.get(i).getStatus() == 1) {
+                isOver = false;
             }
         }
+        if (isOver) {
+            getPresenter().getMantissaWareOver();
+        }
+        if (!"Success".equalsIgnoreCase(rows.getMsg())) {
 
-        Collections.swap(dataList2,0,position);
+            tv_hint.setText(rows.getMsg());
+        }
+        mRecyContetn.scrollToPosition(position);
         adapter2.notifyDataSetChanged();
-
     }
 
     @Override
-    public void getMantissaWarehouseputFailed(String message) {
-
-        ToastUtils.showMessage(this,message);
+    public void getMantissaWarehouseputFailed(final String message) {
+        DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                getPresenter().getMantissaWareOver();
+            }
+        });
+        tv_hint.setText(message);
+        ToastUtils.showMessage(this, message);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override
-    public void getMantissaWareOverSucess(List<MantissaWarehouseDetailsResult.MantissaWarehouseDetails> mantissaWarehouseDetailses) {
+    public void getMantissaWareOverSucess(IssureToWarehFinishResult issureToWarehFinishResult) {
         Toast.makeText(this, "扣账成功", Toast.LENGTH_SHORT).show();
+        tv_hint.setText("扣账成功");
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
     }
+
 
     @Override
     public void getMantissaWareOverFailed(String message) {
+        tv_hint.setText(message);
+        ToastUtils.showMessage(this, message);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
 
     }
 
     @Override
-    public void getFindCarSucess(List<MantissaCarResult.MantissaCar> car) {
-        String rows = car.get(0).getMsg();
+    public void getFindCarSucess(MaterialCar car) {
+        String rows = car.getRows().get(0).getCar_name();
+        tv_hint.setText(car.getMsg());
         mCar.setText(rows);
         flag = 2;
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
     }
 
     @Override
@@ -245,17 +296,49 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    protected void onDestroy() {
-        Log.e(TAG, "onDestroy: ");
-        super.onDestroy();
+    public void getFindCarFailed(String message) {
+        flag = 1;
+        tv_hint.setText(message);
     }
 
     @Override
-    public void getFindCarFailed(String message) {
-
-        flag = 1;
+    public void getMantissaWarehouseDetailsSucess(MantissaWarehouseDetailsResult mantissaWarehouseDetails) {
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehouseDetails.getRows());
+        adapter2.notifyDataSetChanged();
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
     }
 
+    @Override
+    public void getMantissaWarehouseDetailsFailed(String msg) {
+        ToastUtils.showMessage(this, msg);
+        tv_hint.setText(msg);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
+    }
+
+    @Override
+    public void showLoadingView() {
+
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
+    }
 
     @Override
     public void onScanSuccess(String barcode) {
@@ -268,12 +351,15 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     LastMaterialCar LastMaterialCar = (LastMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_CAR);
                     lastCar = LastMaterialCar.getSource();
                     Toast.makeText(this, lastCar, Toast.LENGTH_SHORT).show();
-                    MantissaBingingCarBean bindBean = new MantissaBingingCarBean(workorder, "Mantiss", lastCar);
+                    MantissaBingingCarBean bindBean = new MantissaBingingCarBean(workorder, "Mantissa", lastCar, side);
                     Gson gson = new Gson();
                     String s = gson.toJson(bindBean);
                     getPresenter().getbingingCar(s);
                 } catch (EntityNotFountException e) {
                     ToastUtils.showMessage(this, "请扫描对应料车");
+                    tv_hint.setText("请扫描对应料车");
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
                     e.printStackTrace();
                 }
                 break;
@@ -299,6 +385,9 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
                     ToastUtils.showMessage(this, "请扫描对应料盘");
+                    tv_hint.setText("请扫描对应料盘");
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
                 }
 
                 break;
@@ -319,4 +408,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         return super.onOptionsItemSelected(item);
     }
 
+    @OnClick(R.id.button2)
+    public void onClick() {
+
+        if (SingleClick.isSingle(1000)) {
+            tv_hint.setText("扣账成功");
+        }
+    }
 }

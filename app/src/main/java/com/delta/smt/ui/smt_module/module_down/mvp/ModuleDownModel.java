@@ -23,8 +23,6 @@ public class ModuleDownModel extends BaseModel<ApiService> implements ModuleDown
     public Observable<ModuleDownWarningItem> getAllModuleDownWarningItems() {
 
         /*ModuleDownWarningItem mi = new ModuleDownWarningItem();
-        mi.setMsg("success");
-        mi.setCode("0");
         List<ModuleDownWarningItem.RowsBean> l = new ArrayList<>();
         ModuleDownWarningItem.RowsBean rb = new ModuleDownWarningItem.RowsBean();
         rb.setWork_order("1234");
@@ -33,7 +31,7 @@ public class ModuleDownModel extends BaseModel<ApiService> implements ModuleDown
         rb.setLine_name("H1");
         rb.setSide("B");
         rb.setStatus("等待下模组");
-        rb.setUnplug_mod_actual_finish_time("2017-02-17 12:00:00");
+        rb.setUnplug_mod_actual_finish_time("120000");
         l.add(rb);
         mi.setRows(l);
         return Observable.just(mi);*/

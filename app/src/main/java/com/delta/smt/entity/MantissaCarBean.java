@@ -8,10 +8,26 @@ public class MantissaCarBean {
 
     private String work_order;
     private String part;
+    private String side;
 
     public MantissaCarBean(String work_order, String part) {
         this.work_order = work_order;
         this.part = part;
+    }
+
+    public MantissaCarBean(String workorder, String part, String side) {
+        this.work_order = workorder;
+        this.part = part;
+        this.side = side;
+    }
+
+    public void setSide(String side) {
+
+        this.side = side;
+    }
+
+    public String getSide() {
+        return side;
     }
 
     public String getWork_order() {

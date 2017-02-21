@@ -309,7 +309,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
     /**
      *@description :根据不同的数据状态显示不同的view
-    */
+     */
     @Override
     public void showLoadingView() {
         mStatusLayout.showLoadingView();

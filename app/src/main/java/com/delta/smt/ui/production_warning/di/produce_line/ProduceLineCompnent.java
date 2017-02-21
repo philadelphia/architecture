@@ -13,6 +13,4 @@ import dagger.Component;
 @Component(modules = ProduceLineModule.class, dependencies = AppComponent.class)
 public interface ProduceLineCompnent {
     void inject(ProduceLineActivity produceLineActivity);
-
-    void inject(com.delta.smt.ui.fault_processing.produce_line.ProduceLineActivity activity);
 }

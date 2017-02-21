@@ -99,9 +99,36 @@ public class AllQuery {
         private String sapWorkOrderId;
         private String partNum;
         private String machineType;
+        private String mainBoard;
+        private String subBoard;
+        private String side;
         private String amount;
         private String endTime;
         private String status;
+
+        public String getMainBoard() {
+            return mainBoard;
+        }
+
+        public void setMainBoard(String mainBoard) {
+            this.mainBoard = mainBoard;
+        }
+
+        public String getSubBoard() {
+            return subBoard;
+        }
+
+        public void setSubBoard(String subBoard) {
+            this.subBoard = subBoard;
+        }
+
+        public String getSide() {
+            return side;
+        }
+
+        public void setSide(String side) {
+            this.side = side;
+        }
 
         public int getId() {
             return id;
