@@ -51,10 +51,6 @@
             android:name=".StartActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 故障处理预警-->
-        <activity
-            android:name=".ui.fault_processing.produce_line.ProduceLineActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.fault_processing.processing.FalutProcessingActivity"
             android:screenOrientation="portrait" />
@@ -140,11 +136,9 @@
 
         <service android:name=".service.warningService.WarningService" />
 
-        <activity android:name=".ui.feeder.warning.FeederWarningActivity"></activity>
+        <activity android:name=".ui.feeder.warning.supply.FeederSupplyListActivity"></activity>
 
-        <activity
-            android:name=".ui.feeder.handle.feederCheckIn.FeederCheckInActivity"
-            android:label="FeederCheckInActivity" />
+
 
         <activity
             android:name=".ui.feeder.handle.feederSupply.FeederSupplyActivity"

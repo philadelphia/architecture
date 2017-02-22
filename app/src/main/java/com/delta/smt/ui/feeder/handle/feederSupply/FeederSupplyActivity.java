@@ -19,6 +19,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -49,6 +50,8 @@ import static com.delta.smt.base.BaseApplication.getContext;
  */
 
 public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> implements FeederSupplyContract.View {
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.tv_setting)
@@ -213,6 +216,28 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
+
+    }
+
 
     @Override
     public void onScanSuccess(String barcode) {
@@ -267,5 +292,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         return super.onOptionsItemSelected(item);
     }
     
+
+
 
 }

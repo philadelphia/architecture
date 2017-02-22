@@ -10,35 +10,55 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include
-            layout="@layout/appbar"/>
+        <include layout="@layout/appbar" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_upload"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/rl"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:text="上传到MES"/>
+                android:layout_marginBottom="@dimen/px_10"
+                android:layout_marginTop="@dimen/px_10">
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_upload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:text="上传到MES"
+                    android:textSize="@dimen/px_40"
+                    android:layout_marginRight="@dimen/px_20"/>
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/automatic_upload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/btn_upload"
+                    android:layout_marginRight="@dimen/px_40"
+                    android:layout_alignBaseline="@id/btn_upload"
+                    android:checked="false"
+                    android:text="自动上传到MES"
+                    android:textSize="@dimen/px_40"/>
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/btn_upload"
+                android:layout_below="@id/rl"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recy_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
                 <com.delta.commonlibs.widget.statusLayout.StatusLayout
                     android:id="@+id/statusLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -46,7 +66,7 @@
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recy_content"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
                     </RelativeLayout>
                 </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 
@@ -54,9 +74,10 @@
         </RelativeLayout>
 
     </LinearLayout>
+
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

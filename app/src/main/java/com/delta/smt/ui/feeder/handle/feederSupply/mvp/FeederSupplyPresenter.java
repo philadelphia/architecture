@@ -16,40 +16,42 @@ import rx.functions.Action1;
  */
 
 @FragmentScope
-public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Model, FeederSupplyContract.View>{
+public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Model, FeederSupplyContract.View> {
     @Inject
-     FeederSupplyPresenter(FeederSupplyContract.Model model, FeederSupplyContract.View mView) {
+    FeederSupplyPresenter(FeederSupplyContract.Model model, FeederSupplyContract.View mView) {
         super(model, mView);
     }
 
-    public void getAllToBeSuppliedFeeders(String workID){
+    public void getAllToBeSuppliedFeeders(String workID) {
         getModel().getAllToBeSuppliedFeeders(workID).subscribe(new Action1<Result<FeederSupplyItem>>() {
             @Override
             public void call(Result<FeederSupplyItem> feederSupplyItems) {
-                if (feederSupplyItems.getMessage().equalsIgnoreCase("success")){
+                if (feederSupplyItems.getMessage().equalsIgnoreCase("success")) {
+                        getView().showContentView();
+                        getView().onSuccess(feederSupplyItems.getRows());
 
-                    getView().onSuccess(feederSupplyItems.getRows());
-                }else {
-//                    getView().onFailed(feederSupplyItems.getMessage());
+                } else {
+                    getView().onFailed(feederSupplyItems.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-//                getView().onFailed(throwable.getMessage());
+                getView().onFailed(throwable.getMessage());
+
             }
         });
     }
 
 
     //获取feeder上模组时间
-    public void getFeederInsertionToSlotTimeStamp(String condition){
+    public void getFeederInsertionToSlotTimeStamp(String condition) {
         getModel().getFeederInsertionToSlotTimeStamp(condition).subscribe(new Action1<Result<FeederSupplyItem>>() {
             @Override
             public void call(Result<FeederSupplyItem> feederSupplyItems) {
-                if (feederSupplyItems.getCode().equalsIgnoreCase("0")){
+                if (feederSupplyItems.getCode().equalsIgnoreCase("0")) {
                     getView().onSuccess(feederSupplyItems.getRows());
-                }else {
+                } else {
                     getView().onFailed(feederSupplyItems.getMessage());
                 }
             }
@@ -62,11 +64,11 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
     }
 
 
-    public void upLoadToMES(){
+    public void upLoadToMES() {
         getModel().upLoadFeederSupplyResult().subscribe(new Action1<ResultFeeder>() {
             @Override
             public void call(ResultFeeder resultFeeder) {
-                if (!resultFeeder.isRows()){
+                if (!resultFeeder.isRows()) {
                     getView().onUpLoadFailed("上传失败，请手动上传到MES");
                 }
 
