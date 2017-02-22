@@ -56,8 +56,9 @@
         <TextView
             android:id="@+id/time_remain"
             android:text="上线剩余时间："
-            android:textSize="40px"
+            android:textSize="50px"
             android:textColor="#333333"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
