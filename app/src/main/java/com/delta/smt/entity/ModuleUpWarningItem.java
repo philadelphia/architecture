@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import com.delta.libs.adapter.TimeEntity;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class ModuleUpWarningItem {
         this.rows = rows;
     }
 
-    public static class RowsBean extends CountDownEntity {
+    public static class RowsBean extends TimeEntity {
         /**
          * line : 3
          * work_order : 1
@@ -51,7 +53,7 @@ public class ModuleUpWarningItem {
          * start_time_plan : Jan 16, 2017 2:36:43 PM
          */
 
-        @Override
+        /*@Override
         public Long getCountDownLong() {
             long res = 0;
             if(online_plan_start_time.length()!=0){
@@ -67,7 +69,7 @@ public class ModuleUpWarningItem {
             }
 
             return res;
-        }
+        }*/
 
         private String line_name;
         private String work_order;

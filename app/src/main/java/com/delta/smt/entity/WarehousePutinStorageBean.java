@@ -6,37 +6,37 @@ package com.delta.smt.entity;
 
 public class WarehousePutinStorageBean {
 
-    private String material_num;
-    private String serial_num;
-    private String shelves;
+    private String material_no;
+    private String serial_no;
+    private String shelf_no;
 
-    public WarehousePutinStorageBean(String material_num, String serial_num, String shelves) {
-        this.material_num = material_num;
-        this.serial_num = serial_num;
-        this.shelves = shelves;
+    public WarehousePutinStorageBean(String material_no, String serial_no, String shelf_no) {
+        this.material_no = material_no;
+        this.serial_no = serial_no;
+        this.shelf_no = shelf_no;
     }
 
-    public String getMaterial_num() {
-        return material_num;
+    public String getMaterial_no() {
+        return material_no;
     }
 
-    public void setMaterial_num(String material_num) {
-        this.material_num = material_num;
+    public void setMaterial_no(String material_no) {
+        this.material_no = material_no;
     }
 
-    public String getSerial_num() {
-        return serial_num;
+    public String getSerial_no() {
+        return serial_no;
     }
 
-    public void setSerial_num(String serial_num) {
-        this.serial_num = serial_num;
+    public void setSerial_no(String serial_no) {
+        this.serial_no = serial_no;
     }
 
-    public String getShelves() {
-        return shelves;
+    public String getShelf_no() {
+        return shelf_no;
     }
 
-    public void setShelves(String shelves) {
-        this.shelves = shelves;
+    public void setShelf_no(String shelf_no) {
+        this.shelf_no = shelf_no;
     }
 }

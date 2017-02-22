@@ -2,6 +2,7 @@ package com.delta.smt.ui.production_warning.mvp.accept_materials_detail;
 
 import android.graphics.Color;
 import android.net.http.LoggingEventHandler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -195,13 +196,15 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         //扫码正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
                         VibratorAndVoiceUtils. correctVoice (this);
-                        ToastUtils.showMessage(getContext(), "旧料盘匹配正确，请扫新料盘！");
+//                        ToastUtils.showMessage(getContext(), "旧料盘匹配正确，请扫新料盘！");
+                        Snackbar.make(getCurrentFocus(), "旧料盘匹配正确，请扫新料盘！", Snackbar.LENGTH_SHORT).show();
                     }else{
 
                         //扫码错误时调用的声音和震动
                         VibratorAndVoiceUtils. wrongVibrator (this);
                         VibratorAndVoiceUtils. wrongVibrator (this);
-                        ToastUtils.showMessage(getContext(), "旧料盘匹配错误！");
+//                        ToastUtils.showMessage(getContext(), "旧料盘匹配错误！");
+                        Snackbar.make(getCurrentFocus(), "旧料盘匹配错误", Snackbar.LENGTH_SHORT).show();
                     }
                 }else{
                     if(dataList1.get(0).getPartNumber().equals(materialNumber)
@@ -220,7 +223,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         //扫码错误时调用的声音和震动
                         VibratorAndVoiceUtils. wrongVibrator (this);
                         VibratorAndVoiceUtils. wrongVibrator (this);
-                        ToastUtils.showMessage(getContext(), "新料盘匹配错误！");
+//                        ToastUtils.showMessage(getContext(), "新料盘匹配错误！");
+                        Snackbar.make(getCurrentFocus(), "新料盘匹配错误！", Snackbar.LENGTH_SHORT).show();
                     }
                 }
 
@@ -233,7 +237,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             VibratorAndVoiceUtils. wrongVibrator (this);
             VibratorAndVoiceUtils. wrongVibrator (this);
 
-            ToastUtils.showMessage(getContext(), "请扫描正确的料盘！");
+//            ToastUtils.showMessage(getContext(), "请扫描正确的料盘！");
+            Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
             materialNumber = null;
             streamNumber=null;
             e.printStackTrace();
@@ -262,7 +267,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     //扫码数据提交成功的操作
     @Override
     public void commitSerialNumberSucess() {
-        ToastUtils.showMessage(getContext(), "新料盘匹配正确，接料完成！");
+//        ToastUtils.showMessage(getContext(), "新料盘匹配正确，接料完成！");
+        Snackbar.make(getCurrentFocus(), "新料盘匹配正确，接料完成！", Snackbar.LENGTH_SHORT).show();
         getPresenter().getItemDatas(lines);
     }
 

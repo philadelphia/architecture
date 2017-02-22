@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/textcolor"
     android:layout_height="wrap_content">
 
     <TextView
@@ -30,6 +31,9 @@
             android:layout_width="@dimen/px_0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="@style/button_style"
+            android:layout_marginBottom="@dimen/px_20"
+            android:layout_marginRight="@dimen/px_20"
             android:text="@string/affirm"
             />
     </com.zhy.autolayout.AutoLinearLayout>

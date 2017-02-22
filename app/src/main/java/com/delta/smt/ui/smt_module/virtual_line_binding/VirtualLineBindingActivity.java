@@ -159,7 +159,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         tv_showLineName.setText("线别："+linName);
         tv_showSide.setText("面别: "+side);
 
-        dataList.add(new VirtualLineBindingItem.RowsBean("序号", "虚拟模组ID"));
+        dataList.add(new VirtualLineBindingItem.RowsBean("模组序号", "虚拟模组ID"));
         adapterTitle = new CommonBaseAdapter<VirtualLineBindingItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, VirtualLineBindingItem.RowsBean item, int position) {

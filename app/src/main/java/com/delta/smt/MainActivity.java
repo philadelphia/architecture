@@ -32,7 +32,7 @@ import com.delta.smt.entity.Download;
 import com.delta.smt.entity.Fuction;
 import com.delta.smt.entity.Update;
 import com.delta.smt.ui.checkstock.StartWorkAndStopWorkActivity;
-import com.delta.smt.ui.feeder.wareSelect.WareSelectActivity;
+import com.delta.smt.ui.feeder.warning.supply.FeederSupplyListActivity;
 import com.delta.smt.ui.main.di.DaggerMainComponent;
 import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
@@ -156,7 +156,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
         switch (item.getTitle()) {
             case "Feeder缓冲区":
-                IntentUtils.showIntent(this, WareSelectActivity.class);
+                IntentUtils.showIntent(this, FeederSupplyListActivity.class);
                 break;
             case "仓库备料":
                 IntentUtils.showIntent(this, StorageSelectActivity.class);

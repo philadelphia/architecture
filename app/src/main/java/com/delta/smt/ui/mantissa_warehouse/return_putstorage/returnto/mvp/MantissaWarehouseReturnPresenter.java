@@ -51,7 +51,7 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnes) {
 
                 if("Success".equals(mantissaWarehouseReturnes.getMsg())){
-                    getView().getMaterialLocationSucess(mantissaWarehouseReturnes.getRows());
+                    getView().getMaterialLocationSucess();
                 }else{
                     getView().getMaterialLocationFailed(mantissaWarehouseReturnes.getMsg());
                 }

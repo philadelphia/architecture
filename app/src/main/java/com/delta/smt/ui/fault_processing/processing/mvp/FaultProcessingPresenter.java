@@ -30,9 +30,6 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
 
     public void getFaultProcessingMessages(String producelines) {
 
-        Map<String, String> maps = new HashMap<>();
-        maps.put("lines", producelines);
-        producelines = new Gson().toJson(maps);
         getModel().getFalutMessages(producelines).doOnSubscribe(new Action0() {
             @Override
             public void call() {
@@ -41,12 +38,10 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
         }).subscribe(new Action1<FaultMessage>() {
             @Override
             public void call(FaultMessage falutMesages) {
-
                 if ("0".equals(falutMesages.getCode())) {
                     if (falutMesages.getRows().size() == 0) {
                         getView().showEmptyView();
                     } else {
-
                         getView().showContentView();
                         getView().getFalutMessgeSucess(falutMesages);
                     }

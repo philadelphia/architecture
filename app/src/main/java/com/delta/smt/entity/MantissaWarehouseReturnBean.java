@@ -6,27 +6,27 @@ package com.delta.smt.entity;
 
 public class MantissaWarehouseReturnBean {
 
-    private String material_num;
-    private String serial_num;
+    private String material_no;
+    private String serial_no;
 
-    public MantissaWarehouseReturnBean(String material_num, String serial_num) {
-        this.material_num = material_num;
-        this.serial_num = serial_num;
+    public MantissaWarehouseReturnBean(String material_no, String serial_no) {
+        this.material_no = material_no;
+        this.serial_no = serial_no;
     }
 
-    public String getMaterial_num() {
-        return material_num;
+    public String getMaterial_no() {
+        return material_no;
     }
 
-    public void setMaterial_num(String material_num) {
-        this.material_num = material_num;
+    public void setMaterial_no(String material_no) {
+        this.material_no = material_no;
     }
 
-    public String getSerial_num() {
-        return serial_num;
+    public String getSerial_no() {
+        return serial_no;
     }
 
-    public void setSerial_num(String serial_num) {
-        this.serial_num = serial_num;
+    public void setSerial_no(String serial_no) {
+        this.serial_no = serial_no;
     }
 }
