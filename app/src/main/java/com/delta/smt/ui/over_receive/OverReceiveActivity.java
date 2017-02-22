@@ -133,16 +133,16 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
         recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        dataList.add(new OverReceiveWarning.RowsBean.DataBean("线别", "料号", "架位", "需求量", "剩余料使用时间", "状态"));
+        dataList.add(new OverReceiveWarning.RowsBean.DataBean("工单", "线别", "模组料站", "料号", "需求量", "已发数量","状态","架位"));
         adapterTitle = new CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, OverReceiveWarning.RowsBean.DataBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_lineID, item.getLine());
-                holder.setText(R.id.tv_materialID, item.getMaterial_num());
-                holder.setText(R.id.tv_shelfPositionID, item.getShevles());
-                holder.setText(R.id.tv_demandAmount, item.getRe_quantity());
-                holder.setText(R.id.tv_materialRemainingUsageTime, item.getRest_time());
+                holder.setText(R.id.tv_lineID, item.getLine_name());
+                holder.setText(R.id.tv_materialID, item.getMaterial_no());
+                holder.setText(R.id.tv_shelfPositionID, item.getShelf_no());
+                holder.setText(R.id.tv_demandAmount, item.getAmount());
+                holder.setText(R.id.tv_materialRemainingUsageTime, "剩余料使用时间");
                 holder.setText(R.id.tv_state, item.getStatus());
 
             }
@@ -159,11 +159,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             @Override
             protected void convert(CommonViewHolder holder, OverReceiveWarning.RowsBean.DataBean item, int position) {
                 holder.itemView.setBackgroundColor(Color.WHITE);
-                holder.setText(R.id.tv_lineID, item.getLine());
-                holder.setText(R.id.tv_materialID, item.getMaterial_num());
-                holder.setText(R.id.tv_shelfPositionID, item.getShevles());
-                holder.setText(R.id.tv_demandAmount, item.getRe_quantity());
-                holder.setText(R.id.tv_materialRemainingUsageTime, item.getRest_time());
+                holder.setText(R.id.tv_lineID, item.getLine_name());
+                holder.setText(R.id.tv_materialID, item.getMaterial_no());
+                holder.setText(R.id.tv_shelfPositionID, item.getShelf_no());
+                holder.setText(R.id.tv_demandAmount, item.getAmount());
+                holder.setText(R.id.tv_materialRemainingUsageTime, "");
                 holder.setText(R.id.tv_state, item.getStatus());
             }
 
