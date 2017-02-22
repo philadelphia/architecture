@@ -140,11 +140,9 @@
 
         <service android:name=".service.warningService.WarningService" />
 
-        <activity android:name=".ui.feeder.warning.FeederWarningActivity"></activity>
+        <activity android:name=".ui.feeder.warning.supply.FeederSupplyListActivity"></activity>
 
-        <activity
-            android:name=".ui.feeder.handle.feederCheckIn.FeederCheckInActivity"
-            android:label="FeederCheckInActivity" />
+
 
         <activity
             android:name=".ui.feeder.handle.feederSupply.FeederSupplyActivity"
