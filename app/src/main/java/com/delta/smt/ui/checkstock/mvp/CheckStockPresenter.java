@@ -1,16 +1,18 @@
 package com.delta.smt.ui.checkstock.mvp;
 
+import android.util.Log;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.ExceptionsBean;
+import com.delta.smt.entity.InventoryExecption;
 import com.delta.smt.entity.Success;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.exceptions.Exceptions;
 import rx.functions.Action0;
 import rx.functions.Action1;
 
@@ -107,6 +109,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(ExceptionsBean success) {
                 getView().showContentView();
+                if (success.getRows().size()!=0){
                 StringBuffer errorBuffer=new StringBuffer();
                 errorBuffer.append("误差 \n");
                 StringBuffer fewBuffer=new StringBuffer();
@@ -141,7 +144,9 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                            }
                         }
                         fewBuffer.append(errorBuffer.toString()+changeBuffer.toString()+notBuffer.toString());
-                        getView().onErrorSucess(fewBuffer.toString());
+                        getView().onErrorSucess(fewBuffer.toString());}else {
+                        getView().onErrorSucess("本架位盘点正常");
+                    }
                 }else {
                     getView().onFailed(success.getMsg());
                 }}
@@ -228,9 +233,9 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             public void call() {
                 getView().showLoadingView();
             }
-        }).subscribe(new Action1<ExceptionsBean>() {
+        }).subscribe(new Action1<InventoryExecption>() {
             @Override
-            public void call(ExceptionsBean success) {
+            public void call(InventoryExecption success) {
                 getView().showContentView();
                 StringBuffer errorBuffer=new StringBuffer();
                 errorBuffer.append("误差 \n");
@@ -242,13 +247,11 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                                 case 0:
                                 case 1:
                                 case 2:
-                                    errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
-                                    break;
                                 case 3:
-                                    errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                    errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"\b 少料 \b"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getRealCount()));
                                     break;
                                 case 4:
-                                    errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                    errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"\b 多料 \b"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
                                     break;
 
                             }

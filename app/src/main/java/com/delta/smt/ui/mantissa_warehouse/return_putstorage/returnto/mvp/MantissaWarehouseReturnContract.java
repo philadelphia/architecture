@@ -30,7 +30,7 @@ public interface MantissaWarehouseReturnContract {
         void getSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
         void getFailed(String message);
 
-        void getMaterialLocationSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
+        void getMaterialLocationSucess();
         void getMaterialLocationFailed(String message);
 
         void getputinstrageSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);

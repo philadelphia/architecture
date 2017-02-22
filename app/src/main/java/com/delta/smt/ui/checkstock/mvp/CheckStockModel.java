@@ -5,11 +5,10 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.ExceptionsBean;
+import com.delta.smt.entity.InventoryExecption;
 import com.delta.smt.entity.Success;
 
 import rx.Observable;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by Lin.Hou on 2016-12-26.
@@ -59,7 +58,7 @@ public class CheckStockModel extends BaseModel<ApiService> implements CheckStock
     }
 
     @Override
-    public Observable<ExceptionsBean> getInventoryException() {
-        return getService().getInventoryException().compose(RxsRxSchedulers.<ExceptionsBean>io_main());
+    public Observable<InventoryExecption> getInventoryException() {
+        return getService().getInventoryException().compose(RxsRxSchedulers.<InventoryExecption>io_main());
     }
 }

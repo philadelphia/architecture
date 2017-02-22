@@ -78,71 +78,82 @@ public class OverReceiveWarning {
         }
 
         public static class DataBean {
-            /**
-             * line : H-01
-             * material_num : 4020108700
-             * shevles : A1D001
-             * re_quantity : 1470
-             * rest_time : 1
-             * status : 等待超领发料
-             * issure_quantity : 0
-             */
 
-            private String line;
-            private String material_num;
-            private String shevles;
-            private String re_quantity;
-            private String rest_time;
+
+            private String id;
+            private String line_name;
+            private String slot;
+            private String material_no;
+            private String amount;
+            private String issue_amount;
             private String status;
-            private int issure_quantity;
+            private String shelf_no;
 
-            public DataBean(String line, String material_num,String shevles, String re_quantity,String rest_time,  String status) {
-                this.line = line;
-                this.material_num = material_num;
-                this.re_quantity = re_quantity;
-                this.rest_time = rest_time;
-                this.shevles = shevles;
+            public DataBean(String id, String line_name,String slot,String material_no,String amount, String issue_amount,  String status,   String shelf_no) {
+                this.amount = amount;
+                this.id = id;
+                this.issue_amount = issue_amount;
+                this.line_name = line_name;
+                this.material_no = material_no;
+                this.shelf_no = shelf_no;
+                this.slot = slot;
                 this.status = status;
             }
 
-            public String getLine() {
-                return line;
+            public String getAmount() {
+                return amount;
             }
 
-            public void setLine(String line) {
-                this.line = line;
+            public void setAmount(String amount) {
+                this.amount = amount;
             }
 
-            public String getMaterial_num() {
-                return material_num;
+            public String getId() {
+                return id;
             }
 
-            public void setMaterial_num(String material_num) {
-                this.material_num = material_num;
+            public void setId(String id) {
+                this.id = id;
             }
 
-            public String getShevles() {
-                return shevles;
+            public String getIssue_amount() {
+                return issue_amount;
             }
 
-            public void setShevles(String shevles) {
-                this.shevles = shevles;
+            public void setIssue_amount(String issue_amount) {
+                this.issue_amount = issue_amount;
             }
 
-            public String getRe_quantity() {
-                return re_quantity;
+            public String getLine_name() {
+                return line_name;
             }
 
-            public void setRe_quantity(String re_quantity) {
-                this.re_quantity = re_quantity;
+            public void setLine_name(String line_name) {
+                this.line_name = line_name;
             }
 
-            public String getRest_time() {
-                return rest_time;
+            public String getMaterial_no() {
+                return material_no;
             }
 
-            public void setRest_time(String rest_time) {
-                this.rest_time = rest_time;
+            public void setMaterial_no(String material_no) {
+                this.material_no = material_no;
+            }
+
+            public String getShelf_no() {
+                return shelf_no;
+            }
+
+            public void setShelf_no(String shelf_no) {
+                this.shelf_no = shelf_no;
+            }
+
+            public String getSlot() {
+                return slot;
+            }
+
+            public void setSlot(String slot) {
+                this.slot = slot;
             }
 
             public String getStatus() {
@@ -151,14 +162,6 @@ public class OverReceiveWarning {
 
             public void setStatus(String status) {
                 this.status = status;
-            }
-
-            public int getIssure_quantity() {
-                return issure_quantity;
-            }
-
-            public void setIssure_quantity(int issure_quantity) {
-                this.issure_quantity = issure_quantity;
             }
         }
     }

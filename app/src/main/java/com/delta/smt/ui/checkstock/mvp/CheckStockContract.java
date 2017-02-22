@@ -4,6 +4,7 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.ExceptionsBean;
+import com.delta.smt.entity.InventoryExecption;
 import com.delta.smt.entity.Success;
 
 import java.util.List;
@@ -40,6 +41,6 @@ public class CheckStockContract {
         Observable<Success>getSubmit(String subShelfCode);
         Observable<String>getCheckStockSuccess();
         Observable<Success>OnEnd();
-        Observable<ExceptionsBean>getInventoryException();
+        Observable<InventoryExecption>getInventoryException();
     }
 }
