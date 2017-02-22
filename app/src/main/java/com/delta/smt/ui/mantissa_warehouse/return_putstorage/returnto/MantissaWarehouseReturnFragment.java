@@ -147,10 +147,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     }
 
     @Override
-    public void getMaterialLocationSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns) {
-        dataList2.clear();
-        dataList2.addAll(mantissaWarehouseReturns);
-        adapter2.notifyDataSetChanged();
+    public void getMaterialLocationSucess() {
         flag = 2;
         //扫描成功震动并发声
         VibratorAndVoiceUtils. correctVibrator (getActivity());
