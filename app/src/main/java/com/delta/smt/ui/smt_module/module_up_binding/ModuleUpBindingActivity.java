@@ -164,6 +164,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+                holder.setText(R.id.tv_line_name,"线别");
+                holder.setText(R.id.tv_side,"面别");
             }
 
             @Override
@@ -186,6 +188,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+                holder.setText(R.id.tv_line_name,linName);
+                holder.setText(R.id.tv_side,side);
             }
 
             @Override
