@@ -7,31 +7,32 @@
 
     <LinearLayout
         android:orientation="horizontal"
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:text="线别："
-            android:textSize="40px"
+            android:textSize="50px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
         <TextView
             android:text="**"
-            android:textSize="40px"
+            android:textSize="50px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_line_type"/>
         <TextView
             android:text="待接料料站："
-            android:textSize="40px"
-            android:layout_marginLeft="100px"
+            android:textSize="50px"
+            android:layout_marginLeft="150px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
         <TextView
             android:text="**"
-            android:textSize="40px"
+            android:textSize="50px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_material_station_num"/>

@@ -61,8 +61,12 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-                getView().getItemHandAddDatasFailed(throwable.getMessage());
+                try {
+                    getView().showErrorView();
+                    getView().getItemHandAddDatasFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
