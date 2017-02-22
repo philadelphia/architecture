@@ -396,7 +396,7 @@ public interface ApiService {
     Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
 
     //尾数仓查询料盘的位置
-    @GET("SMM/MantissaStorage/qMaterialPlace")
+    @GET("SMM/MantissaStorage/findshelf")
     Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query("condition") String bind);
 
     //尾数仓查料盘入库
