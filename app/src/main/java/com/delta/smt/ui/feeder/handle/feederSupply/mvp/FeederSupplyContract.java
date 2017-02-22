@@ -22,6 +22,15 @@ public interface FeederSupplyContract {
          void onFailed(String message);
 
         void onUpLoadFailed(String message);
+
+
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
     }
 
     interface Model extends IModel{

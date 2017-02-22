@@ -19,6 +19,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -49,6 +50,8 @@ import static com.delta.smt.base.BaseApplication.getContext;
  */
 
 public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> implements FeederSupplyContract.View {
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.tv_setting)
@@ -190,6 +193,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
 //            getPresenter().upLoadToMES();
         }
+
+        for (FeederSupplyItem feederSupplyItem : dataSource) {
+            if (mCurrentMaterialNumber.equalsIgnoreCase(feederSupplyItem.getMaterialID()) && mCurrentSerinalNumber.equalsIgnoreCase(feederSupplyItem.getSerialNumber())) {
+                Log.i(TAG, "对应的item: " + feederSupplyItem.toString());
+                index = dataSource.indexOf(feederSupplyItem);
+                Log.i(TAG, "index:== " + index);
+            }
+        }
     }
 
 
@@ -205,6 +216,28 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
+
+    }
+
 
     @Override
     public void onScanSuccess(String barcode) {
@@ -215,11 +248,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
             mCurrentMaterialNumber = materialBlockBarCode.getDeltaMaterialNumber();
             mCurrentSerinalNumber = materialBlockBarCode.getStreamNumber();
-            mCurrentquantity = materialBlockBarCode.getCount();
             Log.i(TAG, "barcode == " + barcode);
             Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialNumber) ;
             Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerinalNumber) ;
-            Log.i(TAG, "mCurrentSerialNumber: " + mCurrentquantity) ;
             for (FeederSupplyItem feederSupplyItem : dataSource) {
                     if (mCurrentMaterialNumber.equalsIgnoreCase(feederSupplyItem.getMaterialID()) && mCurrentSerinalNumber.equalsIgnoreCase(feederSupplyItem.getSerialNumber())) {
                         Log.i(TAG, "对应的item: " + feederSupplyItem.toString());
@@ -228,11 +259,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
                         index = dataSource.indexOf(feederSupplyItem);
                         Log.i(TAG, "当前扫描的数据index是: " + index);
-//                        Collections.swap(dataSource,index,0);
                         Map<String, String> map = new HashMap<>();
-                        map.put("material_num", mCurrentMaterialNumber);
-                        map.put("serial_num", mCurrentSerinalNumber);
-                        map.put("quantity", mCurrentquantity);
+                        map.put("material_no", mCurrentMaterialNumber);
+                        map.put("serial_no", mCurrentSerinalNumber);
                         Gson gson = new Gson();
                         String argument = gson.toJson(map);
                         Log.i(TAG, "argument== " + argument);
@@ -242,6 +271,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             }
         } catch (EntityNotFountException e) {
             e.printStackTrace();
+        }catch (ArrayIndexOutOfBoundsException e){
+            Toast.makeText(this,"解析错误",Toast.LENGTH_SHORT).show();
         }
 
 
@@ -261,5 +292,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         return super.onOptionsItemSelected(item);
     }
     
+
+
 
 }

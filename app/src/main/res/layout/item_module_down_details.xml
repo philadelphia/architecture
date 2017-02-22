@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content">
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="85px">
         <TextView
             android:id="@+id/tv_work_order"
-            android:layout_width="90dp"
+            android:layout_width="300px"
             android:textColor="#333333"
             android:gravity="center"
             android:text="工单"
@@ -18,7 +18,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_side"
-            android:layout_width="90dp"
+            android:layout_width="120px"
             android:textColor="#333333"
             android:gravity="center"
             android:text="面别"
@@ -27,7 +27,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_materialID"
-            android:layout_width="90dp"
+            android:layout_width="300px"
             android:textColor="#333333"
             android:gravity="center"
             android:text="料号"
@@ -37,7 +37,7 @@
 
         <TextView
             android:id="@+id/tv_serialID"
-            android:layout_width="90dp"
+            android:layout_width="300px"
             android:gravity="center"
             android:text="流水码"
             android:textColor="#333333"
@@ -46,7 +46,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_feederID"
-            android:layout_width="150dp"
+            android:layout_width="200px"
             android:gravity="center"
             android:text="Feeder ID"
             android:textColor="#333333"
@@ -64,7 +64,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_ownership"
-            android:layout_width="120dp"
+            android:layout_width="200px"
             android:gravity="center"
             android:text="归属"
             android:textColor="#333333"
@@ -73,7 +73,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_moduleDownTime"
-            android:layout_width="180dp"
+            android:layout_width="300px"
             android:gravity="center"
             android:text="下模组时间"
             android:textColor="#333333"
@@ -84,4 +84,4 @@
 
 
 
-</android.support.v7.widget.LinearLayoutCompat>
+</com.zhy.autolayout.AutoLinearLayout>

@@ -21,7 +21,7 @@ import com.delta.smt.ui.feeder.wareSelect.di.DaggerWareSelectComponent;
 import com.delta.smt.ui.feeder.wareSelect.di.WareSelectModule;
 import com.delta.smt.ui.feeder.wareSelect.mvp.WareSelectContract;
 import com.delta.smt.ui.feeder.wareSelect.mvp.WareSelectPresenter;
-import com.delta.smt.ui.feeder.warning.FeederWarningActivity;
+import com.delta.smt.ui.feeder.warning.supply.FeederSupplyListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,7 +117,7 @@ public class WareSelectActivity extends BaseActivity<WareSelectPresenter> implem
             case R.id.tv_setting:
                 break;
             case R.id.btn_selectWareHouse:
-                IntentUtils.showIntent(this, FeederWarningActivity.class);
+                IntentUtils.showIntent(this, FeederSupplyListActivity.class);
                 break;
             default:
                 break;
