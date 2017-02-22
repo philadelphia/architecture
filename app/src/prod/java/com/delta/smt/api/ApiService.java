@@ -11,6 +11,7 @@ import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.InventoryExecption;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
@@ -216,10 +217,10 @@ public interface ApiService {
     Observable<Success> closeLight(@Query("subShelfCode") String s);//关灯操作
 
     @GET("pcb/management/outbound/alarm/submit")
-    Observable<Success> getAlarmOutSubmit(@Query("alarmId") int scheduleId,@Query("amount")int amount);//提交
+    Observable<Success> getAlarmOutSubmit(@Query("alarmId") int scheduleId);//提交
 
     @GET("pcb/management/outbound/schedule/submit")
-    Observable<Success> getOutSubmit(@Query("scheduleId") int scheduleId,@Query("amount")int amount);//提交
+    Observable<Success> getOutSubmit(@Query("scheduleId") int scheduleId);//提交
 
     @GET("pcb/management/outbound/alarm/submit")
     Observable<Success> getAlarmSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId, @Query("alarmId") int alarmId);//预警出库完成
@@ -249,7 +250,7 @@ public interface ApiService {
     Observable<ExceptionsBean> getException(@Query("subShelfCode") String boxSerial);//盘点结果
 
     @GET("pcb/inventory/exception")
-    Observable<ExceptionsBean> getInventoryException();//获取总结
+    Observable<InventoryExecption> getInventoryException();//获取总结
 
     @GET("pcb/inventory/submit")
     Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
@@ -396,7 +397,7 @@ public interface ApiService {
     Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
 
     //尾数仓查询料盘的位置
-    @GET("SMM/MantissaStorage/qMaterialPlace")
+    @GET("SMM/MantissaStorage/findshelf")
     Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query("condition") String bind);
 
     //尾数仓查料盘入库

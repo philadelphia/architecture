@@ -44,65 +44,39 @@ public class MantissaWarehouseReturnResult {
     }
 
     public static class MantissaWarehouseReturn {
-        /**
-         * shelves : D33E-01
-         * material_num : 4020108700
-         * work_order : 20171011
-         * status : 0
-         */
 
-        private String shelves;
-        private String material_num;
-        private String serial_num;
-        private String work_order;
-        private String status;
+        private String material_no;
+        private String serial_no;
+        private String shelf_no;
 
-        public MantissaWarehouseReturn(String shelves, String material_num, String serial_num, String work_order, String status) {
-            this.shelves = shelves;
-            this.material_num = material_num;
-            this.serial_num = serial_num;
-            this.work_order = work_order;
-            this.status = status;
+        public MantissaWarehouseReturn(String material_no, String serial_no, String shelf_no) {
+            this.material_no = material_no;
+            this.serial_no = serial_no;
+            this.shelf_no = shelf_no;
         }
 
-        public String getSerial_num() {
-            return serial_num;
+        public String getMaterial_no() {
+            return material_no;
         }
 
-        public void setSerial_num(String serial_num) {
-            this.serial_num = serial_num;
+        public void setMaterial_no(String material_no) {
+            this.material_no = material_no;
         }
 
-        public String getShelves() {
-            return shelves;
+        public String getSerial_no() {
+            return serial_no;
         }
 
-        public void setShelves(String shelves) {
-            this.shelves = shelves;
+        public void setSerial_no(String serial_no) {
+            this.serial_no = serial_no;
         }
 
-        public String getMaterial_num() {
-            return material_num;
+        public String getShelf_no() {
+            return shelf_no;
         }
 
-        public void setMaterial_num(String material_num) {
-            this.material_num = material_num;
-        }
-
-        public String getWork_order() {
-            return work_order;
-        }
-
-        public void setWork_order(String work_order) {
-            this.work_order = work_order;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
+        public void setShelf_no(String shelf_no) {
+            this.shelf_no = shelf_no;
         }
     }
 }

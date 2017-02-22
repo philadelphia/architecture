@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -253,7 +254,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     @Override
     public void getItemWarningDatasFailed(String message) {
-        ToastUtils.showMessage(getContext(), message);
+/*        ToastUtils.showMessage(getContext(), message);*/
+        Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_INDEFINITE).show();
     }
 
     @Override
