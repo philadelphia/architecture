@@ -223,8 +223,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
                 }
             });
         }
-    public void getOutSumbit(int scheduleId, int amount){
-        getModel().getOutSubmit(scheduleId,amount).doOnSubscribe(new Action0() {
+    public void getOutSumbit(int scheduleId){
+        getModel().getOutSubmit(scheduleId).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showContentView();
@@ -247,8 +247,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             }
         });
     }
-    public void getAlarmOutSumbit(int scheduleId, int amount){
-        getModel().getAlarmOutSubmit(scheduleId,amount).doOnSubscribe(new Action0() {
+    public void getAlarmOutSumbit(int scheduleId){
+        getModel().getAlarmOutSubmit(scheduleId).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showContentView();

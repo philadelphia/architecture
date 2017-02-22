@@ -38,10 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.delta.buletoothio.barcode.parse.BarCodeType.PCB_FRAME_LOCATION;
 
 
@@ -169,19 +167,11 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 //                    }
 //                }
                 if (item.getIsColor()==1) {
-                    holder.setBackgroundColor(R.id.pcb_number, Color.YELLOW);
-                    holder.setBackgroundColor(R.id.pcb_price, Color.YELLOW);
-                    holder.setBackgroundColor(R.id.pcb_thenumber, Color.YELLOW);
-                    //           holder.setBackgroundColor(R.id.pcb_demand, Color.YELLOW);
-                    holder.setBackgroundColor(R.id.pcb_code, Color.YELLOW);
-                    holder.setBackgroundColor(R.id.pcb_time, Color.YELLOW);
+                  holder.itemView.setBackgroundColor(Color.YELLOW);
                 }else if (item.getIsColor()==2){
-                    holder.setBackgroundColor(R.id.pcb_number, Color.GRAY);
-                    holder.setBackgroundColor(R.id.pcb_price, Color.GRAY);
-                    holder.setBackgroundColor(R.id.pcb_thenumber, Color.GRAY);
-                    //           holder.setBackgroundColor(R.id.pcb_demand, Color.YELLOW);
-                    holder.setBackgroundColor(R.id.pcb_code, Color.GRAY);
-                    holder.setBackgroundColor(R.id.pcb_time, Color.GRAY);
+                    holder.itemView.setBackgroundColor(Color.GRAY);
+                }else {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
                 }
 
             }
@@ -377,9 +367,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @OnClick(R.id.warning_sum)
     public void onClick() {
         if (mIsAlarmInfo) {
-            getPresenter().getAlarmOutSumbit(mAlarminfoId, mSunAmout);
+            getPresenter().getAlarmOutSumbit(mAlarminfoId);
         } else {
-            getPresenter().getOutSumbit(mAlarminfoId,mSunAmout);
+            getPresenter().getOutSumbit(mAlarminfoId);
         }
     }
 }

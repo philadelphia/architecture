@@ -2,6 +2,7 @@ package com.delta.smt.ui.checkstock;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,12 +36,13 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
- @BindView(R.id.statusLayout)
+    @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     @BindView(R.id.goneView)
     AutoLinearLayout goneView;
     @BindView(R.id.startAndstop_text)
     TextView startAndstopText;
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -80,14 +82,19 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         return R.layout.activity_startworkandstopwork;
     }
 
-    @OnClick({R.id.startAndstop_startwork})
+    @OnClick({R.id.startAndstop_startwork,R.id.startAndstop_continue,R.id.startAndstop_cancel})
     public void onClick(View view) {
 
         switch (view.getId()) {
             case R.id.startAndstop_startwork:
                 getPresenter().StartWork();
                 break;
-
+            case R.id.startAndstop_continue:
+                startActivity(new Intent(this, CheckStockActivity.class));
+                break;
+            case R.id.startAndstop_cancel:
+                finish();
+                break;
         }
     }
 
@@ -105,9 +112,13 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     @Override
     public void ongoingSuccess(OnGoing s) {
         startAndstopStartwork.setVisibility(View.GONE);
-        goneView.setVisibility(View.INVISIBLE);
-        startAndstopText.setText(s.getRows().get(0).getCompletedSubShelf().get(s.getRows().get(0).getCompletedSubShelf().size()));
+        goneView.setVisibility(View.VISIBLE);
+        goneView.setGravity(Gravity.CENTER);
+        if (s.getRows() != null) {
+            startAndstopText.setText(s.getRows().getCompletedSubShelf().get(s.getRows().getCompletedSubShelf().size() - 1));
+        } else {
 
+        }
     }
 
     @Override
@@ -135,7 +146,5 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     public void showEmptyView() {
         statusLayout.showEmptyView();
     }
-
-
 
 }
