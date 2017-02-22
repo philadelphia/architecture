@@ -31,6 +31,7 @@ import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponen
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -251,6 +252,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             Log.i(TAG, "barcode == " + barcode);
             Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialNumber) ;
             Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerinalNumber) ;
+            VibratorAndVoiceUtils.correctVibrator(this);
+            VibratorAndVoiceUtils.correctVoice(this);
             for (FeederSupplyItem feederSupplyItem : dataSource) {
                     if (mCurrentMaterialNumber.equalsIgnoreCase(feederSupplyItem.getMaterialID()) && mCurrentSerinalNumber.equalsIgnoreCase(feederSupplyItem.getSerialNumber())) {
                         Log.i(TAG, "对应的item: " + feederSupplyItem.toString());
@@ -270,8 +273,12 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 }
             }
         } catch (EntityNotFountException e) {
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
             e.printStackTrace();
         }catch (ArrayIndexOutOfBoundsException e){
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
             Toast.makeText(this,"解析错误",Toast.LENGTH_SHORT).show();
         }
 

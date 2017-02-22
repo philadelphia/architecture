@@ -72,7 +72,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     private String mCurrentWorkOrder;
     private String mCurrentMaterialID;
     private String mCurrentSerialNumber;
+    private String mCurrentQuantity;
     private String mCurrentLocation;
+    private String mCurrentSlot;
+    private String mCurrentFeederID;
     private boolean flag1;
     private boolean flag2;
     private int index = -1;
@@ -91,6 +94,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     StatusLayout statusLayout;
 
     private static final String TAG = "ModuleDownDetailsActivi";
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -297,17 +301,27 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
                 mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
                 mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
+                mCurrentQuantity = materialBlockBarCode.getCount();
                 Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
                 Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
                 for (ModuleDownDetailsItem.RowsBean moduleDownDetailsItem : dataSource) {
                     if (mCurrentMaterialID.equalsIgnoreCase(moduleDownDetailsItem.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(moduleDownDetailsItem.getSerial_no())) {
                         index = dataSource.indexOf(moduleDownDetailsItem);
+
+                        mCurrentSlot =  moduleDownDetailsItem.getSlot();
+                        mCurrentFeederID=  moduleDownDetailsItem.getFeeder_id();
+
                         Log.i(TAG, "对应的feederCheckInItem: " + moduleDownDetailsItem.toString());
                         adapter.notifyDataSetChanged();
                         Log.i(TAG, "onScanSuccess: ");
                         Map<String, String> map = new HashMap<>();
-                        map.put("material_num", materialBlockBarCode.getDeltaMaterialNumber());
-                        map.put("serial_num", materialBlockBarCode.getStreamNumber());
+                        map.put("work_order", mCurrentWorkOrder);
+                        map.put("material_no", materialBlockBarCode.getDeltaMaterialNumber());
+                        map.put("serial_no", materialBlockBarCode.getStreamNumber());
+                        map.put("side", side);
+                        map.put("feeder_id", mCurrentFeederID);
+                        map.put("qty", mCurrentQuantity);
+                        map.put("slot", mCurrentSlot);
                         Gson gson = new Gson();
                         String argument = gson.toJson(map);
                         Log.i(TAG, "argument== " + argument);
@@ -329,9 +343,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 Log.i(TAG, "mCurrentLocation: " + frameLocation.toString());
                 Map<String, String> map = new HashMap<>();
                 map.put("work_order", mCurrentWorkOrder);
+                map.put("side", side);
                 map.put("material_no", mCurrentMaterialID);
                 map.put("serial_no", mCurrentSerialNumber);
+                map.put("feeder_id", mCurrentFeederID);
                 map.put("shelf_no", mCurrentLocation);
+                map.put("qty", mCurrentQuantity);
+                map.put("slot", mCurrentSlot);
                 Gson gson = new Gson();
                 String argument = gson.toJson(map);
                 Log.i(TAG, "argument== " + argument);

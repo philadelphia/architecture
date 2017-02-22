@@ -60,13 +60,11 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     AutoToolbar toolbar;
     private List<FeederSupplyWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<FeederSupplyWarningItem> adapter;
-    private static final String TAG = "SupplyFragment";
+    private static final String TAG = "FeederSupplyList";
     private AlertDialog alertDialog;
 
     @Inject
     WarningManger warningManger;
-
-
 
 
     @Override
@@ -148,7 +146,8 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
             FeederSupplyWarningItem entity = data.get(i);
             entity.setEntityId(i);
             long time = System.currentTimeMillis();
-            entity.setEnd_time(time + entity.getRemainTime());
+            entity.setEnd_time(time + entity.getRemainTime() * 1000);
+            Log.e(TAG, "onSuccess: " + entity.toString());
             dataList.add(entity);
 
         }
@@ -213,8 +212,21 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         warningManger.registerWReceiver(this);
         Log.i(TAG, "onResume: ");
         super.onResume();
+
+        if (null != adapter) {
+            adapter.startRefreshTime();
+        }
+
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (null != adapter) {
+            adapter.cancelRefreshTime();
+        }
+    }
 
     @Override
     protected void onStop() {
@@ -222,6 +234,14 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
 
         Log.i(TAG, "onResume: ");
         warningManger.unregisterWReceriver(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null != adapter) {
+            adapter.cancelRefreshTime();
+        }
     }
 
     @Override
