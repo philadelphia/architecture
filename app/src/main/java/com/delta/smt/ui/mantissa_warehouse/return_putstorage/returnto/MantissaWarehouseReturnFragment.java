@@ -3,7 +3,6 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -26,6 +25,7 @@ import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.DaggerM
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.MantissaWarehouseReturnModule;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnContract;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -143,7 +143,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getFailed(String message) {
-        Toast.makeText(getActivity(), "数据...异常", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -152,11 +152,17 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         dataList2.addAll(mantissaWarehouseReturns);
         adapter2.notifyDataSetChanged();
         flag = 2;
+        //扫描成功震动并发声
+        VibratorAndVoiceUtils. correctVibrator (getActivity());
+        VibratorAndVoiceUtils. correctVoice (getActivity());
     }
 
     @Override
     public void getMaterialLocationFailed(String message) {
-        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        //扫描失败震动并发声
+        VibratorAndVoiceUtils. wrongVibrator (getActivity());
+        VibratorAndVoiceUtils. wrongVoice (getActivity());
     }
 
     @Override
@@ -171,11 +177,18 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         dataList2.addAll(mantissaWarehouseReturns);
         adapter2.notifyDataSetChanged();
         flag = 1;
+        //扫描成功震动并发声
+        VibratorAndVoiceUtils. correctVibrator (getActivity());
+        VibratorAndVoiceUtils. correctVoice (getActivity());
+
     }
 
     @Override
     public void getputinstrageFailed(String message) {
-        Toast.makeText(getActivity(), "数据异常", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        //扫描失败震动并发声
+        VibratorAndVoiceUtils. wrongVibrator (getActivity());
+        VibratorAndVoiceUtils. wrongVoice (getActivity());
     }
 
 
@@ -183,7 +196,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     public void scanSucceses(BacKBarCode bacKBarCode) {
 
         String barcode = bacKBarCode.getBarCode();
-
 
             BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
 
@@ -202,9 +214,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         String s = gson.toJson(bindBean);
 
                         getPresenter().getMaterialLocation(s);
-                        Log.i(TAG,flag+"aaaaaaaaaaaaaaa");
                     } catch (EntityNotFountException e) {
-                        Log.i(TAG,e+"eeeeeeeeeeeeeee111111");
                     }
                     break;
                 case 2:
