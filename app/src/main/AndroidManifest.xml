@@ -51,10 +51,6 @@
             android:name=".StartActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 故障处理预警-->
-        <activity
-            android:name=".ui.fault_processing.produce_line.ProduceLineActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.fault_processing.processing.FalutProcessingActivity"
             android:screenOrientation="portrait" />
