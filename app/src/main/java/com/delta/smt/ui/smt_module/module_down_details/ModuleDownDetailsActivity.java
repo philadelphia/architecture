@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -222,14 +223,16 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     public void onSuccessMaintain(ModuleDownMaintain maintain) {
-        /*if(maintain.getMsg().toLowerCase().equals("success")){
-            getPresenter().getAllModuleDownDetailsItems(preferences.getString("work_order",""));
-        }*/
+        if(maintain.getMsg().toLowerCase().equals("success")){
+            Toast.makeText(this, "Feeder保养成功！", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Feeder保养失败！", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onFailMaintain() {
-
+        Toast.makeText(this, "Feeder保养网络请求失败！", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -298,16 +301,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         switch (view.getId()) {
             case R.id.btn_feederMaintain:
 
-                /*if(dataSource.size()>0){
-                    String res ="";
-                    for (int i=0;i<dataSource.size()-1;i++){
-                        res += dataSource.get(i).getId()+",";
-                    }
-                    res += dataSource.get(dataSource.size()-1).getId();
-                    Toast.makeText(this,res,Toast.LENGTH_SHORT).show();
-                    getPresenter().getAllModuleDownMaintainResult(res);
-                }*/
-
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", mCurrentWorkOrder);
+                map.put("side",side);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+                getPresenter().getAllModuleDownMaintainResult(argument);
                 break;
         }
     }

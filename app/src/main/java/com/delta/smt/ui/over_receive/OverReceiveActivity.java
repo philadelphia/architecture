@@ -238,18 +238,16 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     public void onSuccessOverReceiveDebit(OverReceiveDebitResult data) {
-        if (data.getMsg().toLowerCase().equals("success")) {
-            //
-            //Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
+        if (data.getCode().toLowerCase().equals("0")) {
+            Toast.makeText(this,"扣账成功！",Toast.LENGTH_SHORT).show();
         } else {
-            //
-            //Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"扣账失败！",Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onFaliedOverReceiveDebit() {
-
+        Toast.makeText(this,"扣账网络请求失败！",Toast.LENGTH_SHORT).show();
     }
 
     @Override

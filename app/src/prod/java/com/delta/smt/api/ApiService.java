@@ -431,7 +431,7 @@ public interface ApiService {
     @GET("SMM/ExcessManagement/delivery")
     Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
 
-    @GET("SMM/WareHIssue/debit")
+    @GET("SMM/ExcessManagement/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     //上模组
@@ -456,8 +456,8 @@ public interface ApiService {
     @GET("SMM/unplugmod/getModsByWordOrder")
     Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("condition") String condition);
 
-    @GET("SMM/unplugmod/updateMod")
-    Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("ids") String content);
+    @GET("SMM/unplugmod/feederMaintain")
+    Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("condition") String condition);
 
     @GET("SMM/unplugmod/bindVirtualLine")
     Observable<VirtualLineBindingItem> getVirtualBindingResult(@Query("condition") String condition);
