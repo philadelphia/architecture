@@ -4,24 +4,18 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp">
 
         <TextView
             android:id="@+id/tv_number"
-            android:layout_width="90dp"
-            android:gravity="center"
-            android:text="料号"
-            android:textColor="#333333"
-            android:textSize="40px"
-            android:background="@drawable/textview_border"
-            android:layout_height="match_parent"/>
-        <TextView
-            android:id="@+id/tv_lastwarehouse_location"
             android:layout_width="110dp"
             android:gravity="center"
-            android:text="尾数仓架位"
+            android:text="料号"
             android:textColor="#333333"
             android:textSize="40px"
             android:background="@drawable/textview_border"
@@ -47,17 +41,17 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_count"
-            android:layout_width="70dp"
+            android:layout_width="110dp"
             android:gravity="center"
             android:text="数量"
             android:textColor="#333333"
             android:textSize="40px"
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
-
-
     </LinearLayout>
 
 
+
+    </RelativeLayout>
 
 </android.support.v7.widget.LinearLayoutCompat>
