@@ -1,8 +1,8 @@
 package com.delta.smt.ui.checkstock;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -37,12 +37,12 @@ import com.delta.smt.ui.checkstock.di.DaggerCheckStockComponent;
 import com.delta.smt.ui.checkstock.mvp.CheckStockContract;
 import com.delta.smt.ui.checkstock.mvp.CheckStockPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
+import com.squareup.haha.perflib.Main;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.smt.R.id.recy_contetn;
@@ -361,7 +361,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onEndSucess() {
-        finish();
+        IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
     }
 
     @Override
@@ -421,6 +421,12 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case R.id.result_alteration:
                 if (mResultDialog.isShowing()) {
                     mResultDialog.dismiss();
+                    dataList.clear();
+                    mAdapter.notifyDataSetChanged();
+                    cargonTv.setText("");
+                    status=1;
+
+
                 }
                 break;
             case R.id.rollback_affirm:
@@ -461,11 +467,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                mRollbackDialog = builder.create();
-                mRollbackDialog.show();
-                mRollbackDialog.setContentView(R.layout.dialog_rollback);
-                mRollbackDialog.findViewById(R.id.rollback_affirm).setOnClickListener(this);
-                mRollbackDialog.findViewById(R.id.rollback_cancel).setOnClickListener(this);
+                IntentUtils.showIntent(this, MainActivity.class);
                 break;
             default:
                 break;
@@ -498,6 +500,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                         if (mId != 0) {
                             String ss = cargoned.getText().toString();
                             getPresenter().fetchCheckStockSuccessNumber(mId, Integer.valueOf(ss));
+                            cargoned.setText(null);
                             cargoned.clearFocus();
                             cargoned.setFocusable(false);
 
