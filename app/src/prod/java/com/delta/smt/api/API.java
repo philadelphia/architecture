@@ -3,7 +3,7 @@ package com.delta.smt.api;
 public class API {
     //public static  String BASE_URL = "http://dg3smt-server.delta.corp:8081/";
     // public static  String BASE_URL = "http://172.22.34.37:8081/";
-     public static String BASE_URL = "http://172.22.34.45:8081/";
+     public static String BASE_URL = "http://172.22.34.43:8081/";
     //public static String BASE_URL = "http://CNBJDRCNB022:8081/";
     //String BASE_URL = "http://172.17.52.43:8081/";
     //更新配置文件update.json url

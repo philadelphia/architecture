@@ -79,7 +79,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private String mCurrentSerinalNumber;
     private String mCurrentMaterialNumber;
     private String mCurrentquantity;
-    private  int index = -1;
+
+
 
     @Override
     protected int getContentViewId() {
@@ -99,7 +100,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         String side = intent.getStringExtra(Constant.SIDE);
         Log.i(TAG, "workId==: " + workId);
         Log.i(TAG, "side==: " + side);
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("work_order", workId);
         map.put("side", side);
 
@@ -117,7 +118,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("备料");
-        dataList.add(new FeederSupplyItem(" ", " ", "  "," ","", 0));
+        dataList.add(new FeederSupplyItem(" ", " ", "  ", " ", "", 0));
         CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
@@ -141,13 +142,17 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_module, item.getSlot());
                 holder.setText(R.id.tv_timestamp, item.getBindTime());
-                holder.setText(R.id.tv_status, item.getStatus()==0 ? "等待上模组" :" 上模组完成");
+                holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待上模组" : " 上模组完成");
 
-                if (position == index) {
+                if (item.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber) && item.getSerialNumber().equalsIgnoreCase(mCurrentSerinalNumber)) {
                     holder.itemView.setBackgroundColor(Color.YELLOW);
+                    tvModuleID.setText("模组料站: " + item.getSlot());
+                    Log.i(TAG, "对应的item: " + item.toString());
                 } else {
+
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
+
             }
 
             @Override
@@ -178,6 +183,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void onSuccess(List<FeederSupplyItem> data) {
         Log.i(TAG, "onSuccess: ");
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
+
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
@@ -195,13 +201,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 //            getPresenter().upLoadToMES();
         }
 
-        for (FeederSupplyItem feederSupplyItem : dataSource) {
-            if (mCurrentMaterialNumber.equalsIgnoreCase(feederSupplyItem.getMaterialID()) && mCurrentSerinalNumber.equalsIgnoreCase(feederSupplyItem.getSerialNumber())) {
-                Log.i(TAG, "对应的item: " + feederSupplyItem.toString());
-                index = dataSource.indexOf(feederSupplyItem);
-                Log.i(TAG, "index:== " + index);
-            }
-        }
+
     }
 
 
@@ -243,46 +243,37 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void onScanSuccess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
+        Log.i(TAG, "barcode == " + barcode);
         super.onScanSuccess(barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
             MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
             mCurrentMaterialNumber = materialBlockBarCode.getDeltaMaterialNumber();
             mCurrentSerinalNumber = materialBlockBarCode.getStreamNumber();
-            Log.i(TAG, "barcode == " + barcode);
-            Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialNumber) ;
-            Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerinalNumber) ;
+
+            Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialNumber);
+            Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerinalNumber);
             VibratorAndVoiceUtils.correctVibrator(this);
             VibratorAndVoiceUtils.correctVoice(this);
-            for (FeederSupplyItem feederSupplyItem : dataSource) {
-                    if (mCurrentMaterialNumber.equalsIgnoreCase(feederSupplyItem.getMaterialID()) && mCurrentSerinalNumber.equalsIgnoreCase(feederSupplyItem.getSerialNumber())) {
-                        Log.i(TAG, "对应的item: " + feederSupplyItem.toString());
-                        tvModuleID.setText("模组料站: " + feederSupplyItem.getSlot());
-                        Log.i(TAG, "对应的模组料站是: " + feederSupplyItem.getSlot());
+            adapter.notifyDataSetChanged();
 
-                        index = dataSource.indexOf(feederSupplyItem);
-                        adapter.notifyDataSetChanged();
-                        Log.i(TAG, "当前扫描的数据index是: " + index);
-                        Map<String, String> map = new HashMap<>();
-                        map.put("material_no", mCurrentMaterialNumber);
-                        map.put("serial_no", mCurrentSerinalNumber);
-                        Gson gson = new Gson();
-                        String argument = gson.toJson(map);
-                        Log.i(TAG, "argument== " + argument);
-                        getPresenter().getFeederInsertionToSlotTimeStamp(argument);
+            Map<String, String> map = new HashMap<>();
+            map.put("material_no", mCurrentMaterialNumber);
+            map.put("serial_no", mCurrentSerinalNumber);
+            Gson gson = new Gson();
+            String argument = gson.toJson(map);
+            Log.i(TAG, "argument== " + argument);
+            getPresenter().getFeederInsertionToSlotTimeStamp(argument);
 
-                }
-            }
         } catch (EntityNotFountException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
             e.printStackTrace();
-        }catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
-            Toast.makeText(this,"解析错误",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "解析错误", Toast.LENGTH_SHORT).show();
         }
-
 
 
     }
@@ -299,8 +290,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         }
         return super.onOptionsItemSelected(item);
     }
-    
-
 
 
 }
