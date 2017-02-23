@@ -7,32 +7,25 @@ import java.util.List;
  */
 
 public class OnGoing {
+
+
     /**
+     * msg : Success
+     * rows : {"startTime":"Feb 22, 2017 2:03:08 PM","id":6,"userName":"admin","completedSubShelf":["A-1-1"],"status":"盘点中"}
      * code : 0
-     * msg : success
-     * rows : [{"id":2,"startTime":"2016/12/13","endTime":"","status":"盘点中","userName":"admin","completedSubShelf":["\u201cA1-2\u201d","\u201dA1-3\u201d"]}]
      */
 
-    private String code;
     private String msg;
     /**
-     * id : 2
-     * startTime : 2016/12/13
-     * endTime :
-     * status : 盘点中
+     * startTime : Feb 22, 2017 2:03:08 PM
+     * id : 6
      * userName : admin
-     * completedSubShelf : ["\u201cA1-2\u201d","\u201dA1-3\u201d"]
+     * completedSubShelf : ["A-1-1"]
+     * status : 盘点中
      */
 
-    private List<RowsBean> rows;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
+    private RowsBean rows;
+    private String code;
 
     public String getMsg() {
         return msg;
@@ -42,29 +35,28 @@ public class OnGoing {
         this.msg = msg;
     }
 
-    public List<RowsBean> getRows() {
+    public RowsBean getRows() {
         return rows;
     }
 
-    public void setRows(List<RowsBean> rows) {
+    public void setRows(RowsBean rows) {
         this.rows = rows;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public static class RowsBean {
-        private int id;
         private String startTime;
-        private String endTime;
-        private String status;
+        private int id;
         private String userName;
+        private String status;
         private List<String> completedSubShelf;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
 
         public String getStartTime() {
             return startTime;
@@ -74,20 +66,12 @@ public class OnGoing {
             this.startTime = startTime;
         }
 
-        public String getEndTime() {
-            return endTime;
+        public int getId() {
+            return id;
         }
 
-        public void setEndTime(String endTime) {
-            this.endTime = endTime;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
+        public void setId(int id) {
+            this.id = id;
         }
 
         public String getUserName() {
@@ -96,6 +80,14 @@ public class OnGoing {
 
         public void setUserName(String userName) {
             this.userName = userName;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
         }
 
         public List<String> getCompletedSubShelf() {

@@ -38,8 +38,8 @@ public class WarningListContract {
         Observable<Success>getAlarmSuccessfulState (String sapWorkOrderId, int alarmId );
         Observable<Success>getScheduleSuccessState (int scheduleId);
         Observable<Success>Closelighting(String subShelfCode);
-        Observable<Success>getOutSubmit(int scheduleId,int amount);
-        Observable<Success>getAlarmOutSubmit(int scheduleId,int amount);
+        Observable<Success>getOutSubmit(int scheduleId);
+        Observable<Success>getAlarmOutSubmit(int scheduleId);
 
 
 

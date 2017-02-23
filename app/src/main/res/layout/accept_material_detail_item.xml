@@ -11,8 +11,8 @@
         android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="料号"
-        android:textColor="#333333"
-        android:textSize="12dp" />
+        android:textColor="@android:color/black"
+        android:textSize="40px" />
 
     <TextView
         android:id="@+id/tv_material_station"
@@ -21,8 +21,8 @@
         android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="模组料站"
-        android:textColor="#333333"
-        android:textSize="12dp" />
+        android:textColor="@android:color/black"
+        android:textSize="40px" />
 
     <TextView
         android:id="@+id/tv_remain_num"
@@ -31,8 +31,8 @@
         android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="剩余料量"
-        android:textColor="#333333"
-        android:textSize="12dp" />
+        android:textColor="@android:color/black"
+        android:textSize="40px" />
 
     <TextView
         android:id="@+id/tv_unit"
@@ -41,8 +41,8 @@
         android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="单位"
-        android:textColor="#333333"
-        android:textSize="12dp" />
+        android:textColor="@android:color/black"
+        android:textSize="40px" />
 
     <TextView
         android:id="@+id/tv_location"
@@ -51,6 +51,6 @@
         android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="余料车位置"
-        android:textColor="#333333"
-        android:textSize="12dp" />
+        android:textColor="@android:color/black"
+        android:textSize="40px" />
 </com.zhy.autolayout.AutoLinearLayout>
