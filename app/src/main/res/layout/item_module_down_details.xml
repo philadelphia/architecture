@@ -43,7 +43,8 @@
             android:textColor="#333333"
             android:textSize="40px"
             android:background="@drawable/textview_border"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tv_feederID"
             android:layout_width="300px"

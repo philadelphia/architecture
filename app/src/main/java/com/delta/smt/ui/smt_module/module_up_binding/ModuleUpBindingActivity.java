@@ -279,6 +279,17 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", workItemID);
+                map.put("side",side);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+                getPresenter().getAllModuleUpBindingItems(argument);
+            }
+        });
     }
 
     @Override
