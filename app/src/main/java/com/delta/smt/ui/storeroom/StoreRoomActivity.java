@@ -93,7 +93,10 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @Override
     protected void initData() {
-        storagePcbed.setFocusable(true);
+        storagePcbed.setFocusable(false);
+        storageVendored.setFocusable(false);
+        storageDatacodeed.setFocusable(false);
+        storageCounted.setFocusable(false);
     }
 
     @Override
