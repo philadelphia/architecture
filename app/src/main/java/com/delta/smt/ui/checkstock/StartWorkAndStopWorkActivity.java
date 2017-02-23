@@ -115,9 +115,11 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         goneView.setVisibility(View.VISIBLE);
         goneView.setGravity(Gravity.CENTER);
         if (s.getRows() != null) {
+            if (s.getRows().getCompletedSubShelf()!=null){
             startAndstopText.setText(s.getRows().getCompletedSubShelf().get(s.getRows().getCompletedSubShelf().size() - 1));
-        } else {
-
+            } else {
+            startAndstopText.setText("暂无盘点架位");
+        }
         }
     }
 

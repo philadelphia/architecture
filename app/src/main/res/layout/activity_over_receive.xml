@@ -54,11 +54,22 @@
                     android:id="@+id/recy_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recy_content"
+                <com.delta.commonlibs.widget.statusLayout.StatusLayout
+                    android:id="@+id/statusLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recy_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </RelativeLayout>
+
+                </com.delta.commonlibs.widget.statusLayout.StatusLayout>
+
+
             </LinearLayout>
         </HorizontalScrollView>
 
