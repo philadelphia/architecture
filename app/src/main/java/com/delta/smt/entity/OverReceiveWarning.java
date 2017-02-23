@@ -88,8 +88,9 @@ public class OverReceiveWarning {
             private String issue_amount;
             private String status;
             private String shelf_no;
+            private String remain_time;
 
-            public DataBean(String id, String line_name,String slot,String material_no,String amount, String issue_amount,  String status,   String shelf_no) {
+            public DataBean(String id, String line_name,String slot,String material_no,String amount, String issue_amount,  String status,   String shelf_no,String remain_time) {
                 this.amount = amount;
                 this.id = id;
                 this.issue_amount = issue_amount;
@@ -98,6 +99,7 @@ public class OverReceiveWarning {
                 this.shelf_no = shelf_no;
                 this.slot = slot;
                 this.status = status;
+                this.remain_time = remain_time;
             }
 
             public String getAmount() {
@@ -162,6 +164,14 @@ public class OverReceiveWarning {
 
             public void setStatus(String status) {
                 this.status = status;
+            }
+
+            public String getRemain_time() {
+                return remain_time;
+            }
+
+            public void setRemain_time(String remain_time) {
+                this.remain_time = remain_time;
             }
         }
     }
