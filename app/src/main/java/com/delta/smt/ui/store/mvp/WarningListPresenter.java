@@ -210,7 +210,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
                 public void call(Success success) {
                     if ("0".equals(success.getCode())) {
                         getView().showContentView();
-                        getView().onOutSubmit(success.getMsg());
+                        getView().onCloseLightSucces(success.getMsg());
                     }else{
                         getView().onFailed(success.getMsg());
                     }

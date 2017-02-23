@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -50,7 +51,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/5.
  */
 
-public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPresenter> implements ModuleDownDetailsContract.View, BarCodeIpml.OnScanSuccessListener{
+public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPresenter> implements ModuleDownDetailsContract.View, BarCodeIpml.OnScanSuccessListener {
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -75,8 +76,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     private String mCurrentQuantity;
     private String mCurrentLocation;
     private String mCurrentSlot;
-    private boolean flag1;
-    private boolean flag2;
     private int index = -1;
 
     //二维码
@@ -93,6 +92,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     StatusLayout statusLayout;
 
     private static final String TAG = "ModuleDownDetailsActivi";
+    private LinearLayoutManager linearLayoutManager;
+    private int flag = 1;
 
 
     @Override
@@ -132,13 +133,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
 
-        dataList.add(new ModuleDownDetailsItem.RowsBean("工单","面别","料号","流水码","Feeder ID", "模组料站", "归属", "下模组时间"));
+        dataList.add(new ModuleDownDetailsItem.RowsBean("工单", "面别", "料号", "流水码", "Feeder ID", "模组料站", "归属", "下模组时间"));
         adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_work_order,item.getWork_order());
-                holder.setText(R.id.tv_side,item.getSide());
+                holder.setText(R.id.tv_work_order, item.getWork_order());
+                holder.setText(R.id.tv_side, item.getSide());
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
@@ -159,8 +160,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(Color.WHITE);
-                holder.setText(R.id.tv_work_order,item.getWork_order());
-                holder.setText(R.id.tv_side,item.getSide());
+                holder.setText(R.id.tv_work_order, item.getWork_order());
+                holder.setText(R.id.tv_side, item.getSide());
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
@@ -175,6 +176,14 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     holder.setText(R.id.tv_ownership, item.getDest());
                 }
                 holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
+
+              if (item.getMaterial_no().equalsIgnoreCase(mCurrentSerialNumber) &&  item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)){
+                  holder.itemView.setBackgroundColor(Color.YELLOW);
+                  mCurrentSlot = item.getSlot();
+                  index = position;
+              } else {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                }
             }
 
             @Override
@@ -183,7 +192,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             }
 
         };
-        recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
+        recyContent.setLayoutManager(linearLayoutManager);
+
         recyContent.setAdapter(adapter);
     }
 
@@ -195,26 +207,32 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onSuccess(ModuleDownDetailsItem data) {
         dataSource.clear();
+        flag = 1;
+
+        Log.i(TAG, "index: == " + index);
         List<ModuleDownDetailsItem.RowsBean> rowsBean = data.getRows();
         dataSource.addAll(rowsBean);
+        Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size());
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onFalied() {
-
+        flag = 2;
     }
 
     @Override
     public void onSuccessMaintain(ModuleDownMaintain maintain) {
-        /*if(maintain.getMsg().toLowerCase().equals("success")){
-            getPresenter().getAllModuleDownDetailsItems(preferences.getString("work_order",""));
-        }*/
+        if(maintain.getMsg().toLowerCase().equals("success")){
+            Toast.makeText(this, "Feeder保养成功！", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Feeder保养失败！", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onFailMaintain() {
-
+        Toast.makeText(this, "Feeder保养网络请求失败！", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -283,16 +301,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         switch (view.getId()) {
             case R.id.btn_feederMaintain:
 
-                /*if(dataSource.size()>0){
-                    String res ="";
-                    for (int i=0;i<dataSource.size()-1;i++){
-                        res += dataSource.get(i).getId()+",";
-                    }
-                    res += dataSource.get(dataSource.size()-1).getId();
-                    Toast.makeText(this,res,Toast.LENGTH_SHORT).show();
-                    getPresenter().getAllModuleDownMaintainResult(res);
-                }*/
-
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", mCurrentWorkOrder);
+                map.put("side",side);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+                getPresenter().getAllModuleDownMaintainResult(argument);
                 break;
         }
     }
@@ -302,68 +316,67 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         Log.i(TAG, "onScanSuccess: ");
         Log.i(TAG, "barcode == " + barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        if (!flag1) {
-            try {
-                MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
-                flag1 = true;
+        switch (flag) {
+            case 1:
+                try {
+                    MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
 
-                mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
-                mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
-                mCurrentQuantity = materialBlockBarCode.getCount();
-                Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
-                Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
-                for (ModuleDownDetailsItem.RowsBean moduleDownDetailsItem : dataSource) {
-                    if (mCurrentMaterialID.equalsIgnoreCase(moduleDownDetailsItem.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(moduleDownDetailsItem.getSerial_no())) {
-                        index = dataSource.indexOf(moduleDownDetailsItem);
+                    mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
+                    mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
+                    mCurrentQuantity = materialBlockBarCode.getCount();
 
-                        mCurrentSlot =  moduleDownDetailsItem.getSlot();
-                        Log.i(TAG, "对应的feederCheckInItem: " + moduleDownDetailsItem.toString());
-                        adapter.notifyDataSetChanged();
-                        Log.i(TAG, "onScanSuccess: ");
-                        Map<String, String> map = new HashMap<>();
-                        map.put("work_order", mCurrentWorkOrder);
-                        map.put("material_no", materialBlockBarCode.getDeltaMaterialNumber());
-                        map.put("serial_no", materialBlockBarCode.getStreamNumber());
-                        map.put("side", side);
-                        map.put("qty", mCurrentQuantity);
-                        map.put("slot", mCurrentSlot);
-                        Gson gson = new Gson();
-                        String argument = gson.toJson(map);
-                        Log.i(TAG, "argument== " + argument);
-                        Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
+                    adapter.notifyDataSetChanged();
+                    recyContent.scrollToPosition(index);
+                    Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
+                    Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
+                    Map<String, String> map = new HashMap<>();
+                    map.put("work_order", mCurrentWorkOrder);
+                    map.put("material_no", materialBlockBarCode.getDeltaMaterialNumber());
+                    map.put("serial_no", materialBlockBarCode.getStreamNumber());
+                    map.put("side", side);
+                    map.put("qty", mCurrentQuantity);
+                    map.put("slot", mCurrentSlot);
+                    Gson gson = new Gson();
+                    String argument = gson.toJson(map);
+                    Log.i(TAG, "argument== " + argument);
+                    Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
+                    flag = 2;
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                    flag = 1;
+                }
+                break;
+            case 2:
+                try {
+                    FeederBuffer frameLocation = (FeederBuffer) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER_BUFFER);
+                    mCurrentLocation = frameLocation.getSource();
+                    Log.i(TAG, "mCurrentLocation: " + frameLocation.toString());
+                    Map<String, String> map = new HashMap<>();
+                    map.put("work_order", mCurrentWorkOrder);
+                    map.put("side", side);
+                    map.put("material_no", mCurrentMaterialID);
+                    map.put("serial_no", mCurrentSerialNumber);
+                    map.put("shelf_no", mCurrentLocation);
+                    map.put("qty", mCurrentQuantity);
+                    map.put("slot", mCurrentSlot);
+                    Gson gson = new Gson();
+                    String argument = gson.toJson(map);
+                    Log.i(TAG, "argument== " + argument);
+                    Log.i(TAG, "料架已经扫描完成，接下来入库: ");
 
-                    }
+                    getPresenter().getFeederCheckInTime(argument);
+
+
+                } catch (EntityNotFountException e1) {
+                    e1.printStackTrace();
+                    flag = 2;
                 }
 
-            } catch (EntityNotFountException e) {
-                e.printStackTrace();
-            }
+                break;
+            default:
+                break;
         }
 
-        if (!flag2) {
-            try {
-                FeederBuffer frameLocation = (FeederBuffer) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER_BUFFER);
-                flag2 = true;
-                mCurrentLocation = frameLocation.getSource();
-                Log.i(TAG, "mCurrentLocation: " + frameLocation.toString());
-                Map<String, String> map = new HashMap<>();
-                map.put("work_order", mCurrentWorkOrder);
-                map.put("side", side);
-                map.put("material_no", mCurrentMaterialID);
-                map.put("serial_no", mCurrentSerialNumber);
-                map.put("shelf_no", mCurrentLocation);
-                map.put("qty", mCurrentQuantity);
-                map.put("slot", mCurrentSlot);
-                Gson gson = new Gson();
-                String argument = gson.toJson(map);
-                Log.i(TAG, "argument== " + argument);
-                Log.i(TAG, "料架已经扫描完成，接下来入库: ");
-                getPresenter().getFeederCheckInTime(argument);
-                flag1 = false;
-                flag2 = false;
-            } catch (EntityNotFountException e1) {
-                e1.printStackTrace();
-            }
-        }
+
     }
 }
