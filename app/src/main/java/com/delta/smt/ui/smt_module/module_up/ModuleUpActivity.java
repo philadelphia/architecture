@@ -138,7 +138,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     public void onSuccess(ModuleUpWarningItem data) {
-        if (data.getMsg().toLowerCase().equals("success")) {
+        //if (data.getMsg().toLowerCase().equals("success")) {
             dataList.clear();
             List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
             for (int i = 0; i < rows.size(); i++) {
@@ -153,7 +153,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             }
             dataList.addAll(rows);
             myAdapter.notifyDataSetChanged();
-        }
+        //}
     }
 
     @Override
@@ -164,37 +164,27 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Override
     public void showLoadingView() {
         statusLayout.showLoadingView();
-        /*showLoading.setVisibility(View.VISIBLE);
-        showError.setVisibility(View.GONE);
-        showNetState.setVisibility(View.GONE);
-        recyclerview.setVisibility(View.GONE);*/
     }
 
     @Override
     public void showContentView() {
         statusLayout.showContentView();
-        /*showLoading.setVisibility(View.GONE);
-        showError.setVisibility(View.GONE);
-        showNetState.setVisibility(View.GONE);
-        recyclerview.setVisibility(View.VISIBLE);*/
     }
 
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
-        /*showLoading.setVisibility(View.GONE);
-        showError.setVisibility(View.VISIBLE);
-        showNetState.setVisibility(View.GONE);
-        recyclerview.setVisibility(View.GONE);*/
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllModuleUpWarningItems();
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
-        /*showLoading.setVisibility(View.GONE);
-        showError.setVisibility(View.GONE);
-        showNetState.setVisibility(View.VISIBLE);
-        recyclerview.setVisibility(View.GONE);*/
     }
 
 

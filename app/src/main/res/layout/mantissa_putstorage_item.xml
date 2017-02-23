@@ -18,7 +18,7 @@
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
         <TextView
-            android:id="@+id/tv_lastwarehouse_location"
+            android:id="@+id/tv_shelf_no"
             android:layout_width="110dp"
             android:gravity="center"
             android:text="尾数仓架位"
@@ -27,7 +27,7 @@
             android:background="@drawable/textview_border"
             android:layout_height="match_parent"/>
         <TextView
-            android:id="@+id/tv_mainwarehouse_location"
+            android:id="@+id/tv_to_shelf_no"
             android:layout_width="110dp"
             android:gravity="center"
             android:text="主仓库架位"

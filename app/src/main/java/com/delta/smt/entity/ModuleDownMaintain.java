@@ -14,7 +14,6 @@ public class ModuleDownMaintain {
 
     private String code;
     private String msg;
-    private int rows;
 
     public String getCode() {
         return code;
@@ -30,13 +29,5 @@ public class ModuleDownMaintain {
 
     public void setMsg(String msg) {
         this.msg = msg;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public void setRows(int rows) {
-        this.rows = rows;
     }
 }

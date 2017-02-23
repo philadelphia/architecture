@@ -1,6 +1,7 @@
 package com.delta.smt.ui.store;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -122,6 +123,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(this.getResources().getString(R.string.storetitle));
+        edWork.setFocusable(true);
         edWork.setText(mWorkNumberString);
         edPcb.setText(mMaterialNumberString);
         edMachine.setText(mMainBoard);
@@ -208,7 +210,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                IntentUtils.showIntent(this,StoreIssueActivity.class);
                 break;
 
             default:
@@ -256,9 +258,10 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     @Override
     public void onOutSubmit(String s) {
-        SnackbarUtil.show(activityMianview,"成功");
-        finish();
+        SnackbarUtil.showMassage(activityMianview,"成功");
         IntentUtils.showIntent(this,StoreIssueActivity.class);
+
+
 
     }
 
@@ -282,6 +285,11 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         if (mAmoutString >= mAmout) {
 
         }
+
+    }
+
+    @Override
+    public void onCloseLightSucces(String s) {
 
     }
 
@@ -320,7 +328,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                             }
                             }
                             if (mAmoutString-mList.get(i).getCount()<0){
-                                ToastUtils.showMessage(this,"请拆箱取出"+(mList.get(i).getCount()-mAmoutString)+"片",5000);
+                                ToastUtils.showMessage(this,"请拆箱取出"+(mAmoutString)+"片",10000);
                             }
                             mList.get(i).setIsColor(1);
                             mAdapter.notifyDataSetChanged();

@@ -20,7 +20,7 @@ public interface ModuleDownDetailsContract {
 
         public void onFailed();
 
-        public void onSuccessMaintain(ModuleDownMaintain maintain);
+        public void onSuccessMaintain(ModuleDownMaintain moduleDownMaintain);
 
         public void onFailMaintain();
 
