@@ -81,6 +81,21 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
         getPresenter().getAllModuleDownWarningItems();
+        /*statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllModuleDownWarningItems();
+            }
+        });
+
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllModuleDownWarningItems();
+            }
+        });*/
+
+
 
     }
 
@@ -166,6 +181,12 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllModuleDownWarningItems();
+            }
+        });
     }
 
     @Override
@@ -278,4 +299,5 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         //startActivityForResult(intent, Constant.ACTIVITY_REQUEST_WORK_ITEM_ID);
         IntentUtils.showIntent(this, VirtualLineBindingActivity.class,bundle);
     }
+
 }

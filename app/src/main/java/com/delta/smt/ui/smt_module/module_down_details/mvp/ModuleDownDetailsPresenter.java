@@ -34,7 +34,6 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         }).subscribe(new Action1<ModuleDownDetailsItem>() {
             @Override
             public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
-                //getView().onSuccess(moduleDownWarningItems);
                 try{
                     if ("0".equals(moduleDownDetailsItem.getCode())) {
                         if (moduleDownDetailsItem.getRows().size() == 0) {
