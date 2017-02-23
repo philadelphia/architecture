@@ -87,8 +87,8 @@ public interface ApiService {
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     //获取feeder入库时间
-    @GET("SMM/FeederBuffStorage/feederBuffStorage")
-    Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
+    @GET("SMM/unplugmod/feederBuffStorage")
+    Observable<ModuleDownDetailsItem> getFeederCheckInTime(@Query("condition") String condition);
 
     //获取下模组列表
     @GET("SMM/FeederBuffStorage/feederBuffStorage")

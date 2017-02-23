@@ -91,4 +91,20 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             }
         });
     }
+
+    public void getFeederCheckInTime(String condition){
+        getModel().getFeederCheckInTime(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
+            @Override
+            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
+                    if (moduleDownDetailsItem.getCode().equalsIgnoreCase("0")){
+                        getView().onSuccess(moduleDownDetailsItem);
+                    }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+    }
 }
