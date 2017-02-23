@@ -79,7 +79,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private String mCurrentSerinalNumber;
     private String mCurrentMaterialNumber;
     private String mCurrentquantity;
-
+    private int index = -1;
 
 
     @Override
@@ -147,6 +147,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 if (item.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber) && item.getSerialNumber().equalsIgnoreCase(mCurrentSerinalNumber)) {
                     holder.itemView.setBackgroundColor(Color.YELLOW);
                     tvModuleID.setText("模组料站: " + item.getSlot());
+                    index = position;
+
                     Log.i(TAG, "对应的item: " + item.toString());
                 } else {
 
@@ -187,6 +189,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
+        recyContent.scrollToPosition(index);
         for (FeederSupplyItem item : dataSource) {
             if (item.getStatus() == 0) {
                 isAllHandleOVer = false;
@@ -200,6 +203,15 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
 //            getPresenter().upLoadToMES();
         }
+//        for (int i = 0; i < dataSource.size(); i++) {
+//            FeederSupplyItem feederSupplyItem = dataSource.get(i);
+//            if (feederSupplyItem.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber) && feederSupplyItem.getSerialNumber().equalsIgnoreCase(mCurrentSerinalNumber)) {
+//                index = i;
+//                adapter.notifyDataSetChanged();
+//            }
+//        }
+
+
 
 
     }
