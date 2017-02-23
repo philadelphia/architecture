@@ -159,6 +159,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         adapter = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
+                Log.i(TAG, "convert: ");
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.tv_work_order, item.getWork_order());
                 holder.setText(R.id.tv_side, item.getSide());
@@ -177,7 +178,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 }
                 holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
 
-              if (item.getMaterial_no().equalsIgnoreCase(mCurrentSerialNumber) &&  item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)){
+              if (item.getMaterial_no().equalsIgnoreCase(mCurrentMaterialID) &&  item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)){
+                  Log.i(TAG, "convert: "+item.toString());
                   holder.itemView.setBackgroundColor(Color.YELLOW);
                   mCurrentSlot = item.getSlot();
                   index = position;
@@ -249,6 +251,18 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public void showErrorView() {
 
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", workItemID);
+                map.put("side", side);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+
+                getPresenter().getAllModuleDownDetailsItems(argument);
+            }
+        });
     }
 
     @Override
