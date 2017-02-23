@@ -76,9 +76,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private List<FeederSupplyItem> dataSource = new ArrayList<>();
     private static final String TAG = "FeederSupplyActivity";
     private boolean isAllHandleOVer = false;
-    private String mCurrentSerinalNumber;
+    private String mCurrentSerialNumber;
     private String mCurrentMaterialNumber;
-    private String mCurrentquantity;
     private int index = -1;
 
 
@@ -144,7 +143,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_timestamp, item.getBindTime());
                 holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待上模组" : " 上模组完成");
 
-                if (item.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber) && item.getSerialNumber().equalsIgnoreCase(mCurrentSerinalNumber)) {
+                if (item.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber) && item.getSerialNumber().equalsIgnoreCase(mCurrentSerialNumber)) {
                     holder.itemView.setBackgroundColor(Color.YELLOW);
                     tvModuleID.setText("模组料站: " + item.getSlot());
                     index = position;
@@ -261,17 +260,17 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         try {
             MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
             mCurrentMaterialNumber = materialBlockBarCode.getDeltaMaterialNumber();
-            mCurrentSerinalNumber = materialBlockBarCode.getStreamNumber();
+            mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
 
             Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialNumber);
-            Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerinalNumber);
+            Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
             VibratorAndVoiceUtils.correctVibrator(this);
             VibratorAndVoiceUtils.correctVoice(this);
             adapter.notifyDataSetChanged();
 
             Map<String, String> map = new HashMap<>();
             map.put("material_no", mCurrentMaterialNumber);
-            map.put("serial_no", mCurrentSerinalNumber);
+            map.put("serial_no", mCurrentSerialNumber);
             Gson gson = new Gson();
             String argument = gson.toJson(map);
             Log.i(TAG, "argument== " + argument);
