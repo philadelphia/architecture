@@ -165,7 +165,15 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_ownership, item.getDest());
+                if("0".equals(item.getDest())){
+                    holder.setText(R.id.tv_ownership, "尾数仓");
+                }else if("1".equals(item.getDest())){
+                    holder.setText(R.id.tv_ownership, "Feeder缓存区");
+                }else if("2".equals(item.getDest())){
+                    holder.setText(R.id.tv_ownership, "Feeder维护区");
+                }else{
+                    holder.setText(R.id.tv_ownership, item.getDest());
+                }
                 holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
 
               if (item.getMaterial_no().equalsIgnoreCase(mCurrentSerialNumber) &&  item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)){

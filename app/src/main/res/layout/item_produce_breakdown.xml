@@ -63,12 +63,14 @@
 <!--这里右边的倒数计我是默认和左边的第三个和第四个高度保持一致的，数据少可自行更改-->
     <LinearLayout
         android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_6"
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/time_remain"
+            android:layout_gravity="center"
             android:text="故障持续时间："
             android:singleLine="true"
             android:textColor="#ff0000"
@@ -76,23 +78,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
-<!--        <cn.iwgang.countdownview.CountdownView
-            android:id="@+id/cv_countdownViewTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/time_remain"
-            android:layout_below="@+id/time_remain"
-            app:isShowDay="false"
-            app:isShowHour="true"
-            app:isShowMillisecond="false"
-            app:isShowMinute="true"
-            app:isShowSecond="true"
-            app:suffixGravity="center"
-            app:suffixTextColor="#000000"
-            app:suffixTextSize="20sp"
-            app:timeTextColor="#ff0000"
-            app:timeTextSize="20sp"
-            />-->
         <com.delta.libs.CountTimeView
             android:id="@+id/cv_countView"
             android:layout_width="wrap_content"

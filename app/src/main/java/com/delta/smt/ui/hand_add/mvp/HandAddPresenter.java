@@ -72,7 +72,13 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
     }
 
     public void getItemHandAddConfirm(String codition){
-        getModel().getItemHandAddConfirm(codition).subscribe(new Action1<Result>() {
+
+        Map<String, String> mMap = new HashMap<>();
+        mMap.put("id", codition);
+        String mS = new Gson().toJson(mMap);
+        Log.i(TAG, mS);
+
+        getModel().getItemHandAddConfirm(mS).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
                 if (result.getCode().equals("0")) {
