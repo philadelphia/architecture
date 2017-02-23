@@ -1,6 +1,7 @@
 package com.delta.smt.ui.production_warning.mvp.produce_info_fragment;
 
 import android.content.DialogInterface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -112,7 +113,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
     @Override
     public void getItemInfoDatasFailed(String message) {
-        ToastUtils.showMessage(getContext(),message);
+        Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
