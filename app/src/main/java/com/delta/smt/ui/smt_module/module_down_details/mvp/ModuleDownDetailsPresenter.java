@@ -97,6 +97,8 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
                     if (moduleDownDetailsItem.getCode().equalsIgnoreCase("0")){
                         getView().onSuccess(moduleDownDetailsItem);
+                    }else {
+                        getView().onFailed();
                     }
             }
         }, new Action1<Throwable>() {
