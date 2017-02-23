@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.SingleClick;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -91,6 +93,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private String lastCar;
     private int flag = 1;
     private String side;
+    private boolean ischecked = true;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -115,7 +118,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         MantissaCarBean car = new MantissaCarBean(workorder, "Mantissa", side);
         String carbean = gson.toJson(car);
         getPresenter().getFindCar(carbean);
-
+        ischecked = SpUtil.getBooleanSF(this, "Mantissa" + "checked");
     }
 
     @Override
@@ -126,7 +129,13 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("尾数仓备料");
-
+        btnSwitch.setChecked(ischecked);
+        btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SpUtil.SetBooleanSF(MantissaWarehouseDetailsActivity.this, "Mantissa" + "checked", b);
+            }
+        });
         dataList.add(new MantissaWarehouseDetailsResult.RowsBean(1, "", "", 0));
         adapter = new CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean>(getContext(), dataList) {
             @Override
@@ -219,9 +228,12 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         VibratorAndVoiceUtils.correctVoice(this);
     }
 
+    boolean isOver = true;
+    boolean isHaveIssureOver;
+
     private void issureToWareh(MantissaWarehouseDetailsResult rows) {
 
-        boolean isOver = true;
+
         dataList2.clear();
         dataList2.addAll(rows.getRows());
         int position = 0;
@@ -233,9 +245,21 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     isFirstUndo = false;
                 }
             }
+            if (dataList2.get(i).getStatus() == 2) {
+
+                isHaveIssureOver = true;
+            } else {
+                isHaveIssureOver = false;
+
+            }
             if (dataList2.get(i).getStatus() == 0 || dataList2.get(i).getStatus() == 1) {
                 isOver = false;
+            } else {
+                isOver = true;
             }
+        }
+        if (btnSwitch.isChecked()) {
+            getPresenter().debit();
         }
         if (isOver) {
             getPresenter().getMantissaWareOver();
@@ -341,6 +365,17 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
+    public void debitSuccess() {
+        tv_hint.setText("扣账成功");
+    }
+
+    @Override
+    public void debitFailed(String message) {
+        tv_hint.setText(message);
+
+    }
+
+    @Override
     public void onScanSuccess(String barcode) {
         Log.e(TAG, "onScanSuccess: ");
         super.onScanSuccess(barcode);
@@ -384,7 +419,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this, "请扫描对应料盘");
+                    ToastUtils.showMessage(this, "请扫描对应料盘！");
                     tv_hint.setText("请扫描对应料盘");
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
@@ -410,9 +445,13 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @OnClick(R.id.button2)
     public void onClick() {
-
+        if (isHaveIssureOver == false) {
+            ToastUtils.showMessage(this, getString(R.string.unfinished_station));
+            tv_hint.setText(getString(R.string.unfinished_station));
+            return;
+        }
         if (SingleClick.isSingle(1000)) {
-            tv_hint.setText("扣账成功");
+            getPresenter().debit();
         }
     }
 }

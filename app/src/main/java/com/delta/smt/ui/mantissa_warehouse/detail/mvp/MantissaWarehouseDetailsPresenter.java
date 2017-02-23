@@ -5,6 +5,7 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MaterialCar;
+import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
@@ -191,6 +192,33 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             }
         });
 
+    }
+
+    /**
+     * 扣账
+     */
+    public void debit() {
+
+        getModel().debit().subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+
+                if ("0".equals(result.getCode())) {
+                    getView().debitSuccess();
+                } else {
+                    getView().debitFailed(result.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().debitFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 

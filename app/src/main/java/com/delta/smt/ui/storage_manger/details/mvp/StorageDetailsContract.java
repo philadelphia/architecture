@@ -34,6 +34,9 @@ public interface StorageDetailsContract {
         Observable<Result<StorageDetails>> jumpMaterials();
 
         Observable<IssureToWarehFinishResult> sureCompleteIssue();
+
+        Observable<Result> deduction();
+
     }
 
     interface View extends IView {
@@ -56,7 +59,7 @@ public interface StorageDetailsContract {
         void bindMaterialCarFailed(String msg);
 
 
-        void jumpMaterialsSucess(Result<StorageDetails> result);
+        void jumpMaterialsSuccess(Result<StorageDetails> result);
 
         void jumpMaterialsFailed(String message);
 
@@ -73,12 +76,17 @@ public interface StorageDetailsContract {
         void sureCompleteIssueFailed(String msg);
 
         void showLoadingView();
-        
+
         void showContentView();
 
         void showErrorView();
 
         void showEmptyView();
+
+
+        void deductionFailed(String message);
+
+        void deductionSuccess();
     }
 
 }

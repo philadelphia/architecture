@@ -184,7 +184,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result<StorageDetails> storageDetailsResult) {
                 if ("0".equalsIgnoreCase(storageDetailsResult.getCode())) {
-                    getView().jumpMaterialsSucess(storageDetailsResult);
+                    getView().jumpMaterialsSuccess(storageDetailsResult);
                 } else {
                     getView().jumpMaterialsFailed(storageDetailsResult.getMessage());
                 }
@@ -201,6 +201,30 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
         });
     }
 
+
+    public void deduction() {
+        getModel().deduction().subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+
+                if ("0".equals(result.getCode())) {
+                    getView().deductionSuccess();
+                } else {
+                    getView().deductionFailed(result.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                try {
+                    getView().deductionFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public void sureCompleteIssue() {
         getModel().sureCompleteIssue().subscribe(new Action1<IssureToWarehFinishResult>() {
