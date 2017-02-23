@@ -34,7 +34,6 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         }).subscribe(new Action1<ModuleDownDetailsItem>() {
             @Override
             public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
-                //getView().onSuccess(moduleDownWarningItems);
                 try{
                     if ("0".equals(moduleDownDetailsItem.getCode())) {
                         if (moduleDownDetailsItem.getRows().size() == 0) {
@@ -44,7 +43,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                             getView().onSuccess(moduleDownDetailsItem);
                         }
                     } else {
-                        getView().onFalied();
+                        getView().onFailed();
                         getView().showErrorView();
                     }
                 }catch (Exception e){
@@ -55,7 +54,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void call(Throwable throwable) {
                 try{
-                    getView().onFalied();
+                    getView().onFailed();
                     getView().showErrorView();
                 }catch (Exception e){
                     e.printStackTrace();
@@ -73,7 +72,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFalied();
+                getView().onFailed();
             }
         });
     }
@@ -83,6 +82,22 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
                 getView().onSuccess(moduleDownDetailsItem);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+    }
+
+    public void getFeederCheckInTime(String condition){
+        getModel().getFeederCheckInTime(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
+            @Override
+            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
+                    if (moduleDownDetailsItem.getCode().equalsIgnoreCase("0")){
+                        getView().onSuccess(moduleDownDetailsItem);
+                    }
             }
         }, new Action1<Throwable>() {
             @Override

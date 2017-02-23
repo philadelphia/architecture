@@ -18,9 +18,9 @@ public interface ModuleDownDetailsContract {
 
         public void onSuccess(ModuleDownDetailsItem data);
 
-        public void onFalied();
+        public void onFailed();
 
-        public void onSuccessMaintain(ModuleDownMaintain maintain);
+        public void onSuccessMaintain(ModuleDownMaintain moduleDownMaintain);
 
         public void onFailMaintain();
 
@@ -38,5 +38,7 @@ public interface ModuleDownDetailsContract {
          Observable<ModuleDownDetailsItem> getAllModuleDownDetailsItems(String str);
          Observable<ModuleDownMaintain> getModuleDownMaintainResult(String str);
         Observable<ModuleDownDetailsItem> getDownModuleList(String condition);
+        Observable<ModuleDownDetailsItem> getFeederCheckInTime(String condition);
+
     }
 }

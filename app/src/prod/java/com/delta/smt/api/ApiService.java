@@ -87,8 +87,8 @@ public interface ApiService {
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     //获取feeder入库时间
-    @GET("SMM/FeederBuffStorage/feederBuffStorage")
-    Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
+    @GET("SMM/unplugmod/feederBuffStorage")
+    Observable<ModuleDownDetailsItem> getFeederCheckInTime(@Query("condition") String condition);
 
     //获取下模组列表
     @GET("SMM/FeederBuffStorage/feederBuffStorage")
@@ -441,7 +441,7 @@ public interface ApiService {
     @GET("SMM/ExcessManagement/delivery")
     Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
 
-    @GET("SMM/WareHIssue/debit")
+    @GET("SMM/ExcessManagement/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     //上模组
@@ -466,8 +466,8 @@ public interface ApiService {
     @GET("SMM/unplugmod/getModsByWordOrder")
     Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("condition") String condition);
 
-    @GET("SMM/unplugmod/updateMod")
-    Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("ids") String content);
+    @GET("SMM/unplugmod/feederMaintain")
+    Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("condition") String condition);
 
     @GET("SMM/unplugmod/bindVirtualLine")
     Observable<VirtualLineBindingItem> getVirtualBindingResult(@Query("condition") String condition);

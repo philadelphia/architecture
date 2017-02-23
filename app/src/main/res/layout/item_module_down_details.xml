@@ -18,7 +18,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_side"
-            android:layout_width="120px"
+            android:layout_width="100px"
             android:textColor="#333333"
             android:gravity="center"
             android:text="面别"
@@ -37,7 +37,7 @@
 
         <TextView
             android:id="@+id/tv_serialID"
-            android:layout_width="300px"
+            android:layout_width="450px"
             android:gravity="center"
             android:text="流水码"
             android:textColor="#333333"
@@ -46,7 +46,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_feederID"
-            android:layout_width="200px"
+            android:layout_width="300px"
             android:gravity="center"
             android:text="Feeder ID"
             android:textColor="#333333"
@@ -64,7 +64,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_ownership"
-            android:layout_width="200px"
+            android:layout_width="300px"
             android:gravity="center"
             android:text="归属"
             android:textColor="#333333"

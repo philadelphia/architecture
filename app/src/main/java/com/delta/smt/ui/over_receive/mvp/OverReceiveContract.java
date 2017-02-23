@@ -22,6 +22,14 @@ public interface OverReceiveContract {
 
         public void onFaliedOverReceiveDebit();
 
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
+
     }
 
     interface Model extends IModel {

@@ -11,38 +11,29 @@
         <Button
             android:id="@+id/clean"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:text="手动请求清理列表"
-            android:textSize="10dp"/>
+            android:textSize="40px"/>
 
 
         <Button
             android:id="@+id/deduct"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:text="开始入库"
-            android:textSize="10dp"
+            android:textSize="40px"
             />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:text="开始绑定"
-            android:textSize="10dp"
-            android:id="@+id/bound"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/deduct"
-            android:layout_toStartOf="@+id/deduct"/>
 
     </RelativeLayout>
 
     <HorizontalScrollView
         android:id="@+id/hr_scrow"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -57,4 +48,38 @@
                 android:layout_height="match_parent"/>
         </LinearLayout>
     </HorizontalScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/bt_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:text="下一个"
+            android:textSize="40px"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/bt_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="完成"
+            android:textSize="40px"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/bt_ok"
+            android:layout_toStartOf="@+id/bt_ok"
+            android:layout_marginRight="19dp"
+            android:layout_marginEnd="19dp"
+            android:visibility="gone"
+            />
+
+
+    </RelativeLayout>
 </LinearLayout>

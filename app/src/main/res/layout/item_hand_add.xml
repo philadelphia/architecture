@@ -67,6 +67,7 @@
         <LinearLayout
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_6"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -74,6 +75,7 @@
                     <TextView
                         android:id="@+id/time_remain"
                         android:text="预计剩余时间："
+                        android:layout_gravity="center"
                         android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textSize="40px"
@@ -102,5 +104,6 @@
                         app:suffixTextSize="20sp"
                         app:timeTextColor="#000000"
                         app:timeTextSize="20sp" />
+
         </LinearLayout>
 </RelativeLayout>
