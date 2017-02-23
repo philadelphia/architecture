@@ -2,11 +2,13 @@ package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -221,7 +223,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     @Override
     public void getTitleDatasFailed(String message) {
-        ToastUtils.showMessage(this, message);
+//        ToastUtils.showMessage(this, message);
+        Snackbar.make(getCurrentFocus(),message,Snackbar.LENGTH_LONG).show();
         titles = new String[]{"预警", "故障", "消息"};
     }
 
@@ -318,11 +321,23 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     @Override
     public void showErrorView() {
         mStatusLayout.showErrorView();
+        mStatusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getTitileNumber(initLine());
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
         mStatusLayout.showEmptyView();
+        mStatusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getTitileNumber(initLine());
+            }
+        });
     }
 
 

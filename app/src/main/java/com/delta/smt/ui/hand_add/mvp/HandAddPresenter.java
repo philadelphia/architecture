@@ -71,7 +71,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
         });
     }
 
-    public void getItemHandAddConfirm(String codition){
+    public void getItemHandAddConfirm(String codition, final String line){
 
         Map<String, String> mMap = new HashMap<>();
         mMap.put("id", codition);
@@ -82,7 +82,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
             @Override
             public void call(Result result) {
                 if (result.getCode().equals("0")) {
-
+                    getItemHandAddDatas(line);
                 }else {
                     getView().getItemHandAddDatasFailed(result.getMessage());
                 }

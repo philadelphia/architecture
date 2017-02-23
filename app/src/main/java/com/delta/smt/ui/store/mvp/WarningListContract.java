@@ -22,6 +22,7 @@ public class WarningListContract {
         void onOutSubmit(String s);
         void onOutSuccess(List<OutBound.DataBean> dataBeanList);
         void getNumberSucces(PcbNumber.DataBean dataBean);
+        void onCloseLightSucces(String s);
         void showLoadingView();
         void showContentView();
         void showErrorView();

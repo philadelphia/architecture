@@ -19,6 +19,7 @@ import java.io.ObjectOutputStream;
 public class SpUtil {
     private static SharedPreferences mSharedPreferences;
     public static final String SP_NAME = "config";
+
     /**
      * 存储重要信息到sharedPreferences；
      *
@@ -31,6 +32,27 @@ public class SpUtil {
         }
         mSharedPreferences.edit().putString(key, value).commit();
     }
+
+    public static void SetBooleanSF(Context context, String key, boolean value) {
+        if (mSharedPreferences == null) {
+            mSharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        }
+        mSharedPreferences.edit().putBoolean(key, value).commit();
+    }
+
+    /**
+     * 返回存在sharedPreferences的信息
+     *
+     * @param key
+     * @return
+     */
+    public static boolean getBooleanSF(Context context, String key) {
+        if (mSharedPreferences == null) {
+            mSharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        }
+        return mSharedPreferences.getBoolean(key, false);
+    }
+
     /**
      * 返回存在sharedPreferences的信息
      *
@@ -79,6 +101,7 @@ public class SpUtil {
         }
         mSharedPreferences.edit().remove(key).commit();
     }
+
     /**
      * 清除Shareprefrence
      */
@@ -174,6 +197,7 @@ public class SpUtil {
 
     /**
      * 获取自定义缓存文件地址
+     *
      * @param context
      * @return
      */

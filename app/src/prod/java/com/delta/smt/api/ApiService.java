@@ -213,6 +213,7 @@ public interface ApiService {
     //    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
     @GET("webapi/pcb/management/outbound")
     Observable<Success> getPcbSuccess(@Query("param") String s);//出料操作
+
     @GET("pcb/management/outbound/light/close")
     Observable<Success> closeLight(@Query("subShelfCode") String s);//关灯操作
 
@@ -263,7 +264,8 @@ public interface ApiService {
     /**
      * @description :
      * 1.故障处理预警
-     * 2.仓库房
+     * 2.仓库房备料
+     * 3. 位数仓备料
      * @author :  V.Wenju.Tian
      * @date : 2017/1/21 13:53
      */
@@ -305,6 +307,10 @@ public interface ApiService {
     @GET("SMM/WareHIssue/sureCompleteIssue")
     Observable<IssureToWarehFinishResult> sureCompleteIssue();
 
+    //仓库房扣账
+    @GET("SMM/WareHIssue/deduction")
+    Observable<Result> deduction();
+
     //尾数仓备料
     @GET("SMM/IssueMana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
@@ -328,6 +334,10 @@ public interface ApiService {
     //尾数仓发料
     @GET("SMM/WareHIssue/mantissIssue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(@Query("condition") String bind);
+
+    //尾数仓扣账
+    @GET("SMM/MantissaStorage/debit")
+    Observable<Result> debit();
 
     //尾数仓发料完成
     @GET("SMM/WareHIssue/completeMantissIssue")
@@ -461,6 +471,7 @@ public interface ApiService {
 
     @GET("SMM/unplugmod/bindVirtualLine")
     Observable<VirtualLineBindingItem> getVirtualBindingResult(@Query("condition") String condition);
+
 
     //@GET("SMM/unplugmod/getModNumByMaterial")
     //Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num, @Query("workOrderNum") String num);

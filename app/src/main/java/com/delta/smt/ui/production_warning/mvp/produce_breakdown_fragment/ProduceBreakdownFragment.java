@@ -1,5 +1,6 @@
 package com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -119,7 +120,7 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
 
     @Override
     public void getItemBreakdownDatasFailed(String message) {
-        ToastUtils.showMessage(getContext(),message);
+        Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
     }
 
 

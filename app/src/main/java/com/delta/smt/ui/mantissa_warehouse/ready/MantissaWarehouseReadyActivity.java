@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
@@ -29,6 +30,7 @@ import com.delta.smt.ui.mantissa_warehouse.ready.mvp.MantissaWarehouseReadyContr
 import com.delta.smt.ui.mantissa_warehouse.ready.mvp.MantissaWarehouseReadyPresenter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -58,6 +60,7 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     private List<MantissaWarehouseReady.RowsBean> dataList = new ArrayList();
 
     private ItemCountViewAdapter<MantissaWarehouseReady.RowsBean> adapter;
+    private boolean isSending;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -103,7 +106,7 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
                 holder.setText(R.id.tv_order, "工单号: " + item.getWork_order());
                 holder.setText(R.id.tv_sides, "面别: " + item.getSide());
                 if (1 == item.getStatus()) {
-                    holder.setText(R.id.tv_states, "状态: " + "等待备料");
+                    holder.setText(R.id.tv_states, "状态: " + "未开始发料");
                 } else {
                     holder.setText(R.id.tv_states, "状态：正在发料");
                 }
@@ -128,7 +131,12 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
         for (int i = 0; i < mantissaWarehouseReadies.size(); i++) {
             mantissaWarehouseReadies.get(i).setEnd_time(System.currentTimeMillis() + mantissaWarehouseReadies.get(i).getRemain_time() * 1000);
             mantissaWarehouseReadies.get(i).setEntityId(i);
+            if (mantissaWarehouseReadies.get(i).getStatus() == 0) {
+                Collections.swap(mantissaWarehouseReadies, 0, i);
+                isSending = true;
+            }
         }
+
         dataList.addAll(mantissaWarehouseReadies);
 
         adapter.notifyDataSetChanged();
@@ -212,6 +220,10 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
 
     @Override
     public void onItemClick(View item, MantissaWarehouseReady.RowsBean rowsBean, int position) {
+        if (rowsBean.getStatus() == 1 && isSending == true) {
+            SnackbarUtil.showMassage(mRecyclerView, Constant.FAILURE_START_ISSUE_STRING);
+            return;
+        }
         Intent intent = new Intent(this, MantissaWarehouseDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("item", rowsBean);

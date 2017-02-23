@@ -241,7 +241,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     public void getItemHandAddDatasFailed(String message) {
         //ToastUtils.showMessage(this,message);
-        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
     }
 
 
@@ -304,8 +304,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            getPresenter().getItemHandAddConfirm(String.valueOf(mItemHandAdd.getId()));
-                            getPresenter().getItemHandAddDatas(producelines);
+                            getPresenter().getItemHandAddConfirm(String.valueOf(mItemHandAdd.getId()),producelines);
                             mAdapter.notifyDataSetChanged();
 
                             if (tag) {
@@ -329,16 +328,29 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     public void showContentView() {
         mStatusLayout.showContentView();
+
     }
 
     @Override
     public void showErrorView() {
         mStatusLayout.showErrorView();
+        mStatusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getItemHandAddDatas(producelines);
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
         mStatusLayout.showEmptyView();
+        mStatusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getItemHandAddDatas(producelines);
+            }
+        });
     }
 
 }

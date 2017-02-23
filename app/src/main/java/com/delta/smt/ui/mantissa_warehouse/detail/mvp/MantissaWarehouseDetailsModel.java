@@ -6,6 +6,7 @@ import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MaterialCar;
+import com.delta.smt.entity.Result;
 
 import rx.Observable;
 
@@ -13,7 +14,7 @@ import rx.Observable;
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehouseDetailsModel extends BaseModel<ApiService> implements MantissaWarehouseDetailsContract.Model{
+public class MantissaWarehouseDetailsModel extends BaseModel<ApiService> implements MantissaWarehouseDetailsContract.Model {
 
 
     public MantissaWarehouseDetailsModel(ApiService apiService) {
@@ -43,6 +44,11 @@ public class MantissaWarehouseDetailsModel extends BaseModel<ApiService> impleme
     @Override
     public Observable<IssureToWarehFinishResult> getMantissaWareOver() {
         return getService().getMantissaWareOver().compose(RxsRxSchedulers.<IssureToWarehFinishResult>io_main());
+    }
+
+    @Override
+    public Observable<Result> debit() {
+        return getService().debit().compose(RxsRxSchedulers.<Result>io_main());
     }
 
 }

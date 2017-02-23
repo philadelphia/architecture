@@ -97,4 +97,5 @@
 
     <string name="MainBoard">主板:</string>
     <string name="LittleBoard">小板:</string>
+    <string name="unfinished_station">还没有完成发料的料站！</string>
 </resources>

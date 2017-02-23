@@ -56,4 +56,9 @@ public class StorageDetailsModel extends BaseModel<ApiService> implements Storag
     public Observable<IssureToWarehFinishResult> sureCompleteIssue() {
         return getService().sureCompleteIssue().compose(RxsRxSchedulers.<IssureToWarehFinishResult>io_main());
     }
+
+    @Override
+    public Observable<Result> deduction() {
+        return getService().deduction().compose(RxsRxSchedulers.<Result>io_main());
+    }
 }
