@@ -93,6 +93,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     StatusLayout statusLayout;
 
     private static final String TAG = "ModuleDownDetailsActivi";
+    private LinearLayoutManager linearLayoutManager;
 
 
     @Override
@@ -167,6 +168,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
                 holder.setText(R.id.tv_ownership, item.getDest());
                 holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
+
+
+                if (position == index) {
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                } else {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                }
             }
 
             @Override
@@ -175,7 +183,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             }
 
         };
-        recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
+        recyContent.setLayoutManager(linearLayoutManager);
+
         recyContent.setAdapter(adapter);
     }
 
@@ -189,6 +200,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         dataSource.clear();
         List<ModuleDownDetailsItem.RowsBean> rowsBean = data.getRows();
         dataSource.addAll(rowsBean);
+        Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size() );
         adapter.notifyDataSetChanged();
     }
 
@@ -307,7 +319,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 for (ModuleDownDetailsItem.RowsBean moduleDownDetailsItem : dataSource) {
                     if (mCurrentMaterialID.equalsIgnoreCase(moduleDownDetailsItem.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(moduleDownDetailsItem.getSerial_no())) {
                         index = dataSource.indexOf(moduleDownDetailsItem);
-
+                        adapter.notifyDataSetChanged();
                         mCurrentSlot =  moduleDownDetailsItem.getSlot();
                         Log.i(TAG, "对应的feederCheckInItem: " + moduleDownDetailsItem.toString());
                         adapter.notifyDataSetChanged();

@@ -261,6 +261,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                         Log.i(TAG, "对应的模组料站是: " + feederSupplyItem.getSlot());
 
                         index = dataSource.indexOf(feederSupplyItem);
+                        adapter.notifyDataSetChanged();
                         Log.i(TAG, "当前扫描的数据index是: " + index);
                         Map<String, String> map = new HashMap<>();
                         map.put("material_no", mCurrentMaterialNumber);
