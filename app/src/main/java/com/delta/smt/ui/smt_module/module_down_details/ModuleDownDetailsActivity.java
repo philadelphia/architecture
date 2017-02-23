@@ -216,7 +216,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     }
 
     @Override
-    public void onFalied() {
+    public void onFailed() {
         flag = 2;
     }
 
