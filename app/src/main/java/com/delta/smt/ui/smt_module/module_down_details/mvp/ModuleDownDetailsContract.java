@@ -38,5 +38,7 @@ public interface ModuleDownDetailsContract {
          Observable<ModuleDownDetailsItem> getAllModuleDownDetailsItems(String str);
          Observable<ModuleDownMaintain> getModuleDownMaintainResult(String str);
         Observable<ModuleDownDetailsItem> getDownModuleList(String condition);
+        Observable<ModuleDownDetailsItem> getFeederCheckInTime(String condition);
+
     }
 }

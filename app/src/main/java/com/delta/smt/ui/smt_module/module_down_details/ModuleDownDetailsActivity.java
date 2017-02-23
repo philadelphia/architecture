@@ -75,7 +75,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     private String mCurrentQuantity;
     private String mCurrentLocation;
     private String mCurrentSlot;
-    private String mCurrentFeederID;
     private boolean flag1;
     private boolean flag2;
     private int index = -1;
@@ -310,8 +309,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                         index = dataSource.indexOf(moduleDownDetailsItem);
 
                         mCurrentSlot =  moduleDownDetailsItem.getSlot();
-                        mCurrentFeederID=  moduleDownDetailsItem.getFeeder_id();
-
                         Log.i(TAG, "对应的feederCheckInItem: " + moduleDownDetailsItem.toString());
                         adapter.notifyDataSetChanged();
                         Log.i(TAG, "onScanSuccess: ");
@@ -320,7 +317,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                         map.put("material_no", materialBlockBarCode.getDeltaMaterialNumber());
                         map.put("serial_no", materialBlockBarCode.getStreamNumber());
                         map.put("side", side);
-                        map.put("feeder_id", mCurrentFeederID);
                         map.put("qty", mCurrentQuantity);
                         map.put("slot", mCurrentSlot);
                         Gson gson = new Gson();
@@ -347,7 +343,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 map.put("side", side);
                 map.put("material_no", mCurrentMaterialID);
                 map.put("serial_no", mCurrentSerialNumber);
-                map.put("feeder_id", mCurrentFeederID);
                 map.put("shelf_no", mCurrentLocation);
                 map.put("qty", mCurrentQuantity);
                 map.put("slot", mCurrentSlot);
@@ -355,7 +350,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 String argument = gson.toJson(map);
                 Log.i(TAG, "argument== " + argument);
                 Log.i(TAG, "料架已经扫描完成，接下来入库: ");
-                getPresenter().getDownModuleList(argument);
+                getPresenter().getFeederCheckInTime(argument);
                 flag1 = false;
                 flag2 = false;
             } catch (EntityNotFountException e1) {
