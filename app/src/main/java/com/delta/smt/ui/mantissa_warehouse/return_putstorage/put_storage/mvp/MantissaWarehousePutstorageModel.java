@@ -48,4 +48,9 @@ public class MantissaWarehousePutstorageModel extends BaseModel<ApiService> impl
         return getService().getYesNext().compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
     }
 
+    @Override
+    public Observable<MantissaWarehousePutstorageResult> getYesok() {
+        return getService().getYesok().compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+    }
+
 }

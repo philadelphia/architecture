@@ -189,6 +189,18 @@ public class MantissaWarehousePutstorageFragment extends
 
     }
 
+    @Override
+    public void getYesokSucess() {
+        dataList2.clear();
+        adapter2.notifyDataSetChanged();
+        dialog.dismiss();
+    }
+
+    @Override
+    public void getYesokFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
+
+    }
+
 
     @Override
     public void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
@@ -301,14 +313,14 @@ public class MantissaWarehousePutstorageFragment extends
     public void alertOKdialog(){
        dialog= new AlertDialog.Builder(getActivity()).setTitle("提示")//设置对话框标题
 
-                .setMessage(firstMaterialNumber+"料没有退完，确定要退下一个么？")//设置显示的内容
+                .setMessage("退料未完成，是否确定结束?")//设置显示的内容
 
                 .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
                     @Override
 
                     public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
 
-                            getPresenter().getYesNext();
+                            getPresenter().getYesok();
 
                     }
 
