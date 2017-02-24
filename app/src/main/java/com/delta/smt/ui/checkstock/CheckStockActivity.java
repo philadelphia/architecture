@@ -361,7 +361,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onEndSucess() {
-        finish();
+          IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
 //        IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
     }
 
@@ -415,8 +415,9 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 }
                 break;
             case R.id.result_cancel:
-                if (mErrorDialog.isShowing()) {
-                    mErrorDialog.dismiss();
+                if (mResultDialog.isShowing()) {
+                    mResultDialog.dismiss();
+                    status=2;
                 }
                 break;
             case R.id.result_alteration:
