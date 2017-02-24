@@ -189,6 +189,18 @@ public class MantissaWarehousePutstorageFragment extends
 
     }
 
+    @Override
+    public void getYesokSucess() {
+        dataList2.clear();
+        adapter2.notifyDataSetChanged();
+        dialog.dismiss();
+    }
+
+    @Override
+    public void getYesokFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
+
+    }
+
 
     @Override
     public void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
@@ -254,10 +266,13 @@ public class MantissaWarehousePutstorageFragment extends
 
             case R.id.bt_next:
 
-                alertdialog();
+                alertNextdialog();
 
                 break;
             case R.id.bt_ok:
+
+                alertOKdialog();
+
                 break;
 
 
@@ -266,7 +281,8 @@ public class MantissaWarehousePutstorageFragment extends
     }
 
 
-    public void alertdialog(){
+    //点击下一个按钮
+    public void alertNextdialog(){
        dialog= new AlertDialog.Builder(getActivity()).setTitle("提示")//设置对话框标题
 
                 .setMessage(firstMaterialNumber+"料没有退完，确定要退下一个么？")//设置显示的内容
@@ -276,7 +292,35 @@ public class MantissaWarehousePutstorageFragment extends
 
                     public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
 
-                            getPresenter().getYesNext();
+
+                    }
+
+                }).setNegativeButton("返回",new DialogInterface.OnClickListener() {//添加返回按钮
+
+
+
+            @Override
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        }).show();//在按键响应事件中显示此对话框
+
+    }
+
+    //点击完成按钮
+    public void alertOKdialog(){
+       dialog= new AlertDialog.Builder(getActivity()).setTitle("提示")//设置对话框标题
+
+                .setMessage("退料未完成，是否确定结束?")//设置显示的内容
+
+                .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
+                    @Override
+
+                    public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+
+                            getPresenter().getYesok();
 
                     }
 
