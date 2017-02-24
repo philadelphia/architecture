@@ -38,7 +38,7 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
                         List<ItemInfo> itemInfoList = new ArrayList<ItemInfo>();
                         for (int i = 0; i < itemInfos.getRows().size(); i++) {
                             ItemInfo itemInfo = new ItemInfo();
-                            itemInfo.setText("线别:" + itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "主板:" + itemInfos.getRows().get(i).getMainBoard()+"\n"+"小板:"+ itemInfos.getRows().get(i).getSubBoard()+ "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus());
+                            itemInfo.setText("线别:" + itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "主板:" + itemInfos.getRows().get(i).getMainBoard()+"\n"+"小板:"+ itemInfos.getRows().get(i).getSubBoard()+ "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus()+ "\n" + "计划上线时间:"+itemInfos.getRows().get(i).getEndTime());
 
 //                            JsonProductBorrowList jsonProductBorrowList=new JsonProductBorrowList();
 //                            jsonProductBorrowList.setPlanPrdTime(itemInfos.getRows().get(i).getEndTime());
@@ -65,8 +65,13 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                try{
                 getView().showErrorView();
                 getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+
+            }catch (Exception e){
+
+                }
             }
         });
     }

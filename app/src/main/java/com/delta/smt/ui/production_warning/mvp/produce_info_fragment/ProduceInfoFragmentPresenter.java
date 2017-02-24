@@ -39,7 +39,11 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getItemInfoDatasFailed(throwable.getMessage());
+                try {
+                    getView().getItemInfoDatasFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -59,7 +63,11 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getItemInfoDatasFailed(throwable.getMessage());
+                try {
+                    getView().getItemInfoDatasFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
