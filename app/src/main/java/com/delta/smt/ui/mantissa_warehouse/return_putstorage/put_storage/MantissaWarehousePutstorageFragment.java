@@ -394,13 +394,13 @@ public class MantissaWarehousePutstorageFragment extends
 
 
 
-                if(materialNumber.equals(materialNumber)){
-                setItemHighLightBasedOnMID(serialNum);
-                UpLocation bindBean = new UpLocation(materialNumber, serialNum);
-                Gson gson = new Gson();
-                String s = gson.toJson(bindBean);
-                getPresenter().getUpLocation(s);
-
+                if(materialNumber.equals(firstMaterialNumber)){
+                    setItemHighLightBase(materialNumber);
+                    UpLocation bindBean = new UpLocation(materialNumber, serialNum);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(bindBean);
+                    getPresenter().getUpLocation(s);
+                    Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
 
 //                for (int i = 0; i < dataList2.size(); i++) {
 //                    if (materialNumber.equals(dataList2.get(i).getMaterial_num()) && serialNum.equals(dataList2.get(i).getSerial_num())) {
@@ -475,6 +475,15 @@ public class MantissaWarehousePutstorageFragment extends
     public void setItemHighLightBasedOnMID(String Shelf_no) {
         for (int i = 0; i < dataList2.size(); i++) {
             if (dataList2.get(i).getShelf_no().equals(Shelf_no)) {
+                scan_position = i;
+                break;
+            }
+        }
+        adapter2.notifyDataSetChanged();
+    }
+    public void setItemHighLightBase(String materialNumber) {
+        for (int i = 0; i < dataList2.size(); i++) {
+            if (dataList2.get(i).getMaterial_no().equals(materialNumber)) {
                 scan_position = i;
                 break;
             }
