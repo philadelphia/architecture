@@ -58,7 +58,6 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener, CompoundButton.OnCheckedChangeListener {
 
-
     public String moduleUpAutomaticUpload = null;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -84,8 +83,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     //二维码
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
     private int scan_position = -1;
-    private String materialBlockCodeCache = null;
-    private String feederCodeCache = null;
     private String workItemID;
     private String side;
     private String productNameMain;
@@ -93,6 +90,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String linName;
     private String materialBlockNumber;
     private String serialNo;
+    private Snackbar snackbar = null;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -103,14 +101,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     protected void initData() {
         automaticUpload.setOnCheckedChangeListener(this);
         moduleUpAutomaticUpload = SpUtil.getStringSF(ModuleUpBindingActivity.this, "module_up_automatic_upload");
-
         Intent intent = ModuleUpBindingActivity.this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
         linName = intent.getStringExtra(Constant.LINE_NAME);
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
-
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
@@ -118,6 +114,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         String argument = gson.toJson(map);
         getPresenter().getAllModuleUpBindingItems(argument);
         barCodeIpml.setOnGunKeyPressListener(this);
+        if (snackbar == null) {
+            snackbar = Snackbar.make(container, "", Snackbar.LENGTH_INDEFINITE);
+        }
     }
 
     @Override
@@ -214,35 +213,36 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void onSuccessBinding(ModuleUpBindingItem data) {
         ToastUtils.showMessage(this, data.getMsg());
-        Snackbar.make(container, dataSource.get(scan_position).getSlot() + "绑定成功！", Snackbar.LENGTH_INDEFINITE).show();
-            dataSource.clear();
-            List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
-            dataSource.addAll(rowsBeen);
-            scan_position = -1;
-            adapter.notifyDataSetChanged();
 
-            state = 1;
+        Snackbar.make(container, dataSource.get(scan_position).getSlot() + "绑定成功！", Snackbar.LENGTH_INDEFINITE);
+        snackbar.show();
+        dataSource.clear();
+        List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
+        dataSource.addAll(rowsBeen);
+        scan_position = -1;
+        adapter.notifyDataSetChanged();
+        state = 1;
         if (isAllFeederBinded()) {
-                new AlertDialog.Builder(this)
-                        .setTitle("提示")
-                        .setMessage("工单" + workItemID + "上模组完成！")
-                        .setCancelable(false)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                ModuleUpBindingActivity.this.finish();
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int which) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create()
-                        .show();
-            }
+            new AlertDialog.Builder(this)
+                    .setTitle("提示")
+                    .setMessage("工单" + workItemID + "上模组完成！")
+                    .setCancelable(false)
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ModuleUpBindingActivity.this.finish();
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .create()
+                    .show();
+        }
 
         /*} else {
 
@@ -325,6 +325,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                         VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                         Snackbar.make(container, "该料盘不属于此套工单，请确认工单及扫描是否正确！", Snackbar.LENGTH_INDEFINITE).show();
+                        //Snackbar.make(container, "该料盘不属于此套工单，请确认工单及扫描是否正确！", Snackbar.LENGTH_INDEFINITE).show();
                     } else {
                         VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
                         VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
