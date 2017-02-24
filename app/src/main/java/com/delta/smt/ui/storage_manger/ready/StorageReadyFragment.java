@@ -72,7 +72,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
                 holder.setText(R.id.tv_title, "产线: " + item.getLine_name());
                 holder.setText(R.id.tv_line, "工单号: " + item.getWork_order());
                 holder.setText(R.id.tv_material_station, "面别: " + item.getSide());
-                if (item.getStatus() == 0) {
+                if (item.getStatus() == 1) {
                     holder.setText(R.id.tv_add_count, "状态：未开始发料");
                 } else {
                     holder.setText(R.id.tv_add_count, "状态：正在发料");
@@ -126,8 +126,8 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
         for (int i = 0; i < storageReadies.size(); i++) {
             storageReadies.get(i).setEnd_time(storageReadies.get(i).getRemain_time() * 1000 + System.currentTimeMillis());
             storageReadies.get(i).setEntityId(i);
-            if (storageReadies.get(i).getStatus() == 1) {
-                Collections.swap(storageReadies,0,i);
+            if (storageReadies.get(i).getStatus() == 0) {
+                Collections.swap(storageReadies, 0, i);
                 isSending = true;
             }
         }
@@ -143,7 +143,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
 
     @Override
     public void onItemClick(View item, StorageReady storageReady, int position) {
-        if (storageReady.getStatus() == 0 && isSending == true) {
+        if (storageReady.getStatus() == 1 && isSending == true) {
             SnackbarUtil.showMassage(mRecyclerView, Constant.FAILURE_START_ISSUE_STRING
             );
             return;

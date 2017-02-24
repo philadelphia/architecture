@@ -5,6 +5,7 @@ import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MaterialCar;
+import com.delta.smt.entity.Result;
 
 import rx.Observable;
 
@@ -27,6 +28,8 @@ public interface MantissaWarehouseDetailsContract {
 
         Observable<IssureToWarehFinishResult> getMantissaWareOver();
 
+
+        Observable<Result> debit();
     }
 
     interface View extends IView {
@@ -60,5 +63,9 @@ public interface MantissaWarehouseDetailsContract {
         void showErrorView();
 
         void showEmptyView();
+
+        void debitSuccess();
+
+        void debitFailed(String message);
     }
 }

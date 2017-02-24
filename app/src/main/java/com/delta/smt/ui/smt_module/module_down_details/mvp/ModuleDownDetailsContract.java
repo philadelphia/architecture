@@ -18,7 +18,7 @@ public interface ModuleDownDetailsContract {
 
         public void onSuccess(ModuleDownDetailsItem data);
 
-        public void onFalied();
+        public void onFailed(String message);
 
         public void onSuccessMaintain(ModuleDownMaintain moduleDownMaintain);
 

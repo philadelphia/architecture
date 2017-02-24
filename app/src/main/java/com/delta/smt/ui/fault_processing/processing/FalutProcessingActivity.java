@@ -51,13 +51,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
  * @date : 2017/1/4 20:02
  */
-
 
 public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresenter> implements FalutProcessingContract.View, WarningManger.OnWarning, ItemOnclick<RowsBean>, Toolbar.OnMenuItemClickListener {
     @BindView(R.id.rv_faultProcessing)
@@ -237,6 +235,11 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     }
 
+    @Override
+    protected void handError() {
+        super.handError();
+        statusLayout.showErrorView();
+    }
 
     @Override
     public void onItemClick(final View Itemview, final RowsBean item, int position) {

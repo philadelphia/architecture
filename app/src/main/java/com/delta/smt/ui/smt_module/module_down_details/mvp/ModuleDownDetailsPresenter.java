@@ -43,7 +43,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                             getView().onSuccess(moduleDownDetailsItem);
                         }
                     } else {
-                        getView().onFalied();
+                        getView().onFailed(moduleDownDetailsItem.getMsg());
                         getView().showErrorView();
                     }
                 }catch (Exception e){
@@ -54,7 +54,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void call(Throwable throwable) {
                 try{
-                    getView().onFalied();
+                    getView().onFailed(throwable.getMessage());
                     getView().showErrorView();
                 }catch (Exception e){
                     e.printStackTrace();
@@ -72,7 +72,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFalied();
+                getView().onFailed(throwable.getMessage());
             }
         });
     }
@@ -97,6 +97,8 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
                     if (moduleDownDetailsItem.getCode().equalsIgnoreCase("0")){
                         getView().onSuccess(moduleDownDetailsItem);
+                    }else {
+                        getView().onFailed(moduleDownDetailsItem.getMsg());
                     }
             }
         }, new Action1<Throwable>() {

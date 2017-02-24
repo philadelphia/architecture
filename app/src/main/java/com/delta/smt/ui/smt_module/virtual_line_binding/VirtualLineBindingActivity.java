@@ -207,20 +207,20 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     public void onSuccess(VirtualLineBindingItem data) {
         if(data.getMsg().toLowerCase().equals("success")){
-            Toast.makeText(this, "onSuccess", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "onSuccess", Toast.LENGTH_SHORT).show();
             dataSource.clear();
             data_tmp = data.getRows();
             dataSource.addAll(data_tmp);
             adapter.notifyDataSetChanged();
             adapterTitle.notifyDataSetChanged();
             if(isAllModuleBinded(dataSource)){
-                new AlertDialog.Builder(this)
+                /*new AlertDialog.Builder(this)
                         .setTitle("提示")
                         .setMessage("虚拟模组绑定完成，是否立即跳转到下模组界面？")
                         .setCancelable(false)
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                            public void onClick(DialogInterface dialogInterface, int i) {*/
                                 Bundle bundle = new Bundle();
                                 bundle.putString(Constant.WORK_ITEM_ID,workItemID);
                                 bundle.putString(Constant.PRODUCT_NAME_MAIN,productNameMain);
@@ -228,7 +228,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                                 bundle.putString(Constant.SIDE,side);
                                 bundle.putString(Constant.LINE_NAME,linName);
                                 IntentUtils.showIntent(VirtualLineBindingActivity.this, ModuleDownDetailsActivity.class,bundle);
-                                dialogInterface.dismiss();
+                                VirtualLineBindingActivity.this.finish();
+                                /*dialogInterface.dismiss();
                                 //VirtualLineBindingActivity.this.finish();
                             }
                         })
@@ -240,7 +241,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                             }
                         })
                         .create()
-                        .show();
+                        .show();*/
             }
         }
 
@@ -264,6 +265,17 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", workItemID);
+                map.put("side", side);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+                getPresenter().getAllVirtualLineBindingItems(argument);
+            }
+        });
     }
 
     @Override
@@ -293,7 +305,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
     @Override
     public void onScanSuccess(String barcode) {
-        Toast.makeText(this, barcode, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, barcode, Toast.LENGTH_SHORT).show();
         //System.out.println(barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {

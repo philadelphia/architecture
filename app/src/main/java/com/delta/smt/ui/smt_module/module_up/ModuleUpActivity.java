@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -138,22 +139,21 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     public void onSuccess(ModuleUpWarningItem data) {
-        //if (data.getMsg().toLowerCase().equals("success")) {
-            dataList.clear();
-            List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
-            for (int i = 0; i < rows.size(); i++) {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    Date parse = format.parse(rows.get(i).getOnline_plan_start_time());
-                    rows.get(i).setEnd_time(parse.getTime());
-                    rows.get(i).setEntityId(i);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+        dataList.clear();
+        List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
+        for (int i = 0; i < rows.size(); i++) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date parse = format.parse(rows.get(i).getOnline_plan_start_time());
+                rows.get(i).setEnd_time(parse.getTime());
+                rows.get(i).setEntityId(i);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            dataList.addAll(rows);
-            myAdapter.notifyDataSetChanged();
-        //}
+        }
+        dataList.addAll(rows);
+        myAdapter.notifyDataSetChanged();
+        Toast.makeText(this, data.getMsg(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -210,12 +210,13 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onSuccess(ModuleUpBindingItem data) {
-        if (data.getMsg().toLowerCase().equals("success")){
+        //if (data.getMsg().toLowerCase().equals("success")){
             dataSource.clear();
             List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
             dataSource.addAll(rowsBeen);
             adapter.notifyDataSetChanged();
-        }
+        Toast.makeText(this, data.getMsg(), Toast.LENGTH_SHORT).show();
+        //}
 
     }
 
@@ -279,6 +280,17 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", workItemID);
+                map.put("side",side);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+                getPresenter().getAllModuleUpBindingItems(argument);
+            }
+        });
     }
 
     @Override
@@ -317,7 +329,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onScanSuccess(String barcode) {
-        Toast.makeText(this, barcode, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, barcode, Toast.LENGTH_SHORT).show();
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:
