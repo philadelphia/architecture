@@ -100,7 +100,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
     }*/
 
     public void manualDebit(){
-        Toast.makeText((Context) getView(),"手动扣账",Toast.LENGTH_SHORT).show();
+        //Toast.makeText((Context) getView(),"手动扣账",Toast.LENGTH_SHORT).show();
         getModel().getOverReceiveDebit().subscribe(new Action1<OverReceiveDebitResult>() {
             @Override
             public void call(OverReceiveDebitResult overReceiveDebitResult) {
