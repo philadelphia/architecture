@@ -255,7 +255,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void getItemWarningDatasFailed(String message) {
 /*        ToastUtils.showMessage(getContext(), message);*/
-        Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -482,11 +482,23 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void showErrorView() {
         mStatusLayout.showErrorView();
+        mStatusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
         mStatusLayout.showEmptyView();
+        mStatusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+            }
+        });
     }
 
 }

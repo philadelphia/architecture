@@ -1,12 +1,15 @@
 package com.delta.smt.ui.storage_manger.details;
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +22,8 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
+import com.delta.commonlibs.utils.SingleClick;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -76,6 +81,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     TextView tv_hint;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
+    @BindView(R.id.btn_switch)
+    CheckBox btnSwitch;
     private List<StorageDetails> dataList = new ArrayList();
     private List<StorageDetails> dataList2 = new ArrayList();
     private CommonBaseAdapter<StorageDetails> adapter;
@@ -87,6 +94,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private String currentDeltaMaterialNumber = "";
     private int currentPostion = -1;
     private String side;
+    private boolean isHaveIssureOver;
+    private boolean ischecked=true;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -110,7 +119,15 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         Log.i("aaa", mS);
         getPresenter().getStorageDetails(mS);
         getPresenter().queryMaterailCar(mS);
+        ischecked = SpUtil.getBooleanSF(this, part + "checked");
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        Log.e(TAG, "onConfigurationChanged: " + newConfig.toString());
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -122,6 +139,13 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("仓库" + part);
         dataList.add(new StorageDetails("", "", 0, 0));
+        btnSwitch.setChecked(ischecked);
+        btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SpUtil.SetBooleanSF(StorageDetailsActivity.this, part + "checked", b);
+            }
+        });
         adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
@@ -208,6 +232,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
         issureToWareh(rows);
+
     }
 
     private void issureToWareh(Result<StorageDetails> rows) {
@@ -226,6 +251,17 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             if (dataList2.get(i).getStatus() == 0 || dataList2.get(i).getStatus() == 1) {
                 isOver = false;
             }
+            if (dataList2.get(i).getStatus() == 2) {
+
+                isHaveIssureOver = true;
+            } else {
+                isHaveIssureOver = false;
+
+            }
+        }
+
+        if (btnSwitch.isChecked()) {
+            getPresenter().deduction();
         }
         if (isOver) {
             getPresenter().issureToWarehFinish();
@@ -274,7 +310,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     @Override
-    public void jumpMaterialsSucess(Result<StorageDetails> result) {
+    public void jumpMaterialsSuccess(Result<StorageDetails> result) {
         issureToWareh(result);
     }
 
@@ -376,6 +412,17 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         statusLayout.showEmptyView();
     }
 
+    @Override
+    public void deductionFailed(String message) {
+        tv_hint.setText(message);
+    }
+
+    @Override
+    public void deductionSuccess() {
+
+        tv_hint.setText("扣账成功");
+    }
+
     int state = 1;
 
     @Override
@@ -453,6 +500,14 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @OnClick(R.id.button2)
     public void onClick() {
 
+        if (isHaveIssureOver == false) {
+            ToastUtils.showMessage(this, getString(R.string.unfinished_station));
+            tv_hint.setText(getString(R.string.unfinished_station));
+            return;
+        }
+        if (SingleClick.isSingle(1000)) {
+            getPresenter().deduction();
+        }
     }
 
 

@@ -225,7 +225,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
     @Override
     public void getFailed(String message) {
-        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -264,11 +264,23 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     @Override
     public void showErrorView() {
         mLayoutStatusLayout1.showErrorView();
+        mLayoutStatusLayout1.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getProductionLineDatas();
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
         mLayoutStatusLayout1.showEmptyView();
+        mLayoutStatusLayout1.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getProductionLineDatas();
+            }
+        });
     }
 
 
