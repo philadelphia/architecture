@@ -319,6 +319,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             case 1:
                 try {
                     MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    if (snackbar.isShown()) {
+                        snackbar.dismiss();
+                    }
                     materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
                     serialNo = materialBlockBarCode.getStreamNumber();
                     if (!isExistInDataSourceAndHighLight(materialBlockNumber, serialNo, dataSource)) {
@@ -333,15 +336,21 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     }
 
                 } catch (EntityNotFountException e) {
+                    //Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
                     Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
                 } catch (ArrayIndexOutOfBoundsException e) {
+                    //Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
                     Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
                 }
                 break;
             case 2:
                 try {
                     Feeder feederCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
+                    if (snackbar.isShown()) {
+                        snackbar.dismiss();
+                    }
                     if (isFeederExistInDataSource(barcode, dataSource)) {
+                        //Snackbar.make(container, "此Feeder已经被绑定！", Snackbar.LENGTH_INDEFINITE).show();
                         Snackbar.make(container, "此Feeder已经被绑定！", Snackbar.LENGTH_INDEFINITE).show();
                     } else {
                         Map<String, String> map = new HashMap<>();
@@ -357,11 +366,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 } catch (EntityNotFountException e) {
                     try {
                         MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                        if (snackbar.isShown()) {
+                            snackbar.dismiss();
+                        }
                         materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
                         serialNo = materialBlockBarCode.getStreamNumber();
                         if (!isExistInDataSourceAndHighLight(materialBlockNumber, serialNo, dataSource)) {
                             VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                             VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
+                            //Snackbar.make(container, "该料盘不属于此套工单，请确认工单及扫描是否正确！", Snackbar.LENGTH_INDEFINITE).show();
                             Snackbar.make(container, "该料盘不属于此套工单，请确认工单及扫描是否正确！", Snackbar.LENGTH_INDEFINITE).show();
                         } else {
                             VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
@@ -371,13 +384,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
                     } catch (EntityNotFountException ee) {
                         ee.printStackTrace();
+                        //Snackbar.make(container, "请扫描feeder ID！", Snackbar.LENGTH_INDEFINITE).show();
                         Snackbar.make(container, "请扫描feeder ID！", Snackbar.LENGTH_INDEFINITE).show();
                     } catch (ArrayIndexOutOfBoundsException ee) {
                         ee.printStackTrace();
+                        //Snackbar.make(container, "请扫描feeder ID！", Snackbar.LENGTH_INDEFINITE).show();
                         Snackbar.make(container, "请扫描feeder ID！", Snackbar.LENGTH_INDEFINITE).show();
                     }
                     e.printStackTrace();
                 } catch (ArrayIndexOutOfBoundsException e) {
+                    //Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
                     Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
                 }
                 break;

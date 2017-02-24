@@ -7,11 +7,11 @@ package com.delta.smt.entity;
 public class UpLocation {
 
     private String material_no;
-    private String serial_num;
+    private String serial_no;
 
-    public UpLocation(String material_no, String serial_num) {
+    public UpLocation(String material_no, String serial_no) {
         this.material_no = material_no;
-        this.serial_num = serial_num;
+        this.serial_no = serial_no;
     }
 
     public String getMaterial_no() {
@@ -22,11 +22,11 @@ public class UpLocation {
         this.material_no = material_no;
     }
 
-    public String getSerial_num() {
-        return serial_num;
+    public String getSerial_no() {
+        return serial_no;
     }
 
-    public void setSerial_num(String serial_num) {
-        this.serial_num = serial_num;
+    public void setSerial_no(String serial_no) {
+        this.serial_no = serial_no;
     }
 }
