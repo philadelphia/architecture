@@ -161,23 +161,23 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                if("0".equals(item.getDest())){
+                if ("0".equals(item.getDest())) {
                     holder.setText(R.id.tv_ownership, "尾数仓");
-                }else if("1".equals(item.getDest())){
+                } else if ("1".equals(item.getDest())) {
                     holder.setText(R.id.tv_ownership, "Feeder缓存区");
-                }else if("2".equals(item.getDest())){
+                } else if ("2".equals(item.getDest())) {
                     holder.setText(R.id.tv_ownership, "Feeder维护区");
-                }else{
+                } else {
                     holder.setText(R.id.tv_ownership, item.getDest());
                 }
                 holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
 
-              if (item.getMaterial_no().equalsIgnoreCase(mCurrentMaterialID) &&  item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)){
-                  Log.i(TAG, "convert: "+item.toString());
-                  holder.itemView.setBackgroundColor(Color.YELLOW);
-                  mCurrentSlot = item.getSlot();
-                  index = position;
-              } else {
+                if (item.getMaterial_no().equalsIgnoreCase(mCurrentMaterialID) && item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)) {
+                    Log.i(TAG, "convert: " + item.toString());
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                    mCurrentSlot = item.getSlot();
+                    index = position;
+                } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
             }
@@ -219,16 +219,17 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     public void onSuccessMaintain(ModuleDownMaintain maintain) {
-        if(maintain.getMsg().toLowerCase().equals("success")){
-            Toast.makeText(this, "Feeder保养成功！", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this, "Feeder保养失败！", Toast.LENGTH_SHORT).show();
-        }
+        ToastUtils.showMessage(this, maintain.getMsg());
     }
 
     @Override
-    public void onFailMaintain() {
-        Toast.makeText(this, "Feeder保养网络请求失败！", Toast.LENGTH_SHORT).show();
+    public void onFailMaintain(ModuleDownMaintain maintain) {
+        ToastUtils.showMessage(this, maintain.getMsg());
+    }
+
+    @Override
+    public void onNetFailed(Throwable throwable) {
+        ToastUtils.showMessage(this, throwable.getMessage());
     }
 
     @Override
@@ -272,7 +273,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         } catch (DevicePairedNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -297,7 +297,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             case android.R.id.home:
                 finish();
                 break;
-
             default:
                 break;
         }
@@ -308,10 +307,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_feederMaintain:
-
                 Map<String, String> map = new HashMap<>();
                 map.put("work_order", mCurrentWorkOrder);
-                map.put("side",side);
+                map.put("side", side);
                 Gson gson = new Gson();
                 String argument = gson.toJson(map);
                 getPresenter().getAllModuleDownMaintainResult(argument);
@@ -328,11 +326,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             case 1:
                 try {
                     MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
-
                     mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
                     mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
                     mCurrentQuantity = materialBlockBarCode.getCount();
-
                     adapter.notifyDataSetChanged();
                     recyContent.scrollToPosition(index);
                     Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
@@ -384,7 +380,5 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             default:
                 break;
         }
-
-
     }
 }
