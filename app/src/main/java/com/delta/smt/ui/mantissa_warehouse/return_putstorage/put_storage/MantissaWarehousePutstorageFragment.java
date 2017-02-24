@@ -14,6 +14,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
 import com.delta.buletoothio.barcode.parse.entity.LabelBarcode;
+import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.smt.R;
@@ -38,8 +39,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
@@ -66,6 +65,7 @@ public class MantissaWarehousePutstorageFragment extends
     private List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter;
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter2;
+    private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> StartStorageAdapter;
     private BaseActivity baseActiviy;
 
 
@@ -75,6 +75,7 @@ public class MantissaWarehousePutstorageFragment extends
     private String lableBarCode;
     private String serialNum;
     private String count;
+    private String lastLocation;
 
     private int position = 0;
     private boolean f = false;
@@ -117,17 +118,15 @@ public class MantissaWarehousePutstorageFragment extends
                 holder.setText(R.id.tv_count, item.getNum());
 
             }
-
             @Override
             protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item) {
                 return R.layout.mantissa_putstorage_item;
             }
         };
-
         mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyContetn.setAdapter(adapter2);
-
     }
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -228,8 +227,9 @@ public class MantissaWarehousePutstorageFragment extends
                 getPresenter().getBeginPut();
                 mClean.setEnabled(false);
                 mDeduct.setEnabled(false);
-//                mBtOk.setVisibility(View.VISIBLE);
-//                mBtNext.setVisibility(View.VISIBLE);
+                mBtOk.setVisibility(View.VISIBLE);
+                mBtNext.setVisibility(View.VISIBLE);
+                beginStorage();
                 flag = 3;
                 break;
 
@@ -251,13 +251,16 @@ public class MantissaWarehousePutstorageFragment extends
         switch (flag) {
             case 1:
                 try {
-                    MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
-                    materialNumber = materiaBar.getDeltaMaterialNumber();
-                    serialNum = materiaBar.getStreamNumber();
+//                    MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+//                    materialNumber = materiaBar.getDeltaMaterialNumber();
+//                    serialNum = materiaBar.getStreamNumber();
+                    //尾数仓架位
+                    LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
+                    lastLocation = lastMaterialCar.getSource();
                     flag = 2;
                     Toast.makeText(baseActiviy, "已扫描料盘", Toast.LENGTH_SHORT).show();
 
-                    setItemHighLightBasedOnMID(serialNum);
+                    setItemHighLightBasedOnMID(lastLocation);
 
                 } catch (EntityNotFountException e) {
 
@@ -269,7 +272,7 @@ public class MantissaWarehousePutstorageFragment extends
                     LabelBarcode lableBar = (LabelBarcode) barCodeParseIpml.getEntity(barcode, BarCodeType.LABLE_BARCODE);
                     lableBarCode = lableBar.getSource();
 
-                    WarehousePutstorageBean bindBean = new WarehousePutstorageBean(materialNumber, serialNum, lableBarCode);
+                    WarehousePutstorageBean bindBean = new WarehousePutstorageBean(lastLocation, lableBarCode);
                     Gson gson = new Gson();
                     String s = gson.toJson(bindBean);
 
@@ -355,14 +358,60 @@ public class MantissaWarehousePutstorageFragment extends
         }
     }
 
-    public void setItemHighLightBasedOnMID(String materialID) {
+    public void setItemHighLightBasedOnMID(String Shelf_no) {
         for (int i = 0; i < dataList2.size(); i++) {
-//            if (dataList2.get(i).getSerial_num().equals(materialID)) {
-//                scan_position = i;
-//                break;
-//            }
+            if (dataList2.get(i).getShelf_no().equals(Shelf_no)) {
+                scan_position = i;
+                break;
+            }
         }
         adapter2.notifyDataSetChanged();
     }
+
+    public void beginStorage(){
+        dataList.clear();
+        dataList.add(new MantissaWarehousePutstorageResult.MantissaWarehousePutstorage("", "", "", "", ""));
+        adapter = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getContext(), dataList) {
+            @Override
+            protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item, int position) {
+                holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item) {
+                return R.layout.mantissa_beginputstorage_item;
+            }
+        };
+        mRecyTitle.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyTitle.setAdapter(adapter);
+
+
+        dataList2.clear();
+        StartStorageAdapter = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getContext(), dataList2) {
+            @Override
+            protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item, int position) {
+                if (scan_position == -1) {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                } else if (scan_position == position) {
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                } else {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                }
+//                holder.setText(R.id.tv_number, item.getMaterial_no());
+//                holder.setText(R.id.tv_shelf_no, item.getShelf_no());
+//                holder.setText(R.id.tv_to_shelf_no, item.getTo_shelf_no());
+//                holder.setText(R.id.tv_tag, item.getLabel_name());
+//                holder.setText(R.id.tv_count, item.getNum());
+
+            }
+            @Override
+            protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item) {
+                return R.layout.mantissa_beginputstorage_item;
+            }
+        };
+        mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mRecyContetn.setAdapter(StartStorageAdapter);
+    }
+
 
 }
