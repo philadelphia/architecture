@@ -6,37 +6,29 @@ package com.delta.smt.entity;
 
 public class WarehousePutstorageBean {
 
-    private String material_num;
-    private String serial_num;
-    private String label;
+    //尾数仓架位
+    private String shelf_no;
+    //标签
+    private String label_name;
 
-    public WarehousePutstorageBean(String material_num, String serial_num, String label) {
-        this.material_num = material_num;
-        this.serial_num = serial_num;
-        this.label = label;
+    public WarehousePutstorageBean(String shelf_no, String label_name) {
+        this.shelf_no = shelf_no;
+        this.label_name = label_name;
     }
 
-    public String getMaterial_num() {
-        return material_num;
+    public String getShelf_no() {
+        return shelf_no;
     }
 
-    public void setMaterial_num(String material_num) {
-        this.material_num = material_num;
+    public void setShelf_no(String shelf_no) {
+        this.shelf_no = shelf_no;
     }
 
-    public String getSerial_num() {
-        return serial_num;
+    public String getLabel_name() {
+        return label_name;
     }
 
-    public void setSerial_num(String serial_num) {
-        this.serial_num = serial_num;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
+    public void setLabel_name(String label_name) {
+        this.label_name = label_name;
     }
 }
