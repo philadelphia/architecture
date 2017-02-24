@@ -15,6 +15,7 @@ import com.delta.smt.ui.product_tools.location.di.DaggerProductToolsLocationComp
 import com.delta.smt.ui.product_tools.location.di.ProductToolsLocationModule;
 import com.delta.smt.ui.product_tools.location.mvp.ProduceToolsLocationContract;
 import com.delta.smt.ui.product_tools.location.mvp.ProduceToolsLocationPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 
 import org.json.JSONObject;
 
@@ -100,6 +101,8 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             } catch (Exception e) {
                 e.printStackTrace();
                 SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"治具二维码格式不对，请重新扫描！");
+                VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
+                VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
             }
         } else {
 
@@ -114,6 +117,8 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             } catch (Exception e) {
                 e.printStackTrace();
                 SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"架位二维码格式不对，请重新扫描！");
+                VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
+                VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
             }
 
         }
@@ -124,8 +129,12 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         if (param.getCode()==0) {
             mProductToolsBarCodeEditText.setText(tools);
             mShiftBarcodeCodeEditText.setText(param.getMessage());
+            VibratorAndVoiceUtils.correctVibrator(ProduceToolsLocationActivity.this);
+            VibratorAndVoiceUtils.correctVoice(ProduceToolsLocationActivity.this);
         }else {
             SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"该治具无法完成入架位操作!");
+            VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
+            VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
         }
         return flag1 = param.getCode();
     }
@@ -133,8 +142,11 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     @Override
     public int getSubmitResoult(int param) {
         if (param == 0) {
+
             mShiftBarcodeCodeEditText.setText(shift);
             SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"治具入架位完成！");
+            VibratorAndVoiceUtils.correctVibrator(ProduceToolsLocationActivity.this);
+            VibratorAndVoiceUtils.correctVoice(ProduceToolsLocationActivity.this);
             finish();
         }
         return 0;
@@ -143,5 +155,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     @Override
     public void Fail() {
         SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"请求的数据不存在!");
+        VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
+        VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
     }
 }
