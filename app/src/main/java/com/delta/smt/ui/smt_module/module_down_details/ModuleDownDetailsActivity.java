@@ -18,6 +18,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FeederBuffer;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.demacia.barcode.BarCodeIpml;
@@ -159,7 +160,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         adapter = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
-                Log.i(TAG, "convert: ");
+
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.tv_work_order, item.getWork_order());
                 holder.setText(R.id.tv_side, item.getSide());
@@ -219,8 +220,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     }
 
     @Override
-    public void onFailed() {
+    public void onFailed(String message) {
         flag = 2;
+        ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
     @Override
