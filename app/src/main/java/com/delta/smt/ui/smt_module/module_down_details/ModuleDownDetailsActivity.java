@@ -53,45 +53,38 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPresenter> implements ModuleDownDetailsContract.View, BarCodeIpml.OnScanSuccessListener {
 
+    private static final String TAG = "ModuleDownDetailsActivi";
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
     RecyclerView recyContent;
     @BindView(R.id.btn_feederMaintain)
     AppCompatButton btnFeederMaintain;
-
+    String workItemID;
+    String side;
+    String productNameMain;
+    String productName;
+    String linName;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
     private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapterTitle;
     private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapter;
     private List<ModuleDownDetailsItem.RowsBean> dataList = new ArrayList<>();
     private List<ModuleDownDetailsItem.RowsBean> dataSource = new ArrayList<>();
-
     private String mCurrentWorkOrder;
+    //SharedPreferences preferences=null;
     private String mCurrentMaterialID;
     private String mCurrentSerialNumber;
     private String mCurrentQuantity;
     private String mCurrentLocation;
     private String mCurrentSlot;
     private int index = -1;
-
     //二维码
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
-    //SharedPreferences preferences=null;
-
-    String workItemID;
-    String side;
-    String productNameMain;
-    String productName;
-    String linName;
-
-    @BindView(R.id.statusLayout)
-    StatusLayout statusLayout;
-
-    private static final String TAG = "ModuleDownDetailsActivi";
     private LinearLayoutManager linearLayoutManager;
     private int flag = 1;
 
@@ -210,7 +203,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public void onSuccess(ModuleDownDetailsItem data) {
         dataSource.clear();
         flag = 1;
-
         Log.i(TAG, "index: == " + index);
         List<ModuleDownDetailsItem.RowsBean> rowsBean = data.getRows();
         dataSource.addAll(rowsBean);
