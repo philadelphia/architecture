@@ -55,7 +55,7 @@
 
 
         <Button
-            android:id="@+id/bt_ok"
+            android:id="@+id/bt_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -67,14 +67,14 @@
             />
 
         <Button
-            android:id="@+id/bt_next"
+            android:id="@+id/bt_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="完成"
             android:textSize="40px"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/bt_ok"
-            android:layout_toStartOf="@+id/bt_ok"
+            android:layout_toLeftOf="@+id/bt_next"
+            android:layout_toStartOf="@+id/bt_next"
             android:layout_marginRight="19dp"
             android:layout_marginEnd="19dp"
             android:visibility="gone"

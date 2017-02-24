@@ -1,7 +1,9 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +27,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.PutBarCode;
+import com.delta.smt.entity.UpLocation;
 import com.delta.smt.entity.WarehousePutstorageBean;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.DaggerMantissaWarehousePutstorageComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.MantissaWarehousePutstorageModule;
@@ -76,9 +79,11 @@ public class MantissaWarehousePutstorageFragment extends
     private String serialNum;
     private String count;
     private String lastLocation;
+    private AlertDialog dialog;
 
     private int position = 0;
     private boolean f = false;
+    private String firstMaterialNumber;
 
     private int scan_position = -1;
 
@@ -163,10 +168,36 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
+        firstMaterialNumber =  dataList2.get(0).getMaterial_no();
     }
 
     @Override
     public void getFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
+
+    }
+
+    @Override
+    public void getYesNextSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
+        dataList2.clear();
+        dataList2.addAll(mantissaWarehousePutstorages);
+        adapter2.notifyDataSetChanged();
+        dialog.dismiss();
+    }
+
+    @Override
+    public void getYesNextFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
+
+    }
+
+    @Override
+    public void getYesokSucess() {
+        dataList2.clear();
+        adapter2.notifyDataSetChanged();
+        dialog.dismiss();
+    }
+
+    @Override
+    public void getYesokFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
 
     }
 
@@ -224,7 +255,7 @@ public class MantissaWarehousePutstorageFragment extends
                 getPresenter().getUpdate();
                 break;
             case R.id.deduct:
-                getPresenter().getBeginPut();
+                getPresenter().getMantissaWarehousePutstorage();
                 mClean.setEnabled(false);
                 mDeduct.setEnabled(false);
                 mBtOk.setVisibility(View.VISIBLE);
@@ -233,9 +264,79 @@ public class MantissaWarehousePutstorageFragment extends
                 flag = 3;
                 break;
 
+            case R.id.bt_next:
+
+                alertNextdialog();
+
+                break;
+            case R.id.bt_ok:
+
+                alertOKdialog();
+
+                break;
+
+
+
         }
     }
 
+
+    //点击下一个按钮
+    public void alertNextdialog(){
+       dialog= new AlertDialog.Builder(getActivity()).setTitle("提示")//设置对话框标题
+
+                .setMessage(firstMaterialNumber+"料没有退完，确定要退下一个么？")//设置显示的内容
+
+                .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
+                    @Override
+
+                    public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+
+
+                    }
+
+                }).setNegativeButton("返回",new DialogInterface.OnClickListener() {//添加返回按钮
+
+
+
+            @Override
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        }).show();//在按键响应事件中显示此对话框
+
+    }
+
+    //点击完成按钮
+    public void alertOKdialog(){
+       dialog= new AlertDialog.Builder(getActivity()).setTitle("提示")//设置对话框标题
+
+                .setMessage("退料未完成，是否确定结束?")//设置显示的内容
+
+                .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
+                    @Override
+
+                    public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+
+                            getPresenter().getYesok();
+
+                    }
+
+                }).setNegativeButton("返回",new DialogInterface.OnClickListener() {//添加返回按钮
+
+
+
+            @Override
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        }).show();//在按键响应事件中显示此对话框
+
+    }
 
     @Override
     protected boolean UseEventBus() {
@@ -258,7 +359,7 @@ public class MantissaWarehousePutstorageFragment extends
                     LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
                     lastLocation = lastMaterialCar.getSource();
                     flag = 2;
-                    Toast.makeText(baseActiviy, "已扫描料盘", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(baseActiviy, "已扫描架位", Toast.LENGTH_SHORT).show();
 
                     setItemHighLightBasedOnMID(lastLocation);
 
@@ -290,8 +391,18 @@ public class MantissaWarehousePutstorageFragment extends
                 count = lableBar.getCount();
                 materialNumber = lableBar.getDeltaMaterialNumber();
                 serialNum = lableBar.getStreamNumber();
-                setItemHighLightBasedOnMID(serialNum);
-                for (int i = 0; i < dataList2.size(); i++) {
+
+
+
+                if(materialNumber.equals(firstMaterialNumber)){
+                    setItemHighLightBase(materialNumber);
+                    UpLocation bindBean = new UpLocation(materialNumber, serialNum);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(bindBean);
+                    getPresenter().getUpLocation(s);
+                    Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
+
+//                for (int i = 0; i < dataList2.size(); i++) {
 //                    if (materialNumber.equals(dataList2.get(i).getMaterial_num()) && serialNum.equals(dataList2.get(i).getSerial_num())) {
 //                        position = i;
 //                        f = true;
@@ -299,11 +410,14 @@ public class MantissaWarehousePutstorageFragment extends
 //                    } else {
 //                        Toast.makeText(getActivity(), "尾数仓暂无此料盘", Toast.LENGTH_SHORT).show();
 //                    }
-                }
+//                }
+//                if (f = true) {
+//                    flag = 4;
+//                    f = false;
+//                }
 
-                if (f = true) {
-                    flag = 4;
-                    f = false;
+                }else{
+                    Toast.makeText(getActivity(), "退料顺序有误，请扫描首个料盘！", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -367,6 +481,15 @@ public class MantissaWarehousePutstorageFragment extends
         }
         adapter2.notifyDataSetChanged();
     }
+    public void setItemHighLightBase(String materialNumber) {
+        for (int i = 0; i < dataList2.size(); i++) {
+            if (dataList2.get(i).getMaterial_no().equals(materialNumber)) {
+                scan_position = i;
+                break;
+            }
+        }
+        adapter2.notifyDataSetChanged();
+    }
 
     public void beginStorage(){
         dataList.clear();
@@ -387,7 +510,7 @@ public class MantissaWarehousePutstorageFragment extends
 
 
         dataList2.clear();
-        StartStorageAdapter = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getContext(), dataList2) {
+        adapter2 = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getContext(), dataList2) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item, int position) {
                 if (scan_position == -1) {
@@ -397,11 +520,10 @@ public class MantissaWarehousePutstorageFragment extends
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
-//                holder.setText(R.id.tv_number, item.getMaterial_no());
-//                holder.setText(R.id.tv_shelf_no, item.getShelf_no());
-//                holder.setText(R.id.tv_to_shelf_no, item.getTo_shelf_no());
-//                holder.setText(R.id.tv_tag, item.getLabel_name());
-//                holder.setText(R.id.tv_count, item.getNum());
+                holder.setText(R.id.tv_number, item.getMaterial_no());
+                holder.setText(R.id.tv_to_shelf_no, item.getTo_shelf_no());
+                holder.setText(R.id.tv_tag, item.getLabel_name());
+                holder.setText(R.id.tv_count, item.getNum());
 
             }
             @Override
@@ -410,7 +532,8 @@ public class MantissaWarehousePutstorageFragment extends
             }
         };
         mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mRecyContetn.setAdapter(StartStorageAdapter);
+        mRecyContetn.setAdapter(adapter2);
+
     }
 
 

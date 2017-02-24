@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -15,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -23,26 +20,19 @@ import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.VirtualModuleID;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
-import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.utils.IntentUtils;
-import com.delta.commonlibs.utils.SpUtil;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
-import com.delta.smt.app.App;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.di.component.DaggerAppComponent;
-import com.delta.smt.entity.ModNumByMaterialResult;
-import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
-import com.delta.smt.entity.VirtualLineBindingItemNative;
-import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.smt_module.module_down_details.ModuleDownDetailsActivity;
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.DaggerVirtualLineBindingComponent;
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.VirtualLineBindingModule;
@@ -56,9 +46,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.OnClick;
-
-import static com.delta.smt.api.API.BASE_URL;
 
 /**
  * Created by Shufeng.Wu on 2017/1/4.
@@ -76,25 +63,11 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     RecyclerView recyContent;
     @BindView(R.id.container)
     CoordinatorLayout container;
-    //@BindView(R.id.btn_virtualLineBindingFinish)
-    //AppCompatButton btnVirtualLineBindingFinish;
-
-    private CommonBaseAdapter<VirtualLineBindingItem.RowsBean> adapterTitle;
-    private CommonBaseAdapter<VirtualLineBindingItem.RowsBean> adapter;
-    private List<VirtualLineBindingItem.RowsBean> dataList = new ArrayList<>();
-    private List<VirtualLineBindingItem.RowsBean> dataSource = new ArrayList<>();
-
-    //二维码
-    private BarCodeIpml barCodeIpml = new BarCodeIpml();
-
-    private int scan_position = -1;
     List<VirtualLineBindingItem.RowsBean> data_tmp = null;
-
     String materialBlockNumber;
     String feederNumber;
     String virtualModuleID;
     String serialNo;
-
     @BindView(R.id.tv_showWorkOrder)
     TextView tv_showWorkOrder;
     @BindView(R.id.tv_showProductNameMain)
@@ -109,17 +82,22 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     TextView tv_showScan_1;
     @BindView(R.id.tv_showScan_2)
     TextView tv_showScan_2;
-
     String workItemID;
     String side;
     String productNameMain;
     String productName;
     String linName;
-
     String scan1_label = null;
-
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
+    int state = 1;
+    private CommonBaseAdapter<VirtualLineBindingItem.RowsBean> adapterTitle;
+    private CommonBaseAdapter<VirtualLineBindingItem.RowsBean> adapter;
+    private List<VirtualLineBindingItem.RowsBean> dataList = new ArrayList<>();
+    private List<VirtualLineBindingItem.RowsBean> dataSource = new ArrayList<>();
+    //二维码
+    private BarCodeIpml barCodeIpml = new BarCodeIpml();
+    private int scan_position = -1;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -206,50 +184,35 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
     @Override
     public void onSuccess(VirtualLineBindingItem data) {
-        if(data.getMsg().toLowerCase().equals("success")){
-            //Toast.makeText(this, "onSuccess", Toast.LENGTH_SHORT).show();
-            dataSource.clear();
-            data_tmp = data.getRows();
-            dataSource.addAll(data_tmp);
-            adapter.notifyDataSetChanged();
-            adapterTitle.notifyDataSetChanged();
-            if(isAllModuleBinded(dataSource)){
-                /*new AlertDialog.Builder(this)
-                        .setTitle("提示")
-                        .setMessage("虚拟模组绑定完成，是否立即跳转到下模组界面？")
-                        .setCancelable(false)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {*/
-                                Bundle bundle = new Bundle();
-                                bundle.putString(Constant.WORK_ITEM_ID,workItemID);
-                                bundle.putString(Constant.PRODUCT_NAME_MAIN,productNameMain);
-                                bundle.putString(Constant.PRODUCT_NAME,productName);
-                                bundle.putString(Constant.SIDE,side);
-                                bundle.putString(Constant.LINE_NAME,linName);
-                                IntentUtils.showIntent(VirtualLineBindingActivity.this, ModuleDownDetailsActivity.class,bundle);
-                                VirtualLineBindingActivity.this.finish();
-                                /*dialogInterface.dismiss();
-                                //VirtualLineBindingActivity.this.finish();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        ToastUtils.showMessage(this, data.getMsg());
+        dataSource.clear();
+        data_tmp = data.getRows();
+        dataSource.addAll(data_tmp);
+        adapter.notifyDataSetChanged();
+        adapterTitle.notifyDataSetChanged();
+        if (isAllModuleBinded(dataSource)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(Constant.WORK_ITEM_ID, workItemID);
+            bundle.putString(Constant.PRODUCT_NAME_MAIN, productNameMain);
+            bundle.putString(Constant.PRODUCT_NAME, productName);
+            bundle.putString(Constant.SIDE, side);
+            bundle.putString(Constant.LINE_NAME, linName);
+            IntentUtils.showIntent(VirtualLineBindingActivity.this, ModuleDownDetailsActivity.class, bundle);
+            VirtualLineBindingActivity.this.finish();
 
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int which) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create()
-                        .show();*/
-            }
         }
+
 
     }
 
     @Override
-    public void onFalied() {
+    public void onFalied(VirtualLineBindingItem data) {
+        ToastUtils.showMessage(this, data.getMsg());
+    }
 
+    @Override
+    public void onNetFailed(Throwable throwable) {
+        ToastUtils.showMessage(this, throwable.getMessage());
     }
 
     @Override
@@ -300,13 +263,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         barCodeIpml.onComplete();
     }
 
-    int state = 1;
-
-
     @Override
     public void onScanSuccess(String barcode) {
-        //Toast.makeText(this, barcode, Toast.LENGTH_SHORT).show();
-        //System.out.println(barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:
@@ -359,8 +317,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                     VirtualModuleID virtualModuleID = (VirtualModuleID) barCodeParseIpml.getEntity(barcode, BarCodeType.VIRTUALMODULE_ID);
                     tv_showScan_2.setText(virtualModuleID.getSource());
                     //检查此模组是否被绑定
-
-
                     if("material".equals(scan1_label)){
                         Map<String, String> map = new HashMap<>();
                         map.put("work_order", workItemID);
@@ -370,7 +326,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         map.put("vitual_id",virtualModuleID.getSource());
                         Gson gson = new Gson();
                         String argument = gson.toJson(map);
-
                         getPresenter().getAllVirtualBindingResult(argument);
                         scan1_label = null;
                         state = 1;

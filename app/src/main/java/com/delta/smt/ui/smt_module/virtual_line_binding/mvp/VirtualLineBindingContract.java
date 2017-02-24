@@ -2,8 +2,6 @@ package com.delta.smt.ui.smt_module.virtual_line_binding.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
-import com.delta.smt.entity.ModNumByMaterialResult;
-import com.delta.smt.entity.VirtualBindingResult;
 import com.delta.smt.entity.VirtualLineBindingItem;
 
 import rx.Observable;
@@ -15,9 +13,11 @@ import rx.Observable;
 public interface VirtualLineBindingContract {
     interface View extends IView {
 
-        public void onSuccess(VirtualLineBindingItem data);
+        void onSuccess(VirtualLineBindingItem data);
 
-        public void onFalied();
+        void onFalied(VirtualLineBindingItem data);
+
+        void onNetFailed(Throwable throwable);
 
         /*public void onSuccessBinding(VirtualLineBindingItem data);
 
@@ -37,9 +37,9 @@ public interface VirtualLineBindingContract {
     }
 
     interface Model extends IModel {
-        public Observable<VirtualLineBindingItem> getAllVirtualLineBindingItems(String str);
+        Observable<VirtualLineBindingItem> getAllVirtualLineBindingItems(String str);
 
-        public Observable<VirtualLineBindingItem>getVirtualBinding(String str);
+        Observable<VirtualLineBindingItem> getVirtualBinding(String str);
 
         //public Observable<ModNumByMaterialResult>getModNumByMaterial(String str,String num);
     }

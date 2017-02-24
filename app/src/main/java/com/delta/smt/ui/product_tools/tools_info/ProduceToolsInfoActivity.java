@@ -30,6 +30,7 @@ import com.delta.smt.ui.product_tools.tools_info.di.DaggerProduceToolsInfoCompoe
 import com.delta.smt.ui.product_tools.tools_info.di.ProduceToolsInfoModule;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoContract;
 import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -323,12 +324,16 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                     data.get(i).setStatus("已完成");
                     productInfoBarCodeEditText.setText(this.barcode);
                     adapter.notifyDataSetChanged();
+                    VibratorAndVoiceUtils.correctVibrator(ProduceToolsInfoActivity.this);
+                    VibratorAndVoiceUtils.correctVoice(ProduceToolsInfoActivity.this);
 
                 }
             }
         } else {
 
             SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),j.getMessage());
+            VibratorAndVoiceUtils.wrongVibrator(ProduceToolsInfoActivity.this);
+            VibratorAndVoiceUtils.wrongVoice(ProduceToolsInfoActivity.this);
 
         }
 

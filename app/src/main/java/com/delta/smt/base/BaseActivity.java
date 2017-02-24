@@ -33,6 +33,7 @@ public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonAc
         if (onBarCodeSucess != null) {
 
             events.add(onBarCodeSucess);
+
         }
     }
 
@@ -59,7 +60,6 @@ public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonAc
     protected abstract void componentInject(AppComponent appComponent);
 
     protected abstract void initData();
-
 
     protected abstract void initView();
 
