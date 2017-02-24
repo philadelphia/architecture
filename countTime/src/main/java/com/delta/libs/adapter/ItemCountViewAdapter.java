@@ -83,6 +83,9 @@ public abstract class ItemCountViewAdapter<T extends TimeEntity> extends Recycle
 
     @Override
     public void onBindViewHolder(final ItemTimeViewHolder holder, final int position) {
+        convert(holder, mList.get(position), position);
+
+
         TimeEntity curItemInfo = mList.get(position);
 
         holder.bindData(curItemInfo);
@@ -104,7 +107,7 @@ public abstract class ItemCountViewAdapter<T extends TimeEntity> extends Recycle
                 }
             }
         });
-        convert(holder, mList.get(position), position);
+
 
 
     }

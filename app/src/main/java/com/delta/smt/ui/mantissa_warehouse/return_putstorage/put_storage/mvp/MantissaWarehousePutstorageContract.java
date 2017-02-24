@@ -27,6 +27,10 @@ public interface MantissaWarehousePutstorageContract {
 
         Observable<MantissaWarehousePutstorageResult> getUpLocation(String str);
 
+        Observable<MantissaWarehousePutstorageResult> getYesNext();
+
+        Observable<MantissaWarehousePutstorageResult> getYesok();
+
     }
 
     public interface View extends IView {
@@ -36,6 +40,12 @@ public interface MantissaWarehousePutstorageContract {
 
         void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
+
+        void getYesNextSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void getYesNextFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
+
+        void getYesokSucess();
+        void getYesokFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
 
 
         void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);

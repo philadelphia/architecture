@@ -1,5 +1,7 @@
 package com.delta.smt.ui.checkstock.mvp;
 
+import android.util.Log;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.CheckStock;
@@ -42,8 +44,12 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
     }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
             }
         });
     }
@@ -68,8 +74,12 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
             }
         });
     }

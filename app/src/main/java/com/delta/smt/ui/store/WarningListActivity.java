@@ -1,6 +1,7 @@
 package com.delta.smt.ui.store;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -121,6 +123,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(this.getResources().getString(R.string.storetitle));
+        edWork.setFocusable(true);
         edWork.setText(mWorkNumberString);
         edPcb.setText(mMaterialNumberString);
         edMachine.setText(mMainBoard);
@@ -207,7 +210,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                IntentUtils.showIntent(this,StoreIssueActivity.class);
                 break;
 
             default:
@@ -244,7 +247,6 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void onSucessStates(String s) {
         Snackbar.make(activityMianview, "发料成功", Snackbar.LENGTH_LONG).show();
-        Log.e("info","----------111111--------");
         if ((mAmoutString - mAmout) == 0) {
             mList.get(position).setIsColor(2);
             mAdapter.notifyDataSetChanged();
@@ -256,8 +258,11 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     @Override
     public void onOutSubmit(String s) {
-        SnackbarUtil.show(activityMianview,"成功");
-        finish();
+        SnackbarUtil.showMassage(activityMianview,"成功");
+        IntentUtils.showIntent(this,StoreIssueActivity.class);
+
+
+
     }
 
     @Override
@@ -283,6 +288,11 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     }
 
+    @Override
+    public void onCloseLightSucces(String s) {
+
+    }
+
 
     @Override
     public void onScanSuccess(String barcode) {
@@ -300,9 +310,10 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                             mId=mList.get(i).getId();
                             mAdapterposition = i;
                             if (mList.get(i).getCount() > mAmoutString) {
-                                ToastUtils.showMessage(this, mList.get(i).getCount() - mAmoutString);
+                                //ToastUtils.showMessage(this, mList.get(i).getCount() - mAmoutString);
                                 if (mIsAlarmInfo) {
                                     getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
+
                                 } else {
                                     getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 1);
 
@@ -310,10 +321,14 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                             }else {
                             if (mIsAlarmInfo) {
                                 getPresenter().fetchPcbSuccess(mAlarminfoId, mList.get(i).getCount(), mId, 0);
+
                             } else {
                                 getPresenter().fetchPcbSuccess(mAlarminfoId, mList.get(i).getCount(), mId, 1);
 
                             }
+                            }
+                            if (mAmoutString-mList.get(i).getCount()<0){
+                                ToastUtils.showMessage(this,"请拆箱取出"+(mAmoutString)+"片",10000);
                             }
                             mList.get(i).setIsColor(1);
                             mAdapter.notifyDataSetChanged();
@@ -328,7 +343,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 mFramebarCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
                 VibratorAndVoiceUtils.correctVibrator(this);
                 VibratorAndVoiceUtils.correctVoice(this);
-                //Snackbar.make(activityMianview, "请拆箱取出" + mAmoutString + "片", Snackbar.LENGTH_INDEFINITE).show();
+
                 getPresenter().closeLight(mFramebarCode.getSource());
 
             } catch (EntityNotFountException e1) {

@@ -37,13 +37,14 @@ public class ModuleUpPresenter extends BasePresenter<ModuleUpContract.Model,Modu
 
                         if (moduleUpWarningItems.getRows().size() == 0) {
                             getView().showEmptyView();
+                            getView().onFalied(moduleUpWarningItems);
                         }else {
                             getView().showContentView();
                             getView().onSuccess(moduleUpWarningItems);
                         }
 
                     } else {
-                        getView().onFalied();
+                        getView().onFalied(moduleUpWarningItems);
                         getView().showErrorView();
                     }
                 }catch (Exception e){
@@ -56,7 +57,7 @@ public class ModuleUpPresenter extends BasePresenter<ModuleUpContract.Model,Modu
             @Override
             public void call(Throwable throwable) {
                 try{
-                    getView().onFalied();
+                    getView().onNetFailed(throwable);
                     getView().showErrorView();
                 }catch (Exception e){
                     e.printStackTrace();

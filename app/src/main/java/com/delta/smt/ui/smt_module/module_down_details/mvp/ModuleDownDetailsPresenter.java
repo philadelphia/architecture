@@ -1,10 +1,8 @@
 package com.delta.smt.ui.smt_module.module_down_details.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
-import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
-import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
@@ -34,17 +32,17 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         }).subscribe(new Action1<ModuleDownDetailsItem>() {
             @Override
             public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
-                //getView().onSuccess(moduleDownWarningItems);
                 try{
                     if ("0".equals(moduleDownDetailsItem.getCode())) {
                         if (moduleDownDetailsItem.getRows().size() == 0) {
                             getView().showEmptyView();
+                            getView().onFailed(moduleDownDetailsItem.getMsg());
                         }else {
                             getView().showContentView();
                             getView().onSuccess(moduleDownDetailsItem);
                         }
                     } else {
-                        getView().onFalied();
+                        getView().onFailed(moduleDownDetailsItem.getMsg());
                         getView().showErrorView();
                     }
                 }catch (Exception e){
@@ -55,7 +53,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void call(Throwable throwable) {
                 try{
-                    getView().onFalied();
+                    getView().onNetFailed(throwable);
                     getView().showErrorView();
                 }catch (Exception e){
                     e.printStackTrace();
@@ -68,12 +66,17 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         getModel().getModuleDownMaintainResult(str).subscribe(new Action1<ModuleDownMaintain>() {
             @Override
             public void call(ModuleDownMaintain moduleDownMaintain) {
-                getView().onSuccessMaintain(moduleDownMaintain);
+                if ("0".equals(moduleDownMaintain.getCode())) {
+                    getView().onSuccessMaintain(moduleDownMaintain);
+                } else {
+                    getView().onFailMaintain(moduleDownMaintain);
+                }
+
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFalied();
+                getView().onNetFailed(throwable);
             }
         });
     }
@@ -88,6 +91,24 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void call(Throwable throwable) {
 
+            }
+        });
+    }
+
+    public void getFeederCheckInTime(String condition){
+        getModel().getFeederCheckInTime(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
+            @Override
+            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
+                    if (moduleDownDetailsItem.getCode().equalsIgnoreCase("0")){
+                        getView().onSuccess(moduleDownDetailsItem);
+                    }else {
+                        getView().onFailed(moduleDownDetailsItem.getMsg());
+                    }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onNetFailed(throwable);
             }
         });
     }

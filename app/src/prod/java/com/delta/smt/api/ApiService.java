@@ -87,8 +87,8 @@ public interface ApiService {
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
     //获取feeder入库时间
-    @GET("SMM/FeederBuffStorage/feederBuffStorage")
-    Observable<Result<FeederCheckInItem>> getFeederCheckInTime(@Query("condition") String condition);
+    @GET("SMM/unplugmod/feederBuffStorage")
+    Observable<ModuleDownDetailsItem> getFeederCheckInTime(@Query("condition") String condition);
 
     //获取下模组列表
     @GET("SMM/FeederBuffStorage/feederBuffStorage")
@@ -213,6 +213,7 @@ public interface ApiService {
     //    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
     @GET("webapi/pcb/management/outbound")
     Observable<Success> getPcbSuccess(@Query("param") String s);//出料操作
+
     @GET("pcb/management/outbound/light/close")
     Observable<Success> closeLight(@Query("subShelfCode") String s);//关灯操作
 
@@ -263,7 +264,8 @@ public interface ApiService {
     /**
      * @description :
      * 1.故障处理预警
-     * 2.仓库房
+     * 2.仓库房备料
+     * 3. 位数仓备料
      * @author :  V.Wenju.Tian
      * @date : 2017/1/21 13:53
      */
@@ -305,6 +307,10 @@ public interface ApiService {
     @GET("SMM/WareHIssue/sureCompleteIssue")
     Observable<IssureToWarehFinishResult> sureCompleteIssue();
 
+    //仓库房扣账
+    @GET("SMM/WareHIssue/deduction")
+    Observable<Result> deduction();
+
     //尾数仓备料
     @GET("SMM/IssueMana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
@@ -328,6 +334,10 @@ public interface ApiService {
     //尾数仓发料
     @GET("SMM/WareHIssue/mantissIssue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(@Query("condition") String bind);
+
+    //尾数仓扣账
+    @GET("SMM/MantissaStorage/debit")
+    Observable<Result> debit();
 
     //尾数仓发料完成
     @GET("SMM/WareHIssue/completeMantissIssue")
@@ -392,6 +402,14 @@ public interface ApiService {
     @GET("SMM/ManToWareh/materToShel")
     Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query("condition") String bind);
 
+    //确定点击下一个架位
+    @GET("SMM/ManToWareh/sureNextShelf")
+    Observable<MantissaWarehousePutstorageResult> getYesNext();
+
+    //确定点击完成
+    @GET("SMM/ManToWareh/sureComplete")
+    Observable<MantissaWarehousePutstorageResult> getYesok();
+
     //尾数仓入库
     @GET("SMM/MantissaStorage/qMantissaStorageList")
     Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
@@ -431,7 +449,7 @@ public interface ApiService {
     @GET("SMM/ExcessManagement/delivery")
     Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
 
-    @GET("SMM/WareHIssue/debit")
+    @GET("SMM/ExcessManagement/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     //上模组
@@ -456,11 +474,12 @@ public interface ApiService {
     @GET("SMM/unplugmod/getModsByWordOrder")
     Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("condition") String condition);
 
-    @GET("SMM/unplugmod/updateMod")
-    Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("ids") String content);
+    @GET("SMM/unplugmod/feederMaintain")
+    Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("condition") String condition);
 
     @GET("SMM/unplugmod/bindVirtualLine")
     Observable<VirtualLineBindingItem> getVirtualBindingResult(@Query("condition") String condition);
+
 
     //@GET("SMM/unplugmod/getModNumByMaterial")
     //Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num, @Query("workOrderNum") String num);

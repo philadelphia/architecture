@@ -1,14 +1,12 @@
 package com.delta.smt.ui.over_receive.mvp;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -23,49 +21,101 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
     }
 
     public void getAllOverReceiveItems(){
-        getModel().getAllOverReceiveItems().subscribe(new Action1<OverReceiveWarning>() {
+        getModel().getAllOverReceiveItems().doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                try{
+                    getView().showLoadingView();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        }).subscribe(new Action1<OverReceiveWarning>() {
             @Override
             public void call(OverReceiveWarning overReceiveItems) {
-                getView().onSuccess(overReceiveItems);
+                try{
+                    if ("0".equals(overReceiveItems.getCode())) {
+
+                        if (overReceiveItems.getRows().getData().size() == 0) {
+                            getView().showEmptyView();
+                        }else {
+                            getView().showContentView();
+                            getView().onSuccess(overReceiveItems);
+                        }
+
+                    } else {
+                        getView().showErrorView();
+                        getView().onFalied();
+
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                //getView().onSuccess(overReceiveItems);
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFalied();
+                try{
+                    getView().showErrorView();
+                    getView().onFalied();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+
             }
         });
     }
 
     public void getOverReceiveItemsAfterSend(String str){
-        getModel().getOverReceiveItemsAfterSend(str).subscribe(new Action1<OverReceiveWarning>() {
+        getModel().getOverReceiveItemsAfterSend(str).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                try {
+                    getView().showLoadingView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).subscribe(new Action1<OverReceiveWarning>() {
             @Override
             public void call(OverReceiveWarning overReceiveWarning) {
-                getView().onSuccess(overReceiveWarning);
+                //getView().onSuccess(overReceiveWarning);
+                try {
+                    if ("0".equals(overReceiveWarning.getCode())) {
+
+                        if (overReceiveWarning.getRows().getData().size() == 0) {
+                            getView().showEmptyView();
+                        } else {
+                            getView().showContentView();
+                            getView().onSuccess(overReceiveWarning);
+                        }
+
+                    } else {
+                        getView().showErrorView();
+                        getView().onFalied();
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFalied();
+                try {
+                    getView().showErrorView();
+                    getView().onFalied();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    /*public void getOverReceiveItemsAfterSendArrive(String str){
-        getModel().getOverReceiveItemsAfterSendArrive(str).subscribe(new Action1<OverReceiveWarning>() {
-            @Override
-            public void call(OverReceiveWarning overReceiveWarning) {
-                getView().onSuccess(overReceiveWarning);
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                getView().onFalied();
-            }
-        });
-    }*/
-
     public void manualDebit(){
-        Toast.makeText((Context) getView(),"手动扣账",Toast.LENGTH_SHORT).show();
         getModel().getOverReceiveDebit().subscribe(new Action1<OverReceiveDebitResult>() {
             @Override
             public void call(OverReceiveDebitResult overReceiveDebitResult) {

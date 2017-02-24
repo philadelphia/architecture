@@ -32,19 +32,19 @@ public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,
         }).subscribe(new Action1<ModuleDownWarningItem>() {
             @Override
             public void call(ModuleDownWarningItem moduleDownWarningItems) {
-                //getView().onSuccess(moduleDownWarningItems);
                 try{
                     if ("0".equals(moduleDownWarningItems.getCode())) {
 
                         if (moduleDownWarningItems.getRows().size() == 0) {
                             getView().showEmptyView();
+                            getView().onFalied(moduleDownWarningItems);
                         }else {
                             getView().showContentView();
                             getView().onSuccess(moduleDownWarningItems);
                         }
 
                     } else {
-                        getView().onFalied();
+                        getView().onFalied(moduleDownWarningItems);
                         getView().showErrorView();
                     }
                 }catch (Exception e){
@@ -55,7 +55,7 @@ public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,
             @Override
             public void call(Throwable throwable) {
                 try{
-                    getView().onFalied();
+                    getView().onNetFailed(throwable);
                     getView().showErrorView();
                 }catch (Exception e){
                     e.printStackTrace();

@@ -31,6 +31,7 @@ import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponen
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -75,10 +76,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private List<FeederSupplyItem> dataSource = new ArrayList<>();
     private static final String TAG = "FeederSupplyActivity";
     private boolean isAllHandleOVer = false;
-    private String mCurrentSerinalNumber;
+    private String mCurrentSerialNumber;
     private String mCurrentMaterialNumber;
-    private String mCurrentquantity;
-    private  int index = -1;
+    private int index = -1;
+
 
     @Override
     protected int getContentViewId() {
@@ -98,7 +99,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         String side = intent.getStringExtra(Constant.SIDE);
         Log.i(TAG, "workId==: " + workId);
         Log.i(TAG, "side==: " + side);
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("work_order", workId);
         map.put("side", side);
 
@@ -116,7 +117,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("备料");
-        dataList.add(new FeederSupplyItem(" ", " ", "  "," ","", 0));
+        dataList.add(new FeederSupplyItem(" ", " ", "  ", " ", "", 0));
         CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
@@ -140,13 +141,19 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_module, item.getSlot());
                 holder.setText(R.id.tv_timestamp, item.getBindTime());
-                holder.setText(R.id.tv_status, item.getStatus()==0 ? "等待上模组" :" 上模组完成");
+                holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待上模组" : " 上模组完成");
 
-                if (position == index) {
+                if (item.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber) && item.getSerialNumber().equalsIgnoreCase(mCurrentSerialNumber)) {
                     holder.itemView.setBackgroundColor(Color.YELLOW);
+                    tvModuleID.setText("模组料站: " + item.getSlot());
+                    index = position;
+
+                    Log.i(TAG, "对应的item: " + item.toString());
                 } else {
+
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
+
             }
 
             @Override
@@ -177,9 +184,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void onSuccess(List<FeederSupplyItem> data) {
         Log.i(TAG, "onSuccess: ");
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
+
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
+        recyContent.scrollToPosition(index);
         for (FeederSupplyItem item : dataSource) {
             if (item.getStatus() == 0) {
                 isAllHandleOVer = false;
@@ -193,14 +202,17 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
 //            getPresenter().upLoadToMES();
         }
+//        for (int i = 0; i < dataSource.size(); i++) {
+//            FeederSupplyItem feederSupplyItem = dataSource.get(i);
+//            if (feederSupplyItem.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber) && feederSupplyItem.getSerialNumber().equalsIgnoreCase(mCurrentSerinalNumber)) {
+//                index = i;
+//                adapter.notifyDataSetChanged();
+//            }
+//        }
 
-        for (FeederSupplyItem feederSupplyItem : dataSource) {
-            if (mCurrentMaterialNumber.equalsIgnoreCase(feederSupplyItem.getMaterialID()) && mCurrentSerinalNumber.equalsIgnoreCase(feederSupplyItem.getSerialNumber())) {
-                Log.i(TAG, "对应的item: " + feederSupplyItem.toString());
-                index = dataSource.indexOf(feederSupplyItem);
-                Log.i(TAG, "index:== " + index);
-            }
-        }
+
+
+
     }
 
 
@@ -242,39 +254,37 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void onScanSuccess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
+        Log.i(TAG, "barcode == " + barcode);
         super.onScanSuccess(barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
             MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
             mCurrentMaterialNumber = materialBlockBarCode.getDeltaMaterialNumber();
-            mCurrentSerinalNumber = materialBlockBarCode.getStreamNumber();
-            Log.i(TAG, "barcode == " + barcode);
-            Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialNumber) ;
-            Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerinalNumber) ;
-            for (FeederSupplyItem feederSupplyItem : dataSource) {
-                    if (mCurrentMaterialNumber.equalsIgnoreCase(feederSupplyItem.getMaterialID()) && mCurrentSerinalNumber.equalsIgnoreCase(feederSupplyItem.getSerialNumber())) {
-                        Log.i(TAG, "对应的item: " + feederSupplyItem.toString());
-                        tvModuleID.setText("模组料站: " + feederSupplyItem.getSlot());
-                        Log.i(TAG, "对应的模组料站是: " + feederSupplyItem.getSlot());
+            mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
 
-                        index = dataSource.indexOf(feederSupplyItem);
-                        Log.i(TAG, "当前扫描的数据index是: " + index);
-                        Map<String, String> map = new HashMap<>();
-                        map.put("material_no", mCurrentMaterialNumber);
-                        map.put("serial_no", mCurrentSerinalNumber);
-                        Gson gson = new Gson();
-                        String argument = gson.toJson(map);
-                        Log.i(TAG, "argument== " + argument);
-                        getPresenter().getFeederInsertionToSlotTimeStamp(argument);
+            Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialNumber);
+            Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
+            VibratorAndVoiceUtils.correctVibrator(this);
+            VibratorAndVoiceUtils.correctVoice(this);
+            adapter.notifyDataSetChanged();
 
-                }
-            }
+            Map<String, String> map = new HashMap<>();
+            map.put("material_no", mCurrentMaterialNumber);
+            map.put("serial_no", mCurrentSerialNumber);
+            Gson gson = new Gson();
+            String argument = gson.toJson(map);
+            Log.i(TAG, "argument== " + argument);
+            getPresenter().getFeederInsertionToSlotTimeStamp(argument);
+
         } catch (EntityNotFountException e) {
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
             e.printStackTrace();
-        }catch (ArrayIndexOutOfBoundsException e){
-            Toast.makeText(this,"解析错误",Toast.LENGTH_SHORT).show();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
+            Toast.makeText(this, "解析错误", Toast.LENGTH_SHORT).show();
         }
-
 
 
     }
@@ -291,8 +301,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         }
         return super.onOptionsItemSelected(item);
     }
-    
-
 
 
 }

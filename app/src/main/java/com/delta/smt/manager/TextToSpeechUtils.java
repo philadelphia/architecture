@@ -1,4 +1,4 @@
-package com.delta.commonlibs.utils;
+package com.delta.smt.manager;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;

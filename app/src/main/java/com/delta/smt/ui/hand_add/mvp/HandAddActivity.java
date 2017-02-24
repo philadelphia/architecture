@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.Attributes;
 
 import javax.inject.Inject;
 
@@ -60,6 +61,8 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     RecyclerView mRyvHandAdd;
     @BindView(R.id.statusLayout)
     StatusLayout mStatusLayout;
+
+
 
     private AlertDialog alertDialog;
     private AlertDialog mItemDialog;
@@ -115,21 +118,28 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
             @Override
             protected void convert(ItemTimeViewHolder holder, ItemHandAdd itemHandAdd, int position) {
                 if (itemHandAdd.getState() == 1) {
+                    holder.setCountUp(true);
+
                     holder.setText(R.id.tv_title, itemHandAdd.getTitle());
                     holder.setText(R.id.tv_line, "产线：" + itemHandAdd.getProduce_line());
                     holder.setText(R.id.tv_material_station, "模组料站：" + itemHandAdd.getMaterial_station());
                     holder.setText(R.id.tv_realAmount, "手补件数量：" + String.valueOf(itemHandAdd.getRealAmount()));
                     holder.setText(R.id.tv_message, "信息：" + itemHandAdd.getInfo());
+                    holder.setText(R.id.time_remain,"预计等待时间：");
 
                     holder.getView(R.id.tv_realAmount).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_expectedAmount).setVisibility(View.GONE);
+
+
                 } else {
+                    holder.setCountUp(false);
 
                     holder.setText(R.id.tv_title, itemHandAdd.getTitle());
                     holder.setText(R.id.tv_line, "产线：" + itemHandAdd.getProduce_line());
                     holder.setText(R.id.tv_material_station, "模组料站：" + itemHandAdd.getMaterial_station());
                     holder.setText(R.id.tv_expectedAmount, "预计Pass数量：" + String.valueOf(itemHandAdd.getExpectedAmount()));
                     holder.setText(R.id.tv_message, "信息：" + itemHandAdd.getInfo());
+                    holder.setText(R.id.time_remain,"预计剩余时间：");
 
                     holder.getView(R.id.tv_expectedAmount).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_realAmount).setVisibility(View.GONE);
@@ -205,12 +215,19 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         datas.clear();
 
         for (int i = 0; i < itemHandAdds.size(); i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+
             try {
+                SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                 Date parse = format.parse(itemHandAdds.get(i).getTime());
-                Log.e("aaa", "getItemWarningDatas: " + parse.getTime());
-                itemHandAdds.get(i).setEnd_time(parse.getTime());
-                itemHandAdds.get(i).setEntityId(i);
+                if (itemHandAdds.get(i).getState()==1) {
+                    itemHandAdds.get(i).setCreat_time(System.currentTimeMillis());
+                    itemHandAdds.get(i).setEntityId(i);
+                }else {
+
+                    Log.e("aaa", "getItemWarningDatas: " + parse.getTime());
+                    itemHandAdds.get(i).setEnd_time(parse.getTime());
+                    itemHandAdds.get(i).setEntityId(i);
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -224,7 +241,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     public void getItemHandAddDatasFailed(String message) {
         //ToastUtils.showMessage(this,message);
-        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
     }
 
 
@@ -286,15 +303,8 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-//                            mItemHandAdd.setInfo("手补件完成，等待品管确认");
-//                            mAdapter.notifyDataSetChanged();
-                            Map<String, String> mMap = new HashMap<>();
-                            mMap.put("id", String.valueOf(mItemHandAdd.getId()));
-                            Gson mGson = new Gson();
-                            String mS = mGson.toJson(mMap);
-                            Log.i("HandAddActivity", mS);
-                            getPresenter().getItemHandAddConfirm(mS);
-                            getPresenter().getItemHandAddDatas(producelines);
+
+                            getPresenter().getItemHandAddConfirm(String.valueOf(mItemHandAdd.getId()),producelines);
                             mAdapter.notifyDataSetChanged();
 
                             if (tag) {
@@ -318,16 +328,29 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     public void showContentView() {
         mStatusLayout.showContentView();
+
     }
 
     @Override
     public void showErrorView() {
         mStatusLayout.showErrorView();
+        mStatusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getItemHandAddDatas(producelines);
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
         mStatusLayout.showEmptyView();
+        mStatusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getItemHandAddDatas(producelines);
+            }
+        });
     }
 
 }

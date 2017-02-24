@@ -43,4 +43,9 @@ public class ModuleDownDetailsModel extends BaseModel<ApiService> implements Mod
     public Observable<ModuleDownDetailsItem> getDownModuleList(String condition) {
         return getService().getDownModuleList(condition).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
     }
+
+    @Override
+    public Observable<ModuleDownDetailsItem> getFeederCheckInTime(String condition) {
+        return getService().getFeederCheckInTime(condition).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
+    }
 }

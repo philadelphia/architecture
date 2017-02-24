@@ -1,8 +1,6 @@
 package com.delta.smt.ui.smt_module.module_down;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
@@ -20,9 +19,6 @@ import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
-import com.delta.smt.common.ItemOnclick;
-import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
-import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.manager.WarningManger;
@@ -56,16 +52,19 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     LinearLayout moduleUpWarning;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
+    @Inject
+    WarningManger warningManger;
+    String workOrderID = "";
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
     private List<ModuleDownWarningItem.RowsBean> dataList = new ArrayList<>();
     private ItemCountViewAdapter<ModuleDownWarningItem.RowsBean> myAdapter;
 
-    @Inject
-    WarningManger warningManger;
-
-    String workOrderID = "";
-
-    @BindView(R.id.statusLayout)
-    StatusLayout statusLayout;
+    public static String timeStamp() {
+        long time = System.currentTimeMillis();
+        String t = String.valueOf(time);
+        return t;
+    }
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -81,6 +80,21 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
         getPresenter().getAllModuleDownWarningItems();
+        /*statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllModuleDownWarningItems();
+            }
+        });
+
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllModuleDownWarningItems();
+            }
+        });*/
+
+
 
     }
 
@@ -129,7 +143,6 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @Override
     public void onSuccess(ModuleDownWarningItem data) {
-        if (data.getMsg().toLowerCase().equals("success")){
             dataList.clear();
             List<ModuleDownWarningItem.RowsBean> rowsList = data.getRows();
             for (int i = 0; i < rowsList.size(); i++) {
@@ -144,13 +157,19 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             }
             dataList.addAll(rowsList);
             myAdapter.notifyDataSetChanged();
-            //showNetState.setVisibility(View.GONE);
-        }
+        ToastUtils.showMessage(this, data.getMsg());
 
     }
 
     @Override
-    public void onFalied() {
+    public void onFalied(ModuleDownWarningItem data) {
+        ToastUtils.showMessage(this, data.getMsg());
+    }
+
+    @Override
+    public void onNetFailed(Throwable throwable) {
+        ToastUtils.showMessage(this, throwable.getMessage());
+
     }
 
     @Override
@@ -166,6 +185,12 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllModuleDownWarningItems();
+            }
+        });
     }
 
     @Override
@@ -257,12 +282,6 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         return "";
     }
 
-    public static String timeStamp(){
-        long time = System.currentTimeMillis();
-        String t = String.valueOf(time);
-        return t;
-    }
-
     @Override
     public void onItemClick(View item, ModuleDownWarningItem.RowsBean rowsBean, int position) {
         Bundle bundle = new Bundle();
@@ -278,4 +297,5 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         //startActivityForResult(intent, Constant.ACTIVITY_REQUEST_WORK_ITEM_ID);
         IntentUtils.showIntent(this, VirtualLineBindingActivity.class,bundle);
     }
+
 }

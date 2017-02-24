@@ -71,12 +71,18 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
         });
     }
 
-    public void getItemHandAddConfirm(String codition){
-        getModel().getItemHandAddConfirm(codition).subscribe(new Action1<Result>() {
+    public void getItemHandAddConfirm(String codition, final String line){
+
+        Map<String, String> mMap = new HashMap<>();
+        mMap.put("id", codition);
+        String mS = new Gson().toJson(mMap);
+        Log.i(TAG, mS);
+
+        getModel().getItemHandAddConfirm(mS).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
                 if (result.getCode().equals("0")) {
-
+                    getItemHandAddDatas(line);
                 }else {
                     getView().getItemHandAddDatasFailed(result.getMessage());
                 }
@@ -84,7 +90,11 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getItemHandAddDatasFailed(throwable.getMessage());
+                try {
+                    getView().getItemHandAddDatasFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

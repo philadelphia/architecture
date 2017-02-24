@@ -45,8 +45,12 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             @Override
             public void call(Throwable throwable) {
                 Log.e("info","test失败");
-                getView().showErrorView();
-                getView().storeFaild(throwable.getMessage().toString());
+                try {
+                    getView().showErrorView();
+                    getView().storeFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
             }
         });
     }
@@ -106,8 +110,11 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                try{
                 getView().showErrorView();
                 getView().storeFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+            }catch (Exception e){
+                }
             }
         });
     }
@@ -176,8 +183,10 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-                getView().storeFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                try{
+                    getView().showErrorView();
+                    getView().storeFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){}
             }
         });
     }

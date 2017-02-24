@@ -2,10 +2,8 @@ package com.delta.smt.ui.smt_module.module_down_details.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
-import com.delta.smt.entity.FeederCheckInItem;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
-import com.delta.smt.entity.Result;
 
 import rx.Observable;
 
@@ -16,13 +14,15 @@ import rx.Observable;
 public interface ModuleDownDetailsContract {
     interface View extends IView {
 
-        public void onSuccess(ModuleDownDetailsItem data);
+        void onSuccess(ModuleDownDetailsItem data);
 
-        public void onFalied();
+        void onFailed(String message);
 
-        public void onSuccessMaintain(ModuleDownMaintain maintain);
+        void onSuccessMaintain(ModuleDownMaintain moduleDownMaintain);
 
-        public void onFailMaintain();
+        void onFailMaintain(ModuleDownMaintain moduleDownMaintain);
+
+        void onNetFailed(Throwable throwable);
 
         void showLoadingView();
 
@@ -38,5 +38,7 @@ public interface ModuleDownDetailsContract {
          Observable<ModuleDownDetailsItem> getAllModuleDownDetailsItems(String str);
          Observable<ModuleDownMaintain> getModuleDownMaintainResult(String str);
         Observable<ModuleDownDetailsItem> getDownModuleList(String condition);
+        Observable<ModuleDownDetailsItem> getFeederCheckInTime(String condition);
+
     }
 }

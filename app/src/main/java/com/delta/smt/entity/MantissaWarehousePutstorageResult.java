@@ -43,75 +43,63 @@ public class MantissaWarehousePutstorageResult {
          */
 
         //标签
-        private String label;
+        private String label_name;
         //料号
-        private String material_num;
-        //流水号
-        private String serial_num;
-        //架位
-        private String shelves;
-        //状态
-        private String status;
-
-        private String msg;
+        private String material_no;
+        //尾数仓架位
+        private String shelf_no;
+        //主仓库架位
+        private String to_shelf_no;
+        //数量
+        private String num;
 
 
-        public MantissaWarehousePutstorage(String label, String material_num, String serial_num, String shelves, String status, String msg) {
-            this.label = label;
-            this.material_num = material_num;
-            this.serial_num = serial_num;
-            this.shelves = shelves;
-            this.status = status;
-            this.msg = msg;
+        public MantissaWarehousePutstorage(String label_name, String material_no, String shelf_no, String to_shelf_no, String num) {
+            this.label_name = label_name;
+            this.material_no = material_no;
+            this.shelf_no = shelf_no;
+            this.to_shelf_no = to_shelf_no;
+            this.num = num;
         }
 
-
-        public String getLabel() {
-            return label;
+        public String getLabel_name() {
+            return label_name;
         }
 
-        public void setLabel(String label) {
-            this.label = label;
+        public void setLabel_name(String label_name) {
+            this.label_name = label_name;
         }
 
-        public String getMaterial_num() {
-            return material_num;
+        public String getMaterial_no() {
+            return material_no;
         }
 
-        public void setMaterial_num(String material_num) {
-            this.material_num = material_num;
+        public void setMaterial_no(String material_no) {
+            this.material_no = material_no;
         }
 
-        public String getSerial_num() {
-            return serial_num;
+        public String getShelf_no() {
+            return shelf_no;
         }
 
-        public void setSerial_num(String serial_num) {
-            this.serial_num = serial_num;
+        public void setShelf_no(String shelf_no) {
+            this.shelf_no = shelf_no;
         }
 
-        public String getShelves() {
-            return shelves;
+        public String getTo_shelf_no() {
+            return to_shelf_no;
         }
 
-        public void setShelves(String shelves) {
-            this.shelves = shelves;
+        public void setTo_shelf_no(String to_shelf_no) {
+            this.to_shelf_no = to_shelf_no;
         }
 
-        public String getStatus() {
-            return status;
+        public String getNum() {
+            return num;
         }
 
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getMsg() {
-            return msg;
-        }
-
-        public void setMsg(String msg) {
-            this.msg = msg;
+        public void setNum(String num) {
+            this.num = num;
         }
     }
 }
