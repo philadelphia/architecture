@@ -361,7 +361,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onEndSucess() {
-        IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
+        finish();
+//        IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
     }
 
     @Override
