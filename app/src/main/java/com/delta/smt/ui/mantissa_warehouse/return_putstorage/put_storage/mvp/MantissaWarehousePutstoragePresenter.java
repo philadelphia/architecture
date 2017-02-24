@@ -81,6 +81,26 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
         });
 
     }
+    public void getYesNext(){
+
+        getModel().getYesNext().subscribe(new Action1<MantissaWarehousePutstorageResult>() {
+            @Override
+            public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
+
+                if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                    getView().getYesNextSucess(mantissaWarehousePutstorageResult.getrows());
+                }else{
+                    getView().getYesNextFailed(mantissaWarehousePutstorageResult.getrows().get(0));
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+
+    }
 
     public void getBindingLabel(String str){
 

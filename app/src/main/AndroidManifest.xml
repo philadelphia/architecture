@@ -126,7 +126,7 @@
 
         <activity
             android:name=".ui.checkstock.StartWorkAndStopWorkActivity"
-            android:label="@string/title_activity_feeder_cache_region"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.warningSample.WarningSampleActivity"

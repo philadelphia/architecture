@@ -46,8 +46,12 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
             }
         });
     }
@@ -72,9 +76,12 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-               // 無法連接到服務器，請確認是否處於聯網狀態，服務器是否開啟，如果一直有問題請聯繫管理員
-                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
             }
         });
     }
@@ -94,8 +101,12 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
             }
         });
     }
@@ -109,18 +120,18 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             @Override
             public void call(ExceptionsBean success) {
                 getView().showContentView();
-                if (success.getRows().size()!=0){
                 StringBuffer errorBuffer=new StringBuffer();
                 errorBuffer.append("误差 \n");
                 StringBuffer fewBuffer=new StringBuffer();
-
                 StringBuffer moreBuffer=new StringBuffer();
                 StringBuffer changeBuffer=new StringBuffer();
                 changeBuffer.append("变更 \n");
                 StringBuffer notBuffer=new StringBuffer();
                 notBuffer.append("未盘点 \n");
                 if ("0".equals(success.getCode())){
-                    if (success.getMsg().contains("Success")){
+                    Log.e("info",""+success.getRows().size());
+                    if (success.getRows().size()!=0){
+                        Log.e("info","-----------------");
                         for (int i=0;i<success.getRows().size();i++){
                            switch (Integer.valueOf(success.getRows().get(i).getStatus())){
                                case 0:
@@ -144,18 +155,24 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                            }
                         }
                         fewBuffer.append(errorBuffer.toString()+changeBuffer.toString()+notBuffer.toString());
-                        getView().onErrorSucess(fewBuffer.toString());}else {
+                        getView().onErrorSucess(fewBuffer.toString());
+                    }else {
+                        Log.e("info","---------111111111--------");
                         getView().onErrorSucess("本架位盘点正常");
                     }
                 }else {
                     getView().onFailed(success.getMsg());
-                }}
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
             }
         });
     }
@@ -171,8 +188,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                 getView().showContentView();
                 if ("0".equals(success.getCode())){
                     if (success.getMsg().contains("Success")){
-
-                    getView().onErrorsSucess(success.getMsg());
+                        getView().onErrorsSucess(success.getMsg());
                 }else {
                     getView().onFailed(success.getMsg());
                 }}
@@ -180,8 +196,12 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
             }
         });
     }
@@ -222,8 +242,12 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
             }
         });
     }
@@ -265,8 +289,12 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
-                getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
             }
         });
     }

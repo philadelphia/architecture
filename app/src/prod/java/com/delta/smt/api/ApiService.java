@@ -402,6 +402,10 @@ public interface ApiService {
     @GET("SMM/ManToWareh/materToShel")
     Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query("condition") String bind);
 
+    //确定下一个架位
+    @GET("SMM/ManToWareh/sureNextShelf")
+    Observable<MantissaWarehousePutstorageResult> getYesNext();
+
     //尾数仓入库
     @GET("SMM/MantissaStorage/qMantissaStorageList")
     Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();

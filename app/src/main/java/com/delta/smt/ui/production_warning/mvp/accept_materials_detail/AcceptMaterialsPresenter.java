@@ -109,7 +109,11 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getItemDatasFailed(throwable.getMessage());
+                try {
+                    getView().getItemDatasFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
