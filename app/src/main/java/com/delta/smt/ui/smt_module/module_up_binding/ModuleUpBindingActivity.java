@@ -3,8 +3,6 @@ package com.delta.smt.ui.smt_module.module_up_binding;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -69,13 +67,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     RecyclerView recyContent;
     @BindView(R.id.btn_upload)
     AppCompatButton btnUpload;
-    @BindView(R.id.container)
-    CoordinatorLayout container;
+    /*@BindView(R.id.container)
+    CoordinatorLayout container;*/
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     @BindView(R.id.automatic_upload)
     AppCompatCheckBox automaticUpload;
     int state = 1;
+    //private Snackbar mSnackbar = null;
+    @BindView(R.id.showMessage)
+    TextView showMessage;
     private CommonBaseAdapter<ModuleUpBindingItem.RowsBean> adapterTitle;
     private CommonBaseAdapter<ModuleUpBindingItem.RowsBean> adapter;
     private List<ModuleUpBindingItem.RowsBean> dataList = new ArrayList<>();
@@ -90,7 +91,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String linName;
     private String materialBlockNumber;
     private String serialNo;
-    private Snackbar snackbar = null;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -114,9 +114,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         String argument = gson.toJson(map);
         getPresenter().getAllModuleUpBindingItems(argument);
         barCodeIpml.setOnGunKeyPressListener(this);
-        if (snackbar == null) {
-            snackbar = Snackbar.make(container, "", Snackbar.LENGTH_INDEFINITE);
-        }
     }
 
     @Override
@@ -214,8 +211,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     public void onSuccessBinding(ModuleUpBindingItem data) {
         ToastUtils.showMessage(this, data.getMsg());
 
-        Snackbar.make(container, dataSource.get(scan_position).getSlot() + "绑定成功！", Snackbar.LENGTH_INDEFINITE);
-        snackbar.show();
+        //mSnackbar.make(container, dataSource.get(scan_position).getSlot() + "绑定成功！", Snackbar.LENGTH_INDEFINITE).show();
+        showMessage.setText(dataSource.get(scan_position).getSlot() + "绑定成功！");
+        showMessage.setVisibility(View.VISIBLE);
         dataSource.clear();
         List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
         dataSource.addAll(rowsBeen);
@@ -285,11 +283,14 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         statusLayout.showEmptyView();
     }
 
-    @OnClick({R.id.btn_upload})
+    @OnClick({R.id.btn_upload, R.id.showMessage})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_upload:
                 getPresenter().upLoadToMES();
+                break;
+            case R.id.showMessage:
+                showMessage.setVisibility(View.GONE);
                 break;
         }
     }
@@ -319,16 +320,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             case 1:
                 try {
                     MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    if (snackbar.isShown()) {
-                        snackbar.dismiss();
-                    }
+
+                    showMessage.setVisibility(View.GONE);
                     materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
                     serialNo = materialBlockBarCode.getStreamNumber();
                     if (!isExistInDataSourceAndHighLight(materialBlockNumber, serialNo, dataSource)) {
                         VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                         VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                        Snackbar.make(container, "该料盘不属于此套工单，请确认工单及扫描是否正确！", Snackbar.LENGTH_INDEFINITE).show();
-                        //Snackbar.make(container, "该料盘不属于此套工单，请确认工单及扫描是否正确！", Snackbar.LENGTH_INDEFINITE).show();
+                        showMessage.setText("该料盘不属于此套工单，请确认工单及扫描是否正确！");
+                        showMessage.setVisibility(View.VISIBLE);
                     } else {
                         VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
                         VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
@@ -336,22 +336,20 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     }
 
                 } catch (EntityNotFountException e) {
-                    //Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
-                    Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
+                    showMessage.setText("请先扫描料盘码！");
+                    showMessage.setVisibility(View.VISIBLE);
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    //Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
-                    Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
+                    showMessage.setText("请先扫描料盘码！");
+                    showMessage.setVisibility(View.VISIBLE);
                 }
                 break;
             case 2:
                 try {
                     Feeder feederCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
-                    if (snackbar.isShown()) {
-                        snackbar.dismiss();
-                    }
+                    showMessage.setVisibility(View.GONE);
                     if (isFeederExistInDataSource(barcode, dataSource)) {
-                        //Snackbar.make(container, "此Feeder已经被绑定！", Snackbar.LENGTH_INDEFINITE).show();
-                        Snackbar.make(container, "此Feeder已经被绑定！", Snackbar.LENGTH_INDEFINITE).show();
+                        showMessage.setText("此Feeder已经被绑定！");
+                        showMessage.setVisibility(View.VISIBLE);
                     } else {
                         Map<String, String> map = new HashMap<>();
                         map.put("work_order", workItemID);
@@ -366,16 +364,14 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 } catch (EntityNotFountException e) {
                     try {
                         MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                        if (snackbar.isShown()) {
-                            snackbar.dismiss();
-                        }
+                        showMessage.setVisibility(View.GONE);
                         materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
                         serialNo = materialBlockBarCode.getStreamNumber();
                         if (!isExistInDataSourceAndHighLight(materialBlockNumber, serialNo, dataSource)) {
                             VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                             VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                            //Snackbar.make(container, "该料盘不属于此套工单，请确认工单及扫描是否正确！", Snackbar.LENGTH_INDEFINITE).show();
-                            Snackbar.make(container, "该料盘不属于此套工单，请确认工单及扫描是否正确！", Snackbar.LENGTH_INDEFINITE).show();
+                            showMessage.setText("该料盘不属于此套工单，请确认工单及扫描是否正确！");
+                            showMessage.setVisibility(View.VISIBLE);
                         } else {
                             VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
                             VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
@@ -384,17 +380,17 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
                     } catch (EntityNotFountException ee) {
                         ee.printStackTrace();
-                        //Snackbar.make(container, "请扫描feeder ID！", Snackbar.LENGTH_INDEFINITE).show();
-                        Snackbar.make(container, "请扫描feeder ID！", Snackbar.LENGTH_INDEFINITE).show();
+                        showMessage.setText("请扫描feeder ID！");
+                        showMessage.setVisibility(View.VISIBLE);
                     } catch (ArrayIndexOutOfBoundsException ee) {
                         ee.printStackTrace();
-                        //Snackbar.make(container, "请扫描feeder ID！", Snackbar.LENGTH_INDEFINITE).show();
-                        Snackbar.make(container, "请扫描feeder ID！", Snackbar.LENGTH_INDEFINITE).show();
+                        showMessage.setText("请扫描feeder ID！");
+                        showMessage.setVisibility(View.VISIBLE);
                     }
                     e.printStackTrace();
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    //Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
-                    Snackbar.make(container, "请先扫描料盘码！", Snackbar.LENGTH_INDEFINITE).show();
+                    showMessage.setText("请先扫描料盘码！");
+                    showMessage.setVisibility(View.VISIBLE);
                 }
                 break;
         }
