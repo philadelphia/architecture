@@ -131,7 +131,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
                     getView().getBeginSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
-                    getView().getBeginFailed(mantissaWarehousePutstorageResult.getrows().get(0));
+                    getView().getBingingLableFailed(mantissaWarehousePutstorageResult.getMsg());
                 }
 
             }

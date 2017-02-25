@@ -124,8 +124,16 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     }
 
     @Override
-    public void ongoingFailed() {
+    protected void onResume() {
+        super.onResume();
+        getPresenter().OnGoing();
+    }
 
+    @Override
+    public void ongoingFailed() {
+        startAndstopStartwork.setVisibility(View.VISIBLE);
+        goneView.setVisibility(View.GONE);
+        startAndstopStartwork.setGravity(Gravity.CENTER);
 
     }
 
