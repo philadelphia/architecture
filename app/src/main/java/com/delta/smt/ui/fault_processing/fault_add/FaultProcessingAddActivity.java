@@ -129,7 +129,6 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
     @Override
     public void addFailed(String message) {
-
         ToastUtils.showMessage(this, message);
     }
 }

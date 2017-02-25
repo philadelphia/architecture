@@ -1,12 +1,15 @@
 package com.delta.smt.ui.mantissa_warehouse.detail;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -20,7 +23,6 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
-import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -44,6 +46,7 @@ import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsMod
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsContract;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
+import com.delta.smt.utils.ViewUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -59,7 +62,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Zhenyu.Liu on 2016/12/27.
  */
 
-public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWarehouseDetailsPresenter> implements MantissaWarehouseDetailsContract.View {
+public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWarehouseDetailsPresenter> implements MantissaWarehouseDetailsContract.View, View.OnClickListener {
 
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
@@ -85,11 +88,16 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     CheckBox btnSwitch;
     private List<MantissaWarehouseDetailsResult.RowsBean> dataList = new ArrayList();
     private List<MantissaWarehouseDetailsResult.RowsBean> dataList2 = new ArrayList();
-    private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> adapter;
-    private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> adapter2;
+    private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> title_adapter;
+    private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> content_adapter;
+    private List<MantissaWarehouseDetailsResult.RowsBean> undebitDataList = new ArrayList<>();
+    private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> undoList_adapter;
     private MantissaWarehouseReady.RowsBean mMantissaWarehouse;
+    private BottomSheetDialog bottomSheetDialog;
+    boolean isOver = true;
+    boolean isHaveIssureOver;
     private String workorder;
-    private String name;
+
     private String lastCar;
     private int flag = 1;
     private String side;
@@ -128,8 +136,9 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        mToolbarTitle.setText("尾数仓备料");
+        mToolbarTitle.setText(R.string.ｍantissa＿warehouse＿stock);
         btnSwitch.setChecked(ischecked);
+
         btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -137,7 +146,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             }
         });
         dataList.add(new MantissaWarehouseDetailsResult.RowsBean(1, "", "", 0));
-        adapter = new CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean>(getContext(), dataList) {
+        title_adapter = new CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehouseDetailsResult.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
@@ -149,10 +158,10 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             }
         };
         mRecyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mRecyTitle.setAdapter(adapter);
+        mRecyTitle.setAdapter(title_adapter);
 
 
-        adapter2 = new CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean>(getContext(), dataList2) {
+        content_adapter = new CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean>(getContext(), dataList2) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehouseDetailsResult.RowsBean item, int position) {
                 holder.setText(R.id.tv_number, item.getMaterial_no());
@@ -182,8 +191,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
         };
         mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        mRecyContetn.setAdapter(adapter2);
-
+        mRecyContetn.setAdapter(content_adapter);
+        createBottomSheetDialog();
     }
 
     @Override
@@ -195,7 +204,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getFailed(String message) {
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -214,7 +222,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getBingingCarFailed(String message) {
         flag = 1;
-        tv_hint.setText(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -224,15 +231,87 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     public void getMantissaWarehouseputSucess(MantissaWarehouseDetailsResult rows) {
 
         issureToWareh(rows);
+        if (btnSwitch.isChecked()) {
+            getPresenter().debit();
+        }
+        if (isOver) {
+            getPresenter().getMantissaWareOver();
+        }
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
 
-    boolean isOver = true;
-    boolean isHaveIssureOver;
 
+    private void createBottomSheetDialog() {
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet, null);
+        RecyclerView rv_title = ViewUtils.findView(view, R.id.rv_sheet_title);
+        RecyclerView mRecycleView = ViewUtils.findView(view, R.id.rv_sheet);
+        Button bt_cancel = ViewUtils.findView(view, R.id.bt_sheet_cancel);
+        Button bt_confim = ViewUtils.findView(view, R.id.bt_sheet_confirm);
+        bt_cancel.setOnClickListener(this);
+        bt_confim.setOnClickListener(this);
+        undoList_adapter = new CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean>(getContext(), dataList2) {
+            @Override
+            protected void convert(CommonViewHolder holder, MantissaWarehouseDetailsResult.RowsBean item, int position) {
+                holder.setText(R.id.tv_number, item.getMaterial_no());
+                holder.setText(R.id.tv_location, item.getShelf_no());
+                holder.setText(R.id.tv_needNumber, String.valueOf(item.getAmount()));
+                holder.setText(R.id.tv_shipments, String.valueOf(item.getIssue_amount()));
+                switch (item.getStatus()) {
+                    case 0:
+                        holder.itemView.setBackgroundColor(Color.YELLOW);
+                        break;
+                    case 1:
+                        holder.itemView.setBackgroundColor(Color.WHITE);
+                        break;
+                    case 2:
+                        holder.itemView.setBackgroundColor(Color.GREEN);
+                        break;
+                    case 3:
+                        holder.itemView.setBackgroundColor(Color.RED);
+                        break;
+                }
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, MantissaWarehouseDetailsResult.RowsBean item) {
+                return R.layout.details_item;
+            }
+
+        };
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(view);
+
+        mRecyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mRecyTitle.setAdapter(title_adapter);
+        mRecycleView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        mRecycleView.setLayoutManager(linearLayoutManager);
+        mRecycleView.setAdapter(undoList_adapter);
+        //从bottomSheetDialog拿到behavior
+        final BottomSheetBehavior<View> mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheetDialog.getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet));
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    bottomSheetDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+    }
+
+    // 获取列表成功后的初始化
     private void issureToWareh(MantissaWarehouseDetailsResult rows) {
-
+        isOver = true;
+        isHaveIssureOver = false;
 
         dataList2.clear();
         dataList2.addAll(rows.getRows());
@@ -249,38 +328,30 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
                 isHaveIssureOver = true;
             } else {
-                isHaveIssureOver = false;
 
-            }
-            if (dataList2.get(i).getStatus() == 0 || dataList2.get(i).getStatus() == 1) {
+
+                undebitDataList.add(dataList2.get(i));
                 isOver = false;
-            } else {
-                isOver = true;
             }
         }
-        if (btnSwitch.isChecked()) {
-            getPresenter().debit();
-        }
-        if (isOver) {
-            getPresenter().getMantissaWareOver();
-        }
+
         if (!"Success".equalsIgnoreCase(rows.getMsg())) {
 
             tv_hint.setText(rows.getMsg());
         }
+
+        content_adapter.notifyDataSetChanged();
         mRecyContetn.scrollToPosition(position);
-        adapter2.notifyDataSetChanged();
     }
 
     @Override
     public void getMantissaWarehouseputFailed(final String message) {
-        DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                getPresenter().getMantissaWareOver();
-            }
-        });
-        tv_hint.setText(message);
+//        DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                getPresenter().getMantissaWareOver();
+//            }
+//        });
         ToastUtils.showMessage(this, message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -288,8 +359,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getMantissaWareOverSucess(IssureToWarehFinishResult issureToWarehFinishResult) {
-        Toast.makeText(this, "扣账成功", Toast.LENGTH_SHORT).show();
-        tv_hint.setText("扣账成功");
+        Toast.makeText(this, issureToWarehFinishResult.getMsg(), Toast.LENGTH_SHORT).show();
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -297,7 +367,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getMantissaWareOverFailed(String message) {
-        tv_hint.setText(message);
         ToastUtils.showMessage(this, message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -322,14 +391,12 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getFindCarFailed(String message) {
         flag = 1;
-        tv_hint.setText(message);
+        ToastUtils.showMessage(this, message);
     }
 
     @Override
     public void getMantissaWarehouseDetailsSucess(MantissaWarehouseDetailsResult mantissaWarehouseDetails) {
-        dataList2.clear();
-        dataList2.addAll(mantissaWarehouseDetails.getRows());
-        adapter2.notifyDataSetChanged();
+        issureToWareh(mantissaWarehouseDetails);
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -337,7 +404,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getMantissaWarehouseDetailsFailed(String msg) {
         ToastUtils.showMessage(this, msg);
-        tv_hint.setText(msg);
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -366,18 +433,18 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void debitSuccess() {
-        tv_hint.setText("扣账成功");
+        ToastUtils.showMessage(this, getString(R.string.debit_success));
+
     }
 
     @Override
     public void debitFailed(String message) {
-        tv_hint.setText(message);
+        ToastUtils.showMessage(this, getString(R.string.debit_failed));
 
     }
 
     @Override
     public void onScanSuccess(String barcode) {
-        Log.e(TAG, "onScanSuccess: ");
         super.onScanSuccess(barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (flag) {
@@ -391,8 +458,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     String s = gson.toJson(bindBean);
                     getPresenter().getbingingCar(s);
                 } catch (EntityNotFountException e) {
-                    ToastUtils.showMessage(this, "请扫描对应料车");
-                    tv_hint.setText("请扫描对应料车");
+                    ToastUtils.showMessage(this, getString(R.string.scan_remain_car_message));
+                    tv_hint.setText(getString(R.string.scan_remain_car_message));
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                     e.printStackTrace();
@@ -412,15 +479,13 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     String po = materiaBar.getPO();
                     String quantity = materiaBar.getCount();
                     MantissaWarehouseputBean bindBean = new MantissaWarehouseputBean(serial_num, material_num, unit, vendor, dc, lc, trasaction_code, po, quantity);
-                    name = material_num;
                     Gson gson = new Gson();
                     String s = gson.toJson(bindBean);
                     getPresenter().getMantissaWarehouseput(s);
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this, "请扫描对应料盘！");
-                    tv_hint.setText("请扫描对应料盘");
+                    ToastUtils.showMessage(this, getString(R.string.scan_corresponding_materials_plate));
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                 }
@@ -434,6 +499,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+
+
                 finish();
                 break;
 
@@ -445,13 +512,43 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @OnClick(R.id.button2)
     public void onClick() {
+
         if (isHaveIssureOver == false) {
             ToastUtils.showMessage(this, getString(R.string.unfinished_station));
-            tv_hint.setText(getString(R.string.unfinished_station));
             return;
         }
         if (SingleClick.isSingle(1000)) {
-            getPresenter().debit();
+
+            if (isOver == false) {
+
+                if (isOver == false) {
+
+                    if (bottomSheetDialog.isShowing()) {
+                        bottomSheetDialog.dismiss();
+                    } else {
+                        undoList_adapter.notifyDataSetChanged();
+                        bottomSheetDialog.show();
+                    }
+                } else {
+                    getPresenter().debit();
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_sheet_cancel:
+                bottomSheetDialog.dismiss();
+                break;
+            case R.id.bt_sheet_confirm:
+                getPresenter().debit();
+                bottomSheetDialog.dismiss();
+                break;
+            default:
+                break;
         }
     }
 }

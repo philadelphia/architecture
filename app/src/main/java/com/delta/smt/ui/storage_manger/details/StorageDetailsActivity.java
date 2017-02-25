@@ -3,10 +3,15 @@ package com.delta.smt.ui.storage_manger.details;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -43,6 +48,7 @@ import com.delta.smt.ui.storage_manger.details.di.StorageDetailsModule;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsContract;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
+import com.delta.smt.utils.ViewUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -59,7 +65,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Zhenyu.Liu on 2016/12/28.
  */
 
-public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter> implements StorageDetailsContract.View {
+public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter> implements StorageDetailsContract.View, View.OnClickListener {
 
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
@@ -83,10 +89,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     StatusLayout statusLayout;
     @BindView(R.id.btn_switch)
     CheckBox btnSwitch;
-    private List<StorageDetails> dataList = new ArrayList();
-    private List<StorageDetails> dataList2 = new ArrayList();
-    private CommonBaseAdapter<StorageDetails> adapter;
-    private CommonBaseAdapter<StorageDetails> adapter2;
+    private List<StorageDetails> dataList = new ArrayList<>();
+    private List<StorageDetails> dataList2 = new ArrayList<>();
+    private List<StorageDetails> undebitDataList = new ArrayList<>();
+    private CommonBaseAdapter<StorageDetails> title_adapter;
+    private CommonBaseAdapter<StorageDetails> content_adapter;
     private BarCodeParseIpml barCodeImp;
     private String work_order;
     private String part;
@@ -95,7 +102,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private int currentPostion = -1;
     private String side;
     private boolean isHaveIssureOver;
-    private boolean ischecked=true;
+    private boolean ischecked = true;
+    private boolean isOver;
+    private String unSendingMessage;
+    private BottomSheetDialog bottomSheetDialog;
+    private CommonBaseAdapter<StorageDetails> undoList_adapter;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -146,7 +157,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 SpUtil.SetBooleanSF(StorageDetailsActivity.this, part + "checked", b);
             }
         });
-        adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList) {
+        title_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
@@ -158,10 +169,10 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             }
         };
         mRecyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mRecyTitle.setAdapter(adapter);
+        mRecyTitle.setAdapter(title_adapter);
 
 
-        adapter2 = new CommonBaseAdapter<StorageDetails>(getContext(), dataList2) {
+        content_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList2) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.setText(R.id.tv_number, item.getMaterial_no());
@@ -191,7 +202,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
         };
         mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        mRecyContetn.setAdapter(adapter2);
+        mRecyContetn.setAdapter(content_adapter);
+        createBottomSheetDialog();
 
     }
 
@@ -201,10 +213,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     @Override
-    public void getSucess(Result<StorageDetails> storageDetailses) {
-        dataList2.clear();
-        dataList2.addAll(storageDetailses.getRows());
-        adapter2.notifyDataSetChanged();
+    public void getSucess(Result<StorageDetails> storageDetails) {
+        issureToWareh(storageDetails);
     }
 
     @Override
@@ -212,7 +222,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 //        Log.e(TAG, "getFailed: "+message);
         tv_hint.setText(message);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        adapter2.notifyDataSetChanged();
+        content_adapter.notifyDataSetChanged();
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -232,11 +242,84 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
         issureToWareh(rows);
+        if (btnSwitch.isChecked()) {
+            getPresenter().deduction();
+        }
+        if (isOver) {
+            getPresenter().issureToWarehFinish();
+        }
+    }
 
+    private void createBottomSheetDialog() {
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet, null);
+        RecyclerView rv_title = ViewUtils.findView(view, R.id.rv_sheet_title);
+        RecyclerView mRecycleView = ViewUtils.findView(view, R.id.rv_sheet);
+        Button bt_cancel = ViewUtils.findView(view, R.id.bt_sheet_cancel);
+        Button bt_confim = ViewUtils.findView(view, R.id.bt_sheet_confirm);
+        bt_cancel.setOnClickListener(this);
+        bt_confim.setOnClickListener(this);
+        undoList_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), undebitDataList) {
+            @Override
+            protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
+                holder.setText(R.id.tv_number, item.getMaterial_no());
+                holder.setText(R.id.tv_location, item.getShelf_no());
+                holder.setText(R.id.tv_needNumber, String.valueOf(item.getAmount()));
+                holder.setText(R.id.tv_shipments, String.valueOf(item.getIssue_amount()));
+                switch (item.getStatus()) {
+                    case 0:
+                        holder.itemView.setBackgroundColor(Color.YELLOW);
+                        break;
+                    case 1:
+                        holder.itemView.setBackgroundColor(Color.WHITE);
+                        break;
+                    case 2:
+                        holder.itemView.setBackgroundColor(Color.GREEN);
+                        break;
+                    case 3:
+                        holder.itemView.setBackgroundColor(Color.RED);
+                        break;
+                }
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, StorageDetails item) {
+                return R.layout.details_item;
+            }
+
+        };
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(view);
+
+        rv_title.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        rv_title.setAdapter(title_adapter);
+        mRecycleView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        mRecycleView.setLayoutManager(linearLayoutManager);
+        mRecycleView.setAdapter(undoList_adapter);
+        //从bottomSheetDialog拿到behavior
+        final BottomSheetBehavior<View> mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheetDialog.getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet));
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    bottomSheetDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
     }
 
     private void issureToWareh(Result<StorageDetails> rows) {
-        boolean isOver = true;
+        undebitDataList.clear();
+        isOver = true;
+        isHaveIssureOver = false;
         dataList2.clear();
         dataList2.addAll(rows.getRows());
         int position = 0;
@@ -248,27 +331,17 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     isFirstUndo = false;
                 }
             }
-            if (dataList2.get(i).getStatus() == 0 || dataList2.get(i).getStatus() == 1) {
-                isOver = false;
-            }
             if (dataList2.get(i).getStatus() == 2) {
 
                 isHaveIssureOver = true;
             } else {
-                isHaveIssureOver = false;
-
+                undebitDataList.add(dataList2.get(i));
+                isOver = false;
             }
         }
-
-        if (btnSwitch.isChecked()) {
-            getPresenter().deduction();
-        }
-        if (isOver) {
-            getPresenter().issureToWarehFinish();
-        }
         tv_hint.setText(rows.getMessage());
+        content_adapter.notifyDataSetChanged();
         mRecyContetn.scrollToPosition(position);
-        adapter2.notifyDataSetChanged();
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -276,8 +349,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void issureToWarehFinishSuccess(String msg) {
 
-        ToastUtils.showMessage(this, "扣帐结果" + msg);
-        tv_hint.setText("扣账成功");
+        ToastUtils.showMessage(this, msg);
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -286,6 +358,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void queryMaterailCar(List<MaterialCar.RowsBean> rows) {
         if (rows.size() != 0) {
             mTextView2.setText(rows.get(0).getCar_name());
+            tv_hint.setText(rows.get(0).getCar_name());
         }
         state = 2;
 
@@ -312,6 +385,12 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void jumpMaterialsSuccess(Result<StorageDetails> result) {
         issureToWareh(result);
+        if (btnSwitch.isChecked()) {
+            getPresenter().deduction();
+        }
+        if (isOver) {
+            getPresenter().issureToWarehFinish();
+        }
     }
 
     @Override
@@ -326,7 +405,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
         state = 2;
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -335,7 +414,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehFailedWithjumpMaterials(String message) {
         state = 2;
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
+
         DialogUtils.showConfirmDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -350,7 +429,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehFinishFaildSure(String message) {
         state = 2;
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
+
         DialogUtils.showConfirmDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -365,7 +444,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehFinishFailedWithoutSure(String message) {
         state = 2;
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -379,7 +458,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void sureCompleteIssueFailed(String message) {
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
         DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
@@ -414,13 +493,14 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void deductionFailed(String message) {
-        tv_hint.setText(message);
+        ToastUtils.showMessage(this, "扣账失败");
+
     }
 
     @Override
     public void deductionSuccess() {
+        ToastUtils.showMessage(this, "扣账成功");
 
-        tv_hint.setText("扣账成功");
     }
 
     int state = 1;
@@ -430,7 +510,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
         switch (state) {
             case 1:
-                Log.e(TAG, "onScanSuccess: " + state);
                 BackupMaterialCar car = null;
                 try {
                     car = ((BackupMaterialCar) barCodeImp.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
@@ -451,7 +530,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 }
                 break;
             case 2:
-                Log.e(TAG, "onScanSuccess: " + state);
                 //扫描料盘
                 try {
                     materialblockbarcode = (MaterialBlockBarCode) barCodeImp.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
@@ -471,8 +549,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
-                    ToastUtils.showMessage(this, "请扫描对应价位的料盘");
-                    tv_hint.setText("请扫描对应价位的料盘");
+                    ToastUtils.showMessage(this, "请扫描对应架位的料盘");
+                    tv_hint.setText("请扫描对应架位的料盘");
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                 }
@@ -500,15 +578,41 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @OnClick(R.id.button2)
     public void onClick() {
 
+
         if (isHaveIssureOver == false) {
             ToastUtils.showMessage(this, getString(R.string.unfinished_station));
-            tv_hint.setText(getString(R.string.unfinished_station));
             return;
         }
+
         if (SingleClick.isSingle(1000)) {
-            getPresenter().deduction();
+            if (isOver == false) {
+
+                if (bottomSheetDialog.isShowing()) {
+                    bottomSheetDialog.dismiss();
+                } else {
+                    undoList_adapter.notifyDataSetChanged();
+                    bottomSheetDialog.show();
+                }
+            }else {
+               getPresenter().deduction();
+            }
+
         }
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_sheet_cancel:
+                bottomSheetDialog.dismiss();
+                break;
+            case R.id.bt_sheet_confirm:
+                getPresenter().deduction();
+                bottomSheetDialog.dismiss();
+                break;
+            default:
+                break;
+        }
+    }
 }

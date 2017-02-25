@@ -112,7 +112,11 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFalutMessageFailed(throwable.getMessage());
+                try {
+                    getView().getFalutMessageFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

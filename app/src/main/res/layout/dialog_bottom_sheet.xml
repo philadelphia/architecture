@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
+        android:orientation="vertical"
+        android:padding="10px">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20px"
+            android:text="提示:"
+            android:textColor="#f9f20568"
+            android:textSize="50px" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="还有未完成的发料的料站是否还要继续扣账？"
+            android:textColor="#f9f20568"
+            android:textSize="45px" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/hr_scrow"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="25px"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_sheet_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_sheet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:padding="10px">
+
+
+        <Button
+            android:id="@+id/bt_sheet_cancel"
+            android:layout_width="72dp"
+            android:layout_height="37dp"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@android:color/white"
+            android:textSize="40px" />
+
+        <Button
+            android:id="@+id/bt_sheet_confirm"
+            android:layout_width="76dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="50px"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:text="@string/confirm"
+            android:textColor="@android:color/white"
+            android:textSize="40px" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>
