@@ -95,7 +95,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private int currentPostion = -1;
     private String side;
     private boolean isHaveIssureOver;
-    private boolean ischecked=true;
+    private boolean ischecked = true;
+    private boolean isOver;
+    private String unSendingMessage;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -236,7 +238,10 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     private void issureToWareh(Result<StorageDetails> rows) {
-        boolean isOver = true;
+        StringBuffer stringbuffer = new StringBuffer();
+        stringbuffer.append("还有未发完的料，是否还要继续扣账？\n\n");
+        isOver = true;
+        isHaveIssureOver = false;
         dataList2.clear();
         dataList2.addAll(rows.getRows());
         int position = 0;
@@ -248,15 +253,12 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     isFirstUndo = false;
                 }
             }
-            if (dataList2.get(i).getStatus() == 0 || dataList2.get(i).getStatus() == 1) {
-                isOver = false;
-            }
             if (dataList2.get(i).getStatus() == 2) {
 
                 isHaveIssureOver = true;
             } else {
-                isHaveIssureOver = false;
-
+                stringbuffer.append("料号：" + dataList2.get(i).getMaterial_no() + "--架位：" + dataList2.get(i).getShelf_no() + "--料站：" + dataList2.get(i).getSlot() + "\n");
+                isOver = false;
             }
         }
 
@@ -266,6 +268,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         if (isOver) {
             getPresenter().issureToWarehFinish();
         }
+        unSendingMessage = stringbuffer.toString();
         tv_hint.setText(rows.getMessage());
         mRecyContetn.scrollToPosition(position);
         adapter2.notifyDataSetChanged();
@@ -286,6 +289,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void queryMaterailCar(List<MaterialCar.RowsBean> rows) {
         if (rows.size() != 0) {
             mTextView2.setText(rows.get(0).getCar_name());
+            tv_hint.setText(rows.get(0).getCar_name());
         }
         state = 2;
 
@@ -326,7 +330,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
         state = 2;
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -335,7 +339,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehFailedWithjumpMaterials(String message) {
         state = 2;
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
+
         DialogUtils.showConfirmDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -350,7 +354,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehFinishFaildSure(String message) {
         state = 2;
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
+
         DialogUtils.showConfirmDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -365,7 +369,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehFinishFailedWithoutSure(String message) {
         state = 2;
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -379,7 +383,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void sureCompleteIssueFailed(String message) {
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
         DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
@@ -414,13 +418,14 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void deductionFailed(String message) {
-        tv_hint.setText(message);
+        tv_hint.setText("扣账失败");
     }
 
     @Override
     public void deductionSuccess() {
 
         tv_hint.setText("扣账成功");
+
     }
 
     int state = 1;
@@ -505,8 +510,18 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             tv_hint.setText(getString(R.string.unfinished_station));
             return;
         }
+
         if (SingleClick.isSingle(1000)) {
-            getPresenter().deduction();
+            if (isOver == false) {
+
+                DialogUtils.showConfirmDialog(this, unSendingMessage, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        getPresenter().deduction();
+                    }
+                });
+            }
+
         }
     }
 

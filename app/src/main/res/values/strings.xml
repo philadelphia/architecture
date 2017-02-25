@@ -98,4 +98,6 @@
     <string name="MainBoard">主板:</string>
     <string name="LittleBoard">小板:</string>
     <string name="unfinished_station">还没有完成发料的料站！</string>
+    <string name="server_error_message"> 无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理员！</string>
+
 </resources>

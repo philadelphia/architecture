@@ -95,6 +95,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private String side;
     private boolean ischecked = true;
 
+    private String unSendingMessage;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
 
@@ -195,7 +197,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getFailed(String message) {
         ToastUtils.showMessage(this, message);
-        tv_hint.setText(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -232,8 +233,10 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     boolean isHaveIssureOver;
 
     private void issureToWareh(MantissaWarehouseDetailsResult rows) {
-
-
+        isOver = true;
+        isHaveIssureOver = false;
+        StringBuffer stringbuffer = new StringBuffer();
+        stringbuffer.append("还有未发完的料站，是否还要继续扣账？\n\n");
         dataList2.clear();
         dataList2.addAll(rows.getRows());
         int position = 0;
@@ -249,13 +252,9 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
                 isHaveIssureOver = true;
             } else {
-                isHaveIssureOver = false;
+                stringbuffer.append("料号："+dataList2.get(i).getMaterial_no() +"--架位："+dataList2.get(i).getShelf_no()+"--料站："+dataList2.get(i).getSlot()+"\n");
 
-            }
-            if (dataList2.get(i).getStatus() == 0 || dataList2.get(i).getStatus() == 1) {
                 isOver = false;
-            } else {
-                isOver = true;
             }
         }
         if (btnSwitch.isChecked()) {
@@ -268,19 +267,19 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
             tv_hint.setText(rows.getMsg());
         }
+        unSendingMessage = stringbuffer.toString();
         mRecyContetn.scrollToPosition(position);
         adapter2.notifyDataSetChanged();
     }
 
     @Override
     public void getMantissaWarehouseputFailed(final String message) {
-        DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                getPresenter().getMantissaWareOver();
-            }
-        });
-        tv_hint.setText(message);
+//        DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                getPresenter().getMantissaWareOver();
+//            }
+//        });
         ToastUtils.showMessage(this, message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -289,7 +288,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getMantissaWareOverSucess(IssureToWarehFinishResult issureToWarehFinishResult) {
         Toast.makeText(this, "扣账成功", Toast.LENGTH_SHORT).show();
-        tv_hint.setText("扣账成功");
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -297,7 +295,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getMantissaWareOverFailed(String message) {
-        tv_hint.setText(message);
         ToastUtils.showMessage(this, message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -322,7 +319,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getFindCarFailed(String message) {
         flag = 1;
-        tv_hint.setText(message);
+        ToastUtils.showMessage(this, message);
     }
 
     @Override
@@ -337,7 +334,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getMantissaWarehouseDetailsFailed(String msg) {
         ToastUtils.showMessage(this, msg);
-        tv_hint.setText(msg);
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -366,12 +363,13 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void debitSuccess() {
-        tv_hint.setText("扣账成功");
+        ToastUtils.showMessage(this, "扣账成功");
+
     }
 
     @Override
     public void debitFailed(String message) {
-        tv_hint.setText(message);
+        ToastUtils.showMessage(this, "扣账失败");
 
     }
 
@@ -434,6 +432,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+
+
                 finish();
                 break;
 
@@ -445,13 +445,25 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @OnClick(R.id.button2)
     public void onClick() {
+
         if (isHaveIssureOver == false) {
-            ToastUtils.showMessage(this, getString(R.string.unfinished_station));
             tv_hint.setText(getString(R.string.unfinished_station));
             return;
         }
         if (SingleClick.isSingle(1000)) {
-            getPresenter().debit();
+
+            if (isOver == false) {
+
+                DialogUtils.showCommonDialog(this, unSendingMessage, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        getPresenter().debit();
+
+                    }
+                });
+            }
         }
+
     }
 }

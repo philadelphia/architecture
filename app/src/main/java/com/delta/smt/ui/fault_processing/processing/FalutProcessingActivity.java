@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.IntentUtils;
-import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
@@ -51,6 +51,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -188,7 +189,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     @Override
     public void getFalutMessageFailed(String message) {
 
-        ToastUtils.showMessage(this, message);
+        SnackbarUtil.show(statusLayout, getString(R.string.server_error_message));
     }
 
     @Override
