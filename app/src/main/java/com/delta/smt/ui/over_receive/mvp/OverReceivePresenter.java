@@ -39,6 +39,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
 
                         if (overReceiveItems.getRows().getData().size() == 0) {
                             getView().showEmptyView();
+                            getView().onFalied(overReceiveItems);
                         }else {
                             getView().showContentView();
                             getView().onSuccess(overReceiveItems);
@@ -46,7 +47,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
 
                     } else {
                         getView().showErrorView();
-                        getView().onFalied();
+                        getView().onFalied(overReceiveItems);
 
                     }
                 }catch(Exception e){
@@ -59,7 +60,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
             public void call(Throwable throwable) {
                 try{
                     getView().showErrorView();
-                    getView().onFalied();
+                    getView().onNetFailed(throwable);
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -88,6 +89,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
 
                         if (overReceiveWarning.getRows().getData().size() == 0) {
                             getView().showEmptyView();
+                            getView().onFalied(overReceiveWarning);
                         } else {
                             getView().showContentView();
                             getView().onSuccess(overReceiveWarning);
@@ -95,7 +97,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
 
                     } else {
                         getView().showErrorView();
-                        getView().onFalied();
+                        getView().onFalied(overReceiveWarning);
 
                     }
                 } catch (Exception e) {
@@ -107,7 +109,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
             public void call(Throwable throwable) {
                 try {
                     getView().showErrorView();
-                    getView().onFalied();
+                    getView().onNetFailed(throwable);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -119,12 +121,17 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
         getModel().getOverReceiveDebit().subscribe(new Action1<OverReceiveDebitResult>() {
             @Override
             public void call(OverReceiveDebitResult overReceiveDebitResult) {
-                getView().onSuccessOverReceiveDebit(overReceiveDebitResult);
+                if ("0".equals(overReceiveDebitResult.getCode())) {
+                    getView().onSuccessOverReceiveDebit(overReceiveDebitResult);
+                } else {
+                    getView().onFaliedOverReceiveDebit(overReceiveDebitResult);
+                }
+
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFaliedOverReceiveDebit();
+                getView().onNetFailed(throwable);
             }
         });
     }

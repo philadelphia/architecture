@@ -20,6 +20,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SpUtil;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.demacia.barcode.BarCodeIpml;
@@ -30,11 +31,8 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
-import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.OverReceiveDebitResult;
-import com.delta.smt.entity.OverReceiveMaterialSend;
-import com.delta.smt.entity.OverReceiveMaterialSendArrive;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.over_receive.di.DaggerOverReceiveComponent;
@@ -66,14 +64,11 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, BarCodeIpml.OnScanSuccessListener,CompoundButton.OnCheckedChangeListener {
 
-    private BarCodeIpml barCodeIpml = new BarCodeIpml();
-    private Gson gson = new Gson();
-
+    public String overReceiveAutomaticDebit = null;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
@@ -82,32 +77,50 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     AppCompatButton manualDebit;
     @BindView(R.id.automatic_debit)
     AppCompatCheckBox automaticDebit;
-
-    private CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean> adapterTitle;
-    private CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean> adapter;
-    private List<OverReceiveWarning.RowsBean.DataBean> dataList = new ArrayList<>();
-    private List<OverReceiveWarning.RowsBean.DataBean> dataSource = new ArrayList<>();
+    @Inject
+    WarningManger warningManger;
+    String materialBlockNumber = "4020108700";
+    String serialNumber = "12344";
+    String count = "2000";
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
     /*@BindView(R.id.testSend)
     AppCompatButton testSend;*/
     //@BindView(R.id.testSendArrive)
     //AppCompatButton testSendArrive;
-
-    @Inject
-    WarningManger warningManger;
-
-    String materialBlockNumber = "4020108700";
-    String serialNumber = "12344";
-    String count = "2000";
-
-    public String overReceiveAutomaticDebit = null;
-
-    @BindView(R.id.statusLayout)
-    StatusLayout statusLayout;
-
     Timer timer = new Timer();
     int recLen =0;
     boolean isAllTimerEnd = true;
+    private BarCodeIpml barCodeIpml = new BarCodeIpml();
+    private Gson gson = new Gson();
+    private CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean> adapterTitle;
+    private CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean> adapter;
+    private List<OverReceiveWarning.RowsBean.DataBean> dataList = new ArrayList<>();
+    private List<OverReceiveWarning.RowsBean.DataBean> dataSource = new ArrayList<>();
+    TimerTask task = new TimerTask() {
+        @Override
+        public void run() {
+
+            runOnUiThread(new Runnable() {      // UI thread
+                @Override
+                public void run() {
+                    isAllTimerEnd = true;
+                    for (int i = 0; i < dataSource.size(); i++) {
+                        int remainTime = Integer.parseInt(dataSource.get(i).getRemain_time());
+                        if (remainTime > 0) {
+                            isAllTimerEnd = false;
+                            dataSource.get(i).setRemain_time((remainTime - 1) + "");
+                        }
+                    }
+                    if (isAllTimerEnd) {
+                        timer.cancel();
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+    };
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -219,35 +232,35 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @Override
     public void onSuccess(OverReceiveWarning data) {
         //Toast.makeText(this, "onSuccess", Toast.LENGTH_SHORT).show();
-        if (data.getMsg().toLowerCase().equals("success")) {
-            dataSource.clear();
-            List<OverReceiveWarning.RowsBean.DataBean> rowsBeanList = data.getRows().getData();
-            dataSource.addAll(rowsBeanList);
-            adapter.notifyDataSetChanged();
-            timer.schedule(task, 1000, 1000);
-        } else {
-            Toast.makeText(this, data.getMsg(), Toast.LENGTH_SHORT).show();
-        }
+        //if (data.getMsg().toLowerCase().equals("success")) {
+        ToastUtils.showMessage(this, data.getMsg());
+        dataSource.clear();
+        List<OverReceiveWarning.RowsBean.DataBean> rowsBeanList = data.getRows().getData();
+        dataSource.addAll(rowsBeanList);
+        adapter.notifyDataSetChanged();
+        timer.schedule(task, 1000, 1000);
+        //
 
     }
 
     @Override
-    public void onFalied() {
-        Toast.makeText(this, "onFalied", Toast.LENGTH_SHORT).show();
+    public void onFalied(OverReceiveWarning data) {
+        ToastUtils.showMessage(this, data.getMsg());
     }
 
     @Override
     public void onSuccessOverReceiveDebit(OverReceiveDebitResult data) {
-        if (data.getCode().toLowerCase().equals("0")) {
-            Toast.makeText(this,"扣账成功！",Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this,"扣账失败！",Toast.LENGTH_SHORT).show();
-        }
+        ToastUtils.showMessage(this, data.getMsg());
     }
 
     @Override
-    public void onFaliedOverReceiveDebit() {
-        Toast.makeText(this,"扣账网络请求失败！",Toast.LENGTH_SHORT).show();
+    public void onFaliedOverReceiveDebit(OverReceiveDebitResult data) {
+        ToastUtils.showMessage(this, data.getMsg());
+    }
+
+    @Override
+    public void onNetFailed(Throwable throwable) {
+        ToastUtils.showMessage(this, throwable.getMessage());
     }
 
     @Override
@@ -279,6 +292,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         }
     }
 
+    /*@Override
+    public void onItemClick(View item, int position) {
+
+    }*/
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -290,11 +308,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /*@Override
-    public void onItemClick(View item, int position) {
-
-    }*/
 
     @Override
     public void warningComing(String warningMessage) {
@@ -403,7 +416,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         }
     }
 
-
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if(buttonView==automaticDebit){
@@ -414,28 +426,4 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             }
         }
     }
-
-    TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-
-            runOnUiThread(new Runnable() {      // UI thread
-                @Override
-                public void run() {
-                    isAllTimerEnd = true;
-                    for(int i=0;i<dataSource.size();i++){
-                        int remainTime = Integer.parseInt(dataSource.get(i).getRemain_time());
-                        if(remainTime>0){
-                            isAllTimerEnd = false;
-                            dataSource.get(i).setRemain_time((remainTime-1)+"");
-                        }
-                    }
-                    if (isAllTimerEnd){
-                        timer.cancel();
-                    }
-                    adapter.notifyDataSetChanged();
-                }
-            });
-        }
-    };
 }
