@@ -16,7 +16,7 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
 
     private TimeEntity mItemInfo;
     private boolean isCountUp;
-    protected View itemView ;
+    public View itemView ;
 
     public boolean isCountUp() {
         return isCountUp;

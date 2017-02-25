@@ -99,5 +99,10 @@
     <string name="LittleBoard">小板:</string>
     <string name="unfinished_station">还没有完成发料的料站！</string>
     <string name="server_error_message"> 无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理员！</string>
+    <string name="scan_remain_car_message">请扫描对应余料车</string>
+    <string name="scan_corresponding_materials_plate">请扫描对应料盘！</string>
+    <string name="debit_success">扣账成功</string>
+    <string name="debit_failed">扣账失败</string>
+    <string name="ｍantissa＿warehouse＿stock">尾数仓备料</string>
 
 </resources>
