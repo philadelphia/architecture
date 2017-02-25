@@ -4,9 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/showMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/c_000000"
+        android:gravity="center_vertical"
+        android:paddingBottom="40px"
+        android:paddingLeft="10px"
+        android:paddingRight="10px"
+        android:paddingTop="40px"
+        android:text="提示"
+        android:textColor="@color/c_ffffff"
+        android:textSize="@dimen/px_40"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/showMessage"
         android:orientation="vertical">
 
         <include layout="@layout/appbar" />
@@ -15,11 +32,11 @@
             android:id="@+id/tv_showWorkOrder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/px_20"
             android:paddingLeft="@dimen/px_20"
+            android:paddingTop="@dimen/px_20"
             android:text="工单号: "
-            android:textSize="@dimen/px_40"
-            android:textColor="@color/c_000000"/>
+            android:textColor="@color/c_000000"
+            android:textSize="@dimen/px_40" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,23 +47,23 @@
                 android:id="@+id/tv_showProductNameMain"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/px_20"
-                android:paddingLeft="@dimen/px_20"
                 android:layout_weight="1"
+                android:paddingLeft="@dimen/px_20"
+                android:paddingTop="@dimen/px_20"
                 android:text="主板: "
-                android:textSize="@dimen/px_40"
-                android:textColor="@color/c_000000"/>
+                android:textColor="@color/c_000000"
+                android:textSize="@dimen/px_40" />
 
             <TextView
                 android:id="@+id/tv_showProductName"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/px_20"
-                android:paddingLeft="@dimen/px_20"
                 android:layout_weight="1"
+                android:paddingLeft="@dimen/px_20"
+                android:paddingTop="@dimen/px_20"
                 android:text="小板: "
-                android:textSize="@dimen/px_40"
-                android:textColor="@color/c_000000"/>
+                android:textColor="@color/c_000000"
+                android:textSize="@dimen/px_40" />
         </LinearLayout>
 
         <LinearLayout
@@ -58,23 +75,23 @@
                 android:id="@+id/tv_showLineName"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/px_20"
-                android:paddingLeft="@dimen/px_20"
                 android:layout_weight="1"
+                android:paddingLeft="@dimen/px_20"
+                android:paddingTop="@dimen/px_20"
                 android:text="线别: "
-                android:textSize="@dimen/px_40"
-                android:textColor="@color/c_000000"/>
+                android:textColor="@color/c_000000"
+                android:textSize="@dimen/px_40" />
 
             <TextView
                 android:id="@+id/tv_showSide"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/px_20"
-                android:paddingLeft="@dimen/px_20"
                 android:layout_weight="1"
+                android:paddingLeft="@dimen/px_20"
+                android:paddingTop="@dimen/px_20"
                 android:text="面别: "
-                android:textSize="@dimen/px_40"
-                android:textColor="@color/c_000000"/>
+                android:textColor="@color/c_000000"
+                android:textSize="@dimen/px_40" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,22 +106,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/px_20"
                     android:paddingLeft="@dimen/px_20"
+                    android:paddingTop="@dimen/px_20"
                     android:text="料盘/feeder: "
-                    android:textSize="@dimen/px_40"
-                    android:textColor="@color/c_000000"/>
+                    android:textColor="@color/c_000000"
+                    android:textSize="@dimen/px_40" />
 
                 <TextView
                     android:id="@+id/tv_showScan_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/px_5"
+                    android:background="@drawable/style_tv_scan"
                     android:text="请扫描"
-                    android:textSize="@dimen/px_40"
                     android:textColor="#0000FF"
-                    android:textStyle="italic"
-                    android:background="@drawable/style_tv_scan"/>
+                    android:textSize="@dimen/px_40"
+                    android:textStyle="italic" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dip"
@@ -114,22 +131,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/px_20"
                     android:paddingLeft="@dimen/px_20"
+                    android:paddingTop="@dimen/px_20"
                     android:text="虚拟模组ID: "
-                    android:textSize="@dimen/px_40"
-                    android:textColor="@color/c_000000"/>
+                    android:textColor="@color/c_000000"
+                    android:textSize="@dimen/px_40" />
 
                 <TextView
                     android:id="@+id/tv_showScan_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/px_5"
+                    android:background="@drawable/style_tv_scan"
                     android:text="请扫描"
-                    android:textSize="@dimen/px_40"
                     android:textColor="#0000FF"
-                    android:textStyle="italic"
-                    android:background="@drawable/style_tv_scan"/>
+                    android:textSize="@dimen/px_40"
+                    android:textStyle="italic" />
             </LinearLayout>
         </LinearLayout>
 
@@ -182,9 +199,9 @@
 
 
     </LinearLayout>
-    <android.support.design.widget.CoordinatorLayout
+    <!--<android.support.design.widget.CoordinatorLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true" />-->
 </RelativeLayout>

@@ -105,13 +105,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
 
-        Map<String, String> map = new HashMap<>();
+        /*Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
         Gson gson = new Gson();
         String argument = gson.toJson(map);
 
-        getPresenter().getAllModuleDownDetailsItems(argument);
+        getPresenter().getAllModuleDownDetailsItems(argument);*/
         barCodeIpml.setOnGunKeyPressListener(this);
 //        // TODO: 2017/2/10
         mCurrentWorkOrder = workItemID;
@@ -263,6 +263,18 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", workItemID);
+                map.put("side", side);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+
+                getPresenter().getAllModuleDownDetailsItems(argument);
+            }
+        });
     }
 
     @Override
@@ -273,6 +285,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         } catch (DevicePairedNotFoundException e) {
             e.printStackTrace();
         }
+        Map<String, String> map = new HashMap<>();
+        map.put("work_order", workItemID);
+        map.put("side", side);
+        Gson gson = new Gson();
+        String argument = gson.toJson(map);
+
+        getPresenter().getAllModuleDownDetailsItems(argument);
     }
 
     @Override

@@ -404,21 +404,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         ee.printStackTrace();
                         VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                         VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                        showMessage.setText("请扫描feeder ID！");
+                        showMessage.setText("此处不能识别此码！");
                         showMessage.setVisibility(View.VISIBLE);
                     } catch (ArrayIndexOutOfBoundsException ee) {
                         ee.printStackTrace();
                         VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                         VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                        showMessage.setText("请扫描feeder ID！");
+                        showMessage.setText("此处不能识别此码！");
                         showMessage.setVisibility(View.VISIBLE);
                     }
                     e.printStackTrace();
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
-                    VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                    showMessage.setText("请先扫描料盘码！");
-                    showMessage.setVisibility(View.VISIBLE);
                 }
                 break;
         }
