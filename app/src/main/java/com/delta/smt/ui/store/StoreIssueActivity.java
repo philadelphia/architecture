@@ -214,6 +214,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     protected void onResume() {
         warningManger.registerWReceiver(this);
         super.onResume();
+        EventBus.getDefault().post(new StoreEmptyMessage());
     }
 
     @Override

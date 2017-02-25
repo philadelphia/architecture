@@ -78,7 +78,11 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getItemWarningDatasFailed(throwable.getMessage());
+                try {
+                    getView().getItemWarningDatasFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -96,7 +100,11 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getItemWarningDatasFailed(throwable.getMessage());
+                try {
+                    getView().getItemWarningDatasFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

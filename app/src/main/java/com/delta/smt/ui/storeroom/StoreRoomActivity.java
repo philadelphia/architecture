@@ -97,6 +97,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         storageVendored.setFocusable(false);
         storageDatacodeed.setFocusable(false);
         storageCounted.setFocusable(false);
+        storageIded.setFocusable(false);
     }
 
     @Override
@@ -114,7 +115,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
             protected void convert(CommonViewHolder holder, ThreeOfMaterial item, int position) {
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.shortList_statistics, item.getDeltaMaterialNumber());
-                holder.setText(R.id.shortList_pcbcode, item.getDeltaMaterialNumber().substring(0, 2));
+                holder.setText(R.id.shortList_pcbcode, item.getPcbCode());
                 holder.setText(R.id.shortList_datacode, item.getDataCode());
                 holder.setText(R.id.shortList_count, item.getCount());
             }
@@ -146,10 +147,10 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
             VibratorAndVoiceUtils.correctVoice(this);
             Log.e("barcode", mBarCode.getDeltaMaterialNumber());
             storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
-            storageVendored.setText(mBarCode.getDeltaMaterialNumber().substring(0, 2));
+            storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
             storageDatacodeed.setText(mBarCode.getDC());
             storageCounted.setText(mBarCode.getCount());
-            if (materialBlockBarCodes.size() < 3) {
+            if (materialBlockBarCodes.size() < 9) {
                 materialBlockBarCodes.add(mBarCode);
                 setTextView();
             }
@@ -160,18 +161,17 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
             e.printStackTrace();
             try {
                 PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
-                VibratorAndVoiceUtils.correctVibrator (this);
-                VibratorAndVoiceUtils.correctVoice(this);
                 storageIded.setText(frameCode.getSource());
-                Log.e("info", frameCode.getSource());
-                if (materialBlockBarCodes.size() < 4) {
+                if (materialBlockBarCodes.size() < 11) {
                     if (!TextUtils.isEmpty(storageIded.getText()))
                         getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
                 }
-            } catch (EntityNotFountException e1) {
+                VibratorAndVoiceUtils.correctVibrator (this);
+                VibratorAndVoiceUtils.correctVoice(this);
+            } catch (Exception e1) {
+                e1.printStackTrace();
                 VibratorAndVoiceUtils. wrongVibrator (this);
                 VibratorAndVoiceUtils. wrongVoice (this);
-                e1.printStackTrace();
             }
 
         }
@@ -179,8 +179,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     private void setTextView() {
         if (mBarCode != null) {
-            if (materialsList.size() < 4) {
-                ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getDeltaMaterialNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
+            if (materialsList.size() < 10) {
+                ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
                 materialsList.add(threeOfMaterial);
                 mShortLisrAdapter.notifyDataSetChanged();
             }else {
@@ -214,8 +214,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     }
 
     @Override
-    public void lightSuccsee() {
-        SnackbarUtil.showMassage(warningActivityMain,"点灯成功,请放到固定架位!");
+    public void lightSuccsee(String s) {
+        SnackbarUtil.showMassage(warningActivityMain,s);
         //ToastUtils.showMessage(this, "请放到固定架位");
 //        storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
 //        storageSubmit.setEnabled(false);
@@ -251,8 +251,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     }
 
     @Override
-    public void storagefaild() {
-        SnackbarUtil.showMassage(warningActivityMain,"入料失败!");
+    public void storagefaild(String s) {
+        SnackbarUtil.showMassage(warningActivityMain,s);
        // ToastUtils.showMessage(this, "入料失败");
         materialBlockBarCodes.clear();
         materialsList.clear();

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
@@ -18,9 +19,6 @@ import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.DialogRelativelayout;
-import com.delta.smt.common.ItemOnclick;
-import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
-import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.manager.WarningManger;
@@ -57,19 +55,15 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
-    private List<ModuleUpWarningItem.RowsBean> dataList = new ArrayList<>();
-    private ItemCountViewAdapter<ModuleUpWarningItem.RowsBean> myAdapter;
-
     @Inject
     WarningManger warningManger;
-
     //List<String> workOrderIDCacheList = new ArrayList<>();
     String workOrderID = "";
     List<String> status = new ArrayList<>();
-
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-
+    private List<ModuleUpWarningItem.RowsBean> dataList = new ArrayList<>();
+    private ItemCountViewAdapter<ModuleUpWarningItem.RowsBean> myAdapter;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -138,27 +132,31 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     public void onSuccess(ModuleUpWarningItem data) {
-        //if (data.getMsg().toLowerCase().equals("success")) {
-            dataList.clear();
-            List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
-            for (int i = 0; i < rows.size(); i++) {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    Date parse = format.parse(rows.get(i).getOnline_plan_start_time());
-                    rows.get(i).setEnd_time(parse.getTime());
-                    rows.get(i).setEntityId(i);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+        dataList.clear();
+        List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
+        for (int i = 0; i < rows.size(); i++) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date parse = format.parse(rows.get(i).getOnline_plan_start_time());
+                rows.get(i).setEnd_time(parse.getTime());
+                rows.get(i).setEntityId(i);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            dataList.addAll(rows);
-            myAdapter.notifyDataSetChanged();
-        //}
+        }
+        dataList.addAll(rows);
+        myAdapter.notifyDataSetChanged();
+        ToastUtils.showMessage(this, data.getMsg());
     }
 
     @Override
-    public void onFalied() {
+    public void onFalied(ModuleUpWarningItem data) {
+        ToastUtils.showMessage(this, data.getMsg());
+    }
 
+    @Override
+    public void onNetFailed(Throwable throwable) {
+        ToastUtils.showMessage(this, throwable.getMessage());
     }
 
     @Override

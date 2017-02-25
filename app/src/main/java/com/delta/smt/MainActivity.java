@@ -60,10 +60,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.delta.smt.R.drawable.ic_warehousestorage;
+
 
 public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<Fuction>, MainContract.View {
 
 
+    //更新
+    private static ProgressDialog progressDialog = null;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @Nullable
@@ -75,12 +79,73 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     TextView tvSetting;
     @BindView(R.id.drawer_layout)
     LinearLayout drawerLayout;
-
     private List<Fuction> fuctions;
-    //更新
-    private static ProgressDialog progressDialog = null;
     private LocalBroadcastManager bManager;
+    private String downloadStr = null;
+    private AlertDialog retryAlertDialog = null;
     private Bundle bundle;
+    //更新状态
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent.getAction().equals(Constant.MESSAGE_PROGRESS)) {
+
+                Download download = intent.getParcelableExtra("download");
+                int progress = download.getProgress();
+                if (download.getProgress() == 100) {
+
+                    progressDialog.setMessage("下载成功");
+                    progressDialog.setProgress(progress);
+                    progressDialog.setProgressNumberFormat(
+                            StringUtils.getDataSize(download.getCurrentFileSize())
+                                    + "/" +
+                                    StringUtils.getDataSize(download.getTotalFileSize()));
+
+
+                } else {
+                    progressDialog.setProgress(progress);
+                    progressDialog.setProgressNumberFormat(
+                            StringUtils.getDataSize(download.getCurrentFileSize())
+                                    + "/" +
+                                    StringUtils.getDataSize(download.getTotalFileSize()));
+
+                }
+            } else if (intent.getAction().equals(Constant.MESSAGE_DIALOG_DISMISS)) {
+                progressDialog.dismiss();
+            } else if (intent.getAction().equals(Constant.MESSAGE_FAILED)) {
+                progressDialog.setMessage("下载失败");
+                progressDialog.setCancelable(true);
+                if (retryAlertDialog == null) {
+                    retryAlertDialog = new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("提示")
+                            .setMessage("下载失败，请重试或取消更新！")
+                            .setCancelable(false)
+                            .setPositiveButton("重试", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    progressDialog.dismiss();
+                                    //显示ProgerssDialog
+                                    showProgerssDialog(MainActivity.this);
+                                    getPresenter().download(MainActivity.this, downloadStr);
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    progressDialog.dismiss();
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create();
+                }
+                if (!retryAlertDialog.isShowing()) {
+                    retryAlertDialog.show();
+                }
+            }
+        }
+    };
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -125,10 +190,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             getPresenter().checkUpdate();
         }
         fuctions = new ArrayList<>();
-        fuctions.add(new Fuction("PCB入库", R.drawable.ic_warehouseroompreparation));
+        fuctions.add(new Fuction("PCB入库", R.drawable.ic_warehousestorage));
         fuctions.add(new Fuction("PCB盘点", R.drawable.ic_warehouseinventory));
         fuctions.add(new Fuction("PCB发料", R.drawable.ic_warehouseforsending));
-        fuctions.add(new Fuction("仓库备料", R.drawable.ic_warehousestorage));
+        fuctions.add(new Fuction("仓库备料", R.drawable.ic_warehouseroompreparation));
         fuctions.add(new Fuction("仓库超领", R.drawable.ic_warehouseroomchaoling));
         fuctions.add(new Fuction("Feeder缓冲区", R.drawable.ic_feederbuffer));
         //fuctions.add(new Fuction("尾数仓备料", R.drawable.ic_mantissawarehousestock));
@@ -143,7 +208,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("手补件", R.drawable.ic_handpatch));
        // fuctions.add(new Fuction("warningSample", R.drawable.title));
     }
-
 
     @Override
     protected int getContentViewId() {
@@ -231,9 +295,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                         .setPositiveButton("更新", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                downloadStr = update.getUrl();
                                 //显示ProgerssDialog
                                 showProgerssDialog(MainActivity.this);
-                                getPresenter().download(MainActivity.this, update.getUrl());
+                                getPresenter().download(MainActivity.this, downloadStr);
                                 dialogInterface.dismiss();
                             }
                         })
@@ -247,46 +312,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                         .create()
                         .show();
             }
-
-
         }
     }
-
-    //更新状态
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if (intent.getAction().equals(Constant.MESSAGE_PROGRESS)) {
-
-                Download download = intent.getParcelableExtra("download");
-                int progress = download.getProgress();
-                if (download.getProgress() == 100) {
-
-                    progressDialog.setMessage("下载成功");
-                    progressDialog.setProgress(progress);
-                    progressDialog.setProgressNumberFormat(
-                            StringUtils.getDataSize(download.getCurrentFileSize())
-                                    + "/" +
-                                    StringUtils.getDataSize(download.getTotalFileSize()));
-
-
-                } else {
-                    progressDialog.setProgress(progress);
-                    progressDialog.setProgressNumberFormat(
-                            StringUtils.getDataSize(download.getCurrentFileSize())
-                                    + "/" +
-                                    StringUtils.getDataSize(download.getTotalFileSize()));
-
-                }
-            } else if (intent.getAction().equals(Constant.MESSAGE_DIALOG_DISMISS)) {
-                progressDialog.dismiss();
-            } else if (intent.getAction().equals(Constant.MESSAGE_FAILED)) {
-                progressDialog.setMessage("下载失败");
-                progressDialog.setCancelable(true);
-            }
-        }
-    };
 
     //运行时权限请求回调方法
     @Override

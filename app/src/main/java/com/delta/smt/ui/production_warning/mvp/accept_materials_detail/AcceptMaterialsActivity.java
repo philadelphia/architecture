@@ -111,9 +111,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         mRecyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         mRecyTitle.setAdapter(adapter);
 
-/*        //初始化item的适配器
-        dataList1.add(new ItemAcceptMaterialDetail("250000501","06T021","0","pcs","RP1201"));
-        dataList1.add(new ItemAcceptMaterialDetail("250000501","03T002","200","pcs","RP1205"));*/
+        //初始化item的适配器
         adapter1=new CommonBaseAdapter<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean>(getContext(),dataList1) {
             @Override
             protected void convert(CommonViewHolder holder, ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean item, int position) {
@@ -261,8 +259,10 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     //网络请求失败
     @Override
     public void getItemDatasFailed(String message) {
-        ToastUtils.showMessage(this,message);
+//        ToastUtils.showMessage(this,message);
+        Snackbar.make(getCurrentFocus(),message,Snackbar.LENGTH_LONG).show();
     }
+
 
     //扫码数据提交成功的操作
     @Override

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
-import com.delta.smt.entity.MaterialAndFeederBindingResult;
 import com.delta.smt.entity.ModuleUpBindingItem;
 
 import javax.inject.Inject;
@@ -42,13 +41,14 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
                         if (moduleUpBindingItems.getRows().size() == 0) {
                             getView().showEmptyView();
+                            getView().onFalied(moduleUpBindingItems);
                         }else {
                             getView().showContentView();
                             getView().onSuccess(moduleUpBindingItems);
                         }
 
                     } else {
-                        getView().onFalied();
+                        getView().onFalied(moduleUpBindingItems);
                         getView().showErrorView();
                     }
                 }catch(Exception e){
@@ -60,7 +60,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().onFalied();
+                    getView().onNetFailed(throwable);
                     getView().showErrorView();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -91,13 +91,14 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
                         if (moduleUpBindingItem.getRows().size() == 0) {
                             getView().showEmptyView();
+                            getView().onFailedBinding(moduleUpBindingItem);
                         }else {
                             getView().showContentView();
                             getView().onSuccessBinding(moduleUpBindingItem);
                         }
 
                     } else {
-                        getView().onFailedBinding();
+                        getView().onFailedBinding(moduleUpBindingItem);
                         getView().showErrorView();
                     }
                 }catch (Exception e){
@@ -109,7 +110,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
             @Override
             public void call(Throwable throwable) {
                 try{
-                    getView().onFailedBinding();
+                    getView().onNetFailed(throwable);
                     getView().showErrorView();
                 }catch (Exception e){
                     e.printStackTrace();
