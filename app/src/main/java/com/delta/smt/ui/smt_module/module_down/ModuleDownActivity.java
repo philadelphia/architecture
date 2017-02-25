@@ -196,6 +196,12 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllModuleDownWarningItems();
+            }
+        });
     }
 
     @Override

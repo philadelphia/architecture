@@ -7,10 +7,11 @@
     <TextView
         android:id="@+id/showMessage"
         android:layout_width="match_parent"
-        android:layout_height="200px"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/c_000000"
         android:gravity="center_vertical"
+        android:padding="10px"
         android:text="提示"
         android:textColor="@color/c_ffffff"
         android:textSize="@dimen/px_40"

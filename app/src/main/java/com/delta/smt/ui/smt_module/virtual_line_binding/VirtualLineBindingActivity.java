@@ -415,54 +415,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         return super.onOptionsItemSelected(item);
     }
 
-    /*public void updateBindingFinishButtonState() {
-        boolean temp = false;
-        if (dataSource.size() > 0) {
-            for (VirtualLineBindingItemNative list_item : dataSource) {
-                if (list_item.getVirtual_module_id().equals("")) {
-                    temp = true;
-                    break;
-                }
-            }
-            if(temp){
-                btnVirtualLineBindingFinish.setEnabled(false);
-            }else{
-                btnVirtualLineBindingFinish.setEnabled(true);
-            }
-        }
-    }*/
-
-    /*public int getModuleIndex(String materialBlockNum) {
-        for (int i = 0; i < virtualData.size(); i++) {
-            if (virtualData.get(i).equals(materialBlockNum)) {
-                return i + 1;
-            }
-        }
-        return -1;
-    }*/
-
-    /*public void setItemVirtualModuleID(String virtualModuleID, String moduleID) {
-        *//*if (dataSource.size() > 0) {
-            for (VirtualLineBindingItemNative listItem : dataSource) {
-                if (listItem.getModule_id().equals(moduleID)) {
-                    listItem.setVirtual_module_id(virtualModuleID);
-                }
-            }
-            adapter.notifyDataSetChanged();
-        }*//*
-
-    }
-
-    public void setItemHighLightBasedOnMID(String moduleID) {
-        *//*for (int i = 0; i < dataSource.size(); i++) {
-            if (dataSource.get(i).getModule_id().equals(moduleID)) {
-                scan_position = i;
-                break;
-            }
-        }
-        adapter.notifyDataSetChanged();*//*
-    }*/
-
     //判断是否所有的模组被绑定
     public boolean isAllModuleBinded(List<VirtualLineBindingItem.RowsBean> rb){
         boolean res = true;
