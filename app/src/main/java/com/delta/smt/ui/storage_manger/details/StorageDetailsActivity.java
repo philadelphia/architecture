@@ -545,7 +545,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
                     getPresenter().issureToWareh(GsonTools.createGsonString(issureToWarehBody));
 
-                } catch (EntityNotFountException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     ToastUtils.showMessage(this, "请扫描对应架位的料盘");
                     tv_hint.setText("请扫描对应架位的料盘");
