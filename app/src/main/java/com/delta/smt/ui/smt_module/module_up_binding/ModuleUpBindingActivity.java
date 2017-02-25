@@ -190,11 +190,13 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onSuccess(ModuleUpBindingItem data) {
+        ToastUtils.showMessage(this, data.getMsg());
+
         dataSource.clear();
         List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
         dataSource.addAll(rowsBeen);
         adapter.notifyDataSetChanged();
-        ToastUtils.showMessage(this, data.getMsg());
+
     }
 
     @Override
@@ -211,9 +213,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     public void onSuccessBinding(ModuleUpBindingItem data) {
         ToastUtils.showMessage(this, data.getMsg());
 
-        //mSnackbar.make(container, dataSource.get(scan_position).getSlot() + "绑定成功！", Snackbar.LENGTH_INDEFINITE).show();
-        showMessage.setText(dataSource.get(scan_position).getSlot() + "绑定成功！");
-        showMessage.setVisibility(View.VISIBLE);
+        if (data.getMsg().toLowerCase().equals("success")) {
+            showMessage.setText(dataSource.get(scan_position).getSlot() + "绑定成功！");
+            showMessage.setVisibility(View.VISIBLE);
+        }
         dataSource.clear();
         List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
         dataSource.addAll(rowsBeen);
@@ -281,6 +284,17 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", workItemID);
+                map.put("side", side);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+                getPresenter().getAllModuleUpBindingItems(argument);
+            }
+        });
     }
 
     @OnClick({R.id.btn_upload, R.id.showMessage})
@@ -336,9 +350,13 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     }
 
                 } catch (EntityNotFountException e) {
+                    VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                    VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                     showMessage.setText("请先扫描料盘码！");
                     showMessage.setVisibility(View.VISIBLE);
                 } catch (ArrayIndexOutOfBoundsException e) {
+                    VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                    VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                     showMessage.setText("请先扫描料盘码！");
                     showMessage.setVisibility(View.VISIBLE);
                 }
@@ -348,9 +366,13 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     Feeder feederCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
                     showMessage.setVisibility(View.GONE);
                     if (isFeederExistInDataSource(barcode, dataSource)) {
+                        VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                        VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                         showMessage.setText("此Feeder已经被绑定！");
                         showMessage.setVisibility(View.VISIBLE);
                     } else {
+                        VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
+                        VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
                         Map<String, String> map = new HashMap<>();
                         map.put("work_order", workItemID);
                         map.put("material_no", materialBlockNumber);
@@ -380,15 +402,21 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
                     } catch (EntityNotFountException ee) {
                         ee.printStackTrace();
+                        VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                        VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                         showMessage.setText("请扫描feeder ID！");
                         showMessage.setVisibility(View.VISIBLE);
                     } catch (ArrayIndexOutOfBoundsException ee) {
                         ee.printStackTrace();
+                        VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                        VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                         showMessage.setText("请扫描feeder ID！");
                         showMessage.setVisibility(View.VISIBLE);
                     }
                     e.printStackTrace();
                 } catch (ArrayIndexOutOfBoundsException e) {
+                    VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                    VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                     showMessage.setText("请先扫描料盘码！");
                     showMessage.setVisibility(View.VISIBLE);
                 }
