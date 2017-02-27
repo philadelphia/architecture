@@ -211,8 +211,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                SnackbarUtil.showMassage(activityMianview,"请结束当前发料！！");
-                //IntentUtils.showIntent(this,StoreIssueActivity.class);
+                IntentUtils.showIntent(this,StoreIssueActivity.class);
                 break;
 
             default:
@@ -294,15 +293,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     public void onCloseLightSucces(String s) {
 
     }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            SnackbarUtil.showMassage(activityMianview,"请结束当前发料！！");
-            return true;
-        }
 
-        return super.onKeyDown(keyCode, event);
-    }
 
 
     @Override
