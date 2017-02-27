@@ -59,10 +59,11 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/px_100"
             android:text="@string/cargon_affirm"
-           android:layout_marginRight="@dimen/px_16"
+            android:layout_marginRight="@dimen/px_16"
             android:layout_alignParentRight="true"
             style="@style/pcb_button"
             android:layout_alignBottom="@id/cargontv"
+            android:layout_alignTop="@id/cargontv"
             />
 
 
