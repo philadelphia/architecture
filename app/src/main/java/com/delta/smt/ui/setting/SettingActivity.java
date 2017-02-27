@@ -58,28 +58,89 @@ import static com.delta.smt.api.API.BASE_URL;
 
 public class SettingActivity extends BaseActivity<MainPresenter> implements MainContract.View {
 
+    //更新
+    private static ProgressDialog progressDialog = null;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-
     @BindView(R.id.setting_update)
     TextView checkUpdateButton;
     @BindView(R.id.setting_server_address)
     TextView settingServerAddress;
-
-    //更新
-    private static ProgressDialog progressDialog = null;
+    Pattern sAddressPattern;
     private LocalBroadcastManager bManager;
     private String downloadStr = null;
     private AlertDialog retryAlertDialog = null;
-    Pattern sAddressPattern;
     private View dialog_view;
     private EditText et_ip;
     private EditText et_port;
     private Dialog dialog;
     private String ip;
     private String port;
+    //更新状态
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent.getAction().equals(Constant.MESSAGE_PROGRESS)) {
+
+                Download download = intent.getParcelableExtra("download");
+                int progress = download.getProgress();
+                if (download.getProgress() == 100) {
+
+                    progressDialog.setMessage("下载成功");
+                    progressDialog.setProgress(progress);
+                    progressDialog.setProgressNumberFormat(
+                            StringUtils.getDataSize(download.getCurrentFileSize())
+                                    + "/" +
+                                    StringUtils.getDataSize(download.getTotalFileSize()));
+
+
+                } else {
+                    progressDialog.setProgress(progress);
+                    progressDialog.setProgressNumberFormat(
+                            StringUtils.getDataSize(download.getCurrentFileSize())
+                                    + "/" +
+                                    StringUtils.getDataSize(download.getTotalFileSize()));
+
+                }
+            } else if (intent.getAction().equals(Constant.MESSAGE_DIALOG_DISMISS)) {
+                progressDialog.dismiss();
+            } else if (intent.getAction().equals(Constant.MESSAGE_FAILED)) {
+                progressDialog.setMessage("下载失败");
+                progressDialog.setCancelable(true);
+                if (retryAlertDialog == null) {
+                    retryAlertDialog = new AlertDialog.Builder(SettingActivity.this)
+                            .setTitle("提示")
+                            .setMessage("下载失败，请重试或取消更新！")
+                            .setCancelable(false)
+                            .setPositiveButton("重试", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    progressDialog.dismiss();
+                                    //显示ProgerssDialog
+                                    showProgerssDialog(SettingActivity.this);
+                                    getPresenter().download(SettingActivity.this, downloadStr);
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    progressDialog.dismiss();
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create();
+                }
+                if (!retryAlertDialog.isShowing()) {
+                    retryAlertDialog.show();
+                }
+
+            }
+        }
+    };
 
     @Override
     protected int getContentViewId() {
@@ -148,10 +209,12 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                     return;
                 }
 
-                SpUtil.SetStringSF(SettingActivity.this, "ip", et_ip.getText().toString());
+                /*SpUtil.SetStringSF(SettingActivity.this, "ip", et_ip.getText().toString());
                 SpUtil.SetStringSF(SettingActivity.this, "port", et_port.getText().toString());
                 ip = SpUtil.getStringSF(SettingActivity.this, "ip");
-                port = SpUtil.getStringSF(SettingActivity.this, "port");
+                port = SpUtil.getStringSF(SettingActivity.this, "port");*/
+                ip = et_ip.getText().toString();
+                port = et_port.getText().toString();
                 BASE_URL = "http://" + ip + ":" + port + "/";
                 Matcher m = sAddressPattern.matcher(BASE_URL);
                 if (m.matches()) {
@@ -164,7 +227,8 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                             .responseErroListener(((BaseApplication) App.getContext()))
                             .build();
                     App.appComponent = DaggerAppComponent.builder().clientModule(mClientModule).appModule(App.getAppModule()).serviceModule(App.getServiceModule()).build();
-
+                    SpUtil.SetStringSF(SettingActivity.this, "ip", ip);
+                    SpUtil.SetStringSF(SettingActivity.this, "port", port);
                 } else {
                     ToastUtils.showMessage(SettingActivity.this, "此地址无效");
                 }
@@ -309,70 +373,6 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
 
         }
     }
-
-    //更新状态
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if (intent.getAction().equals(Constant.MESSAGE_PROGRESS)) {
-
-                Download download = intent.getParcelableExtra("download");
-                int progress = download.getProgress();
-                if (download.getProgress() == 100) {
-
-                    progressDialog.setMessage("下载成功");
-                    progressDialog.setProgress(progress);
-                    progressDialog.setProgressNumberFormat(
-                            StringUtils.getDataSize(download.getCurrentFileSize())
-                                    + "/" +
-                                    StringUtils.getDataSize(download.getTotalFileSize()));
-
-
-                } else {
-                    progressDialog.setProgress(progress);
-                    progressDialog.setProgressNumberFormat(
-                            StringUtils.getDataSize(download.getCurrentFileSize())
-                                    + "/" +
-                                    StringUtils.getDataSize(download.getTotalFileSize()));
-
-                }
-            } else if (intent.getAction().equals(Constant.MESSAGE_DIALOG_DISMISS)) {
-                progressDialog.dismiss();
-            } else if (intent.getAction().equals(Constant.MESSAGE_FAILED)) {
-                progressDialog.setMessage("下载失败");
-                progressDialog.setCancelable(true);
-                if (retryAlertDialog == null) {
-                    retryAlertDialog = new AlertDialog.Builder(SettingActivity.this)
-                            .setTitle("提示")
-                            .setMessage("下载失败，请重试或取消更新！")
-                            .setCancelable(false)
-                            .setPositiveButton("重试", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    progressDialog.dismiss();
-                                    //显示ProgerssDialog
-                                    showProgerssDialog(SettingActivity.this);
-                                    getPresenter().download(SettingActivity.this, downloadStr);
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    progressDialog.dismiss();
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .create();
-                }
-                if (!retryAlertDialog.isShowing()) {
-                    retryAlertDialog.show();
-                }
-
-            }
-        }
-    };
 
     //运行时权限请求回调方法
     @Override
