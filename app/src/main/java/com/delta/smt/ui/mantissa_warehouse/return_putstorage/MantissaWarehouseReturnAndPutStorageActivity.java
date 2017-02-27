@@ -62,9 +62,8 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     @Override
     protected void initData() {
-//此处的Title应该是 从网络获取的数量
+        //此处的Title应该是 从网络获取的数量
         titles = new String[]{"入库", "退入主仓库"};
-
         //接收那种预警，没有的话自己定义常量
         WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
         //是否接收预警 可以控制预警时机
@@ -116,12 +115,12 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
-                currentTab=0;
+                currentTab = 0;
                 showHideFragment(mMantissaWarehouseReturnFragment, currentFragment);
                 currentFragment = mMantissaWarehouseReturnFragment;
                 break;
             case 1:
-                currentTab=1;
+                currentTab = 1;
                 showHideFragment(mMantissaWarehousePutstorageFragment, currentFragment);
                 currentFragment = mMantissaWarehousePutstorageFragment;
                 break;
