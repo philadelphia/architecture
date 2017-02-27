@@ -364,7 +364,7 @@ public class MantissaWarehousePutstorageFragment extends
                     setItemHighLightBasedOnMID(lastLocation);
 
                 } catch (EntityNotFountException e) {
-
+                    Toast.makeText(baseActiviy, "扫描类型有误，请从新确认！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 2:
@@ -381,7 +381,7 @@ public class MantissaWarehousePutstorageFragment extends
                     flag = 1;
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
-                    e.printStackTrace();
+                    Toast.makeText(baseActiviy, "已扫描架位", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
