@@ -9,9 +9,12 @@ import com.delta.commonlibs.rx.rxerrorhandler.ResponseErrorListener;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.utils.SpUtil;
 import com.tbruyelle.rxpermissions.RxPermissions;
+
 import java.io.File;
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
@@ -23,7 +26,6 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- *
  * 使用构建者模式,模块化组件
  */
 @Module
@@ -33,18 +35,18 @@ public class ClientModule {
     private HttpUrl mApiUrl;
     private GlobeHttpHandler mHandler;
     private Interceptor[] mInterceptors;
-    private ResponseErrorListener mErroListener;
+    private ResponseErrorListener mErrorListener;
 
     /**
      * @author: jess
      * @date 8/5/16 11:03 AM
      * @description: 设置baseurl
      */
-    private ClientModule(Builder buidler) {
-        this.mApiUrl = buidler.apiUrl;
-        this.mHandler = buidler.handler;
-        this.mInterceptors = buidler.interceptors;
-        this.mErroListener = buidler.responseErroListener;
+    private ClientModule(Builder builder) {
+        this.mApiUrl = builder.apiUrl;
+        this.mHandler = builder.handler;
+        this.mInterceptors = builder.interceptors;
+        this.mErrorListener = builder.responseErrorListener;
     }
 
     public static Builder buidler() {
@@ -92,11 +94,13 @@ public class ClientModule {
     Cache provideCache(File cacheFile) {
         return new Cache(cacheFile, HTTP_RESPONSE_DISK_CACHE_MAX_SIZE);//设置缓存路径和大小
     }
+
     @Singleton
     @Provides
     Interceptor provideIntercept() {
         return new RequestIntercept(mHandler);//打印请求信息的拦截器
     }
+
     /**
      * 提供缓存地址
      */
@@ -111,7 +115,6 @@ public class ClientModule {
      * 提供处理Rxjava错误的管理器
      *
      * @return
-     *
      */
     @Singleton
     @Provides
@@ -119,12 +122,13 @@ public class ClientModule {
         return RxErrorHandler
                 .builder()
                 .with(application)
-                .responseErrorListener(mErroListener)
+                .responseErrorListener(mErrorListener)
                 .build();
     }
 
     /**
      * 提供权限管理类,用于请求权限,适配6.0的权限管理
+     *
      * @param application
      * @return
      */
@@ -133,6 +137,7 @@ public class ClientModule {
     RxPermissions provideRxPermissions(Application application) {
         return RxPermissions.getInstance(application);
     }
+
     /**
      * @param builder
      * @param client
@@ -176,7 +181,7 @@ public class ClientModule {
         private HttpUrl apiUrl = HttpUrl.parse("https://api.github.com/");
         private GlobeHttpHandler handler;
         private Interceptor[] interceptors;
-        private ResponseErrorListener responseErroListener;
+        private ResponseErrorListener responseErrorListener;
 
         private Builder() {
         }
@@ -200,7 +205,7 @@ public class ClientModule {
         }
 
         public Builder responseErroListener(ResponseErrorListener listener) {//处理所有Rxjava的onError逻辑
-            this.responseErroListener = listener;
+            this.responseErrorListener = listener;
             return this;
         }
 
