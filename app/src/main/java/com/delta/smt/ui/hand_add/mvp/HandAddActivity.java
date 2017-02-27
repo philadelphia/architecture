@@ -241,7 +241,12 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     public void getItemHandAddDatasFailed(String message) {
         //ToastUtils.showMessage(this,message);
-        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+        if ("Error".equals(message)) {
+            Snackbar.make(getCurrentFocus(),this.getString(R.string.server_error_message),Snackbar.LENGTH_LONG).show();
+        }else {
+            Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+        }
+
     }
 
 

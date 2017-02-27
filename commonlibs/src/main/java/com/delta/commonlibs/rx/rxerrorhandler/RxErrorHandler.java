@@ -24,7 +24,10 @@ public class RxErrorHandler {
     public void handleError(Throwable throwable)
 
     {
-        responseErrorListener.hanlderResponseError(context, ((Exception) throwable));
+        if (responseErrorListener != null) {
+
+            responseErrorListener.hanlderResponseError(context, ((Exception) throwable));
+        }
     }
 
     public static class Builder {

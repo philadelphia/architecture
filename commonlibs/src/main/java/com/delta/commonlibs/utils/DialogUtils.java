@@ -5,12 +5,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+
 /**
-* @description :对话框工具类, 提供常用对话框显示, 使用support.v7包内的AlertDialog样式
-* @author :  V.Wenju.Tian
-* @date : 2016/12/19 14:05
-*/
+ * @author :  V.Wenju.Tian
+ * @description :对话框工具类, 提供常用对话框显示, 使用support.v7包内的AlertDialog样式
+ * @date : 2016/12/19 14:05
+ */
 public class DialogUtils {
+
 
     public static Dialog createProgressDialog(Context context) {
         return createProgressDialog(context, true);
@@ -41,6 +44,11 @@ public class DialogUtils {
                 .setMessage(message)
                 .setPositiveButton("确定", listener)
                 .show();
+    }
+
+    public static Dialog showDefineDialog(Context context, View view) {
+
+        return new AlertDialog.Builder(context).setView(view).setView(view).show();
     }
 
 }

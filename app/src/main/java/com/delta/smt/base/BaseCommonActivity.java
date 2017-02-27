@@ -196,7 +196,6 @@ public abstract class BaseCommonActivity extends SupportActivity {
                         String text = intent.getStringExtra("content");
                         boolean isLong = intent.getBooleanExtra("long", false);
                         View view = BaseCommonActivity.this.getWindow().getDecorView().findViewById(android.R.id.content);
-
                         Snackbar.make(view, text, isLong ? Snackbar.LENGTH_LONG : Snackbar.LENGTH_SHORT).show();
                         break;
                     case "handError"://处理错误

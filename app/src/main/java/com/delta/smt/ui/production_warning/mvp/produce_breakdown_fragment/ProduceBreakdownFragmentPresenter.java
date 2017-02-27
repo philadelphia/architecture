@@ -37,7 +37,7 @@ public class ProduceBreakdownFragmentPresenter extends BasePresenter<ProduceBrea
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemBreakdownDatasFailed(throwable.getMessage());
+                    getView().getItemBreakdownDatasFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
