@@ -19,6 +19,8 @@ import com.delta.buletoothio.barcode.parse.entity.LabelBarcode;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
@@ -364,7 +366,7 @@ public class MantissaWarehousePutstorageFragment extends
                     setItemHighLightBasedOnMID(lastLocation);
 
                 } catch (EntityNotFountException e) {
-                    Toast.makeText(baseActiviy, "扫描类型有误，请从新确认！", Toast.LENGTH_SHORT).show();
+                    SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
                 }
                 break;
             case 2:
@@ -381,7 +383,7 @@ public class MantissaWarehousePutstorageFragment extends
                     flag = 1;
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
-                    Toast.makeText(baseActiviy, "已扫描架位", Toast.LENGTH_SHORT).show();
+                    SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
                 }
                 break;
 
@@ -417,7 +419,7 @@ public class MantissaWarehousePutstorageFragment extends
 //                }
 
                 }else{
-                    Toast.makeText(getActivity(), "退料顺序有误，请扫描首个料盘！", Toast.LENGTH_SHORT).show();
+                    SnackbarUtil.showMassage(mRecyContetn, "退料顺序有误，请扫描首个料盘");
                 }
                 break;
 

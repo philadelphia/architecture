@@ -140,5 +140,6 @@ public class Constant {
     public static final String FAILURE_MANTISS_TRAYS_STRING = "该料盘不属于该工单，请确认";
     public static final String CAN_NOT_END_ISSUE_STRING = "发料没有完成，不能完成发料";
     public static final String FAILURE_START_ISSUE_STRING = "有未完成的发料工单，不允许再次开始发料";
+    public static final String SCAN_FAILED = "扫描有误，请确认所扫二维码";
 
 }
