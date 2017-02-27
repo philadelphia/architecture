@@ -256,7 +256,7 @@ public class MantissaWarehousePutstorageFragment extends
                 break;
             case R.id.deduct:
                 getPresenter().getMantissaWarehousePutstorage();
-                mClean.setEnabled(false);
+                mClean.setVisibility(View.GONE);
                 mDeduct.setEnabled(false);
                 mBtOk.setVisibility(View.VISIBLE);
                 mBtNext.setVisibility(View.VISIBLE);
