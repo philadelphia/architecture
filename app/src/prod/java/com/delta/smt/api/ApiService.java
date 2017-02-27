@@ -336,7 +336,7 @@ public interface ApiService {
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(@Query("condition") String bind);
 
     //尾数仓扣账
-    @GET("SMM/MantissaStorage/debit")
+    @GET("SMM/WareHIssue/deduction")
     Observable<Result> debit();
 
     //尾数仓发料完成

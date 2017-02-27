@@ -1,6 +1,8 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -51,6 +53,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     private SupportFragment currentFragment;
     private String[] titles;
+    private int currentTab = 0;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -68,10 +71,21 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         WarningManger.getInstance().setRecieve(true);
         //关键 初始化预警接口
         WarningManger.getInstance().setOnWarning(this);
+
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+
+            currentTab = savedInstanceState.getInt("temp");
+        }
     }
 
     @Override
     protected void initView() {
+
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,6 +97,8 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         }
         ViewUtils.setTabTitle(mTlTitle, titles);
         mTlTitle.addOnTabSelectedListener(this);
+
+        mTlTitle.getTabAt(currentTab).select();
         mMantissaWarehousePutstorageFragment = new MantissaWarehousePutstorageFragment();
         mMantissaWarehouseReturnFragment = new MantissaWarehouseReturnFragment();
         loadMultipleRootFragment(R.id.fl_container, 0, mMantissaWarehouseReturnFragment, mMantissaWarehousePutstorageFragment);
@@ -90,14 +106,22 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("temp", currentTab);
+    }
+
+    @Override
     public void onTabSelected(TabLayout.Tab tab) {
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
+                currentTab=0;
                 showHideFragment(mMantissaWarehouseReturnFragment, currentFragment);
                 currentFragment = mMantissaWarehouseReturnFragment;
                 break;
             case 1:
+                currentTab=1;
                 showHideFragment(mMantissaWarehousePutstorageFragment, currentFragment);
                 currentFragment = mMantissaWarehousePutstorageFragment;
                 break;
@@ -178,10 +202,10 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     @Override
     public void onScanSuccess(String barcode) {
-        if(currentFragment==mMantissaWarehouseReturnFragment){
+        if (currentFragment == mMantissaWarehouseReturnFragment) {
 
             EventBus.getDefault().post(new BacKBarCode(barcode));
-        }else {
+        } else {
 
             EventBus.getDefault().post(new PutBarCode(barcode));
         }

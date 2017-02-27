@@ -2,6 +2,7 @@ package com.delta.smt.ui.mantissa_warehouse.ready;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -107,8 +108,10 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
                 holder.setText(R.id.tv_sides, "面别: " + item.getSide());
                 if (1 == item.getStatus()) {
                     holder.setText(R.id.tv_states, "状态: " + "未开始发料");
+                    holder.itemView.setBackgroundColor(Color.WHITE);
                 } else {
                     holder.setText(R.id.tv_states, "状态：正在发料");
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
                 }
             }
         };

@@ -14,13 +14,15 @@ import rx.Observable;
 public interface OverReceiveContract {
     interface View extends IView {
 
-        public void onSuccess(OverReceiveWarning data);
+        void onSuccess(OverReceiveWarning data);
 
-        public void onFalied();
+        void onFalied(OverReceiveWarning data);
 
-        public void onSuccessOverReceiveDebit(OverReceiveDebitResult data);
+        void onSuccessOverReceiveDebit(OverReceiveDebitResult data);
 
-        public void onFaliedOverReceiveDebit();
+        void onFaliedOverReceiveDebit(OverReceiveDebitResult data);
+
+        void onNetFailed(Throwable throwable);
 
         void showLoadingView();
 
@@ -33,13 +35,13 @@ public interface OverReceiveContract {
     }
 
     interface Model extends IModel {
-        public Observable<OverReceiveWarning> getAllOverReceiveItems();
+        Observable<OverReceiveWarning> getAllOverReceiveItems();
 
-        public Observable<OverReceiveWarning> getOverReceiveItemsAfterSend(String str);
+        Observable<OverReceiveWarning> getOverReceiveItemsAfterSend(String str);
 
         /*public Observable<OverReceiveWarning> getOverReceiveItemsAfterSendArrive(String str);*/
 
-        public Observable<OverReceiveDebitResult > getOverReceiveDebit();
+        Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     }
 }

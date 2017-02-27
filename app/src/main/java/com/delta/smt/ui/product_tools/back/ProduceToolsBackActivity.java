@@ -23,6 +23,7 @@ import com.delta.smt.ui.product_tools.back.di.DaggerProduceToolsBackComponent;
 import com.delta.smt.ui.product_tools.back.di.ProduceToolsBackModule;
 import com.delta.smt.ui.product_tools.back.mvp.ProduceToolsBackContract;
 import com.delta.smt.ui.product_tools.back.mvp.ProduceToolsBackPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -164,9 +165,12 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
             data.addAll(p);
             adapter.notifyDataSetChanged();
             SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),list.getMessage());
+            VibratorAndVoiceUtils.correctVibrator(ProduceToolsBackActivity.this);
+            VibratorAndVoiceUtils.correctVoice(ProduceToolsBackActivity.this);
         } else {
             SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),list.getMessage());
-
+            VibratorAndVoiceUtils.wrongVibrator(ProduceToolsBackActivity.this);
+            VibratorAndVoiceUtils.wrongVoice(ProduceToolsBackActivity.this);
         }
 
     }
@@ -175,6 +179,8 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
     public void getFail() {
 
         SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"请求的数据不存在");
+        VibratorAndVoiceUtils.wrongVibrator(ProduceToolsBackActivity.this);
+        VibratorAndVoiceUtils.wrongVoice(ProduceToolsBackActivity.this);
 
     }
 

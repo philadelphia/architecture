@@ -1,11 +1,8 @@
 package com.delta.smt.ui.smt_module.virtual_line_binding;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -38,6 +35,7 @@ import com.delta.smt.ui.smt_module.virtual_line_binding.di.DaggerVirtualLineBind
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.VirtualLineBindingModule;
 import com.delta.smt.ui.smt_module.virtual_line_binding.mvp.VirtualLineBindingContract;
 import com.delta.smt.ui.smt_module.virtual_line_binding.mvp.VirtualLineBindingPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -46,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by Shufeng.Wu on 2017/1/4.
@@ -61,8 +60,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
     RecyclerView recyContent;
-    @BindView(R.id.container)
-    CoordinatorLayout container;
     List<VirtualLineBindingItem.RowsBean> data_tmp = null;
     String materialBlockNumber;
     String feederNumber;
@@ -91,6 +88,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     int state = 1;
+    @BindView(R.id.showMessage)
+    TextView showMessage;
     private CommonBaseAdapter<VirtualLineBindingItem.RowsBean> adapterTitle;
     private CommonBaseAdapter<VirtualLineBindingItem.RowsBean> adapter;
     private List<VirtualLineBindingItem.RowsBean> dataList = new ArrayList<>();
@@ -244,6 +243,17 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", workItemID);
+                map.put("side", side);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+                getPresenter().getAllVirtualLineBindingItems(argument);
+            }
+        });
     }
 
     @Override
@@ -263,27 +273,45 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         barCodeIpml.onComplete();
     }
 
+    @OnClick({R.id.showMessage})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.showMessage:
+                showMessage.setVisibility(View.GONE);
+                break;
+        }
+    }
+
     @Override
     public void onScanSuccess(String barcode) {
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:
                 try {
+                    showMessage.setVisibility(View.GONE);
                     MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
                     serialNo = materialBlockBarCode.getStreamNumber();
                     scan1_label = "material";
                     tv_showScan_1.setText(materialBlockNumber);
+                    VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
+                    VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                     state = 2;
                 } catch (EntityNotFountException e) {
                     try{
+                        showMessage.setVisibility(View.GONE);
                         Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
                         feederNumber = barcode;
                         scan1_label="feeder";
                         tv_showScan_1.setText(feederNumber);
+                        VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
+                        VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                         state = 2;
                     }catch (EntityNotFountException ee) {
-                        new AlertDialog.Builder(this)
+                        VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
+                        VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
+
+                        /*new AlertDialog.Builder(this)
                                 .setTitle("提示")
                                 .setMessage("请扫描料盘或feederID！")
                                 .setCancelable(false)
@@ -294,10 +322,14 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                                     }
                                 })
                                 .create()
-                                .show();
+                                .show();*/
+                        showMessage.setText("请扫描料盘！");
+                        showMessage.setVisibility(View.VISIBLE);
                     }
                 } catch (ArrayIndexOutOfBoundsException e){
-                    new AlertDialog.Builder(this)
+                    VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
+                    VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
+                    /*new AlertDialog.Builder(this)
                             .setTitle("提示")
                             .setMessage("请扫描料盘或feederID！")
                             .setCancelable(false)
@@ -308,12 +340,15 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                                 }
                             })
                             .create()
-                            .show();
+                            .show();*/
+                    showMessage.setText("请扫描料盘！");
+                    showMessage.setVisibility(View.VISIBLE);
 
                 }
                 break;
             case 2:
                 try {
+                    showMessage.setVisibility(View.GONE);
                     VirtualModuleID virtualModuleID = (VirtualModuleID) barCodeParseIpml.getEntity(barcode, BarCodeType.VIRTUALMODULE_ID);
                     tv_showScan_2.setText(virtualModuleID.getSource());
                     //检查此模组是否被绑定
@@ -328,6 +363,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         String argument = gson.toJson(map);
                         getPresenter().getAllVirtualBindingResult(argument);
                         scan1_label = null;
+                        VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
+                        VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                         state = 1;
                     }else if("feeder".equals(scan1_label)){
                         Map<String, String> map = new HashMap<>();
@@ -338,6 +375,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         Gson gson = new Gson();
                         String argument = gson.toJson(map);
                         getPresenter().getAllVirtualBindingResult(argument);
+                        VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
+                        VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                         scan1_label = null;
                         state = 1;
                     }else{
@@ -346,21 +385,29 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
                 } catch (EntityNotFountException e) {
                     try {
+                        showMessage.setVisibility(View.GONE);
                         MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                         materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
                         serialNo = materialBlockBarCode.getStreamNumber();
                         scan1_label = "material";
                         tv_showScan_1.setText(materialBlockNumber);
+                        VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
+                        VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                         state = 2;
                     } catch (EntityNotFountException ee) {
                         try{
+                            showMessage.setVisibility(View.GONE);
                             Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
                             feederNumber = barcode;
                             scan1_label="feeder";
                             tv_showScan_1.setText(feederNumber);
+                            VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
+                            VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                             state = 2;
                         }catch (EntityNotFountException eee) {
-                            new AlertDialog.Builder(this)
+                            VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
+                            VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
+                            /*new AlertDialog.Builder(this)
                                     .setTitle("提示")
                                     .setMessage("请扫描虚拟模组！")
                                     .setCancelable(false)
@@ -371,10 +418,14 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                                         }
                                     })
                                     .create()
-                                    .show();
+                                    .show();*/
+                            showMessage.setText("请扫描虚拟模组！");
+                            showMessage.setVisibility(View.VISIBLE);
                         }
                     }catch (ArrayIndexOutOfBoundsException ee){
-                        new AlertDialog.Builder(this)
+                        VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
+                        VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
+                        /*new AlertDialog.Builder(this)
                                 .setTitle("提示")
                                 .setMessage("请扫描虚拟模组！")
                                 .setCancelable(false)
@@ -385,7 +436,9 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                                     }
                                 })
                                 .create()
-                                .show();
+                                .show();*/
+                        showMessage.setText("请扫描虚拟模组！");
+                        showMessage.setVisibility(View.VISIBLE);
                     }
                 }
                 break;
@@ -415,54 +468,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         return super.onOptionsItemSelected(item);
     }
 
-    /*public void updateBindingFinishButtonState() {
-        boolean temp = false;
-        if (dataSource.size() > 0) {
-            for (VirtualLineBindingItemNative list_item : dataSource) {
-                if (list_item.getVirtual_module_id().equals("")) {
-                    temp = true;
-                    break;
-                }
-            }
-            if(temp){
-                btnVirtualLineBindingFinish.setEnabled(false);
-            }else{
-                btnVirtualLineBindingFinish.setEnabled(true);
-            }
-        }
-    }*/
-
-    /*public int getModuleIndex(String materialBlockNum) {
-        for (int i = 0; i < virtualData.size(); i++) {
-            if (virtualData.get(i).equals(materialBlockNum)) {
-                return i + 1;
-            }
-        }
-        return -1;
-    }*/
-
-    /*public void setItemVirtualModuleID(String virtualModuleID, String moduleID) {
-        *//*if (dataSource.size() > 0) {
-            for (VirtualLineBindingItemNative listItem : dataSource) {
-                if (listItem.getModule_id().equals(moduleID)) {
-                    listItem.setVirtual_module_id(virtualModuleID);
-                }
-            }
-            adapter.notifyDataSetChanged();
-        }*//*
-
-    }
-
-    public void setItemHighLightBasedOnMID(String moduleID) {
-        *//*for (int i = 0; i < dataSource.size(); i++) {
-            if (dataSource.get(i).getModule_id().equals(moduleID)) {
-                scan_position = i;
-                break;
-            }
-        }
-        adapter.notifyDataSetChanged();*//*
-    }*/
-
     //判断是否所有的模组被绑定
     public boolean isAllModuleBinded(List<VirtualLineBindingItem.RowsBean> rb){
         boolean res = true;
@@ -480,32 +485,4 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
         return res;
     }
-
-    /*public boolean isExistInDataSource(String item,List<VirtualLineBindingItem.RowsBean> data_tmp) {
-        if (data_tmp.size() > 0) {
-            for (VirtualLineBindingItem.RowsBean list_item : data_tmp) {
-                if (list_item.getVitual_id().equals(item)) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            return false;
-        }
-
-    }
-
-    public boolean isVirtualExistInDataSource(String item, List<VirtualLineBindingItemNative> list) {
-        if (list.size() > 0) {
-            for (VirtualLineBindingItemNative list_item : list) {
-                if (list_item.getVirtual_module_id().equals(item)) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            return false;
-        }
-
-    }*/
 }
