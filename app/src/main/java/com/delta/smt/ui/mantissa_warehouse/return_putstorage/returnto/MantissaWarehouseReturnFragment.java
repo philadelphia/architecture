@@ -158,7 +158,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getMaterialLocationFailed(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(mRecyContetn, message);
         //扫描失败震动并发声
         VibratorAndVoiceUtils. wrongVibrator (getActivity());
         VibratorAndVoiceUtils. wrongVoice (getActivity());
@@ -176,6 +176,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         dataList2.addAll(mantissaWarehouseReturns);
         adapter2.notifyDataSetChanged();
         flag = 1;
+        scan_position = -1;
         //扫描成功震动并发声
         VibratorAndVoiceUtils. correctVibrator (getActivity());
         VibratorAndVoiceUtils. correctVoice (getActivity());
@@ -184,7 +185,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getputinstrageFailed(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(mRecyContetn, message);
         //扫描失败震动并发声
         VibratorAndVoiceUtils. wrongVibrator (getActivity());
         VibratorAndVoiceUtils. wrongVoice (getActivity());
@@ -229,7 +230,8 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         getPresenter().getputinstrage(s);
                         Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
                     } catch (EntityNotFountException e) {
-                        SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
+                        SnackbarUtil.showMassage(mRecyContetn, e.getMessage());
+
                     }
                     break;
 
