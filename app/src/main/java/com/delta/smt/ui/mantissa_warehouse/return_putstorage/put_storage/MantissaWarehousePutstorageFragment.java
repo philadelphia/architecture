@@ -166,7 +166,7 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
-
+        scan_position = -1;
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
