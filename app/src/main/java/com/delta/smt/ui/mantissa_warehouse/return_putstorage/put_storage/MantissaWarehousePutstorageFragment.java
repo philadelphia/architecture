@@ -166,7 +166,7 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
-
+        scan_position = -1;
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
@@ -214,7 +214,7 @@ public class MantissaWarehousePutstorageFragment extends
     @Override
     public void getBeginFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
         dataList2.clear();
-        Toast.makeText(getActivity(), message.toString(), Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(mRecyContetn, message.toString());
     }
 
 
@@ -223,11 +223,12 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
+        scan_position = -1;
     }
 
     @Override
     public void getBingingLableFailed(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(mRecyContetn, message);
     }
 
 
@@ -236,7 +237,7 @@ public class MantissaWarehousePutstorageFragment extends
         position = 0;
         f = false;
         flag = 3;
-
+        scan_position = -1;
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
@@ -246,7 +247,7 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void getUpLocationFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
-        Toast.makeText(getActivity(), message.toString(), Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(mRecyContetn, message.toString());
     }
 
 
