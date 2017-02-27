@@ -50,7 +50,7 @@ public class ProduceLinePresenter extends BasePresenter<ProduceLineContract.Mode
             public void call(Throwable throwable) {
                 try {
                     getView().showErrorView();
-                    getView().getFailed(throwable.getMessage());
+                    getView().getFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

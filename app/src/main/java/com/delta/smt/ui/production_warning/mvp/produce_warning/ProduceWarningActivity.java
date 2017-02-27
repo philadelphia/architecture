@@ -224,7 +224,11 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     @Override
     public void getTitleDatasFailed(String message) {
 //        ToastUtils.showMessage(this, message);
-        Snackbar.make(getCurrentFocus(),message,Snackbar.LENGTH_LONG).show();
+        if ("Error".equals(message)) {
+            Snackbar.make(getCurrentFocus(),this.getString(R.string.server_error_message),Snackbar.LENGTH_LONG).show();
+        }else {
+            Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+        }
         titles = new String[]{"预警", "故障", "消息"};
     }
 

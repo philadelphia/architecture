@@ -7,6 +7,10 @@ import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.Constant;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -40,7 +44,7 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemInfoDatasFailed(throwable.getMessage());
+                    getView().getItemInfoDatasFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -49,6 +53,11 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
     }
 
     public void getItemInfoConfirm(String condition){
+
+        Map<String, String > map = new HashMap<>();
+        map.put("id", condition);
+        condition = new Gson().toJson(map);
+
         getModel().getItemInfoConfirm(condition).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
@@ -64,7 +73,7 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemInfoDatasFailed(throwable.getMessage());
+                    getView().getItemInfoDatasFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

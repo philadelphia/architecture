@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.smt.R;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.google.gson.Gson;
@@ -63,7 +64,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
             public void call(Throwable throwable) {
                 try {
                     getView().showErrorView();
-                    getView().getItemHandAddDatasFailed(throwable.getMessage());
+                    getView().getItemHandAddDatasFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -91,7 +92,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemHandAddDatasFailed(throwable.getMessage());
+                    getView().getItemHandAddDatasFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
