@@ -7,7 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+import android.text.TextUtils;
 
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.smt.BuildConfig;
@@ -57,12 +57,18 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
 
     @Override
     public String getBaseUrl() {
-        if(SpUtil.getStringSF(this,"server_address")==null||"".equals(SpUtil.getStringSF(this,"server_address"))){
+        String ip = SpUtil.getStringSF(this, "ip");
+        String port = SpUtil.getStringSF(this, "port");
+        if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
 
-        }else{
-            API.BASE_URL = SpUtil.getStringSF(this,"server_address");
+            API.BASE_URL = "http://" + ip + ":" + port + "/";
+//        if(SpUtil.getStringSF(this,"server_address")==null||"".equals(SpUtil.getStringSF(this,"server_address"))){
+//
+//        }else{
+//            API.BASE_URL = SpUtil.getStringSF(this,"server_address");
+//        }
+
         }
-
         return API.BASE_URL;
     }
 
@@ -75,7 +81,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     }
 
     public static boolean isForeground() {
-        return getAppCount() > 0 ;
+        return getAppCount() > 0;
     }
 
     @Override
