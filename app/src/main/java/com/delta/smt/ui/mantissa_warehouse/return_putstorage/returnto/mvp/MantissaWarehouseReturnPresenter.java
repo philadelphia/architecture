@@ -27,7 +27,13 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnes) {
 
                 if("Success".equals(mantissaWarehouseReturnes.getMsg())){
-                    getView().getSucess(mantissaWarehouseReturnes.getRows());
+                    if(mantissaWarehouseReturnes.getRows().size() == 0 ){
+                        getView().showEmptyView();
+                    }else{
+                        getView().getSucess(mantissaWarehouseReturnes.getRows());
+                        getView().showContentView();
+                    }
+
                 }else{
                     getView().getFailed(mantissaWarehouseReturnes.getMsg());
                 }
@@ -38,6 +44,7 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             public void call(Throwable throwable) {
 
                 getView().getFailed(throwable.getMessage());
+                getView().showErrorView();
 
             }
         });

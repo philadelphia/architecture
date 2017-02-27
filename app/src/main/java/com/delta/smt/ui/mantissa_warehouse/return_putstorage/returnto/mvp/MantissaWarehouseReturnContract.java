@@ -36,5 +36,14 @@ public interface MantissaWarehouseReturnContract {
         void getputinstrageSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
         void getputinstrageFailed(String message);
 
+
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
+
     }
 }

@@ -57,6 +57,12 @@ public interface MantissaWarehousePutstorageContract {
         void getUpLocationSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getUpLocationFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
 
+        void showLoadingView();
 
+        void showContentView();
+
+        void showErrorView();
+
+        void showEmptyView();
     }
 }
