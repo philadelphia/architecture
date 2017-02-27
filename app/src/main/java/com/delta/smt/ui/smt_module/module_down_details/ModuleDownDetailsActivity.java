@@ -31,6 +31,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
+import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.ui.smt_module.module_down_details.di.DaggerModuleDownDetailsComponent;
 import com.delta.smt.ui.smt_module.module_down_details.di.ModuleDownDetailsModule;
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsContract;
@@ -105,13 +106,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
 
-        Map<String, String> map = new HashMap<>();
+        /*Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
         Gson gson = new Gson();
         String argument = gson.toJson(map);
 
-        getPresenter().getAllModuleDownDetailsItems(argument);
+        getPresenter().getAllModuleDownDetailsItems(argument);*/
         barCodeIpml.setOnGunKeyPressListener(this);
 //        // TODO: 2017/2/10
         mCurrentWorkOrder = workItemID;
@@ -209,6 +210,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         dataSource.addAll(rowsBean);
         Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size());
         adapter.notifyDataSetChanged();
+        updateFeederMaintainState();
     }
 
     @Override
@@ -263,6 +265,18 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", workItemID);
+                map.put("side", side);
+                Gson gson = new Gson();
+                String argument = gson.toJson(map);
+
+                getPresenter().getAllModuleDownDetailsItems(argument);
+            }
+        });
     }
 
     @Override
@@ -273,6 +287,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         } catch (DevicePairedNotFoundException e) {
             e.printStackTrace();
         }
+        Map<String, String> map = new HashMap<>();
+        map.put("work_order", workItemID);
+        map.put("side", side);
+        Gson gson = new Gson();
+        String argument = gson.toJson(map);
+        getPresenter().getAllModuleDownDetailsItems(argument);
     }
 
     @Override
@@ -380,5 +400,17 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             default:
                 break;
         }
+    }
+
+    public void updateFeederMaintainState() {
+        boolean state = true;
+        for (ModuleDownDetailsItem.RowsBean rb : dataSource) {
+            if (rb.getDest().equals("1")) {
+                state = false;
+                break;
+            }
+        }
+        btnFeederMaintain.setEnabled(state);
+
     }
 }

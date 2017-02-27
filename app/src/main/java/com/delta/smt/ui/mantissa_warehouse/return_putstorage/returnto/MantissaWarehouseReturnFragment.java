@@ -11,6 +11,8 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
@@ -203,7 +205,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         materialNumber = materiaBar.getDeltaMaterialNumber();
                         serialNum = materiaBar.getStreamNumber();
 
-                        setItemHighLightBasedOnMID(serialNum);
+                        setItemHighLightBasedOnMID(materialNumber);
                         Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
 
                         MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
@@ -212,6 +214,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
                         getPresenter().getMaterialLocation(s);
                     } catch (EntityNotFountException e) {
+                        SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
                     }
                     break;
                 case 2:
@@ -226,7 +229,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         getPresenter().getputinstrage(s);
                         Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
                     } catch (EntityNotFountException e) {
-                        e.printStackTrace();
+                        SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
                     }
                     break;
 
@@ -238,7 +241,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     public void setItemHighLightBasedOnMID(String materialID) {
         for (int i = 0; i < dataList2.size(); i++) {
-            if (dataList2.get(i).getSerial_no().equals(materialID)) {
+            if (dataList2.get(i).getMaterial_no().equals(materialID)) {
                 scan_position = i;
                 break;
             }

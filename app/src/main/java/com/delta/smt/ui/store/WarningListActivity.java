@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -210,7 +211,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                IntentUtils.showIntent(this,StoreIssueActivity.class);
+                SnackbarUtil.showMassage(activityMianview,"请结束当前发料！！");
+                //IntentUtils.showIntent(this,StoreIssueActivity.class);
                 break;
 
             default:
@@ -291,6 +293,15 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void onCloseLightSucces(String s) {
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            SnackbarUtil.showMassage(activityMianview,"请结束当前发料！！");
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
 

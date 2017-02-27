@@ -86,6 +86,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     StatusLayout statusLayout;
     @BindView(R.id.btn_switch)
     CheckBox btnSwitch;
+    boolean isOver = true;
+    boolean isHaveIssureOver;
     private List<MantissaWarehouseDetailsResult.RowsBean> dataList = new ArrayList();
     private List<MantissaWarehouseDetailsResult.RowsBean> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> title_adapter;
@@ -94,8 +96,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> undoList_adapter;
     private MantissaWarehouseReady.RowsBean mMantissaWarehouse;
     private BottomSheetDialog bottomSheetDialog;
-    boolean isOver = true;
-    boolean isHaveIssureOver;
     private String workorder;
 
     private String lastCar;
@@ -483,7 +483,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     String s = gson.toJson(bindBean);
                     getPresenter().getMantissaWarehouseput(s);
 
-                } catch (EntityNotFountException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     ToastUtils.showMessage(this, getString(R.string.scan_corresponding_materials_plate));
                     VibratorAndVoiceUtils.wrongVibrator(this);

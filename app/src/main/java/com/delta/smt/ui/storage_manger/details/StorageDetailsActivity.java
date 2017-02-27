@@ -89,6 +89,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     StatusLayout statusLayout;
     @BindView(R.id.btn_switch)
     CheckBox btnSwitch;
+    int state = 1;
     private List<StorageDetails> dataList = new ArrayList<>();
     private List<StorageDetails> dataList2 = new ArrayList<>();
     private List<StorageDetails> undebitDataList = new ArrayList<>();
@@ -237,7 +238,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         }
 
     }
-
 
     @Override
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
@@ -503,8 +503,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     }
 
-    int state = 1;
-
     @Override
     public void onScanSuccess(String barcode) {
 
@@ -520,7 +518,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     maps.put("side", side);
                     maps.put("pre_car", car.getSource());
                     getPresenter().bindBoundPrepCar(GsonTools.createGsonString(maps));
-                } catch (EntityNotFountException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     state = 1;
                     ToastUtils.showMessage(this, "请扫描料车");
@@ -547,7 +545,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
                     getPresenter().issureToWareh(GsonTools.createGsonString(issureToWarehBody));
 
-                } catch (EntityNotFountException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     ToastUtils.showMessage(this, "请扫描对应架位的料盘");
                     tv_hint.setText("请扫描对应架位的料盘");
