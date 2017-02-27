@@ -79,6 +79,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private String mCurrentSerialNumber;
     private String mCurrentMaterialNumber;
     private int index = -1;
+    private String workId;
 
 
     @Override
@@ -95,7 +96,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     protected void initData() {
         Log.i(TAG, "initData: ");
         Intent intent = getIntent();
-        String workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
+        workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
         String side = intent.getStringExtra(Constant.SIDE);
         Log.i(TAG, "workId==: " + workId);
         Log.i(TAG, "side==: " + side);
@@ -241,12 +242,24 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllToBeSuppliedFeeders(workId);
+            }
+        });
 
     }
 
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllToBeSuppliedFeeders(workId);
+            }
+        });
 
     }
 
