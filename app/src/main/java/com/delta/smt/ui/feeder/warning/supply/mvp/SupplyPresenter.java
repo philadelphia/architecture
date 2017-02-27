@@ -43,8 +43,13 @@ public class SupplyPresenter extends BasePresenter<SupplyContract.Model, SupplyC
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.getMessage());
-                getView().showErrorView();
+
+                try {
+                    getView().onFailed(throwable.getMessage());
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });

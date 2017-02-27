@@ -12,6 +12,7 @@ import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -49,6 +50,8 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
     RecyclerView mRecyContetn;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
     private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList = new ArrayList();
     private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter;
@@ -107,15 +110,15 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
 
-               // holder.setText(R.id.tv_workOrder, item.getWork_order());
+                // holder.setText(R.id.tv_workOrder, item.getWork_order());
                 holder.setText(R.id.tv_number, item.getMaterial_no());
-               // holder.setText(R.id.tv_serialNumber, item.getSerial_num());
+                // holder.setText(R.id.tv_serialNumber, item.getSerial_num());
                 holder.setText(R.id.tv_location, item.getShelf_no());
-               // if("1".equals(item.getStatus())){
-                  //  holder.setText(R.id.tv_type, "已入库");
+                // if("1".equals(item.getStatus())){
+                //  holder.setText(R.id.tv_type, "已入库");
                 //}else if("0".equals(item.getStatus())) {
-                  //  holder.setText(R.id.tv_type, "未入库");
-               // }
+                //  holder.setText(R.id.tv_type, "未入库");
+                // }
             }
 
             @Override
@@ -152,16 +155,16 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     public void getMaterialLocationSucess() {
         flag = 2;
         //扫描成功震动并发声
-        VibratorAndVoiceUtils. correctVibrator (getActivity());
-        VibratorAndVoiceUtils. correctVoice (getActivity());
+        VibratorAndVoiceUtils.correctVibrator(getActivity());
+        VibratorAndVoiceUtils.correctVoice(getActivity());
     }
 
     @Override
     public void getMaterialLocationFailed(String message) {
         SnackbarUtil.showMassage(mRecyContetn, message);
         //扫描失败震动并发声
-        VibratorAndVoiceUtils. wrongVibrator (getActivity());
-        VibratorAndVoiceUtils. wrongVoice (getActivity());
+        VibratorAndVoiceUtils.wrongVibrator(getActivity());
+        VibratorAndVoiceUtils.wrongVoice(getActivity());
     }
 
     @Override
@@ -178,8 +181,8 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         flag = 1;
         scan_position = -1;
         //扫描成功震动并发声
-        VibratorAndVoiceUtils. correctVibrator (getActivity());
-        VibratorAndVoiceUtils. correctVoice (getActivity());
+        VibratorAndVoiceUtils.correctVibrator(getActivity());
+        VibratorAndVoiceUtils.correctVoice(getActivity());
 
     }
 
@@ -187,8 +190,30 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     public void getputinstrageFailed(String message) {
         SnackbarUtil.showMassage(mRecyContetn, message);
         //扫描失败震动并发声
-        VibratorAndVoiceUtils. wrongVibrator (getActivity());
-        VibratorAndVoiceUtils. wrongVoice (getActivity());
+        VibratorAndVoiceUtils.wrongVibrator(getActivity());
+        VibratorAndVoiceUtils.wrongVoice(getActivity());
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+
+        statusLayout.showEmptyView();
     }
 
 
@@ -197,45 +222,45 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
         String barcode = bacKBarCode.getBarCode();
 
-            BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+        BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
 
-            switch (flag) {
-                case 1:
-                    try {
-                        MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
-                        materialNumber = materiaBar.getDeltaMaterialNumber();
-                        serialNum = materiaBar.getStreamNumber();
+        switch (flag) {
+            case 1:
+                try {
+                    MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+                    materialNumber = materiaBar.getDeltaMaterialNumber();
+                    serialNum = materiaBar.getStreamNumber();
 
-                        setItemHighLightBasedOnMID(materialNumber);
-                        Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
+                    setItemHighLightBasedOnMID(materialNumber);
+                    Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
 
-                        MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
-                        Gson gson = new Gson();
-                        String s = gson.toJson(bindBean);
+                    MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(bindBean);
 
-                        getPresenter().getMaterialLocation(s);
-                    } catch (EntityNotFountException e) {
-                        SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
-                    }
-                    break;
-                case 2:
-                    try {
-                        LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
-                        lastCar = lastMaterialCar.getSource();
+                    getPresenter().getMaterialLocation(s);
+                } catch (EntityNotFountException e) {
+                    SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
+                }
+                break;
+            case 2:
+                try {
+                    LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
+                    lastCar = lastMaterialCar.getSource();
 
-                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar);
-                        Gson gson = new Gson();
-                        String s = gson.toJson(bindBean);
+                    WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(bindBean);
 
-                        getPresenter().getputinstrage(s);
-                        Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
-                    } catch (EntityNotFountException e) {
-                        SnackbarUtil.showMassage(mRecyContetn, e.getMessage());
+                    getPresenter().getputinstrage(s);
+                    Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
+                } catch (EntityNotFountException e) {
+                    SnackbarUtil.showMassage(mRecyContetn, e.getMessage());
 
-                    }
-                    break;
+                }
+                break;
 
-            }
+        }
 
 
     }
@@ -250,5 +275,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         }
         adapter2.notifyDataSetChanged();
     }
+
 
 }

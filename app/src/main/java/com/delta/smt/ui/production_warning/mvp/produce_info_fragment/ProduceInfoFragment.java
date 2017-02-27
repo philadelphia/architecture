@@ -113,7 +113,11 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
     @Override
     public void getItemInfoDatasFailed(String message) {
-        Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+        if ("Error".equals(message)) {
+            Snackbar.make(getActivity().getCurrentFocus(),this.getString(R.string.server_error_message),Snackbar.LENGTH_LONG).show();
+        }else {
+            Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -146,11 +150,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-
-                        Map<String, String > map = new HashMap<>();
-                        map.put("id", String.valueOf(item.getId()));
-                        Gson gson = new Gson();
-                        String id = gson.toJson(map);
+                        String id = String.valueOf(item.getId());
                         Log.i("ProduceInfoFragment",id);
                         getPresenter().getItemInfoConfirm(id);
 
