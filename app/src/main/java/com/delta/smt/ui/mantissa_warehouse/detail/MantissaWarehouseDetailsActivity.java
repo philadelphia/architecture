@@ -231,6 +231,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     public void getMantissaWarehouseputSucess(MantissaWarehouseDetailsResult rows) {
 
         issureToWareh(rows);
+        tv_hint.setText(rows.getMsg());
         if (btnSwitch.isChecked()) {
             getPresenter().debit();
         }
@@ -312,7 +313,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private void issureToWareh(MantissaWarehouseDetailsResult rows) {
         isOver = true;
         isHaveIssureOver = false;
-
         dataList2.clear();
         dataList2.addAll(rows.getRows());
         int position = 0;
@@ -335,10 +335,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             }
         }
 
-        if (!"Success".equalsIgnoreCase(rows.getMsg())) {
-
-            tv_hint.setText(rows.getMsg());
-        }
 
         content_adapter.notifyDataSetChanged();
         mRecyContetn.scrollToPosition(position);
@@ -404,7 +400,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getMantissaWarehouseDetailsFailed(String msg) {
         ToastUtils.showMessage(this, msg);
-
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }

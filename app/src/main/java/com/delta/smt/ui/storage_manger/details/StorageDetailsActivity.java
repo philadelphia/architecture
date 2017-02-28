@@ -24,7 +24,6 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.BackupMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
-import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SingleClick;
@@ -221,7 +220,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void getFailed(String message) {
 //        Log.e(TAG, "getFailed: "+message);
-        tv_hint.setText(message);
+        //tv_hint.setText(message);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         content_adapter.notifyDataSetChanged();
         VibratorAndVoiceUtils.wrongVibrator(this);
@@ -236,12 +235,14 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             mTextView2.setText(data.get(0).getCar_name());
             tv_hint.setText("绑定备料车" + data.get(0).getCar_name());
         }
-
+        VibratorAndVoiceUtils.correctVoice(this);
+        VibratorAndVoiceUtils.correctVibrator(this);
     }
 
     @Override
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
         issureToWareh(rows);
+        tv_hint.setText(rows.getMessage());
         if (btnSwitch.isChecked()) {
             getPresenter().deduction();
         }
@@ -339,7 +340,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 isOver = false;
             }
         }
-        tv_hint.setText(rows.getMessage());
+
         content_adapter.notifyDataSetChanged();
         mRecyContetn.scrollToPosition(position);
         VibratorAndVoiceUtils.correctVibrator(this);
@@ -367,7 +368,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void queryMaterailCarFailed(String msg) {
         ToastUtils.showMessage(this, msg);
-        tv_hint.setText(msg);
+       // tv_hint.setText(msg);
         state = 1;
 
     }
@@ -376,7 +377,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void bindMaterialCarFailed(String msg) {
         state = 1;
         mTextView2.setText("无");
-        tv_hint.setText(msg);
+       // tv_hint.setText(msg);
         ToastUtils.showMessage(this, msg);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -385,6 +386,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void jumpMaterialsSuccess(Result<StorageDetails> result) {
         issureToWareh(result);
+        tv_hint.setText(result.getMessage());
         if (btnSwitch.isChecked()) {
             getPresenter().deduction();
         }
@@ -395,7 +397,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void jumpMaterialsFailed(String message) {
-        tv_hint.setText(message);
+        ToastUtils.showMessage(this,message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -504,6 +506,16 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     @Override
+    public void queryCarFailed(String message) {
+        //tv_hint.setText(message);
+        ToastUtils.showMessage(this,message);
+       // Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        content_adapter.notifyDataSetChanged();
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
+    }
+
+    @Override
     public void onScanSuccess(String barcode) {
 
         switch (state) {
@@ -521,8 +533,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 } catch (Exception e) {
                     e.printStackTrace();
                     state = 1;
-                    ToastUtils.showMessage(this, "请扫描料车");
-                    tv_hint.setText("请扫描料车");
+                    ToastUtils.showMessage(this, "请扫描备料车");
+                    tv_hint.setText("请扫描备料车");
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                 }
@@ -591,8 +603,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     undoList_adapter.notifyDataSetChanged();
                     bottomSheetDialog.show();
                 }
-            }else {
-               getPresenter().deduction();
+            } else {
+                getPresenter().deduction();
             }
 
         }

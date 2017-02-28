@@ -80,7 +80,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getFailed(throwable.getMessage());
+                    getView().queryCarFailed(throwable.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
