@@ -196,6 +196,11 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         if (ip != null && port != null) {
             et_ip.setText(ip);
             et_port.setText(port);
+        } else {
+            et_ip.setText(API.IP);
+            et_port.setText(API.PORT);
+            SpUtil.SetStringSF(SettingActivity.this, "ip", API.IP);
+            SpUtil.SetStringSF(SettingActivity.this, "port", API.PORT);
         }
         ViewUtils.findView(dialog_view, R.id.bt_sure).setOnClickListener(new View.OnClickListener() {
             @Override

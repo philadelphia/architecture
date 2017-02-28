@@ -1,12 +1,24 @@
 package com.delta.smt.entity;
 
+import com.delta.libs.adapter.TimeEntity;
+
 import java.text.SimpleDateFormat;
 
 /**
  * Created by Lin.Hou on 2016-12-27.
  */
-public class ItemInfo extends CountDownEntity {
+public class ItemInfo extends TimeEntity {
     private int alarminfoId;
+    private Long endTime;
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
+    }
+
     private String text;
     private String workNumber;
     private String mainBoard;
@@ -41,10 +53,7 @@ public class ItemInfo extends CountDownEntity {
         this.side = side;
     }
 
-    @Override
-    public Long getCountDownLong() {
-        return 100000l;
-    }
+
 
     public boolean isAlarminfo() {
         return isAlarminfo;
@@ -96,13 +105,7 @@ public class ItemInfo extends CountDownEntity {
         this.workNumber = workNumber;
     }
 
-    public long getEndTime() {
-        return endTime;
-    }
 
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
-    }
 
 
 
