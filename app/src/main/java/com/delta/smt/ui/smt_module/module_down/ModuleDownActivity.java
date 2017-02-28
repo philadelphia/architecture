@@ -19,7 +19,7 @@ import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.manager.WarningManger;
@@ -235,19 +235,19 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     public void showDialog(String message){
         //1.创建这个DialogRelativelayout
-        DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
+        DialogLayout dialogLayout = new DialogLayout(this);
         //2.传入的是红色字体的标题
-        dialogRelativelayout.setStrTitle("");
+        dialogLayout.setStrTitle("");
         //3.传入的是黑色字体的二级标题
-        dialogRelativelayout.setStrSecondTitle("下模组提醒");
+        dialogLayout.setStrSecondTitle("下模组提醒");
         //4.传入的是一个ArrayList<String>
         ArrayList<String> titleList = new ArrayList<>();
         titleList.add(message);
-        dialogRelativelayout.setStrContent(titleList);
+        dialogLayout.setStrContent(titleList);
         //5.构建Dialog，setView的时候把这个View set进去。
         new AlertDialog.Builder(this)
                 .setCancelable(false)
-                .setView(dialogRelativelayout)
+                .setView(dialogLayout)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -14,7 +14,7 @@ import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ArrangeInt;
 import com.delta.smt.entity.StoreEmptyMessage;
@@ -66,7 +66,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     private int warnInt;
 
     private AlertDialog alertDialog;
-    private DialogRelativelayout dialogRelativelayout;
+    private DialogLayout dialogLayout;
     ArrayList<String> SimpleWarningdatas = new ArrayList<>();
     private SimpleDateFormat dateFormat;
 
@@ -171,7 +171,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
                 }
 
             }
-            dialogRelativelayout.setDatas(SimpleWarningdatas);
+            dialogLayout.setDatas(SimpleWarningdatas);
             alertDialog.show();
         } else {
             alertDialog = createDialog(message);
@@ -181,9 +181,9 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     public AlertDialog createDialog(String message) {
 
         Log.e(TAG, "createDialog: "+message);
-        dialogRelativelayout = new DialogRelativelayout(this);
+        dialogLayout = new DialogLayout(this);
         //2.传入的是红色字体的标题
-        dialogRelativelayout.setStrTitle("预警信息");
+        dialogLayout.setStrTitle("预警信息");
         ArrayList<WarningContent> warningContents = GsonTools.changeGsonToList(message, WarningContent.class);
         for (WarningContent warningContent : warningContents) {
             if(warningContent.getType()==Constant.SAMPLEWARING){
@@ -192,11 +192,11 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
             }
         }
         //3.传入的是黑色字体的二级标题
-        dialogRelativelayout.setStrSecondTitle("simple预警");
+        dialogLayout.setStrSecondTitle("simple预警");
         //4.传入的是一个ArrayList<String>
-        dialogRelativelayout.setStrContent(SimpleWarningdatas);
+        dialogLayout.setStrContent(SimpleWarningdatas);
         //5.构建Dialog，setView的时候把这个View set进去。
-        return new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        return new AlertDialog.Builder(this).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EventBus.getDefault().post(new StoreEmptyMessage());

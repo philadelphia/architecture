@@ -81,7 +81,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     private String paramter;
     private BottomSheetDialog bottomSheetDialog;
     private TextView tv_sheet_title;
-    private RowsBean item=new RowsBean();
+    private RowsBean item = new RowsBean();
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -246,8 +246,6 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     }
 
     private void createBottomSheetDialog() {
-
-
         View view = LayoutInflater.from(this).inflate(R.layout.dialogview_fault_processing, null);
         tv_sheet_title = ViewUtils.findView(view, R.id.tv_title);
         RecyclerView rv_ll = ViewUtils.findView(view, R.id.rv_processing_dialog);

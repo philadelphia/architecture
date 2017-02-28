@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import com.delta.libs.adapter.TimeEntity;
+
 import java.util.List;
 
 /**
@@ -93,7 +95,7 @@ public class AllQuery {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean extends TimeEntity{
         private int id;
         private String productLine;
         private String sapWorkOrderId;

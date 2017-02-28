@@ -8,13 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-import com.delta.commonlibs.utils.ToastUtils;
-import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
-import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
@@ -23,15 +21,12 @@ import com.delta.smt.ui.production_warning.di.produce_info_fragment.DaggerProduc
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.ProduceInfoFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 
@@ -51,7 +46,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     private List<ItemInfo> datas=new ArrayList<>();
 
 
-    DialogRelativelayout mDialogRelativelayout;
+    DialogLayout mDialogLayout;
 
 
     @Override
@@ -130,12 +125,12 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     public void onItemClick(View view, final ItemInfo item, int position) {
         EventBus.getDefault().post(new BroadcastCancel());
         AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
-        mDialogRelativelayout=new DialogRelativelayout(getContext());
-        mDialogRelativelayout.setStrSecondTitle("请求确认");
+        mDialogLayout =new DialogLayout(getContext());
+        mDialogLayout.setStrSecondTitle("请求确认");
         final ArrayList<String> datas = new ArrayList<>();
 
-        mDialogRelativelayout.setStrContent(datas);
-        dialog.setCancelable(false).setView(mDialogRelativelayout)
+        mDialogLayout.setStrContent(datas);
+        dialog.setCancelable(false).setView(mDialogLayout)
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

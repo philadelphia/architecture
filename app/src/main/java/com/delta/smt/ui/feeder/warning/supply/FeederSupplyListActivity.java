@@ -2,29 +2,23 @@ package com.delta.smt.ui.feeder.warning.supply;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
-import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.manager.WarningManger;
@@ -33,7 +27,6 @@ import com.delta.smt.ui.feeder.warning.supply.di.DaggerSupplyComponent;
 import com.delta.smt.ui.feeder.warning.supply.di.SupplyModule;
 import com.delta.smt.ui.feeder.warning.supply.mvp.SupplyContract;
 import com.delta.smt.ui.feeder.warning.supply.mvp.SupplyPresenter;
-import com.delta.smt.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +34,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Author:   Tao.ZT.Zhang
@@ -198,9 +190,9 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
 
 
     private AlertDialog createDialog(final String warningMessage) {
-        DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
+        DialogLayout dialogLayout = new DialogLayout(this);
         //3.传入的是黑色字体的二级标题
-        dialogRelativelayout.setStrSecondTitle("预警信息");
+        dialogLayout.setStrSecondTitle("预警信息");
         //4.传入的是一个ArrayList<String>
         ArrayList<String> datas = new ArrayList<>();
         datas.add("新备料请求:  ");
@@ -208,8 +200,8 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         datas.add("H14----01:20:00");
         datas.add("新入库请求: ");
         datas.add("20163847536---00:10:11");
-        dialogRelativelayout.setStrContent(datas);
-        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        dialogLayout.setStrContent(datas);
+        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 getPresenter().getAllSupplyWorkItems();

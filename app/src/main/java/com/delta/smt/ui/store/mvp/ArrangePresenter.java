@@ -23,7 +23,7 @@ import rx.functions.Action1;
  */
 @FragmentScope
 public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,ArrangeContract.View> {
-    @Inject
+        @Inject
     public ArrangePresenter(ArrangeContract.Model model, ArrangeContract.View mView) {
         super(model, mView);
     }
@@ -46,14 +46,15 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
                         Log.e("infows1",""+itemInfos.getRows().size());
                         ItemInfo itemInfo=new ItemInfo();
                         itemInfo.setEntityId(i);
-                        try {
-                            Date parse = format.parse(itemInfos.getRows().get(i).getEndTime());
-                            itemInfo.setEndTime(parse.getTime());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        itemInfo.setEnd_time(System.currentTimeMillis()+100000l*60);
+//                        try {
+//                            Date parse = format.parse(itemInfos.getRows().get(i).getEndTime());
+//                            Date parse = format.parse("18-02-22 14:23:52");
+//                        itemInfo.setEndTime(10000l);
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
 
-                        itemInfo.setEntityId(i);
                         itemInfo.setText("线别:" +itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "主板:" + itemInfos.getRows().get(i).getMainBoard() +  "\n" + "小板："+itemInfos.getRows().get(i).getSubBoard()+ "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus()+ "\n" + "计划上线时间:"+itemInfos.getRows().get(i).getEndTime());
                         //itemInfo.setEndTime(Long.valueOf(itemInfos.getRows().get(i).getEndTime()));
                         itemInfo.setMainBoard(itemInfos.getRows().get(i).getMainBoard());
