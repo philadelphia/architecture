@@ -8,6 +8,7 @@ import com.delta.smt.entity.ResultFeeder;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -22,8 +23,19 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         super(model, mView);
     }
 
+
+    //获取对应工单的Feeder备料列表
     public void getAllToBeSuppliedFeeders(String workID) {
-        getModel().getAllToBeSuppliedFeeders(workID).subscribe(new Action1<Result<FeederSupplyItem>>() {
+        getModel().getAllToBeSuppliedFeeders(workID).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                try {
+                    getView().showLoadingView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).subscribe(new Action1<Result<FeederSupplyItem>>() {
             @Override
             public void call(Result<FeederSupplyItem> feederSupplyItems) {
                 if (feederSupplyItems.getMessage().equalsIgnoreCase("success")) {
@@ -50,7 +62,17 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
     //获取feeder上模组时间
     public void getFeederInsertionToSlotTimeStamp(String condition) {
-        getModel().getFeederInsertionToSlotTimeStamp(condition).subscribe(new Action1<Result<FeederSupplyItem>>() {
+        getModel().getFeederInsertionToSlotTimeStamp(condition).
+                doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        try {
+                            getView().showLoadingView();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).subscribe(new Action1<Result<FeederSupplyItem>>() {
             @Override
             public void call(Result<FeederSupplyItem> feederSupplyItems) {
                 if (feederSupplyItems.getCode().equalsIgnoreCase("0")) {
