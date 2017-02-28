@@ -7,7 +7,10 @@ import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ItemInfo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,15 +40,25 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
                 if ("0".equals(itemInfos.getCode())){
                     if (itemInfos.getMsg().contains("Success")){
                     List<ItemInfo> itemInfoList=new ArrayList<>();
+
+                        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                     for (int i=0;i<itemInfos.getRows().size();i++){
                         Log.e("infows1",""+itemInfos.getRows().size());
                         ItemInfo itemInfo=new ItemInfo();
+                        itemInfo.setEntityId(i);
+                        try {
+                            Date parse = format.parse(itemInfos.getRows().get(i).getEndTime());
+                            itemInfo.setEndTime(parse.getTime());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        itemInfo.setEntityId(i);
                         itemInfo.setText("线别:" +itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "主板:" + itemInfos.getRows().get(i).getMainBoard() +  "\n" + "小板："+itemInfos.getRows().get(i).getSubBoard()+ "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus()+ "\n" + "计划上线时间:"+itemInfos.getRows().get(i).getEndTime());
                         //itemInfo.setEndTime(Long.valueOf(itemInfos.getRows().get(i).getEndTime()));
                         itemInfo.setMainBoard(itemInfos.getRows().get(i).getMainBoard());
                         itemInfo.setSubBoard(itemInfos.getRows().get(i).getSubBoard());
                         itemInfo.setMachine(itemInfos.getRows().get(i).getPartNum());
-                        Log.e("info",""+itemInfos.getRows().get(i).getPartNum());
                         itemInfo.setWorkNumber(itemInfos.getRows().get(i).getSapWorkOrderId());
                         itemInfo.setAmount(itemInfos.getRows().get(i).getAmount());
                         itemInfo.setAlarminfoId(itemInfos.getRows().get(i).getId());

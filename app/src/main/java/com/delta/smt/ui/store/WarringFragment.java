@@ -3,16 +3,14 @@ package com.delta.smt.ui.store;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
+import com.delta.libs.adapter.ItemCountViewAdapter;
+import com.delta.libs.adapter.ItemOnclick;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
-import com.delta.smt.common.ItemOnclick;
-import com.delta.smt.common.adapter.ItemCountdownViewAdapter;
-import com.delta.smt.common.adapter.ItemTimeViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ItemInfo;
 import com.delta.smt.entity.StoreEmptyMessage;
@@ -42,27 +40,34 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
     FamiliarRecyclerView timeRecycler;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    private ItemCountdownViewAdapter mAdapter;
+    private ItemCountViewAdapter mAdapter;
 
     private List<ItemInfo> mList = new ArrayList<>();
 
     @Override
     protected void initView() {
-        mAdapter = new ItemCountdownViewAdapter<ItemInfo>(getActivity(), mList) {
+        mAdapter = new ItemCountViewAdapter<ItemInfo>(getActivity(), mList) {
+            @Override
+            protected int getCountViewId() {
+                return R.id.cv_countView;
+            }
+
             @Override
             protected int getLayoutId() {
                 return R.layout.item_base;
             }
 
             @Override
-            protected void convert(ItemTimeViewHolder holder, ItemInfo itemInfo, int position) {
+            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, ItemInfo itemInfo, int position) {
                 holder.setText(R.id.content_text,itemInfo.getText());
             }
+
         };
         timeRecycler.setAdapter(mAdapter);
-        mAdapter.setOnItemTimeOnclck(new ItemOnclick() {
+        mAdapter.setOnItemTimeOnclick(new ItemOnclick() {
+
             @Override
-            public void onItemClick(View item, int position) {
+            public void onItemClick(View item, Object o, int position) {
                 if (mList.size() == 0) {
 
                 } else {
