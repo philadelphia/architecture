@@ -81,6 +81,13 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private int index = -1;
     private String workId;
 
+    @Override
+    protected void handError(String contents) {
+        super.handError(contents);
+        onFailed(contents);
+        showErrorView();
+
+    }
 
     @Override
     protected int getContentViewId() {
