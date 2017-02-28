@@ -175,7 +175,6 @@
         <activity
             android:name=".ui.setting.SettingActivity"
             android:screenOrientation="portrait" />
-
         <!--治工具-->
         <activity
             android:name=".ui.product_tools.borrow.ProduceToolsBorrowActivity"

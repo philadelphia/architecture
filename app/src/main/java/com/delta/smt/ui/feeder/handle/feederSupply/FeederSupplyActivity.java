@@ -51,6 +51,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  */
 
 public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> implements FeederSupplyContract.View {
+    private static final String TAG = "FeederSupplyActivity";
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     @BindView(R.id.toolbar_title)
@@ -74,7 +75,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private CommonBaseAdapter<FeederSupplyItem> adapter;
     private List<FeederSupplyItem> dataList = new ArrayList<>();
     private List<FeederSupplyItem> dataSource = new ArrayList<>();
-    private static final String TAG = "FeederSupplyActivity";
     private boolean isAllHandleOVer = false;
     private String mCurrentSerialNumber;
     private String mCurrentMaterialNumber;
