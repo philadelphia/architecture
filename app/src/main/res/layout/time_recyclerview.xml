@@ -12,6 +12,7 @@
 <cn.iwgang.familiarrecyclerview.FamiliarRecyclerView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/px_20"
     android:id="@+id/time_recycler"
     app:frv_divider="#999999"
     app:frv_dividerHeight="0.5dp"

@@ -200,7 +200,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
                         break;
                     case "handError"://处理错误
                         String contents = intent.getStringExtra("content");
-                        handError();
+                        handError(contents);
                         break;
                     case "killAll":
                         LinkedList<BaseCommonActivity> copy;
@@ -218,7 +218,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
     }
 
     // 处理错误
-    protected void handError() {
+    protected void handError(String contents) {
 
     }
 

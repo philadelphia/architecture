@@ -101,7 +101,7 @@ public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonAc
     }
 
     @Override
-    protected void handError() {
+    protected void handError(String contents) {
 
     }
 

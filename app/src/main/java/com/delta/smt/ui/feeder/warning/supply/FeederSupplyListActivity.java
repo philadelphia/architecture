@@ -169,11 +169,23 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllSupplyWorkItems();
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllSupplyWorkItems();
+            }
+        });
     }
 
 

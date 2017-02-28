@@ -3,11 +3,11 @@ package com.delta.smt.ui.store;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
+import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.ItemOnclick;
@@ -41,12 +41,17 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
     FamiliarRecyclerView timeRecycler;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    private ItemCountdownViewAdapter mAdapter;
+    private ItemCountViewAdapter mAdapter;
     private List<ItemInfo> mList = new ArrayList<>();
 
     @Override
     protected void initView() {
-        mAdapter = new ItemCountdownViewAdapter<ItemInfo>(getContext(), mList) {
+        mAdapter = new ItemCountViewAdapter<ItemInfo>(getContext(), mList) {
+
+            @Override
+            protected int getCountViewId() {
+                return R.id.cv_countView;
+            }
 
             @Override
             protected int getLayoutId() {
@@ -54,15 +59,16 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
             }
 
             @Override
-            protected void convert(ItemTimeViewHolder holder, ItemInfo itemInfo, int position) {
-                Log.e("info4","----------------------");
+            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, ItemInfo itemInfo, int position) {
                 holder.setText(R.id.content_text,itemInfo.getText());
             }
+
         };
         timeRecycler.setAdapter(mAdapter);
-        mAdapter.setOnItemTimeOnclck(new ItemOnclick() {
+        mAdapter.setOnItemTimeOnclick(new com.delta.libs.adapter.ItemOnclick() {
+
             @Override
-            public void onItemClick(View item, int position) {
+            public void onItemClick(View item, Object o, int position) {
                 if (mList.size() == 0) {
 
                 } else {
@@ -73,9 +79,9 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
                     bundle.putString("materialNumber", itemInfo.getMachine());
                     bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
                     bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
+                    bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
                     bundle.putString("mainBoard", itemInfo.getMainBoard());
                     bundle.putString("subBoard", itemInfo.getSubBoard());
-                    bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
                     IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
                 }
             }

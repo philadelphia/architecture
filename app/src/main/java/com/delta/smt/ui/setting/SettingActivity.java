@@ -196,6 +196,11 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         if (ip != null && port != null) {
             et_ip.setText(ip);
             et_port.setText(port);
+        } else {
+            et_ip.setText(API.IP);
+            et_port.setText(API.PORT);
+            SpUtil.SetStringSF(SettingActivity.this, "ip", API.IP);
+            SpUtil.SetStringSF(SettingActivity.this, "port", API.PORT);
         }
         ViewUtils.findView(dialog_view, R.id.bt_sure).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,8 +215,8 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                 }
 
                 /*SpUtil.SetStringSF(SettingActivity.this, "ip", et_ip.getText().toString());
-                SpUtil.SetStringSF(SettingActivity.this, "port", et_port.getText().toString());
-                ip = SpUtil.getStringSF(SettingActivity.this, "ip");
+                SpUtil.SetStringSF(SettingActivity.this, "port", et_port.getText().toString());*/
+                /*ip = SpUtil.getStringSF(SettingActivity.this, "ip");
                 port = SpUtil.getStringSF(SettingActivity.this, "port");*/
                 ip = et_ip.getText().toString();
                 port = et_port.getText().toString();
@@ -269,56 +274,6 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                         dialog.show();
                     }
                 }
-
-//                final EditText et = new EditText(this);
-//                if (SpUtil.getStringSF(SettingActivity.this, "server_address") != null && !"".equals(SpUtil.getStringSF(SettingActivity.this, "server_address"))) {
-//                    et.setText(SpUtil.getStringSF(SettingActivity.this, "server_address"));
-//
-//                } else if (SpUtil.getStringSF(SettingActivity.this, "server_address") == null) {
-//                    et.setText(BASE_URL);
-//                } else {
-//                    et.setText("");
-//                }
-//                et.setHint("请输入服务器IP或域名！");
-//                new AlertDialog.Builder(this)
-//                        .setTitle("配置服务器地址")
-//                        .setView(et)
-//                        .setCancelable(false)
-//                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                String content_et = et.getText().toString();
-//                                Matcher m = sAddressPattern.matcher(content_et);
-//                                if (m.matches()) {
-//                                    if (!content_et.endsWith("/")) {
-//                                        content_et += "/";
-//                                    }
-//                                    settingServerAddress.setText("配置服务器地址" + "\n(" + content_et + ")");
-//                                    SpUtil.SetStringSF(SettingActivity.this, "server_address", content_et);
-//                                    BASE_URL = SpUtil.getStringSF(SettingActivity.this, "server_address");
-//                                    ClientModule mClientModule = ClientModule//用于提供okhttp和retrofit的单列
-//                                            .buidler()
-//                                            .baseurl(BASE_URL)
-//                                            .globeHttpHandler(App.getHttpHandler())
-//                                            .interceptors(App.getInterceptors()).responseErroListener(((BaseApplication) App.getContext()))
-//                                            .build();
-//                                    App.appComponent = DaggerAppComponent.builder().clientModule(mClientModule).appModule(App.getAppModule()).serviceModule(App.getServiceModule()).build();
-//                                    dialogInterface.dismiss();
-//                                } else {
-//                                    Toast.makeText(SettingActivity.this, "此地址无效！", Toast.LENGTH_SHORT).show();
-//                                }
-//
-//
-//                            }
-//                        })
-//                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        })
-//                        .create()
-//                        .show();
 
                 break;
         }

@@ -240,8 +240,8 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     }
 
     @Override
-    protected void handError() {
-        super.handError();
+    protected void handError(String contents) {
+        super.handError(contents);
         statusLayout.showErrorView();
     }
 

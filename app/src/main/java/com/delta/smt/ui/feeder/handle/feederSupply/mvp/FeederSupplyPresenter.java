@@ -2,12 +2,15 @@ package com.delta.smt.ui.feeder.handle.feederSupply.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -17,56 +20,123 @@ import rx.functions.Action1;
 
 @FragmentScope
 public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Model, FeederSupplyContract.View> {
+    private RxErrorHandler rxErrorHandler;
+
     @Inject
-    FeederSupplyPresenter(FeederSupplyContract.Model model, FeederSupplyContract.View mView) {
+    FeederSupplyPresenter(FeederSupplyContract.Model model, FeederSupplyContract.View mView, RxErrorHandler rxErrorHandler) {
         super(model, mView);
+        this.rxErrorHandler = rxErrorHandler;
     }
 
-    public void getAllToBeSuppliedFeeders(String workID) {
-        getModel().getAllToBeSuppliedFeeders(workID).subscribe(new Action1<Result<FeederSupplyItem>>() {
-            @Override
-            public void call(Result<FeederSupplyItem> feederSupplyItems) {
-                if (feederSupplyItems.getMessage().equalsIgnoreCase("success")) {
-                        getView().showContentView();
-                        getView().onSuccess(feederSupplyItems.getRows());
+//
+//    //获取对应工单的Feeder备料列表
+//    public void getAllToBeSuppliedFeeders(String workID) {
+//        getModel().getAllToBeSuppliedFeeders(workID).doOnSubscribe(new Action0() {
+//            @Override
+//            public void call() {
+//                try {
+//                    getView().showLoadingView();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).subscribe(new Action1<Result<FeederSupplyItem>>() {
+//            @Override
+//            public void call(Result<FeederSupplyItem> feederSupplyItems) {
+//
+//                if (feederSupplyItems.getCode().equalsIgnoreCase("0")) {
+//                    if (feederSupplyItems.getRows().size() == 0){
+//                        getView().showEmptyView();
+//                        getView().onFailed(feederSupplyItems.getMessage());
+//                    }else {
+//                        getView().showContentView();
+//                        getView().onSuccess(feederSupplyItems.getRows());
+//                    }
+//
+//                } else {
+//                    getView().onFailed(feederSupplyItems.getMessage());
+//                    getView().showErrorView();
+//                }
+//            }
+//        }, new Action1<Throwable>() {
+//            @Override
+//            public void call(Throwable throwable) {
+//                try {
+//                    getView().onFailed(throwable.getMessage());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
+//    }
 
-                } else {
-                    getView().onFailed(feederSupplyItems.getMessage());
-                }
-            }
-        }, new Action1<Throwable>() {
+
+    //
+//    //获取对应工单的Feeder备料列表
+    public void getAllToBeSuppliedFeeders(String workID) {
+        getModel().getAllToBeSuppliedFeeders(workID).doOnSubscribe(new Action0() {
             @Override
-            public void call(Throwable throwable) {
+            public void call() {
                 try {
-                    getView().onFailed(throwable.getMessage());
+                    getView().showLoadingView();
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        }).subscribe(new RxErrorHandlerSubscriber<Result<FeederSupplyItem>>(rxErrorHandler) {
+            @Override
+            public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
+
+                if (feederSupplyItemResult.getCode().equalsIgnoreCase("0")) {
+                    if (feederSupplyItemResult.getRows().size() == 0) {
+                        getView().showEmptyView();
+                        getView().onFailed(feederSupplyItemResult.getMessage());
+                    } else {
+                        getView().showContentView();
+                        getView().onSuccess(feederSupplyItemResult.getRows());
+                    }
+
+                } else {
+                    getView().onFailed(feederSupplyItemResult.getMessage());
+                    getView().showErrorView();
                 }
 
             }
         });
+
+
     }
 
 
     //获取feeder上模组时间
     public void getFeederInsertionToSlotTimeStamp(String condition) {
-        getModel().getFeederInsertionToSlotTimeStamp(condition).subscribe(new Action1<Result<FeederSupplyItem>>() {
+        getModel().getFeederInsertionToSlotTimeStamp(condition).
+                doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        try {
+                            getView().showLoadingView();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).subscribe(new RxErrorHandlerSubscriber<Result<FeederSupplyItem>>(rxErrorHandler) {
             @Override
-            public void call(Result<FeederSupplyItem> feederSupplyItems) {
-                if (feederSupplyItems.getCode().equalsIgnoreCase("0")) {
-                    getView().onSuccess(feederSupplyItems.getRows());
-                } else {
-                    getView().onFailed(feederSupplyItems.getMessage());
+            public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
+                if (feederSupplyItemResult.getCode().equals("0")){
+                    if (feederSupplyItemResult.getRows().size() == 0){
+                        getView().showEmptyView();
+                        getView().onFailed(feederSupplyItemResult.getMessage());
+                    }else {
+                        getView().showContentView();
+                    }
+                }else {
+                    getView().onFailed(feederSupplyItemResult.getMessage());
+                    getView().showErrorView();
+
                 }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                try {
-                    getView().onFailed(throwable.getMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
             }
         });
     }

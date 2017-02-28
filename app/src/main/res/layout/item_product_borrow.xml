@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:layout_weight="10"
         android:gravity="center"
-        android:text="@string/MainBoard"
+        android:text="主板"
         android:textColor="#333333"
         android:textSize="30px"
         android:id="@+id/MainBroad"/>
@@ -40,7 +40,7 @@
         android:layout_height="match_parent"
         android:layout_weight="10"
         android:gravity="center"
-        android:text="@string/LittleBoard"
+        android:text="小板"
         android:textColor="#333333"
         android:textSize="30px"
         android:id="@+id/LittleBroad"/>
