@@ -11,6 +11,8 @@ public class ItemInfo extends TimeEntity {
     private int alarminfoId;
     private Long endTime;
 
+
+
     public Long getEndTime() {
         return endTime;
     }

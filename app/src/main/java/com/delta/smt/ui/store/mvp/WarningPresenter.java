@@ -5,19 +5,14 @@ import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ItemInfo;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.functions.Action0;
 import rx.functions.Action1;
-
-import static android.R.attr.format;
 
 /**
  * Created by Lin.Hou on 2016-12-26.
@@ -45,12 +40,15 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
                         SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                         for (int i = 0; i < itemInfos.getRows().size(); i++) {
                             ItemInfo itemInfo = new ItemInfo();
-                            try {
-                                Date parse = format.parse(itemInfos.getRows().get(i).getEndTime());
-                                itemInfo.setEndTime(parse.getTime());
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
+                            itemInfo.setEntityId(i);
+                            itemInfo.setEnd_time(System.currentTimeMillis()+100000l);
+//                            try {
+//                                //Date parse = format.parse(itemInfos.getRows().get(i).getEndTime());
+//                                Date parse = format.parse("18-02-22 14:23:52");
+//                                itemInfo.setEndTime(parse.getTime());
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
 
                             itemInfo.setText("线别:" + itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "主板:" + itemInfos.getRows().get(i).getMainBoard()+"\n"+"小板:"+ itemInfos.getRows().get(i).getSubBoard()+ "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus()+ "\n" + "计划上线时间:"+itemInfos.getRows().get(i).getEndTime());
 

@@ -60,7 +60,6 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
     protected void componentInject(AppComponent appComponent) {
 
         DaggerProduceToolsBorrowComponent.builder().appComponent(appComponent).produceToolsBorrowModule(new ProduceToolsBorrowModule(this)).build().Inject(this);
-
     }
 
     @Override
