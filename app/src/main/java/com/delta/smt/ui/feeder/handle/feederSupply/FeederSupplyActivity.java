@@ -249,7 +249,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
-        statusLayout.setEmptyClick(new View.OnClickListener() {
+        statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getPresenter().getAllToBeSuppliedFeeders(workId);
