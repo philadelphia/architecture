@@ -38,7 +38,7 @@ public class VibratorAndVoiceUtils {
 
     public static void correctVoice(Context context) {
 
-        music = MediaPlayer.create(context, R.raw.scanfailed);
+        music = MediaPlayer.create(context, R.raw.scansuccess);
         music.start();
         music.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -51,7 +51,7 @@ public class VibratorAndVoiceUtils {
 
     public static void wrongVoice(Context context) {
 
-        music = MediaPlayer.create(context, R.raw.scansuccess);
+        music = MediaPlayer.create(context, R.raw.scanfailed);
         music.start();
         music.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
