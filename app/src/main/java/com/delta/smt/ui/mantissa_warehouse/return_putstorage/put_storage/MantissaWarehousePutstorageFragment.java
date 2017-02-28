@@ -19,6 +19,9 @@ import com.delta.buletoothio.barcode.parse.entity.LabelBarcode;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
@@ -64,6 +67,8 @@ public class MantissaWarehousePutstorageFragment extends
     Button mBtOk;
     @BindView(R.id.bt_next)
     Button mBtNext;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
     private List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> dataList = new ArrayList();
     private List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter;
@@ -123,6 +128,7 @@ public class MantissaWarehousePutstorageFragment extends
                 holder.setText(R.id.tv_count, item.getNum());
 
             }
+
             @Override
             protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item) {
                 return R.layout.mantissa_putstorage_item;
@@ -164,11 +170,11 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
-
+        scan_position = -1;
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
-        firstMaterialNumber =  dataList2.get(0).getMaterial_no();
+        firstMaterialNumber = dataList2.get(0).getMaterial_no();
     }
 
     @Override
@@ -212,7 +218,7 @@ public class MantissaWarehousePutstorageFragment extends
     @Override
     public void getBeginFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
         dataList2.clear();
-        Toast.makeText(getActivity(), message.toString(), Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(mRecyContetn, message.toString());
     }
 
 
@@ -221,11 +227,12 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
+        scan_position = -1;
     }
 
     @Override
     public void getBingingLableFailed(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(mRecyContetn, message);
     }
 
 
@@ -234,7 +241,7 @@ public class MantissaWarehousePutstorageFragment extends
         position = 0;
         f = false;
         flag = 3;
-
+        scan_position = -1;
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
@@ -244,11 +251,11 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void getUpLocationFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
-        Toast.makeText(getActivity(), message.toString(), Toast.LENGTH_SHORT).show();
+        SnackbarUtil.showMassage(mRecyContetn, message.toString());
     }
 
 
-    @OnClick({R.id.clean, R.id.deduct,R.id.bt_ok,R.id.bt_next})
+    @OnClick({R.id.clean, R.id.deduct, R.id.bt_ok, R.id.bt_next})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.clean:
@@ -256,7 +263,7 @@ public class MantissaWarehousePutstorageFragment extends
                 break;
             case R.id.deduct:
                 getPresenter().getMantissaWarehousePutstorage();
-                mClean.setEnabled(false);
+                mClean.setVisibility(View.GONE);
                 mDeduct.setEnabled(false);
                 mBtOk.setVisibility(View.VISIBLE);
                 mBtNext.setVisibility(View.VISIBLE);
@@ -276,18 +283,17 @@ public class MantissaWarehousePutstorageFragment extends
                 break;
 
 
-
         }
     }
 
 
     //点击下一个按钮
-    public void alertNextdialog(){
-       dialog= new AlertDialog.Builder(getActivity()).setTitle("提示")//设置对话框标题
+    public void alertNextdialog() {
+        dialog = new AlertDialog.Builder(getActivity()).setTitle("提示")//设置对话框标题
 
-                .setMessage(firstMaterialNumber+"料没有退完，确定要退下一个么？")//设置显示的内容
+                .setMessage(firstMaterialNumber + "料没有退完，确定要退下一个么？")//设置显示的内容
 
-                .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
                     @Override
 
                     public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
@@ -295,46 +301,44 @@ public class MantissaWarehousePutstorageFragment extends
 
                     }
 
-                }).setNegativeButton("返回",new DialogInterface.OnClickListener() {//添加返回按钮
+                }).setNegativeButton("返回", new DialogInterface.OnClickListener() {//添加返回按钮
 
 
+                    @Override
 
-            @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
 
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-
-        }).show();//在按键响应事件中显示此对话框
+                }).show();//在按键响应事件中显示此对话框
 
     }
 
     //点击完成按钮
-    public void alertOKdialog(){
-       dialog= new AlertDialog.Builder(getActivity()).setTitle("提示")//设置对话框标题
+    public void alertOKdialog() {
+        dialog = new AlertDialog.Builder(getActivity()).setTitle("提示")//设置对话框标题
 
                 .setMessage("退料未完成，是否确定结束?")//设置显示的内容
 
-                .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
                     @Override
 
                     public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
 
-                            getPresenter().getYesok();
+                        getPresenter().getYesok();
 
                     }
 
-                }).setNegativeButton("返回",new DialogInterface.OnClickListener() {//添加返回按钮
+                }).setNegativeButton("返回", new DialogInterface.OnClickListener() {//添加返回按钮
 
 
+                    @Override
 
-            @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
 
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-
-        }).show();//在按键响应事件中显示此对话框
+                }).show();//在按键响应事件中显示此对话框
 
     }
 
@@ -364,7 +368,7 @@ public class MantissaWarehousePutstorageFragment extends
                     setItemHighLightBasedOnMID(lastLocation);
 
                 } catch (EntityNotFountException e) {
-
+                    SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
                 }
                 break;
             case 2:
@@ -381,7 +385,7 @@ public class MantissaWarehousePutstorageFragment extends
                     flag = 1;
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
-                    e.printStackTrace();
+                    SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
                 }
                 break;
 
@@ -393,8 +397,7 @@ public class MantissaWarehousePutstorageFragment extends
                 serialNum = lableBar.getStreamNumber();
 
 
-
-                if(materialNumber.equals(firstMaterialNumber)){
+                if (materialNumber.equals(firstMaterialNumber)) {
                     setItemHighLightBase(materialNumber);
                     UpLocation bindBean = new UpLocation(materialNumber, serialNum);
                     Gson gson = new Gson();
@@ -416,8 +419,8 @@ public class MantissaWarehousePutstorageFragment extends
 //                    f = false;
 //                }
 
-                }else{
-                    Toast.makeText(getActivity(), "退料顺序有误，请扫描首个料盘！", Toast.LENGTH_SHORT).show();
+                } else {
+                    SnackbarUtil.showMassage(mRecyContetn, "退料顺序有误，请扫描首个料盘");
                 }
                 break;
 
@@ -481,6 +484,7 @@ public class MantissaWarehousePutstorageFragment extends
         }
         adapter2.notifyDataSetChanged();
     }
+
     public void setItemHighLightBase(String materialNumber) {
         for (int i = 0; i < dataList2.size(); i++) {
             if (dataList2.get(i).getMaterial_no().equals(materialNumber)) {
@@ -491,7 +495,7 @@ public class MantissaWarehousePutstorageFragment extends
         adapter2.notifyDataSetChanged();
     }
 
-    public void beginStorage(){
+    public void beginStorage() {
         dataList.clear();
         dataList.add(new MantissaWarehousePutstorageResult.MantissaWarehousePutstorage("", "", "", "", ""));
         adapter = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getContext(), dataList) {
@@ -526,6 +530,7 @@ public class MantissaWarehousePutstorageFragment extends
                 holder.setText(R.id.tv_count, item.getNum());
 
             }
+
             @Override
             protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item) {
                 return R.layout.mantissa_beginputstorage_item;
@@ -535,6 +540,26 @@ public class MantissaWarehousePutstorageFragment extends
         mRecyContetn.setAdapter(adapter2);
 
     }
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
 
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+
+        statusLayout.showErrorView();
+    }
+
+    @Override
+    public void showEmptyView() {
+
+        statusLayout.showEmptyView();
+    }
 
 }

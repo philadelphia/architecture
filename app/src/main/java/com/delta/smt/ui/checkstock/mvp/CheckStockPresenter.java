@@ -40,6 +40,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                     List<CheckStock.RowsBean> rows = rowsBeen.getRows();
                     getView().onSucess(rows);
                 } else {
+                        getView().showContentView();
                     getView().onFailed(rowsBeen.getMsg());
                 }}
             }
@@ -70,6 +71,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                     if (success.getMsg().contains("Success")){
                     getView().onCheckStockNumberSucess(success.getMsg());
                 }else {
+                        getView().showContentView();
                     getView().onFailed(success.getMsg());
                 }}
             }
@@ -95,6 +97,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                 if (success.getMsg().contains("Success")){
                 getView().onErrorsSucess(success.getMsg());
             }else {
+                    getView().showContentView();
                 getView().onFailed(success.getMsg());
             }}
             }
@@ -157,10 +160,11 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                         fewBuffer.append(errorBuffer.toString()+changeBuffer.toString()+notBuffer.toString());
                         getView().onErrorSucess(fewBuffer.toString());
                     }else {
-                        Log.e("info","---------111111111--------");
+
                         getView().onErrorSucess("本架位盘点正常");
                     }
                 }else {
+                    getView().showContentView();
                     getView().onFailed(success.getMsg());
                 }
             }

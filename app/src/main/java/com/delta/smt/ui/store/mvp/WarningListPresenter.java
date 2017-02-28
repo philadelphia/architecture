@@ -37,13 +37,13 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }).subscribe(new Action1<Success>() {
             @Override
             public void call(Success s) {
+                getView().showContentView();
                 if ("0".equals(s.getCode())){
-                    getView().showContentView();
-                    if (s.getMsg().contains("Success")){
+
                     getView().onSucessStates(s.getMsg());
                     }else {
                     getView().onFailed(s.getMsg());
-                }}
+                }
             }
         }, new Action1<Throwable>() {
             @Override
@@ -66,9 +66,9 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }).subscribe(new Action1<Success>() {
             @Override
             public void call(Success s) {
+                getView().showContentView();
                 if ("0".equals(s.getCode())){
-                    getView().showContentView();
-                getView().onSucessStates(s.getMsg());}else {
+                    getView().onSucessStates(s.getMsg());}else {
                     getView().onFailed(s.getMsg());
                 }
             }
@@ -95,14 +95,13 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }).subscribe(new Action1<OutBound>() {
             @Override
             public void call(OutBound outBound) {
+                getView().showContentView();
                 if ("0".equals(outBound.getCode())){
-                    getView().showContentView();
-                    if (outBound.getMsg().contains("Success")){
-            List<OutBound.DataBean> datalist = outBound.getRows();
+                    List<OutBound.DataBean> datalist = outBound.getRows();
             getView().onOutSuccess(datalist);
             }else {
                 getView().onFailed(outBound.getMsg());
-                }}
+                }
             }
         }, new Action1<Throwable>() {
             @Override
@@ -125,14 +124,13 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }).subscribe(new Action1<OutBound>() {
             @Override
             public void call(OutBound outBound) {
+                getView().showContentView();
                 if ("0".equals(outBound.getCode())){
-                    getView().showContentView();
-                    if (outBound.getMsg().contains("Success")){
                     List<OutBound.DataBean> datalist = outBound.getRows();
                     getView().onOutSuccess(datalist);
                 }else {
                     getView().onFailed(outBound.getMsg());
-                }}
+                }
             }
         }, new Action1<Throwable>() {
             @Override
@@ -156,8 +154,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }).subscribe(new Action1<PcbNumber>() {
             @Override
             public void call(PcbNumber pcbNumber) {
-            if ("0".equals(pcbNumber.getCode())){
                 getView().showContentView();
+            if ("0".equals(pcbNumber.getCode())){
                 getView().getNumberSucces(pcbNumber.getRows());
             }else {
                 getView().onFailed(pcbNumber.getMsg());
@@ -204,8 +202,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }).subscribe(new Action1<Success>() {
             @Override
             public void call(Success success) {
+                getView().showContentView();
                 if("0".equals(success.getCode())){
-                    getView().showContentView();
                 getView().onSucessState(success.getMsg());
                 }else {
                     getView().onFailed(success.getMsg());
@@ -232,8 +230,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             }).subscribe(new Action1<Success>() {
                 @Override
                 public void call(Success success) {
+                    getView().showContentView();
                     if ("0".equals(success.getCode())) {
-                        getView().showContentView();
                         getView().onCloseLightSucces(success.getMsg());
                     }else{
                         getView().onFailed(success.getMsg());
@@ -261,8 +259,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }).subscribe(new Action1<Success>() {
             @Override
             public void call(Success success) {
+                getView().showContentView();
                 if ("0".equals(success.getCode())) {
-                    getView().showContentView();
                     getView().onOutSubmit(success.getMsg());
                 }else{
                     getView().onFailed(success.getMsg());
@@ -289,8 +287,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }).subscribe(new Action1<Success>() {
             @Override
             public void call(Success success) {
+                getView().showContentView();
                 if ("0".equals(success.getCode())) {
-                    getView().showContentView();
                     getView().onOutSubmit(success.getMsg());
                 }else{
                     getView().onFailed(success.getMsg());

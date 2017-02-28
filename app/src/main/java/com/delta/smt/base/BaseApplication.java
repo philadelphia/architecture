@@ -50,7 +50,7 @@ public abstract class BaseApplication extends Application implements ResponseErr
                 .baseurl(getBaseUrl())
                 .globeHttpHandler(getHttpHandler())
                 .interceptors(getInterceptors())
-                .responseErroListener(this)
+                .responseErroListener(getResponseErrorListener())
                 .build();
         this.mAppModule = new AppModule(this);//提供application
         this.serviceModule = new ServiceModule();
@@ -176,5 +176,9 @@ public abstract class BaseApplication extends Application implements ResponseErr
         Timber.tag(TAG).w("------------>" + e.getMessage());
 //        UiUtils.SnackbarText("net error");
         UiUtils.HandError("net error");
+    }
+
+    public ResponseErrorListener getResponseErrorListener() {
+        return this;
     }
 }

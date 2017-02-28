@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -292,6 +293,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     public void onCloseLightSucces(String s) {
 
     }
+
 
 
     @Override

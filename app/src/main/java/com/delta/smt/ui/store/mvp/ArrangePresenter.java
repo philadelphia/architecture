@@ -33,8 +33,8 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
         }).subscribe(new Action1<AllQuery>() {
             @Override
             public void call(AllQuery itemInfos) {
+                getView().showContentView();
                 if ("0".equals(itemInfos.getCode())){
-                    getView().showContentView();
                     if (itemInfos.getMsg().contains("Success")){
                     List<ItemInfo> itemInfoList=new ArrayList<>();
                     for (int i=0;i<itemInfos.getRows().size();i++){

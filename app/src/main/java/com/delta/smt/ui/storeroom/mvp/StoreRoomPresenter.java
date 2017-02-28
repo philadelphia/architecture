@@ -98,9 +98,9 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         }).subscribe(new Action1<Light>() {
             @Override
             public void call(Light light) {
-            if ("0".equals(light.getCode())){
                 getView().showContentView();
-              getView().lightSuccsee();
+            if ("0".equals(light.getCode())){
+              getView().lightSuccsee(light.getMsg());
                 }else {
              getView().storeFaild(light.getMsg());
 
@@ -171,14 +171,14 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         }).subscribe(new Action1<Success>() {
             @Override
             public void call(Success storageSuccess) {
+                getView().showContentView();
                 if (storageSuccess.getCode().equals("0")) {
-                    getView().showContentView();
-                    if (storageSuccess.getMsg().contains("Success")){
+
                     getView().storageSuccsee();
                 }else {
-                    getView().storeFaild(storageSuccess.getMsg());
+                    getView().storagefaild(storageSuccess.getMsg());
                 }
-                }
+
             }
         }, new Action1<Throwable>() {
             @Override

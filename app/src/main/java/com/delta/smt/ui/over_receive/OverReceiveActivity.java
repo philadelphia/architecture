@@ -20,6 +20,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SpUtil;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.demacia.barcode.BarCodeIpml;
@@ -30,17 +31,15 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.DialogRelativelayout;
-import com.delta.smt.common.ItemOnclick;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.OverReceiveDebitResult;
-import com.delta.smt.entity.OverReceiveMaterialSend;
-import com.delta.smt.entity.OverReceiveMaterialSendArrive;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.over_receive.di.DaggerOverReceiveComponent;
 import com.delta.smt.ui.over_receive.di.OverReceiveModule;
 import com.delta.smt.ui.over_receive.mvp.OverReceiveContract;
 import com.delta.smt.ui.over_receive.mvp.OverReceivePresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
@@ -66,14 +65,11 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, BarCodeIpml.OnScanSuccessListener,CompoundButton.OnCheckedChangeListener {
 
-    private BarCodeIpml barCodeIpml = new BarCodeIpml();
-    private Gson gson = new Gson();
-
+    public String overReceiveAutomaticDebit = null;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-
     @BindView(R.id.recy_title)
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
@@ -82,32 +78,52 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     AppCompatButton manualDebit;
     @BindView(R.id.automatic_debit)
     AppCompatCheckBox automaticDebit;
-
-    private CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean> adapterTitle;
-    private CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean> adapter;
-    private List<OverReceiveWarning.RowsBean.DataBean> dataList = new ArrayList<>();
-    private List<OverReceiveWarning.RowsBean.DataBean> dataSource = new ArrayList<>();
+    @Inject
+    WarningManger warningManger;
+    String materialBlockNumber = "4020108700";
+    String serialNumber = "12344";
+    String count = "2000";
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
 
     /*@BindView(R.id.testSend)
     AppCompatButton testSend;*/
     //@BindView(R.id.testSendArrive)
     //AppCompatButton testSendArrive;
-
-    @Inject
-    WarningManger warningManger;
-
-    String materialBlockNumber = "4020108700";
-    String serialNumber = "12344";
-    String count = "2000";
-
-    public String overReceiveAutomaticDebit = null;
-
-    @BindView(R.id.statusLayout)
-    StatusLayout statusLayout;
-
     Timer timer = new Timer();
     int recLen =0;
     boolean isAllTimerEnd = true;
+    @BindView(R.id.showMessage)
+    TextView showMessage;
+    private BarCodeIpml barCodeIpml = new BarCodeIpml();
+    private Gson gson = new Gson();
+    private CommonBaseAdapter<OverReceiveWarning.RowsBean> adapterTitle;
+    private CommonBaseAdapter<OverReceiveWarning.RowsBean> adapter;
+    private List<OverReceiveWarning.RowsBean> dataList = new ArrayList<>();
+    private List<OverReceiveWarning.RowsBean> dataSource = new ArrayList<>();
+    TimerTask task = new TimerTask() {
+        @Override
+        public void run() {
+
+            runOnUiThread(new Runnable() {      // UI thread
+                @Override
+                public void run() {
+                    isAllTimerEnd = true;
+                    for (int i = 0; i < dataSource.size(); i++) {
+                        int remainTime = Integer.parseInt(dataSource.get(i).getRemain_time());
+                        if (remainTime > 0) {
+                            isAllTimerEnd = false;
+                            dataSource.get(i).setRemain_time((remainTime - 1) + "");
+                        }
+                    }
+                    if (isAllTimerEnd) {
+                        timer.cancel();
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+    };
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -153,10 +169,10 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
         recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        dataList.add(new OverReceiveWarning.RowsBean.DataBean("工单", "线别", "模组料站", "料号", "需求量", "已发数量","状态","架位","剩余料使用时间"));
-        adapterTitle = new CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean>(this, dataList) {
+        dataList.add(new OverReceiveWarning.RowsBean("工单", "线别", "模组料站", "料号", "需求量", "已发数量", "状态", "架位", "剩余料使用时间"));
+        adapterTitle = new CommonBaseAdapter<OverReceiveWarning.RowsBean>(this, dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, OverReceiveWarning.RowsBean.DataBean item, int position) {
+            protected void convert(CommonViewHolder holder, OverReceiveWarning.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
                 holder.setText(R.id.tv_lineID, item.getLine_name());
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
@@ -168,16 +184,16 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, OverReceiveWarning.RowsBean.DataBean item) {
+            protected int getItemViewLayoutId(int position, OverReceiveWarning.RowsBean item) {
                 return R.layout.item_over_receive_list;
             }
         };
 
         recyTitle.setAdapter(adapterTitle);
 
-        adapter = new CommonBaseAdapter<OverReceiveWarning.RowsBean.DataBean>(this, dataSource) {
+        adapter = new CommonBaseAdapter<OverReceiveWarning.RowsBean>(this, dataSource) {
             @Override
-            protected void convert(CommonViewHolder holder, OverReceiveWarning.RowsBean.DataBean item, int position) {
+            protected void convert(CommonViewHolder holder, OverReceiveWarning.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.tv_lineID, item.getLine_name());
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
@@ -202,7 +218,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, OverReceiveWarning.RowsBean.DataBean item) {
+            protected int getItemViewLayoutId(int position, OverReceiveWarning.RowsBean item) {
                 return R.layout.item_over_receive_list;
             }
 
@@ -219,35 +235,36 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @Override
     public void onSuccess(OverReceiveWarning data) {
         //Toast.makeText(this, "onSuccess", Toast.LENGTH_SHORT).show();
-        if (data.getMsg().toLowerCase().equals("success")) {
-            dataSource.clear();
-            List<OverReceiveWarning.RowsBean.DataBean> rowsBeanList = data.getRows().getData();
-            dataSource.addAll(rowsBeanList);
-            adapter.notifyDataSetChanged();
-            timer.schedule(task, 1000, 1000);
-        } else {
-            Toast.makeText(this, data.getMsg(), Toast.LENGTH_SHORT).show();
-        }
+        ToastUtils.showMessage(this, data.getMsg());
+        //if (data.getMsg().toLowerCase().equals("success")) {
+
+        dataSource.clear();
+        List<OverReceiveWarning.RowsBean> rowsBeanList = data.getRows();
+        dataSource.addAll(rowsBeanList);
+        adapter.notifyDataSetChanged();
+        timer.schedule(task, 1000, 1000);
+        //
 
     }
 
     @Override
-    public void onFalied() {
-        Toast.makeText(this, "onFalied", Toast.LENGTH_SHORT).show();
+    public void onFalied(OverReceiveWarning data) {
+        ToastUtils.showMessage(this, data.getMsg());
     }
 
     @Override
     public void onSuccessOverReceiveDebit(OverReceiveDebitResult data) {
-        if (data.getCode().toLowerCase().equals("0")) {
-            Toast.makeText(this,"扣账成功！",Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this,"扣账失败！",Toast.LENGTH_SHORT).show();
-        }
+        ToastUtils.showMessage(this, data.getMsg());
     }
 
     @Override
-    public void onFaliedOverReceiveDebit() {
-        Toast.makeText(this,"扣账网络请求失败！",Toast.LENGTH_SHORT).show();
+    public void onFaliedOverReceiveDebit(OverReceiveDebitResult data) {
+        ToastUtils.showMessage(this, data.getMsg());
+    }
+
+    @Override
+    public void onNetFailed(Throwable throwable) {
+        ToastUtils.showMessage(this, throwable.getMessage());
     }
 
     @Override
@@ -263,21 +280,41 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllOverReceiveItems();
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllOverReceiveItems();
+            }
+        });
     }
 
-    @OnClick({R.id.manual_debit})
+    @OnClick({R.id.manual_debit, R.id.showMessage})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.manual_debit:
                 getPresenter().manualDebit();
                 break;
+            case R.id.showMessage:
+                showMessage.setVisibility(View.GONE);
+                break;
         }
     }
+
+    /*@Override
+    public void onItemClick(View item, int position) {
+
+    }*/
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -290,11 +327,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /*@Override
-    public void onItemClick(View item, int position) {
-
-    }*/
 
     @Override
     public void warningComing(String warningMessage) {
@@ -382,6 +414,9 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
             if(isExistInList){
                 if(position_scan>=0){
+                    showMessage.setVisibility(View.GONE);
+                    VibratorAndVoiceUtils.correctVibrator(OverReceiveActivity.this);
+                    VibratorAndVoiceUtils.correctVoice(OverReceiveActivity.this);
                     String work_order_id = dataSource.get(position_scan).getId();
                     String slot = dataSource.get(position_scan).getSlot();
                     Map<String, String> map = new HashMap<>();
@@ -394,15 +429,20 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                     getPresenter().getOverReceiveItemsAfterSend(argument);
                 }
             }else{
+                VibratorAndVoiceUtils.wrongVibrator(OverReceiveActivity.this);
+                VibratorAndVoiceUtils.wrongVoice(OverReceiveActivity.this);
                 Toast.makeText(this, "列表中不存在此料盘码", Toast.LENGTH_SHORT).show();
             }
 
         } catch (EntityNotFountException e) {
-            Toast.makeText(this, "此处不支持此类型码!", Toast.LENGTH_SHORT).show();
+            VibratorAndVoiceUtils.wrongVibrator(OverReceiveActivity.this);
+            VibratorAndVoiceUtils.wrongVoice(OverReceiveActivity.this);
+            //Toast.makeText(this, "此处不支持此类型码!", Toast.LENGTH_SHORT).show();
+            showMessage.setText("此处不支持此类型码!");
+            showMessage.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -414,28 +454,4 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             }
         }
     }
-
-    TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-
-            runOnUiThread(new Runnable() {      // UI thread
-                @Override
-                public void run() {
-                    isAllTimerEnd = true;
-                    for(int i=0;i<dataSource.size();i++){
-                        int remainTime = Integer.parseInt(dataSource.get(i).getRemain_time());
-                        if(remainTime>0){
-                            isAllTimerEnd = false;
-                            dataSource.get(i).setRemain_time((remainTime-1)+"");
-                        }
-                    }
-                    if (isAllTimerEnd){
-                        timer.cancel();
-                    }
-                    adapter.notifyDataSetChanged();
-                }
-            });
-        }
-    };
 }

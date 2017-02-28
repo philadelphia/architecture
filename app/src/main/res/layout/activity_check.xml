@@ -38,13 +38,14 @@
             android:layout_height="wrap_content"
             android:text="@string/cargonumber"
             android:layout_below="@id/cargon_text"
-            android:layout_marginTop="@dimen/px_20"
+            android:paddingBottom="@dimen/px_20"
+            android:paddingTop="@dimen/px_20"
             style="@style/waring_text"
             />
         <EditText
             android:id="@+id/cargoned"
             android:layout_width="@dimen/px_240"
-            android:layout_height="@dimen/px_60"
+            android:layout_height="@dimen/px_80"
             android:background="@drawable/ed_frame"
             android:layout_toRightOf="@id/cargontv"
             android:layout_alignBottom="@id/cargontv"
@@ -56,12 +57,13 @@
         <Button
             android:id="@+id/cargon_affirm"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/px_60"
+            android:layout_height="@dimen/px_100"
             android:text="@string/cargon_affirm"
-           android:layout_marginRight="@dimen/px_16"
+            android:layout_marginRight="@dimen/px_16"
             android:layout_alignParentRight="true"
             style="@style/pcb_button"
             android:layout_alignBottom="@id/cargontv"
+            android:layout_alignTop="@id/cargontv"
             />
 
 

@@ -37,7 +37,11 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.getMessage());
+                try {
+                    getView().onFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -58,7 +62,11 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.getMessage());
+                try {
+                    getView().onFailed(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

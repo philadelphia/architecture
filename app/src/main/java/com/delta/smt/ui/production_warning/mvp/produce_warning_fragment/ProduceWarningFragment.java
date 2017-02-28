@@ -255,7 +255,11 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void getItemWarningDatasFailed(String message) {
 /*        ToastUtils.showMessage(getContext(), message);*/
-        Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+        if ("Error".equals(message)) {
+            Snackbar.make(getActivity().getCurrentFocus(),this.getString(R.string.server_error_message),Snackbar.LENGTH_LONG).show();
+        }else {
+            Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override

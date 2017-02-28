@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -146,14 +147,20 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             dataList.clear();
             List<ModuleDownWarningItem.RowsBean> rowsList = data.getRows();
             for (int i = 0; i < rowsList.size(); i++) {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    Date parse = format.parse(rowsList.get(i).getUnplug_mod_actual_finish_time());
-                    rowsList.get(i).setCreat_time(parse.getTime());
-                    rowsList.get(i).setEntityId(i);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                if (TextUtils.isEmpty(rowsList.get(i).getUnplug_mod_actual_finish_time())) {
+                    rowsList.get(i).setCreat_time(System.currentTimeMillis());
+                } else {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        Date parse = format.parse(rowsList.get(i).getUnplug_mod_actual_finish_time());
+                        rowsList.get(i).setCreat_time(parse.getTime());
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
+                rowsList.get(i).setEntityId(i);
+
             }
             dataList.addAll(rowsList);
             myAdapter.notifyDataSetChanged();
@@ -196,6 +203,12 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllModuleDownWarningItems();
+            }
+        });
     }
 
     @Override

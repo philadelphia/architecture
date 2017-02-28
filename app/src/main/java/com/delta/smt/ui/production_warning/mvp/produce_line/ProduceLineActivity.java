@@ -225,7 +225,11 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
     @Override
     public void getFailed(String message) {
-        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+        if ("Error".equals(message)) {
+            Snackbar.make(getCurrentFocus(),this.getString(R.string.server_error_message),Snackbar.LENGTH_LONG).show();
+        }else {
+            Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override

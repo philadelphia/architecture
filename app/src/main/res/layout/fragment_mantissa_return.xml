@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.delta.commonlibs.widget.statusLayout.StatusLayout
+    android:id="@+id/statusLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
@@ -19,6 +24,19 @@
             android:textSize="40px"
             />
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自动扣账"
+            android:textSize="40px"
+            android:layout_alignBaseline="@+id/button2"
+            android:layout_alignBottom="@+id/button2"
+            android:layout_toLeftOf="@+id/button2"
+            android:layout_toStartOf="@+id/button2"
+            android:layout_marginRight="9dp"
+            android:layout_marginEnd="9dp"
+            android:id="@+id/checkBox"/>
+
     </RelativeLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -34,3 +52,5 @@
                 android:layout_height="match_parent"/>
         </LinearLayout>
 </LinearLayout>
+
+</com.delta.commonlibs.widget.statusLayout.StatusLayout>

@@ -47,7 +47,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemDatasFailed(throwable.getMessage());
+                    getView().getItemDatasFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -81,7 +81,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemDatasFailed(throwable.getMessage());
+                    getView().getItemDatasFailed("Error");
                     Log.e("aaa", "请求异常 "+throwable.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -110,7 +110,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemDatasFailed(throwable.getMessage());
+                    getView().getItemDatasFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
