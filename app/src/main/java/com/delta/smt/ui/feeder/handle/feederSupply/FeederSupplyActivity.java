@@ -299,11 +299,12 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         } catch (EntityNotFountException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
+            Toast.makeText(this, "解析错误,请重新扫描", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         } catch (ArrayIndexOutOfBoundsException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
-            Toast.makeText(this, "解析错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "解析错误,请重新扫描", Toast.LENGTH_SHORT).show();
         }
 
 
