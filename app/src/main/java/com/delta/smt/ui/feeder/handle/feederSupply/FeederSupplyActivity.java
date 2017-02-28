@@ -151,16 +151,21 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_timestamp, item.getBindTime());
                 holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待上模组" : " 上模组完成");
 
-                if (item.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber) && item.getSerialNumber().equalsIgnoreCase(mCurrentSerialNumber)) {
-                    holder.itemView.setBackgroundColor(Color.YELLOW);
-                    tvModuleID.setText("模组料站: " + item.getSlot());
-                    index = position;
 
-                    Log.i(TAG, "对应的item: " + item.toString());
-                } else {
 
-                    holder.itemView.setBackgroundColor(Color.WHITE);
+                switch (item.getStatus()) {
+                    case 0:
+                        holder.itemView.setBackgroundColor(Color.WHITE);
+                        break;
+                    case 1:
+                        holder.itemView.setBackgroundColor(Color.GREEN);
+                        break;
+                    default:
+                        break;
                 }
+
+
+
 
             }
 
@@ -217,8 +222,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 //                adapter.notifyDataSetChanged();
 //            }
 //        }
-
-
 
 
     }
@@ -286,7 +289,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
             VibratorAndVoiceUtils.correctVibrator(this);
             VibratorAndVoiceUtils.correctVoice(this);
-//            adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
 
             Map<String, String> map = new HashMap<>();
             map.put("material_no", mCurrentMaterialNumber);
