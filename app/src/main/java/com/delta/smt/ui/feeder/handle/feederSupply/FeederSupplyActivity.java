@@ -79,7 +79,15 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private String mCurrentSerialNumber;
     private String mCurrentMaterialNumber;
     private int index = -1;
+    private String workId;
 
+    @Override
+    protected void handError(String contents) {
+        super.handError(contents);
+        onFailed(contents);
+        showErrorView();
+
+    }
 
     @Override
     protected int getContentViewId() {
@@ -95,7 +103,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     protected void initData() {
         Log.i(TAG, "initData: ");
         Intent intent = getIntent();
-        String workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
+        workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
         String side = intent.getStringExtra(Constant.SIDE);
         Log.i(TAG, "workId==: " + workId);
         Log.i(TAG, "side==: " + side);
@@ -241,12 +249,24 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllToBeSuppliedFeeders(workId);
+            }
+        });
 
     }
 
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getAllToBeSuppliedFeeders(workId);
+            }
+        });
 
     }
 
@@ -279,11 +299,12 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         } catch (EntityNotFountException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
+            Toast.makeText(this, "解析错误,请重新扫描", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         } catch (ArrayIndexOutOfBoundsException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
-            Toast.makeText(this, "解析错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "解析错误,请重新扫描", Toast.LENGTH_SHORT).show();
         }
 
 
