@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
@@ -36,7 +35,7 @@ import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
-import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
@@ -60,7 +59,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/22.
@@ -80,7 +78,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     private ItemCountViewAdapter<ItemWarningInfo> mAdapter;
     private List<ItemWarningInfo> datas = new ArrayList<>();
 
-    private DialogRelativelayout mDialogRelativelayout;
+    private DialogLayout mDialogLayout;
     public ArrayList<String> barcodedatas = new ArrayList<>();
     private BaseActivity baseActiviy;
     private String currentBarcode;
@@ -276,7 +274,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
         }else {*/
         EventBus.getDefault().post(new BroadcastCancel());
-        mDialogRelativelayout = new DialogRelativelayout(getContext());
+        mDialogLayout = new DialogLayout(getContext());
         barcodedatas.clear();
         final ItemWarningInfo mItemWarningInfo = datas.get(position);
 
@@ -291,10 +289,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         } else {
 
             final ArrayList<String> dialogDatas = new ArrayList<>();
-            mDialogRelativelayout.setStrSecondTitle("请求确认");
+            mDialogLayout.setStrSecondTitle("请求确认");
             dialogDatas.add("是否已经完成？");
-            mDialogRelativelayout.setStrContent(dialogDatas);
-            new AlertDialog.Builder(getContext()).setCancelable(false).setView(mDialogRelativelayout)
+            mDialogLayout.setStrContent(dialogDatas);
+            new AlertDialog.Builder(getContext()).setCancelable(false).setView(mDialogLayout)
                     .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -324,13 +322,13 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
 
     private void makePopupWindow() {
-        mPopupWindow = new PopupWindow(mDialogRelativelayout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow = new PopupWindow(mDialogLayout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setOutsideTouchable(false);
 
-        mDialogRelativelayout.setStrSecondTitle("请进行接料");
+        mDialogLayout.setStrSecondTitle("请进行接料");
         barcodedatas.add("从备料车亮灯位置取出接料盘进行接料，" +
                 "接料完成后请扫描新料盘/FeederID/料站 完成接料操作");
-        mDialogRelativelayout.setStrContent(barcodedatas);
+        mDialogLayout.setStrContent(barcodedatas);
 
         //动态生成布局
         RelativeLayout layout = new RelativeLayout(getmActivity());
@@ -343,7 +341,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         RelativeLayout.LayoutParams parm = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         parm.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         layout.addView(textView, parm);
-        mDialogRelativelayout.addView(layout);
+        mDialogLayout.addView(layout);
 
         //展示popupwindow
         mPopupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
@@ -402,10 +400,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
         }
 
-        if (currentBarcode != null && mDialogRelativelayout != null && mPopupWindow.isShowing()) {
+        if (currentBarcode != null && mDialogLayout != null && mPopupWindow.isShowing()) {
             Log.i("barcode", "呈现：" + currentBarcode);
             barcodedatas.add(currentBarcode);
-            mDialogRelativelayout.setDatas(barcodedatas);
+            mDialogLayout.setDatas(barcodedatas);
             tag++;
             if (tag == 3) {
                 hanlder.sendEmptyMessageDelayed(1, 1000);

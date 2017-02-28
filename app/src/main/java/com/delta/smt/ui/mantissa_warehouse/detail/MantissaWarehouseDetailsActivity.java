@@ -387,6 +387,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getFindCarFailed(String message) {
         flag = 1;
+        tv_hint.setText(message);
         ToastUtils.showMessage(this, message);
     }
 

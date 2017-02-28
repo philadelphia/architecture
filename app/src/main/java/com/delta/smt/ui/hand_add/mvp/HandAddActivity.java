@@ -1,7 +1,6 @@
 package com.delta.smt.ui.hand_add.mvp;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,27 +18,22 @@ import com.delta.libs.adapter.ItemTimeViewHolder;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.hand_add.di.DaggerHandAddCompent;
 import com.delta.smt.ui.hand_add.di.HandAddModule;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
-import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.jar.Attributes;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/27.
@@ -70,7 +64,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     private ItemCountViewAdapter<ItemHandAdd> mAdapter;
     private List<ItemHandAdd> datas = new ArrayList<>();
 
-    DialogRelativelayout mDialogRelativelayout;
+    DialogLayout mDialogLayout;
     private boolean tag = false;
     private String dialogwarningMessage;
     private String producelines;
@@ -266,16 +260,16 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     }
 
     private AlertDialog createDialog(String warningMessage) {
-        DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
+        DialogLayout dialogLayout = new DialogLayout(this);
         //传入的是黑色字体的二级标题
-        dialogRelativelayout.setStrSecondTitle("预警提示");
+        dialogLayout.setStrSecondTitle("预警提示");
         //传入的是一个ArrayList<String>
         ArrayList<String> datas = new ArrayList<>();
         datas.add("dsfdsf");
         datas.add("sdfsdf1");
         datas.add("dsfsdf2");
-        dialogRelativelayout.setStrContent(datas);
-        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        dialogLayout.setStrContent(datas);
+        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 getPresenter().getItemHandAddDatas(producelines);
@@ -289,12 +283,12 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     public void onItemClick(View item, Object o, int position) {
         final ItemHandAdd mItemHandAdd = datas.get(position);
         if (mItemHandAdd.getState() != 1) {
-            mDialogRelativelayout = new DialogRelativelayout(this);
-            mDialogRelativelayout.setStrSecondTitle("请求确认");
+            mDialogLayout = new DialogLayout(this);
+            mDialogLayout.setStrSecondTitle("请求确认");
             final ArrayList<String> datas = new ArrayList<>();
             datas.add("手补件完成？");
-            mDialogRelativelayout.setStrContent(datas);
-            mItemDialog = new AlertDialog.Builder(this).setCancelable(false).setView(mDialogRelativelayout)
+            mDialogLayout.setStrContent(datas);
+            mItemDialog = new AlertDialog.Builder(this).setCancelable(false).setView(mDialogLayout)
                     .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

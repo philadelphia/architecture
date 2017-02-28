@@ -20,7 +20,7 @@ import com.delta.libs.adapter.ItemTimeViewHolder;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.manager.WarningManger;
@@ -174,19 +174,19 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
 
     @Override
     public void warningComing(String warningMessage) {
-        DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
+        DialogLayout dialogLayout = new DialogLayout(this);
         //2.传入的是红色字体的标题
-        dialogRelativelayout.setStrTitle("测试标题");
+        dialogLayout.setStrTitle("测试标题");
         //3.传入的是黑色字体的二级标题
-        dialogRelativelayout.setStrSecondTitle("预警异常");
+        dialogLayout.setStrSecondTitle("预警异常");
         //4.传入的是一个ArrayList<String>
         ArrayList<String> datas = new ArrayList<>();
         datas.add("dsfdsf");
         datas.add("sdfsdf1");
         datas.add("dsfsdf2");
-        dialogRelativelayout.setStrContent(datas);
+        dialogLayout.setStrContent(datas);
         //5.构建Dialog，setView的时候把这个View set进去。
-        new AlertDialog.Builder(this).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

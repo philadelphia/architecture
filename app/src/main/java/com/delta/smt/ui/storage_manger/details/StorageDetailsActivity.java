@@ -368,7 +368,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void queryMaterailCarFailed(String msg) {
         ToastUtils.showMessage(this, msg);
-       // tv_hint.setText(msg);
+        tv_hint.setText(msg);
         state = 1;
 
     }

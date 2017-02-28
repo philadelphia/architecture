@@ -30,19 +30,42 @@ public abstract class ItemCountdownViewAdapter<T extends CountDownEntity> extend
     private Handler mHandler = new Handler();
     private Timer mTimer;
     private boolean isCancel = true;
-
     private ItemOnclick itemTimeOnclck;
+    private Runnable mRefreshTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mCountdownVHList.size() == 0) return;
 
-    public void setOnItemTimeOnclck(ItemOnclick itemTimeOnclck) {
-        this.itemTimeOnclck = itemTimeOnclck;
+            synchronized (mCountdownVHList) {
+                long currentTime = System.currentTimeMillis();
+                int key;
+                for (int i = 0; i < mCountdownVHList.size(); i++) {
+                    key = mCountdownVHList.keyAt(i);
+                    ItemTimeViewHolder curMyViewHolder = mCountdownVHList.get(key);
+                    if (currentTime >= curMyViewHolder.getBean().getEndTime()) {
+                        // 倒计时结束
+                        curMyViewHolder.getBean().setCountDownLong(0);
+                        mCountdownVHList.remove(key);
+                        notifyDataSetChanged();
+                    } else {
+                        curMyViewHolder.refreshTime(currentTime);
+                    }
 
-    }
+                }
+            }
+        }
+    };
 
     public ItemCountdownViewAdapter(Context context, List<T> list) {
         this.mList = list;
         mLayoutinflater = LayoutInflater.from(context);
         mCountdownVHList = new SparseArray<>();
         startRefreshTime();
+    }
+
+    public void setOnItemTimeOnclck(ItemOnclick itemTimeOnclck) {
+        this.itemTimeOnclck = itemTimeOnclck;
+
     }
 
     public void startRefreshTime() {
@@ -124,31 +147,6 @@ public abstract class ItemCountdownViewAdapter<T extends CountDownEntity> extend
             mCountdownVHList.remove(curAnnounceGoodsInfo.getTimeId());
         }
     }
-
-    private Runnable mRefreshTimeRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (mCountdownVHList.size() == 0) return;
-
-            synchronized (mCountdownVHList) {
-                long currentTime = System.currentTimeMillis();
-                int key;
-                for (int i = 0; i < mCountdownVHList.size(); i++) {
-                    key = mCountdownVHList.keyAt(i);
-                    ItemTimeViewHolder curMyViewHolder = mCountdownVHList.get(key);
-                    if (currentTime >= curMyViewHolder.getBean().getEndTime()) {
-                        // 倒计时结束
-                        curMyViewHolder.getBean().setCountDownLong(0);
-                        mCountdownVHList.remove(key);
-                        notifyDataSetChanged();
-                    } else {
-                        curMyViewHolder.refreshTime(currentTime);
-                    }
-
-                }
-            }
-        }
-    };
 
 
 }

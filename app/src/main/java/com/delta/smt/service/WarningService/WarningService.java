@@ -14,7 +14,7 @@ import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.api.API;
 import com.delta.smt.app.App;
-import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.service.warningService.di.DaggerWarningComponent;
@@ -121,17 +121,17 @@ public class WarningService extends IntentService implements WarningSocketClient
     @NonNull
     public AlertDialog getAlertDialog(String text) {
         //1.创建这个DialogRelativelayout
-        DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
+        DialogLayout dialogLayout = new DialogLayout(this);
         //2.传入的是红色字体的标题
-        dialogRelativelayout.setStrTitle("预警信息");
+        dialogLayout.setStrTitle("预警信息");
         //3.传入的是黑色字体的二级标题
-        dialogRelativelayout.setStrSecondTitle("预警异常");
+        dialogLayout.setStrSecondTitle("预警异常");
         //4.传入的是一个ArrayList<String>
         ArrayList<String> datas = new ArrayList<>();
         datas.add(text);
-        dialogRelativelayout.setStrContent(datas);
+        dialogLayout.setStrContent(datas);
         //5.构建Dialog，setView的时候把这个View set进去。
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.AlertDialogCustom).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.AlertDialogCustom).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(WarningService.this, activityMonitor.getTopActivity().getClass());
