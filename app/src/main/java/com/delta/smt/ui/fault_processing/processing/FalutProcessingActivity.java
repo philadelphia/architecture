@@ -172,11 +172,10 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     @Override
     public void getFalutMessgeSucess(FaultMessage falutMesage) {
-
+        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
         datas.clear();
         List<RowsBean> rows = falutMesage.getRows();
         for (int i = 0; i < rows.size(); i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
             try {
                 Date parse = format.parse(rows.get(i).getCreateTime());
                 rows.get(i).setCreat_time(parse.getTime());

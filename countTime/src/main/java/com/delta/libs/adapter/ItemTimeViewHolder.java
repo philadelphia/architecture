@@ -45,6 +45,10 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
             return;
         }
         if (isCountUp) {
+            if (curTimeMillis - mItemInfo.getCreat_time() < 0) {
+                resetZero();
+                return;
+            }
             mCountdownViewTest.updateShow(curTimeMillis - mItemInfo.getCreat_time());
         } else {
             if (mItemInfo.getEnd_time() - curTimeMillis <= 0) {
