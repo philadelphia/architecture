@@ -58,7 +58,14 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
-                    getView().getSucessUpdate(mantissaWarehousePutstorageResult.getrows());
+
+                    if(mantissaWarehousePutstorageResult.getrows().size() == 0){
+                        getView().showEmptyView();
+                    }else {
+                        getView().getSucessUpdate(mantissaWarehousePutstorageResult.getrows());
+                        getView().showContentView();
+                    }
+
                 }else{
                     getView().getFailedUpdate(mantissaWarehousePutstorageResult.getrows().get(0));
                 }
