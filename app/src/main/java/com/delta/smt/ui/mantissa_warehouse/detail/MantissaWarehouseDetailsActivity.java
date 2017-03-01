@@ -246,7 +246,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private void createBottomSheetDialog() {
 
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet, null);
-        RecyclerView rv_title = ViewUtils.findView(view, R.id.rv_sheet_title);
+        RecyclerView mRecyTitle = ViewUtils.findView(view, R.id.rv_sheet_title);
         RecyclerView mRecycleView = ViewUtils.findView(view, R.id.rv_sheet);
         Button bt_cancel = ViewUtils.findView(view, R.id.bt_sheet_cancel);
         Button bt_confim = ViewUtils.findView(view, R.id.bt_sheet_confirm);
@@ -311,6 +311,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     // 获取列表成功后的初始化
     private void issureToWareh(MantissaWarehouseDetailsResult rows) {
+        undebitDataList.clear();
         isOver = true;
         isHaveIssureOver = false;
         dataList2.clear();
@@ -328,8 +329,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
                 isHaveIssureOver = true;
             } else {
-
-
                 undebitDataList.add(dataList2.get(i));
                 isOver = false;
             }
