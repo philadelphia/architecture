@@ -289,7 +289,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
             VibratorAndVoiceUtils.correctVibrator(this);
             VibratorAndVoiceUtils.correctVoice(this);
-            adapter.notifyDataSetChanged();
+//            adapter.notifyDataSetChanged();
 
             Map<String, String> map = new HashMap<>();
             map.put("material_no", mCurrentMaterialNumber);
