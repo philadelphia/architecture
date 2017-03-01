@@ -142,6 +142,25 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         });
     }
 
+    public void resetFeederSupplyStatus(){
+        getModel().resetFeederSupplyStatus().subscribe(new Action1<ResultFeeder>() {
+            @Override
+            public void call(ResultFeeder result) {
+                if (result.getCode().equals("0")){
+                    getView().onAllSupplyComplete();
+                }else {
+                    getView().onFailed(result.getMsg());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+            getView().onFailed(throwable.toString());
+            }
+        });
+
+
+    }
 
     public void upLoadToMES() {
         getModel().upLoadFeederSupplyResult().subscribe(new Action1<ResultFeeder>() {

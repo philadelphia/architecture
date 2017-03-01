@@ -134,6 +134,20 @@ public class ModuleDownDetailsItem {
         public void setWork_order(String work_order) {
             this.work_order = work_order;
         }
+
+        @Override
+        public String toString() {
+            return "RowsBean{" +
+                    "dest='" + dest + '\'' +
+                    ", work_order='" + work_order + '\'' +
+                    ", side='" + side + '\'' +
+                    ", material_no='" + material_no + '\'' +
+                    ", serial_no='" + serial_no + '\'' +
+                    ", feeder_id='" + feeder_id + '\'' +
+                    ", slot='" + slot + '\'' +
+                    ", unbind_time='" + unbind_time + '\'' +
+                    '}';
+        }
     }
 
     @Override

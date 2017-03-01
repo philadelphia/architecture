@@ -27,6 +27,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyItem;
+import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
@@ -213,16 +214,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
         if (isAllHandleOVer) {
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
-//            getPresenter().upLoadToMES();
+            getPresenter().resetFeederSupplyStatus();
         }
-//        for (int i = 0; i < dataSource.size(); i++) {
-//            FeederSupplyItem feederSupplyItem = dataSource.get(i);
-//            if (feederSupplyItem.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber) && feederSupplyItem.getSerialNumber().equalsIgnoreCase(mCurrentSerinalNumber)) {
-//                index = i;
-//                adapter.notifyDataSetChanged();
-//            }
-//        }
-
 
     }
 
@@ -231,6 +224,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void onFailed(String message) {
         Log.i(TAG, "onFailed: " + message);
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onAllSupplyComplete() {
+        ToastUtils.showMessage(this, "所有Feeder已完成发料", Toast.LENGTH_SHORT);
     }
 
     @Override
@@ -297,12 +295,17 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             Gson gson = new Gson();
             String argument = gson.toJson(map);
             Log.i(TAG, "argument== " + argument);
-            getPresenter().getFeederInsertionToSlotTimeStamp(argument);
+            if (isMaterialExists(materialBlockBarCode)){
+
+                getPresenter().getFeederInsertionToSlotTimeStamp(argument);
+            }else {
+                ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
+            }
 
         } catch (EntityNotFountException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
-            Toast.makeText(this, "解析错误,请重新扫描", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "请扫描料盘", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         } catch (ArrayIndexOutOfBoundsException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
@@ -327,4 +330,28 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     }
 
 
+    public boolean isMaterialExists(MaterialBlockBarCode material) {
+        boolean flag = false;
+        for (int i = 0; i < dataSource.size(); i++) {
+            FeederSupplyItem feederSupplyItem = dataSource.get(i);
+            if (mCurrentMaterialNumber.equalsIgnoreCase(feederSupplyItem.getMaterialID()) && mCurrentSerialNumber.equalsIgnoreCase(feederSupplyItem.getSerialNumber())){
+                flag = true;
+                break;
+            }else {
+                flag = false;
+            }
+        }
+//        for (ModuleDownDetailsItem.RowsBean rowsBean : dataSource) {
+//            if (mCurrentMaterialID.equalsIgnoreCase(rowsBean.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(rowsBean.getSerial_no())) {
+//                Log.i(TAG, "isMaterialExists: " + rowsBean.toString());
+//                flag = true;
+//                break;
+//            } else {
+//                flag = false;
+//                break;
+//            }
+//        }
+//        Log.i(TAG, "isMaterialExists: " + flag);
+        return  flag;
+    }
 }

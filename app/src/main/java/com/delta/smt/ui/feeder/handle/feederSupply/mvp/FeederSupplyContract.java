@@ -21,6 +21,8 @@ public interface FeederSupplyContract {
 
          void onFailed(String message);
 
+        void onAllSupplyComplete();
+
         void onUpLoadFailed(String message);
 
 
@@ -37,6 +39,8 @@ public interface FeederSupplyContract {
          Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(String workID);
 
         Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(String condition);
+
+        Observable<ResultFeeder> resetFeederSupplyStatus();
 
          Observable<ResultFeeder> upLoadFeederSupplyResult();
     }

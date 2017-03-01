@@ -90,6 +90,13 @@ public interface ApiService {
     @GET("SMM/unplugmod/feederBuffStorage")
     Observable<ModuleDownDetailsItem> getFeederCheckInTime(@Query("condition") String condition);
 
+
+    //重置Feeder发料状态
+    @GET("SMM/Buffer/completeBufferIssue")
+    Observable<ResultFeeder> resetFeederSupplyStatus();
+
+
+
     //获取下模组列表
     @GET("SMM/FeederBuffStorage/feederBuffStorage")
     Observable<ModuleDownDetailsItem> getDownModuleList(@Query("condition") String condition);

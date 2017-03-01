@@ -142,9 +142,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 holder.setText(R.id.tv_ownership, item.getDest());
                 holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
 
-                if (mCurrentWorkOrder.equals(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())){
+                if (mCurrentWorkOrder.equals(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())) {
                     holder.itemView.setBackgroundColor(Color.YELLOW);
-                }else {
+                } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
 
                 }
@@ -222,7 +222,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     public void onFailed(String message) {
-        flag = 2;
+        flag = 1;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
@@ -371,18 +371,18 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     String argument = gson.toJson(map);
                     Log.i(TAG, "argument== " + argument);
                     Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
-                    if (isMaterialExists(materialBlockBarCode)){
+                    if (isMaterialExists(materialBlockBarCode)) {
                         flag = 2;
-                    }else {
+                    } else {
                         flag = 1;
-                        ToastUtils.showMessage(this,"该料盘不存在，請重新扫描料盘");
+                        ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
                     }
                 } catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
-                    Toast.makeText(this, "解析错误,请重新扫描料盘", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "请扫描料盘", Toast.LENGTH_SHORT).show();
                     flag = 1;
-                }catch (ArrayIndexOutOfBoundsException e){
+                } catch (ArrayIndexOutOfBoundsException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                     flag = 1;
@@ -414,9 +414,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     e1.printStackTrace();
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
-                    Toast.makeText(this, "解析错误,请重新扫描架位", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "请扫描架位", Toast.LENGTH_SHORT).show();
                     flag = 2;
-                }catch (ArrayIndexOutOfBoundsException e){
+                } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
@@ -442,7 +442,29 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     }
 
-    public boolean isMaterialExists(MaterialBlockBarCode material){
-        return dataSource.contains(material);
+    public boolean isMaterialExists(MaterialBlockBarCode material) {
+        boolean flag = false;
+        for (int i = 0; i < dataSource.size(); i++) {
+            ModuleDownDetailsItem.RowsBean item = dataSource.get(i);
+            if (mCurrentMaterialID.equalsIgnoreCase(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())){
+                flag = true;
+                break;
+            }else {
+                flag = false;
+            }
+        }
+//        for (ModuleDownDetailsItem.RowsBean rowsBean : dataSource) {
+//            if (mCurrentMaterialID.equalsIgnoreCase(rowsBean.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(rowsBean.getSerial_no())) {
+//                Log.i(TAG, "isMaterialExists: " + rowsBean.toString());
+//                flag = true;
+//                break;
+//            } else {
+//                flag = false;
+//                break;
+//            }
+//        }
+//        Log.i(TAG, "isMaterialExists: " + flag);
+        return  flag;
     }
+
 }
