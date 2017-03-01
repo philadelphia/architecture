@@ -222,7 +222,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     public void onFailed(String message) {
-        flag = 2;
+        flag = 1;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
@@ -375,12 +375,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                         flag = 2;
                     } else {
                         flag = 1;
-                        ToastUtils.showMessage(this, "该料盘不存在，請重新扫描料盘");
+                        ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
                     }
                 } catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
-                    Toast.makeText(this, "解析错误,请重新扫描料盘", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "请扫描料盘", Toast.LENGTH_SHORT).show();
                     flag = 1;
                 } catch (ArrayIndexOutOfBoundsException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
@@ -414,7 +414,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     e1.printStackTrace();
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
-                    Toast.makeText(this, "解析错误,请重新扫描架位", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "请扫描架位", Toast.LENGTH_SHORT).show();
                     flag = 2;
                 } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
