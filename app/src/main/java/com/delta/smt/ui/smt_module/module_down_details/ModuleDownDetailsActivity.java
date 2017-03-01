@@ -142,6 +142,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 holder.setText(R.id.tv_ownership, item.getDest());
                 holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
 
+                if (mCurrentWorkOrder.equals(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())){
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                }else {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+
+                }
+
             }
 
             @Override
@@ -364,7 +371,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     String argument = gson.toJson(map);
                     Log.i(TAG, "argument== " + argument);
                     Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
-                    flag = 2;
+                    if (isMaterialExists(materialBlockBarCode)){
+                        flag = 2;
+                    }else {
+                        flag = 1;
+                        ToastUtils.showMessage(this,"该料盘不存在，請重新扫描料盘");
+                    }
                 } catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
@@ -428,5 +440,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         }
         btnFeederMaintain.setEnabled(state);
 
+    }
+
+    public boolean isMaterialExists(MaterialBlockBarCode material){
+        return dataSource.contains(material);
     }
 }
