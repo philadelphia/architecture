@@ -170,13 +170,17 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 //                        }
 //                    }
 //                }
-                if (item.getIsColor()==1) {
-                  holder.itemView.setBackgroundColor(Color.YELLOW);
-                }else if (item.getIsColor()==2){
-                    holder.itemView.setBackgroundColor(Color.GRAY);
-                }else {
-                    holder.itemView.setBackgroundColor(Color.WHITE);
-                }
+
+                    if (item.getIsColor() == 1) {
+
+                        holder.itemView.setBackgroundColor(Color.YELLOW);
+                    } else if (item.getIsColor() == 2) {
+                        holder.itemView.setBackgroundColor(Color.GRAY);
+                    } else {
+                        holder.itemView.setBackgroundColor(Color.WHITE);
+                    }
+
+
 
             }
 
@@ -311,6 +315,8 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                         if (mList.get(i).getBoxSerial().equals(mMaterbarCode.getStreamNumber())) {
                             mId=mList.get(i).getId();
                             mAdapterposition = i;
+                            if(!mList.get(i).isDelivery()){
+                                mList.get(i).setDelivery(true);
                             if (mList.get(i).getCount() > mAmoutString) {
                                 //ToastUtils.showMessage(this, mList.get(i).getCount() - mAmoutString);
                                 if (mIsAlarmInfo) {
@@ -318,7 +324,6 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
                                 } else {
                                     getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 1);
-
                                 }
                             }else {
                             if (mIsAlarmInfo) {
@@ -333,7 +338,9 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                                 ToastUtils.showMessage(this,"请拆箱取出"+(mAmoutString)+"片",10000);
                             }
                             mList.get(i).setIsColor(1);
-                            mAdapter.notifyDataSetChanged();
+                            mAdapter.notifyDataSetChanged();}else {
+                                SnackbarUtil.showMassage(activityMianview,"这箱料已经发过了，请不要反复扫码");
+                            }
                         }
                     }
 
