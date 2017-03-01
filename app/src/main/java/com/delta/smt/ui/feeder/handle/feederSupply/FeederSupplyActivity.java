@@ -214,16 +214,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
         if (isAllHandleOVer) {
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
-//            getPresenter().upLoadToMES();
+            getPresenter().resetFeederSupplyStatus();
         }
-//        for (int i = 0; i < dataSource.size(); i++) {
-//            FeederSupplyItem feederSupplyItem = dataSource.get(i);
-//            if (feederSupplyItem.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber) && feederSupplyItem.getSerialNumber().equalsIgnoreCase(mCurrentSerinalNumber)) {
-//                index = i;
-//                adapter.notifyDataSetChanged();
-//            }
-//        }
-
 
     }
 
@@ -232,6 +224,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void onFailed(String message) {
         Log.i(TAG, "onFailed: " + message);
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onAllSupplyComplete() {
+        ToastUtils.showMessage(this, "所有Feeder已完成发料", Toast.LENGTH_SHORT);
     }
 
     @Override
