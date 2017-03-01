@@ -87,6 +87,8 @@ public interface StorageDetailsContract {
         void deductionFailed(String message);
 
         void deductionSuccess();
+
+        void queryCarFailed(String message);
     }
 
 }

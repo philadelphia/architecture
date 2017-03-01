@@ -5,6 +5,7 @@ import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ItemInfo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,19 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
                 if ("0".equals(itemInfos.getCode())) {
                     if (itemInfos.getMsg().contains("Success")) {
                         List<ItemInfo> itemInfoList = new ArrayList<ItemInfo>();
+                        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                         for (int i = 0; i < itemInfos.getRows().size(); i++) {
                             ItemInfo itemInfo = new ItemInfo();
+                            itemInfo.setEntityId(i);
+                            itemInfo.setEnd_time(System.currentTimeMillis()+100000l);
+//                            try {
+//                                //Date parse = format.parse(itemInfos.getRows().get(i).getEndTime());
+//                                Date parse = format.parse("18-02-22 14:23:52");
+//                                itemInfo.setEndTime(parse.getTime());
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
+
                             itemInfo.setText("线别:" + itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "主板:" + itemInfos.getRows().get(i).getMainBoard()+"\n"+"小板:"+ itemInfos.getRows().get(i).getSubBoard()+ "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus()+ "\n" + "计划上线时间:"+itemInfos.getRows().get(i).getEndTime());
 
 //                            JsonProductBorrowList jsonProductBorrowList=new JsonProductBorrowList();

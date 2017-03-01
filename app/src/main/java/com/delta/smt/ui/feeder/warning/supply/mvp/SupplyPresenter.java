@@ -22,6 +22,8 @@ public class SupplyPresenter extends BasePresenter<SupplyContract.Model, SupplyC
         super(model, mView);
     }
 
+
+    //获取Feeder备料排程
     public void getAllSupplyWorkItems(){
         getModel().getAllSupplyWorkItems().doOnSubscribe(new Action0() {
             @Override

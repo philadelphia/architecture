@@ -81,7 +81,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     private String paramter;
     private BottomSheetDialog bottomSheetDialog;
     private TextView tv_sheet_title;
-    private RowsBean item=new RowsBean();
+    private RowsBean item = new RowsBean();
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -172,11 +172,10 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     @Override
     public void getFalutMessgeSucess(FaultMessage falutMesage) {
-
+        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
         datas.clear();
         List<RowsBean> rows = falutMesage.getRows();
         for (int i = 0; i < rows.size(); i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
             try {
                 Date parse = format.parse(rows.get(i).getCreateTime());
                 rows.get(i).setCreat_time(parse.getTime());
@@ -240,14 +239,12 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     }
 
     @Override
-    protected void handError() {
-        super.handError();
+    protected void handError(String contents) {
+        super.handError(contents);
         statusLayout.showErrorView();
     }
 
     private void createBottomSheetDialog() {
-
-
         View view = LayoutInflater.from(this).inflate(R.layout.dialogview_fault_processing, null);
         tv_sheet_title = ViewUtils.findView(view, R.id.tv_title);
         RecyclerView rv_ll = ViewUtils.findView(view, R.id.rv_processing_dialog);

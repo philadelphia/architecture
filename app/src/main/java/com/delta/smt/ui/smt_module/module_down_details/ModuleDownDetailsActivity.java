@@ -31,11 +31,11 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
-import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.ui.smt_module.module_down_details.di.DaggerModuleDownDetailsComponent;
 import com.delta.smt.ui.smt_module.module_down_details.di.ModuleDownDetailsModule;
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsContract;
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -366,8 +366,15 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
                     flag = 2;
                 } catch (EntityNotFountException e) {
-                    e.printStackTrace();
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                    Toast.makeText(this, "解析错误,请重新扫描料盘", Toast.LENGTH_SHORT).show();
                     flag = 1;
+                }catch (ArrayIndexOutOfBoundsException e){
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                    flag = 1;
+                    Toast.makeText(this, "解析错误,请重新扫描料盘", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 2:
@@ -393,6 +400,15 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
                 } catch (EntityNotFountException e1) {
                     e1.printStackTrace();
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                    Toast.makeText(this, "解析错误,请重新扫描架位", Toast.LENGTH_SHORT).show();
+                    flag = 2;
+                }catch (ArrayIndexOutOfBoundsException e){
+                    e.printStackTrace();
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                    Toast.makeText(this, "解析错误,请重新扫描架位", Toast.LENGTH_SHORT).show();
                     flag = 2;
                 }
 

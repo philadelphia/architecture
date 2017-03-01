@@ -1,4 +1,4 @@
-package com.delta.smt.common;
+package com.delta.smt.widget;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -20,14 +20,14 @@ import java.util.ArrayList;
  * @description :自定义的Dialog的View
  */
 
-public class DialogRelativelayout extends LinearLayout {
+public class DialogLayout extends LinearLayout {
 
     private Context context;
     private ArrayAdapter<String> mStringArrayAdapter;
     private ArrayList<String> datas = new ArrayList<>();
     private ListView listView;
 
-    public DialogRelativelayout(Context context) {
+    public DialogLayout(Context context) {
         super(context);
         this.context = context;
         this.setOrientation(VERTICAL);
@@ -35,12 +35,12 @@ public class DialogRelativelayout extends LinearLayout {
         this.setPadding(dip2px(context,16),dip2px(context,8),10,0);
     }
 
-    public DialogRelativelayout(Context context, AttributeSet attrs) {
+    public DialogLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setOrientation(VERTICAL);
     }
 
-    public DialogRelativelayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DialogLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.setOrientation(VERTICAL);
     }

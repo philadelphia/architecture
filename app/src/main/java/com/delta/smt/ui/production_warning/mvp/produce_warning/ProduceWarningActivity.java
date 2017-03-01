@@ -1,7 +1,6 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
@@ -13,14 +12,13 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.GsonTools;
-import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.common.DialogRelativelayout;
+import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
@@ -44,7 +42,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
@@ -247,16 +244,16 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     }
 
     private AlertDialog createDialog(final String warningMessage) {
-        DialogRelativelayout dialogRelativelayout = new DialogRelativelayout(this);
+        DialogLayout dialogLayout = new DialogLayout(this);
         //3.传入的是黑色字体的二级标题
-        dialogRelativelayout.setStrSecondTitle("预警异常");
+        dialogLayout.setStrSecondTitle("预警异常");
         //4.传入的是一个ArrayList<String>
         ArrayList<String> datas = new ArrayList<>();
         datas.add("dsfdsf");
         datas.add("sdfsdf1");
         datas.add("dsfsdf2");
-        dialogRelativelayout.setStrContent(datas);
-        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogRelativelayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        dialogLayout.setStrContent(datas);
+        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

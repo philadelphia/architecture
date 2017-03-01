@@ -9,20 +9,20 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50px"
-        android:layout_marginRight="50px"
-        android:layout_marginTop="53px"
-        android:layout_marginBottom="5px"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:layout_marginTop="20px"
+        android:background="@drawable/card_background"
         android:paddingLeft="50px"
-        android:background="@drawable/card_background">
+        android:paddingRight="50px">
         <TextView
             android:id="@+id/tv_lineID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25px"
             android:text="线别"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
 
         <TextView
             android:id="@+id/tv_workID"
@@ -31,8 +31,8 @@
             android:layout_below="@+id/tv_lineID"
             android:layout_marginTop="25px"
             android:text="工单号"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
 
         <TextView
             android:id="@+id/tv_faceID"
@@ -42,8 +42,8 @@
             android:layout_below="@+id/tv_workID"
             android:layout_marginTop="25px"
             android:text="面别"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
 
         <TextView
             android:id="@+id/tv_product_name_main"
@@ -52,8 +52,8 @@
             android:layout_below="@+id/tv_faceID"
             android:layout_marginTop="25px"
             android:text="主板"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
 
         <TextView
             android:id="@+id/tv_product_name"
@@ -62,8 +62,8 @@
             android:layout_below="@+id/tv_product_name_main"
             android:layout_marginTop="25px"
             android:text="小板"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
 
         <TextView
             android:id="@+id/tv_status"
@@ -72,18 +72,18 @@
             android:layout_below="@+id/tv_product_name"
             android:layout_marginTop="25px"
             android:text="状态"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
         <TextView
             android:id="@+id/tv_forecast_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_status"
-            android:layout_marginTop="25px"
             android:layout_marginBottom="25px"
+            android:layout_marginTop="25px"
             android:text="预计上线时间"
-            android:textSize="40px"
-            android:textColor="@color/c_333333"/>
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
 
 
         <!--这里右边的倒数计我是默认和左边的第三个和第四个高度保持一致的，数据少可自行更改-->

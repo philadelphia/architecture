@@ -317,7 +317,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onErrorSucess(String wareHouses) {
-        ToastUtils.showMessage(this, wareHouses);
+//        ToastUtils.showMessage(this, wareHouses);
         mResultDialog = builder.create();
         mResultDialog.show();
         mResultDialog.setContentView(R.layout.dialog_result);
