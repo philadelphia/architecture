@@ -43,8 +43,13 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFailed(throwable.getMessage());
-                getView().showErrorView();
+                try {
+                    getView().getFailed(throwable.getMessage());
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
             }
         });
@@ -68,7 +73,12 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFailed(throwable.getMessage());
+                try {
+                    getView().getFailed(throwable.getMessage());
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -92,7 +102,13 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             @Override
             public void call(Throwable throwable) {
 
-                getView().getputinstrageFailed(throwable.getMessage());
+                try {
+                    getView().getputinstrageFailed(throwable.getMessage());
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
             }
         });

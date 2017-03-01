@@ -41,7 +41,11 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().showErrorView();
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -62,7 +66,11 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -82,7 +90,11 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -102,7 +114,11 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -122,7 +138,11 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -144,7 +164,11 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -167,7 +191,11 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });
