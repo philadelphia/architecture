@@ -162,9 +162,13 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
             try {
                 PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
                 storageIded.setText(frameCode.getSource());
-                if (materialBlockBarCodes.size() < 11) {
-                    if (!TextUtils.isEmpty(storageIded.getText()))
+                if (materialBlockBarCodes.size() < 11&&materialBlockBarCodes.size()!=0) {
+                    if (!TextUtils.isEmpty(storageIded.getText())){
+
                         getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
+                }
+                }else {
+                    SnackbarUtil.showMassage(warningActivityMain,"请先扫描外箱条码，再扫描架位");
                 }
                 VibratorAndVoiceUtils.correctVibrator (this);
                 VibratorAndVoiceUtils.correctVoice(this);
