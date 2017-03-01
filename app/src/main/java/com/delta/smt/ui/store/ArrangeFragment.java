@@ -13,6 +13,7 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ArrangeInt;
 import com.delta.smt.entity.ItemInfo;
+import com.delta.smt.entity.SentRefreshRequest;
 import com.delta.smt.entity.StoreEmptyMessage;
 import com.delta.smt.ui.store.di.ArrangeModule;
 import com.delta.smt.ui.store.di.DaggerArrangeComponent;
@@ -114,6 +115,11 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
 
     @Subscribe
     public void event(StoreEmptyMessage message) {
+        getPresenter().fatchArrange();
+        Log.e(TAG, "event: ");
+    }
+    @Subscribe
+    public void event(SentRefreshRequest message) {
         getPresenter().fatchArrange();
         Log.e(TAG, "event: ");
     }
