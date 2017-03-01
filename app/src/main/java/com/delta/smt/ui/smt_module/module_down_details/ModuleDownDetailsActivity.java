@@ -444,15 +444,26 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     public boolean isMaterialExists(MaterialBlockBarCode material) {
         boolean flag = false;
-        for (ModuleDownDetailsItem.RowsBean rowsBean : dataSource) {
-            if (mCurrentWorkOrder.equals(rowsBean.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(rowsBean.getSerial_no())) {
+        for (int i = 0; i < dataSource.size(); i++) {
+            ModuleDownDetailsItem.RowsBean item = dataSource.get(i);
+            if (mCurrentMaterialID.equalsIgnoreCase(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())){
                 flag = true;
                 break;
-            } else {
+            }else {
                 flag = false;
-                break;
             }
         }
+//        for (ModuleDownDetailsItem.RowsBean rowsBean : dataSource) {
+//            if (mCurrentMaterialID.equalsIgnoreCase(rowsBean.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(rowsBean.getSerial_no())) {
+//                Log.i(TAG, "isMaterialExists: " + rowsBean.toString());
+//                flag = true;
+//                break;
+//            } else {
+//                flag = false;
+//                break;
+//            }
+//        }
+//        Log.i(TAG, "isMaterialExists: " + flag);
         return  flag;
     }
 
