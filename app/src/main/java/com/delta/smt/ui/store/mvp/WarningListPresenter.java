@@ -185,6 +185,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         try {
             jsonObject.putOpt("billId",mAlarminfoId);
             jsonObject.putOpt("id",id);
+//            jsonObject.putOpt("id",mAlarminfoId);
+//            jsonObject.putOpt("billId",id);
             jsonObject.putOpt("amount",amout);
             jsonObject.putOpt("type",type);
             jsonArray.put(jsonObject);

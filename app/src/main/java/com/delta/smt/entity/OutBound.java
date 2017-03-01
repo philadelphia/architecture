@@ -57,6 +57,15 @@ public class OutBound {
         private String boxSerial;
         private int count;
         private int  id;
+        private boolean isDelivery;
+
+        public boolean isDelivery() {
+            return isDelivery;
+        }
+
+        public void setDelivery(boolean delivery) {
+            isDelivery = delivery;
+        }
 
         public String getBoxSerial() {
             return boxSerial;
