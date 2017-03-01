@@ -130,6 +130,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                         getView().onFailed(feederSupplyItemResult.getMessage());
                     }else {
                         getView().showContentView();
+                        getView().onSuccess(feederSupplyItemResult.getRows());
                     }
                 }else {
                     getView().onFailed(feederSupplyItemResult.getMessage());
