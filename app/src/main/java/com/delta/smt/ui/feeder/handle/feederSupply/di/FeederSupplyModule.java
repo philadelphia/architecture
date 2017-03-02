@@ -1,6 +1,6 @@
 package com.delta.smt.ui.feeder.handle.feederSupply.di;
 
-import com.delta.commonlibs.di.scope.FragmentScope;
+import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyModel;
@@ -21,13 +21,13 @@ public class FeederSupplyModule {
         this.view = view;
     }
 
-    @FragmentScope
+    @ActivityScope
     @Provides
     public FeederSupplyContract.View providesView(){
         return view;
     }
 
-    @FragmentScope
+    @ActivityScope
     @Provides
     public FeederSupplyContract.Model providesModel(ApiService apiService){
         return  new FeederSupplyModel(apiService);

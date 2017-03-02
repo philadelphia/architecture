@@ -19,7 +19,6 @@ import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.manager.WarningManger;
@@ -28,6 +27,7 @@ import com.delta.smt.ui.smt_module.module_down.di.ModuleDownModule;
 import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownContract;
 import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownPresenter;
 import com.delta.smt.ui.smt_module.virtual_line_binding.VirtualLineBindingActivity;
+import com.delta.smt.widget.DialogLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -80,7 +80,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         warningManger.setRecieve(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        getPresenter().getAllModuleDownWarningItems();
+        //getPresenter().getAllModuleDownWarningItems();
         /*statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,7 +224,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             myAdapter.startRefreshTime();
         }
         warningManger.registerWReceiver(this);
-
+        getPresenter().getAllModuleDownWarningItems();
     }
 
     //预警

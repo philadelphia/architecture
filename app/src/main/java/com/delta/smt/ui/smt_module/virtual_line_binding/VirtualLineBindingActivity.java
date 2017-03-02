@@ -294,6 +294,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                     serialNo = materialBlockBarCode.getStreamNumber();
                     scan1_label = "material";
                     tv_showScan_1.setText(materialBlockNumber);
+                    tv_showScan_2.setText("");
                     VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
                     VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                     state = 2;
@@ -391,6 +392,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         serialNo = materialBlockBarCode.getStreamNumber();
                         scan1_label = "material";
                         tv_showScan_1.setText(materialBlockNumber);
+                        tv_showScan_2.setText("");
                         VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
                         VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                         state = 2;
