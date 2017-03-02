@@ -368,7 +368,7 @@ public class MantissaWarehousePutstorageFragment extends
                     setItemHighLightBasedOnMID(lastLocation);
 
                 } catch (EntityNotFountException e) {
-                    SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
+                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描架位！");
                 }
                 break;
             case 2:
@@ -385,25 +385,27 @@ public class MantissaWarehousePutstorageFragment extends
                     flag = 1;
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
-                    SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
+                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描标签！");
                 }
                 break;
 
             case 3:
 
-                MaterialBlockBarCode lableBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                count = lableBar.getCount();
-                materialNumber = lableBar.getDeltaMaterialNumber();
-                serialNum = lableBar.getStreamNumber();
+                try {
+
+                    MaterialBlockBarCode lableBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    count = lableBar.getCount();
+                    materialNumber = lableBar.getDeltaMaterialNumber();
+                    serialNum = lableBar.getStreamNumber();
 
 
-                if (materialNumber.equals(firstMaterialNumber)) {
-                    setItemHighLightBase(materialNumber);
-                    UpLocation bindBean = new UpLocation(materialNumber, serialNum);
-                    Gson gson = new Gson();
-                    String s = gson.toJson(bindBean);
-                    getPresenter().getUpLocation(s);
-                    Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
+                    if (materialNumber.equals(firstMaterialNumber)) {
+                        setItemHighLightBase(materialNumber);
+                        UpLocation bindBean = new UpLocation(materialNumber, serialNum);
+                        Gson gson = new Gson();
+                        String s = gson.toJson(bindBean);
+                        getPresenter().getUpLocation(s);
+                        Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
 
 //                for (int i = 0; i < dataList2.size(); i++) {
 //                    if (materialNumber.equals(dataList2.get(i).getMaterial_num()) && serialNum.equals(dataList2.get(i).getSerial_num())) {
@@ -419,9 +421,14 @@ public class MantissaWarehousePutstorageFragment extends
 //                    f = false;
 //                }
 
-                } else {
-                    SnackbarUtil.showMassage(mRecyContetn, "退料顺序有误，请扫描首个料盘");
+                    } else {
+                        SnackbarUtil.showMassage(mRecyContetn, "退料顺序有误，请扫描首个料盘");
+                    }
+
+                }catch (EntityNotFountException e){
+                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
                 }
+
                 break;
 
             case 4:
