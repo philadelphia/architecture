@@ -1,7 +1,7 @@
 package com.delta.smt.ui.feeder.handle.feederSupply.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
-import com.delta.commonlibs.di.scope.FragmentScope;
+import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
 import com.delta.smt.entity.FeederSupplyItem;
@@ -18,7 +18,7 @@ import rx.functions.Action1;
  * Date:     2016/12/26.
  */
 
-@FragmentScope
+@ActivityScope
 public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Model, FeederSupplyContract.View> {
     private RxErrorHandler rxErrorHandler;
 

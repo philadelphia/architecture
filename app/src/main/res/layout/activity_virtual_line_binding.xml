@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/px_20"
                     android:paddingTop="@dimen/px_20"
-                    android:text="料盘/feeder: "
+                    android:text="料盘: "
                     android:textColor="@color/c_000000"
                     android:textSize="@dimen/px_40" />
 
