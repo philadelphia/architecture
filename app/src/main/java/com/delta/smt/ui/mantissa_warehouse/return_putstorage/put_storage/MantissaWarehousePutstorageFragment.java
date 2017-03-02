@@ -46,6 +46,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
  */
@@ -160,6 +162,9 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
+        if(mantissaWarehousePutstorages.size() == 0){
+            Toast.makeText(getActivity(), "暂无数据！", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -352,7 +357,7 @@ public class MantissaWarehousePutstorageFragment extends
 
         String barcode = putBarCode.getBarCode();
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-
+        mDeduct.setEnabled(true);
         switch (flag) {
             case 1:
                 try {

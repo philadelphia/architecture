@@ -26,6 +26,7 @@
             android:layout_alignParentEnd="true"
             android:text="开始入库"
             android:textSize="40px"
+            android:enabled="false"
             />
 
 
