@@ -233,6 +233,7 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
         scan_position = -1;
+        mDeduct.setEnabled(true);
     }
 
     @Override
@@ -357,7 +358,7 @@ public class MantissaWarehousePutstorageFragment extends
 
         String barcode = putBarCode.getBarCode();
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        mDeduct.setEnabled(true);
+
         switch (flag) {
             case 1:
                 try {
