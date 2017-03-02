@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.VirtualModuleID;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
@@ -294,11 +293,12 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                     serialNo = materialBlockBarCode.getStreamNumber();
                     scan1_label = "material";
                     tv_showScan_1.setText(materialBlockNumber);
+                    tv_showScan_2.setText("");
                     VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
                     VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                     state = 2;
                 } catch (EntityNotFountException e) {
-                    try{
+                    /*try{
                         showMessage.setVisibility(View.GONE);
                         Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
                         feederNumber = barcode;
@@ -307,40 +307,20 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
                         VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                         state = 2;
+
                     }catch (EntityNotFountException ee) {
                         VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
                         VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
-
-                        /*new AlertDialog.Builder(this)
-                                .setTitle("提示")
-                                .setMessage("请扫描料盘或feederID！")
-                                .setCancelable(false)
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .create()
-                                .show();*/
                         showMessage.setText("请扫描料盘！");
                         showMessage.setVisibility(View.VISIBLE);
-                    }
+                    }*/
+                    VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
+                    VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
+                    showMessage.setText("请扫描料盘！");
+                    showMessage.setVisibility(View.VISIBLE);
                 } catch (ArrayIndexOutOfBoundsException e){
                     VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
                     VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
-                    /*new AlertDialog.Builder(this)
-                            .setTitle("提示")
-                            .setMessage("请扫描料盘或feederID！")
-                            .setCancelable(false)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .create()
-                            .show();*/
                     showMessage.setText("请扫描料盘！");
                     showMessage.setVisibility(View.VISIBLE);
 
@@ -391,11 +371,12 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         serialNo = materialBlockBarCode.getStreamNumber();
                         scan1_label = "material";
                         tv_showScan_1.setText(materialBlockNumber);
+                        tv_showScan_2.setText("");
                         VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
                         VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                         state = 2;
                     } catch (EntityNotFountException ee) {
-                        try{
+                        /*try{
                             showMessage.setVisibility(View.GONE);
                             Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
                             feederNumber = barcode;
@@ -407,36 +388,17 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         }catch (EntityNotFountException eee) {
                             VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
                             VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
-                            /*new AlertDialog.Builder(this)
-                                    .setTitle("提示")
-                                    .setMessage("请扫描虚拟模组！")
-                                    .setCancelable(false)
-                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    })
-                                    .create()
-                                    .show();*/
                             showMessage.setText("请扫描虚拟模组！");
                             showMessage.setVisibility(View.VISIBLE);
-                        }
+                        }*/
+                        VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
+                        VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
+                        showMessage.setText("请扫描虚拟模组！");
+                        showMessage.setVisibility(View.VISIBLE);
                     }catch (ArrayIndexOutOfBoundsException ee){
                         VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
                         VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
-                        /*new AlertDialog.Builder(this)
-                                .setTitle("提示")
-                                .setMessage("请扫描虚拟模组！")
-                                .setCancelable(false)
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .create()
-                                .show();*/
+
                         showMessage.setText("请扫描虚拟模组！");
                         showMessage.setVisibility(View.VISIBLE);
                     }

@@ -22,11 +22,11 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
         getModel().getAllVirtualLineBindingItems(str).doOnSubscribe(new Action0() {
             @Override
             public void call() {
-                try {
+                /*try {
                     getView().showLoadingView();
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         }).subscribe(new Action1<VirtualLineBindingItem>() {
             @Override
@@ -66,11 +66,11 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
         getModel().getVirtualBinding(str).doOnSubscribe(new Action0() {
             @Override
             public void call() {
-                try {
+                /*try {
                     getView().showLoadingView();
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         }).subscribe(new Action1<VirtualLineBindingItem>() {
             @Override
@@ -86,7 +86,7 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
                         }
                     } else {
                         getView().onFalied(virtualLineBindingItem);
-                        getView().showErrorView();
+                        //getView().showErrorView();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -97,7 +97,7 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
             public void call(Throwable throwable) {
                 try {
                     getView().onNetFailed(throwable);
-                    getView().showErrorView();
+                    //getView().showErrorView();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

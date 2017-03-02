@@ -240,7 +240,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
                     getPresenter().getMaterialLocation(s);
                 } catch (EntityNotFountException e) {
-                    SnackbarUtil.showMassage(mRecyContetn, Constant.SCAN_FAILED);
+                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
                 }
                 break;
             case 2:
@@ -255,7 +255,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     getPresenter().getputinstrage(s);
                     Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
-                    SnackbarUtil.showMassage(mRecyContetn, e.getMessage());
+                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描架位！");
 
                 }
                 break;
