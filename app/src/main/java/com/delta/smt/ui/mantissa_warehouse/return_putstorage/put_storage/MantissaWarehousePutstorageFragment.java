@@ -21,7 +21,6 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
-import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
@@ -45,8 +44,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
@@ -304,7 +301,7 @@ public class MantissaWarehousePutstorageFragment extends
 
                     public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
 
-
+                        getPresenter().getYesNext();
                     }
 
                 }).setNegativeButton("返回", new DialogInterface.OnClickListener() {//添加返回按钮

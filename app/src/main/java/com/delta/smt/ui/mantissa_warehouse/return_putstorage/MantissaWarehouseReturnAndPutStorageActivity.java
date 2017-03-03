@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -75,54 +76,58 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
 
             currentTab = savedInstanceState.getInt("temp");
         }
+        Log.e(TAG, "onCreate: "+currentTab);
+        super.onCreate(savedInstanceState);
     }
-
     @Override
     protected void initView() {
-
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("尾数仓入库及退料");
-
         for (int i = 0; i < titles.length; i++) {
             mTlTitle.addTab(mTlTitle.newTab());
         }
         ViewUtils.setTabTitle(mTlTitle, titles);
         mTlTitle.addOnTabSelectedListener(this);
 
-        mTlTitle.getTabAt(currentTab).select();
         mMantissaWarehousePutstorageFragment = new MantissaWarehousePutstorageFragment();
         mMantissaWarehouseReturnFragment = new MantissaWarehouseReturnFragment();
         loadMultipleRootFragment(R.id.fl_container, 0, mMantissaWarehouseReturnFragment, mMantissaWarehousePutstorageFragment);
         currentFragment = mMantissaWarehouseReturnFragment;
+        mTlTitle.getTabAt(currentTab).select();
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+        currentTab =mTlTitle.getSelectedTabPosition();
         outState.putInt("temp", currentTab);
+        super.onSaveInstanceState(outState);
+        Log.e(TAG, "onSaveInstanceState: "+currentTab);
     }
+
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
-                currentTab = 0;
+               // currentTab = 0;
                 showHideFragment(mMantissaWarehouseReturnFragment, currentFragment);
                 currentFragment = mMantissaWarehouseReturnFragment;
+                Log.e(TAG, "onTabSelected: ");
                 break;
             case 1:
-                currentTab = 1;
+               // currentTab = 1;
                 showHideFragment(mMantissaWarehousePutstorageFragment, currentFragment);
                 currentFragment = mMantissaWarehousePutstorageFragment;
+                Log.e(TAG, "onTabSelected: ");
                 break;
             default:
                 break;
@@ -137,24 +142,28 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-
+        Log.e(TAG, "onTabUnselected: ");
     }
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-
+        Log.e(TAG, "onTabReselected: ");
     }
 
     @Override
     protected void onResume() {
+        mTlTitle.getTabAt(currentTab).select();
         WarningManger.getInstance().registerWReceiver(this);
         super.onResume();
+        Log.e(TAG, "onResume: "+currentTab);
     }
 
     @Override
     protected void onStop() {
         WarningManger.getInstance().unregisterWReceriver(this);
+
         super.onStop();
+        Log.e(TAG, "onStop: "+currentTab);
     }
 
     @Override
