@@ -15,6 +15,7 @@ public interface AcceptMaterialsContract {
     interface View extends IView {
         void getAcceptMaterialsItemDatas(ItemAcceptMaterialDetail itemAcceptMaterialDetail);
         void getItemDatasFailed(String message);
+        void showMessage(String message);
         void commitSerialNumberSucess();
     }
 
