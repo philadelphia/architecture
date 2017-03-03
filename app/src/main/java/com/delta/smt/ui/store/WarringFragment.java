@@ -13,6 +13,7 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ItemInfo;
+import com.delta.smt.entity.SentRefreshRequest;
 import com.delta.smt.entity.StoreEmptyMessage;
 import com.delta.smt.entity.WarningInt;
 import com.delta.smt.ui.store.di.DaggerWarningComponent;
@@ -105,7 +106,11 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
         super.onStart();
 
     }
-
+    @Subscribe
+    public void event(SentRefreshRequest message) {
+        getPresenter().fatchWarning();
+        Log.e(TAG, "event: ");
+    }
 
     @Override
     protected boolean UseEventBus() {
