@@ -231,11 +231,13 @@ public class MantissaWarehousePutstorageFragment extends
         adapter2.notifyDataSetChanged();
         scan_position = -1;
         mDeduct.setEnabled(true);
+        flag = 1;
     }
 
     @Override
     public void getBingingLableFailed(String message) {
         SnackbarUtil.showMassage(mRecyContetn, message);
+        flag = 2;
     }
 
 
@@ -383,9 +385,7 @@ public class MantissaWarehousePutstorageFragment extends
                     WarehousePutstorageBean bindBean = new WarehousePutstorageBean(lastLocation, lableBarCode);
                     Gson gson = new Gson();
                     String s = gson.toJson(bindBean);
-
                     getPresenter().getBindingLabel(s);
-                    flag = 1;
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
                     SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描标签！");
