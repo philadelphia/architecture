@@ -303,6 +303,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public void onFailed(String s) {
         ToastUtils.showMessage(this, s);
+
     }
 
     @Override

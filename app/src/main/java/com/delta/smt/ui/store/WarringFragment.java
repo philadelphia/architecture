@@ -1,8 +1,10 @@
 package com.delta.smt.ui.store;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -42,11 +44,14 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     private ItemCountViewAdapter mAdapter;
+    private AlertDialog.Builder builder;
+    private AlertDialog mAffirmDialog;
 
     private List<ItemInfo> mList = new ArrayList<>();
 
     @Override
     protected void initView() {
+        builder = new AlertDialog.Builder(getActivity());
         mAdapter = new ItemCountViewAdapter<ItemInfo>(getActivity(), mList) {
             @Override
             protected int getCountViewId() {
@@ -68,21 +73,44 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
         mAdapter.setOnItemTimeOnclick(new ItemOnclick() {
 
             @Override
-            public void onItemClick(View item, Object o, int position) {
+            public void onItemClick(View item, Object o, final int position) {
                 if (mList.size() == 0) {
 
                 } else {
-                    ItemInfo itemInfo = mList.get(position);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("workNumber", itemInfo.getWorkNumber());
-                    bundle.putString("machine", itemInfo.getMaterialNumber());
-                    bundle.putString("materialNumber", itemInfo.getMachine());
-                    bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
-                    bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
-                    bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
-                    bundle.putString("mainBoard", itemInfo.getMainBoard());
-                    bundle.putString("subBoard", itemInfo.getSubBoard());
-                    IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
+                    mAffirmDialog=builder.create();
+                    mAffirmDialog.show();
+                    mAffirmDialog.setContentView(R.layout.dialog_affirm);
+                    Button affirmButton= (Button) mAffirmDialog.findViewById(R.id.dialog_affirm_affirm);
+                    Button cabcelButton= (Button) mAffirmDialog.findViewById(R.id.dialog_affirm_cancel);
+                    affirmButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mAffirmDialog.isShowing()){
+                                mAffirmDialog.dismiss();
+                            }
+                            ItemInfo itemInfo = mList.get(position);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("workNumber", itemInfo.getWorkNumber());
+                            bundle.putString("machine", itemInfo.getMaterialNumber());
+                            bundle.putString("materialNumber", itemInfo.getMachine());
+                            bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
+                            bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
+                            bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
+                            bundle.putString("mainBoard", itemInfo.getMainBoard());
+                            bundle.putString("subBoard", itemInfo.getSubBoard());
+                            IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
+                        }
+                    });
+                    cabcelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mAffirmDialog.isShowing()){
+                                mAffirmDialog.dismiss();
+                            }
+                        }
+                    });
+
+
                 }
             }
         });
