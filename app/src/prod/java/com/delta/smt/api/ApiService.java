@@ -402,7 +402,7 @@ public interface ApiService {
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
     //尾数仓点击开始入库
-    @GET("SMM/ManToWareh/startStorage")
+    @GET("SMM/ManToWareh/startReturnedWareh")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
     //尾数仓点击开始入库上架位完成

@@ -35,7 +35,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                     }
 
                 }else{
-                    getView().getFailed(mantissaWarehousePutstorageResult.getrows().get(0));
+                    getView().getFailed(mantissaWarehousePutstorageResult.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
@@ -115,7 +115,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
                     getView().getYesNextSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
-                    getView().getYesNextFailed(mantissaWarehousePutstorageResult.getrows().get(0));
+                    getView().getYesNextFailed(mantissaWarehousePutstorageResult.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
@@ -139,7 +139,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
                     getView().getYesokSucess();
                 }else{
-                    getView().getYesokFailed(mantissaWarehousePutstorageResult.getrows().get(0));
+                    getView().getYesokFailed(mantissaWarehousePutstorageResult.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
@@ -191,7 +191,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
                     getView().getUpLocationSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
-                    getView().getUpLocationFailed(mantissaWarehousePutstorageResult.getrows().get(0));
+                    getView().getUpLocationFailed(mantissaWarehousePutstorageResult.getMsg());
                 }
 
             }
