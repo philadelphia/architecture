@@ -147,7 +147,10 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"治具入架位完成！");
             VibratorAndVoiceUtils.correctVibrator(ProduceToolsLocationActivity.this);
             VibratorAndVoiceUtils.correctVoice(ProduceToolsLocationActivity.this);
-            finish();
+            mShiftBarcodeCodeEditText.setText("");
+            mProductToolsBarCodeEditText.setText("");
+            flag1=1;
+
         }
         return 0;
     }

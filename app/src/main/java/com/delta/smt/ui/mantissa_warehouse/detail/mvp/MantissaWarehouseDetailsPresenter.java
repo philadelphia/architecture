@@ -19,7 +19,6 @@ import rx.functions.Action1;
 @ActivityScope
 public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWarehouseDetailsContract.Model, MantissaWarehouseDetailsContract.View> {
 
-
     @Inject
     public MantissaWarehouseDetailsPresenter(MantissaWarehouseDetailsContract.Model model, MantissaWarehouseDetailsContract.View mView) {
         super(model, mView);

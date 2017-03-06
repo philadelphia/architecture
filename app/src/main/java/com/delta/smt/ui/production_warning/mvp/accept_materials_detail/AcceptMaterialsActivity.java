@@ -267,6 +267,11 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         }
     }
 
+    @Override
+    public void showMessage(String message) {
+        ToastUtils.showMessage(this,message);
+    }
+
 
     //扫码数据提交成功的操作
     @Override

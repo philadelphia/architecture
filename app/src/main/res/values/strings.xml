@@ -43,7 +43,7 @@
     <string name="warning_pcbid">PCB流水号</string>
     <string name="pcb_number">PCB料号</string>
     <string name="pcb_price">架位</string>
-    <string name="pcb_thenumber">当前发料量</string>
+    <string name="pcb_thenumber">已发料量</string>
     <string name="pcb_demand">需求量</string>
     <string name="pcb_code">PCBCode</string>
     <string name="pcb_time">D/C</string>

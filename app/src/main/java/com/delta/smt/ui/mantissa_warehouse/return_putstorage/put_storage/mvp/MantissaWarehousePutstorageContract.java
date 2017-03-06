@@ -39,13 +39,13 @@ public interface MantissaWarehousePutstorageContract {
         void getFailedUpdate(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
 
         void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
+        void getFailed(String message);
 
         void getYesNextSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getYesNextFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
+        void getYesNextFailed(String message);
 
         void getYesokSucess();
-        void getYesokFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
+        void getYesokFailed(String message);
 
 
         void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
@@ -55,7 +55,7 @@ public interface MantissaWarehousePutstorageContract {
         void getBingingLableFailed(String message);
 
         void getUpLocationSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getUpLocationFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
+        void getUpLocationFailed(String message);
 
         void showLoadingView();
 
