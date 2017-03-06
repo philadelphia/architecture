@@ -14,6 +14,7 @@ import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
+import com.delta.smt.entity.SentRefreshRequest;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ArrangeInt;
@@ -136,11 +137,13 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
                 Log.i(TAG, "onTabSelected: 0");
                 showHideFragment(mWarringFragment, currentFragment);
                 currentFragment = mWarringFragment;
+                EventBus.getDefault().post(new SentRefreshRequest());
                 break;
             case 1:
                 Log.i(TAG, "onTabSelected: 1");
                 showHideFragment(mArrangeFragment, currentFragment);
                 currentFragment = mArrangeFragment;
+                EventBus.getDefault().post(new SentRefreshRequest());
                 break;
             default:
                 break;
