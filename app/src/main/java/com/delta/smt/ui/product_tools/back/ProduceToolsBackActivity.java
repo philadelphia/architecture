@@ -162,6 +162,7 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
 
         if (list.getCode() == 0) {
             editText.setText(barCode);
+            data.clear();
             data.addAll(p);
             adapter.notifyDataSetChanged();
             SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),list.getMessage());

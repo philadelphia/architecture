@@ -44,7 +44,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                     size++;
                     String toolsStatus="";
                     switch (j.getLoanStatus()){
-                        case 0:toolsStatus="已發";
+                        case 0:toolsStatus="准备中";
                             break;
                         case 1:toolsStatus="待發";
                             break;
