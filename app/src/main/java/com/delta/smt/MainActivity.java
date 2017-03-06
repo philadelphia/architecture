@@ -60,8 +60,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.delta.smt.R.drawable.ic_warehousestorage;
-
 
 public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<Fuction>, MainContract.View {
 
@@ -117,6 +115,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 progressDialog.setMessage("下载失败");
                 progressDialog.setCancelable(true);
                 if (retryAlertDialog == null) {
+
                     retryAlertDialog = new AlertDialog.Builder(MainActivity.this)
                             .setTitle("提示")
                             .setMessage("下载失败，请重试或取消更新！")
