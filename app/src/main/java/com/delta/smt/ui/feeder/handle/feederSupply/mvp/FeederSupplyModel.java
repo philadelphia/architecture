@@ -32,8 +32,8 @@ public class FeederSupplyModel extends BaseModel<ApiService> implements FeederSu
     }
 
     @Override
-    public Observable<ResultFeeder> resetFeederSupplyStatus() {
-        return getService().resetFeederSupplyStatus().compose(RxsRxSchedulers.<ResultFeeder>io_main());
+    public Observable<ResultFeeder> resetFeederSupplyStatus(String condition) {
+        return getService().resetFeederSupplyStatus(condition).compose(RxsRxSchedulers.<ResultFeeder>io_main());
     }
 
     @Override
