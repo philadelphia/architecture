@@ -18,6 +18,7 @@ import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
+import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
@@ -438,7 +439,7 @@ public interface ApiService {
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
     @GET("webapi/sms/jig/life/use/loan/submit")
-    Observable<JsonProductToolsLocationRoot> getProductToolsBorrowSubmit(@Query("param") String param);
+    Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(@Query("param") String param);
 
 
     //liuzhenyu

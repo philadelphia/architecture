@@ -6,6 +6,7 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.JsonProductRequestToolsList;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
+import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyList;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.ProductToolsInfo;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -111,12 +113,17 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
     }
     //扫描完成上传数据
     public void getToolsBorrowSubmit(String param){
-        getView().showLoadingView();
-        getModel().getProductToolsBorrowSubmit(param).subscribe(new Action1<JsonProductToolsLocationRoot>() {
+
+        getModel().getProductToolsBorrowSubmit(param).doOnSubscribe(new Action0() {
             @Override
-            public void call(JsonProductToolsLocationRoot jsonProductToolsLocationRoot) {
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<JsonProductToolsSubmitRoot>() {
+            @Override
+            public void call(JsonProductToolsSubmitRoot jsonProductToolsSubmitRoot) {
                 getView().showContentView();
-                getView().getToolsBorrowSubmit(jsonProductToolsLocationRoot);
+                getView().getToolsBorrowSubmit(jsonProductToolsSubmitRoot);
 
             }
         }, new Action1<Throwable>() {
