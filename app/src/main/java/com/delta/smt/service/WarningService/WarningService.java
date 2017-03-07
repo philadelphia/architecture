@@ -14,13 +14,9 @@ import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.api.API;
 import com.delta.smt.app.App;
-import com.delta.smt.widget.DialogLayout;
-import com.delta.smt.manager.ActivityMonitor;
-import com.delta.smt.manager.WarningManger;
 import com.delta.smt.service.warningService.di.DaggerWarningComponent;
-import com.delta.smt.service.warningService.di.WebSocketClientModule;
-
-import org.java_websocket.drafts.Draft_17;
+import com.delta.smt.service.warningService.di.WarningSocketPresenterModule;
+import com.delta.smt.widget.DialogLayout;
 
 import java.util.ArrayList;
 
@@ -35,20 +31,18 @@ import javax.inject.Inject;
  */
 
 
-public class WarningService extends IntentService implements WarningSocketClient.OnRecieveLisneter {
+public class WarningService extends IntentService implements WarningSocketPresenter.OnReceiveListener {
 
     private static final String TAG = "WarningService";
+//    @Inject
+//    WarningSocketClient warningSocketClient;
+//    @Inject
+//    ActivityMonitor activityMonitor;
     @Inject
-    WarningSocketClient warningSocketClient;
-    @Inject
-    WarningManger warningManger;
-    @Inject
-    ActivityMonitor activityMonitor;
-
+    WarningSocketPresenter warningSocketPresenter;
     public WarningService() {
         this("WarningService");
     }
-
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -63,10 +57,12 @@ public class WarningService extends IntentService implements WarningSocketClient
     public void onCreate() {
         super.onCreate();
         Log.e(TAG, "onCreate: ");
-        WebSocketClientModule webSocketClientModule = WebSocketClientModule.builder().draft(new Draft_17()).uri(API.WebSocketURl).build();
-        DaggerWarningComponent.builder().appComponent(App.getAppComponent()).webSocketClientModule(webSocketClientModule).build().inject(this);
-
-        warningSocketClient.addOnRecieveLisneter(this);
+//        WebSocketClientModule webSocketClientModule = WebSocketClientModule.builder().draft(new Draft_17()).uri(API.WebSocketURl).build();
+//        DaggerWarningComponent.builder().appComponent(App.getAppComponent()).webSocketClientModule(webSocketClientModule).build().inject(this);
+        WarningSocketPresenterModule warningSocketPresenterModule = WarningSocketPresenterModule.builder().context(this).url(API.WebSocketURl).build();
+        DaggerWarningComponent.builder().appComponent(App.getAppComponent()).warningSocketPresenterModule(warningSocketPresenterModule).build().inject(this);
+        warningSocketPresenter.addOnRecieveLisneter(this);
+        //warningSocketClient.addOnRecieveLisneter(this);
 
     }
 
@@ -120,7 +116,7 @@ public class WarningService extends IntentService implements WarningSocketClient
 
     @NonNull
     public AlertDialog getAlertDialog(String text) {
-        //1.创建这个DialogRelativelayout
+       // 1.创建这个DialogRelativelayout
         DialogLayout dialogLayout = new DialogLayout(this);
         //2.传入的是红色字体的标题
         dialogLayout.setStrTitle("预警信息");
@@ -134,14 +130,14 @@ public class WarningService extends IntentService implements WarningSocketClient
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.AlertDialogCustom).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(WarningService.this, activityMonitor.getTopActivity().getClass());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+//                Intent intent = new Intent(WarningService.this, activityMonitor.getTopActivity().getClass());
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
             }
         });
         AlertDialog dialog = builder1.create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        return dialog;
+      return dialog;
     }
 
 

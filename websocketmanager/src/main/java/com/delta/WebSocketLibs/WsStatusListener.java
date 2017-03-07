@@ -1,4 +1,4 @@
-package com.delta.libs;
+package com.delta.WebSocketLibs;
 
 import okhttp3.Response;
 import okio.ByteString;

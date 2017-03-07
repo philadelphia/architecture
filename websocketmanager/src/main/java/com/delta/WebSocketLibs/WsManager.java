@@ -1,9 +1,9 @@
-package com.delta.libs;
+package com.delta.WebSocketLibs;
 
 import okio.ByteString;
 
 /**
- * @description :
+ * @description :策略模式构建WsManager 以后不依赖具体的实现
  * @autHor :  V.Wenju.Tian
  * @date : 2017/3/2 16:43
  */
@@ -58,4 +58,11 @@ public class WsManager implements ISocketListener {
     }
 
 
+    public static WsManager getInstance() {
+        return SingletonHolder.sInstance;
+    }
+
+    private static class SingletonHolder {
+        static WsManager sInstance = new WsManager();
+    }
 }

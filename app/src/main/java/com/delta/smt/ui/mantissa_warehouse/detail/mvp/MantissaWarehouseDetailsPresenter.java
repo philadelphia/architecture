@@ -165,9 +165,9 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
 
     }
 
-    public void getMantissaWareOver() {
+    public void getMantissaWareOver(String s) {
 
-        getModel().getMantissaWareOver().subscribe(new Action1<IssureToWarehFinishResult>() {
+        getModel().getMantissaWareOver(s).subscribe(new Action1<IssureToWarehFinishResult>() {
             @Override
             public void call(IssureToWarehFinishResult issureToWarehFinishResult) {
                 if ("0".equals(issureToWarehFinishResult.getCode())) {
