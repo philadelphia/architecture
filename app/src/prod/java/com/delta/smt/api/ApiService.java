@@ -448,6 +448,10 @@ public interface ApiService {
     @GET("SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
+    //点击开始绑定
+    @GET("SMM/ManToWareh/startBound")
+    Observable<MantissaWarehousePutstorageResult> getOnclickBeginButton();
+
     //尾数仓点击开始入库
     @GET("SMM/ManToWareh/startReturnedWareh")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();

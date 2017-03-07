@@ -209,5 +209,32 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
 
     }
 
+    public void getonclickBeginButton(){
+
+        getModel().onclickBeginButton().subscribe(new Action1<MantissaWarehousePutstorageResult>() {
+            @Override
+            public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
+
+                if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                    getView().getonclickBeginButtonSucess(mantissaWarehousePutstorageResult.getrows());
+                }else{
+                    getView().getonclickBeginButtonFailed(mantissaWarehousePutstorageResult.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+    }
+
 
 }
