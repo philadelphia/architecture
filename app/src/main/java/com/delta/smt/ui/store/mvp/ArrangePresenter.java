@@ -46,7 +46,7 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
                         Log.e("infows1",""+itemInfos.getRows().size());
                         ItemInfo itemInfo=new ItemInfo();
                         itemInfo.setEntityId(i);
-                        itemInfo.setEnd_time(System.currentTimeMillis()+100000l*60);
+                        itemInfo.setEnd_time(System.currentTimeMillis()+itemInfos.getRows().get(i).getLeftTime());
 //                        try {
 //                            Date parse = format.parse(itemInfos.getRows().get(i).getEndTime());
 //                            Date parse = format.parse("18-02-22 14:23:52");

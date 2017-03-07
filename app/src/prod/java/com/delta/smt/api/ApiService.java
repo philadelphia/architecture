@@ -306,6 +306,9 @@ public interface ApiService {
     @GET("pcb/inventory/exception")
     Observable<InventoryExecption> getInventoryException();//获取总结
 
+    @GET("pcb/inventory/alteration/judge")
+    Observable<Success> getJudgeSuccsee(@Query("boxSerial") String boxSerial);//获取总结
+
     @GET("pcb/inventory/submit")
     Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
 

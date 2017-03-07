@@ -31,6 +31,7 @@ public class ItemInfo extends TimeEntity {
     private String amount;
     private boolean isAlarminfo;
 
+
     public String getMainBoard() {
         return mainBoard;
     }

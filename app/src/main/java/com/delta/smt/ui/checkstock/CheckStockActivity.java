@@ -199,6 +199,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     VibratorAndVoiceUtils.correctVibrator(this);
                     VibratorAndVoiceUtils.correctVoice(this);
                     if (mMaterbarCode != null) {
+                        if (dataList.size()!=0){
                         for (int i = 0; i < dataList.size(); i++) {
                             if (!dataList.get(i).isCheck()) {
                                 isChexNumber++;
@@ -229,17 +230,14 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                     if (isChexNumber == dataList.size()) {
                                         if (isShowDialog) {
                                             isShowDialog = false;
-                                            mErrorDialog = builder.create();
-                                            mErrorDialog.show();
-                                            mErrorDialog.setContentView(R.layout.dialog_error);
-                                            mErrorContent = (TextView) mErrorDialog.findViewById(R.id.error_content);
-                                            mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
-                                            mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
-                                            mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
+                                            getPresenter().fetchJudgeSuceess(mMaterbarCode.getStreamNumber());
                                         }
                                     }
                                 }
                             }
+                        }
+                        }else {
+                            getPresenter().fetchJudgeSuceess(mMaterbarCode.getStreamNumber());
                         }
                         ToastUtils.showMessage(this, "料号：" + mMaterbarCode.getDeltaMaterialNumber() + "\n数量：" + mMaterbarCode.getCount() + "\n单位：" + mMaterbarCode.getUnit() + "\nVendor：" + mMaterbarCode.getVendor() + "\n Data Code：" + mMaterbarCode.getDC() + "\n PCB Code：" + mMaterbarCode.getStreamNumber().substring(0, 2) + "\n 流水号" + mMaterbarCode.getStreamNumber());
                     }
@@ -395,6 +393,18 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+    }
+
+    @Override
+    public void JudgeSuceess(String s) {
+        mErrorDialog = builder.create();
+        mErrorDialog.show();
+        mErrorDialog.setContentView(R.layout.dialog_error);
+        mErrorContent = (TextView) mErrorDialog.findViewById(R.id.error_content);
+        mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
+        mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
+        mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
+
     }
 
 
