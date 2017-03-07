@@ -165,11 +165,11 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
             data.clear();
             data.addAll(p);
             adapter.notifyDataSetChanged();
-            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),list.getMessage());
+            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(), list.getMessage());
             VibratorAndVoiceUtils.correctVibrator(ProduceToolsBackActivity.this);
             VibratorAndVoiceUtils.correctVoice(ProduceToolsBackActivity.this);
         } else {
-            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),list.getMessage());
+            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(), list.getMessage());
             VibratorAndVoiceUtils.wrongVibrator(ProduceToolsBackActivity.this);
             VibratorAndVoiceUtils.wrongVoice(ProduceToolsBackActivity.this);
         }
@@ -179,7 +179,7 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
     @Override
     public void getFail() {
 
-        SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"请求的数据不存在");
+        SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(), "请求的数据不存在");
         VibratorAndVoiceUtils.wrongVibrator(ProduceToolsBackActivity.this);
         VibratorAndVoiceUtils.wrongVoice(ProduceToolsBackActivity.this);
 
