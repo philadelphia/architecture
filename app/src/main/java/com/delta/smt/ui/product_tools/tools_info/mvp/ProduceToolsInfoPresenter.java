@@ -5,7 +5,7 @@ import android.util.Log;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.JsonProductRequestToolsList;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
-import com.delta.smt.entity.JsonProductToolsLocation;
+import com.delta.smt.entity.JsonProductToolsLocationRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyList;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.ProductToolsInfo;
@@ -112,11 +112,11 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
     //扫描完成上传数据
     public void getToolsBorrowSubmit(String param){
         getView().showLoadingView();
-        getModel().getProductToolsBorrowSubmit(param).subscribe(new Action1<JsonProductToolsLocation>() {
+        getModel().getProductToolsBorrowSubmit(param).subscribe(new Action1<JsonProductToolsLocationRoot>() {
             @Override
-            public void call(JsonProductToolsLocation jsonProductToolsLocation) {
+            public void call(JsonProductToolsLocationRoot jsonProductToolsLocationRoot) {
                 getView().showContentView();
-                getView().getToolsBorrowSubmit(jsonProductToolsLocation);
+                getView().getToolsBorrowSubmit(jsonProductToolsLocationRoot);
 
             }
         }, new Action1<Throwable>() {

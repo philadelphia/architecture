@@ -16,7 +16,7 @@ import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
-import com.delta.smt.entity.JsonProductToolsLocation;
+import com.delta.smt.entity.JsonProductToolsLocationRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
@@ -405,7 +405,6 @@ public interface ApiService {
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
     //TODO shaoqiang,8Interfance
-//    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/order/list/page")
     @GET("sms/jig/life/use/loan/order/list/page")
     Observable<JsonProductBorrowRoot> getProductWorkItem(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent);
 
@@ -419,11 +418,11 @@ public interface ApiService {
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/verify")
     @GET("webapi/sms/jig/life/use/instore/verify")
-    Observable<JsonProductToolsLocation> getLocationVerify(@Query("param") String param);
+    Observable<JsonProductToolsLocationRoot> getLocationVerify(@Query("param") String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
     @GET("webapi/sms/jig/life/use/instore/submit")
-    Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param") String param);
+    Observable<JsonProductToolsLocationRoot> getLocationSubmit(@Query("param") String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/back/submit")
     @GET("webapi/sms/jig/life/use/back/submit")
@@ -435,7 +434,7 @@ public interface ApiService {
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
     @GET("webapi/sms/jig/life/use/loan/submit")
-    Observable<JsonProductToolsLocation> getProductToolsBorrowSubmit(@Query("param") String param);
+    Observable<JsonProductToolsLocationRoot> getProductToolsBorrowSubmit(@Query("param") String param);
 
 
     //liuzhenyu

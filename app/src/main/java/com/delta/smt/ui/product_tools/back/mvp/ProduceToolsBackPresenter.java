@@ -27,7 +27,9 @@ public class ProduceToolsBackPresenter extends BasePresenter<ProduceToolsBackCon
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+
                 getView().getFail();
+
             }
         });
     }
