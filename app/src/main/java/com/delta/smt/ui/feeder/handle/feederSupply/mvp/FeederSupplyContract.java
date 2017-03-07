@@ -40,7 +40,7 @@ public interface FeederSupplyContract {
 
         Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(String condition);
 
-        Observable<ResultFeeder> resetFeederSupplyStatus();
+        Observable<ResultFeeder> resetFeederSupplyStatus(String condition);
 
          Observable<ResultFeeder> upLoadFeederSupplyResult();
     }
