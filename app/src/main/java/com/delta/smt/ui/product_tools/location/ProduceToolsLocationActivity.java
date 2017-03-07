@@ -1,5 +1,6 @@
 package com.delta.smt.ui.product_tools.location;
 
+import android.support.design.widget.Snackbar;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -144,13 +145,18 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         if (param == 0) {
 
             mShiftBarcodeCodeEditText.setText(shift);
-            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"治具入架位完成！");
             VibratorAndVoiceUtils.correctVibrator(ProduceToolsLocationActivity.this);
             VibratorAndVoiceUtils.correctVoice(ProduceToolsLocationActivity.this);
             mShiftBarcodeCodeEditText.setText("");
             mProductToolsBarCodeEditText.setText("");
             flag1=1;
+            Snackbar.make(getCurrentFocus(),"治具入架位已完成，可以进行下一次操作。",Snackbar.LENGTH_LONG).show();
 
+        }else{
+            mShiftBarcodeCodeEditText.setText("");
+            mProductToolsBarCodeEditText.setText("");
+            Snackbar.make(getCurrentFocus(),"该治具无法入架位。",Snackbar.LENGTH_LONG).show();
+            flag1=1;
         }
         return 0;
     }
