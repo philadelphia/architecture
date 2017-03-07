@@ -31,6 +31,8 @@ public interface MantissaWarehousePutstorageContract {
 
         Observable<MantissaWarehousePutstorageResult> getYesok();
 
+        Observable<MantissaWarehousePutstorageResult> onclickBeginButton();
+
     }
 
     public interface View extends IView {
@@ -49,10 +51,13 @@ public interface MantissaWarehousePutstorageContract {
 
 
         void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getBeginFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
+        void getBeginFailed(String message);
 
         void getBingingLableSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getBingingLableFailed(String message);
+
+        void getonclickBeginButtonSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void getonclickBeginButtonFailed(String message);
 
         void getUpLocationSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getUpLocationFailed(String message);

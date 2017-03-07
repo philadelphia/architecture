@@ -195,8 +195,9 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                     holder.setBackgroundColor(R.id.ProductToolsLocation, 0xFFf2f2f2);
                     holder.setBackgroundColor(R.id.ReSelect, 0xFFf2f2f2);
                     holder.setBackgroundColor(R.id.Status, 0xFFf2f2f2);
+                    holder.itemView.setVisibility(View.VISIBLE);
 
-                } else {
+                }else {
 
                     holder.setBackgroundColor(R.id.ReSelect, 0xFF428bca);
                     holder.setText(R.id.TurnNumber, item.getTurnNumber());
@@ -205,6 +206,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                     holder.setText(R.id.ProductToolsLocation, item.getProductToolsLocation());
                     holder.setText(R.id.ReSelect, item.getReSelect());
                     holder.setText(R.id.Status, item.getStatus());
+
+
 
                 }
 
