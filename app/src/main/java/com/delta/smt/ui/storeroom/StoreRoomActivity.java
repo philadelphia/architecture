@@ -151,17 +151,21 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
             storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
             storageDatacodeed.setText(mBarCode.getDC());
             storageCounted.setText(mBarCode.getCount());
-            if (materialBlockBarCodes.size() ==0){
+            if(materialBlockBarCodes.size() <10) {
                 materialBlockBarCodes.add(mBarCode);
-                setTextView();
-            }else{
-//                for (int i=0;i<materialBlockBarCodes.size();i++){
-//                if (!mBarCode.getStreamNumber().equals(materialBlockBarCodes.get(i).getStreamNumber())){
-                materialBlockBarCodes.add(mBarCode);
-//                }
-//                }
                 setTextView();
             }
+//            if (materialBlockBarCodes.size() ==0){
+//                materialBlockBarCodes.add(mBarCode);
+//                setTextView();
+//            }else{
+////                for (int i=0;i<materialBlockBarCodes.size();i++){
+////                if (!mBarCode.getStreamNumber().equals(materialBlockBarCodes.get(i).getStreamNumber())){
+//                materialBlockBarCodes.add(mBarCode);
+////                }
+////                }
+//                setTextView();
+//            }
 
 
         } catch (EntityNotFountException e) {
@@ -169,11 +173,9 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
             e.printStackTrace();
             try {
                 PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
-
                 storageIded.setText(frameCode.getSource());
                 if (materialBlockBarCodes.size() < 11&&materialBlockBarCodes.size()!=0) {
                     if (!TextUtils.isEmpty(storageIded.getText())){
-
                         getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
                 }
                 }else {
@@ -193,16 +195,20 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     private void setTextView() {
         if (mBarCode != null) {
-            if (materialsList.size() ==0){
+//            if (materialsList.size() ==0){
+//                ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
+//                materialsList.add(threeOfMaterial);
+//                mShortLisrAdapter.notifyDataSetChanged();
+//            }else if (materialsList.size() < 10) {
+//                ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
+//                materialsList.add(threeOfMaterial);
+//                mShortLisrAdapter.notifyDataSetChanged();
+//
+//                }
+            if (materialsList.size() <10){
                 ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
-                materialsList.add(threeOfMaterial);
+               materialsList.add(threeOfMaterial);
                 mShortLisrAdapter.notifyDataSetChanged();
-            }else if (materialsList.size() < 10) {
-                ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
-                materialsList.add(threeOfMaterial);
-                mShortLisrAdapter.notifyDataSetChanged();
-
-                }
             }else {
                 SnackbarUtil.showMassage(warningActivityMain,"请确实是否有扫错的条码或者确认箱子上有几个条码!");
                 //ToastUtils.showMessage(this,"请确实是否有扫错的条码或者确认箱子上有几个条码!");
@@ -210,7 +216,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
         }
 
-//    }
+    }
 
 
     @Override
