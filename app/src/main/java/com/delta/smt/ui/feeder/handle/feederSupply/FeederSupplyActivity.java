@@ -81,6 +81,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private String mCurrentMaterialNumber;
     private int index = -1;
     private String workId;
+    private String side;
 
     @Override
     protected void handError(String contents) {
@@ -105,7 +106,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Log.i(TAG, "initData: ");
         Intent intent = getIntent();
         workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
-        String side = intent.getStringExtra(Constant.SIDE);
+        side = intent.getStringExtra(Constant.SIDE);
         Log.i(TAG, "workId==: " + workId);
         Log.i(TAG, "side==: " + side);
         Map<String, String> map = new HashMap<>();
@@ -214,7 +215,13 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
         if (isAllHandleOVer) {
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
-            getPresenter().resetFeederSupplyStatus();
+            Map<String, String> map = new HashMap<>();
+            map.put("work_order", workId);
+            map.put("side", side);
+
+            Gson gson = new Gson();
+            String argument = gson.toJson(map);
+            getPresenter().resetFeederSupplyStatus(argument);
         }
 
     }
@@ -292,6 +299,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             Map<String, String> map = new HashMap<>();
             map.put("material_no", mCurrentMaterialNumber);
             map.put("serial_no", mCurrentSerialNumber);
+            map.put("work_order", workId);
+            map.put("side", side);
+
             Gson gson = new Gson();
             String argument = gson.toJson(map);
             Log.i(TAG, "argument== " + argument);

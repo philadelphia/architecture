@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.libs.adapter.ItemOnclick;
@@ -146,17 +145,17 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
 
     @Override
     public void onItemClick(View item, StorageReady storageReady, int position) {
-        if (storageReady.getStatus() == 1 && isSending == true) {
-            SnackbarUtil.showMassage(mRecyclerView, Constant.FAILURE_START_ISSUE_STRING
-            );
-            return;
-        } else {
+//        if (storageReady.getStatus() == 1 && isSending == true) {
+//            SnackbarUtil.showMassage(mRecyclerView, Constant.FAILURE_START_ISSUE_STRING
+//            );
+//            return;
+//        } else {
             Intent intent = new Intent(getActivity(), StorageDetailsActivity.class);
             intent.putExtra(Constant.WORK_ORDER, dataList.get(position).getWork_order());
             intent.putExtra(Constant.SIDE, storageReady.getSide());
             intent.putExtra(Constant.WARE_HOUSE_NAME, wareHouseName);
             startActivity(intent);
-        }
+        //}
 
     }
 }

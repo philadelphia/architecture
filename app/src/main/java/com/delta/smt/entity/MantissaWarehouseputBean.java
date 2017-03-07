@@ -15,7 +15,24 @@ public class MantissaWarehouseputBean {
     private String tc;
     private String po;
     private String qty;
+    private String work_order;
+    private String side;
 
+    public String getWork_order() {
+        return work_order;
+    }
+
+    public void setWork_order(String work_order) {
+        this.work_order = work_order;
+    }
+
+    public String getSide() {
+        return side;
+    }
+
+    public void setSide(String side) {
+        this.side = side;
+    }
 
     public MantissaWarehouseputBean(String serial_num, String material_num, String unit, String vendor, String dc, String lc, String trasaction_code, String po, String quantity) {
         this.serial_no = serial_num;

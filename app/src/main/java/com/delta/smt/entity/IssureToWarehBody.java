@@ -30,6 +30,33 @@ public class IssureToWarehBody {
     private String trasaction_code;
     private String po;
     private String quantity;
+    private String work_order;
+    private String part;
+    private String side;
+
+    public String getWork_order() {
+        return work_order;
+    }
+
+    public void setWork_order(String work_order) {
+        this.work_order = work_order;
+    }
+
+    public String getPart() {
+        return part;
+    }
+
+    public void setPart(String part) {
+        this.part = part;
+    }
+
+    public String getSide() {
+        return side;
+    }
+
+    public void setSide(String side) {
+        this.side = side;
+    }
 
     public String getSerial_no() {
         return serial_no;

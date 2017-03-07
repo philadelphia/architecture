@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
@@ -20,7 +19,6 @@ import com.delta.libs.adapter.ItemTimeViewHolder;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.manager.WarningManger;
@@ -29,6 +27,7 @@ import com.delta.smt.ui.mantissa_warehouse.ready.di.DaggerMantissaWarehouseReady
 import com.delta.smt.ui.mantissa_warehouse.ready.di.MantissaWarehouseReadyModule;
 import com.delta.smt.ui.mantissa_warehouse.ready.mvp.MantissaWarehouseReadyContract;
 import com.delta.smt.ui.mantissa_warehouse.ready.mvp.MantissaWarehouseReadyPresenter;
+import com.delta.smt.widget.DialogLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -223,10 +222,10 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
 
     @Override
     public void onItemClick(View item, MantissaWarehouseReady.RowsBean rowsBean, int position) {
-        if (rowsBean.getStatus() == 1 && isSending == true) {
-            SnackbarUtil.showMassage(mRecyclerView, Constant.FAILURE_START_ISSUE_STRING);
-            return;
-        }
+//        if (rowsBean.getStatus() == 1 && isSending == true) {
+//            SnackbarUtil.showMassage(mRecyclerView, Constant.FAILURE_START_ISSUE_STRING);
+//            return;
+//        }
         Intent intent = new Intent(this, MantissaWarehouseDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("item", rowsBean);

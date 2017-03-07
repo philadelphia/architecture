@@ -91,7 +91,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
                     getView().getBeginSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
-                    getView().getBeginFailed(mantissaWarehousePutstorageResult.getrows().get(0));
+                    getView().getBeginFailed(mantissaWarehousePutstorageResult.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
@@ -192,6 +192,33 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                     getView().getUpLocationSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
                     getView().getUpLocationFailed(mantissaWarehousePutstorageResult.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+    }
+
+    public void getonclickBeginButton(){
+
+        getModel().onclickBeginButton().subscribe(new Action1<MantissaWarehousePutstorageResult>() {
+            @Override
+            public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
+
+                if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                    getView().getonclickBeginButtonSucess(mantissaWarehousePutstorageResult.getrows());
+                }else{
+                    getView().getonclickBeginButtonFailed(mantissaWarehousePutstorageResult.getMsg());
                 }
 
             }

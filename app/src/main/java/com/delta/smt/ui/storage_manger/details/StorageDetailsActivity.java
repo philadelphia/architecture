@@ -107,6 +107,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private String unSendingMessage;
     private BottomSheetDialog bottomSheetDialog;
     private CommonBaseAdapter<StorageDetails> undoList_adapter;
+    private String mS;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -126,7 +127,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         mMap.put("work_order", work_order);
         mMap.put("side", side);
         Gson mGson = new Gson();
-        String mS = mGson.toJson(mMap);
+        mS = mGson.toJson(mMap);
         Log.i("aaa", mS);
         getPresenter().getStorageDetails(mS);
         getPresenter().queryMaterailCar(mS);
@@ -244,10 +245,10 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         issureToWareh(rows);
         tv_hint.setText(rows.getMessage());
         if (btnSwitch.isChecked()) {
-            getPresenter().deduction();
+            getPresenter().deduction(mS);
         }
         if (isOver) {
-            getPresenter().issureToWarehFinish();
+            getPresenter().issureToWarehFinish(mS);
         }
     }
 
@@ -377,7 +378,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void bindMaterialCarFailed(String msg) {
         state = 1;
         mTextView2.setText("无");
-       // tv_hint.setText(msg);
+        // tv_hint.setText(msg);
         ToastUtils.showMessage(this, msg);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -388,16 +389,16 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         issureToWareh(result);
         tv_hint.setText(result.getMessage());
         if (btnSwitch.isChecked()) {
-            getPresenter().deduction();
+            getPresenter().deduction(mS);
         }
         if (isOver) {
-            getPresenter().issureToWarehFinish();
+            getPresenter().issureToWarehFinish(mS);
         }
     }
 
     @Override
     public void jumpMaterialsFailed(String message) {
-        ToastUtils.showMessage(this,message);
+        ToastUtils.showMessage(this, message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -407,7 +408,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
         state = 2;
         ToastUtils.showMessage(this, message);
-
+        tv_hint.setText(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -420,7 +421,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         DialogUtils.showConfirmDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                getPresenter().jumpMaterials();
+                getPresenter().jumpMaterials(mS);
             }
         });
         VibratorAndVoiceUtils.wrongVibrator(this);
@@ -508,8 +509,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void queryCarFailed(String message) {
         //tv_hint.setText(message);
-        ToastUtils.showMessage(this,message);
-       // Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        ToastUtils.showMessage(this, message);
+        // Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         content_adapter.notifyDataSetChanged();
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -554,6 +555,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     issureToWarehBody.setTrasaction_code(materialblockbarcode.getBusinessCode());
                     issureToWarehBody.setPo(materialblockbarcode.getPO());
                     issureToWarehBody.setQuantity(materialblockbarcode.getCount());
+                    issureToWarehBody.setWork_order(work_order);
+                    issureToWarehBody.setSide(side);
+                    issureToWarehBody.setPart(part);
                     currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
                     getPresenter().issureToWareh(GsonTools.createGsonString(issureToWarehBody));
 
@@ -604,7 +608,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     bottomSheetDialog.show();
                 }
             } else {
-                getPresenter().deduction();
+                getPresenter().deduction(mS);
             }
 
         }
@@ -618,7 +622,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 bottomSheetDialog.dismiss();
                 break;
             case R.id.bt_sheet_confirm:
-                getPresenter().deduction();
+                getPresenter().deduction(mS);
                 bottomSheetDialog.dismiss();
                 break;
             default:

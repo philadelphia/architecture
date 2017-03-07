@@ -5,7 +5,7 @@ import android.util.Log;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.JsonProductRequestToolsList;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
-import com.delta.smt.entity.JsonProductToolsLocation;
+import com.delta.smt.entity.JsonProductToolsLocationRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyList;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.ProductToolsInfo;
@@ -23,11 +23,13 @@ import rx.functions.Action1;
 
 public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoContract.Model,ProduceToolsInfoContract.View>{
 
+
+    String status;
     @Inject
     public ProduceToolsInfoPresenter(ProduceToolsInfoContract.Model model, ProduceToolsInfoContract.View mView) {
         super(model, mView);
     }
-
+    //刚进入页面时获取治具信息
     public void getToolsInfo(String condition){
 
         getView().showLoadingView();
@@ -44,16 +46,20 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                     size++;
                     String toolsStatus="";
                     switch (j.getLoanStatus()){
-                        case 0:toolsStatus="已發";
+                        case 0:toolsStatus="准备中";
                             break;
                         case 1:toolsStatus="待發";
+                            break;
+                        case 2:toolsStatus="已借出";
                             break;
                         case 3:toolsStatus="待确定";
                             break;
                         default:toolsStatus="状态未知";
                     }
-                    ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName(),"更多",toolsStatus,String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
-                    data.add(p);
+
+                        ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName(),"更多",toolsStatus,String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
+                        data.add(p);
+
 
                     Log.e("-------===-------->>>",j.toString());
 
@@ -68,7 +74,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
         });
 
     }
-
+    //点击确定，开始扫描
     public void getToolsVerfy(String condition){
         getView().showLoadingView();
         getModel().getProductToolsVerfy(condition).subscribe(new Action1<JsonProductToolsVerfyRoot>() {
@@ -82,7 +88,12 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                 int size=0;
                 for(JsonProductToolsVerfyList j:rows){
                     size++;
-                    ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),"","更多",j.getStatID()==1?"待确认":"待取",String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
+                    if (j.getLoanStatus()==1) {
+                        status="待取";
+                    }else {
+                        status=j.getStatName();
+                    }
+                    ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),"","更多",status,String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
                     data.add(p);
 
                 }
@@ -98,14 +109,14 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
         });
 
     }
-
+    //扫描完成上传数据
     public void getToolsBorrowSubmit(String param){
         getView().showLoadingView();
-        getModel().getProductToolsBorrowSubmit(param).subscribe(new Action1<JsonProductToolsLocation>() {
+        getModel().getProductToolsBorrowSubmit(param).subscribe(new Action1<JsonProductToolsLocationRoot>() {
             @Override
-            public void call(JsonProductToolsLocation jsonProductToolsLocation) {
+            public void call(JsonProductToolsLocationRoot jsonProductToolsLocationRoot) {
                 getView().showContentView();
-                getView().getToolsBorrowSubmit(jsonProductToolsLocation);
+                getView().getToolsBorrowSubmit(jsonProductToolsLocationRoot);
 
             }
         }, new Action1<Throwable>() {

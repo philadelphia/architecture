@@ -3,7 +3,7 @@ package com.delta.smt.ui.product_tools.location.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.JsonProductToolsLocation;
+import com.delta.smt.entity.JsonProductToolsLocationRoot;
 
 import rx.Observable;
 
@@ -17,12 +17,12 @@ public class ProduceToolsLocationModel extends BaseModel<ApiService> implements 
     }
 
     @Override
-    public Observable<JsonProductToolsLocation> getLocationVerify(String param) {
-        return getService().getLocationVerify(param).compose(RxsRxSchedulers.<JsonProductToolsLocation>io_main());
+    public Observable<JsonProductToolsLocationRoot> getLocationVerify(String param) {
+        return getService().getLocationVerify(param).compose(RxsRxSchedulers.<JsonProductToolsLocationRoot>io_main());
     }
 
     @Override
-    public Observable<JsonProductToolsLocation> getLocationSubmit(String param) {
-        return getService().getLocationSubmit(param).compose(RxsRxSchedulers.<JsonProductToolsLocation>io_main());
+    public Observable<JsonProductToolsLocationRoot> getLocationSubmit(String param) {
+        return getService().getLocationSubmit(param).compose(RxsRxSchedulers.<JsonProductToolsLocationRoot>io_main());
     }
 }

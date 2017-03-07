@@ -16,7 +16,7 @@ import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
-import com.delta.smt.entity.JsonProductToolsLocation;
+import com.delta.smt.entity.JsonProductToolsLocationRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
@@ -93,8 +93,7 @@ public interface ApiService {
 
     //重置Feeder发料状态
     @GET("SMM/Buffer/completeBufferIssue")
-    Observable<ResultFeeder> resetFeederSupplyStatus();
-
+    Observable<ResultFeeder> resetFeederSupplyStatus(@Query("condition") String contidion);
 
 
     //获取下模组列表
@@ -116,6 +115,53 @@ public interface ApiService {
     //上传feeder备料上模组结果
     @GET("SMM/Buffer/completeBufferIssue")
     Observable<ResultFeeder> upLoadFeederSupplyResult();
+
+
+
+    //超领
+    @GET("SMM/ExcessManagement/qExcessList")
+    Observable<OverReceiveWarning> getOverReceiveItems();
+
+    @GET("SMM/ExcessManagement/execessIssure")
+    Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
+
+
+    @GET("SMM/ExcessManagement/debit")
+    Observable<OverReceiveDebitResult> getOverReceiveDebit();
+
+    //上模组排程
+    @GET("SMM/plugmod/getProductionLines")
+    Observable<ModuleUpWarningItem> getModuleUpWarningItems();
+
+    //对应工单的上模组列表
+    @GET("SMM/plugmod/getModsByWordOrder")
+    Observable<ModuleUpBindingItem> getModuleUpBindingItems(@Query("condition") String condition);
+
+    //上模组,料盘feeder绑定
+    @GET("SMM/plugmod/updateMod")
+    Observable<ModuleUpBindingItem> getMaterialAndFeederBindingResult(@Query("condition") String condition);
+
+    //下模组排程
+    @GET("SMM/unplugmod/getProductionLines")
+    Observable<ModuleDownWarningItem> getModuleDownWarningItems();
+
+    //虚拟线体绑定列表
+    @GET("SMM/unplugmod/getModelList")
+    Observable<VirtualLineBindingItem> getVirtualLineBindingItems(@Query("condition") String condition);
+
+    //虚拟线体绑定接口
+    @GET("SMM/unplugmod/bindVirtualLine")
+    Observable<VirtualLineBindingItem> getVirtualBindingResult(@Query("condition") String condition);
+
+
+    //对应工单的下模组列表
+    @GET("SMM/unplugmod/getModsByWordOrder")
+    Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("condition") String condition);
+
+    //Feeder保养
+    @GET("SMM/unplugmod/feederMaintain")
+    Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("condition") String condition);
+
 
 
     /**
@@ -303,20 +349,20 @@ public interface ApiService {
     Observable<Result<StorageDetails>> issureToWareh(@Query("condition") String content);
 
     @GET("SMM/WareHIssue/issureToWarehFinish")
-    Observable<IssureToWarehFinishResult> issureToWarehFinish();
+    Observable<IssureToWarehFinishResult> issureToWarehFinish(@Query("condition") String content);
 
     @GET("SMM/WareHIssue/startWareHIssure")
     Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
 
     @GET("SMM/WareHIssue/jumpMaterials")
-    Observable<Result<StorageDetails>> jumpMaterials();
+    Observable<Result<StorageDetails>> jumpMaterials(@Query("condition") String mS);
 
     @GET("SMM/WareHIssue/sureCompleteIssue")
     Observable<IssureToWarehFinishResult> sureCompleteIssue();
 
     //仓库房扣账
     @GET("SMM/WareHIssue/deduction")
-    Observable<Result> deduction();
+    Observable<Result> deduction(@Query("condition") String mS);
 
     //尾数仓备料
     @GET("SMM/IssueMana/querymantiss")
@@ -348,7 +394,7 @@ public interface ApiService {
 
     //尾数仓发料完成
     @GET("SMM/WareHIssue/completeMantissIssue")
-    Observable<IssureToWarehFinishResult> getMantissaWareOver();
+    Observable<IssureToWarehFinishResult> getMantissaWareOver(String s);
 
     //仓库房备料和尾数仓选择
     @GET("SMM/IssueMana/queryWarehousePart")
@@ -359,7 +405,6 @@ public interface ApiService {
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
     //TODO shaoqiang,8Interfance
-//    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/order/list/page")
     @GET("sms/jig/life/use/loan/order/list/page")
     Observable<JsonProductBorrowRoot> getProductWorkItem(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent);
 
@@ -373,11 +418,11 @@ public interface ApiService {
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/verify")
     @GET("webapi/sms/jig/life/use/instore/verify")
-    Observable<JsonProductToolsLocation> getLocationVerify(@Query("param") String param);
+    Observable<JsonProductToolsLocationRoot> getLocationVerify(@Query("param") String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
     @GET("webapi/sms/jig/life/use/instore/submit")
-    Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param") String param);
+    Observable<JsonProductToolsLocationRoot> getLocationSubmit(@Query("param") String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/back/submit")
     @GET("webapi/sms/jig/life/use/back/submit")
@@ -389,7 +434,7 @@ public interface ApiService {
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
     @GET("webapi/sms/jig/life/use/loan/submit")
-    Observable<JsonProductToolsLocation> getProductToolsBorrowSubmit(@Query("param") String param);
+    Observable<JsonProductToolsLocationRoot> getProductToolsBorrowSubmit(@Query("param") String param);
 
 
     //liuzhenyu
@@ -400,6 +445,10 @@ public interface ApiService {
     //点击清理按钮
     @GET("SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
+
+    //点击开始绑定
+    @GET("SMM/ManToWareh/startBound")
+    Observable<MantissaWarehousePutstorageResult> getOnclickBeginButton();
 
     //尾数仓点击开始入库
     @GET("SMM/ManToWareh/startReturnedWareh")
@@ -445,47 +494,6 @@ public interface ApiService {
     @Streaming
     @GET
     Observable<ResponseBody> download(@Url String url);
-
-    //超领
-    @GET("SMM/ExcessManagement/qExcessList")
-    Observable<OverReceiveWarning> getOverReceiveItems();
-
-    @GET("SMM/ExcessManagement/execessIssure")
-    Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
-
-    @GET("SMM/ExcessManagement/delivery")
-    Observable<OverReceiveWarning> getOverReceiveItemSendArrive(@Query("condition") String content);
-
-    @GET("SMM/ExcessManagement/debit")
-    Observable<OverReceiveDebitResult> getOverReceiveDebit();
-
-    //上模组
-    @GET("SMM/plugmod/getProductionLines")
-    Observable<ModuleUpWarningItem> getModuleUpWarningItems();
-
-    @GET("SMM/plugmod/getModsByWordOrder")
-    Observable<ModuleUpBindingItem> getModuleUpBindingItems(@Query("condition") String condition);
-
-    @GET("SMM/plugmod/updateMod")
-    Observable<ModuleUpBindingItem> getMaterialAndFeederBindingResult(@Query("condition") String condition);
-
-    //下模组
-    @GET("SMM/unplugmod/getProductionLines")
-    Observable<ModuleDownWarningItem> getModuleDownWarningItems();
-
-    //smm/unplugmod/getModelList?condition={"work_order":"1","side":"A"}
-    //@GET("smm/unplugmod/getVirtualLine")
-    @GET("SMM/unplugmod/getModelList")
-    Observable<VirtualLineBindingItem> getVirtualLineBindingItems(@Query("condition") String condition);
-
-    @GET("SMM/unplugmod/getModsByWordOrder")
-    Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("condition") String condition);
-
-    @GET("SMM/unplugmod/feederMaintain")
-    Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("condition") String condition);
-
-    @GET("SMM/unplugmod/bindVirtualLine")
-    Observable<VirtualLineBindingItem> getVirtualBindingResult(@Query("condition") String condition);
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")

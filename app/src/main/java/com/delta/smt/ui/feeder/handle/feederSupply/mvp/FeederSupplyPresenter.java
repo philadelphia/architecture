@@ -142,8 +142,8 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         });
     }
 
-    public void resetFeederSupplyStatus(){
-        getModel().resetFeederSupplyStatus().subscribe(new Action1<ResultFeeder>() {
+    public void resetFeederSupplyStatus(String condition){
+        getModel().resetFeederSupplyStatus(condition).subscribe(new Action1<ResultFeeder>() {
             @Override
             public void call(ResultFeeder result) {
                 if (result.getCode().equals("0")){

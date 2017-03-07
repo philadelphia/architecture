@@ -42,8 +42,8 @@ public class MantissaWarehouseDetailsModel extends BaseModel<ApiService> impleme
     }
 
     @Override
-    public Observable<IssureToWarehFinishResult> getMantissaWareOver() {
-        return getService().getMantissaWareOver().compose(RxsRxSchedulers.<IssureToWarehFinishResult>io_main());
+    public Observable<IssureToWarehFinishResult> getMantissaWareOver(String s) {
+        return getService().getMantissaWareOver(s).compose(RxsRxSchedulers.<IssureToWarehFinishResult>io_main());
     }
 
     @Override

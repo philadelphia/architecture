@@ -13,7 +13,6 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
-import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
@@ -157,6 +156,8 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         //扫描成功震动并发声
         VibratorAndVoiceUtils.correctVibrator(getActivity());
         VibratorAndVoiceUtils.correctVoice(getActivity());
+        setItemHighLightBasedOnMID(materialNumber);
+        Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -231,8 +232,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     materialNumber = materiaBar.getDeltaMaterialNumber();
                     serialNum = materiaBar.getStreamNumber();
 
-                    setItemHighLightBasedOnMID(materialNumber);
-                    Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
 
                     MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
                     Gson gson = new Gson();

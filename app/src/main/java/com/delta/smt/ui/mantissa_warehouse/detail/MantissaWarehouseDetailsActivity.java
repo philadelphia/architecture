@@ -102,6 +102,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private int flag = 1;
     private String side;
     private boolean ischecked = true;
+    private String s;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -119,7 +120,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         side = mMantissaWarehouse.getSide();
         WarehouseDetailBean bindBean = new WarehouseDetailBean(side, workorder);
         Gson gson = new Gson();
-        String s = gson.toJson(bindBean);
+        s = gson.toJson(bindBean);
         getPresenter().getMantissaWarehouseDetails(s);
         mCar.setText("");
         //备料车
@@ -236,7 +237,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             getPresenter().debit();
         }
         if (isOver) {
-            getPresenter().getMantissaWareOver();
+            getPresenter().getMantissaWareOver(s);
         }
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
@@ -474,6 +475,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     String po = materiaBar.getPO();
                     String quantity = materiaBar.getCount();
                     MantissaWarehouseputBean bindBean = new MantissaWarehouseputBean(serial_num, material_num, unit, vendor, dc, lc, trasaction_code, po, quantity);
+                    bindBean.setSide(side);
+                    bindBean.setWork_order(workorder);
                     Gson gson = new Gson();
                     String s = gson.toJson(bindBean);
                     getPresenter().getMantissaWarehouseput(s);

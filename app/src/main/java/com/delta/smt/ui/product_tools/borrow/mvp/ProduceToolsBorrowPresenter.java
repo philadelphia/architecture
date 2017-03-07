@@ -50,14 +50,16 @@ public class ProduceToolsBorrowPresenter extends BasePresenter<ProduceToolsBorro
                 }
                 getView().getFormData(data);
             }
-
-
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                Log.e("getfail","fail");
-                getView().getFail();
-                getView().showErrorView();
+                try {
+                    Log.e("getfail","fail");
+                    getView().getFail();
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

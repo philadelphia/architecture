@@ -33,7 +33,8 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         mMap.put("line",line);
         line=new Gson().toJson(mMap);
         Log.e("aaa", "getItemDatas: "+line);
-        getModel().getAcceptMaterialsItemDatas(line).subscribe(new Action1<ItemAcceptMaterialDetail>() {
+        getModel().getAcceptMaterialsItemDatas(line)
+                .subscribe(new Action1<ItemAcceptMaterialDetail>() {
             @Override
             public void call(ItemAcceptMaterialDetail itemAcceptMaterialDetail) {
                 if (itemAcceptMaterialDetail.getCode().equals("0")) {
@@ -101,7 +102,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
             @Override
             public void call(Result result) {
                 if ("0".equals(result.getCode())) {
-                    getView().getItemDatasFailed("已关灯");
+                    getView().showMessage("已关灯");
                 }else{
                     getView().getItemDatasFailed(result.getMessage());
                 }
