@@ -51,7 +51,7 @@ public interface MantissaWarehousePutstorageContract {
 
 
         void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getBeginFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
+        void getBeginFailed(String message);
 
         void getBingingLableSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getBingingLableFailed(String message);

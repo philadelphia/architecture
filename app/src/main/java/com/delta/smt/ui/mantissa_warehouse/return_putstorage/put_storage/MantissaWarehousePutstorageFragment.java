@@ -233,7 +233,7 @@ public class MantissaWarehousePutstorageFragment extends
     }
 
     @Override
-    public void getBeginFailed(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
+    public void getBeginFailed(String message) {
         dataList2.clear();
         SnackbarUtil.showMassage(mRecyContetn, message.toString());
     }
