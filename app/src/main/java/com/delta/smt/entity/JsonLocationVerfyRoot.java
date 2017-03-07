@@ -1,14 +1,16 @@
 package com.delta.smt.entity;
 
+import java.util.List;
+
 /**
- * Created by Shaoqiang.Zhang on 2017/1/18.
+ * Created by Shaoqiang.Zhang on 2017/3/7.
  */
 
-public class JsonProductToolsLocationRoot {
+public class JsonLocationVerfyRoot {
 
     private int returnTotal;
 
-    private JsonProductToolsLocationList rows;
+    private List<JsonLocationVerfyList> rows ;
 
     private int code;
 
@@ -20,10 +22,10 @@ public class JsonProductToolsLocationRoot {
     public int getReturnTotal(){
         return this.returnTotal;
     }
-    public void setRows(JsonProductToolsLocationList rows){
+    public void setRows(List<JsonLocationVerfyList> rows){
         this.rows = rows;
     }
-    public JsonProductToolsLocationList getRows(){
+    public List<JsonLocationVerfyList> getRows(){
         return this.rows;
     }
     public void setCode(int code){
@@ -38,4 +40,5 @@ public class JsonProductToolsLocationRoot {
     public String getMessage(){
         return this.message;
     }
+
 }

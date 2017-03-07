@@ -2,6 +2,7 @@ package com.delta.smt.ui.product_tools.location.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.smt.entity.JsonLocationVerfyRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
 
 import javax.inject.Inject;
@@ -35,10 +36,10 @@ public class ProduceToolsLocationPresenter extends BasePresenter<ProduceToolsLoc
     }
 
     public void getSubmitResult(String param){
-        getModel().getLocationSubmit(param).subscribe(new Action1<JsonProductToolsLocationRoot>() {
+        getModel().getLocationSubmit(param).subscribe(new Action1<JsonLocationVerfyRoot>() {
             @Override
-            public void call(JsonProductToolsLocationRoot jsonProductToolsLocationRoot) {
-                getView().getSubmitResoult(jsonProductToolsLocationRoot.getCode());
+            public void call(JsonLocationVerfyRoot jsonLocationVerfyRoot) {
+                getView().getSubmitResult(jsonLocationVerfyRoot.getCode());
             }
         }, new Action1<Throwable>() {
             @Override

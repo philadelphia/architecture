@@ -140,7 +140,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     }
 
     @Override
-    public int getSubmitResoult(int param) {
+    public int getSubmitResult(int param) {
         if (param == 0) {
 
             mShiftBarcodeCodeEditText.setText(shift);

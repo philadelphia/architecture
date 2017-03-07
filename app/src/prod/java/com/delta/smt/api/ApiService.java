@@ -13,6 +13,7 @@ import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.InventoryExecption;
 import com.delta.smt.entity.IssureToWarehFinishResult;
+import com.delta.smt.entity.JsonLocationVerfyRoot;
 import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
@@ -425,7 +426,7 @@ public interface ApiService {
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
     @GET("webapi/sms/jig/life/use/instore/submit")
-    Observable<JsonProductToolsLocationRoot> getLocationSubmit(@Query("param") String param);
+    Observable<JsonLocationVerfyRoot> getLocationSubmit(@Query("param") String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/back/submit")
     @GET("webapi/sms/jig/life/use/back/submit")
