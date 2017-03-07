@@ -26,7 +26,7 @@ public interface MantissaWarehouseDetailsContract {
 
         Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(String str);
 
-        Observable<IssureToWarehFinishResult> getMantissaWareOver();
+        Observable<IssureToWarehFinishResult> getMantissaWareOver(String s);
 
 
         Observable<Result> debit();

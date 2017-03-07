@@ -29,13 +29,13 @@ public interface StorageDetailsContract {
 
         Observable<Result<StorageDetails>> issureToWareh(String content);
 
-        Observable<IssureToWarehFinishResult> issureToWarehFinish();
+        Observable<IssureToWarehFinishResult> issureToWarehFinish(String content);
 
-        Observable<Result<StorageDetails>> jumpMaterials();
+        Observable<Result<StorageDetails>> jumpMaterials(String mS);
 
         Observable<IssureToWarehFinishResult> sureCompleteIssue();
 
-        Observable<Result> deduction();
+        Observable<Result> deduction(String mS);
 
     }
 

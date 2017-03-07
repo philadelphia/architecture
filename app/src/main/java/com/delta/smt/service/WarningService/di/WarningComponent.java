@@ -11,7 +11,7 @@ import dagger.Component;
  * @date : 2017/1/11 17:06
  */
 @ServiceScope
-@Component(modules = {WebSocketClientModule.class},dependencies = AppComponent.class)
+@Component(modules = {WarningSocketPresenterModule.class},dependencies = AppComponent.class)
 public interface WarningComponent {
 
     void inject(WarningService warningService);
