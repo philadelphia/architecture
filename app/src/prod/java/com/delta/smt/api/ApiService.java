@@ -96,7 +96,6 @@ public interface ApiService {
     Observable<ResultFeeder> resetFeederSupplyStatus(@Query("condition") String contidion);
 
 
-
     //获取下模组列表
     @GET("SMM/FeederBuffStorage/feederBuffStorage")
     Observable<ModuleDownDetailsItem> getDownModuleList(@Query("condition") String condition);
@@ -350,20 +349,20 @@ public interface ApiService {
     Observable<Result<StorageDetails>> issureToWareh(@Query("condition") String content);
 
     @GET("SMM/WareHIssue/issureToWarehFinish")
-    Observable<IssureToWarehFinishResult> issureToWarehFinish();
+    Observable<IssureToWarehFinishResult> issureToWarehFinish(@Query("condition") String content);
 
     @GET("SMM/WareHIssue/startWareHIssure")
     Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
 
     @GET("SMM/WareHIssue/jumpMaterials")
-    Observable<Result<StorageDetails>> jumpMaterials();
+    Observable<Result<StorageDetails>> jumpMaterials(@Query("condition") String mS);
 
     @GET("SMM/WareHIssue/sureCompleteIssue")
     Observable<IssureToWarehFinishResult> sureCompleteIssue();
 
     //仓库房扣账
     @GET("SMM/WareHIssue/deduction")
-    Observable<Result> deduction();
+    Observable<Result> deduction(@Query("condition") String mS);
 
     //尾数仓备料
     @GET("SMM/IssueMana/querymantiss")
@@ -395,7 +394,7 @@ public interface ApiService {
 
     //尾数仓发料完成
     @GET("SMM/WareHIssue/completeMantissIssue")
-    Observable<IssureToWarehFinishResult> getMantissaWareOver();
+    Observable<IssureToWarehFinishResult> getMantissaWareOver(String s);
 
     //仓库房备料和尾数仓选择
     @GET("SMM/IssueMana/queryWarehousePart")

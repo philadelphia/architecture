@@ -1,4 +1,4 @@
-package com.delta.libs;
+package com.delta.WebSocketLibs;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

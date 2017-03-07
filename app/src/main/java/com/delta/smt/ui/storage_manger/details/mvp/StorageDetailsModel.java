@@ -43,13 +43,13 @@ public class StorageDetailsModel extends BaseModel<ApiService> implements Storag
     }
 
     @Override
-    public Observable<IssureToWarehFinishResult> issureToWarehFinish() {
-        return getService().issureToWarehFinish().compose(RxsRxSchedulers.<IssureToWarehFinishResult>io_main());
+    public Observable<IssureToWarehFinishResult> issureToWarehFinish(String content) {
+        return getService().issureToWarehFinish(content).compose(RxsRxSchedulers.<IssureToWarehFinishResult>io_main());
     }
 
     @Override
-    public Observable<Result<StorageDetails>> jumpMaterials() {
-        return getService().jumpMaterials().compose(RxsRxSchedulers.<Result<StorageDetails>>io_main());
+    public Observable<Result<StorageDetails>> jumpMaterials(String mS) {
+        return getService().jumpMaterials(mS).compose(RxsRxSchedulers.<Result<StorageDetails>>io_main());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class StorageDetailsModel extends BaseModel<ApiService> implements Storag
     }
 
     @Override
-    public Observable<Result> deduction() {
-        return getService().deduction().compose(RxsRxSchedulers.<Result>io_main());
+    public Observable<Result> deduction(String mS) {
+        return getService().deduction(mS).compose(RxsRxSchedulers.<Result>io_main());
     }
 }

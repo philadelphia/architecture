@@ -149,9 +149,9 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
         });
     }
 
-    public void issureToWarehFinish() {
+    public void issureToWarehFinish(String content) {
 
-        getModel().issureToWarehFinish().subscribe(new Action1<IssureToWarehFinishResult>() {
+        getModel().issureToWarehFinish(content).subscribe(new Action1<IssureToWarehFinishResult>() {
             @Override
             public void call(IssureToWarehFinishResult issureToWarehFinishResult) {
 
@@ -179,8 +179,9 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
         });
     }
 
-    public void jumpMaterials() {
-        getModel().jumpMaterials().subscribe(new Action1<Result<StorageDetails>>() {
+
+    public void jumpMaterials(String mS) {
+        getModel().jumpMaterials(mS).subscribe(new Action1<Result<StorageDetails>>() {
             @Override
             public void call(Result<StorageDetails> storageDetailsResult) {
                 if ("0".equalsIgnoreCase(storageDetailsResult.getCode())) {
@@ -202,8 +203,8 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
     }
 
 
-    public void deduction() {
-        getModel().deduction().subscribe(new Action1<Result>() {
+    public void deduction(String mS) {
+        getModel().deduction(mS).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
 
