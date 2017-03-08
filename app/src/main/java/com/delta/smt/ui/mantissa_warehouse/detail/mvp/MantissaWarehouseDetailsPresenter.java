@@ -181,7 +181,6 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
                 try {
                     getView().getFailed(throwable.getMessage());
                 } catch (Exception e) {
