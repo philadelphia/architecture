@@ -122,6 +122,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
         }).subscribe(new Action1<JsonProductToolsSubmitRoot>() {
             @Override
             public void call(JsonProductToolsSubmitRoot jsonProductToolsSubmitRoot) {
+
                 getView().showContentView();
                 getView().getToolsBorrowSubmit(jsonProductToolsSubmitRoot);
 

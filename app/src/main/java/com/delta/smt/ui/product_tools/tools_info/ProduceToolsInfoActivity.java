@@ -156,7 +156,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
         mProductToolsWorkItemTextView.setText(workNumber);
 
-        if(this.getIntent().getExtras().getString("MainBroad")!=null) {
+        if (this.getIntent().getExtras().getString("MainBroad") != null) {
             mainBroadTextView.setText(this.getIntent().getExtras().getString("MainBroad"));
             littleBroadTextView.setText(this.getIntent().getExtras().getString("LittleBroad"));
             coverTextView.setText(this.getIntent().getExtras().getString("Cover"));
@@ -164,19 +164,19 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             mPWB_CodeTextView.setText(this.getIntent().getExtras().getString("PWB"));
             mPCBCODETextView.setText(this.getIntent().getExtras().getString("PCB"));
 
-            SharedPreferencesUtils.putData(this,"MainBroad",this.getIntent().getExtras().getString("MainBroad"));
-            SharedPreferencesUtils.putData(this,"LittleBroad",this.getIntent().getExtras().getString("LittleBroad"));
-            SharedPreferencesUtils.putData(this,"Cover",this.getIntent().getExtras().getString("Cover"));
-            SharedPreferencesUtils.putData(this,"Line",this.getIntent().getExtras().getString("Line"));
-            SharedPreferencesUtils.putData(this,"PWB",this.getIntent().getExtras().getString("PWB"));
-            SharedPreferencesUtils.putData(this,"PCB",this.getIntent().getExtras().getString("PCB"));
-        }else {
-            mainBroadTextView.setText(SharedPreferencesUtils.getData(this,"MainBroad"));
-            littleBroadTextView.setText(SharedPreferencesUtils.getData(this,"LittleBroad"));
-            coverTextView.setText(SharedPreferencesUtils.getData(this,"Cover"));
-            lineTextView.setText(SharedPreferencesUtils.getData(this,"Line"));
-            mPWB_CodeTextView.setText(SharedPreferencesUtils.getData(this,"PWB"));
-            mPCBCODETextView.setText(SharedPreferencesUtils.getData(this,"PCB"));
+            SharedPreferencesUtils.putData(this, "MainBroad", this.getIntent().getExtras().getString("MainBroad"));
+            SharedPreferencesUtils.putData(this, "LittleBroad", this.getIntent().getExtras().getString("LittleBroad"));
+            SharedPreferencesUtils.putData(this, "Cover", this.getIntent().getExtras().getString("Cover"));
+            SharedPreferencesUtils.putData(this, "Line", this.getIntent().getExtras().getString("Line"));
+            SharedPreferencesUtils.putData(this, "PWB", this.getIntent().getExtras().getString("PWB"));
+            SharedPreferencesUtils.putData(this, "PCB", this.getIntent().getExtras().getString("PCB"));
+        } else {
+            mainBroadTextView.setText(SharedPreferencesUtils.getData(this, "MainBroad"));
+            littleBroadTextView.setText(SharedPreferencesUtils.getData(this, "LittleBroad"));
+            coverTextView.setText(SharedPreferencesUtils.getData(this, "Cover"));
+            lineTextView.setText(SharedPreferencesUtils.getData(this, "Line"));
+            mPWB_CodeTextView.setText(SharedPreferencesUtils.getData(this, "PWB"));
+            mPCBCODETextView.setText(SharedPreferencesUtils.getData(this, "PCB"));
         }
 
         data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态", "", ""));
@@ -196,7 +196,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                     holder.setBackgroundColor(R.id.Status, 0xFFf2f2f2);
                     holder.itemView.setVisibility(View.VISIBLE);
 
-                }else {
+                } else {
 
                     holder.setBackgroundColor(R.id.ReSelect, 0xFF428bca);
                     holder.setText(R.id.TurnNumber, item.getTurnNumber());
@@ -205,7 +205,6 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                     holder.setText(R.id.ProductToolsLocation, item.getProductToolsLocation());
                     holder.setText(R.id.ReSelect, item.getReSelect());
                     holder.setText(R.id.Status, item.getStatus());
-
 
 
                 }
@@ -295,7 +294,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void getToolsVerfy(List<ProductToolsInfo> ProductToolsItem) {
         if (ProductToolsItem == null) {
-            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),"请求的数据不存在");
+            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(), "请求的数据不存在");
         }
         int i = 0;
         for (ProductToolsInfo p : ProductToolsItem) {
@@ -313,13 +312,14 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void getToolsBorrowSubmit(JsonProductToolsSubmitRoot j) {
         if (j == null) {
-            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),"请求的数据不存在");
+            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(), "请求的数据不存在");
         }
         Log.e("getToolsBorrowSubmit", j.toString());
         if (j.getCode() == 0) {
 
             int i = 0;
             for (ProductToolsInfo p : data) {
+
                 i++;
                 if (data.get(i).getProductToolsBarCode().equals(this.barcode)) {
 
@@ -333,7 +333,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             }
         } else {
 
-            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(),j.getMessage());
+            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(), j.getMessage());
             VibratorAndVoiceUtils.wrongVibrator(ProduceToolsInfoActivity.this);
             VibratorAndVoiceUtils.wrongVoice(ProduceToolsInfoActivity.this);
 

@@ -5,6 +5,8 @@ import android.view.KeyEvent;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.demacia.barcode.BarCodeIpml;
+import com.delta.demacia.barcode.Barcode;
+import com.delta.demacia.barcode.BarcodeFactory;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.di.component.AppComponent;
 
@@ -23,9 +25,7 @@ public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonAc
     @Inject
     protected p mPresenter;
 
-
-
-    private BarCodeIpml barCodeIpml;
+    private Barcode barCodeIpml;
 
     private List<OnBarCodeSuccess> events = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonAc
 
     @Override
     protected void initCData() {
-        barCodeIpml = new BarCodeIpml();
+        barCodeIpml = BarcodeFactory.getBarcode(this);
         barCodeIpml.setOnGunKeyPressListener(this);
         componentInject(getMApplication().getAppComponent());//依赖注入
         initData();
