@@ -399,7 +399,7 @@ public interface ApiService {
 
     //尾数仓发料完成
     @GET("SMM/WareHIssue/completeMantissIssue")
-    Observable<IssureToWarehFinishResult> getMantissaWareOver(String s);
+    Observable<IssureToWarehFinishResult> getMantissaWareOver(@Query("condition") String s);
 
     //仓库房备料和尾数仓选择
     @GET("SMM/IssueMana/queryWarehousePart")

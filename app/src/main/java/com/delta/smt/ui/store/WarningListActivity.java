@@ -360,7 +360,11 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                 VibratorAndVoiceUtils.wrongVoice(this);
                 e1.printStackTrace();
 
+            }catch(Exception es){
+
             }
+        }catch(Exception e){
+
         }
 
 
