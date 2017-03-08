@@ -2,7 +2,8 @@ package com.delta.smt.ui.product_tools.location.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.smt.entity.JsonProductToolsLocation;
+import com.delta.smt.entity.JsonLocationVerfyRoot;
+import com.delta.smt.entity.JsonProductToolsLocationRoot;
 
 import javax.inject.Inject;
 
@@ -21,10 +22,10 @@ public class ProduceToolsLocationPresenter extends BasePresenter<ProduceToolsLoc
     }
 
     public void getLocation(String param){
-        getModel().getLocationVerify(param).subscribe(new Action1<JsonProductToolsLocation>() {
+        getModel().getLocationVerify(param).subscribe(new Action1<JsonProductToolsLocationRoot>() {
             @Override
-            public void call(JsonProductToolsLocation jsonProductToolsLocation) {
-                getView().getLocation(jsonProductToolsLocation);
+            public void call(JsonProductToolsLocationRoot jsonProductToolsLocationRoot) {
+                getView().getLocation(jsonProductToolsLocationRoot);
             }
         }, new Action1<Throwable>() {
             @Override
@@ -34,11 +35,11 @@ public class ProduceToolsLocationPresenter extends BasePresenter<ProduceToolsLoc
         });
     }
 
-    public void getSubmitResoult(String param){
-        getModel().getLocationSubmit(param).subscribe(new Action1<JsonProductToolsLocation>() {
+    public void getSubmitResult(String param){
+        getModel().getLocationSubmit(param).subscribe(new Action1<JsonLocationVerfyRoot>() {
             @Override
-            public void call(JsonProductToolsLocation jsonProductToolsLocation) {
-                getView().getSubmitResoult(jsonProductToolsLocation.getCode());
+            public void call(JsonLocationVerfyRoot jsonLocationVerfyRoot) {
+                getView().getSubmitResult(jsonLocationVerfyRoot.getCode());
             }
         }, new Action1<Throwable>() {
             @Override

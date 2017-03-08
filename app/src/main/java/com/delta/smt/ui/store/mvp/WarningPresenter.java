@@ -41,7 +41,7 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
                         for (int i = 0; i < itemInfos.getRows().size(); i++) {
                             ItemInfo itemInfo = new ItemInfo();
                             itemInfo.setEntityId(i);
-                            itemInfo.setEnd_time(System.currentTimeMillis()+100000l);
+                            itemInfo.setEnd_time(System.currentTimeMillis()+itemInfos.getRows().get(i).getLeftTime());
 //                            try {
 //                                //Date parse = format.parse(itemInfos.getRows().get(i).getEndTime());
 //                                Date parse = format.parse("18-02-22 14:23:52");

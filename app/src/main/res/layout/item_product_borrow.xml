@@ -8,11 +8,11 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="8"
         android:gravity="center"
         android:text="@string/WordNumber"
         android:textColor="#333333"
-        android:textSize="30px"
+        android:textSize="35px"
         android:id="@+id/WorkNumber"/>
 
     <View
@@ -27,7 +27,7 @@
         android:gravity="center"
         android:text="主板"
         android:textColor="#333333"
-        android:textSize="30px"
+        android:textSize="35px"
         android:id="@+id/MainBroad"/>
 
     <View
@@ -38,11 +38,11 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="14"
         android:gravity="center"
         android:text="小板"
         android:textColor="#333333"
-        android:textSize="30px"
+        android:textSize="35px"
         android:id="@+id/LittleBroad"/>
 
     <TextView
@@ -52,7 +52,7 @@
         android:gravity="center"
         android:text="@string/PCB_Code"
         android:textColor="#333333"
-        android:textSize="30px"
+        android:textSize="35px"
         android:id="@+id/PWB_Code"/>
 
     <TextView
@@ -62,7 +62,7 @@
         android:gravity="center"
         android:text="@string/FormMaterialNumber"
         android:textColor="#333333"
-        android:textSize="30px"
+        android:textSize="35px"
         android:id="@+id/FormMaterialNumber"/>
 
     <View
@@ -73,11 +73,11 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="8"
         android:gravity="center"
         android:text="@string/Line"
         android:textColor="#333333"
-        android:textSize="30px"
+        android:textSize="35px"
         android:id="@+id/Line"/>
 
     <TextView
@@ -88,7 +88,7 @@
         android:gravity="center"
         android:text="@string/PWB_MaterialNumber"
         android:textColor="#333333"
-        android:textSize="30px"
+        android:textSize="35px"
         />
 
     <View
@@ -99,11 +99,11 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="8"
         android:gravity="center"
         android:text="@string/Cover"
         android:textColor="#333333"
-        android:textSize="30px"
+        android:textSize="35px"
         android:id="@+id/Cover"/>
 
     <View
@@ -118,7 +118,7 @@
         android:gravity="center"
         android:text="@string/PlanOnLineTime"
         android:textColor="#333333"
-        android:textSize="30px"
+        android:textSize="35px"
         android:id="@+id/PlanOnLineTime"/>
 
     <View
@@ -129,10 +129,10 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="13"
         android:gravity="center"
         android:text="@string/Status"
         android:textColor="#333333"
-        android:textSize="30px"
+        android:textSize="35px"
         android:id="@+id/ProductToolsStatus"/>
 </com.zhy.autolayout.AutoLinearLayout>

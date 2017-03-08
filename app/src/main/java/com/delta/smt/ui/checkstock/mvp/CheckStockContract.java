@@ -31,6 +31,7 @@ public class CheckStockContract {
         void showContentView();
         void showErrorView();
         void showEmptyView();
+        void JudgeSuceess(String s);
 
     }
     public interface Model extends IModel{
@@ -42,5 +43,7 @@ public class CheckStockContract {
         Observable<String>getCheckStockSuccess();
         Observable<Success>OnEnd();
         Observable<InventoryExecption>getInventoryException();
+        Observable<Success>getJudgeSuceess(String s);
+
     }
 }

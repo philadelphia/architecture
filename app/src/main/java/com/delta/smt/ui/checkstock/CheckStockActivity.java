@@ -32,6 +32,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.CheckStockDemo;
+import com.delta.smt.entity.ExceptionsBean;
 import com.delta.smt.ui.checkstock.di.CheckStockModule;
 import com.delta.smt.ui.checkstock.di.DaggerCheckStockComponent;
 import com.delta.smt.ui.checkstock.mvp.CheckStockContract;
@@ -191,6 +192,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     SnackbarUtil.showMassage(mianCheckStockActivityView, "扫描的架位二维码错误，请重新扫描");
                     //ToastUtils.showMessage(this, "扫描的架位二维码错误，请重新扫描");
                     status = 1;
+                }catch(Exception e){
+
                 }
                 break;
             case 2:
@@ -199,6 +202,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     VibratorAndVoiceUtils.correctVibrator(this);
                     VibratorAndVoiceUtils.correctVoice(this);
                     if (mMaterbarCode != null) {
+                        if (dataList.size()!=0){
                         for (int i = 0; i < dataList.size(); i++) {
                             if (!dataList.get(i).isCheck()) {
                                 isChexNumber++;
@@ -229,17 +233,15 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                     if (isChexNumber == dataList.size()) {
                                         if (isShowDialog) {
                                             isShowDialog = false;
-                                            mErrorDialog = builder.create();
-                                            mErrorDialog.show();
-                                            mErrorDialog.setContentView(R.layout.dialog_error);
-                                            mErrorContent = (TextView) mErrorDialog.findViewById(R.id.error_content);
-                                            mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
-                                            mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
-                                            mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
+                                            getPresenter().fetchJudgeSuceess(mMaterbarCode.getStreamNumber());
                                         }
+
                                     }
                                 }
                             }
+                        }
+                        }else {
+                            getPresenter().fetchJudgeSuceess(mMaterbarCode.getStreamNumber());
                         }
                         ToastUtils.showMessage(this, "料号：" + mMaterbarCode.getDeltaMaterialNumber() + "\n数量：" + mMaterbarCode.getCount() + "\n单位：" + mMaterbarCode.getUnit() + "\nVendor：" + mMaterbarCode.getVendor() + "\n Data Code：" + mMaterbarCode.getDC() + "\n PCB Code：" + mMaterbarCode.getStreamNumber().substring(0, 2) + "\n 流水号" + mMaterbarCode.getStreamNumber());
                     }
@@ -252,6 +254,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     SnackbarUtil.showMassage(mianCheckStockActivityView, "请重新扫描架位");
                     //ToastUtils.showMessage(this, "请重新扫描架位");
                     status = 3;
+                }catch(Exception e){
+
                 }
                 break;
             case 3:
@@ -277,6 +281,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     VibratorAndVoiceUtils.wrongVoice(this);
                     //SnackbarUtil.showMassage(mianCheckStockActivityView,"请输入数量");
                     ToastUtils.showMessageLong(this, "扫描的架位二维码错误，请重新扫描");
+                }catch(Exception e){
+
                 }
 
                 break;
@@ -303,6 +309,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public void onFailed(String s) {
         ToastUtils.showMessage(this, s);
+
     }
 
     @Override
@@ -394,6 +401,18 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+    }
+
+    @Override
+    public void JudgeSuceess(String s) {
+        mErrorDialog = builder.create();
+        mErrorDialog.show();
+        mErrorDialog.setContentView(R.layout.dialog_error);
+        mErrorContent = (TextView) mErrorDialog.findViewById(R.id.error_content);
+        mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
+        mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
+        mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
+
     }
 
 

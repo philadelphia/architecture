@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="60px"
+        android:layout_marginLeft="40px"
         android:layout_marginTop="70px"
         android:text="治具二维码:"
         android:textColor="#333333"
@@ -19,7 +19,7 @@
         android:id="@+id/ProductInfoBarCode"
         android:layout_width="550px"
         android:layout_height="80px"
-        android:layout_marginLeft="310px"
+        android:layout_marginLeft="290px"
         android:layout_marginTop="-60px"
         android:focusable="false"
         android:background="@drawable/ed_back_white"/>
@@ -28,8 +28,8 @@
         android:layout_height="80px"
         android:layout_width="wrap_content"
         android:text="确定"
-        android:layout_marginTop="-85px"
-        android:layout_marginLeft="900px"
+        android:layout_marginTop="-82px"
+        android:layout_marginLeft="880px"
         android:background="#00B2EE"
         android:textColor="#ffffff"
         android:id="@+id/ProductBack"/>

@@ -94,6 +94,7 @@
     <string name="affirm">确认</string>
     <string name="dialog_stopwork_content">请确认是否结束盘点！</string>
     <string name="dialog_rollback_content">请确认是否回退到上一个界面！</string>
+    <string name="dialog_affirm_content">是否确认备料！</string>
 
     <string name="MainBoard">主板:</string>
     <string name="LittleBoard">小板:</string>

@@ -13,10 +13,12 @@ import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.InventoryExecption;
 import com.delta.smt.entity.IssureToWarehFinishResult;
+import com.delta.smt.entity.JsonLocationVerfyRoot;
 import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
-import com.delta.smt.entity.JsonProductToolsLocation;
+import com.delta.smt.entity.JsonProductToolsLocationRoot;
+import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Light;
@@ -306,6 +308,9 @@ public interface ApiService {
     @GET("pcb/inventory/exception")
     Observable<InventoryExecption> getInventoryException();//获取总结
 
+    @GET("pcb/inventory/alteration/judge")
+    Observable<Success> getJudgeSuccsee(@Query("boxSerial") String boxSerial);//获取总结
+
     @GET("pcb/inventory/submit")
     Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
 
@@ -394,7 +399,7 @@ public interface ApiService {
 
     //尾数仓发料完成
     @GET("SMM/WareHIssue/completeMantissIssue")
-    Observable<IssureToWarehFinishResult> getMantissaWareOver(String s);
+    Observable<IssureToWarehFinishResult> getMantissaWareOver(@Query("condition") String s);
 
     //仓库房备料和尾数仓选择
     @GET("SMM/IssueMana/queryWarehousePart")
@@ -405,7 +410,6 @@ public interface ApiService {
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
     //TODO shaoqiang,8Interfance
-//    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/order/list/page")
     @GET("sms/jig/life/use/loan/order/list/page")
     Observable<JsonProductBorrowRoot> getProductWorkItem(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent);
 
@@ -419,11 +423,11 @@ public interface ApiService {
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/verify")
     @GET("webapi/sms/jig/life/use/instore/verify")
-    Observable<JsonProductToolsLocation> getLocationVerify(@Query("param") String param);
+    Observable<JsonProductToolsLocationRoot> getLocationVerify(@Query("param") String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
     @GET("webapi/sms/jig/life/use/instore/submit")
-    Observable<JsonProductToolsLocation> getLocationSubmit(@Query("param") String param);
+    Observable<JsonLocationVerfyRoot> getLocationSubmit(@Query("param") String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/back/submit")
     @GET("webapi/sms/jig/life/use/back/submit")
@@ -435,7 +439,7 @@ public interface ApiService {
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
     @GET("webapi/sms/jig/life/use/loan/submit")
-    Observable<JsonProductToolsLocation> getProductToolsBorrowSubmit(@Query("param") String param);
+    Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(@Query("param") String param);
 
 
     //liuzhenyu
@@ -446,6 +450,10 @@ public interface ApiService {
     //点击清理按钮
     @GET("SMM/ManToWareh/triggerListUpdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
+
+    //点击开始绑定
+    @GET("SMM/ManToWareh/startBound")
+    Observable<MantissaWarehousePutstorageResult> getOnclickBeginButton();
 
     //尾数仓点击开始入库
     @GET("SMM/ManToWareh/startReturnedWareh")

@@ -1,16 +1,16 @@
 package com.delta.smt.ui.product_tools.location;
 
+import android.support.design.widget.Snackbar;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.JsonProductToolsLocation;
+import com.delta.smt.entity.JsonProductToolsLocationRoot;
 import com.delta.smt.ui.product_tools.location.di.DaggerProductToolsLocationComponent;
 import com.delta.smt.ui.product_tools.location.di.ProductToolsLocationModule;
 import com.delta.smt.ui.product_tools.location.mvp.ProduceToolsLocationContract;
@@ -112,7 +112,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
                 jsonObject.put("shelfBarcode", barcode);
                 jsonObject.put("userID", ID);
                 String s = "[\'" + jsonObject.toString() + "\']";
-                getPresenter().getSubmitResoult(s);
+                getPresenter().getSubmitResult(s);
                 shift = barcode;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -125,7 +125,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     }
 
     @Override
-    public int getLocation(JsonProductToolsLocation param) {
+    public int getLocation(JsonProductToolsLocationRoot param) {
         if (param.getCode()==0) {
             mProductToolsBarCodeEditText.setText(tools);
             mShiftBarcodeCodeEditText.setText(param.getMessage());
@@ -140,17 +140,22 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     }
 
     @Override
-    public int getSubmitResoult(int param) {
+    public int getSubmitResult(int param) {
         if (param == 0) {
 
             mShiftBarcodeCodeEditText.setText(shift);
-            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"治具入架位完成！");
             VibratorAndVoiceUtils.correctVibrator(ProduceToolsLocationActivity.this);
             VibratorAndVoiceUtils.correctVoice(ProduceToolsLocationActivity.this);
             mShiftBarcodeCodeEditText.setText("");
             mProductToolsBarCodeEditText.setText("");
             flag1=1;
+            Snackbar.make(getCurrentFocus(),"治具入架位已完成，可以进行下一次操作。",Snackbar.LENGTH_LONG).show();
 
+        }else{
+            mShiftBarcodeCodeEditText.setText("");
+            mProductToolsBarCodeEditText.setText("");
+            Snackbar.make(getCurrentFocus(),"该治具无法入架位。",Snackbar.LENGTH_LONG).show();
+            flag1=1;
         }
         return 0;
     }

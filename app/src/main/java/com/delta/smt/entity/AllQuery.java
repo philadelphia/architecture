@@ -107,6 +107,16 @@ public class AllQuery {
         private String amount;
         private String endTime;
         private String status;
+        private long  leftTime;
+
+
+        public long getLeftTime() {
+            return leftTime;
+        }
+
+        public void setLeftTime(long leftTime) {
+            this.leftTime = leftTime;
+        }
 
         public String getMainBoard() {
             return mainBoard;
