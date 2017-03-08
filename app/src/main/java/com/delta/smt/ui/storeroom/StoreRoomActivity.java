@@ -190,6 +190,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                 VibratorAndVoiceUtils. wrongVoice (this);
             }
 
+        }catch(Exception e){
+
         }
     }
 

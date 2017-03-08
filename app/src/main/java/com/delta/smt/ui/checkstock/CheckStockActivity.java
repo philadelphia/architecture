@@ -32,6 +32,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.CheckStockDemo;
+import com.delta.smt.entity.ExceptionsBean;
 import com.delta.smt.ui.checkstock.di.CheckStockModule;
 import com.delta.smt.ui.checkstock.di.DaggerCheckStockComponent;
 import com.delta.smt.ui.checkstock.mvp.CheckStockContract;
@@ -191,6 +192,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     SnackbarUtil.showMassage(mianCheckStockActivityView, "扫描的架位二维码错误，请重新扫描");
                     //ToastUtils.showMessage(this, "扫描的架位二维码错误，请重新扫描");
                     status = 1;
+                }catch(Exception e){
+
                 }
                 break;
             case 2:
@@ -232,6 +235,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                             isShowDialog = false;
                                             getPresenter().fetchJudgeSuceess(mMaterbarCode.getStreamNumber());
                                         }
+
                                     }
                                 }
                             }
@@ -250,6 +254,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     SnackbarUtil.showMassage(mianCheckStockActivityView, "请重新扫描架位");
                     //ToastUtils.showMessage(this, "请重新扫描架位");
                     status = 3;
+                }catch(Exception e){
+
                 }
                 break;
             case 3:
@@ -275,6 +281,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     VibratorAndVoiceUtils.wrongVoice(this);
                     //SnackbarUtil.showMassage(mianCheckStockActivityView,"请输入数量");
                     ToastUtils.showMessageLong(this, "扫描的架位二维码错误，请重新扫描");
+                }catch(Exception e){
+
                 }
 
                 break;
