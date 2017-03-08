@@ -88,6 +88,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     CheckBox btnSwitch;
     boolean isOver = true;
     boolean isHaveIssureOver;
+    BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
     private List<MantissaWarehouseDetailsResult.RowsBean> dataList = new ArrayList();
     private List<MantissaWarehouseDetailsResult.RowsBean> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> title_adapter;
@@ -97,7 +98,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private MantissaWarehouseReady.RowsBean mMantissaWarehouse;
     private BottomSheetDialog bottomSheetDialog;
     private String workorder;
-
     private String lastCar;
     private int flag = 1;
     private String side;
@@ -442,7 +442,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
-        BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+
         switch (flag) {
             case 1:
                 try {
