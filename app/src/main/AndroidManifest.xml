@@ -6,9 +6,10 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--更新所需权限-->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 更新所需权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -22,9 +23,11 @@
         android:persistent="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!-- autolayout meta
+
+        <!--
+             autolayout meta
                  将设计图的宽高配置后,配合AutoLauout控件使用,在设计图尺寸以外的其它尺寸手机上,也能达到和设计图一样的效果
-                 -->
+        -->
         <meta-data
             android:name="design_width"
             android:value="1080" />
@@ -38,20 +41,20 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!--login activity-->
+        <!-- login activity -->
         <activity
             android:name=".ui.login.LoginActivity"
             android:screenOrientation="portrait" />
 
-        <!--main activity-->
+        <!-- main activity -->
         <activity
             android:name=".StartActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.fault_processing.processing.FalutProcessingActivity"
             android:screenOrientation="portrait" />
@@ -62,7 +65,7 @@
             android:name=".ui.fault_processing.fault_add.FaultProcessingAddActivity"
             android:screenOrientation="portrait" />
 
-        <!--StorageWarningActivity  liuzhenyu -->
+        <!-- StorageWarningActivity  liuzhenyu -->
         <activity
             android:name=".ui.storage_manger.StorageWarningActivity"
             android:screenOrientation="portrait" />
@@ -78,31 +81,26 @@
         <activity
             android:name=".ui.mantissa_warehouse.detail.MantissaWarehouseDetailsActivity"
             android:configChanges="keyboard"
-
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity"
             android:screenOrientation="portrait" />
 
-
-        <!--production warning activity-->
+        <!-- production warning activity -->
         <activity
             android:name=".ui.production_warning.mvp.produce_line.ProduceLineActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.production_warning.mvp.produce_warning.ProduceWarningActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.hand_add.mvp.HandAddActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity"
             android:screenOrientation="portrait" />
 
-        <!--lin-->
+        <!-- lin -->
         <activity
             android:name=".ui.store.StoreIssueActivity"
             android:launchMode="singleTask"
@@ -119,12 +117,10 @@
             android:name=".ui.store.WarningListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.feeder.wareSelect.WareSelectActivity"
             android:label="@string/title_activity_feeder_cache_region"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.checkstock.StartWorkAndStopWorkActivity"
             android:launchMode="singleTask"
@@ -136,17 +132,15 @@
 
         <service android:name=".service.warningService.WarningService" />
 
-        <activity android:name=".ui.feeder.warning.supply.FeederSupplyListActivity"></activity>
-
-
+        <activity android:name=".ui.feeder.warning.supply.FeederSupplyListActivity" />
         <activity
             android:name=".ui.feeder.handle.feederSupply.FeederSupplyActivity"
             android:label="feederSupplyActivity" />
 
-        <!--shufeng.wu downloadservice-->
+        <!-- shufeng.wu downloadservice -->
         <service android:name=".ui.main.update.DownloadService" />
 
-        <!--shufen.wu FileProvider-->
+        <!-- shufen.wu FileProvider -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="delta.smart_smt.fileprovider"
@@ -163,7 +157,6 @@
         <activity
             android:name=".ui.smt_module.module_down.ModuleDownActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.smt_module.module_up_binding.ModuleUpBindingActivity"
             android:screenOrientation="portrait" />
@@ -176,7 +169,7 @@
         <activity
             android:name=".ui.setting.SettingActivity"
             android:screenOrientation="portrait" />
-        <!--治工具-->
+        <!-- 治工具 -->
         <activity
             android:name=".ui.product_tools.borrow.ProduceToolsBorrowActivity"
             android:screenOrientation="portrait" />
@@ -193,11 +186,16 @@
             android:name=".ui.product_tools.mtools_info.Produce_mToolsActivity"
             android:screenOrientation="portrait" />
 
-        <!--超领-->
+        <!-- 超领 -->
         <activity
             android:name=".ui.over_receive.OverReceiveActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".service.warningService.WarningDialogActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Wallpaper.NoTitleBar"></activity>
     </application>
 
 </manifest>

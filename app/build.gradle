@@ -53,6 +53,7 @@ android {
         disable "ResourceType"
         abortOnError false
     }
+    buildToolsVersion '25.0.0'
 }
 
 dependencies {
@@ -77,4 +78,5 @@ dependencies {
     compile files('libs/java-websocket-1.3.0.jar')
     compile project(':countTime')
     compile project(':websocketmanager')
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 }

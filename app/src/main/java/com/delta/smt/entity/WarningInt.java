@@ -18,4 +18,6 @@ public class WarningInt {
     public void setWarnInt(int warnInt) {
         this.warnInt = warnInt;
     }
+
+
 }

@@ -27,8 +27,8 @@ public class TextToSpeechUtils implements TextToSpeech.OnInitListener {
     //初始化TTS引擎
     @Override
     public void onInit(int status) {
-        Log.i("TextToSpeechUtils",String.valueOf(status));
-        if(status==TextToSpeech.SUCCESS){
+        Log.i("TextToSpeechUtils", String.valueOf(status));
+        if(status== TextToSpeech.SUCCESS){
             int result = this.mTextToSpeech.setLanguage(Locale.CHINA);//设置识别语音为中文
             synchronized (this){
                 this.mIsReady=true;//设置标识符为true
@@ -65,6 +65,6 @@ public class TextToSpeechUtils implements TextToSpeech.OnInitListener {
         HashMap<String,String> params=new HashMap<String,String >();
         params.put(TextToSpeech.Engine.KEY_PARAM_STREAM,"STREAM_NOTIFICATION");//设置播放类型（音频流类型）
         this.mTextToSpeech.speak(message, TextToSpeech.QUEUE_ADD, params);//将这个发音任务添加当前任务之后
-        this.mTextToSpeech.playSilence(100,TextToSpeech.QUEUE_ADD,params);//间隔多长时间
+        this.mTextToSpeech.playSilence(100, TextToSpeech.QUEUE_ADD,params);//间隔多长时间
     }
 }
