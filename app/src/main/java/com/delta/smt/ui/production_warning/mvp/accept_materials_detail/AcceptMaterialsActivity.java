@@ -1,7 +1,7 @@
 package com.delta.smt.ui.production_warning.mvp.accept_materials_detail;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
-import android.net.http.LoggingEventHandler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +17,6 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
-import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -141,6 +140,11 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         return R.layout.activity_produce_warning_details;
     }
 
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
