@@ -3,6 +3,7 @@ package com.delta.smt.ui.checkstock;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -32,10 +34,12 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.CheckStockDemo;
+import com.delta.smt.entity.ExceptionsBean;
 import com.delta.smt.ui.checkstock.di.CheckStockModule;
 import com.delta.smt.ui.checkstock.di.DaggerCheckStockComponent;
 import com.delta.smt.ui.checkstock.mvp.CheckStockContract;
 import com.delta.smt.ui.checkstock.mvp.CheckStockPresenter;
+import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.squareup.haha.perflib.Main;
 
@@ -93,6 +97,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     private boolean isShowDialog = true;
     private int isChexNumber = 0;
     private boolean isChexs = true;
+    private String FrameLocation;
 
 
     @Override
@@ -102,8 +107,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     protected void initData() {
-
-
+        FrameLocation=SpUtil.getString(CheckStockActivity.this,"FrameLocation");
     }
 
     @Override
@@ -165,6 +169,11 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         };
         recyContetn.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyContetn.setAdapter(mAdapter);
+        if (!"".equals(FrameLocation)){
+            cargonTv.setText(FrameLocation);
+            getPresenter().fetchCheckStock(FrameLocation);
+            status = 2;
+        }
 
 
     }
@@ -181,6 +190,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     VibratorAndVoiceUtils.correctVoice(this);
                     if (mFrameLocation != null) {
                         cargonTv.setText(mFrameLocation.getSource());
+                        SpUtil.SetString(CheckStockActivity.this, "FrameLocation", mFrameLocation.getSource());
                         getPresenter().fetchCheckStock(mFrameLocation.getSource());
                         status = 2;
                     }
@@ -191,6 +201,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     SnackbarUtil.showMassage(mianCheckStockActivityView, "扫描的架位二维码错误，请重新扫描");
                     //ToastUtils.showMessage(this, "扫描的架位二维码错误，请重新扫描");
                     status = 1;
+                }catch(Exception e){
+
                 }
                 break;
             case 2:
@@ -232,6 +244,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                             isShowDialog = false;
                                             getPresenter().fetchJudgeSuceess(mMaterbarCode.getStreamNumber());
                                         }
+
                                     }
                                 }
                             }
@@ -250,6 +263,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     SnackbarUtil.showMassage(mianCheckStockActivityView, "请重新扫描架位");
                     //ToastUtils.showMessage(this, "请重新扫描架位");
                     status = 3;
+                }catch(Exception e){
+
                 }
                 break;
             case 3:
@@ -257,7 +272,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     mFrameLocationSuccess = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
                     VibratorAndVoiceUtils.correctVibrator(this);
                     VibratorAndVoiceUtils.correctVoice(this);
-                    if (mFrameLocationSuccess.getSource().equals(mFrameLocation.getSource())) {
+                    if (mFrameLocationSuccess.getSource().equals(mFrameLocation.getSource())||mFrameLocationSuccess.getSource().equals(FrameLocation)) {
                         getPresenter().fetchException(mFrameLocationSuccess.getSource());
                     } else {
                         cargoned.setFocusable(true);
@@ -275,6 +290,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     VibratorAndVoiceUtils.wrongVoice(this);
                     //SnackbarUtil.showMassage(mianCheckStockActivityView,"请输入数量");
                     ToastUtils.showMessageLong(this, "扫描的架位二维码错误，请重新扫描");
+                }catch(Exception e){
+
                 }
 
                 break;
@@ -294,6 +311,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         dataList.clear();
         dataList.addAll(wareHouses);
         mAdapter.notifyDataSetChanged();
+
 
 
     }
@@ -457,6 +475,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case R.id.stopwork_affirm:
                 if (mStopWorkDialog.isShowing()) {
                     mStopWorkDialog.dismiss();
+                    SpUtil.SetString(CheckStockActivity.this,"FrameLocation","");
                     getPresenter().fetchInventoryException();
                 }
 

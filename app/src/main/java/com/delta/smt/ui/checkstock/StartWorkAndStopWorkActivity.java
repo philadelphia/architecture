@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -22,7 +24,6 @@ import com.delta.smt.ui.checkstock.mvp.StartWorkAndStopWorkPresenter;
 import com.zhy.autolayout.AutoLinearLayout;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -42,6 +43,8 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     AutoLinearLayout goneView;
     @BindView(R.id.startAndstop_text)
     TextView startAndstopText;
+
+    private String mFrameLocation;
 
 
     @Override
@@ -105,8 +108,10 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     }
 
     @Override
-    public void onStartWork(String s) {
+    public void onStartWork(String s)
+    {
         startActivity(new Intent(this, CheckStockActivity.class));
+
     }
 
     @Override
@@ -114,12 +119,11 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         startAndstopStartwork.setVisibility(View.GONE);
         goneView.setVisibility(View.VISIBLE);
         goneView.setGravity(Gravity.CENTER);
-        if (s.getRows() != null) {
-            if (s.getRows().getCompletedSubShelf()!=null){
-            startAndstopText.setText(s.getRows().getCompletedSubShelf().get(s.getRows().getCompletedSubShelf().size() - 1));
+        mFrameLocation=SpUtil.getString(StartWorkAndStopWorkActivity.this,"FrameLocation");
+        if (!"".equals(mFrameLocation)) {
+            startAndstopText.setText(mFrameLocation);
             } else {
             startAndstopText.setText("暂无盘点架位");
-        }
         }
     }
 
