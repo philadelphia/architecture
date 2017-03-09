@@ -4,6 +4,7 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
+import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.ProductToolsInfo;
 
@@ -23,7 +24,7 @@ public interface ProduceToolsInfoContract {
 
         Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(String param);
 
-        Observable<JsonProductToolsLocationRoot> getProductToolsBorrowSubmit(String param);
+        Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(String param);
     }
 
     interface View extends IView {
@@ -32,7 +33,7 @@ public interface ProduceToolsInfoContract {
 
         void getToolsVerfy(List<ProductToolsInfo> ProductToolsItem);
 
-        void getToolsBorrowSubmit(JsonProductToolsLocationRoot j);
+        void getToolsBorrowSubmit(JsonProductToolsSubmitRoot j);
 
         void getFail();
 

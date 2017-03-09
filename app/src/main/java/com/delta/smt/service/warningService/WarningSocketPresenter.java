@@ -5,11 +5,10 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.delta.commonlibs.utils.GsonTools;
 import com.delta.WebSocketLibs.BaseWebSocketStrategy;
 import com.delta.WebSocketLibs.WsManager;
 import com.delta.WebSocketLibs.WsStatusListener;
-import com.delta.smt.entity.WarningContent;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.WarningManger;
 import com.google.gson.Gson;
@@ -22,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
-
 /**
  * @description : 定制Presenter 负责 client 与 WarningManger之间的交互
  * @autHor :  V.Wenju.Tian
@@ -33,7 +30,7 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 public class WarningSocketPresenter extends WsStatusListener implements ActivityMonitor.OnAppStateChangeListener, WarningManger.OnRegister {
 
-
+    private static final String TAG = "WarningSocketPresenter";
     private WsManager wsManager;
     private WarningManger warningManger;
     private boolean foreground;
@@ -41,7 +38,7 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
     private BaseWebSocketStrategy baseWebSocketStrategy;
     private List<OnReceiveListener> onReceiveListeners = new ArrayList<>();
 
-    private List<WarningContent> contents = new ArrayList<>();
+    private List<String> contents = new ArrayList<>();
     private ActivityMonitor activityMonitor;
 
     public WarningSocketPresenter(WsManager wsManager, WarningManger warningManger, Context context, BaseWebSocketStrategy baseWebSocketStrategy, ActivityMonitor activityMonitor) {
@@ -92,6 +89,12 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
 
     }
 
+    public Activity getTopActivity() {
+        return activityMonitor.getTopActivity();
+    }
+
+    ;
+
     @Override
     public void onMessage(String text) {
         super.onMessage(text);
@@ -99,29 +102,28 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
             Log.e(TAG, "onMessage() called with: text = [" + text + "]");
             if (!TextUtils.isEmpty(text)) {
                 try {
+
                     JSONObject jsonObject = new JSONObject(text);
                     int type = jsonObject.getInt("type");
-
                     //1.首先判断栈顶是不是有我们的预警页面
                     //2.其次判断是否是在前台如果是前台就发送广播如果是后台就弹出dialog
                     Activity topActivity = activityMonitor.getTopActivity();
                     if (topActivity != null) {
                         if (topActivity.getClass().equals(warningManger.getWaringCalss(type))) {
                             Gson gson = new Gson();
-                            WarningContent sendMessage = gson.fromJson(text, WarningContent.class);
                             if (warningManger.isConsume()) {
                                 contents.clear();
                                 warningManger.setConsume(false);
                             }
-                            contents.add(sendMessage);
-                            text = gson.toJson(contents);
+                            contents.add(text);
+                            String st_content = GsonTools.createGsonString(contents);
                             if (foreground) {
                                 for (OnReceiveListener onReceiveListener : onReceiveListeners) {
-                                    onReceiveListener.OnForeground(text);
+                                    onReceiveListener.OnForeground(st_content);
                                 }
                             } else {
                                 for (OnReceiveListener onReceiveListener : onReceiveListeners) {
-                                    onReceiveListener.OnBackground(text);
+                                    onReceiveListener.OnBackground(st_content);
                                 }
                             }
                         }

@@ -2,11 +2,15 @@ package com.delta.smt.service.warningService;
 
 import android.app.AlertDialog;
 import android.app.IntentService;
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -31,18 +35,22 @@ import javax.inject.Inject;
  */
 
 
+@RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class WarningService extends IntentService implements WarningSocketPresenter.OnReceiveListener {
 
     private static final String TAG = "WarningService";
-//    @Inject
+    //    @Inject
 //    WarningSocketClient warningSocketClient;
 //    @Inject
 //    ActivityMonitor activityMonitor;
     @Inject
     WarningSocketPresenter warningSocketPresenter;
+    private KeyguardManager km;
+
     public WarningService() {
         this("WarningService");
     }
+
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -62,8 +70,8 @@ public class WarningService extends IntentService implements WarningSocketPresen
         WarningSocketPresenterModule warningSocketPresenterModule = WarningSocketPresenterModule.builder().context(this).url(API.WebSocketURl).build();
         DaggerWarningComponent.builder().appComponent(App.getAppComponent()).warningSocketPresenterModule(warningSocketPresenterModule).build().inject(this);
         warningSocketPresenter.addOnRecieveLisneter(this);
+        km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
         //warningSocketClient.addOnRecieveLisneter(this);
-
     }
 
     @Override
@@ -80,12 +88,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.e(TAG, "onHandleIntent: ");
-        /*try {
-            warningSocketClient.connectBlocking();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+
     }
 
     @Override
@@ -100,23 +103,29 @@ public class WarningService extends IntentService implements WarningSocketPresen
         intent.setAction(Constant.WARNINGRECIEVE);
         intent.putExtra(Constant.WARNINGMESSAGE, text);
         sendBroadcast(intent);
+
     }
 
     @Override
     public void OnBackground(final String text) {
 
         App.getMainHander().post(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
             @Override
             public void run() {
-                getAlertDialog(text).show();
+                if (km.inKeyguardRestrictedInputMode()) {
+                    Intent alarmIntent = new Intent(WarningService.this, WarningDialogActivity.class);
+                    alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(alarmIntent);
+                }
             }
         });
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @NonNull
     public AlertDialog getAlertDialog(String text) {
-       // 1.创建这个DialogRelativelayout
+        // 1.创建这个DialogRelativelayout
         DialogLayout dialogLayout = new DialogLayout(this);
         //2.传入的是红色字体的标题
         dialogLayout.setStrTitle("预警信息");
@@ -130,15 +139,13 @@ public class WarningService extends IntentService implements WarningSocketPresen
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.AlertDialogCustom).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                Intent intent = new Intent(WarningService.this, activityMonitor.getTopActivity().getClass());
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
+                Intent intent = new Intent(WarningService.this, warningSocketPresenter.getTopActivity().getClass());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
         AlertDialog dialog = builder1.create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-      return dialog;
+        return dialog;
     }
-
-
 }

@@ -72,6 +72,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         application = ((App) getApplication());
         boolean isNotAdd = getIntent().getBooleanExtra(IS_NOT_ADD_ACTIVITY_LIST, false);
         synchronized (BaseCommonActivity.class) {
@@ -81,10 +82,14 @@ public abstract class BaseCommonActivity extends SupportActivity {
         if (UseEventBus()) {
             EventBus.getDefault().register(this);
         }
+        initWindow();
         setContentView(getContentViewId());
         bind = ButterKnife.bind(this);
         initCData();
         initCView();
+    }
+
+    protected void initWindow() {
     }
 
     public boolean UseEventBus() {
