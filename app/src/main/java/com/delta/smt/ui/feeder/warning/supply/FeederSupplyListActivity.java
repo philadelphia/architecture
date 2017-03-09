@@ -73,7 +73,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         warningManger.setRecieve(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        getPresenter().getAllSupplyWorkItems();
+
     }
 
     @Override
@@ -220,6 +220,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         if (null != adapter) {
             adapter.startRefreshTime();
         }
+        getPresenter().getAllSupplyWorkItems();
 
     }
 
