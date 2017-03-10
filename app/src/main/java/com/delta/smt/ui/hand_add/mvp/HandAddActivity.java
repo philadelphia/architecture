@@ -83,7 +83,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         //设置接收哪种预警
         mWarningManger.addWarning(Constant.HAND_ADD, getClass());
         //是否接收预警 可以控制预警时机
-        mWarningManger.setRecieve(true);
+        mWarningManger.setReceive(true);
 
         mWarningManger.setOnWarning(this);
 
@@ -167,7 +167,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
     @Override
     protected void onPause() {
-        mWarningManger.unregisterWReceriver(this);
+        mWarningManger.unregisterWReceiver(this);
         if (null != mAdapter) {
             mAdapter.cancelRefreshTime();
         }

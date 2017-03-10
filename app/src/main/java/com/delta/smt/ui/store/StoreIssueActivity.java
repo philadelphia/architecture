@@ -86,7 +86,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
         }
         dateFormat = new SimpleDateFormat("hh:mm:ss");
         warningManger.addWarning(Constant.PCB_WAREH_ISSUE_ALARM_FLAG , getClass());
-        warningManger.setRecieve(true);
+        warningManger.setReceive(true);
         warningManger.setOnWarning(this);
     }
 
@@ -222,7 +222,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
 
     @Override
     protected void onStop() {
-        warningManger.unregisterWReceriver(this);
+        warningManger.unregisterWReceiver(this);
         super.onStop();
     }
 

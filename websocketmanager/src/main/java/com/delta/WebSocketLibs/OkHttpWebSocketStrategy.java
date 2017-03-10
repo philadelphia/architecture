@@ -51,7 +51,7 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
 
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
-            Log.e(TAG, "onOpen: "+"sdf");
+            Log.e(TAG, "onOpen: " + "sdf");
             mWebSocket = webSocket;
             mCurrentStatus = WsStatus.CONNECTED;
             connected();
@@ -80,7 +80,7 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
 
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-             tryReconnect();
+            tryReconnect();
             if (wsStatusListener != null) wsStatusListener.onFailure(t, response);
         }
     };
@@ -89,7 +89,7 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
         mContext = builder.mContext;
         wsUrl = builder.wsUrl;
         mOkHttpClient = builder.mOkHttpClient;
-        this.wsStatusListener=builder.wsStatusListener;
+        this.wsStatusListener = builder.wsStatusListener;
         this.mLock = new ReentrantLock();
     }
 
@@ -203,10 +203,10 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
             } else if (msg instanceof ByteString) {
                 isSend = mWebSocket.send((ByteString) msg);
             }
-            //发送消息失败，尝试重连
-            if (!isSend) {
-                tryReconnect();
-            }
+        }
+        //发送消息失败，尝试重连
+        if (!isSend) {
+            tryReconnect();
         }
         return isSend;
     }

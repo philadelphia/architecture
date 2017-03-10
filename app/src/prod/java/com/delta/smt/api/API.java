@@ -13,5 +13,4 @@ public class API {
     public static String PORT = "8081";
     public static String BASE_URL = "http://" + IP + ":" + PORT + "/";
 
-
 }

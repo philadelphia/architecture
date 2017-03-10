@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.delta.smt.R;
@@ -42,12 +44,26 @@ public class WarningDialog extends Dialog {
     public WarningDialog(@NonNull Context context) {
         super(context, R.style.AlertDialogCustom);
         this.context = context;
+    }
 
-
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        WindowManager m = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display d = m.getDefaultDisplay();
+        android.view.WindowManager.LayoutParams p = getWindow().getAttributes();
+        p.height = (int)(d.getHeight() *0.8);
+        p.width = (int)(d.getWidth()*0.7);
+        p.dimAmount = 0.0f;
+        getWindow().setAttributes(p);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         initView();
         initData();
@@ -81,15 +97,17 @@ public class WarningDialog extends Dialog {
         };
         rv_warning.setLayoutManager(new LinearLayoutManager(context));
         rv_warning.setAdapter(waringDialogEntityCommonBaseAdapter);
+
     }
 
     public List<WaringDialogEntity> getDatas() {
         return datas;
     }
 
-    public CommonBaseAdapter getAdapter() {
-        return waringDialogEntityCommonBaseAdapter;
+    public void notifyData() {
+        waringDialogEntityCommonBaseAdapter.notifyDataSetChanged();
     }
+
 
     //初始化时间
     private void initEvent() {
@@ -103,6 +121,7 @@ public class WarningDialog extends Dialog {
             }
         });
     }
+
     public interface OnClickListener {
         void onclick(View view);
     }

@@ -7,6 +7,7 @@ import android.view.View;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.SendMessage;
 import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.login.di.DaggerLoginComponent;
@@ -45,7 +46,6 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
     ArrayList<String> SimpleWarningdatas = new ArrayList<>();
     private SimpleDateFormat dateFormat;
     private WarningDialog warningDialog;
-    private WarningDialog dialog;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -56,10 +56,12 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
     @Override
     protected void initData() {
         dateFormat = new SimpleDateFormat("hh:mm:ss");
-        //接收那种预警，没有的话自己定义常量
+        //接收那种预警
         warningManger.addWarning(9, getClass());
+        //需要定制的信息
+        warningManger.sendMessage(new SendMessage(9));
         //是否接收预警 可以控制预警时机
-        warningManger.setRecieve(true);
+        warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
 
@@ -84,7 +86,7 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
 
     @Override
     protected void onStop() {
-        warningManger.unregisterWReceriver(this);
+        warningManger.unregisterWReceiver(this);
         super.onStop();
     }
 
@@ -102,11 +104,14 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
     public void warningComing(String message) {
         Log.e(TAG, "warningComing: " + message);
 
-        if (dialog == null) {
-            dialog = createDialog(message);
-        } else {
-            updateMessage(message);
+        if (warningDialog == null) {
+            warningDialog = createDialog(message);
         }
+        if(!warningDialog.isShowing()){
+            warningDialog.show();
+        }
+            updateMessage(message);
+
 
 //        if (alertDialog != null) {
 //            SimpleWarningdatas.clear();
@@ -127,22 +132,28 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
     }
 
     public WarningDialog createDialog(String message) {
-        WarningDialog warningDialog = new WarningDialog(this);
+        warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override
             public void onclick(View view) {
                 warningManger.setConsume(true);
             }
         });
-        updateMessage(message);
+        warningDialog.show();
+
         return warningDialog;
     }
 
+    /**
+     * type == 9  代表你要发送的是哪个
+     * @param message
+     */
     private void updateMessage(String message) {
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("预警Sample");
+        String content ="";
         try {
             JSONArray jsonArray = new JSONArray(message);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -151,11 +162,13 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
                 //可能有多种预警的情况
                 if (type == 9) {
                     Object message1 = jsonObject.get("message");
-                    warningEntity.setContent(message1 + "\n");
+                    content=content+message1+"\n";
+
                 }
             }
+            warningEntity.setContent(content + "\n");
             datas.add(warningEntity);
-            warningDialog.getAdapter().notifyDataSetChanged();
+            warningDialog.notifyData();
         } catch (JSONException e) {
             e.printStackTrace();
         }

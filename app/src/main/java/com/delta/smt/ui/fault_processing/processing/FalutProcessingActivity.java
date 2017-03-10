@@ -96,7 +96,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         faultParameter.setLines(lines);
         paramter = GsonTools.createGsonString(faultParameter);
         warningManger.addWarning(Constant.ENGINEER_FAULT_ALARM_FLAG, this.getClass());
-        warningManger.setRecieve(true);
+        warningManger.setReceive(true);
         warningManger.setOnWarning(this);
 
     }

@@ -9,6 +9,7 @@ import com.delta.WebSocketLibs.BaseWebSocketStrategy;
 import com.delta.WebSocketLibs.WsManager;
 import com.delta.WebSocketLibs.WsStatusListener;
 import com.delta.commonlibs.utils.GsonTools;
+import com.delta.smt.entity.SendMessage;
 import com.delta.smt.entity.WarningMessage;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.WarningManger;
@@ -18,9 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @description : 定制Presenter 负责 client 与 WarningManger之间的交互
@@ -57,6 +56,9 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
 
     }
 
+    public void setConsume(boolean isConsume){
+        warningManger.setConsume(isConsume);
+    }
     public void startConntect() {
         wsManager.startConnect();
     }
@@ -88,15 +90,10 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
     }
 
     @Override
-    public void register(int type) {
-        if (wsManager.isWsConnected()) {
-            Map<String, String> maps = new HashMap<>();
-            maps.put("type", String.valueOf(type));
-            String s = GsonTools.createGsonString(maps);
-            Log.e(TAG, "register: " + s);
-            wsManager.sendMessage(s);
-        }
-
+    public void register(SendMessage sendMessage) {
+        String s = GsonTools.createGsonString(sendMessage);
+        Log.e(TAG, "register: "+s);
+        wsManager.sendMessage(s);
     }
 
     public Activity getTopActivity() {
@@ -112,16 +109,13 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
             if (!TextUtils.isEmpty(text)) {
                 try {
                     JSONObject jsonObject = new JSONObject(text);
-
-
                     int type = jsonObject.getInt("type");
                     //1.首先判断栈顶是不是有我们的预警页面
                     //2.其次判断是否是在前台如果是前台就发送广播如果是后台就弹出dialog
                     Activity topActivity = activityMonitor.getTopActivity();
                     if (topActivity != null) {
-                        if (topActivity.getClass().equals(warningManger.getWaringCalss(type))) {
+                        if (topActivity.getClass().equals(warningManger.getWaringClass(type))) {
                             WarningMessage warningMessage = GsonTools.changeGsonToBean(text, WarningMessage.class);
-
                             if (warningManger.isConsume()) {
                                 jsonArray = null;
                                 jsonArray = new JSONArray();
