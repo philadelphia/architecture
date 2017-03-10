@@ -112,23 +112,6 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
         }
             updateMessage(message);
 
-
-//        if (alertDialog != null) {
-//            SimpleWarningdatas.clear();
-//            ArrayList<WarningContent> warningContents = GsonTools.changeGsonToList(message, WarningContent.class);
-//
-//            for (WarningContent warningContent : warningContents) {
-//                if (warningContent.getType() == Constant.SAMPLEWARING) {
-//                    String format = dateFormat.format(new Date(System.currentTimeMillis() - Long.valueOf(warningContent.getMessage().getDeadLine())));
-//                    SimpleWarningdatas.add(warningContent.getMessage().getProductline() + "--" + format + "\n");
-//                }
-//
-//            }
-//            dialogLayout.setDatas(SimpleWarningdatas);
-//            alertDialog.show();
-//        } else {
-//            alertDialog = createDialog(message);
-//        }
     }
 
     public WarningDialog createDialog(String message) {

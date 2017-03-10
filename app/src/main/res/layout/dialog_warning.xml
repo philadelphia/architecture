@@ -23,7 +23,6 @@
             android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.NestedScrollView>
 
-
     <Button
         android:id="@+id/bt_sure"
         android:layout_width="200px"
