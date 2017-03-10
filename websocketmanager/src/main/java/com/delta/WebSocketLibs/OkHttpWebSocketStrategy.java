@@ -20,7 +20,7 @@ import okio.ByteString;
 import static android.content.ContentValues.TAG;
 
 /**
- * @description :
+ * @description :基于OKhttp的websocket
  * @autHor :  V.Wenju.Tian
  * @date : 2017/3/3 13:53
  */
@@ -65,7 +65,6 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
 
         @Override
         public void onMessage(final WebSocket webSocket, String text) {
-            Log.e(TAG, "onMessage: "+text);
             if (wsStatusListener != null) wsStatusListener.onMessage(text);
         }
 
@@ -81,7 +80,7 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
 
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-            tryReconnect();
+             tryReconnect();
             if (wsStatusListener != null) wsStatusListener.onFailure(t, response);
         }
     };

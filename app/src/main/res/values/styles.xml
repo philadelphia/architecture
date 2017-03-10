@@ -44,7 +44,12 @@
         <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/waring_editext</item>
         <item name="android:padding">@dimen/dp_5</item>
-
+    </style>
+    <style name="waringTitle">
+        <item name="android:textSize">@dimen/px_50</item>
+        <item name="android:textColor">@color/ff0000</item>
+        <item name="android:layout_marginTop">@dimen/px_50</item>
+        <item name="android:layout_marginLeft">@dimen/px_50</item>
     </style>
     <style name="pcb_button">
         <item name="android:textSize">@dimen/sp_12</item>
@@ -109,4 +114,6 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+
 </resources>

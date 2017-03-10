@@ -32,7 +32,7 @@ public class DialogLayout extends LinearLayout {
         this.context = context;
         this.setOrientation(VERTICAL);
         this.setBackgroundColor(Color.WHITE);
-        this.setPadding(dip2px(context,16),dip2px(context,8),10,0);
+        this.setPadding(dip2px(context, 16), dip2px(context, 8), 10, 0);
     }
 
     public DialogLayout(Context context, AttributeSet attrs) {
@@ -55,6 +55,7 @@ public class DialogLayout extends LinearLayout {
 
     /**
      * 传入的是一级标题，红色的
+     *
      * @param strTitle
      */
     public void setStrTitle(String strTitle) {
@@ -62,35 +63,38 @@ public class DialogLayout extends LinearLayout {
         TextView tvTitle = new TextView(context);
         tvTitle.setTextColor(Color.RED);
         tvTitle.setText(strTitle);
-        tvTitle.setTextSize(px2sp(context,16));
+        tvTitle.setTextSize(px2sp(context, 16));
 
-        LayoutParams param=new LayoutParams(
+        LayoutParams param = new LayoutParams(
                 ViewGroup.LayoutParams.FILL_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        param.setMargins(0,0,0,0);
+        param.setMargins(0, 0, 0, 0);
         tvTitle.setLayoutParams(param);
 
         this.addView(tvTitle);
 
     }
+
     public void setBlackTitle(String strTitle) {
 
         TextView tvTitle = new TextView(context);
         tvTitle.setTextColor(Color.BLACK);
         tvTitle.setText(strTitle);
-        tvTitle.setTextSize(px2sp(context,16));
+        tvTitle.setTextSize(px2sp(context, 16));
 
-        LayoutParams param=new LayoutParams(
+        LayoutParams param = new LayoutParams(
                 ViewGroup.LayoutParams.FILL_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        param.setMargins(0,0,0,0);
+        param.setMargins(0, 0, 0, 0);
         tvTitle.setLayoutParams(param);
 
         this.addView(tvTitle);
 
     }
+
     /**
      * 传入的是二级标题，黑色
+     *
      * @param strSecondTitle
      */
     public void setStrSecondTitle(String strSecondTitle) {
@@ -100,10 +104,10 @@ public class DialogLayout extends LinearLayout {
         tvSecondTitle.setTextSize(20);
         tvSecondTitle.setTextColor(Color.parseColor("#333333"));
 
-        LayoutParams param=new LayoutParams(
+        LayoutParams param = new LayoutParams(
                 ViewGroup.LayoutParams.FILL_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        param.setMargins(dip2px(context,12),dip2px(context,6),0,dip2px(context,6));
+        param.setMargins(dip2px(context, 12), dip2px(context, 6), 0, dip2px(context, 6));
         tvSecondTitle.setLayoutParams(param);
 
         this.addView(tvSecondTitle);
@@ -111,6 +115,7 @@ public class DialogLayout extends LinearLayout {
 
     /**
      * 传入的是diglog的listview的ArrayList。
+     *
      * @param arrayListContent
      */
 
@@ -154,8 +159,7 @@ public class DialogLayout extends LinearLayout {
      * 将px值转换为sp值，保证文字大小不变
      *
      * @param pxValue
-     * @param
-     *            （DisplayMetrics类中属性scaledDensity）
+     * @param （DisplayMetrics类中属性scaledDensity）
      * @return
      */
     public static int px2sp(Context context, float pxValue) {
@@ -167,13 +171,13 @@ public class DialogLayout extends LinearLayout {
      * 将sp值转换为px值，保证文字大小不变
      *
      * @param spValue
-     * @param
-     *            （DisplayMetrics类中属性scaledDensity）
+     * @param （DisplayMetrics类中属性scaledDensity）
      * @return
      */
     public static int sp2px(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
+
 
 }

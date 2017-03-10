@@ -71,6 +71,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
         DaggerWarningComponent.builder().appComponent(App.getAppComponent()).warningSocketPresenterModule(warningSocketPresenterModule).build().inject(this);
         warningSocketPresenter.addOnRecieveLisneter(this);
         km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        warningSocketPresenter.startConntect();
         //warningSocketClient.addOnRecieveLisneter(this);
     }
 
@@ -113,10 +114,11 @@ public class WarningService extends IntentService implements WarningSocketPresen
             @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
             @Override
             public void run() {
+                Intent alarmIntent = new Intent(WarningService.this, WarningDialogActivity.class);
+                alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(alarmIntent);
                 if (km.inKeyguardRestrictedInputMode()) {
-                    Intent alarmIntent = new Intent(WarningService.this, WarningDialogActivity.class);
-                    alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(alarmIntent);
+
                 }
             }
         });
