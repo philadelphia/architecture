@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
-    android:id="@+id/rl_item"
-    android:layout_marginTop="20px"
-    android:layout_marginRight="20px"
-    android:layout_marginLeft="20px"
-    android:background="@drawable/card_background"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+                xmlns:app="http://schemas.android.com/tools"
+                android:id="@+id/rl_item"
+                android:layout_marginTop="20px"
+                android:layout_marginRight="20px"
+                android:layout_marginLeft="20px"
+                android:background="@drawable/card_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:ignore="NamespaceTypo">
 
 
     <TextView
@@ -23,6 +23,7 @@
             android:id="@+id/tv_info"
             android:textColor="@android:color/black"
             android:text="消息：锡膏即将配送到产线，请确认"
+            android:singleLine="true"
             android:layout_below="@+id/tv_produce_line"
             android:textSize="40px"
             android:padding="20px"

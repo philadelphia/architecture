@@ -97,6 +97,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden"
             android:screenOrientation="portrait" />
 
         <!-- lin -->
