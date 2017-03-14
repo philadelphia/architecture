@@ -77,7 +77,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.MODULE_DOWN_WARNING, getClass());
         //是否接收预警 可以控制预警时机
-        warningManger.setRecieve(true);
+        warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
         //getPresenter().getAllModuleDownWarningItems();
@@ -213,7 +213,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @Override
     protected void onStop() {
-        warningManger.unregisterWReceriver(this);
+        warningManger.unregisterWReceiver(this);
         super.onStop();
     }
 

@@ -9,17 +9,17 @@ import com.delta.WebSocketLibs.BaseWebSocketStrategy;
 import com.delta.WebSocketLibs.WsManager;
 import com.delta.WebSocketLibs.WsStatusListener;
 import com.delta.commonlibs.utils.GsonTools;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WarningMessage;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.WarningManger;
-import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @description : 定制Presenter 负责 client 与 WarningManger之间的交互
@@ -37,8 +37,8 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
     private Context context;
     private BaseWebSocketStrategy baseWebSocketStrategy;
     private List<OnReceiveListener> onReceiveListeners = new ArrayList<>();
-
-    private List<String> contents = new ArrayList<>();
+    JSONArray jsonArray = new JSONArray();
+    private List<WarningMessage> contents = new ArrayList<>();
     private ActivityMonitor activityMonitor;
 
     public WarningSocketPresenter(WsManager wsManager, WarningManger warningManger, Context context, BaseWebSocketStrategy baseWebSocketStrategy, ActivityMonitor activityMonitor) {
@@ -47,9 +47,19 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
         this.context = context;
         this.baseWebSocketStrategy = baseWebSocketStrategy;
         this.activityMonitor = activityMonitor;
+        activityMonitor.registerAppStateChangeListener(this);
+        ActivityMonitor.setStrictForeground(true);
         warningManger.setOnRegister(this);
         wsManager.setBaseWebSocketStrategy(baseWebSocketStrategy);
         baseWebSocketStrategy.setWsStatusListener(this);
+
+
+    }
+
+    public void setConsume(boolean isConsume){
+        warningManger.setConsume(isConsume);
+    }
+    public void startConntect() {
         wsManager.startConnect();
     }
 
@@ -58,6 +68,8 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
         this.wsManager = wsManager;
         warningManger.setOnRegister(this);
         wsManager.setBaseWebSocketStrategy(baseWebSocketStrategy);
+        activityMonitor.registerAppStateChangeListener(this);
+        ActivityMonitor.setStrictForeground(true);
         baseWebSocketStrategy.setWsStatusListener(this);
     }
 
@@ -78,22 +90,16 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
     }
 
     @Override
-    public void register(int type) {
-        if (wsManager.isWsConnected()) {
-            Map<String, String> maps = new HashMap<>();
-            maps.put("type", String.valueOf(type));
-            String s = GsonTools.createGsonString(maps);
-            Log.e(TAG, "register: " + s);
-            wsManager.sendMessage(s);
-        }
-
+    public void register(SendMessage sendMessage) {
+        String s = GsonTools.createGsonString(sendMessage);
+        Log.e(TAG, "register: "+s);
+        wsManager.sendMessage(s);
     }
 
     public Activity getTopActivity() {
         return activityMonitor.getTopActivity();
     }
 
-    ;
 
     @Override
     public void onMessage(String text) {
@@ -102,21 +108,24 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
             Log.e(TAG, "onMessage() called with: text = [" + text + "]");
             if (!TextUtils.isEmpty(text)) {
                 try {
-
                     JSONObject jsonObject = new JSONObject(text);
                     int type = jsonObject.getInt("type");
                     //1.首先判断栈顶是不是有我们的预警页面
                     //2.其次判断是否是在前台如果是前台就发送广播如果是后台就弹出dialog
                     Activity topActivity = activityMonitor.getTopActivity();
                     if (topActivity != null) {
-                        if (topActivity.getClass().equals(warningManger.getWaringCalss(type))) {
-                            Gson gson = new Gson();
+                        if (topActivity.getClass().equals(warningManger.getWaringClass(type))) {
+                            WarningMessage warningMessage = GsonTools.changeGsonToBean(text, WarningMessage.class);
                             if (warningManger.isConsume()) {
+                                jsonArray = null;
+                                jsonArray = new JSONArray();
                                 contents.clear();
                                 warningManger.setConsume(false);
                             }
-                            contents.add(text);
-                            String st_content = GsonTools.createGsonString(contents);
+                            jsonArray.put(jsonObject);
+                            contents.add(warningMessage);
+                            //String st_content = GsonTools.createGsonString(contents);
+                            String st_content = jsonArray.toString();
                             if (foreground) {
                                 for (OnReceiveListener onReceiveListener : onReceiveListeners) {
                                     onReceiveListener.OnForeground(st_content);

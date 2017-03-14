@@ -100,7 +100,15 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             public void call(Light light) {
                 getView().showContentView();
             if ("0".equals(light.getCode())){
-              getView().lightSuccsee(light.getMsg());
+                if ("当前库存中没有目标相同的料，请放置到一个空位即可!".equals(light.getMsg())){
+                        getView().lightSuccsee("N/A");
+                    }else {
+                    StringBuffer buffer = new StringBuffer();
+                    for (int i = 0; i < light.getRows().size(); i++) {
+                        buffer.append(light.getRows().get(i).getSubShelfSerial());
+                    }
+                    getView().lightSuccsee(buffer.toString());
+                }
                 }else {
              getView().storeFaild(light.getMsg());
 

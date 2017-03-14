@@ -110,7 +110,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
         //注册广播初始化
         warningManger.addWarning(Constant.PRODUCE_WARNING, getClass());
-        warningManger.setRecieve(true);
+        warningManger.setReceive(true);
         warningManger.setOnWarning(this);
     }
 
@@ -162,7 +162,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     @Override
     protected void onStop() {
         Log.e(TAG, "onStop: ");
-        warningManger.unregisterWReceriver(this);
+        warningManger.unregisterWReceiver(this);
         super.onStop();
     }
 

@@ -112,7 +112,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
         //接收那种预警，没有的话自己定义常量
         WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
         //是否接收预警 可以控制预警时机
-        WarningManger.getInstance().setRecieve(true);
+        WarningManger.getInstance().setReceive(true);
         //关键 初始化预警接口
         WarningManger.getInstance().setOnWarning(this);
     }
@@ -125,7 +125,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
 
     @Override
     protected void onStop() {
-        WarningManger.getInstance().unregisterWReceriver(this);
+        WarningManger.getInstance().unregisterWReceiver(this);
         super.onStop();
     }
 

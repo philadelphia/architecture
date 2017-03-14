@@ -70,10 +70,10 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.SAMPLEWARING, this.getClass());
         //是否接收预警 可以控制预警时机
-        warningManger.setRecieve(true);
+        warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        getPresenter().getAllSupplyWorkItems();
+
     }
 
     @Override
@@ -220,6 +220,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         if (null != adapter) {
             adapter.startRefreshTime();
         }
+        getPresenter().getAllSupplyWorkItems();
 
     }
 
@@ -237,7 +238,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         super.onStop();
 
         Log.i(TAG, "onResume: ");
-        warningManger.unregisterWReceriver(this);
+        warningManger.unregisterWReceiver(this);
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.delta.commonlibs.utils.GsonTools;
+import com.delta.smt.entity.SendMessage;
 import com.delta.smt.entity.WarningContent;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.WarningManger;
@@ -97,7 +98,7 @@ public class WarningSocketClient extends WebSocketClient implements ActivityMoni
                     //2.其次判断是否是在前台如果是前台就发送广播如果是后台就弹出dialog
                     Activity topActivity = activityMonitor.getTopActivity();
                     if (topActivity != null) {
-                        if (topActivity.getClass().equals(warningManger.getWaringCalss(type))) {
+                        if (topActivity.getClass().equals(warningManger.getWaringClass(type))) {
                             Gson gson = new Gson();
                             WarningContent sendMessage = gson.fromJson(text, WarningContent.class);
                             if (warningManger.isConsume()) {
@@ -146,7 +147,7 @@ public class WarningSocketClient extends WebSocketClient implements ActivityMoni
     }
 
     @Override
-    public void register(int type) {
+    public void register(SendMessage type) {
 
         if (isConnect) {
             Map<String, String> maps = new HashMap<>();

@@ -20,7 +20,7 @@ import okio.ByteString;
 import static android.content.ContentValues.TAG;
 
 /**
- * @description :
+ * @description :基于OKhttp的websocket
  * @autHor :  V.Wenju.Tian
  * @date : 2017/3/3 13:53
  */
@@ -51,7 +51,7 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
 
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
-            Log.e(TAG, "onOpen: "+"sdf");
+            Log.e(TAG, "onOpen: " + "sdf");
             mWebSocket = webSocket;
             mCurrentStatus = WsStatus.CONNECTED;
             connected();
@@ -65,7 +65,6 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
 
         @Override
         public void onMessage(final WebSocket webSocket, String text) {
-            Log.e(TAG, "onMessage: "+text);
             if (wsStatusListener != null) wsStatusListener.onMessage(text);
         }
 
@@ -90,7 +89,7 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
         mContext = builder.mContext;
         wsUrl = builder.wsUrl;
         mOkHttpClient = builder.mOkHttpClient;
-        this.wsStatusListener=builder.wsStatusListener;
+        this.wsStatusListener = builder.wsStatusListener;
         this.mLock = new ReentrantLock();
     }
 
@@ -204,10 +203,10 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
             } else if (msg instanceof ByteString) {
                 isSend = mWebSocket.send((ByteString) msg);
             }
-            //发送消息失败，尝试重连
-            if (!isSend) {
-                tryReconnect();
-            }
+        }
+        //发送消息失败，尝试重连
+        if (!isSend) {
+            tryReconnect();
         }
         return isSend;
     }

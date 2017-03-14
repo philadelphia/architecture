@@ -119,6 +119,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                 holder.setText(R.id.shortList_pcbcode, item.getPcbCode());
                 holder.setText(R.id.shortList_datacode, item.getDataCode());
                 holder.setText(R.id.shortList_count, item.getCount());
+                holder.setText(R.id.shortList_forprices, item.getPrice());
             }
 
             @Override
@@ -151,9 +152,24 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
             storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
             storageDatacodeed.setText(mBarCode.getDC());
             storageCounted.setText(mBarCode.getCount());
-            if(materialBlockBarCodes.size() <10) {
+            if(materialBlockBarCodes.size() ==0) {
                 materialBlockBarCodes.add(mBarCode);
                 setTextView();
+            }else{
+                int size=0;
+                for (int i=0;i<materialBlockBarCodes.size();i++){
+                    size++;
+                    if (!mBarCode.getStreamNumber().equals(materialBlockBarCodes.get(i).getStreamNumber())){
+                    materialBlockBarCodes.add(mBarCode);
+                    setTextView();
+                    }else {
+                        if (size==materialBlockBarCodes.size()){
+                            ToastUtils.showMessage(getApplication(),"请确认是否扫描的同一个标签!!");
+                        }
+                    }
+                    size=0;
+                }
+
             }
 //            if (materialBlockBarCodes.size() ==0){
 //                materialBlockBarCodes.add(mBarCode);
@@ -209,7 +225,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 //                }
             if (materialsList.size() <10){
                 ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
-               materialsList.add(threeOfMaterial);
+                materialsList.add(threeOfMaterial);
                 mShortLisrAdapter.notifyDataSetChanged();
             }else {
                 SnackbarUtil.showMassage(warningActivityMain,"请确实是否有扫错的条码或者确认箱子上有几个条码!");
@@ -243,10 +259,13 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @Override
     public void lightSuccsee(String s) {
-        SnackbarUtil.showMassage(warningActivityMain,s);
-        //ToastUtils.showMessage(this, "请放到固定架位");
-//        storageSubmit.setBackgroundColor(this.getResources().getColor(R.color.background));
-//        storageSubmit.setEnabled(false);
+        SnackbarUtil.showMassage(warningActivityMain,"点灯成功，请放置到固定架位");
+        for (int i=0;i<materialsList.size();i++){
+        ThreeOfMaterial threeOfMaterial = materialsList.get(i);
+        threeOfMaterial.setPrice(s);
+        materialsList.set(materialsList.size()-1,threeOfMaterial);
+        }
+        mShortLisrAdapter.notifyDataSetChanged();
     }
 
     @Override

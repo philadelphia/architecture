@@ -1,7 +1,5 @@
 package com.delta.smt.entity;
 
-import java.util.List;
-
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -10,15 +8,14 @@ import java.util.List;
 
 
 public class SendMessage {
+    int type;
+
     public SendMessage() {
     }
 
-    int type;
-    List<String> content;
+    public SendMessage(int type) {
 
-    public SendMessage(int type, List<String> content) {
         this.type = type;
-        this.content = content;
     }
 
     public int getType() {
@@ -27,13 +24,5 @@ public class SendMessage {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public void setContent(List<String> content) {
-        this.content = content;
-    }
-
-    public List<String> getContent() {
-        return content;
     }
 }

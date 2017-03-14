@@ -33,12 +33,21 @@ public class SpUtil {
         mSharedPreferences.edit().putString(key, value).commit();
     }
 
+    public static void SetString(Context context, String key, String value) {
+        if (mSharedPreferences == null) {
+            mSharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_APPEND);
+        }
+        mSharedPreferences.edit().putString(key, value).commit();
+    }
+
     public static void SetBooleanSF(Context context, String key, boolean value) {
         if (mSharedPreferences == null) {
             mSharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         }
         mSharedPreferences.edit().putBoolean(key, value).commit();
     }
+
+
 
     /**
      * 返回存在sharedPreferences的信息
@@ -62,6 +71,13 @@ public class SpUtil {
     public static String getStringSF(Context context, String key) {
         if (mSharedPreferences == null) {
             mSharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        }
+        return mSharedPreferences.getString(key, null);
+    }
+
+    public static String getString(Context context, String key) {
+        if (mSharedPreferences == null) {
+            mSharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_APPEND);
         }
         return mSharedPreferences.getString(key, null);
     }

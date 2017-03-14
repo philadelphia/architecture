@@ -12,17 +12,25 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.api.API;
 import com.delta.smt.app.App;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.service.warningService.di.DaggerWarningComponent;
 import com.delta.smt.service.warningService.di.WarningSocketPresenterModule;
 import com.delta.smt.widget.DialogLayout;
+import com.delta.smt.widget.WarningDialog;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -46,6 +54,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
     @Inject
     WarningSocketPresenter warningSocketPresenter;
     private KeyguardManager km;
+    private WarningDialog warningDialog;
 
     public WarningService() {
         this("WarningService");
@@ -71,6 +80,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
         DaggerWarningComponent.builder().appComponent(App.getAppComponent()).warningSocketPresenterModule(warningSocketPresenterModule).build().inject(this);
         warningSocketPresenter.addOnRecieveLisneter(this);
         km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        warningSocketPresenter.startConntect();
         //warningSocketClient.addOnRecieveLisneter(this);
     }
 
@@ -107,19 +117,69 @@ public class WarningService extends IntentService implements WarningSocketPresen
     }
 
     @Override
-    public void OnBackground(final String text) {
+    public void OnBackground(final String message) {
 
         App.getMainHander().post(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
             @Override
             public void run() {
+                if (warningDialog == null) {
+                    warningDialog = createDialog(message);
+                }
+                if (!warningDialog.isShowing()) {
+                    warningDialog.show();
+                }
+                updateMessage(message);
                 if (km.inKeyguardRestrictedInputMode()) {
-                    Intent alarmIntent = new Intent(WarningService.this, WarningDialogActivity.class);
-                    alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(alarmIntent);
+
                 }
             }
         });
+    }
+
+    public WarningDialog createDialog(String message) {
+        warningDialog = new WarningDialog(this);
+        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
+            @Override
+            public void onclick(View view) {
+                warningSocketPresenter.setConsume(true);
+                warningDialog.dismiss();
+                Intent intent = new Intent(WarningService.this, warningSocketPresenter.getTopActivity().getClass());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+        warningDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        warningDialog.show();
+        return warningDialog;
+    }
+
+    private void updateMessage(String message) {
+        List<WaringDialogEntity> datas = warningDialog.getDatas();
+        datas.clear();
+        WaringDialogEntity warningEntity = new WaringDialogEntity();
+        warningEntity.setTitle("预警Sample");
+        String content = "";
+        try {
+            JSONArray jsonArray = new JSONArray(message);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                int type = jsonObject.getInt("type");
+                //可能有多种预警的情况
+                if (type == 9) {
+                    Object message1 = jsonObject.get("message");
+                    content = content + message1 + "\n";
+
+                }
+            }
+            warningEntity.setContent(content + "\n");
+            datas.add(warningEntity);
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -139,9 +199,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.AlertDialogCustom).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(WarningService.this, warningSocketPresenter.getTopActivity().getClass());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+
             }
         });
         AlertDialog dialog = builder1.create();

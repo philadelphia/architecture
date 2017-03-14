@@ -75,7 +75,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.MODULE_UP_WARNING, getClass());
         //是否接收预警 可以控制预警时机
-        warningManger.setRecieve(true);
+        warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
         //getPresenter().getAllModuleUpWarningItems();
@@ -194,7 +194,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     protected void onStop() {
-        warningManger.unregisterWReceriver(this);
+        warningManger.unregisterWReceiver(this);
         super.onStop();
     }
 
