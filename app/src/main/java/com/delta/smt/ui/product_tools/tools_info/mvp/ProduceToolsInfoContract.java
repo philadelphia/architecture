@@ -35,7 +35,7 @@ public interface ProduceToolsInfoContract {
 
         void getToolsBorrowSubmit(JsonProductToolsSubmitRoot j);
 
-        void getFail();
+        void getFail(String message);
 
         void showLoadingView();
 
