@@ -1,6 +1,7 @@
 package com.delta.smt.ui.feeder.warning.supply.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.Result;
@@ -15,7 +16,7 @@ import rx.functions.Action1;
  * Date:     2016/12/21.
  */
 
-@FragmentScope
+@ActivityScope
 public class SupplyPresenter extends BasePresenter<SupplyContract.Model, SupplyContract.View>{
     @Inject
      SupplyPresenter(SupplyContract.Model model, SupplyContract.View mView) {

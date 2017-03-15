@@ -1,5 +1,6 @@
 package com.delta.smt.ui.feeder.warning.supply.di;
 
+import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.ui.feeder.warning.supply.mvp.SupplyContract;
@@ -21,13 +22,13 @@ public class SupplyModule {
         this.view = view;
     }
 
-    @FragmentScope
+    @ActivityScope
     @Provides
     public SupplyContract.View providesView(){
         return view;
     }
 
-    @FragmentScope
+    @ActivityScope
     @Provides
     public SupplyContract.Model providesModel(ApiService apiService){
         return  new SupplyModel(apiService);

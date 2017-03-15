@@ -18,6 +18,7 @@ import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyWarningItem;
@@ -27,6 +28,11 @@ import com.delta.smt.ui.feeder.warning.supply.di.DaggerSupplyComponent;
 import com.delta.smt.ui.feeder.warning.supply.di.SupplyModule;
 import com.delta.smt.ui.feeder.warning.supply.mvp.SupplyContract;
 import com.delta.smt.ui.feeder.warning.supply.mvp.SupplyPresenter;
+import com.delta.smt.widget.WarningDialog;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +59,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     private List<FeederSupplyWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<FeederSupplyWarningItem> adapter;
     private static final String TAG = "FeederSupplyList";
-    private AlertDialog alertDialog;
+    private WarningDialog warningDialog;
 
     @Inject
     WarningManger warningManger;
@@ -68,7 +74,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     protected void initData() {
         Log.i(TAG, "initData: ");
         //接收那种预警，没有的话自己定义常量
-        warningManger.addWarning(Constant.SAMPLEWARING, this.getClass());
+        warningManger.addWarning(Constant.FEEDER_SUPPLY_WARNING, this.getClass());
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
@@ -120,11 +126,40 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
 
     @Override
     public void warningComing(String warningMessage) {
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
-            alertDialog = createDialog(warningMessage);
-        } else {
-            alertDialog = createDialog(warningMessage);
+        if (warningDialog == null) {
+            warningDialog = createDialog(warningMessage);
+        }
+        if (!warningDialog.isShowing()) {
+            warningDialog.show();
+        }
+        warningDialog = createDialog(warningMessage);
+            updateMessage(warningMessage);
+    }
+
+    private void updateMessage(String warningMessage) {
+
+        List<WaringDialogEntity> datas = warningDialog.getDatas();
+        datas.clear();
+        WaringDialogEntity warningEntity = new WaringDialogEntity();
+        warningEntity.setTitle("预警Sample");
+        String content ="";
+        try {
+            JSONArray jsonArray = new JSONArray(warningMessage);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                int type = jsonObject.getInt("type");
+                //可能有多种预警的情况
+                if (type == Constant.FEEDER_SUPPLY_WARNING) {
+                    Object message1 = jsonObject.get("message");
+                    content=content+message1+"\n";
+
+                }
+            }
+            warningEntity.setContent(content + "\n");
+            datas.add(warningEntity);
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -172,7 +207,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllSupplyWorkItems();
+              onRefresh();
             }
         });
     }
@@ -183,31 +218,43 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllSupplyWorkItems();
+              onRefresh();
             }
         });
     }
 
 
-    private AlertDialog createDialog(final String warningMessage) {
-        DialogLayout dialogLayout = new DialogLayout(this);
-        //3.传入的是黑色字体的二级标题
-        dialogLayout.setStrSecondTitle("预警信息");
-        //4.传入的是一个ArrayList<String>
-        ArrayList<String> datas = new ArrayList<>();
-        datas.add("新备料请求:  ");
-        datas.add("H13----01:00:00");
-        datas.add("H14----01:20:00");
-        datas.add("新入库请求: ");
-        datas.add("20163847536---00:10:11");
-        dialogLayout.setStrContent(datas);
-        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+    private WarningDialog createDialog(final String warningMessage) {
+//        DialogLayout dialogLayout = new DialogLayout(this);
+//        //3.传入的是黑色字体的二级标题
+//        dialogLayout.setStrSecondTitle("预警信息");
+//        //4.传入的是一个ArrayList<String>
+//        ArrayList<String> datas = new ArrayList<>();
+//        datas.add("新备料请求:  ");
+//        datas.add("H13----01:00:00");
+//        datas.add("H14----01:20:00");
+//        datas.add("新入库请求: ");
+//        datas.add("20163847536---00:10:11");
+//        dialogLayout.setStrContent(datas);
+//        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                getPresenter().getAllSupplyWorkItems();
+//                dialog.dismiss();
+//            }
+//        }).show();
+
+        warningDialog = new WarningDialog(this);
+        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                getPresenter().getAllSupplyWorkItems();
-                dialog.dismiss();
+            public void onclick(View view) {
+                warningManger.setConsume(true);
+                onRefresh();
             }
-        }).show();
+        });
+        warningDialog.show();
+
+        return warningDialog;
     }
 
 
@@ -272,6 +319,11 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void onRefresh(){
+        getPresenter().getAllSupplyWorkItems();
     }
 
 }
