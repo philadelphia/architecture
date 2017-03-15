@@ -3,6 +3,7 @@ package com.delta.commonlibs.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.delta.commonlibs.utils.DeviceUuidFactory;
 import com.google.gson.Gson;
 
 import javax.inject.Singleton;
@@ -36,4 +37,9 @@ public class AppModule {
     @Singleton
     @Provides
     public Gson provideGson(){return new Gson();}
+    @Singleton
+    @Provides
+    public  DeviceUuidFactory provideDeviceUuid(Context context){
+        return new DeviceUuidFactory(context);
+    }
 }

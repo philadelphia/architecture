@@ -85,7 +85,7 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
         toolbarTitle.setText("治具归还");
 
 
-        data.add(0, new ProductToolsBack("序号", "治具二维码", "工单号", "治具类型", "状态"));
+//        data.add(0, new ProductToolsBack("序号", "治具二维码", "工单号", "治具类型", "状态"));
 
         adapter = new CommonBaseAdapter<ProductToolsBack>(getContext(), data) {
             @Override
@@ -162,9 +162,11 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
 
         if (list.getCode() == 0) {
             editText.setText(barCode);
+            data.clear();
+            data.add(0, new ProductToolsBack("序号", "治具二维码", "工单号", "治具类型", "状态"));
             data.addAll(p);
             adapter.notifyDataSetChanged();
-            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(), list.getMessage());
+            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(), "成功归还");
             VibratorAndVoiceUtils.correctVibrator(ProduceToolsBackActivity.this);
             VibratorAndVoiceUtils.correctVoice(ProduceToolsBackActivity.this);
         } else {

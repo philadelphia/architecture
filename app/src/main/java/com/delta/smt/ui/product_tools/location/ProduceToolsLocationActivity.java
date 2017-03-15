@@ -1,8 +1,12 @@
 package com.delta.smt.ui.product_tools.location;
 
-import android.support.design.widget.Snackbar;
+import android.app.Activity;
+import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.SnackbarUtil;
@@ -20,6 +24,7 @@ import com.delta.smt.utils.VibratorAndVoiceUtils;
 import org.json.JSONObject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Shaoqiang.Zhang on 2017/1/6.
@@ -38,6 +43,8 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
     @BindView(R.id.ShiftBarcode)
     EditText mShiftBarcodeCodeEditText;
+    @BindView(R.id.layout_root)
+    LinearLayout mLayoutRoot;
 
     private int flag1 = 1;
     private int ID = 1001;
@@ -52,10 +59,16 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
     }
 
+    private  View getRootView(Activity context)
+    {
+        return ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+    }
+
     @Override
     protected void initData() {
 
     }
+
 
     @Override
     protected void initView() {
@@ -100,7 +113,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
             } catch (Exception e) {
                 e.printStackTrace();
-                SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"治具二维码格式不对，请重新扫描！");
+                SnackbarUtil.showMassage(getRootView(this), "治具二维码格式不对，请重新扫描！");
                 VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
                 VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
             }
@@ -116,7 +129,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
                 shift = barcode;
             } catch (Exception e) {
                 e.printStackTrace();
-                SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"架位二维码格式不对，请重新扫描！");
+                SnackbarUtil.showMassage(getRootView(this), "架位二维码格式不对，请重新扫描！");
                 VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
                 VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
             }
@@ -126,13 +139,13 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
     @Override
     public int getLocation(JsonProductToolsLocationRoot param) {
-        if (param.getCode()==0) {
+        if (param.getCode() == 0) {
             mProductToolsBarCodeEditText.setText(tools);
             mShiftBarcodeCodeEditText.setText(param.getMessage());
             VibratorAndVoiceUtils.correctVibrator(ProduceToolsLocationActivity.this);
             VibratorAndVoiceUtils.correctVoice(ProduceToolsLocationActivity.this);
-        }else {
-            SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"该治具无法完成入架位操作!");
+        } else {
+            SnackbarUtil.showMassage(getRootView(this), "该治具无法完成入架位操作!");
             VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
             VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
         }
@@ -148,22 +161,23 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             VibratorAndVoiceUtils.correctVoice(ProduceToolsLocationActivity.this);
             mShiftBarcodeCodeEditText.setText("");
             mProductToolsBarCodeEditText.setText("");
-            flag1=1;
-            Snackbar.make(getCurrentFocus(),"治具入架位已完成，可以进行下一次操作。",Snackbar.LENGTH_LONG).show();
-
-        }else{
+            flag1 = 1;
+            SnackbarUtil.showMassage(getRootView(this), "治具入架位已完成，可以进行下一次操作。");
+        } else {
             mShiftBarcodeCodeEditText.setText("");
             mProductToolsBarCodeEditText.setText("");
-            Snackbar.make(getCurrentFocus(),"该治具无法入架位。",Snackbar.LENGTH_LONG).show();
-            flag1=1;
+            SnackbarUtil.showMassage(getRootView(this), "该治具无法入架位。");
+            flag1 = 1;
         }
         return 0;
     }
 
     @Override
     public void Fail() {
-        SnackbarUtil.showMassage(this.getWindow().getCurrentFocus(),"请求的数据不存在!");
+        SnackbarUtil.showMassage(getRootView(this), "请求的数据不存在!");
         VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
         VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
     }
+
+
 }

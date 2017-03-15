@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60px"
+            android:layout_marginLeft="40px"
             android:layout_marginTop="80px"
             android:text="@string/WorkNumberPlus"
             android:textColor="#333333"
@@ -29,8 +29,8 @@
             android:id="@+id/ProductToolsWorkItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="200px"
-            android:layout_marginTop="-45px"
+            android:layout_marginLeft="180px"
+            android:layout_marginTop="-50px"
             android:text="2314123"
             android:textColor="#333333"
             android:textSize="40px" />
@@ -38,8 +38,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="400px"
-            android:layout_marginTop="-45px"
+            android:layout_marginLeft="420px"
+            android:layout_marginTop="-50px"
             android:text="@string/MainBoard"
             android:textColor="#333333"
             android:textSize="40px" />
@@ -48,8 +48,8 @@
             android:id="@+id/MainBroad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="500px"
-            android:layout_marginTop="-45px"
+            android:layout_marginLeft="520px"
+            android:layout_marginTop="-50px"
             android:text="2314123"
             android:textColor="#333333"
             android:textSize="40px" />
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="720px"
-            android:layout_marginTop="-45px"
+            android:layout_marginTop="-50px"
             android:text="@string/LittleBoard"
             android:textColor="#333333"
             android:textSize="40px" />
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="820px"
-            android:layout_marginTop="-45px"
+            android:layout_marginTop="-50px"
             android:text="2314123"
             android:textColor="#333333"
             android:textSize="40px" />
@@ -76,56 +76,55 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60px"
+            android:layout_marginLeft="40px"
             android:layout_marginTop="30px"
             android:text="面别:"
             android:textColor="#333333"
             android:textSize="40px" />
 
-        <TextView
-            android:id="@+id/Cover"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="160px"
-            android:layout_marginTop="-45px"
-            android:text="1234"
-            android:textColor="#333333"
-            android:textSize="40px" />
+            <TextView
+                android:id="@+id/Cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="180px"
+                android:layout_marginTop="-50px"
+                android:text="1234"
+                android:textColor="#333333"
+                android:textSize="40px"/>
 
-        <TextView
+            <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="400px"
-            android:layout_marginTop="-45px"
+            android:layout_marginLeft="420px"
+            android:layout_marginTop="-50px"
             android:text="线别:"
             android:textColor="#333333"
             android:textSize="40px" />
 
-        <TextView
-            android:id="@+id/Line"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="500px"
-            android:layout_marginTop="-45px"
-            android:text="1234"
-            android:textColor="#333333"
-            android:textSize="40px" />
-
-        <TextView
+            <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="720px"
-            android:layout_marginTop="-45px"
+            android:layout_marginTop="-50px"
             android:text="PWB料號:"
             android:textColor="#333333"
             android:textSize="40px" />
 
-        <TextView
+            <TextView
+                android:id="@+id/Line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="520px"
+                android:layout_marginTop="-50px"
+                android:text="1234"
+                android:textColor="#333333"
+                android:textSize="40px"/>
+            <TextView
             android:id="@+id/PWB_Code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="900px"
-            android:layout_marginTop="-45px"
+            android:layout_marginTop="-50px"
             android:text="2314123"
             android:textColor="#333333"
             android:textSize="40px" />
@@ -133,7 +132,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60px"
+            android:layout_marginLeft="40px"
             android:layout_marginTop="30px"
             android:text="PCBCODE:"
             android:textColor="#333333"
@@ -144,7 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="250px"
-            android:layout_marginTop="-45px"
+            android:layout_marginTop="-50px"
             android:text="1234"
             android:textColor="#333333"
             android:textSize="40px" />
@@ -152,7 +151,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60px"
+            android:layout_marginLeft="40px"
             android:layout_marginTop="30px"
             android:text="治具二维码:"
             android:textColor="#333333"
@@ -162,7 +161,7 @@
             android:id="@+id/ProductInfoBarCode"
             android:layout_width="600px"
             android:layout_height="55px"
-            android:layout_marginLeft="310px"
+            android:layout_marginLeft="280px"
             android:layout_marginTop="-50px"
             android:background="@drawable/ed_back_white"
             android:focusable="false"
