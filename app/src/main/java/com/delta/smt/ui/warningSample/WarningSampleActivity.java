@@ -35,9 +35,6 @@ import javax.inject.Inject;
 public class WarningSampleActivity extends BaseActivity<LoginPresenter> implements LoginContract.View, WarningManger.OnWarning {
     @Inject
     WarningManger warningManger;
-
-    @Inject
-    DeviceUuidFactory deviceUuidFactory;
     private DialogLayout dialogLayout;
     private WarningDialog warningDialog;
     @Override
@@ -48,11 +45,11 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
 
     @Override
     protected void initData() {
-        Log.e(TAG, "initData: "+deviceUuidFactory.getUuid().toString());
+        Log.e(TAG, "initData: "+DeviceUuidFactory.getUuid().toString());
         //接收那种预警
                 warningManger.addWarning(9, getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(deviceUuidFactory.getUuid().toString(),9));
+        warningManger.sendMessage(new SendMessage(9));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
