@@ -8,14 +8,23 @@ package com.delta.smt.entity;
 
 
 public class SendMessage {
-    int type;
 
-    public SendMessage() {
+    private String uuid;
+    private int type;
+    /** 预警消息内容 */
+    private Object message;
+
+    public SendMessage(String uuid, int type) {
+        this.uuid = uuid;
+        this.type = type;
     }
 
-    public SendMessage(int type) {
+    public String getUuid() {
+        return uuid;
+    }
 
-        this.type = type;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public int getType() {

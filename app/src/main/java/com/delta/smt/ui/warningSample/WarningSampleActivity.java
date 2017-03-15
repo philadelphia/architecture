@@ -1,9 +1,9 @@
 package com.delta.smt.ui.warningSample;
 
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 
+import com.delta.commonlibs.utils.DeviceUuidFactory;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
@@ -21,8 +21,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,18 +33,13 @@ import javax.inject.Inject;
 
 
 public class WarningSampleActivity extends BaseActivity<LoginPresenter> implements LoginContract.View, WarningManger.OnWarning {
-
-
-    private AlertDialog alertDialog;
-
     @Inject
     WarningManger warningManger;
-    private DialogLayout dialogLayout;
-    //private List<WarningContent> SimpleWarningContents = new ArrayList<>();
-    ArrayList<String> SimpleWarningdatas = new ArrayList<>();
-    private SimpleDateFormat dateFormat;
-    private WarningDialog warningDialog;
 
+    @Inject
+    DeviceUuidFactory deviceUuidFactory;
+    private DialogLayout dialogLayout;
+    private WarningDialog warningDialog;
     @Override
     protected void componentInject(AppComponent appComponent) {
 
@@ -55,17 +48,15 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
 
     @Override
     protected void initData() {
-        dateFormat = new SimpleDateFormat("hh:mm:ss");
+        Log.e(TAG, "initData: "+deviceUuidFactory.getUuid().toString());
         //接收那种预警
-        warningManger.addWarning(9, getClass());
+                warningManger.addWarning(9, getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(9));
+        warningManger.sendMessage(new SendMessage(deviceUuidFactory.getUuid().toString(),9));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-
-
     }
 
     @Override

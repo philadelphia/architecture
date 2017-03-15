@@ -6,6 +6,7 @@ import android.content.Context;
 import com.delta.commonlibs.di.module.AppModule;
 import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
+import com.delta.commonlibs.utils.DeviceUuidFactory;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.di.module.MangerModule;
 import com.delta.smt.di.module.ServiceModule;
@@ -29,6 +30,8 @@ public interface AppComponent {
     ApiService apiService();
 
     WarningManger warningManger();
+
+    DeviceUuidFactory deviceUuidFactory();
 
     //Rxjava错误处理管理类
     RxErrorHandler rxErrorHandler();
