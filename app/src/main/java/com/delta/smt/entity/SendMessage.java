@@ -12,13 +12,13 @@ import com.delta.commonlibs.utils.DeviceUuidFactory;
 public class SendMessage {
 
     private String uuid;
-    private int type;
+    private String type;
     /** 预警消息内容 */
     private Object message;
 
-    public SendMessage( int type) {
-        this.uuid = DeviceUuidFactory.getUuid().toString();
-        this.type = type;
+    public SendMessage( String type) {
+
+        this.type =DeviceUuidFactory.getUuid().toString()+type;
     }
 
     public String getUuid() {
@@ -29,11 +29,11 @@ public class SendMessage {
         this.uuid = uuid;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 }

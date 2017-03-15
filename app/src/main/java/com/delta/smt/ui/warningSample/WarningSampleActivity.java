@@ -35,8 +35,8 @@ import javax.inject.Inject;
 public class WarningSampleActivity extends BaseActivity<LoginPresenter> implements LoginContract.View, WarningManger.OnWarning {
     @Inject
     WarningManger warningManger;
-    private DialogLayout dialogLayout;
     private WarningDialog warningDialog;
+    private DialogLayout dialogLayout;
     @Override
     protected void componentInject(AppComponent appComponent) {
 
@@ -49,7 +49,7 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
         //接收那种预警
                 warningManger.addWarning(9, getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(9));
+        warningManger.sendMessage(new SendMessage("9"));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
