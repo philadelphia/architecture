@@ -121,8 +121,12 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                Log.i(TAG, "call: "+throwable.getMessage());
-                getView().getFail(throwable.getMessage());
+                try {
+                    Log.i(TAG, "call: "+throwable.getMessage());
+                    getView().getFail(throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -149,7 +153,6 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             @Override
             public void call(Throwable throwable) {
 
-                getView().getFail(throwable.getMessage());
 
             }
         });

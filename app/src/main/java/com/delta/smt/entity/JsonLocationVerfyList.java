@@ -26,6 +26,14 @@ public class JsonLocationVerfyList {
 
     private int loanStatus;
 
+    public JsonLocationVerfyList(String barcode, String shelfName, String shelfBarcode, String jigTypeName, int loanStatus) {
+        this.barcode = barcode;
+        this.shelfName = shelfName;
+        this.shelfBarcode = shelfBarcode;
+        this.jigTypeName = jigTypeName;
+        this.loanStatus = loanStatus;
+    }
+
     public void setJigID(int jigID){
         this.jigID = jigID;
     }
