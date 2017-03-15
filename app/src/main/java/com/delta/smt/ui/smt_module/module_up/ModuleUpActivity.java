@@ -84,7 +84,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         warningManger.addWarning(Constant.MODULE_UP_WARNING, getClass());
 
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(Constant.MODULE_UP_WARNING));
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.MODULE_UP_WARNING)));
 
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);

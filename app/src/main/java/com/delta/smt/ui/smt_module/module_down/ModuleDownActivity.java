@@ -86,7 +86,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.MODULE_DOWN_WARNING, getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(Constant.MODULE_DOWN_WARNING));
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.MODULE_DOWN_WARNING)));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口

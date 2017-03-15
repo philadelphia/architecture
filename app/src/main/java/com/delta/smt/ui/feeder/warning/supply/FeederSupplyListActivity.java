@@ -18,6 +18,7 @@ import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
+import com.delta.smt.entity.SendMessage;
 import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
@@ -75,6 +76,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         Log.i(TAG, "initData: ");
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.FEEDER_SUPPLY_WARNING, this.getClass());
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_SUPPLY_WARNING)));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
