@@ -106,7 +106,7 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
                 } else {
 
-                    holder.setText(R.id.WorkNumber, item.getWorkNumber());
+                    holder.setText(R.id.WorkNumber, item.getOrderName());
 
                     holder.setText(R.id.MainBroad, item.getMainBroad());
 
@@ -194,20 +194,7 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         this.data = new ArrayList<>();
     }
 
-    @Override
-    public void showLoadingView() {
-        statusLayout.showLoadingView();
-    }
 
-    @Override
-    public void showContentView() {
-        statusLayout.showContentView();
-    }
-
-    @Override
-    public void showErrorView() {
-        statusLayout.showErrorView();
-    }
 
     @Override
     public void onItemClick(View view, ProductWorkItem item, int position) {
@@ -216,6 +203,7 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
             Bundle bundle = new Bundle();
 
             bundle.putString(TAG, item.getWorkNumber());
+            bundle.putString("OrderName",item.getOrderName());
             bundle.putString("MainBroad", item.getMainBroad());
             bundle.putString("LittleBroad", item.getLittleBroad());
             bundle.putString("Cover", item.getCover());
@@ -230,6 +218,7 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         }
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -241,5 +230,26 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getData();
+            }
+        });
     }
 }

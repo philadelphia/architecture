@@ -10,12 +10,25 @@ public class ThreeOfMaterial {
     private String pcbCode;
     private String dataCode;
     private String count;
+    private String price;
+
+    public ThreeOfMaterial() {
+
+    }
 
     public ThreeOfMaterial(String deltaMaterialNumber, String pcbCode, String dataCode, String count) {
         this.deltaMaterialNumber = deltaMaterialNumber;
         this.pcbCode = pcbCode;
         this.dataCode = dataCode;
         this.count = count;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public String getCount() {

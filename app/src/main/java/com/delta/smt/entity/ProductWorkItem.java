@@ -18,8 +18,10 @@ public class ProductWorkItem implements Comparable{
     private String cover;
     private String playOnLineTime;
     private String productStatus;
+    private String orderName;
 
-    public ProductWorkItem(String workNumber, String MainBroad, String LittleBroad, String PCB_Code, String formMaterialNumber, String line, String PWB_Number, String cover, String playOnLineTime, String productStatus) {
+    public ProductWorkItem(String orderName,String workNumber, String MainBroad, String LittleBroad, String PCB_Code, String formMaterialNumber, String line, String PWB_Number, String cover, String playOnLineTime, String productStatus) {
+        this.orderName=orderName;
         this.workNumber = workNumber;
         this.mainBroad = MainBroad;
         this.littleBroad = LittleBroad;
@@ -30,6 +32,28 @@ public class ProductWorkItem implements Comparable{
         this.cover = cover;
         this.playOnLineTime = playOnLineTime;
         this.productStatus = productStatus;
+    }
+
+    public ProductWorkItem(String workNumber, String MainBroad, String LittleBroad, String PCB_Code, String formMaterialNumber, String line, String PWB_Number, String cover, String playOnLineTime, String productStatus) {
+
+        this.workNumber = workNumber;
+        this.mainBroad = MainBroad;
+        this.littleBroad = LittleBroad;
+        this.PCB_Code = PCB_Code;
+        this.formMaterialNumber = formMaterialNumber;
+        this.line = line;
+        this.PWB_Number = PWB_Number;
+        this.cover = cover;
+        this.playOnLineTime = playOnLineTime;
+        this.productStatus = productStatus;
+    }
+
+    public String getOrderName() {
+        return orderName;
+    }
+
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
     }
 
     public String getWorkNumber() {

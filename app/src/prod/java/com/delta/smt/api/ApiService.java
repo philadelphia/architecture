@@ -410,8 +410,8 @@ public interface ApiService {
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
     //TODO shaoqiang,8Interfance
-    @GET("sms/jig/life/use/loan/order/list/page")
-    Observable<JsonProductBorrowRoot> getProductWorkItem(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent);
+    @GET("sms/jig/life/schedule/list/page?condition={\"orderStatus\":[3,5]} ")
+    Observable<JsonProductBorrowRoot> getProductWorkItem();
 
     //    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
     @GET("sms/jig/life/use/loan/jig")
