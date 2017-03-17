@@ -147,7 +147,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         //接收那种预警
         warningManger.addWarning(Constant.EXCESS_ALARM_FLAG, getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG + ""));
+        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
@@ -343,7 +343,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         if (!warningDialog.isShowing()) {
             warningDialog.show();
         }
-        //updateMessage(message);
+        updateMessage(message);
     }
 
 
@@ -354,6 +354,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             public void onclick(View view) {
                 warningManger.setConsume(true);
                 getPresenter().getAllOverReceiveItems();
+                warningDialog.dismiss();
             }
         });
         warningDialog.show();
@@ -370,19 +371,16 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("预警Sample");
+        warningEntity.setTitle("仓库房超领");
         String content = "";
         try {
             JSONArray jsonArray = new JSONArray(message);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
-                int type = jsonObject.getInt("type");
+
                 //可能有多种预警的情况
-                if (type == Constant.EXCESS_ALARM_FLAG) {
                     Object message1 = jsonObject.get("message");
                     content = content + message1 + "\n";
-
-                }
             }
             warningEntity.setContent(content + "\n");
             datas.add(warningEntity);
