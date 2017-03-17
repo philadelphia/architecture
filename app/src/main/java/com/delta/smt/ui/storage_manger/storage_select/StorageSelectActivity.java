@@ -69,7 +69,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
 
     @Override
     protected void initData() {
-        storeName = SpUtil.getStringSF(this, Constant.STORAGENAME);
+        storeName = SpUtil.getStringSF(this, Constant.STORAGE_NAME);
         getPresenter().getStorageSelect();
     }
 
@@ -174,7 +174,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
         if (checkBox.isChecked()) {
             checkBox.setChecked(false);
             item.setCheck(false);
-            SpUtil.SetStringSF(this, Constant.STORAGENAME, "");
+            SpUtil.SetStringSF(this, Constant.STORAGE_NAME, "");
             for (CheckBox box : checkBoxMap.values()) {
                 box.setFocusable(true);
             }
@@ -185,7 +185,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
                 box.setChecked(false);
             }
             checkBox.setChecked(true);
-            SpUtil.SetStringSF(this, Constant.STORAGENAME, item.getName());
+            SpUtil.SetStringSF(this, Constant.STORAGE_NAME, item.getName());
             item.setCheck(true);
             storeName = item.getName();
         }

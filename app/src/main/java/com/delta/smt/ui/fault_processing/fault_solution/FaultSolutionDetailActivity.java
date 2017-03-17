@@ -68,10 +68,10 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     @Override
     protected void initData() {
         Bundle extras = getIntent().getExtras();
-        faultSolutionId = extras.getString(Constant.FAULTSOLUTIONID);
-        faultCode = extras.getString(Constant.FAULTCODE);
-        faultId = extras.getString(Constant.FAULTID);
-        faultSolutionName = extras.getString(Constant.FAULTSOLUTIONNAME);
+        faultSolutionId = extras.getString(Constant.FAULT_SOLUTION_ID);
+        faultCode = extras.getString(Constant.FAULT_CODE);
+        faultId = extras.getString(Constant.FAULT_ID);
+        faultSolutionName = extras.getString(Constant.FAULT_SOLUTION_NAME);
         getPresenter().getDetailSolutionMessage(faultSolutionId);
     }
 

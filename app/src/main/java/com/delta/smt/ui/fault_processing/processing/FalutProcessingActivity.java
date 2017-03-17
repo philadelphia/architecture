@@ -91,7 +91,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     @Override
     protected void initData() {
-        lines = getIntent().getExtras().getString(Constant.PRODUCTIONLINE);
+        lines = getIntent().getExtras().getString(Constant.PRODUCTION_LINE);
         faultParameter = new FaultParameter();
         faultParameter.setLines(lines);
         paramter = GsonTools.createGsonString(faultParameter);
@@ -257,7 +257,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
             public void onClick(View v) {
 
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.FAULTCODE, item.getFaultCode());
+                bundle.putString(Constant.FAULT_CODE, item.getFaultCode());
                 IntentUtils.showIntent(FalutProcessingActivity.this, FaultProcessingAddActivity.class, bundle);
                 bottomSheetDialog.dismiss();
             }
@@ -290,10 +290,10 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
             @Override
             public void onItemClick(View view, SolutionMessage.RowsBean rowsBean, int position) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.FAULTID, String.valueOf(item.getId()));
-                bundle.putString(Constant.FAULTCODE, rowsBean.getFaultCode());
-                bundle.putString(Constant.FAULTSOLUTIONID, String.valueOf(rowsBean.getId()));
-                bundle.putString(Constant.FAULTSOLUTIONNAME, rowsBean.getName());
+                bundle.putString(Constant.FAULT_ID, String.valueOf(item.getId()));
+                bundle.putString(Constant.FAULT_CODE, rowsBean.getFaultCode());
+                bundle.putString(Constant.FAULT_SOLUTION_ID, String.valueOf(rowsBean.getId()));
+                bundle.putString(Constant.FAULT_SOLUTION_NAME, rowsBean.getName());
                 IntentUtils.showIntent(FalutProcessingActivity.this, FaultSolutionDetailActivity.class, bundle);
                 bottomSheetDialog.dismiss();
 
@@ -340,7 +340,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 //            public void onClick(View v) {
 //
 //                Bundle bundle = new Bundle();
-//                bundle.putString(Constant.FAULTCODE, item.getFaultCode());
+//                bundle.putString(Constant.FAULT_CODE, item.getFaultCode());
 //                IntentUtils.showIntent(FalutProcessingActivity.this, FaultProcessingAddActivity.class, bundle);
 //                dialog.dismiss();
 //            }
@@ -369,10 +369,10 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 //            @Override
 //            public void onItemClick(View view, SolutionMessage.RowsBean rowsBean, int position) {
 //                Bundle bundle = new Bundle();
-//                bundle.putString(Constant.FAULTID, String.valueOf(item.getId()));
-//                bundle.putString(Constant.FAULTCODE, rowsBean.getFaultCode());
-//                bundle.putString(Constant.FAULTSOLUTIONID, String.valueOf(rowsBean.getId()));
-//                bundle.putString(Constant.FAULTSOLUTIONNAME, rowsBean.getName());
+//                bundle.putString(Constant.FAULT_ID, String.valueOf(item.getId()));
+//                bundle.putString(Constant.FAULT_CODE, rowsBean.getFaultCode());
+//                bundle.putString(Constant.FAULT_SOLUTION_ID, String.valueOf(rowsBean.getId()));
+//                bundle.putString(Constant.FAULT_SOLUTION_NAME, rowsBean.getName());
 //                IntentUtils.showIntent(FalutProcessingActivity.this, FaultSolutionDetailActivity.class, bundle);
 //                dialog.dismiss();
 //

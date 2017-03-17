@@ -37,6 +37,7 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
     WarningManger warningManger;
     private WarningDialog warningDialog;
     private DialogLayout dialogLayout;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
 
@@ -45,9 +46,9 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
 
     @Override
     protected void initData() {
-        Log.e(TAG, "initData: "+DeviceUuidFactory.getUuid().toString());
+        Log.e(TAG, "initData: " + DeviceUuidFactory.getUuid().toString());
         //接收那种预警
-                warningManger.addWarning(9, getClass());
+        warningManger.addWarning(String.valueOf(9), getClass());
         //需要定制的信息
         warningManger.sendMessage(new SendMessage("9"));
         //是否接收预警 可以控制预警时机
@@ -95,10 +96,10 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
         if (warningDialog == null) {
             warningDialog = createDialog(message);
         }
-        if(!warningDialog.isShowing()){
+        if (!warningDialog.isShowing()) {
             warningDialog.show();
         }
-            updateMessage(message);
+        updateMessage(message);
 
     }
 
@@ -117,6 +118,7 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
 
     /**
      * type == 9  代表你要发送的是哪个
+     *
      * @param message
      */
     private void updateMessage(String message) {
@@ -124,18 +126,13 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("预警Sample");
-        String content ="";
+        String content = "";
         try {
             JSONArray jsonArray = new JSONArray(message);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
-                int type = jsonObject.getInt("type");
-                //可能有多种预警的情况
-                if (type == 9) {
-                    Object message1 = jsonObject.get("message");
-                    content=content+message1+"\n";
-
-                }
+                Object message1 = jsonObject.get("message");
+                content = content + message1 + "\n";
             }
             warningEntity.setContent(content + "\n");
             datas.add(warningEntity);

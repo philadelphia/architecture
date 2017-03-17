@@ -37,7 +37,7 @@ public class MantissaWarehouseReadyPresenter extends BasePresenter<MantissaWareh
                         getView().showEmptyView();
                     } else {
                         getView().showContentView();
-                        getView().getSucess(mantissaWarehouseReady.getRows());
+                        getView().getSuccess(mantissaWarehouseReady.getRows());
                     }
                 } else {
                     getView().showContentView();

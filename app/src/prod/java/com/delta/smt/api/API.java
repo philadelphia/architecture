@@ -13,6 +13,6 @@ public class API {
     public static String PORT = "8081";
     public static String SOCKET_PORT="9090";
     public static String BASE_URL = "http://" + IP + ":" + PORT + "/";
-    public static String WebSocketURl = "ws://"+IP+":"+SOCKET_PORT;
+    public static String WebSocketURl = "ws://"+"172.22.40.49"+":"+SOCKET_PORT;
 
 }

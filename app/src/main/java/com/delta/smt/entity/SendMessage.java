@@ -1,7 +1,5 @@
 package com.delta.smt.entity;
 
-import com.delta.commonlibs.utils.DeviceUuidFactory;
-
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -18,7 +16,7 @@ public class SendMessage {
 
     public SendMessage( String type) {
 
-        this.type =DeviceUuidFactory.getUuid().toString()+type;
+        this.type =type;
     }
 
     public String getUuid() {

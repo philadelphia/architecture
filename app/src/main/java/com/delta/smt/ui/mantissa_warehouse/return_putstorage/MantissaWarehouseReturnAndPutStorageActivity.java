@@ -15,7 +15,6 @@ import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BacKBarCode;
 import com.delta.smt.entity.PutBarCode;
@@ -23,6 +22,7 @@ import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.MantissaWarehousePutstorageFragment;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.MantissaWarehouseReturnFragment;
 import com.delta.smt.utils.ViewUtils;
+import com.delta.smt.widget.DialogLayout;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,7 +66,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         //此处的Title应该是 从网络获取的数量
         titles = new String[]{"入库", "退入主仓库"};
         //接收那种预警，没有的话自己定义常量
-        WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
+        WarningManger.getInstance().addWarning(String.valueOf(Constant.STORAGEREAD), getClass());
         //是否接收预警 可以控制预警时机
         WarningManger.getInstance().setReceive(true);
         //关键 初始化预警接口
@@ -77,7 +77,6 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-
             currentTab = savedInstanceState.getInt("temp");
         }
         Log.e(TAG, "onCreate: "+currentTab);
@@ -95,12 +94,12 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         }
         ViewUtils.setTabTitle(mTlTitle, titles);
         mTlTitle.addOnTabSelectedListener(this);
-
         mMantissaWarehousePutstorageFragment = new MantissaWarehousePutstorageFragment();
         mMantissaWarehouseReturnFragment = new MantissaWarehouseReturnFragment();
         loadMultipleRootFragment(R.id.fl_container, 0, mMantissaWarehouseReturnFragment, mMantissaWarehousePutstorageFragment);
         currentFragment = mMantissaWarehouseReturnFragment;
         mTlTitle.getTabAt(currentTab).select();
+
     }
 
 

@@ -195,19 +195,27 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
         return send(byteString);
     }
 
+    /**
+     *
+     * @param msg
+     * @return  Sending Message is success.
+     */
     private boolean send(Object msg) {
         boolean isSend = false;
-        if (mWebSocket != null && mCurrentStatus == WsStatus.CONNECTED) {
-            if (msg instanceof String) {
-                isSend = mWebSocket.send((String) msg);
-            } else if (msg instanceof ByteString) {
-                isSend = mWebSocket.send((ByteString) msg);
+
+
+            if (mWebSocket != null && mCurrentStatus == WsStatus.CONNECTED) {
+                if (msg instanceof String) {
+                    isSend = mWebSocket.send((String) msg);
+                } else if (msg instanceof ByteString) {
+                    isSend = mWebSocket.send((ByteString) msg);
+                }
             }
-        }
-        //发送消息失败，尝试重连
-        if (!isSend) {
-            tryReconnect();
-        }
+            //发送消息失败，尝试重连
+            if (!isSend) {
+                tryReconnect();
+            }
+
         return isSend;
     }
 

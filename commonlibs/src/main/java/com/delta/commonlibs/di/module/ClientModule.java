@@ -30,7 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class ClientModule {
-    private static final int TOME_OUT = 20;
+    private static final int TOME_OUT = 50;
     public static final int HTTP_RESPONSE_DISK_CACHE_MAX_SIZE = 10 * 1024 * 1024;//缓存文件最大值为10Mb
     private HttpUrl mApiUrl;
     private GlobeHttpHandler mHandler;

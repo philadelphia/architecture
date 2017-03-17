@@ -22,6 +22,7 @@ public class WarningDialogActivity extends BaseCommonActivity {
         p.width = (int)(d.getWidth()*0.7);
         p.dimAmount = 0.0f;
         getWindow().setAttributes(p);
+
     }
 
     @Override

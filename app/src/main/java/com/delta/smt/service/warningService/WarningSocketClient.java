@@ -98,7 +98,7 @@ public class WarningSocketClient extends WebSocketClient implements ActivityMoni
                     //2.其次判断是否是在前台如果是前台就发送广播如果是后台就弹出dialog
                     Activity topActivity = activityMonitor.getTopActivity();
                     if (topActivity != null) {
-                        if (topActivity.getClass().equals(warningManger.getWaringClass(type))) {
+                        if (topActivity.getClass().equals(warningManger.getWaringClass(String.valueOf(type)))) {
                             Gson gson = new Gson();
                             WarningContent sendMessage = gson.fromJson(text, WarningContent.class);
                             if (warningManger.isConsume()) {

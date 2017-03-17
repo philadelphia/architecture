@@ -73,7 +73,7 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
         baseWebSocketStrategy.setWsStatusListener(this);
     }
 
-    public void addOnRecieveLisneter(OnReceiveListener onRecieveLisneter) {
+    public void addOnRecieveListener(OnReceiveListener onRecieveLisneter) {
         onReceiveListeners.add(onRecieveLisneter);
     }
 
@@ -109,22 +109,23 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
             if (!TextUtils.isEmpty(text)) {
                 try {
                     JSONObject jsonObject = new JSONObject(text);
-                    int type = jsonObject.getInt("type");
+                    String type = jsonObject.getString("type");
                     //1.首先判断栈顶是不是有我们的预警页面
                     //2.其次判断是否是在前台如果是前台就发送广播如果是后台就弹出dialog
                     Activity topActivity = activityMonitor.getTopActivity();
+                    Log.e(TAG, "onMessage: "+topActivity.getClass().getName());
+
                     if (topActivity != null) {
+                        Log.e(TAG, "onMessage: "+topActivity.getClass().equals(warningManger.getWaringClass(type)));
                         if (topActivity.getClass().equals(warningManger.getWaringClass(type))) {
-                            WarningMessage warningMessage = GsonTools.changeGsonToBean(text, WarningMessage.class);
+                            //WarningMessage warningMessage = GsonTools.changeGsonToBean(text, WarningMessage.class);
                             if (warningManger.isConsume()) {
                                 jsonArray = null;
                                 jsonArray = new JSONArray();
-                                contents.clear();
                                 warningManger.setConsume(false);
                             }
                             jsonArray.put(jsonObject);
-                            contents.add(warningMessage);
-                            //String st_content = GsonTools.createGsonString(contents);
+                            //contents.add(warningMessage);
                             String st_content = jsonArray.toString();
                             if (foreground) {
                                 for (OnReceiveListener onReceiveListener : onReceiveListeners) {

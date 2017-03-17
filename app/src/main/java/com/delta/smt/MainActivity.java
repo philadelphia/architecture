@@ -238,13 +238,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 break;
             case "生产中预警":
                 bundle = new Bundle();
-                bundle.putInt(Constant.SELECTTYPE, 0);
+                bundle.putInt(Constant.SELECT_TYPE, 0);
                 IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
                 break;
 
             case "手补件":
                 bundle=new Bundle();
-                bundle.putInt(Constant.SELECTTYPE,2);
+                bundle.putInt(Constant.SELECT_TYPE,2);
                 IntentUtils.showIntent(this,ProduceLineActivity.class,bundle);
 //                IntentUtils.showIntent(this, HandAddActivity.class);
                 break;
@@ -263,7 +263,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 break;
             case "故障处理":
                 bundle = new Bundle();
-                bundle.putInt(Constant.SELECTTYPE, 1);
+                bundle.putInt(Constant.SELECT_TYPE, 1);
                 IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
                 break;
             case "治具借出":

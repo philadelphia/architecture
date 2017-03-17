@@ -1,10 +1,8 @@
 package com.delta.smt.ui.mantissa_warehouse.ready;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -21,13 +19,19 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaWarehouseReady;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.mantissa_warehouse.detail.MantissaWarehouseDetailsActivity;
 import com.delta.smt.ui.mantissa_warehouse.ready.di.DaggerMantissaWarehouseReadyComponent;
 import com.delta.smt.ui.mantissa_warehouse.ready.di.MantissaWarehouseReadyModule;
 import com.delta.smt.ui.mantissa_warehouse.ready.mvp.MantissaWarehouseReadyContract;
 import com.delta.smt.ui.mantissa_warehouse.ready.mvp.MantissaWarehouseReadyPresenter;
-import com.delta.smt.widget.DialogLayout;
+import com.delta.smt.widget.WarningDialog;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,10 +61,12 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     RecyclerView mRecyclerView;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
+
     private List<MantissaWarehouseReady.RowsBean> dataList = new ArrayList();
 
     private ItemCountViewAdapter<MantissaWarehouseReady.RowsBean> adapter;
     private boolean isSending;
+    private WarningDialog warningDialog;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -72,12 +78,14 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     @Override
     protected void initData() {
 
-        //接收那种预警，没有的话自己定义常量
-        WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
+        //接收那种预警
+        warningManger.addWarning(Constant.MANTISSA_WAREHOUSE_ALARM_FLAG, getClass());
+        //需要定制的信息
+        warningManger.sendMessage(new SendMessage(Constant.MANTISSA_WAREHOUSE_ALARM_FLAG));
         //是否接收预警 可以控制预警时机
-        WarningManger.getInstance().setReceive(true);
+        warningManger.setReceive(true);
         //关键 初始化预警接口
-        WarningManger.getInstance().setOnWarning(this);
+        warningManger.setOnWarning(this);
 
     }
 
@@ -127,7 +135,7 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
 
 
     @Override
-    public void getSucess(List<MantissaWarehouseReady.RowsBean> mantissaWarehouseReadies) {
+    public void getSuccess(List<MantissaWarehouseReady.RowsBean> mantissaWarehouseReadies) {
 
         dataList.clear();
         for (int i = 0; i < mantissaWarehouseReadies.size(); i++) {
@@ -173,24 +181,57 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
 
     @Override
     public void warningComing(String warningMessage) {
-        DialogLayout dialogLayout = new DialogLayout(this);
-        //2.传入的是红色字体的标题
-        dialogLayout.setStrTitle("测试标题");
-        //3.传入的是黑色字体的二级标题
-        dialogLayout.setStrSecondTitle("预警异常");
-        //4.传入的是一个ArrayList<String>
-        ArrayList<String> datas = new ArrayList<>();
-        datas.add("dsfdsf");
-        datas.add("sdfsdf1");
-        datas.add("dsfsdf2");
-        dialogLayout.setStrContent(datas);
-        //5.构建Dialog，setView的时候把这个View set进去。
-        new AlertDialog.Builder(this).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        if (warningDialog == null) {
+            warningDialog = createDialog(warningMessage);
+        }
+        if (!warningDialog.isShowing()) {
+            warningDialog.show();
+        }
+        updateMessage(warningMessage);
+    }
+
+    public WarningDialog createDialog(String message) {
+
+        WarningDialog warningDialog = new WarningDialog(this);
+        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onclick(View view) {
+                warningManger.setConsume(true);
+                getPresenter().getMantissaWarehouseReadies();
 
             }
-        }).show();
+        });
+        warningDialog.show();
+
+        return warningDialog;
+    }
+
+    /**
+     * type == 9  代表你要发送的是哪个
+     *
+     * @param message
+     */
+    private void updateMessage(String message) {
+        List<WaringDialogEntity> datas = warningDialog.getDatas();
+        datas.clear();
+        WaringDialogEntity warningEntity = new WaringDialogEntity();
+        warningEntity.setTitle("尾数仓预警");
+        String content = "";
+        try {
+            JSONArray jsonArray = new JSONArray(message);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                Object message1 = jsonObject.get("message");
+                content = content + message1 + "\n";
+            }
+            warningEntity.setContent(content + "\n");
+            datas.add(warningEntity);
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
