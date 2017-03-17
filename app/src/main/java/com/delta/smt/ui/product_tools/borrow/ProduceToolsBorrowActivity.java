@@ -1,9 +1,11 @@
 package com.delta.smt.ui.product_tools.borrow;
 
 import android.content.Intent;
+import android.net.http.LoggingEventHandler;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -30,6 +32,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.delta.smt.R.id.logo;
 import static com.delta.smt.R.id.statusLayout;
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -172,19 +175,34 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         data.clear();
         data.addAll(ProductWorkItemList);
 
-        //TODO data按时间排序
+        for (ProductWorkItem mProductWorkItem : data) {
+            Log.e(TAG, "getFormData: "+mProductWorkItem.getOrderName() );
+        }
+/*        //TODO data按时间排序
         MyCompare myCompare = new MyCompare();
-        Collections.sort(data, myCompare);
+        Collections.sort(data, myCompare);*/
 
         data.add(0, new ProductWorkItem("工单号", "工单类型", "机种", "PCB code", "组合料号", "线别", "PWB料号", "面别", "计划上线时间", "状态"));
 
+/*        //将准备就绪的item置顶
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getProductStatus().equals(getString(R.string.AreReady))) {
                 ProductWorkItem productWorkItem = data.get(i);
                 data.remove(i);
                 data.add(1, productWorkItem);
             }
+
         }
+
+        //将准备就绪的item从倒序变成正序
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getProductStatus().equals(getString(R.string.AreReady))) {
+                ProductWorkItem productWorkItem = data.get(i);
+                data.remove(i);
+                data.add(1, productWorkItem);
+            }
+
+        }*/
         adapter.notifyDataSetChanged();
 
     }

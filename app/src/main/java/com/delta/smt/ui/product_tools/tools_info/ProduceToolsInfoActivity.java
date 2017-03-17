@@ -321,6 +321,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                     data.get(i).setStatus("已完成");
                     productInfoBarCodeEditText.setText(this.barcode);
                     adapter.notifyDataSetChanged();
+                    SnackbarUtil.showMassage(getCurrentFocus(), "借出成功");
                     VibratorAndVoiceUtils.correctVibrator(ProduceToolsInfoActivity.this);
                     VibratorAndVoiceUtils.correctVoice(ProduceToolsInfoActivity.this);
 

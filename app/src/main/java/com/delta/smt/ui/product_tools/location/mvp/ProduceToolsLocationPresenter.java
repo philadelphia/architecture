@@ -39,7 +39,10 @@ public class ProduceToolsLocationPresenter extends BasePresenter<ProduceToolsLoc
         getModel().getLocationSubmit(param).subscribe(new Action1<JsonLocationVerfyRoot>() {
             @Override
             public void call(JsonLocationVerfyRoot jsonLocationVerfyRoot) {
-                getView().getSubmitResult(jsonLocationVerfyRoot.getCode());
+
+                    getView().getSubmitResult(jsonLocationVerfyRoot);
+
+
             }
         }, new Action1<Throwable>() {
             @Override
