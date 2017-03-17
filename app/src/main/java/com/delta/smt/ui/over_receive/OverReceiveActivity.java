@@ -147,19 +147,14 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         //接收那种预警
         warningManger.addWarning(Constant.EXCESS_ALARM_FLAG, getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG));
+        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG + ""));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
 
-        getPresenter().getAllOverReceiveItems();
+        //getPresenter().getAllOverReceiveItems();
         barCodeIpml.setOnGunKeyPressListener(this);
-        /*runOnUiThread(new Runnable() {      // UI thread
-            @Override
-            public void run() {
-            }
-        });*/
     }
 
     @Override
@@ -348,7 +343,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         if (!warningDialog.isShowing()) {
             warningDialog.show();
         }
-        updateMessage(message);
+        //updateMessage(message);
     }
 
 
@@ -358,6 +353,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             @Override
             public void onclick(View view) {
                 warningManger.setConsume(true);
+                getPresenter().getAllOverReceiveItems();
             }
         });
         warningDialog.show();
