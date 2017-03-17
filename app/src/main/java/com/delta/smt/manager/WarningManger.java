@@ -22,7 +22,7 @@ import java.util.Map;
 public class WarningManger {
 
     private static final String TAG = "WarningManger";
-    private Map<Integer, Class> maps = new HashMap<>();
+    private Map<String, Class> maps = new HashMap<>();
     private boolean isReceive = true;
     private OnWarning onWarning;
     private boolean isConsume;
@@ -64,7 +64,7 @@ public class WarningManger {
      * @param type   预警类型
      * @param mClass 预警类
      */
-    public void addWarning(int type, Class mClass) {
+    public void addWarning(String type, Class mClass) {
         maps.put(type, mClass);
     }
 
@@ -81,18 +81,18 @@ public class WarningManger {
     }
 
 
-    public void removeWarning(int type) {
+    public void removeWarning(String type) {
         maps.remove(type);
     }
 
-    public Class getWaringClass(int Type) {
+    public Class getWaringClass(String Type) {
         if (!maps.keySet().contains(Type)) {
             return null;
         }
         return maps.get(Type);
     }
 
-    public Map<Integer, Class> getMaps() {
+    public Map<String, Class> getMaps() {
         return maps;
     }
 

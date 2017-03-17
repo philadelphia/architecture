@@ -1,14 +1,11 @@
 package com.delta.smt.service.warningService;
 
-import android.app.AlertDialog;
 import android.app.IntentService;
 import android.app.KeyguardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
@@ -18,20 +15,17 @@ import android.view.WindowManager;
 
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.smt.Constant;
-import com.delta.smt.R;
 import com.delta.smt.api.API;
 import com.delta.smt.app.App;
 import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.service.warningService.di.DaggerWarningComponent;
 import com.delta.smt.service.warningService.di.WarningSocketPresenterModule;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.widget.WarningDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -58,6 +52,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
     private KeyguardManager km;
     private WarningDialog warningDialog;
 
+
     public WarningService() {
         this("WarningService");
     }
@@ -75,11 +70,13 @@ public class WarningService extends IntentService implements WarningSocketPresen
     @Override
     public void onCreate() {
         super.onCreate();
+
+
         Log.e(TAG, "onCreate: ");
 //        WebSocketClientModule webSocketClientModule = WebSocketClientModule.builder().draft(new Draft_17()).uri(API.WebSocketURl).build();
 //        DaggerWarningComponent.builder().appComponent(App.getAppComponent()).webSocketClientModule(webSocketClientModule).build().inject(this);
-       
-        //warningSocketClient.addOnRecieveLisneter(this);
+
+        //warningSocketClient.addOnRecieveListener(this);
     }
 
     @Override
@@ -87,14 +84,14 @@ public class WarningService extends IntentService implements WarningSocketPresen
         String ip = SpUtil.getStringSF(this, "ip");
         String port = SpUtil.getStringSF(this, "port");
         if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
-            API.WebSocketURl = "ws://" + ip + ":" + API.SOCKET_PORT ;
+            API.WebSocketURl = "ws://" + ip + ":" + API.SOCKET_PORT;
         }
         WarningSocketPresenterModule warningSocketPresenterModule = WarningSocketPresenterModule.builder().context(this).url(API.WebSocketURl).build();
         DaggerWarningComponent.builder().appComponent(App.getAppComponent()).warningSocketPresenterModule(warningSocketPresenterModule).build().inject(this);
-        warningSocketPresenter.addOnRecieveLisneter(this);
+        warningSocketPresenter.addOnRecieveListener(this);
         km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
         warningSocketPresenter.startConntect();
-        Log.e(TAG, "onStartCommand: "+API.WebSocketURl);
+        Log.e(TAG, "onStartCommand: " + API.WebSocketURl);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -138,9 +135,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
                     warningDialog.show();
                 }
                 updateMessage(message);
-                if (km.inKeyguardRestrictedInputMode()) {
 
-                }
             }
         });
     }
@@ -166,19 +161,14 @@ public class WarningService extends IntentService implements WarningSocketPresen
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("预警Sample");
+        warningEntity.setTitle("");
         String content = "";
         try {
             JSONArray jsonArray = new JSONArray(message);
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(0);
-                int type = jsonObject.getInt("type");
-                //可能有多种预警的情况
-                if (type == 9) {
-                    Object message1 = jsonObject.get("message");
-                    content = content + message1 + "\n";
-
-                }
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Object message1 = jsonObject.get("message");
+                content = content + message1 + "\n";
             }
             warningEntity.setContent(content + "\n");
             datas.add(warningEntity);
@@ -186,32 +176,6 @@ public class WarningService extends IntentService implements WarningSocketPresen
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-    @NonNull
-    public AlertDialog getAlertDialog(String text) {
-        // 1.创建这个DialogRelativelayout
-        DialogLayout dialogLayout = new DialogLayout(this);
-        //2.传入的是红色字体的标题
-        dialogLayout.setStrTitle("预警信息");
-        //3.传入的是黑色字体的二级标题
-        dialogLayout.setStrSecondTitle("预警异常");
-        //4.传入的是一个ArrayList<String>
-        ArrayList<String> datas = new ArrayList<>();
-        datas.add(text);
-        dialogLayout.setStrContent(datas);
-        //5.构建Dialog，setView的时候把这个View set进去。
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.AlertDialogCustom).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        AlertDialog dialog = builder1.create();
-        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        return dialog;
-    }
 }

@@ -282,7 +282,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
 //                makePopupWindow();
             Bundle bundle = new Bundle();
-            bundle.putString(Constant.ACCEPTMATERIALSLINES, mItemWarningInfo.getProductionline());
+            bundle.putString(Constant.ACCEPT_MATERIALS_LINES, mItemWarningInfo.getProductionline());
             IntentUtils.showIntent(getmActivity(), AcceptMaterialsActivity.class, bundle);
             id = String.valueOf(mItemWarningInfo.getId());
 

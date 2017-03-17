@@ -23,7 +23,7 @@ public interface MantissaWarehouseReadyContract {
 
     interface View extends IView {
 
-        void getSucess(List<MantissaWarehouseReady.RowsBean> mantissaWarehouseReadies);
+        void getSuccess(List<MantissaWarehouseReady.RowsBean> mantissaWarehouseReadies);
 
         void getFailed(String message);
 

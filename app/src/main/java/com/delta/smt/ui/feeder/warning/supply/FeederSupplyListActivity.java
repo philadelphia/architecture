@@ -1,8 +1,6 @@
 package com.delta.smt.ui.feeder.warning.supply;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,11 +16,10 @@ import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.entity.SendMessage;
-import com.delta.smt.entity.WaringDialogEntity;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyWarningItem;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.feeder.handle.feederSupply.FeederSupplyActivity;
 import com.delta.smt.ui.feeder.warning.supply.di.DaggerSupplyComponent;
@@ -75,8 +72,8 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     protected void initData() {
         Log.i(TAG, "initData: ");
         //接收那种预警，没有的话自己定义常量
-        warningManger.addWarning(Constant.FEEDER_SUPPLY_WARNING, this.getClass());
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_SUPPLY_WARNING)));
+        warningManger.addWarning(Constant.FEEDER_BUFF_ALARM_FLAG, this.getClass());
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG)));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
@@ -134,7 +131,6 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         if (!warningDialog.isShowing()) {
             warningDialog.show();
         }
-        warningDialog = createDialog(warningMessage);
             updateMessage(warningMessage);
     }
 
@@ -143,19 +139,19 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("预警Sample");
+        warningEntity.setTitle("Feeder预警");
         String content ="";
         try {
             JSONArray jsonArray = new JSONArray(warningMessage);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
-                int type = jsonObject.getInt("type");
+
                 //可能有多种预警的情况
-                if (type == Constant.FEEDER_SUPPLY_WARNING) {
+
                     Object message1 = jsonObject.get("message");
                     content=content+message1+"\n";
 
-                }
+
             }
             warningEntity.setContent(content + "\n");
             datas.add(warningEntity);

@@ -78,7 +78,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
     @Override
     protected void initData() {
-        lines=getIntent().getExtras().getString(Constant.ACCEPTMATERIALSLINES);
+        lines=getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_LINES);
         Log.e(TAG, "initData: "+lines );
         getPresenter().getItemDatas(lines);
 

@@ -63,7 +63,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
     @Override
     protected void initData() {
-        faultCode = getIntent().getExtras().getString(Constant.FAULTCODE);
+        faultCode = getIntent().getExtras().getString(Constant.FAULT_CODE);
         etCode.setText(faultCode);
     }
 

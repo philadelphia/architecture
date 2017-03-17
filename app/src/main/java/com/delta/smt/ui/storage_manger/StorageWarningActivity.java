@@ -1,11 +1,9 @@
 package com.delta.smt.ui.storage_manger;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -14,12 +12,10 @@ import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseCommonActivity;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.storage_manger.ready.StorageReadyFragment;
 import com.delta.smt.utils.ViewUtils;
-
-import java.util.ArrayList;
+import com.delta.smt.widget.WarningDialog;
 
 import butterknife.BindView;
 
@@ -40,11 +36,15 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
     AutoToolbar mToolbar;
     @BindView(R.id.fl_container)
     FrameLayout mFlContainer;
+
     private FragmentTransaction mFragmentTransaction;
     private StorageReadyFragment mStorageReadyFragment;
 
     private Fragment currentFragment;
     private String[] titles;
+    private WarningDialog warningDialog;
+    private String storage_name;
+    private String mS;
 
     @Override
     protected int getContentViewId() {
@@ -88,9 +88,8 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         Bundle extras = getIntent().getExtras();
-        String name = extras.getString(Constant.WARE_HOUSE_NAME);
-
-        mToolbarTitle.setText("仓库" + name);
+        storage_name = extras.getString(Constant.WARE_HOUSE_NAME);
+        mToolbarTitle.setText("仓库" + storage_name);
         for (int i = 0; i < titles.length; i++) {
             mTlTitle.addTab(mTlTitle.newTab());
         }
@@ -103,6 +102,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
         mFragmentTransaction.show(mStorageReadyFragment).commit();
         // setDispathchKeyEvent(mStorageReadyFragment);
         currentFragment = mStorageReadyFragment;
+
     }
 
     @Override
@@ -110,11 +110,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
         //此处的Title应该是 从网络获取的数量
         titles = new String[]{"备料"};
         //接收那种预警，没有的话自己定义常量
-        WarningManger.getInstance().addWarning(Constant.STORAGEREAD, getClass());
-        //是否接收预警 可以控制预警时机
-        WarningManger.getInstance().setReceive(true);
-        //关键 初始化预警接口
-        WarningManger.getInstance().setOnWarning(this);
+
     }
 
     @Override
@@ -130,26 +126,10 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
     }
 
     @Override
-    public void warningComing(String warningMessage) {
-        DialogLayout dialogLayout = new DialogLayout(this);
-        //2.传入的是红色字体的标题
-        dialogLayout.setStrTitle("测试标题");
-        //3.传入的是黑色字体的二级标题
-        dialogLayout.setStrSecondTitle("预警异常");
-        //4.传入的是一个ArrayList<String>
-        ArrayList<String> datas = new ArrayList<>();
-        datas.add("dsfdsf");
-        datas.add("sdfsdf1");
-        datas.add("dsfsdf2");
-        dialogLayout.setStrContent(datas);
-        //5.构建Dialog，setView的时候把这个View set进去。
-        new AlertDialog.Builder(this).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+    public void warningComing(String message) {
 
-            }
-        }).show();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

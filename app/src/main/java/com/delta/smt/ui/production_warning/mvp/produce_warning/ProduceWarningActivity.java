@@ -105,11 +105,11 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         }
 
 /*        Constant.CONDITION = null;
-        Constant.CONDITION = getIntent().getExtras().getString(Constant.PRODUCTIONLINE);*/
+        Constant.CONDITION = getIntent().getExtras().getString(Constant.PRODUCTION_LINE);*/
 
 
         //注册广播初始化
-        warningManger.addWarning(Constant.PRODUCE_WARNING, getClass());
+        warningManger.addWarning(String.valueOf(Constant.PRODUCE_WARNING), getClass());
         warningManger.setReceive(true);
         warningManger.setOnWarning(this);
     }

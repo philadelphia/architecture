@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -67,16 +66,16 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         //初始请求的产线
         getPresenter().getProductionLineDatas();
         Intent intent = getIntent();
-        type = intent.getExtras().getInt(Constant.SELECTTYPE, -1);
+        type = intent.getExtras().getInt(Constant.SELECT_TYPE, -1);
         switch (type) {
             case 0:
-                lineNames = SpUtil.getStringSF(this, Constant.PRODUCEWARNINGLINE_NAME);
+                lineNames = SpUtil.getStringSF(this, Constant.PRODUCE_WARNING_LINE_NAME);
                 break;
             case 1:
-                lineNames = SpUtil.getStringSF(this, Constant.FALUTPROCESSINGLINE_NAME);
+                lineNames = SpUtil.getStringSF(this, Constant.FAULT_PROCESSING_LINE_NAME);
                 break;
             case 2:
-                lineNames = SpUtil.getStringSF(this, Constant.HANDADDLINE_NAME);
+                lineNames = SpUtil.getStringSF(this, Constant.HAND_ADD_LINE_NAME);
                 break;
         }
     }
@@ -146,18 +145,18 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 Log.i("aaa", String.valueOf(mStringBuffer));
                 Constant.CONDITION = mStringBuffer.toString();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.PRODUCTIONLINE, mStringBuffer.toString());
+                bundle.putString(Constant.PRODUCTION_LINE, mStringBuffer.toString());
                 switch (type) {
                     case 0:
-                        SpUtil.SetStringSF(this, Constant.PRODUCEWARNINGLINE_NAME, mStringBuffer.toString());
+                        SpUtil.SetStringSF(this, Constant.PRODUCE_WARNING_LINE_NAME, mStringBuffer.toString());
                         IntentUtils.showIntent(this, ProduceWarningActivity.class, bundle);
                         break;
                     case 1:
-                        SpUtil.SetStringSF(this, Constant.FALUTPROCESSINGLINE_NAME, mStringBuffer.toString());
+                        SpUtil.SetStringSF(this, Constant.FAULT_PROCESSING_LINE_NAME, mStringBuffer.toString());
                         IntentUtils.showIntent(this, FalutProcessingActivity.class, bundle);
                         break;
                     case 2:
-                        SpUtil.SetStringSF(this, Constant.HANDADDLINE_NAME, mStringBuffer.toString());
+                        SpUtil.SetStringSF(this, Constant.HAND_ADD_LINE_NAME, mStringBuffer.toString());
                         IntentUtils.showIntent(this, HandAddActivity.class, bundle);
                         break;
                 }

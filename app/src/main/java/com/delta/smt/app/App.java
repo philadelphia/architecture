@@ -53,6 +53,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
         registerActivityLifecycleCallbacks(this);
         Intent intent = new Intent(this, WarningService.class);
         startService(intent);
+
     }
 
     public static Handler getMainHander() {

@@ -1,8 +1,6 @@
 package com.delta.smt.ui.smt_module.module_down;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -29,7 +27,6 @@ import com.delta.smt.ui.smt_module.module_down.di.ModuleDownModule;
 import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownContract;
 import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownPresenter;
 import com.delta.smt.ui.smt_module.virtual_line_binding.VirtualLineBindingActivity;
-
 import com.delta.smt.widget.WarningDialog;
 
 import org.json.JSONArray;
@@ -84,9 +81,9 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @Override
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
-        warningManger.addWarning(Constant.MODULE_DOWN_WARNING, getClass());
+        warningManger.addWarning(Constant.UNPLUG_MOD_ALARM_FLAG, getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.MODULE_DOWN_WARNING)));
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG)));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
@@ -232,7 +229,6 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         if (!warningDialog.isShowing()) {
             warningDialog.show();
         }
-        warningDialog = createDialog(warningMessage);
         updateMessage(warningMessage);
     }
 

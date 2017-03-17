@@ -37,7 +37,7 @@
         <item name="android:windowIsTranslucent">false</item><!--半透明-->
         <item name="android:windowNoTitle">true</item><!--无标题-->
         <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
-        <item name="android:backgroundDimEnabled">false</item><!--模糊-->
+        <item name="android:backgroundDimEnabled">true</item><!--模糊-->
     </style>
 
     <style name="dialogStyle" parent="AlertDialogCustom">
@@ -48,8 +48,10 @@
     <style name="waringTitle">
         <item name="android:textSize">@dimen/px_50</item>
         <item name="android:textColor">@color/ff0000</item>
-        <item name="android:layout_marginTop">@dimen/px_50</item>
-        <item name="android:layout_marginLeft">@dimen/px_50</item>
+        <item name="android:paddingTop">@dimen/px_25</item>
+        <item name="android:paddingBottom">@dimen/px_25</item>
+        <item name="android:paddingLeft">@dimen/px_50</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
     <style name="pcb_button">
         <item name="android:textSize">@dimen/sp_12</item>
@@ -116,4 +118,5 @@
     </style>
 
 
+    <dimen name="px_25">25px</dimen>
 </resources>

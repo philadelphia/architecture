@@ -1,9 +1,7 @@
 package com.delta.smt.ui.smt_module.module_up;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -18,11 +16,10 @@ import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.entity.SendMessage;
-import com.delta.smt.entity.WaringDialogEntity;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.smt_module.module_up.di.DaggerModuleUpComponent;
 import com.delta.smt.ui.smt_module.module_up.di.ModuleUpModule;
@@ -81,10 +78,10 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Override
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
-        warningManger.addWarning(Constant.MODULE_UP_WARNING, getClass());
+        warningManger.addWarning(Constant.PLUG_MOD_ALARM_FLAG, getClass());
 
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.MODULE_UP_WARNING)));
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.PLUG_MOD_ALARM_FLAG)));
 
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
@@ -228,33 +225,11 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         if (!warningDialog.isShowing()) {
             warningDialog.show();
         }
-        warningDialog = createDialog(warningMessage);
         updateMessage(warningMessage);
     }
 
     public WarningDialog createDialog(String message) {
-//        //1.创建这个DialogRelativelayout
-//        DialogLayout dialogLayout = new DialogLayout(this);
-//        //2.传入的是红色字体的标题
-//        dialogLayout.setStrTitle("");
-//        //3.传入的是黑色字体的二级标题
-//        dialogLayout.setStrSecondTitle("新工单");
-//        //4.传入的是一个ArrayList<String>
-//        ArrayList<String> titleList = new ArrayList<>();
-//        titleList.add(message);
-//        dialogLayout.setStrContent(titleList);
-//        //5.构建Dialog，setView的时候把这个View set进去。
-//        new AlertDialog.Builder(this)
-//                .setCancelable(false)
-//                .setView(dialogLayout)
-//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        //if (workOrderID.length()!=0){
-//                        getPresenter().getAllModuleUpWarningItems();
-//                        //}
-//                    }
-//                }).show();
+
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override

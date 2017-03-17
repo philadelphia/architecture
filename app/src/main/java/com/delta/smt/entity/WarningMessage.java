@@ -13,19 +13,19 @@ public class WarningMessage<T>  {
      * message : [{"work_order_id":0,"line_name":"T07","work_order":"2311701218/2316","side":"B","product_name_main":"DPS-495BB A","product_name":"DPS-495BB A","online_plan_start_time":"","status":204}]
      */
 
-    private int type;
+    private String type;
     private T message;
 
-    public WarningMessage(int type, T message) {
+    public WarningMessage(String type, T message) {
         this.type = type;
         this.message = message;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String  type) {
         this.type = type;
     }
 
