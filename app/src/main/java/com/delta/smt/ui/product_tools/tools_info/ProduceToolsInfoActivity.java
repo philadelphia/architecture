@@ -81,38 +81,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @BindView(R.id.ProductToolStatusLayout)
     StatusLayout statusLayout;
 
-    @OnClick(R.id.confirm)
-    public void confirmData() {
-
-        if (data.size() > 1) {
-            String d1;
-            String d2;
-            String d3;
-            String d4;
-            try {
-                d1 = data.get(1).getJigID();
-            } catch (Exception e) {
-                d1 = "0";
-            }
-            try {
-                d2 = data.get(2).getJigID();
-            } catch (Exception e) {
-                d2 = "0";
-            }
-            try {
-                d3 = data.get(3).getJigID();
-            } catch (Exception e) {
-                d3 = "0";
-            }
-            try {
-                d4 = data.get(4).getJigID();
-            } catch (Exception e) {
-                d4 = "0";
-            }
-            getPresenter().getToolsVerfy("[\"{\\\"workOrderID\\\":" + workNumber + ",\\\"stencil\\\":" + d1 + ",\\\"scraper\\\":" + d2 + ",\\\"plate\\\":" + d3 + ",\\\"ict\\\":" + d4 + "}\"]");
-        }
-    }
-
+    private StringBuffer mStringBuffer;
+    private String mString;
     List<ProductToolsInfo> data = new ArrayList<>();
     CommonBaseAdapter<ProductToolsInfo> adapter;
     String workNumber;
@@ -122,6 +92,31 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     Product_mToolsInfo selectItem;
     String barcode;
     int ID = 1001;
+
+    @OnClick(R.id.confirm)
+    public void confirmData() {
+
+        mStringBuffer= new StringBuffer();
+        mString=new String();
+
+        if (data.size()!=0){
+            for (int mI = 1; mI < data.size(); mI++) {
+                if (mI==data.size()-1){
+                    mStringBuffer.append("\\\""+data.get(mI).getProductToolsBarCode()+"\\\"");
+                }else {
+                    mStringBuffer.append("\\\""+data.get(mI).getProductToolsBarCode()+"\\\"" + ",");
+                }
+            }
+
+        }
+        Log.i(TAG, String.valueOf(mStringBuffer));
+        mString="[\"{\\\"workOrderID\\\":"+workNumber+", \\\"jig\\\":["+mStringBuffer.toString()+"]}\"]";
+        Log.i(TAG, "confirmData: "+mString);
+        getPresenter().getToolsVerfy(mString);
+
+    }
+
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -154,7 +149,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具信息");
 
-        mProductToolsWorkItemTextView.setText(workNumber);
+        mProductToolsWorkItemTextView.setText(this.getIntent().getExtras().getString("OrderName") );
 
         if (this.getIntent().getExtras().getString("MainBroad") != null) {
             mainBroadTextView.setText(this.getIntent().getExtras().getString("MainBroad"));
@@ -326,6 +321,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                     data.get(i).setStatus("已完成");
                     productInfoBarCodeEditText.setText(this.barcode);
                     adapter.notifyDataSetChanged();
+                    SnackbarUtil.showMassage(getCurrentFocus(), "借出成功");
                     VibratorAndVoiceUtils.correctVibrator(ProduceToolsInfoActivity.this);
                     VibratorAndVoiceUtils.correctVoice(ProduceToolsInfoActivity.this);
 
@@ -342,7 +338,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     }
 
     @Override
-    public void getFail() {
+    public void getFail(String message) {
+        SnackbarUtil.showMassage(getCurrentFocus(),message);
 
     }
 
@@ -359,6 +356,12 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getToolsVerfy(mString);
+            }
+        });
     }
 
     @Override

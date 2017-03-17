@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.delta.commonlibs.utils.DeviceUuidFactory;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.smt.BuildConfig;
 import com.delta.smt.api.API;
@@ -42,6 +43,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     @Override
     public void onCreate() {
         super.onCreate();
+        new DeviceUuidFactory(this);
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }

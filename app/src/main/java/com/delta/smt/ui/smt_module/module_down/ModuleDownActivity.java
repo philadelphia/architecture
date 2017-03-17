@@ -21,13 +21,20 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleDownWarningItem;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.smt_module.module_down.di.DaggerModuleDownComponent;
 import com.delta.smt.ui.smt_module.module_down.di.ModuleDownModule;
 import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownContract;
 import com.delta.smt.ui.smt_module.module_down.mvp.ModuleDownPresenter;
 import com.delta.smt.ui.smt_module.virtual_line_binding.VirtualLineBindingActivity;
-import com.delta.smt.widget.DialogLayout;
+
+import com.delta.smt.widget.WarningDialog;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,7 +50,7 @@ import butterknife.BindView;
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implements ModuleDownContract.View,WarningManger.OnWarning,com.delta.libs.adapter.ItemOnclick<ModuleDownWarningItem.RowsBean>{
+public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implements ModuleDownContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleDownWarningItem.RowsBean> {
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -61,6 +68,8 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     private List<ModuleDownWarningItem.RowsBean> dataList = new ArrayList<>();
     private ItemCountViewAdapter<ModuleDownWarningItem.RowsBean> myAdapter;
 
+    private WarningDialog warningDialog;
+
     public static String timeStamp() {
         long time = System.currentTimeMillis();
         String t = String.valueOf(time);
@@ -76,25 +85,12 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.MODULE_DOWN_WARNING, getClass());
+        //需要定制的信息
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.MODULE_DOWN_WARNING)));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        //getPresenter().getAllModuleDownWarningItems();
-        /*statusLayout.setEmptyClick(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getPresenter().getAllModuleDownWarningItems();
-            }
-        });
-
-        statusLayout.setErrorClick(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getPresenter().getAllModuleDownWarningItems();
-            }
-        });*/
-
 
 
     }
@@ -125,8 +121,8 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
                 holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine_name());
                 holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
                 holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getSide());
-                holder.setText(R.id.tv_product_name_main,"主板: "+moduleUpWarningItem.getProduct_name_main());
-                holder.setText(R.id.tv_product_name,"小板: "+moduleUpWarningItem.getProduct_name());
+                holder.setText(R.id.tv_product_name_main, "主板: " + moduleUpWarningItem.getProduct_name_main());
+                holder.setText(R.id.tv_product_name, "小板: " + moduleUpWarningItem.getProduct_name());
                 //holder.setText(R.id.tv_status,"状态: "+moduleUpWarningItem.getStatus());
                 holder.setText(R.id.tv_status, "状态: " + "等待下模组");
             }
@@ -144,26 +140,26 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @Override
     public void onSuccess(ModuleDownWarningItem data) {
-            dataList.clear();
-            List<ModuleDownWarningItem.RowsBean> rowsList = data.getRows();
-            for (int i = 0; i < rowsList.size(); i++) {
-                if (TextUtils.isEmpty(rowsList.get(i).getUnplug_mod_actual_finish_time())) {
-                    rowsList.get(i).setCreat_time(System.currentTimeMillis());
-                } else {
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    try {
-                        Date parse = format.parse(rowsList.get(i).getUnplug_mod_actual_finish_time());
-                        rowsList.get(i).setCreat_time(parse.getTime());
+        dataList.clear();
+        List<ModuleDownWarningItem.RowsBean> rowsList = data.getRows();
+        for (int i = 0; i < rowsList.size(); i++) {
+            if (TextUtils.isEmpty(rowsList.get(i).getUnplug_mod_actual_finish_time())) {
+                rowsList.get(i).setCreat_time(System.currentTimeMillis());
+            } else {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date parse = format.parse(rowsList.get(i).getUnplug_mod_actual_finish_time());
+                    rowsList.get(i).setCreat_time(parse.getTime());
 
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-                rowsList.get(i).setEntityId(i);
-
             }
-            dataList.addAll(rowsList);
-            myAdapter.notifyDataSetChanged();
+            rowsList.get(i).setEntityId(i);
+
+        }
+        dataList.addAll(rowsList);
+        myAdapter.notifyDataSetChanged();
         ToastUtils.showMessage(this, data.getMsg());
 
     }
@@ -195,7 +191,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllModuleDownWarningItems();
+                onRefresh();
             }
         });
     }
@@ -206,7 +202,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllModuleDownWarningItems();
+                onRefresh();
             }
         });
     }
@@ -230,31 +226,83 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     //预警
     @Override
     public void warningComing(String warningMessage) {
-        showDialog(warningMessage);
+        if (warningDialog == null) {
+            warningDialog = createDialog(warningMessage);
+        }
+        if (!warningDialog.isShowing()) {
+            warningDialog.show();
+        }
+        warningDialog = createDialog(warningMessage);
+        updateMessage(warningMessage);
     }
 
-    public void showDialog(String message){
-        //1.创建这个DialogRelativelayout
-        DialogLayout dialogLayout = new DialogLayout(this);
-        //2.传入的是红色字体的标题
-        dialogLayout.setStrTitle("");
-        //3.传入的是黑色字体的二级标题
-        dialogLayout.setStrSecondTitle("下模组提醒");
-        //4.传入的是一个ArrayList<String>
-        ArrayList<String> titleList = new ArrayList<>();
-        titleList.add(message);
-        dialogLayout.setStrContent(titleList);
-        //5.构建Dialog，setView的时候把这个View set进去。
-        new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setView(dialogLayout)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                getPresenter().getAllModuleDownWarningItems();
+    private void updateMessage(String warningMessage) {
+
+        List<WaringDialogEntity> datas = warningDialog.getDatas();
+        datas.clear();
+        WaringDialogEntity warningEntity = new WaringDialogEntity();
+        warningEntity.setTitle("预警Sample");
+        String content ="";
+        try {
+            JSONArray jsonArray = new JSONArray(warningMessage);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                int type = jsonObject.getInt("type");
+                //可能有多种预警的情况
+                if (type == Constant.MODULE_DOWN_WARNING) {
+                    Object message1 = jsonObject.get("message");
+                    content=content+message1+"\n";
+
+                }
             }
-        }).show();
+            warningEntity.setContent(content + "\n");
+            datas.add(warningEntity);
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+}
+
+    public WarningDialog createDialog(String message) {
+//        //1.创建这个DialogRelativelayout
+//        DialogLayout dialogLayout = new DialogLayout(this);
+//        //2.传入的是红色字体的标题
+//        dialogLayout.setStrTitle("");
+//        //3.传入的是黑色字体的二级标题
+//        dialogLayout.setStrSecondTitle("下模组提醒");
+//        //4.传入的是一个ArrayList<String>
+//        ArrayList<String> titleList = new ArrayList<>();
+//        titleList.add(message);
+//        dialogLayout.setStrContent(titleList);
+//        //5.构建Dialog，setView的时候把这个View set进去。
+//        new AlertDialog.Builder(this)
+//                .setCancelable(false)
+//                .setView(dialogLayout)
+//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                getPresenter().getAllModuleDownWarningItems();
+//            }
+//        }).show();
+
+
+        warningDialog = new WarningDialog(this);
+        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
+            @Override
+            public void onclick(View view) {
+                warningManger.setConsume(true);
+                onRefresh();
+
+            }
+        });
+        warningDialog.show();
+
+        return warningDialog;
+
     }
+
 
     @Override
     protected void onPause() {
@@ -285,7 +333,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         return super.onOptionsItemSelected(item);
     }
 
-    public String date2TimeStamp(String date_str,String format){
+    public String date2TimeStamp(String date_str, String format) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(format);
             return String.valueOf(sdf.parse(date_str).getTime());
@@ -298,17 +346,20 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @Override
     public void onItemClick(View item, ModuleDownWarningItem.RowsBean rowsBean, int position) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constant.WORK_ITEM_ID,dataList.get(position).getWork_order());
-        bundle.putString(Constant.PRODUCT_NAME_MAIN,dataList.get(position).getProduct_name_main());
-        bundle.putString(Constant.PRODUCT_NAME,dataList.get(position).getProduct_name());
-        bundle.putString(Constant.SIDE,dataList.get(position).getSide());
-        bundle.putString(Constant.LINE_NAME,dataList.get(position).getLine_name());
+        bundle.putString(Constant.WORK_ITEM_ID, dataList.get(position).getWork_order());
+        bundle.putString(Constant.PRODUCT_NAME_MAIN, dataList.get(position).getProduct_name_main());
+        bundle.putString(Constant.PRODUCT_NAME, dataList.get(position).getProduct_name());
+        bundle.putString(Constant.SIDE, dataList.get(position).getSide());
+        bundle.putString(Constant.LINE_NAME, dataList.get(position).getLine_name());
 
         //Intent intent = new Intent(this, ModuleUpBindingActivity.class);
         //intent.putExtras(bundle);
         //this.startActivity(intent);
         //startActivityForResult(intent, Constant.ACTIVITY_REQUEST_WORK_ITEM_ID);
-        IntentUtils.showIntent(this, VirtualLineBindingActivity.class,bundle);
+        IntentUtils.showIntent(this, VirtualLineBindingActivity.class, bundle);
     }
 
+    public void onRefresh(){
+        getPresenter().getAllModuleDownWarningItems();
+    }
 }

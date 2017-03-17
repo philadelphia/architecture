@@ -35,6 +35,7 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.di.component.DaggerAppComponent;
 import com.delta.smt.entity.Download;
 import com.delta.smt.entity.Update;
+import com.delta.smt.service.warningService.WarningService;
 import com.delta.smt.ui.main.di.DaggerMainComponent;
 import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
@@ -224,6 +225,12 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                 Matcher m = sAddressPattern.matcher(BASE_URL);
                 if (m.matches()) {
                     settingServerAddress.setText("配置服务器地址" + "\n(" + BASE_URL + ")");
+                    API.IP = ip;
+                    API.PORT = port;
+                    BASE_URL = "http://" + API.IP + ":" + API.PORT + "/";
+                    //重启service
+                    Intent intent = new Intent(SettingActivity.this, WarningService.class);
+                    startService(intent);
                     ClientModule mClientModule = ClientModule//用于提供okhttp和retrofit的单列
                             .buidler()
                             .baseurl(BASE_URL)
@@ -232,6 +239,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                             .responseErroListener(((BaseApplication) App.getContext()))
                             .build();
                     App.appComponent = DaggerAppComponent.builder().clientModule(mClientModule).appModule(App.getAppModule()).serviceModule(App.getServiceModule()).build();
+
                     SpUtil.SetStringSF(SettingActivity.this, "ip", ip);
                     SpUtil.SetStringSF(SettingActivity.this, "port", port);
                 } else {

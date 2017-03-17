@@ -2,8 +2,11 @@ package com.delta.smt.ui.product_tools.location.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.JsonLocationVerfyList;
 import com.delta.smt.entity.JsonLocationVerfyRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -23,7 +26,7 @@ public interface ProduceToolsLocationContract {
     interface View extends IView {
 
         int getLocation(JsonProductToolsLocationRoot param);
-        int getSubmitResult(int param);
+        int getSubmitResult(JsonLocationVerfyRoot JsonLocationVerfyRoot);
         void Fail();
 
     }

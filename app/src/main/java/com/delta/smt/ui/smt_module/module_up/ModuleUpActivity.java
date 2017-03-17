@@ -18,6 +18,8 @@ import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpWarningItem;
@@ -27,6 +29,11 @@ import com.delta.smt.ui.smt_module.module_up.di.ModuleUpModule;
 import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpContract;
 import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpPresenter;
 import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
+import com.delta.smt.widget.WarningDialog;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,6 +71,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     StatusLayout statusLayout;
     private List<ModuleUpWarningItem.RowsBean> dataList = new ArrayList<>();
     private ItemCountViewAdapter<ModuleUpWarningItem.RowsBean> myAdapter;
+    private WarningDialog warningDialog;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -74,12 +82,14 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.MODULE_UP_WARNING, getClass());
+
+        //需要定制的信息
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.MODULE_UP_WARNING)));
+
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        //getPresenter().getAllModuleUpWarningItems();
-
 
     }
 
@@ -175,7 +185,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllModuleUpWarningItems();
+              onRefresh();
             }
         });
     }
@@ -186,7 +196,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllModuleUpWarningItems();
+              onRefresh();
             }
         });
     }
@@ -212,32 +222,82 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     //预警
     @Override
     public void warningComing(String warningMessage) {
-        showDialog(warningMessage);
+        if (warningDialog == null) {
+            warningDialog = createDialog(warningMessage);
+        }
+        if (!warningDialog.isShowing()) {
+            warningDialog.show();
+        }
+        warningDialog = createDialog(warningMessage);
+        updateMessage(warningMessage);
     }
 
-    public void showDialog(String message) {
-        //1.创建这个DialogRelativelayout
-        DialogLayout dialogLayout = new DialogLayout(this);
-        //2.传入的是红色字体的标题
-        dialogLayout.setStrTitle("");
-        //3.传入的是黑色字体的二级标题
-        dialogLayout.setStrSecondTitle("新工单");
-        //4.传入的是一个ArrayList<String>
-        ArrayList<String> titleList = new ArrayList<>();
-        titleList.add(message);
-        dialogLayout.setStrContent(titleList);
-        //5.构建Dialog，setView的时候把这个View set进去。
-        new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setView(dialogLayout)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //if (workOrderID.length()!=0){
-                        getPresenter().getAllModuleUpWarningItems();
-                        //}
-                    }
-                }).show();
+    public WarningDialog createDialog(String message) {
+//        //1.创建这个DialogRelativelayout
+//        DialogLayout dialogLayout = new DialogLayout(this);
+//        //2.传入的是红色字体的标题
+//        dialogLayout.setStrTitle("");
+//        //3.传入的是黑色字体的二级标题
+//        dialogLayout.setStrSecondTitle("新工单");
+//        //4.传入的是一个ArrayList<String>
+//        ArrayList<String> titleList = new ArrayList<>();
+//        titleList.add(message);
+//        dialogLayout.setStrContent(titleList);
+//        //5.构建Dialog，setView的时候把这个View set进去。
+//        new AlertDialog.Builder(this)
+//                .setCancelable(false)
+//                .setView(dialogLayout)
+//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //if (workOrderID.length()!=0){
+//                        getPresenter().getAllModuleUpWarningItems();
+//                        //}
+//                    }
+//                }).show();
+        warningDialog = new WarningDialog(this);
+        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
+            @Override
+            public void onclick(View view) {
+                warningManger.setConsume(true);
+                onRefresh();
+
+            }
+        });
+        warningDialog.show();
+
+        return warningDialog;
+    }
+
+
+
+    private void updateMessage(String warningMessage) {
+
+        List<WaringDialogEntity> datas = warningDialog.getDatas();
+        datas.clear();
+        WaringDialogEntity warningEntity = new WaringDialogEntity();
+        warningEntity.setTitle("预警Sample");
+        String content ="";
+        try {
+            JSONArray jsonArray = new JSONArray(warningMessage);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                int type = jsonObject.getInt("type");
+                //可能有多种预警的情况
+                if (type == Constant.MODULE_DOWN_WARNING) {
+                    Object message1 = jsonObject.get("message");
+                    content=content+message1+"\n";
+
+                }
+            }
+            warningEntity.setContent(content + "\n");
+            datas.add(warningEntity);
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
@@ -334,4 +394,9 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         //this.startActivity(intent);
         startActivityForResult(intent, Constant.ACTIVITY_REQUEST_WORK_ITEM_ID);
     }
+
+    private void onRefresh() {
+        getPresenter().getAllModuleUpWarningItems();
+    }
+
 }

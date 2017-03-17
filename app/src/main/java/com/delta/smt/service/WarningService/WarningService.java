@@ -11,10 +11,12 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.api.API;
@@ -76,17 +78,23 @@ public class WarningService extends IntentService implements WarningSocketPresen
         Log.e(TAG, "onCreate: ");
 //        WebSocketClientModule webSocketClientModule = WebSocketClientModule.builder().draft(new Draft_17()).uri(API.WebSocketURl).build();
 //        DaggerWarningComponent.builder().appComponent(App.getAppComponent()).webSocketClientModule(webSocketClientModule).build().inject(this);
-        WarningSocketPresenterModule warningSocketPresenterModule = WarningSocketPresenterModule.builder().context(this).url(API.WebSocketURl).build();
-        DaggerWarningComponent.builder().appComponent(App.getAppComponent()).warningSocketPresenterModule(warningSocketPresenterModule).build().inject(this);
-        warningSocketPresenter.addOnRecieveLisneter(this);
-        km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        warningSocketPresenter.startConntect();
+       
         //warningSocketClient.addOnRecieveLisneter(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        String ip = SpUtil.getStringSF(this, "ip");
+        String port = SpUtil.getStringSF(this, "port");
+        if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
+            API.WebSocketURl = "ws://" + ip + ":" + API.SOCKET_PORT ;
+        }
+        WarningSocketPresenterModule warningSocketPresenterModule = WarningSocketPresenterModule.builder().context(this).url(API.WebSocketURl).build();
+        DaggerWarningComponent.builder().appComponent(App.getAppComponent()).warningSocketPresenterModule(warningSocketPresenterModule).build().inject(this);
+        warningSocketPresenter.addOnRecieveLisneter(this);
+        km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        warningSocketPresenter.startConntect();
+        Log.e(TAG, "onStartCommand: "+API.WebSocketURl);
         return super.onStartCommand(intent, flags, startId);
     }
 

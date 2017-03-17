@@ -21,9 +21,9 @@ public class ProduceToolsBorrowModel extends BaseModel<ApiService> implements Pr
     }
 
     @Override
-    public Observable<JsonProductBorrowRoot> getProductWorkItem(int pageSize, int pageCurrent) {
+    public Observable<JsonProductBorrowRoot> getProductWorkItem() {
 
-        return getService().getProductWorkItem(pageSize, pageCurrent).compose(RxsRxSchedulers.<JsonProductBorrowRoot>io_main());
+        return getService().getProductWorkItem().compose(RxsRxSchedulers.<JsonProductBorrowRoot>io_main());
     }
 
 }

@@ -31,7 +31,7 @@ public class ProduceToolsBorrowPresenter extends BasePresenter<ProduceToolsBorro
     public void getData(){
         getView().showLoadingView();
         //TODO 修改输入的参数
-        getModel().getProductWorkItem(1000000000,1).subscribe(new Action1<JsonProductBorrowRoot>() {
+        getModel().getProductWorkItem().subscribe(new Action1<JsonProductBorrowRoot>() {
 
             List<ProductWorkItem> data=new ArrayList<>();
             @Override
@@ -43,7 +43,7 @@ public class ProduceToolsBorrowPresenter extends BasePresenter<ProduceToolsBorro
 
                         String lastDate = TimeSortUtils.getMyStyleTime(j);
                         Log.e("time",lastDate);
-                        ProductWorkItem productWorkItem = new ProductWorkItem(String.valueOf(j.getOrderID()), j.getMainBoard(), j.getSubBoard(), j.getPcbCode(), j.getCompositeMaterial(), j.getLineName(), j.getPcbMaterial(), j.getSide(), lastDate, j.getOrderStatus() == 0 ? "等待" : "准备就绪");
+                        ProductWorkItem productWorkItem = new ProductWorkItem(j.getOrderName(),String.valueOf(j.getOrderID()), j.getMainBoard(), j.getSubBoard(), j.getPcbCode(), j.getCompositeMaterial(), j.getLineName(), j.getPcbMaterial(), j.getSide(), lastDate, j.getOrderStatus() == 0 ? "等待" : "准备就绪");
                         data.add(productWorkItem);
 
                     }

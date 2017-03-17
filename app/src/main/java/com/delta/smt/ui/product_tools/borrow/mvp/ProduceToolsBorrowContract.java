@@ -17,7 +17,7 @@ public interface ProduceToolsBorrowContract {
 
     interface Model extends IModel{
 
-        Observable<JsonProductBorrowRoot> getProductWorkItem(int pageSize, int pageCurrent);
+        Observable<JsonProductBorrowRoot> getProductWorkItem();
 
     }
 

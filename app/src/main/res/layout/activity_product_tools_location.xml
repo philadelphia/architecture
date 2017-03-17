@@ -1,47 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/layout_root"
     android:layout_height="match_parent">
 
     <include layout="@layout/appbar" />
-
-    <TextView
-        android:layout_marginTop="608px"
-        android:layout_marginLeft="68px"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textSize="@dimen/ProtectToolsTextSize"
-        android:textColor="#333333"
-        android:text="@string/ProductToolsBarCodePlus"/>
+        android:padding="40px">
 
-    <EditText
-        android:id="@+id/ProductToolsBarCode"
-        android:layout_height="84px"
-        android:layout_width="698px"
-        android:layout_marginLeft="288px"
-        android:layout_marginTop="-75px"
-        android:background="@drawable/ed_back_white"
-        android:focusable="false"
-        />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:text="治具二维码："
+            android:textColor="#333333"
+            android:textSize="@dimen/ProtectToolsTextSize"/>
 
-    <TextView
-        android:layout_marginTop="80px"
-        android:layout_marginLeft="68px"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textColor="#333333"
-        android:textSize="@dimen/ProtectToolsTextSize"
-        android:text="@string/LocationBarCode"/>
+        <EditText
+            android:id="@+id/ProductToolsBarCode"
+            android:layout_width="698px"
+            android:layout_height="70px"
+            android:background="@drawable/ed_back_white"
+            android:focusable="false"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
 
-    <EditText
-        android:shadowColor="@color/c_000000"
-        android:layout_height="84px"
-        android:layout_width="698px"
-        android:layout_marginTop="-75px"
-        android:layout_marginLeft="288px"
-        android:id="@+id/ShiftBarcode"
-        android:background="@drawable/ed_back_white"
-        android:focusable="false"
-        />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="60px"
+            android:text="架位名称："
+            android:textColor="#333333"
+            android:textSize="@dimen/ProtectToolsTextSize"/>
+
+        <EditText
+            android:id="@+id/et_location_name"
+            android:layout_width="698px"
+            android:layout_height="70px"
+            android:layout_alignBottom="@+id/textView2"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ed_back_white"
+            android:focusable="false"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView2"
+            android:layout_marginTop="60px"
+            android:text="架位二维码："
+            android:textColor="#333333"
+            android:textSize="@dimen/ProtectToolsTextSize"/>
+
+        <EditText
+            android:id="@+id/ShiftBarcode"
+            android:layout_width="698px"
+            android:layout_height="70px"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/textView3"
+            android:background="@drawable/ed_back_white"
+            android:focusable="false"
+            android:shadowColor="@color/c_000000"/>
+
+    </RelativeLayout>
+    <HorizontalScrollView
+        android:id="@+id/hr_scrow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_content"
+        android:layout_marginTop="40px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+
+    </HorizontalScrollView>
+
 
 </LinearLayout>
