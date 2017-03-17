@@ -165,14 +165,14 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
     }
     public WarningDialog createDialog(String message) {
 
-        WarningDialog warningDialog = new WarningDialog(getmActivity());
+        final WarningDialog warningDialog = new WarningDialog(getmActivity());
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override
             public void onclick(View view) {
                 warningManger.setConsume(true);
 
                     getPresenter().getStorageReady(mS);
-
+                warningDialog.dismiss();
             }
         });
         warningDialog.show();
