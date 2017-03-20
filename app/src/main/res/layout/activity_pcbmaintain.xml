@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_mianview">
+    <include layout="@layout/appbar" />
+    <com.delta.commonlibs.widget.statusLayout.StatusLayout
+        android:id="@+id/statusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/px_20">
+    <EditText
+        android:id="@+id/pcbmaintain_ed"
+        android:layout_width="@dimen/px_0"
+        android:layout_height="match_parent"
+        android:background="@drawable/ed_frame"
+        android:layout_weight="2"
+        android:hint="@string/pcb_ed_storehint"
+        android:layout_marginLeft="@dimen/px_20"
+        />
+        <Button
+            android:id="@+id/pcbmaintain_btn"
+            android:layout_width="@dimen/px_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/button_style"
+            android:text="@string/affirm"
+            android:layout_marginLeft="@dimen/px_20"
+            android:layout_marginRight="@dimen/px_20"
+            />
+        <Button
+            android:id="@+id/pcbmaintainnext_btn"
+            android:layout_width="@dimen/px_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/button_style"
+            android:text="@string/pcbmaintainnext"
+            android:layout_marginLeft="@dimen/px_20"
+            android:layout_marginRight="@dimen/px_20"
+            />
+        </LinearLayout>
+
+    <include layout="@layout/main_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+        </LinearLayout>
+</com.delta.commonlibs.widget.statusLayout.StatusLayout>
+</LinearLayout>

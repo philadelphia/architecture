@@ -120,7 +120,7 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         goneView.setVisibility(View.VISIBLE);
         goneView.setGravity(Gravity.CENTER);
         mFrameLocation=SpUtil.getString(StartWorkAndStopWorkActivity.this,"FrameLocation");
-        if (!"".equals(mFrameLocation)) {
+        if (!"".equals(mFrameLocation)&&mFrameLocation!=null) {
             startAndstopText.setText(mFrameLocation);
             } else {
             startAndstopText.setText("暂无盘点架位");

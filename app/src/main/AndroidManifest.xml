@@ -113,6 +113,11 @@
             android:name=".ui.checkstock.CheckStockActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.maintain.PCBMaintainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.store.WarningListActivity"
             android:launchMode="singleTask"

@@ -21,6 +21,7 @@ import com.delta.smt.entity.JsonProductToolsLocationRoot;
 import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
+import com.delta.smt.entity.LedLight;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
@@ -316,6 +317,15 @@ public interface ApiService {
 
 
     Observable<String> getCheckStockSuccess();//是否成功?
+
+    @GET("/pcb/subshelf")
+    Observable<LedLight> getSubshelf(@Query("shelfSerial") String s);
+    @GET("pcb/subshelf/update")
+    Observable<Success> getUpdate(@Query("id") String id,@Query("lightSerial") String lightSerial);
+    @GET("/webapi/pcb/subshelf/unbound")
+    Observable<Success> getUnbound(@Query("param") String id);
+
+
 
     //Observable<List<MantissaWarehousePutstorage>> getBeginput();
 

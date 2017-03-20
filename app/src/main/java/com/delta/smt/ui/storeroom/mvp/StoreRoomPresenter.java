@@ -61,7 +61,11 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         JSONObject jsonObject1=new JSONObject();
             try {
                 jsonObject1.putOpt("partNum",materialBlockBarCodes.get(i).getDeltaMaterialNumber());
-                jsonObject1.putOpt("pcbCode",materialBlockBarCodes.get(i).getStreamNumber().substring(0,2));
+                if("0".equals(materialBlockBarCodes.get(i).getStreamNumber().substring(0,2))) {
+                    jsonObject1.putOpt("pcbCode", materialBlockBarCodes.get(i).getStreamNumber().substring(0, 2));
+                }else{
+                    jsonObject1.putOpt("pcbCode", materialBlockBarCodes.get(i).getDeltaMaterialNumber().substring(materialBlockBarCodes.get(i).getDeltaMaterialNumber().length()-2, materialBlockBarCodes.get(i).getDeltaMaterialNumber().length()));
+                }
                 jsonObject1.putOpt("dateCode",materialBlockBarCodes.get(i).getDC());
                 jsonObject1.putOpt("serial",materialBlockBarCodes.get(i).getStreamNumber());
             } catch (JSONException e) {
@@ -123,6 +127,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
                 getView().storeFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
             }catch (Exception e){
                 }
+
             }
         });
     }
