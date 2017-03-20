@@ -27,9 +27,9 @@ public class IssureToWarehBody {
     private String vendor;
     private String dc;
     private String lc;
-    private String trasaction_code;
+    private String tc;
     private String po;
-    private String quantity;
+    private String qty;
     private String work_order;
     private String part;
     private String side;
@@ -106,12 +106,12 @@ public class IssureToWarehBody {
         this.lc = lc;
     }
 
-    public String getTrasaction_code() {
-        return trasaction_code;
+    public String getQty() {
+        return qty;
     }
 
-    public void setTrasaction_code(String trasaction_code) {
-        this.trasaction_code = trasaction_code;
+    public void setQty(String qty) {
+        this.qty = qty;
     }
 
     public String getPo() {
@@ -122,11 +122,11 @@ public class IssureToWarehBody {
         this.po = po;
     }
 
-    public String getQuantity() {
-        return quantity;
+    public String getTc() {
+        return tc;
     }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
+    public void setTc(String tc) {
+        this.tc = tc;
     }
 }
