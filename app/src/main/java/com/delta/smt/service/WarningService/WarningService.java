@@ -129,7 +129,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
             @Override
             public void run() {
                 if (warningDialog == null) {
-                    warningDialog = createDialog(message);
+                    warningDialog = createDialog();
                 }
                 if (!warningDialog.isShowing()) {
                     warningDialog.show();
@@ -140,7 +140,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
         });
     }
 
-    public WarningDialog createDialog(String message) {
+    public WarningDialog createDialog() {
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override

@@ -55,6 +55,13 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
         warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
+        if (warningDialog == null) {
+            warningDialog = createDialog("dfsfd");
+        }
+        if (!warningDialog.isShowing()) {
+            warningDialog.show();
+        }
+        updateMessage("fdsf");
     }
 
     @Override

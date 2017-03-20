@@ -56,6 +56,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
     private Map<Integer, CheckBox> checkBoxMap = new HashMap<>();
     private int index = 0;
     private String storeName;
+    private Bundle bundle;
 
     @Override
     protected int getContentViewId() {
@@ -69,6 +70,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
 
     @Override
     protected void initData() {
+        bundle = new Bundle();
         storeName = SpUtil.getStringSF(this, Constant.STORAGE_NAME);
         getPresenter().getStorageSelect();
     }
@@ -98,7 +100,6 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
                 return R.layout.item_storageselect;
             }
         };
-
         adapter.setOnItemClickListener(this);
         recyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), 3));
         recyclerView.setAdapter(adapter);
@@ -153,7 +154,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
                 if (TextUtils.isEmpty(storeName)) {
                     SnackbarUtil.showMassage(statusLayout, "请选择仓库");
                 } else {
-                    Bundle bundle = new Bundle();
+
                     bundle.putString(Constant.WARE_HOUSE_NAME, storeName);
                     if ("Mantissa".equals(storeName)) {
                         IntentUtils.showIntent(this, MantissaWarehouseReadyActivity.class, bundle);

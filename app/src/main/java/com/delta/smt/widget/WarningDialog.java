@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -48,16 +49,15 @@ public class WarningDialog extends Dialog {
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-//        WindowManager m = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-//        Display d = m.getDefaultDisplay();
-//        android.view.WindowManager.LayoutParams p = getWindow().getAttributes();
-//        p.height = (int)(d.getHeight() *0.8);
-//        p.width = (int)(d.getWidth()*0.7);
-//        p.dimAmount = 0.0f;
-//        getWindow().setAttributes(p);
+        WindowManager m = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display d = m.getDefaultDisplay();
+        android.view.WindowManager.LayoutParams p = getWindow().getAttributes();
+        p.height = (int)(d.getHeight() *0.6);
+        p.dimAmount = 0.0f;
+        getWindow().setAttributes(p);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
     }
 
     @Override
