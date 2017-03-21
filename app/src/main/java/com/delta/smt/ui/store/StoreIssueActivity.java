@@ -1,25 +1,24 @@
 package com.delta.smt.ui.store;
 
-import android.content.DialogInterface;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.entity.SentRefreshRequest;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ArrangeInt;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.SentRefreshRequest;
 import com.delta.smt.entity.StoreEmptyMessage;
-import com.delta.smt.entity.WarningContent;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.entity.WarningInt;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.store.di.DaggerStoreComponent;
@@ -27,13 +26,18 @@ import com.delta.smt.ui.store.di.StoreModule;
 import com.delta.smt.ui.store.mvp.StoreContract;
 import com.delta.smt.ui.store.mvp.StorePresenter;
 import com.delta.smt.utils.ViewUtils;
+import com.delta.smt.widget.DialogLayout;
+import com.delta.smt.widget.WarningDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -70,6 +74,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     private DialogLayout dialogLayout;
     ArrayList<String> SimpleWarningdatas = new ArrayList<>();
     private SimpleDateFormat dateFormat;
+    private WarningDialog warningDialog;
 
 
     @Override
@@ -84,11 +89,19 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
         } else {
             mTitles = new String[]{"预警" + arrayint, "排程" + warnInt};
         }
-        dateFormat = new SimpleDateFormat("hh:mm:ss");
-        warningManger.addWarning(Constant.PCB_WAREH_ISSUE_ALARM_FLAG , getClass());
+
+
+        //接收那种预警
+        warningManger.addWarning(Constant.PCB_WAREH_ISSUE_ALARM_FLAG, getClass());
+        //需要定制的信息
+        warningManger.sendMessage(new SendMessage(Constant.PCB_WAREH_ISSUE_ALARM_FLAG,0));
+        //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
+        //关键 初始化预警接口
         warningManger.setOnWarning(this);
+
     }
+
 
 
 
@@ -130,6 +143,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         switch (tab.getPosition()) {
@@ -160,52 +174,64 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
 
     }
 
+    public WarningDialog createDialog(String message) {
+        warningDialog = new WarningDialog(this);
+        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
+            @Override
+            public void onclick(View view) {
+                warningManger.setConsume(true);
+                EventBus.getDefault().post(new SentRefreshRequest());
+            }
+        });
+        warningDialog.show();
+
+        return warningDialog;
+    }
+
     @Override
     public void warningComing(String message) {
         Log.e(TAG, "warningComing: " + message);
-        if (alertDialog != null) {
-            SimpleWarningdatas.clear();
-            ArrayList<WarningContent> warningContents = GsonTools.changeGsonToList(message, WarningContent.class);
 
-            for (WarningContent warningContent : warningContents) {
-                if(warningContent.getType()==Constant.SAMPLEWARING){
-                    String format = dateFormat.format(new Date(System.currentTimeMillis() - Long.valueOf(warningContent.getMessage().getDeadLine())));
-                    SimpleWarningdatas.add(warningContent.getMessage().getProductline()+"--"+format+"\n");
-                }
-
-            }
-            dialogLayout.setDatas(SimpleWarningdatas);
-            alertDialog.show();
-        } else {
-            alertDialog = createDialog(message);
+        if (warningDialog == null) {
+            warningDialog = createDialog(message);
         }
+        if(!warningDialog.isShowing()){
+            warningDialog.show();
+        }
+        updateMessage(message);
+
     }
 
-    public AlertDialog createDialog(String message) {
+    /**
+     * type == 9  代表你要发送的是哪个
+     * @param message
+     */
+    private void updateMessage(String message) {
+        List<WaringDialogEntity> datas = warningDialog.getDatas();
+        datas.clear();
+        WaringDialogEntity warningEntity = new WaringDialogEntity();
+        warningEntity.setTitle("PCB发料预警");
+        String content ="";
+        try {
+            JSONArray jsonArray = new JSONArray(message);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                int type = jsonObject.getInt("type");
+                //可能有多种预警的情况
+                if (type == 0) {
+                    Object message1 = jsonObject.get("message");
+                    content=content+message1+"\n";
 
-        Log.e(TAG, "createDialog: "+message);
-        dialogLayout = new DialogLayout(this);
-        //2.传入的是红色字体的标题
-        dialogLayout.setStrTitle("预警信息");
-        ArrayList<WarningContent> warningContents = GsonTools.changeGsonToList(message, WarningContent.class);
-        for (WarningContent warningContent : warningContents) {
-            if(warningContent.getType()==Constant.SAMPLEWARING){
-                String format = dateFormat.format(new Date(System.currentTimeMillis() - Long.valueOf(warningContent.getMessage().getDeadLine())));
-                SimpleWarningdatas.add(warningContent.getMessage().getProductline()+"--"+format);
+                }
             }
+            warningEntity.setContent(content + "\n");
+            datas.add(warningEntity);
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        //3.传入的是黑色字体的二级标题
-        dialogLayout.setStrSecondTitle("simple预警");
-        //4.传入的是一个ArrayList<String>
-        dialogLayout.setStrContent(SimpleWarningdatas);
-        //5.构建Dialog，setView的时候把这个View set进去。
-        return new AlertDialog.Builder(this).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                EventBus.getDefault().post(new StoreEmptyMessage());
-                warningManger.setConsume(true);
-            }
-        }).show();
+
+
     }
 
     @Override
@@ -224,6 +250,12 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     protected void onStop() {
         warningManger.unregisterWReceiver(this);
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        warningManger.sendMessage(new SendMessage(Constant.PCB_WAREH_ISSUE_ALARM_FLAG,1));
     }
 
     @Subscribe
