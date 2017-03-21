@@ -253,6 +253,9 @@ public interface ApiService {
     @GET("pcb/management/scheduleinfo")
     Observable<AllQuery> getArrange();//获取所有排程信息
 
+    @GET("pcb/management/outbound/lights/close")
+    Observable<Success> closeLights(@Query("id") int id,@Query("type")int type);//退出后又进入
+
     @GET("pcb/management/outbound/alarm/bill")
     Observable<OutBound> outBound(@Query("id") int id, @Query("sapWorkOrderId") String sapWorkOrderId, @Query("partNum") String partNum, @Query("amount") int amount);//预警仓库发料清单
 

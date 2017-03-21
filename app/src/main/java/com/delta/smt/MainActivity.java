@@ -193,7 +193,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("PCB入库", R.drawable.ic_warehousestorage));
         fuctions.add(new Fuction("PCB盘点", R.drawable.ic_warehouseinventory));
         fuctions.add(new Fuction("PCB发料", R.drawable.ic_warehouseforsending));
-        fuctions.add(new Fuction("PCB维护", R.drawable.ic_warehouseforsending));
+        fuctions.add(new Fuction("PCB维护", R.drawable.ic_pcbsetting));
         fuctions.add(new Fuction("仓库备料", R.drawable.ic_warehouseroompreparation));
         fuctions.add(new Fuction("仓库超领", R.drawable.ic_warehouseroomchaoling));
         fuctions.add(new Fuction("Feeder缓冲区", R.drawable.ic_feederbuffer));

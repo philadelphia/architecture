@@ -97,7 +97,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     private boolean isShowDialog = true;
     private int isChexNumber = 0;
     private boolean isChexs = true;
-    private String FrameLocation;
+    private String FrameLocation=null;
 
 
     @Override
