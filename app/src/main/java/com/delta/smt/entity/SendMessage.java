@@ -11,12 +11,26 @@ public class SendMessage {
 
     private String uuid;
     private String type;
+    private int regist;//0:subscriber 1:un_subscriber
     /** 预警消息内容 */
     private Object message;
 
-    public SendMessage( String type) {
+    public int getRegist() {
+        return regist;
+    }
+
+    public void setRegist(int regist) {
+        this.regist = regist;
+    }
+
+    public SendMessage(String type) {
 
         this.type =type;
+    }
+
+    public SendMessage(String type, int regist) {
+        this.type = type;
+        this.regist = regist;
     }
 
     public String getUuid() {

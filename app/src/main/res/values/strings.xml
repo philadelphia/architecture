@@ -95,6 +95,8 @@
     <string name="dialog_stopwork_content">请确认是否结束盘点！</string>
     <string name="dialog_rollback_content">请确认是否回退到上一个界面！</string>
     <string name="dialog_affirm_content">是否确认备料！</string>
+    <string name="pcb_ed_storehint">请输入货架编号！</string>
+
 
     <string name="MainBoard">主板:</string>
     <string name="LittleBoard">小板:</string>
@@ -105,5 +107,9 @@
     <string name="debit_success">扣账成功</string>
     <string name="debit_failed">扣账失败</string>
     <string name="ｍantissa＿warehouse＿stock">尾数仓备料</string>
+    <string name="pcbmaintain_number">编号</string>
+    <string name="pcbmaintain_framelocation">架位编号二维码</string>
+    <string name="pcbmaintain_Led">灯的编号二维码</string>
+    <string name="pcbmaintainnext">下一个货架</string>
 
 </resources>

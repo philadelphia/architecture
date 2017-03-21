@@ -552,9 +552,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     issureToWarehBody.setLc(materialblockbarcode.getDC());
                     issureToWarehBody.setVendor(materialblockbarcode.getDC());
                     issureToWarehBody.setVendor(materialblockbarcode.getVendor());
-                    issureToWarehBody.setTrasaction_code(materialblockbarcode.getBusinessCode());
+                    issureToWarehBody.setTc(materialblockbarcode.getBusinessCode());
                     issureToWarehBody.setPo(materialblockbarcode.getPO());
-                    issureToWarehBody.setQuantity(materialblockbarcode.getCount());
+                    issureToWarehBody.setQty(materialblockbarcode.getCount());
                     issureToWarehBody.setWork_order(work_order);
                     issureToWarehBody.setSide(side);
                     issureToWarehBody.setPart(part);

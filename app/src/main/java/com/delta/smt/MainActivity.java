@@ -38,6 +38,7 @@ import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
 import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.main.update.DownloadService;
+import com.delta.smt.ui.maintain.PCBMaintainActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
 import com.delta.smt.ui.over_receive.OverReceiveActivity;
 import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
@@ -192,6 +193,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("PCB入库", R.drawable.ic_warehousestorage));
         fuctions.add(new Fuction("PCB盘点", R.drawable.ic_warehouseinventory));
         fuctions.add(new Fuction("PCB发料", R.drawable.ic_warehouseforsending));
+        fuctions.add(new Fuction("PCB维护", R.drawable.ic_warehouseforsending));
         fuctions.add(new Fuction("仓库备料", R.drawable.ic_warehouseroompreparation));
         fuctions.add(new Fuction("仓库超领", R.drawable.ic_warehouseroomchaoling));
         fuctions.add(new Fuction("Feeder缓冲区", R.drawable.ic_feederbuffer));
@@ -235,6 +237,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 break;
             case "PCB盘点":
                 IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
+                break;
+            case "PCB维护":
+                IntentUtils.showIntent(this, PCBMaintainActivity.class);
                 break;
             case "生产中预警":
                 bundle = new Bundle();

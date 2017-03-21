@@ -309,4 +309,27 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
 
+    public void getRefresh(int id, String partNum, int offset, int type){
+        getModel().getRefresh(id,partNum,offset,type).subscribe(new Action1<OutBound>() {
+            @Override
+            public void call(OutBound outBound) {
+                if ("0".equals(outBound.getCode())) {
+                    getView().onOutSuccess(outBound.getRows());
+                } else {
+                    getView().onFailed(outBound.getMsg());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }
+            }
+        });
+    }
+
 }

@@ -41,6 +41,9 @@ public class WarningListContract {
         Observable<Success>Closelighting(String subShelfCode);
         Observable<Success>getOutSubmit(int scheduleId);
         Observable<Success>getAlarmOutSubmit(int scheduleId);
+        Observable<OutBound>getRefresh(int id,String partNum,int offset,int type);
+
+
 
 
 

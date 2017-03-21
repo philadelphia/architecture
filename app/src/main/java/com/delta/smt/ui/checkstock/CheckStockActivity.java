@@ -169,7 +169,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         };
         recyContetn.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyContetn.setAdapter(mAdapter);
-        if (!"".equals(FrameLocation)){
+        if (!"".equals(FrameLocation)&&FrameLocation!=null){
             cargonTv.setText(FrameLocation);
             getPresenter().fetchCheckStock(FrameLocation);
             status = 2;

@@ -115,6 +115,12 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
     }
 
     @Override
+    public void onDestroy() {
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_ALARM_FLAG +"_" +wareHouseName,1));
+        super.onDestroy();
+    }
+
+    @Override
     protected void initData() {
 
         wareHouseName = getArguments().getString(Constant.WARE_HOUSE_NAME);
@@ -126,7 +132,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
         //接收那种预警
         warningManger.addWarning(Constant.WAREH_ALARM_FLAG +"_" +wareHouseName, getmActivity().getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(Constant.WAREH_ALARM_FLAG +"_" +wareHouseName));
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_ALARM_FLAG +"_" +wareHouseName,0));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口

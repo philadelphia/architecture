@@ -40,7 +40,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static android.R.attr.id;
 import static com.delta.buletoothio.barcode.parse.BarCodeType.PCB_FRAME_LOCATION;
 
 /**
@@ -85,6 +84,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     private List<ThreeOfMaterial> materialsList = new ArrayList<>();
     private MaterialBlockBarCode mBarCode;
     private CommonBaseAdapter<ThreeOfMaterial> mShortLisrAdapter;
+
+    public static String myResEx= "^[0-9A-Z]{5}$";
 
 
     @Override
@@ -148,94 +149,76 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
             VibratorAndVoiceUtils.correctVibrator (this);
             VibratorAndVoiceUtils.correctVoice(this);
             Log.e("barcode", mBarCode.getDeltaMaterialNumber());
-            storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
-            storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
-            storageDatacodeed.setText(mBarCode.getDC());
-            storageCounted.setText(mBarCode.getCount());
+
             if(materialBlockBarCodes.size() ==0) {
                 materialBlockBarCodes.add(mBarCode);
-                setTextView();
-            }else{
-                int size=0;
-                for (int i=0;i<materialBlockBarCodes.size();i++){
-                    size++;
-                    if (!mBarCode.getStreamNumber().equals(materialBlockBarCodes.get(i).getStreamNumber())){
-                    materialBlockBarCodes.add(mBarCode);
-                    setTextView();
-                    }else {
-                        if (size==materialBlockBarCodes.size()){
-                            ToastUtils.showMessage(getApplication(),"请确认是否扫描的同一个标签!!");
-                        }
-                    }
-                    size=0;
-                }
-
-            }
-//            if (materialBlockBarCodes.size() ==0){
-//                materialBlockBarCodes.add(mBarCode);
-//                setTextView();
-//            }else{
-////                for (int i=0;i<materialBlockBarCodes.size();i++){
-////                if (!mBarCode.getStreamNumber().equals(materialBlockBarCodes.get(i).getStreamNumber())){
-//                materialBlockBarCodes.add(mBarCode);
-////                }
-////                }
-//                setTextView();
-//            }
-
-
-        } catch (EntityNotFountException e) {
-
-            e.printStackTrace();
-            try {
-                PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
-                storageIded.setText(frameCode.getSource());
-                if (materialBlockBarCodes.size() < 11&&materialBlockBarCodes.size()!=0) {
-                    if (!TextUtils.isEmpty(storageIded.getText())){
-                        getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
-                }
-                }else {
-                    storageIded.setText(null);
-                    SnackbarUtil.showMassage(warningActivityMain,"请先扫描外箱条码，再扫描架位");
-                }
-                VibratorAndVoiceUtils.correctVibrator (this);
-                VibratorAndVoiceUtils.correctVoice(this);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-                VibratorAndVoiceUtils. wrongVibrator (this);
-                VibratorAndVoiceUtils. wrongVoice (this);
-            }
-
-        }catch(Exception e){
-
-        }
-    }
-
-    private void setTextView() {
-        if (mBarCode != null) {
-//            if (materialsList.size() ==0){
-//                ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
-//                materialsList.add(threeOfMaterial);
-//                mShortLisrAdapter.notifyDataSetChanged();
-//            }else if (materialsList.size() < 10) {
-//                ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
-//                materialsList.add(threeOfMaterial);
-//                mShortLisrAdapter.notifyDataSetChanged();
-//
-//                }
-            if (materialsList.size() <10){
                 ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
                 materialsList.add(threeOfMaterial);
                 mShortLisrAdapter.notifyDataSetChanged();
-            }else {
-                SnackbarUtil.showMassage(warningActivityMain,"请确实是否有扫错的条码或者确认箱子上有几个条码!");
-                //ToastUtils.showMessage(this,"请确实是否有扫错的条码或者确认箱子上有几个条码!");
+                storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
+                storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
+                storageDatacodeed.setText(mBarCode.getDC());
+                storageCounted.setText(mBarCode.getCount());
+
+            }else{
+                int i=0;
+                int  materialBlockBarCodesize=materialBlockBarCodes.size();
+                for (;i<materialBlockBarCodesize;i++){
+                    if (mBarCode.getStreamNumber().equals(materialBlockBarCodes.get(i).getStreamNumber())){
+                    break;
+                    }
+
+
+                }
+                if (i<materialBlockBarCodesize){
+                    ToastUtils.showMessage(getApplication(),"请确认是否扫描的同一个标签!!");
+                }else {
+                    materialBlockBarCodes.add(mBarCode);
+                    ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
+                    materialsList.add(threeOfMaterial);
+                    mShortLisrAdapter.notifyDataSetChanged();
+                    storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
+                    storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
+                    storageDatacodeed.setText(mBarCode.getDC());
+                    storageCounted.setText(mBarCode.getCount());
+                }
+
+
+
+
+
             }
 
+} catch (EntityNotFountException e) {
+
+            e.printStackTrace();
+            try {
+               PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
+//                Pattern pattern = Pattern.compile(myResEx);
+//                Matcher matcher = pattern.matcher(barcode);
+//                boolean isMatcher = matcher.matches();
+//                if (isMatcher) {
+                    VibratorAndVoiceUtils.correctVibrator(this);
+                    VibratorAndVoiceUtils.correctVoice(this);
+                    storageIded.setText(barcode);
+                    if (materialBlockBarCodes.size() < 11 && materialBlockBarCodes.size() != 0) {
+                        if (!TextUtils.isEmpty(storageIded.getText())) {
+                            getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
+                        }
+                    } else {
+                        storageIded.setText(null);
+                        SnackbarUtil.showMassage(warningActivityMain, "请先扫描外箱条码，再扫描架位");
+                    }
+
+
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                VibratorAndVoiceUtils.wrongVibrator(this);
+                VibratorAndVoiceUtils.wrongVoice(this);
+            }
         }
 
     }
-
 
     @Override
     public void storeSuccess(String s) {

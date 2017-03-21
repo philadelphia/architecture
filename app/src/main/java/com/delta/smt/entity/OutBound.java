@@ -58,6 +58,7 @@ public class OutBound {
         private int count;
         private int  id;
         private boolean isDelivery;
+        private int level=0;
 
         public boolean isDelivery() {
             return isDelivery;
@@ -91,14 +92,14 @@ public class OutBound {
             this.id = id;
         }
 
-        private int isColor=0;
 
-        public int getIsColor() {
-            return isColor;
+
+        public int getLevel() {
+            return level;
         }
 
-        public void setIsColor(int isColor) {
-            this.isColor = isColor;
+        public void setLevel(int level) {
+            this.level = level;
         }
 
         public String getPartNum() {
