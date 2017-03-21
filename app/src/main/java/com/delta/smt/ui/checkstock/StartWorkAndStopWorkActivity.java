@@ -44,7 +44,7 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     @BindView(R.id.startAndstop_text)
     TextView startAndstopText;
 
-    private String mFrameLocation;
+//    private String mFrameLocation;
 
 
     @Override
@@ -119,7 +119,7 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         startAndstopStartwork.setVisibility(View.GONE);
         goneView.setVisibility(View.VISIBLE);
         goneView.setGravity(Gravity.CENTER);
-        mFrameLocation=SpUtil.getString(StartWorkAndStopWorkActivity.this,"FrameLocation");
+        String mFrameLocation=SpUtil.getString(StartWorkAndStopWorkActivity.this,"FrameLocation");
         if (!"".equals(mFrameLocation)&&mFrameLocation!=null) {
             startAndstopText.setText(mFrameLocation);
             } else {

@@ -73,7 +73,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         Log.i(TAG, "initData: ");
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.FEEDER_BUFF_ALARM_FLAG, this.getClass());
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG)));
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG),0));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
@@ -292,6 +292,8 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         if (null != adapter) {
             adapter.cancelRefreshTime();
         }
+
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG), 1));
     }
 
     @Override

@@ -81,7 +81,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         warningManger.addWarning(Constant.PLUG_MOD_ALARM_FLAG, getClass());
 
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.PLUG_MOD_ALARM_FLAG)));
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.PLUG_MOD_ALARM_FLAG), 0));
 
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
@@ -289,6 +289,9 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         if (null != myAdapter) {
             myAdapter.cancelRefreshTime();
         }
+
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.PLUG_MOD_ALARM_FLAG), 1));
+
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -4,6 +4,7 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.AllQuery;
+import com.delta.smt.entity.Success;
 
 import rx.Observable;
 
@@ -22,4 +23,11 @@ public class ArrangeModel extends BaseModel<ApiService> implements ArrangeContra
     public Observable<AllQuery> getArrange() {
         return getService().getArrange().compose(RxsRxSchedulers.<AllQuery>io_main());
     }
+
+    @Override
+    public Observable<Success> getArrangeCloneLight(int s,int type) {
+        return getService().closeLights(s,type).compose(RxsRxSchedulers.<Success>io_main());
+    }
+
+
 }
