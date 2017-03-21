@@ -83,7 +83,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.UNPLUG_MOD_ALARM_FLAG, getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG)));
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG),0));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
@@ -314,6 +314,8 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         if (null != myAdapter) {
             myAdapter.cancelRefreshTime();
         }
+
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG),1));
     }
 
     @Override
