@@ -106,8 +106,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_widget"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
             <include layout="@layout/main_recyclerview"
         />
+            </android.support.v4.widget.SwipeRefreshLayout>
             <Button
                 android:id="@+id/warning_sum"
                 android:layout_width="match_parent"

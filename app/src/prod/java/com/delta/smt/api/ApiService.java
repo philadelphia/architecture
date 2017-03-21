@@ -285,6 +285,9 @@ public interface ApiService {
     @GET("pcb/management/outbound/schedule/submit")
     Observable<Success> getScheduleSuccessState(@Query("scheduleId") int scheduleId);//预警出库完成
 
+    @GET("pcb/management/outbound/alternative/bill")
+    Observable<OutBound> getRefresh(@Query("id") int id,@Query("partNum")String partNum,@Query("offset") int offset,@Query("type") int type);
+
     @GET("pcb/inventory/start")
     Observable<Success> onStartWork();//开始盘点
 
