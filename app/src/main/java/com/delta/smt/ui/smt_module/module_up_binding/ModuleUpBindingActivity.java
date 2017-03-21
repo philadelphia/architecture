@@ -431,6 +431,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     public void setItemHighLightBasedOnMID(int position) {
         scan_position = position;
+        recyContent.scrollToPosition(position);
         adapter.notifyDataSetChanged();
     }
 
