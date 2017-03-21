@@ -4,6 +4,7 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ItemInfo;
+import com.delta.smt.entity.Success;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import rx.Observable;
 public class WarningContract {
     public  interface View extends IView{
         void onSucess(List<ItemInfo> wareHouses);
+        void onColenSucess(String s);
         void onFailed(String s);
         void showLoadingView();
         void showContentView();
@@ -25,5 +27,6 @@ public class WarningContract {
     }
      public interface Model extends IModel{
          Observable<AllQuery> getWarning();
+         Observable<Success> getArrangeCloneLight(int s,int type);
     }
 }

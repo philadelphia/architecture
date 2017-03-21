@@ -6,6 +6,7 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ItemInfo;
+import com.delta.smt.entity.Success;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -84,4 +85,33 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
                 }    }
         });
     }
+
+    public void closeLights(int s,int type){
+        getModel().getArrangeCloneLight(s,type).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }}).subscribe(new Action1<Success>() {
+            @Override
+            public void call(Success success) {
+                getView().showContentView();
+                if ("0".equals(success.getCode())){
+                    getView().onColenSucess(success.getMsg());
+                }else {
+                    getView().onFailed(success.getMsg());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().showErrorView();
+                    getView().onFailed("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){
+
+                }    }
+        });
+            }
+
+
 }
