@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
@@ -83,12 +84,11 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
     @Override
     protected void initCView() {
         mToolbar.setTitle("");
-
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         Bundle extras = getIntent().getExtras();
-        storage_name = extras.getString(Constant.WARE_HOUSE_NAME);
+        storage_name = SpUtil.getStringSF(this,Constant.STORAGE_NAME);
         mToolbarTitle.setText("仓库" + storage_name);
         for (int i = 0; i < titles.length; i++) {
             mTlTitle.addTab(mTlTitle.newTab());

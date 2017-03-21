@@ -92,6 +92,10 @@ public class ActivityMonitor {
         return mActivityEntries.get(mActivityEntries.size() - 1).mActivityRef.get();
     }
 
+    public boolean hasCurrentActivity(){
+        return  true;
+    }
+
 
     /**
      * 判断App是否在前台

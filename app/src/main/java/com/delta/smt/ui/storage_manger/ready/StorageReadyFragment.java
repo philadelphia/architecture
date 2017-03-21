@@ -120,6 +120,8 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
         super.onDestroy();
     }
 
+
+
     @Override
     protected void initData() {
 
@@ -137,13 +139,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
         warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-//        if (warningDialog == null) {
-//            warningDialog = createDialog("sdfsdf");
-//        }
-//        if (!warningDialog.isShowing()) {
-//            warningDialog.show();
-//        }
-//        updateMessage(warningDialog,"sdfsfsd");
+
     }
 
 
@@ -210,8 +206,6 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
