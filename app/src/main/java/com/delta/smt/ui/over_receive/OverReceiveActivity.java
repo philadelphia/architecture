@@ -147,7 +147,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         //接收那种预警
         warningManger.addWarning(Constant.EXCESS_ALARM_FLAG, getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG));
+        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG, 0));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
@@ -447,6 +447,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @Override
     protected void onStop() {
         warningManger.unregisterWReceiver(this);
+        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG, 1));
         super.onStop();
     }
 
