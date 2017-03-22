@@ -93,6 +93,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     private int isChexNumber = 0;
     private boolean isChexs = true;
     private String FrameLocation=null;
+    private boolean isJudge=false;
 
 
     @Override
@@ -165,6 +166,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         recyContetn.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyContetn.setAdapter(mAdapter);
         if (!"".equals(FrameLocation)&&FrameLocation!=null){
+            isJudge=true;
             cargonTv.setText(FrameLocation);
             getPresenter().fetchCheckStock(FrameLocation);
             status = 2;
@@ -196,7 +198,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     SnackbarUtil.showMassage(mianCheckStockActivityView, "扫描的架位二维码错误，请重新扫描");
                     //ToastUtils.showMessage(this, "扫描的架位二维码错误，请重新扫描");
                     status = 1;
-                }catch(Exception e){
+                } catch (Exception e) {
 
                 }
                 break;
@@ -206,45 +208,45 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     VibratorAndVoiceUtils.correctVibrator(this);
                     VibratorAndVoiceUtils.correctVoice(this);
                     if (mMaterbarCode != null) {
-                        if (dataList.size()!=0){
-                        for (int i = 0; i < dataList.size(); i++) {
-                            if (!dataList.get(i).isCheck()) {
-                                isChexNumber++;
-                                if (mMaterbarCode.getStreamNumber().equals(dataList.get(i).getBoxSerial())) {
-                                    if (Integer.valueOf(mMaterbarCode.getCount()) <= dataList.get(i).getBoundCount()) {
-                                        position = i;
-                                        mId = dataList.get(i).getId();
-                                        dataList.get(i).setColor(true);
-                                        dataList.get(i).setCheck(true);
-                                        mAdapter.notifyDataSetChanged();
-                                        getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(mMaterbarCode.getCount()));
-                                        break;
-                                    } else {
-                                        mId = dataList.get(i).getId();
-                                        cargoned.setFocusable(true);
-                                        cargoned.setFocusableInTouchMode(true);
-                                        cargoned.requestFocus();
-                                        cargoned.findFocus();
-                                        position = i;
-                                        dataList.get(i).setColor(true);
-                                        dataList.get(i).setCheck(true);
-                                        mAdapter.notifyDataSetChanged();
-                                        SnackbarUtil.showMassage(mianCheckStockActivityView, "请查数后输入数量!");
-                                        //ToastUtils.showMessage(CheckStockActivity.this,"请查数后输入数量!");
-                                        break;
-                                    }
-                                } else {
-                                    if (isChexNumber == dataList.size()) {
-                                        if (isShowDialog) {
-                                            isShowDialog = false;
-                                            getPresenter().fetchJudgeSuceess(mMaterbarCode.getStreamNumber());
+                        if (dataList.size() != 0) {
+                            for (int i = 0; i < dataList.size(); i++) {
+                                if (!dataList.get(i).isCheck()) {
+                                    isChexNumber++;
+                                    if (mMaterbarCode.getStreamNumber().equals(dataList.get(i).getBoxSerial())) {
+                                        if (Integer.valueOf(mMaterbarCode.getCount()) <= dataList.get(i).getBoundCount()) {
+                                            position = i;
+                                            mId = dataList.get(i).getId();
+                                            dataList.get(i).setColor(true);
+                                            dataList.get(i).setCheck(true);
+                                            mAdapter.notifyDataSetChanged();
+                                            getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(mMaterbarCode.getCount()));
+                                            break;
+                                        } else {
+                                            mId = dataList.get(i).getId();
+                                            cargoned.setFocusable(true);
+                                            cargoned.setFocusableInTouchMode(true);
+                                            cargoned.requestFocus();
+                                            cargoned.findFocus();
+                                            position = i;
+                                            dataList.get(i).setColor(true);
+                                            dataList.get(i).setCheck(true);
+                                            mAdapter.notifyDataSetChanged();
+                                            SnackbarUtil.showMassage(mianCheckStockActivityView, "请查数后输入数量!");
+                                            //ToastUtils.showMessage(CheckStockActivity.this,"请查数后输入数量!");
+                                            break;
                                         }
+                                    } else {
+                                        if (isChexNumber == dataList.size()) {
+                                            if (isShowDialog) {
+//                                            isShowDialog = false;
+                                                getPresenter().fetchJudgeSuceess(mMaterbarCode.getStreamNumber());
+                                            }
 
+                                        }
                                     }
                                 }
                             }
-                        }
-                        }else {
+                        } else {
                             getPresenter().fetchJudgeSuceess(mMaterbarCode.getStreamNumber());
                         }
                         ToastUtils.showMessage(this, "料号：" + mMaterbarCode.getDeltaMaterialNumber() + "\n数量：" + mMaterbarCode.getCount() + "\n单位：" + mMaterbarCode.getUnit() + "\nVendor：" + mMaterbarCode.getVendor() + "\n Data Code：" + mMaterbarCode.getDC() + "\n PCB Code：" + mMaterbarCode.getStreamNumber().substring(0, 2) + "\n 流水号" + mMaterbarCode.getStreamNumber());
@@ -258,7 +260,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     SnackbarUtil.showMassage(mianCheckStockActivityView, "请重新扫描架位");
                     //ToastUtils.showMessage(this, "请重新扫描架位");
                     status = 3;
-                }catch(Exception e){
+                } catch (Exception e) {
 
                 }
                 break;
@@ -267,31 +269,45 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     mFrameLocationSuccess = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
                     VibratorAndVoiceUtils.correctVibrator(this);
                     VibratorAndVoiceUtils.correctVoice(this);
-                    if (mFrameLocationSuccess.getSource().equals(mFrameLocation.getSource())||mFrameLocationSuccess.getSource().equals(FrameLocation)) {
-                        getPresenter().fetchException(mFrameLocationSuccess.getSource());
-                    } else {
-                        cargoned.setFocusable(true);
-                        if (isChexs) {
-                            ToastUtils.showMessage(this, "两次扫描架位不一致");
-                            isChexs = false;
+                    if (isJudge) {
+                        if (mFrameLocationSuccess.getSource().equals(FrameLocation)) {
+                            getPresenter().fetchException(mFrameLocationSuccess.getSource());
                         } else {
-                            status = 1;
+                            cargoned.setFocusable(true);
+                            if (isChexs) {
+                                ToastUtils.showMessage(this, "两次扫描架位不一致");
+                                isChexs = false;
+                            } else {
+                                status = 1;
+                            }
+                        }
+                    } else {
+                        if (mFrameLocationSuccess.getSource().equals(mFrameLocation)) {
+                            getPresenter().fetchException(mFrameLocationSuccess.getSource());
+                        } else {
+                            cargoned.setFocusable(true);
+                            if (isChexs) {
+                                ToastUtils.showMessage(this, "两次扫描架位不一致");
+                                isChexs = false;
+                            } else {
+                                status = 1;
+                            }
                         }
                     }
 
-                } catch (EntityNotFountException e) {
-                    e.printStackTrace();
-                    VibratorAndVoiceUtils.wrongVibrator(this);
-                    VibratorAndVoiceUtils.wrongVoice(this);
-                    //SnackbarUtil.showMassage(mianCheckStockActivityView,"请输入数量");
-                    ToastUtils.showMessageLong(this, "扫描的架位二维码错误，请重新扫描");
-                }catch(Exception e){
+                    } catch(EntityNotFountException e){
+                        e.printStackTrace();
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
+                        //SnackbarUtil.showMassage(mianCheckStockActivityView,"请输入数量");
+                        ToastUtils.showMessageLong(this, "扫描的架位二维码错误，请重新扫描");
+                    }catch(Exception e){
 
-                }
+                    }
 
-                break;
+                    break;
+
         }
-
     }
 
     @Override
@@ -320,7 +336,10 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public void onCheckStockNumberSucess(String wareHouses) {
         dataList.get(position).setColor(false);
-        if (mFrameLocation != null) {
+        if (isJudge) {
+            cargonTv.setText(FrameLocation);
+            getPresenter().fetchCheckStock(FrameLocation);
+        }else {
             cargonTv.setText(mFrameLocation.getSource());
             getPresenter().fetchCheckStock(mFrameLocation.getSource());
         }
@@ -344,12 +363,16 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     public void onErrorsSucess(String wareHouses) {
         SnackbarUtil.showMassage(mianCheckStockActivityView, wareHouses);
         //ToastUtils.showMessage(this, wareHouses);
-        getPresenter().fetchCheckStock(mFrameLocation.getSource());
+        if (isJudge){
+            getPresenter().fetchCheckStock(FrameLocation);}else {
+            getPresenter().fetchCheckStock(mFrameLocation.getSource());
+        }
+
     }
 
     @Override
     public void onExceptionSucess(String wareHouses) {
-        getPresenter().fetchSubmit(mFrameLocationSuccess.getSource());
+         getPresenter().fetchSubmit(mFrameLocationSuccess.getSource());
     }
 
     @Override
@@ -410,6 +433,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void JudgeSuceess(String s) {
+//        isShowDialog = true;
         mErrorDialog = builder.create();
         mErrorDialog.show();
         mErrorDialog.setContentView(R.layout.dialog_error);
@@ -434,8 +458,13 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                 if (mErrorDialog.isShowing()) {
                     isShowDialog = true;
                     mErrorDialog.dismiss();
-                    getPresenter().fetchError(mMaterbarCode.getStreamNumber(), mFrameLocation.getSource());
-                    getPresenter().fetchCheckStock(mFrameLocation.getSource());
+                    if (isJudge){
+                        getPresenter().fetchError(mMaterbarCode.getStreamNumber(), FrameLocation);
+                        getPresenter().fetchCheckStock(FrameLocation);
+                    }else {
+                        getPresenter().fetchError(mMaterbarCode.getStreamNumber(), mFrameLocation.getSource());
+                        getPresenter().fetchCheckStock(mFrameLocation.getSource());
+                   }
                 }
                 break;
             case R.id.result_cancel:
