@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -91,6 +92,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String linName;
     private String materialBlockNumber;
     private String serialNo;
+    private String argument;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -111,8 +113,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         map.put("work_order", workItemID);
         map.put("side", side);
         Gson gson = new Gson();
-        String argument = gson.toJson(map);
-        getPresenter().getAllModuleUpBindingItems(argument);
+        argument = gson.toJson(map);
+
         barCodeIpml.setOnGunKeyPressListener(this);
     }
 
@@ -319,6 +321,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             e.printStackTrace();
         }
 
+        getPresenter().getAllModuleUpBindingItems(argument);
+
     }
 
     @Override
@@ -344,8 +348,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         showMessage.setText("该料盘不属于此套工单，请确认工单及扫描是否正确！");
                         showMessage.setVisibility(View.VISIBLE);
                     } else {
-                        VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
-                        VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
+                        if (isMaterialBinded(materialBlockBarCode)){
+                            VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                            VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
+                            Toast.makeText(this, "该料盘已经绑定", Toast.LENGTH_SHORT).show();
+                        }else {
+                            VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
+                            VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
+                        }
+
                         state = 2;
                     }
 
@@ -506,5 +517,19 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 SpUtil.SetStringSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", "false");
             }
         }
+    }
+
+    public boolean isMaterialBinded(MaterialBlockBarCode materialBlockBarCode){
+     boolean flag = false;
+        for (ModuleUpBindingItem.RowsBean rowsBean : dataSource) {
+            if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())){
+                if (rowsBean.getFeeder_id() != null){
+                   flag = true;
+                    break;
+                }
+
+            }
+        }
+        return flag;
     }
 }
