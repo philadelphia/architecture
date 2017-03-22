@@ -152,6 +152,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getMaterialLocationSucess() {
+        mRecyContetn.scrollToPosition(scan_position);
         flag = 2;
         //扫描成功震动并发声
         VibratorAndVoiceUtils.correctVibrator(getActivity());
