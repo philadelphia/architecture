@@ -16,7 +16,7 @@
             android:layout_marginLeft="@dimen/px_16"
             style="@style/waring_text"
             />
-        <LinearLayout
+        <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/waring_text"
-
+            android:textSize="@dimen/px_60"
             android:text="@string/timetext"
             android:layout_marginTop="@dimen/px_6"
             />
@@ -47,7 +47,7 @@
             app:suffixTextColor="#000000"
             app:suffixTextSize="@dimen/px_12"
             app:timeTextColor="#000000"
-            app:timeTextSize="@dimen/px_40"
+            app:timeTextSize="@dimen/px_80"
             />
-        </LinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
 </LinearLayout>
