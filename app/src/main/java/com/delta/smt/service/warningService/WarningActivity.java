@@ -28,6 +28,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.ActivityMonitor;
+import com.delta.smt.manager.WarningManger;
 import com.delta.smt.widget.WarningDialog;
 
 import org.json.JSONArray;
@@ -150,6 +151,7 @@ public class WarningActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(WarningActivity.this, ActivityMonitor.getInstance().getPenultActivity().getClass());
+                WarningManger.getInstance().setConsume(true);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 WarningActivity.this.finish();
