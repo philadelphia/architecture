@@ -89,6 +89,14 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @BindView(R.id.btn_switch)
     CheckBox btnSwitch;
     int state = 1;
+    @BindView(R.id.tv_work_order)
+    TextView tvWorkOrder;
+    @BindView(R.id.tv_line_name)
+    TextView tvLineName;
+    @BindView(R.id.tv_line_num)
+    TextView tvLineNum;
+    @BindView(R.id.textView)
+    TextView textView;
     private List<StorageDetails> dataList = new ArrayList<>();
     private List<StorageDetails> dataList2 = new ArrayList<>();
     private List<StorageDetails> unDebitDataList = new ArrayList<>();
@@ -108,6 +116,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private BottomSheetDialog bottomSheetDialog;
     private CommonBaseAdapter<StorageDetails> undoList_adapter;
     private String mS;
+    private String line_name;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -119,8 +128,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     protected void initData() {
         barCodeImp = new BarCodeParseIpml();
-        work_order = getIntent().getStringExtra(Constant.WORK_ORDER);
         part = getIntent().getStringExtra(Constant.WARE_HOUSE_NAME);
+        work_order = getIntent().getStringExtra(Constant.WORK_ORDER);
+        line_name = getIntent().getStringExtra(Constant.LINE_NAME);
         side = getIntent().getStringExtra(Constant.SIDE);
         Map<String, String> mMap = new HashMap<>();
         mMap.put("part", part);
@@ -150,6 +160,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("仓库" + part);
+        tvWorkOrder.setText("工单：" + work_order);
+        tvLineName.setText("线别：" + line_name);
+        tvLineNum.setText("面别：" + side);
         dataList.add(new StorageDetails("", "", 0, 0));
         btnSwitch.setChecked(ischecked);
         btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -629,4 +642,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 break;
         }
     }
+
+
 }
