@@ -114,7 +114,7 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
 
                     if (topActivity != null) {
                         Log.e(TAG, "onMessage: " + topActivity.getClass().equals(warningManger.getWaringClass(type)));
-                       // if (topActivity.getClass().equals(warningManger.getWaringClass(type))) {
+                        if (topActivity.getClass().equals(warningManger.getWaringClass(type))||activityMonitor.getPenultActivity().equals(warningManger.getWaringClass(type))) {
                             //WarningMessage warningMessage = GsonTools.changeGsonToBean(text, WarningMessage.class);
                             if (warningManger.isConsume()) {
                                 jsonArray = null;
@@ -122,7 +122,6 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
                                 warningManger.setConsume(false);
                             }
                             if (!GsonTools.containsJson(jsonArray, text)) {
-
                                 jsonArray.put(jsonObject);
                             }
                             //contents.add(warningMessage);
@@ -137,7 +136,7 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
                                 }
                             }
                         }
-                   // }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
