@@ -14,8 +14,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ryv_hand_add"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    />
+        android:layout_height="match_parent"/>
 
     </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 </LinearLayout>
