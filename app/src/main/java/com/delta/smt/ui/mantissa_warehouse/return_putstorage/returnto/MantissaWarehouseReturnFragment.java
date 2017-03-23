@@ -157,6 +157,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         VibratorAndVoiceUtils.correctVibrator(getActivity());
         VibratorAndVoiceUtils.correctVoice(getActivity());
         setItemHighLightBasedOnMID(materialNumber);
+        mRecyContetn.scrollToPosition(scan_position);
         Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
     }
 
