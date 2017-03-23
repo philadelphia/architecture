@@ -46,7 +46,7 @@
         <item name="android:padding">@dimen/dp_5</item>
     </style>
     <style name="waringTitle">
-        <item name="android:textSize">@dimen/px_50</item>
+        <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/ff0000</item>
         <item name="android:paddingTop">@dimen/px_25</item>
         <item name="android:paddingBottom">@dimen/px_25</item>
@@ -117,6 +117,12 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-
+    <style name="NoTitle" parent="Theme.AppCompat">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        　　
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
     <dimen name="px_25">25px</dimen>
 </resources>

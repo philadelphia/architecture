@@ -92,8 +92,15 @@ public class ActivityMonitor {
         return mActivityEntries.get(mActivityEntries.size() - 1).mActivityRef.get();
     }
 
-    public boolean hasCurrentActivity(){
-        return  true;
+    /**
+     * 获取倒数第二个activity
+     * @return
+     */
+    public Activity getPenultActivity(){
+        if (mActivityEntries.isEmpty()) {
+            return null;
+        }
+        return mActivityEntries.get(mActivityEntries.size() - 2).mActivityRef.get();
     }
 
 

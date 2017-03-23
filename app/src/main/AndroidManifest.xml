@@ -199,8 +199,13 @@
             android:name=".service.warningService.WarningDialogActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
+            android:taskAffinity=""></activity>
+        <activity
+            android:name=".service.warningService.WarningActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
             android:taskAffinity=""
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/NoTitle" />
     </application>
 
 </manifest>

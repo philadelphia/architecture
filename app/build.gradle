@@ -53,6 +53,7 @@ android {
         disable "ResourceType"
         abortOnError false
     }
+
     buildToolsVersion '25.0.0'
 }
 

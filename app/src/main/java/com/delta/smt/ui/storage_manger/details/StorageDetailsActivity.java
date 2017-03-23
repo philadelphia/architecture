@@ -91,7 +91,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     int state = 1;
     private List<StorageDetails> dataList = new ArrayList<>();
     private List<StorageDetails> dataList2 = new ArrayList<>();
-    private List<StorageDetails> undebitDataList = new ArrayList<>();
+    private List<StorageDetails> unDebitDataList = new ArrayList<>();
     private CommonBaseAdapter<StorageDetails> title_adapter;
     private CommonBaseAdapter<StorageDetails> content_adapter;
     private BarCodeParseIpml barCodeImp;
@@ -261,7 +261,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         Button bt_confim = ViewUtils.findView(view, R.id.bt_sheet_confirm);
         bt_cancel.setOnClickListener(this);
         bt_confim.setOnClickListener(this);
-        undoList_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), undebitDataList) {
+        undoList_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), unDebitDataList) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.setText(R.id.tv_number, item.getMaterial_no());
@@ -319,7 +319,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     private void issureToWareh(Result<StorageDetails> rows) {
-        undebitDataList.clear();
+        unDebitDataList.clear();
         isOver = true;
         isHaveIssureOver = false;
         dataList2.clear();
@@ -337,7 +337,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
                 isHaveIssureOver = true;
             } else {
-                undebitDataList.add(dataList2.get(i));
+                unDebitDataList.add(dataList2.get(i));
                 isOver = false;
             }
         }
