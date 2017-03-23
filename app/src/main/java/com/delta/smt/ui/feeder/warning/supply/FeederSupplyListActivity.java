@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.WrapperListAdapter;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -73,7 +74,6 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         Log.i(TAG, "initData: ");
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.FEEDER_BUFF_ALARM_FLAG, this.getClass());
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG),0));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
@@ -248,6 +248,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
             public void onclick(View view) {
                 warningManger.setConsume(true);
                 onRefresh();
+
             }
         });
         warningDialog.show();
@@ -259,6 +260,8 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     @Override
     public void onResume() {
         warningManger.registerWReceiver(this);
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG),0));
+
         Log.i(TAG, "onResume: ");
         super.onResume();
 
@@ -301,9 +304,11 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         FeederSupplyWarningItem feederSupplyWarningItem = dataList.get(position);
         String workItemID = feederSupplyWarningItem.getWorkOrder();
         String side = feederSupplyWarningItem.getSide();
+        String line = feederSupplyWarningItem.getLineName();
         Bundle bundle = new Bundle();
         bundle.putString(Constant.WORK_ITEM_ID, workItemID);
         bundle.putString(Constant.SIDE, side);
+        bundle.putString(Constant.LINE_NAME, line);
         IntentUtils.showIntent(this, FeederSupplyActivity.class, bundle);
     }
 

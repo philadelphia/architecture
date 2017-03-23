@@ -66,11 +66,19 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     RecyclerView recyContent;
     @BindView(R.id.btn_feederMaintain)
     AppCompatButton btnFeederMaintain;
+    @BindView(R.id.tv_work_order)
+    TextView tv_workOrder;
+    @BindView(R.id.tv_side)
+    TextView tv_side;
+    @BindView(R.id.tv_Line)
+    TextView tv_line;
+
+
     String workItemID;
     String side;
     String productNameMain;
     String productName;
-    String linName;
+    String lineName;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapterTitle;
@@ -89,6 +97,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     private BarCodeIpml barCodeIpml = new BarCodeIpml();
     private LinearLayoutManager linearLayoutManager;
     private int flag = 1;
+    private String argument;
 
 
     @Override
@@ -102,17 +111,19 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         Intent intent = this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
-        linName = intent.getStringExtra(Constant.LINE_NAME);
+        lineName = intent.getStringExtra(Constant.LINE_NAME);
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
-
-        /*Map<String, String> map = new HashMap<>();
+        tv_workOrder.setText(workItemID);
+        tv_side.setText(side);
+        tv_line.setText(lineName);
+        Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
         Gson gson = new Gson();
-        String argument = gson.toJson(map);
+        argument = gson.toJson(map);
 
-        getPresenter().getAllModuleDownDetailsItems(argument);*/
+
         barCodeIpml.setOnGunKeyPressListener(this);
 //        // TODO: 2017/2/10
         mCurrentWorkOrder = workItemID;
@@ -128,13 +139,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
 
-        dataList.add(new ModuleDownDetailsItem.RowsBean("工单", "面别", "料号", "流水码", "Feeder ID", "模组料站", "归属", "下模组时间"));
+        dataList.add(new ModuleDownDetailsItem.RowsBean("料号", "流水码", "Feeder ID", "模组料站", "归属", "下模组时间"));
         adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_work_order, item.getWork_order());
-                holder.setText(R.id.tv_side, item.getSide());
+
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
@@ -163,8 +173,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
 
                 holder.itemView.setBackgroundColor(Color.WHITE);
-                holder.setText(R.id.tv_work_order, item.getWork_order());
-                holder.setText(R.id.tv_side, item.getSide());
+//                holder.setText(R.id.tv_work_order, item.getWork_order());
+//                holder.setText(R.id.tv_side, item.getSide());
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
@@ -294,11 +304,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         } catch (DevicePairedNotFoundException e) {
             e.printStackTrace();
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("work_order", workItemID);
-        map.put("side", side);
-        Gson gson = new Gson();
-        String argument = gson.toJson(map);
+
         getPresenter().getAllModuleDownDetailsItems(argument);
     }
 
@@ -446,10 +452,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         boolean flag = false;
         for (int i = 0; i < dataSource.size(); i++) {
             ModuleDownDetailsItem.RowsBean item = dataSource.get(i);
-            if (mCurrentMaterialID.equalsIgnoreCase(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())){
+            if (mCurrentMaterialID.equalsIgnoreCase(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())) {
                 flag = true;
                 break;
-            }else {
+            } else {
                 flag = false;
             }
         }
@@ -464,7 +470,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 //            }
 //        }
 //        Log.i(TAG, "isMaterialExists: " + flag);
-        return  flag;
+        return flag;
     }
 
 }

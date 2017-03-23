@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -10,8 +10,105 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include
-            layout="@layout/appbar"/>
+        <include layout="@layout/appbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <TextView
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/textview_border"
+                    android:text="工单："
+                    android:textColor="#333333"
+                    android:textSize="40px" />
+
+                <TextView
+                    android:id="@+id/tv_work_order"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:background="@drawable/textview_border"
+                    android:gravity="center"
+                    android:textColor="#333333"
+                    android:textSize="40px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/textview_border"
+                    android:text="面别："
+                    android:textColor="#333333"
+                    android:textSize="40px" />
+
+                <TextView
+                    android:id="@+id/tv_side"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:background="@drawable/textview_border"
+                    android:gravity="center"
+                    android:textColor="#333333"
+                    android:textSize="40px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/textview_border"
+                    android:text="线别："
+                    android:textColor="#333333"
+                    android:textSize="40px" />
+
+                <TextView
+                    android:id="@+id/tv_Line"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:background="@drawable/textview_border"
+                    android:gravity="center"
+                    android:textColor="#333333"
+                    android:textSize="40px" />
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:gravity="center"
+                android:text="上传到MES" />
+
+
+        </LinearLayout>
 
         <com.delta.commonlibs.widget.statusLayout.StatusLayout
 
@@ -19,48 +116,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
 
-                <RelativeLayout
+            <HorizontalScrollView
+                android:id="@+id/hr_scrow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    >
+                    android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/btn_upload"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:gravity="center"
-                        android:text="上传到MES"/>
-                </RelativeLayout>
-
-                <HorizontalScrollView
-                    android:id="@+id/hr_scrow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recy_title"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content" />
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recy_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recy_content"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </HorizontalScrollView>
-
-            </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recy_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </HorizontalScrollView>
 
 
         </com.delta.commonlibs.widget.statusLayout.StatusLayout>
@@ -75,5 +152,5 @@
         android:alpha="10"
         android:background="@android:color/black"
         android:gravity="center"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 </RelativeLayout>
