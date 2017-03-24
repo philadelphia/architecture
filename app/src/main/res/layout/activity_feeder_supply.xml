@@ -7,91 +7,50 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <include layout="@layout/appbar" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px"
+            android:orientation="vertical"
+            android:padding="10px">
+
+
+            <TextView
+                android:id="@+id/tv_work_order"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10px"
+                android:text="工单："
+                android:textColor="#333333"
+                android:textSize="40px" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:text="工单："
-                    android:textColor="#333333"
-                    android:textSize="40px" />
-
-                <TextView
-                    android:id="@+id/tv_work_order"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:background="@drawable/textview_border"
-                    android:gravity="center"
-                    android:textColor="#333333"
-                    android:textSize="40px" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:text="面别："
-                    android:textColor="#333333"
-                    android:textSize="40px" />
+                android:layout_marginTop="15px">
 
                 <TextView
                     android:id="@+id/tv_side"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:background="@drawable/textview_border"
-                    android:gravity="center"
-                    android:textColor="#333333"
-                    android:textSize="40px" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:text="线别："
+                    android:text="面别："
                     android:textColor="#333333"
                     android:textSize="40px" />
+
 
                 <TextView
                     android:id="@+id/tv_Line"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:background="@drawable/textview_border"
-                    android:gravity="center"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="线别："
                     android:textColor="#333333"
                     android:textSize="40px" />
 

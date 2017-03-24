@@ -106,11 +106,13 @@
     <string name="scan_corresponding_materials_plate">请扫描对应料盘！</string>
     <string name="debit_success">扣账成功</string>
     <string name="debit_failed">扣账失败</string>
-    <string name="ｍantissa＿warehouse＿stock">尾数仓备料</string>
+    <string name="mantissa＿warehouse＿stock">尾数仓备料</string>
     <string name="pcbmaintain_number">编号</string>
     <string name="pcbmaintain_framelocation">架位二维码</string>
     <string name="pcbmaintain_Led">LED二维码</string>
     <string name="pcbmaintainnext">下一个货架</string>
     <string name="FeederCache">Feeder 暂存区备料</string>
+    <string name="WorkID">工单</string>
+    <string name="Side">面别</string>
 
 </resources>
