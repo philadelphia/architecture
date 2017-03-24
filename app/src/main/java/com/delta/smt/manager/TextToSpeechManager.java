@@ -12,13 +12,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Created by Shaoqiang.Zhang on 2017/2/22.
  */
 
-public class TextToSpeechUtils implements TextToSpeech.OnInitListener {
+public class TextToSpeechManager implements TextToSpeech.OnInitListener {
     private final TextToSpeech mTextToSpeech;//TTS对象
     private final ConcurrentLinkedQueue<String> mBufferedMessages;//消息队列
     private Context mContext;
     private boolean mIsReady;//标识符
 
-    public TextToSpeechUtils(Context context){
+    public TextToSpeechManager(Context context){
         this.mContext=context;//获取上下文
         this.mBufferedMessages=new ConcurrentLinkedQueue<String>();//实例化队列
         this.mTextToSpeech=new TextToSpeech(this.mContext,this);//实例化TTS
@@ -27,7 +27,7 @@ public class TextToSpeechUtils implements TextToSpeech.OnInitListener {
     //初始化TTS引擎
     @Override
     public void onInit(int status) {
-        Log.i("TextToSpeechUtils", String.valueOf(status));
+        Log.i("TextToSpeechManager", String.valueOf(status));
         if(status== TextToSpeech.SUCCESS){
             int result = this.mTextToSpeech.setLanguage(Locale.CHINA);//设置识别语音为中文
             synchronized (this){

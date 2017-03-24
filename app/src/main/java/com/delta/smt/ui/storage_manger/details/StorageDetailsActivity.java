@@ -42,6 +42,7 @@ import com.delta.smt.entity.IssureToWarehBody;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
+import com.delta.smt.manager.TextToSpeechManager;
 import com.delta.smt.ui.storage_manger.details.di.DaggerStorageDetailsComponent;
 import com.delta.smt.ui.storage_manger.details.di.StorageDetailsModule;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsContract;
@@ -54,6 +55,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -117,6 +120,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private CommonBaseAdapter<StorageDetails> undoList_adapter;
     private String mS;
     private String line_name;
+    @Inject
+    TextToSpeechManager textToSpeechManager;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -257,6 +262,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
         issureToWareh(rows);
         tv_hint.setText(rows.getMessage());
+        textToSpeechManager.readMessage(rows.getMessage());
         if (btnSwitch.isChecked()) {
             getPresenter().deduction(mS);
         }
@@ -331,6 +337,12 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        textToSpeechManager.freeSource();
+        super.onDestroy();
+    }
+
     private void issureToWareh(Result<StorageDetails> rows) {
         unDebitDataList.clear();
         isOver = true;
@@ -354,9 +366,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 isOver = false;
             }
         }
-
         content_adapter.notifyDataSetChanged();
         mRecyContetn.scrollToPosition(position);
+
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -551,6 +563,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     tv_hint.setText("请扫描备料车");
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
+                    textToSpeechManager.readMessage("请扫描备料车");
                 }
                 break;
             case 2:
@@ -578,6 +591,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     e.printStackTrace();
                     ToastUtils.showMessage(this, "请扫描对应架位的料盘");
                     tv_hint.setText("请扫描对应架位的料盘");
+                    textToSpeechManager.readMessage("请扫描对应架位的料盘");
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                 }

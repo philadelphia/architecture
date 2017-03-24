@@ -1,5 +1,8 @@
 package com.delta.smt.di.module;
 
+import android.content.Context;
+
+import com.delta.smt.manager.TextToSpeechManager;
 import com.delta.smt.manager.WarningManger;
 
 import javax.inject.Singleton;
@@ -20,6 +23,12 @@ public class MangerModule {
     @Singleton
     @Provides
     WarningManger providerWarningManger() {
-        return  WarningManger.getInstance();
+        return WarningManger.getInstance();
+    }
+
+    @Singleton
+    @Provides
+    TextToSpeechManager provderTextSpeechManager(Context context) {
+        return new TextToSpeechManager(context);
     }
 }
