@@ -85,6 +85,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapter;
     private List<ModuleDownDetailsItem.RowsBean> dataList = new ArrayList<>();
     private List<ModuleDownDetailsItem.RowsBean> dataSource = new ArrayList<>();
+    private List<ModuleDownDetailsItem.RowsBean> dataSourceForCheckIn = new ArrayList<>();
     private String mCurrentWorkOrder;
     //SharedPreferences preferences=null;
     private String mCurrentMaterialID;
@@ -139,25 +140,25 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
 
-        dataList.add(new ModuleDownDetailsItem.RowsBean("料号", "流水码", "Feeder ID", "模组料站", "归属", "下模组时间"));
+        dataList.add(new ModuleDownDetailsItem.RowsBean("料号", "流水码", "Feeder ID", "模组料站", "归属"));
         adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
 
-                holder.setText(R.id.tv_materialID, item.getMaterial_no());
-                holder.setText(R.id.tv_serialID, item.getSerial_no());
-                holder.setText(R.id.tv_feederID, item.getFeeder_id());
-                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_ownership, item.getDest());
-                holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
-
-                if (mCurrentMaterialID.equals(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())) {
-                    holder.itemView.setBackgroundColor(Color.YELLOW);
-                } else {
-                    holder.itemView.setBackgroundColor(Color.WHITE);
-
-                }
+//                holder.setText(R.id.tv_materialID, item.getMaterial_no());
+//                holder.setText(R.id.tv_serialID, item.getSerial_no());
+//                holder.setText(R.id.tv_feederID, item.getFeeder_id());
+//                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+//                holder.setText(R.id.tv_ownership, item.getDest());
+//                holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
+//
+//                if (item.getMaterial_no().equals(mCurrentMaterialID) && item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)) {
+//                    holder.itemView.setBackgroundColor(Color.YELLOW);
+//                } else {
+//                    holder.itemView.setBackgroundColor(Color.WHITE);
+//
+//                }
 
             }
 
@@ -188,7 +189,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 } else {
                     holder.setText(R.id.tv_ownership, item.getDest());
                 }
-                holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
+
 
                 if (item.getMaterial_no().equalsIgnoreCase(mCurrentMaterialID) && item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)) {
                     Log.i(TAG, "convert: " + item.toString());
@@ -221,10 +222,16 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onSuccess(ModuleDownDetailsItem data) {
         dataSource.clear();
+        dataSourceForCheckIn.clear();
+
         flag = 1;
         Log.i(TAG, "index: == " + index);
         List<ModuleDownDetailsItem.RowsBean> rowsBean = data.getRows();
         dataSource.addAll(rowsBean);
+        for (ModuleDownDetailsItem.RowsBean bean : dataSource) {
+            if (bean.getDest().equalsIgnoreCase("Feeder缓存区"))
+                dataSourceForCheckIn.add(bean);
+        }
         Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size());
         adapter.notifyDataSetChanged();
         updateFeederMaintainState();
@@ -232,7 +239,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     public void onFailed(String message) {
-        flag = 1;
+        flag = 2;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
@@ -378,7 +385,16 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     Log.i(TAG, "argument== " + argument);
                     Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
                     if (isMaterialExists(materialBlockBarCode)) {
-                        flag = 2;
+                        if (!isFeederCheckInListEmpty()){
+                            if(isMaterialInFeederCheckInList(materialBlockBarCode)){
+                                flag = 2;
+                            }else {
+                                ToastUtils.showMessage(this, "请先扫描待入库的料盘");
+                            }
+                        }else {
+                            flag = 2;
+                        }
+
                     } else {
                         flag = 1;
                         ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
@@ -473,4 +489,32 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         return flag;
     }
 
+    public boolean isMaterialInFeederCheckInList(MaterialBlockBarCode material) {
+        boolean flag = false;
+        for (int i = 0; i < dataSourceForCheckIn.size(); i++) {
+            ModuleDownDetailsItem.RowsBean item = dataSourceForCheckIn.get(i);
+            if (material.getDeltaMaterialNumber().equalsIgnoreCase(item.getMaterial_no()) && material.getStreamNumber().equalsIgnoreCase(item.getSerial_no())) {
+                flag = true;
+                break;
+            } else {
+                flag = false;
+            }
+        }
+//        for (ModuleDownDetailsItem.RowsBean rowsBean : dataSource) {
+//            if (mCurrentMaterialID.equalsIgnoreCase(rowsBean.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(rowsBean.getSerial_no())) {
+//                Log.i(TAG, "isMaterialExists: " + rowsBean.toString());
+//                flag = true;
+//                break;
+//            } else {
+//                flag = false;
+//                break;
+//            }
+//        }
+//        Log.i(TAG, "isMaterialExists: " + flag);
+        return flag;
+    }
+
+    public boolean isFeederCheckInListEmpty(){
+        return dataSourceForCheckIn.isEmpty() ? true : false;
+    }
 }

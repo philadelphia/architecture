@@ -57,11 +57,10 @@ public class ModuleDownDetailsItem {
         private String feeder_id;
         private String slot;
         private String dest;
-        private String unbind_time;
 
-        public RowsBean(String material_no, String serial_no, String feeder_id, String slot, String dest, String unbind_time) {
+
+        public RowsBean(String material_no, String serial_no, String feeder_id, String slot, String dest) {
             this.dest = dest;
-            this.unbind_time = unbind_time;
             this.slot = slot;
             this.serial_no = serial_no;
             this.material_no = material_no;
@@ -109,15 +108,6 @@ public class ModuleDownDetailsItem {
             this.dest = dest;
         }
 
-        public String getUnbind_time() {
-            return unbind_time;
-        }
-
-        public void setUnbind_time(String unbind_time) {
-            this.unbind_time = unbind_time;
-        }
-
-
 
         @Override
         public String toString() {
@@ -127,7 +117,7 @@ public class ModuleDownDetailsItem {
                     ", serial_no='" + serial_no + '\'' +
                     ", feeder_id='" + feeder_id + '\'' +
                     ", slot='" + slot + '\'' +
-                    ", unbind_time='" + unbind_time + '\'' +
+                     +
                     '}';
         }
     }
