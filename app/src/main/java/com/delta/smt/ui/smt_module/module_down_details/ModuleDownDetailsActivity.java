@@ -152,7 +152,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 holder.setText(R.id.tv_ownership, item.getDest());
                 holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
 
-                if (mCurrentWorkOrder.equals(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())) {
+                if (mCurrentMaterialID.equals(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())) {
                     holder.itemView.setBackgroundColor(Color.YELLOW);
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);

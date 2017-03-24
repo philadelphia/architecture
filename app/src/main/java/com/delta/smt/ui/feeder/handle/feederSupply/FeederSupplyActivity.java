@@ -119,9 +119,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
         lineName = intent.getStringExtra(Constant.LINE_NAME);
-        tv_workOrder.setText("工单:" + workId);
-        tv_line.setText("线别: " + lineName);
-        tv_side.setText("面别：" + side);
+        tv_workOrder.setText(workId);
+        tv_line.setText(lineName);
+        tv_side.setText(side);
         Log.i(TAG, "workId==: " + workId);
         Log.i(TAG, "side==: " + side);
         Log.i(TAG, "lineName==: " + lineName);

@@ -74,6 +74,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     StatusLayout statusLayout;
     @BindView(R.id.automatic_upload)
     AppCompatCheckBox automaticUpload;
+
+
+    @BindView(R.id.tv_work_order)
+    TextView tv_workOrder;
+    @BindView(R.id.tv_side)
+    TextView tv_side;
+    @BindView(R.id.tv_Line)
+    TextView tv_line;
+
     int state = 1;
     //private Snackbar mSnackbar = null;
     @BindView(R.id.showMessage)
@@ -109,6 +118,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         linName = intent.getStringExtra(Constant.LINE_NAME);
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
+        tv_workOrder.setText(workItemID);
+        tv_side.setText(side);
+        tv_line.setText(linName);
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
@@ -147,8 +159,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_line_name, "线别");
-                holder.setText(R.id.tv_side, "面别");
+
             }
 
             @Override
@@ -171,8 +182,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_line_name, linName);
-                holder.setText(R.id.tv_side, side);
+
             }
 
             @Override
