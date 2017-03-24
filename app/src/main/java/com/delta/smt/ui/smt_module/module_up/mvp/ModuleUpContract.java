@@ -15,7 +15,7 @@ public interface ModuleUpContract {
 
         void onSuccess(ModuleUpWarningItem data);
 
-        void onFalied(ModuleUpWarningItem data);
+        void onFailed(ModuleUpWarningItem data);
 
         void onNetFailed(Throwable throwable);
 

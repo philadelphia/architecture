@@ -15,7 +15,7 @@ public interface ModuleDownContract {
 
         void onSuccess(ModuleDownWarningItem data);
 
-        void onFalied(ModuleDownWarningItem data);
+        void onFailed(ModuleDownWarningItem data);
 
         void onNetFailed(Throwable throwable);
 

@@ -15,7 +15,7 @@ public interface ModuleUpBindingContract {
 
         void onSuccess(ModuleUpBindingItem data);
 
-        void onFalied(ModuleUpBindingItem data);
+        void onFailed(ModuleUpBindingItem data);
 
         void onNetFailed(Throwable throwable);
 

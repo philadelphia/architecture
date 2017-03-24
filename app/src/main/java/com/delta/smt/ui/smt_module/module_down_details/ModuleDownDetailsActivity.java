@@ -22,6 +22,7 @@ import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.demacia.barcode.BarCodeIpml;
+import com.delta.demacia.barcode.BarcodeFactory;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
@@ -50,7 +51,7 @@ import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BAR
 import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
- * Created by Shufeng.Wu on 2017/1/5.
+ * Created by Shu feng.Wu on 2017/1/5.
  */
 
 public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPresenter> implements ModuleDownDetailsContract.View, BarCodeIpml.OnScanSuccessListener {
@@ -61,9 +62,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.recy_title)
-    RecyclerView recyTitle;
+    RecyclerView  recyclerViewTitle;
     @BindView(R.id.recy_content)
-    RecyclerView recyContent;
+    RecyclerView  recyclerViewContent;
     @BindView(R.id.btn_feederMaintain)
     AppCompatButton btnFeederMaintain;
     @BindView(R.id.tv_work_order)
@@ -81,7 +82,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     String lineName;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapterTitle;
     private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapter;
     private List<ModuleDownDetailsItem.RowsBean> dataList = new ArrayList<>();
     private List<ModuleDownDetailsItem.RowsBean> dataSource = new ArrayList<>();
@@ -91,12 +91,11 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     private String mCurrentMaterialID;
     private String mCurrentSerialNumber;
     private String mCurrentQuantity;
-    private String mCurrentLocation;
+
     private String mCurrentSlot;
     private int index = -1;
     //二维码
-    private BarCodeIpml barCodeIpml = new BarCodeIpml();
-    private LinearLayoutManager linearLayoutManager;
+    private BarCodeIpml barCodeIpml ;
     private int flag = 1;
     private String argument;
 
@@ -108,7 +107,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     protected void initData() {
-
+        barCodeIpml = (BarCodeIpml) BarcodeFactory.getBarcode(this);
         Intent intent = this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
@@ -126,7 +125,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
 
         barCodeIpml.setOnGunKeyPressListener(this);
-//        // TODO: 2017/2/10
         mCurrentWorkOrder = workItemID;
     }
 
@@ -136,12 +134,14 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
 
         dataList.add(new ModuleDownDetailsItem.RowsBean("料号", "流水码", "Feeder ID", "模组料站", "归属"));
-        adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
+        CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
@@ -167,15 +167,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 return R.layout.item_module_down_details;
             }
         };
-        recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyTitle.setAdapter(adapterTitle);
+         recyclerViewTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+         recyclerViewTitle.setAdapter(adapterTitle);
         adapter = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
 
                 holder.itemView.setBackgroundColor(Color.WHITE);
-//                holder.setText(R.id.tv_work_order, item.getWork_order());
-//                holder.setText(R.id.tv_side, item.getSide());
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
@@ -208,10 +206,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
         };
 
-        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
-        recyContent.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
+         recyclerViewContent.setLayoutManager(linearLayoutManager);
 
-        recyContent.setAdapter(adapter);
+         recyclerViewContent.setAdapter(adapter);
     }
 
     @Override
@@ -370,7 +368,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
                     mCurrentQuantity = materialBlockBarCode.getCount();
                     adapter.notifyDataSetChanged();
-                    recyContent.scrollToPosition(index);
+                     recyclerViewContent.scrollToPosition(index);
                     Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
                     Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
                     Map<String, String> map = new HashMap<>();
@@ -385,7 +383,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     Log.i(TAG, "argument== " + argument);
                     Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
                     if (isMaterialExists(materialBlockBarCode)) {
-                        if (!isFeederCheckInListEmpty()){
+                        if (!dataSourceForCheckIn.isEmpty()){
                             if(isMaterialInFeederCheckInList(materialBlockBarCode)){
                                 flag = 2;
                             }else {
@@ -414,7 +412,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             case 2:
                 try {
                     FeederBuffer frameLocation = (FeederBuffer) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER_BUFFER);
-                    mCurrentLocation = frameLocation.getSource();
+                    String mCurrentLocation = frameLocation.getSource();
                     Log.i(TAG, "mCurrentLocation: " + frameLocation.toString());
                     Map<String, String> map = new HashMap<>();
                     map.put("work_order", mCurrentWorkOrder);
@@ -468,7 +466,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         boolean flag = false;
         for (int i = 0; i < dataSource.size(); i++) {
             ModuleDownDetailsItem.RowsBean item = dataSource.get(i);
-            if (mCurrentMaterialID.equalsIgnoreCase(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())) {
+            if (material.getDeltaMaterialNumber().equalsIgnoreCase(item.getMaterial_no()) && material.getStreamNumber().equalsIgnoreCase(item.getSerial_no())) {
                 flag = true;
                 break;
             } else {
@@ -514,7 +512,5 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         return flag;
     }
 
-    public boolean isFeederCheckInListEmpty(){
-        return dataSourceForCheckIn.isEmpty() ? true : false;
-    }
+
 }

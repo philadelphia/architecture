@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.WrapperListAdapter;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -86,9 +85,11 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.GONE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        toolbarTitle.setText("Feeder 暂存区备料");
+        toolbarTitle.setText(R.string.FeederCache);
 
         adapter = new ItemCountViewAdapter<FeederSupplyWarningItem>(this, dataList) {
             @Override
@@ -126,7 +127,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     @Override
     public void warningComing(String warningMessage) {
         if (warningDialog == null) {
-            warningDialog = createDialog(warningMessage);
+            warningDialog = createDialog();
         }
         if (!warningDialog.isShowing()) {
             warningDialog.show();
@@ -222,26 +223,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     }
 
 
-    private WarningDialog createDialog(final String warningMessage) {
-//        DialogLayout dialogLayout = new DialogLayout(this);
-//        //3.传入的是黑色字体的二级标题
-//        dialogLayout.setStrSecondTitle("预警信息");
-//        //4.传入的是一个ArrayList<String>
-//        ArrayList<String> datas = new ArrayList<>();
-//        datas.add("新备料请求:  ");
-//        datas.add("H13----01:00:00");
-//        datas.add("H14----01:20:00");
-//        datas.add("新入库请求: ");
-//        datas.add("20163847536---00:10:11");
-//        dialogLayout.setStrContent(datas);
-//        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                getPresenter().getAllSupplyWorkItems();
-//                dialog.dismiss();
-//            }
-//        }).show();
-
+    private WarningDialog createDialog() {
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override

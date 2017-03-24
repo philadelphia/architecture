@@ -13,5 +13,5 @@ import dagger.Component;
 @ActivityScope
 @Component(modules =ModuleDownModule.class, dependencies = AppComponent.class)
 public interface ModuleDownComponent {
-    public void inject(ModuleDownActivity moduleDownActivity);
+     void inject(ModuleDownActivity moduleDownActivity);
 }

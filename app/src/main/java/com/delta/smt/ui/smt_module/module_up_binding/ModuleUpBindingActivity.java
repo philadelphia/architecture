@@ -212,7 +212,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void onFalied(ModuleUpBindingItem data) {
+    public void onFailed(ModuleUpBindingItem data) {
         ToastUtils.showMessage(this, data.getMsg());
     }
 
