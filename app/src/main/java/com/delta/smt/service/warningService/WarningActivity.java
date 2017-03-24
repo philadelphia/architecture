@@ -89,6 +89,7 @@ public class WarningActivity extends AppCompatActivity {
     protected void onResume() {
         Log.e(TAG, "onResume: ");
         datas.clear();
+       
         message = getIntent().getStringExtra(Constant.WARNINGMESSAGE);
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("");
