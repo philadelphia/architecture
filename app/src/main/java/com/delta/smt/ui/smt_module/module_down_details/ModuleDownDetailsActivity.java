@@ -232,7 +232,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         }
         Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size());
         adapter.notifyDataSetChanged();
-        updateFeederMaintainState();
+        if(dataSourceForCheckIn.isEmpty()){
+            btnFeederMaintain.setEnabled(true);
+        }
+
     }
 
     @Override
@@ -458,7 +461,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 break;
             }
         }
-        btnFeederMaintain.setEnabled(state);
+
 
     }
 
