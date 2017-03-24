@@ -27,7 +27,6 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyItem;
-import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
@@ -73,6 +72,13 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     LinearLayout linearLayout;
     @BindView(R.id.tv_moduleID)
     TextView tvModuleID;
+    @BindView(R.id.tv_work_order)
+    TextView tv_workOrder;
+    @BindView(R.id.tv_side)
+    TextView tv_side;
+    @BindView(R.id.tv_Line)
+    TextView tv_line;
+
     private CommonBaseAdapter<FeederSupplyItem> adapter;
     private List<FeederSupplyItem> dataList = new ArrayList<>();
     private List<FeederSupplyItem> dataSource = new ArrayList<>();
@@ -82,6 +88,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private int index = -1;
     private String workId;
     private String side;
+    private String lineName;
+    private String argument;
+
 
     @Override
     protected void handError(String contents) {
@@ -107,16 +116,21 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Intent intent = getIntent();
         workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
+        lineName = intent.getStringExtra(Constant.LINE_NAME);
+        tv_workOrder.setText("工单:   " + workId);
+        tv_line.setText("线别:    " + lineName);
+        tv_side.setText("面别:    " + side);
         Log.i(TAG, "workId==: " + workId);
         Log.i(TAG, "side==: " + side);
+        Log.i(TAG, "lineName==: " + lineName);
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workId);
         map.put("side", side);
 
 
-        String argument = new Gson().toJson(map);
+        argument = new Gson().toJson(map);
         Log.i(TAG, "argument==: " + argument);
-        getPresenter().getAllToBeSuppliedFeeders(argument);
+
     }
 
     @Override
@@ -127,11 +141,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("备料");
-        dataList.add(new FeederSupplyItem(" ", " ", "  ", " ", "", 0));
+        dataList.add(new FeederSupplyItem());
         CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
-                holder.itemView.setBackgroundColor(Color.GRAY);
+                holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
             }
 
             @Override
@@ -278,6 +292,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPresenter().getAllToBeSuppliedFeeders(argument);
+    }
 
     @Override
     public void onScanSuccess(String barcode) {

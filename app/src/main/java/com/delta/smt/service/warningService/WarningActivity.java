@@ -22,11 +22,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.ActivityMonitor;
+import com.delta.smt.manager.WarningManger;
 import com.delta.smt.widget.WarningDialog;
 
 import org.json.JSONArray;
@@ -86,8 +88,9 @@ public class WarningActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         Log.e(TAG, "onResume: ");
-       // message = getIntent().getStringExtra(Constant.WARNINGMESSAGE);
-
+        datas.clear();
+       
+        message = getIntent().getStringExtra(Constant.WARNINGMESSAGE);
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("");
         String content = "";
@@ -149,9 +152,10 @@ public class WarningActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(WarningActivity.this, ActivityMonitor.getInstance().getPenultActivity().getClass());
+                WarningManger.getInstance().setConsume(true);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                    WarningActivity.this.finish();
+                WarningActivity.this.finish();
 
             }
         });

@@ -1,7 +1,6 @@
 package com.delta.smt.ui.feeder.warning.supply.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.ui.feeder.warning.supply.mvp.SupplyContract;
 import com.delta.smt.ui.feeder.warning.supply.mvp.SupplyModel;

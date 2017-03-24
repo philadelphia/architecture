@@ -1,7 +1,6 @@
 package com.delta.smt.ui.feeder.warning.supply.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.feeder.warning.supply.FeederSupplyListActivity;
 
@@ -15,5 +14,5 @@ import dagger.Component;
 @ActivityScope
 @Component(modules = SupplyModule.class, dependencies = AppComponent.class)
 public interface SupplyComponent {
-    public void inject(FeederSupplyListActivity feederSupplyListActivity);
+     void inject(FeederSupplyListActivity feederSupplyListActivity);
 }

@@ -110,6 +110,9 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private boolean ischecked = true;
     private String s;
     private String line_name;
+    private String material_num = "";
+    private String serial_num = "";
+    private int index = 0;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -130,7 +133,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         Gson gson = new Gson();
         s = gson.toJson(bindBean);
         getPresenter().getMantissaWarehouseDetails(s);
-        mCar.setText("");
         //备料车
         MantissaCarBean car = new MantissaCarBean(work_order, "Mantissa", side);
         String carbean = gson.toJson(car);
@@ -145,7 +147,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        mToolbarTitle.setText(R.string.ｍantissa＿warehouse＿stock);
+        mToolbarTitle.setText(R.string.mantissa＿warehouse＿stock);
         tvWorkOrder.setText("工单：" + work_order);
         tvLineName.setText("线别：" + line_name);
         tvLineNum.setText("面别：" + side);
@@ -180,6 +182,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 holder.setText(R.id.tv_location, item.getShelf_no());
                 holder.setText(R.id.tv_needNumber, String.valueOf(item.getAmount()));
                 holder.setText(R.id.tv_shipments, String.valueOf(item.getIssue_amount()));
+
+
+                if (item.getMaterial_no().equals(serial_num)) {
+                    index = position;
+                }
                 switch (item.getStatus()) {
                     case 0:
                         holder.itemView.setBackgroundColor(Color.YELLOW);
@@ -222,7 +229,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getBingingCarSucess(MaterialCar car) {
-        mCar.setText("");
         mCar.setText(car.getRows().get(0).getCar_name());
         flag = 2;
         tv_hint.setText(car.getRows().get(0).getCar_name());
@@ -348,7 +354,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
 
         content_adapter.notifyDataSetChanged();
-        mRecyContetn.scrollToPosition(position);
+        mRecyContetn.scrollToPosition(index);
     }
 
     @Override
@@ -476,8 +482,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             case 2:
                 try {
                     MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
-                    String serial_num = materiaBar.getStreamNumber();
-                    String material_num = materiaBar.getDeltaMaterialNumber();
+                    serial_num = materiaBar.getStreamNumber();
+                    material_num = materiaBar.getDeltaMaterialNumber();
                     String unit = materiaBar.getUnit();
                     String vendor = materiaBar.getVendor();
                     String dc = materiaBar.getDC();

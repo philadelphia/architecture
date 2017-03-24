@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -47,7 +48,7 @@ import butterknife.BindView;
  */
 
 public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
-        ModuleUpContract.View, WarningManger.OnWarning,  com.delta.libs.adapter.ItemOnclick<ModuleUpWarningItem.RowsBean> {
+        ModuleUpContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleUpWarningItem.RowsBean> {
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -61,9 +62,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     RecyclerView recyclerview;
     @Inject
     WarningManger warningManger;
-    //List<String> workOrderIDCacheList = new ArrayList<>();
-    String workOrderID = "";
-    List<String> status = new ArrayList<>();
+  
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     private List<ModuleUpWarningItem.RowsBean> dataList = new ArrayList<>();
@@ -79,9 +78,6 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.PLUG_MOD_ALARM_FLAG, getClass());
-
-        //需要定制的信息
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.PLUG_MOD_ALARM_FLAG), 0));
 
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
@@ -117,14 +113,14 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine_name());
                 holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
                 holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getSide());
-                holder.setText(R.id.tv_product_name_main, "主板: "+moduleUpWarningItem.getProduct_name_main());
-                holder.setText(R.id.tv_product_name, "小板: "+moduleUpWarningItem.getProduct_name());
-                if("204".equals(moduleUpWarningItem.getStatus())){
-                    holder.setText(R.id.tv_status,"状态: "+"正在上模组");
-                }else if("205".equals(moduleUpWarningItem.getStatus())){
-                    holder.setText(R.id.tv_status,"状态: "+"上模组完成");
+                holder.setText(R.id.tv_product_name_main, "主板: " + moduleUpWarningItem.getProduct_name_main());
+                holder.setText(R.id.tv_product_name, "小板: " + moduleUpWarningItem.getProduct_name());
+                if ("204".equals(moduleUpWarningItem.getStatus())) {
+                    holder.setText(R.id.tv_status, "状态: " + "正在上模组");
+                } else if ("205".equals(moduleUpWarningItem.getStatus())) {
+                    holder.setText(R.id.tv_status, "状态: " + "上模组完成");
                 }
-                holder.setText(R.id.tv_forecast_time,"预计上线时间: "+moduleUpWarningItem.getOnline_plan_start_time());
+                holder.setText(R.id.tv_forecast_time, "预计上线时间: " + moduleUpWarningItem.getOnline_plan_start_time());
             }
         };
         myAdapter.setOnItemTimeOnclick(this);
@@ -142,7 +138,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         dataList.clear();
         List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
         for (int i = 0; i < rows.size(); i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             try {
                 Date parse = format.parse(rows.get(i).getOnline_plan_start_time());
                 rows.get(i).setEnd_time(parse.getTime());
@@ -157,7 +153,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     }
 
     @Override
-    public void onFalied(ModuleUpWarningItem data) {
+    public void onFailed(ModuleUpWarningItem data) {
         ToastUtils.showMessage(this, data.getMsg());
     }
 
@@ -182,7 +178,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              onRefresh();
+                onRefresh();
             }
         });
     }
@@ -193,7 +189,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              onRefresh();
+                onRefresh();
             }
         });
     }
@@ -208,6 +204,9 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Override
     protected void onResume() {
         warningManger.registerWReceiver(this);
+
+        //需要定制的信息
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.PLUG_MOD_ALARM_FLAG), 0));
         if (null != myAdapter) {
             myAdapter.startRefreshTime();
         }
@@ -237,6 +236,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 warningManger.setConsume(true);
                 onRefresh();
 
+
             }
         });
         warningDialog.show();
@@ -245,25 +245,19 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     }
 
 
-
     private void updateMessage(String warningMessage) {
 
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("预警Sample");
-        String content ="";
+        String content = "";
         try {
             JSONArray jsonArray = new JSONArray(warningMessage);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
-                int type = jsonObject.getInt("type");
-                //可能有多种预警的情况
-                if (type == Constant.MODULE_DOWN_WARNING) {
-                    Object message1 = jsonObject.get("message");
-                    content=content+message1+"\n";
-
-                }
+                Object message1 = jsonObject.get("message");
+                content = content + message1 + "\n";
             }
             warningEntity.setContent(content + "\n");
             datas.add(warningEntity);
@@ -306,45 +300,6 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         return super.onOptionsItemSelected(item);
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constant.ACTIVITY_REQUEST_WORK_ITEM_ID) {
-            if (resultCode == Constant.ACTIVITY_RESULT_WORK_ITEM_ID) {
-                String result = data.getStringExtra(Constant.WORK_ITEM_ID);
-
-                for (int i = 0; i < dataList.size(); i++) {
-                    if (dataList.get(i).getWork_order().equals(result)) {
-                        ModuleUpWarningItem.RowsBean rb = dataList.get(i);
-                        rb.setStart_time_plan("");
-                        dataList.set(i, rb);
-                    }
-                }
-                myAdapter.notifyDataSetChanged();
-                //deleteItemByWorkItemID(result);
-                //deleteWorkOrderIDCacheList(result);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }*/
-
-    /*public void deleteItemByWorkItemID(String workItemID){
-        for(ModuleUpWarningItem.RowsBean list_item:dataList){
-            if(list_item.getWork_order().equals(workItemID)){
-                dataList.remove(list_item);
-                break;
-            }
-        }
-        myAdapter.notifyDataSetChanged();
-    }*/
-
-    /*public void deleteWorkOrderIDCacheList(String workOrderID){
-        for (String item:workOrderIDCacheList){
-            if(item.equals(workOrderID)){
-                dataList.remove(item);
-                break;
-            }
-        }
-    }*/
 
     public String getWorkOrderIDCacheStr(List<String> workOrderIDCacheList) {
         String res = "";
@@ -362,10 +317,10 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     public void onItemClick(View item, ModuleUpWarningItem.RowsBean rowsBean, int position) {
         Bundle bundle = new Bundle();
         bundle.putString(Constant.WORK_ITEM_ID, dataList.get(position).getWork_order());
-        bundle.putString(Constant.SIDE,dataList.get(position).getSide());
-        bundle.putString(Constant.PRODUCT_NAME_MAIN,dataList.get(position).getProduct_name_main());
-        bundle.putString(Constant.PRODUCT_NAME,dataList.get(position).getProduct_name());
-        bundle.putString(Constant.LINE_NAME,dataList.get(position).getLine_name());
+        bundle.putString(Constant.SIDE, dataList.get(position).getSide());
+        bundle.putString(Constant.PRODUCT_NAME_MAIN, dataList.get(position).getProduct_name_main());
+        bundle.putString(Constant.PRODUCT_NAME, dataList.get(position).getProduct_name());
+        bundle.putString(Constant.LINE_NAME, dataList.get(position).getLine_name());
 
         Intent intent = new Intent(this, ModuleUpBindingActivity.class);
         intent.putExtras(bundle);
