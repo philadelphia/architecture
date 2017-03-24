@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="85px">
-        <TextView
+        <!--<TextView
             android:id="@+id/tv_work_order"
             android:layout_width="300px"
             android:textColor="#333333"
@@ -24,7 +24,7 @@
             android:text="面别"
             android:textSize="40px"
             android:background="@drawable/textview_border"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"/>-->
         <TextView
             android:id="@+id/tv_materialID"
             android:layout_width="300px"

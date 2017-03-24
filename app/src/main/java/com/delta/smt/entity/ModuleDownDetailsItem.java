@@ -51,8 +51,7 @@ public class ModuleDownDetailsItem {
          * dest : Feeder缓冲区
          * unbind_time : 1200
          */
-        private String work_order;
-        private String side;
+
         private String material_no;
         private String serial_no;
         private String feeder_id;
@@ -60,15 +59,14 @@ public class ModuleDownDetailsItem {
         private String dest;
         private String unbind_time;
 
-        public RowsBean(String work_order,String side,String material_no, String serial_no, String feeder_id, String slot, String dest, String unbind_time) {
+        public RowsBean(String material_no, String serial_no, String feeder_id, String slot, String dest, String unbind_time) {
             this.dest = dest;
             this.unbind_time = unbind_time;
             this.slot = slot;
             this.serial_no = serial_no;
             this.material_no = material_no;
             this.feeder_id = feeder_id;
-            this.work_order = work_order;
-            this.side = side;
+
         }
 
         public String getMaterial_no() {
@@ -119,28 +117,12 @@ public class ModuleDownDetailsItem {
             this.unbind_time = unbind_time;
         }
 
-        public String getSide() {
-            return side;
-        }
 
-        public void setSide(String side) {
-            this.side = side;
-        }
-
-        public String getWork_order() {
-            return work_order;
-        }
-
-        public void setWork_order(String work_order) {
-            this.work_order = work_order;
-        }
 
         @Override
         public String toString() {
             return "RowsBean{" +
                     "dest='" + dest + '\'' +
-                    ", work_order='" + work_order + '\'' +
-                    ", side='" + side + '\'' +
                     ", material_no='" + material_no + '\'' +
                     ", serial_no='" + serial_no + '\'' +
                     ", feeder_id='" + feeder_id + '\'' +
