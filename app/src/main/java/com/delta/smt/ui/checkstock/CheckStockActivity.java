@@ -269,8 +269,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     mFrameLocationSuccess = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
                     VibratorAndVoiceUtils.correctVibrator(this);
                     VibratorAndVoiceUtils.correctVoice(this);
-                    if (isJudge) {
-                        if (mFrameLocationSuccess.getSource().equals(FrameLocation)) {
+                        if (mFrameLocationSuccess.getSource().equals(cargonTv.getText())) {
                             getPresenter().fetchException(mFrameLocationSuccess.getSource());
                         } else {
                             cargoned.setFocusable(true);
@@ -281,19 +280,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                 status = 1;
                             }
                         }
-                    } else {
-                        if (mFrameLocationSuccess.getSource().equals(mFrameLocation)) {
-                            getPresenter().fetchException(mFrameLocationSuccess.getSource());
-                        } else {
-                            cargoned.setFocusable(true);
-                            if (isChexs) {
-                                ToastUtils.showMessage(this, "两次扫描架位不一致");
-                                isChexs = false;
-                            } else {
-                                status = 1;
-                            }
-                        }
-                    }
 
                     } catch(EntityNotFountException e){
                         e.printStackTrace();
@@ -336,13 +322,14 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public void onCheckStockNumberSucess(String wareHouses) {
         dataList.get(position).setColor(false);
-        if (isJudge) {
-            cargonTv.setText(FrameLocation);
-            getPresenter().fetchCheckStock(FrameLocation);
-        }else {
-            cargonTv.setText(mFrameLocation.getSource());
-            getPresenter().fetchCheckStock(mFrameLocation.getSource());
-        }
+        getPresenter().fetchCheckStock(cargonTv.getText().toString());
+//        if (isJudge) {
+//            cargonTv.setText(FrameLocation);
+//            getPresenter().fetchCheckStock(FrameLocation);
+//        }else {
+//            cargonTv.setText(mFrameLocation.getSource());
+//            getPresenter().fetchCheckStock(mFrameLocation.getSource());
+//        }
         mAdapter.notifyDataSetChanged();
     }
 
