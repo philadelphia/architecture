@@ -149,16 +149,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("上模组");
 
-        recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyTitle.setLayoutManager(new LinearLayoutManager(getContext()));
         recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        dataList.add(new ModuleUpBindingItem.RowsBean("工单", "料号", "流水码", "FeederID", "模组料站", "", ""));
+        dataList.add(new ModuleUpBindingItem.RowsBean("料号", "FeederID", "模组料站"));
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_materialID, item.getMaterial_no());
-                holder.setText(R.id.tv_feederID, item.getFeeder_id());
-                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+//                holder.setText(R.id.tv_materialID, item.getMaterial_no());
+//                holder.setText(R.id.tv_feederID, item.getFeeder_id());
+//                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
 
             }
 
@@ -343,6 +343,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onScanSuccess(String barcode) {
+        showMessage.setVisibility(View.GONE);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:

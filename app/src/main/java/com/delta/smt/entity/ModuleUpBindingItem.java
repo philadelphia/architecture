@@ -71,6 +71,13 @@ public class ModuleUpBindingItem {
             this.id = id;
         }
 
+        public RowsBean(String material_no, String feeder_id, String slot) {
+            this.feeder_id = feeder_id;
+            this.slot = slot;
+            this.material_no = material_no;
+        }
+
+
         public String getWork_order() {
             return work_order;
         }
