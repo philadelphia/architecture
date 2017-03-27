@@ -227,10 +227,11 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         List<ModuleDownDetailsItem.RowsBean> rowsBean = data.getRows();
         dataSource.addAll(rowsBean);
         for (ModuleDownDetailsItem.RowsBean bean : dataSource) {
-            if (bean.getDest().equalsIgnoreCase("Feeder缓存区"))
+            if (bean.getDest().equalsIgnoreCase("1"))
                 dataSourceForCheckIn.add(bean);
         }
         Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size());
+        Log.i(TAG, "onSuccess: 后台返回的待入库数据长度是" + dataSourceForCheckIn.size());
         adapter.notifyDataSetChanged();
         if(dataSourceForCheckIn.isEmpty()){
             btnFeederMaintain.setEnabled(true);
@@ -398,7 +399,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
                     } else {
                         flag = 1;
-                        ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
+                        ToastUtils.showMessage(this, "该料盘不存在此工单，请重新扫描料盘或检查料盘二维码是否损坏");
                     }
                 } catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
