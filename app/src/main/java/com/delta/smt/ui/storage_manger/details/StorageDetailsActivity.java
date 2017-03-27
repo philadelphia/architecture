@@ -56,8 +56,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -120,8 +118,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private CommonBaseAdapter<StorageDetails> undoList_adapter;
     private String mS;
     private String line_name;
-    @Inject
-    TextToSpeechManager textToSpeechManager;
+    private TextToSpeechManager textToSpeechManager;
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -132,6 +130,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     protected void initData() {
+        textToSpeechManager = new TextToSpeechManager(this);
         barCodeImp = new BarCodeParseIpml();
         part = getIntent().getStringExtra(Constant.WARE_HOUSE_NAME);
         work_order = getIntent().getStringExtra(Constant.WORK_ORDER);
@@ -241,6 +240,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 //        Log.e(TAG, "getFailed: "+message);
         //tv_hint.setText(message);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
         content_adapter.notifyDataSetChanged();
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -254,6 +254,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             mTextView2.setText(data.get(0).getCar_name());
             tv_hint.setText("绑定备料车" + data.get(0).getCar_name());
         }
+
         VibratorAndVoiceUtils.correctVoice(this);
         VibratorAndVoiceUtils.correctVibrator(this);
     }
@@ -262,6 +263,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
         issureToWareh(rows);
         tv_hint.setText(rows.getMessage());
+        textToSpeechManager.stop();
         textToSpeechManager.readMessage(rows.getMessage());
         if (btnSwitch.isChecked()) {
             getPresenter().deduction(mS);
@@ -339,7 +341,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     protected void onDestroy() {
-        textToSpeechManager.freeSource();
+       textToSpeechManager.freeSource();
         super.onDestroy();
     }
 
@@ -385,8 +387,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void queryMaterailCar(List<MaterialCar.RowsBean> rows) {
         if (rows.size() != 0) {
             mTextView2.setText(rows.get(0).getCar_name());
-            tv_hint.setText(rows.get(0).getCar_name());
+          //  tv_hint.setText(rows.get(0).getCar_name());
         }
+
         state = 2;
 
     }
@@ -395,6 +398,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void queryMaterailCarFailed(String msg) {
         ToastUtils.showMessage(this, msg);
         tv_hint.setText(msg);
+        textToSpeechManager.readMessage(msg);
         state = 1;
 
     }
@@ -424,6 +428,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void jumpMaterialsFailed(String message) {
         ToastUtils.showMessage(this, message);
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -434,6 +439,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         state = 2;
         ToastUtils.showMessage(this, message);
         tv_hint.setText(message);
+        textToSpeechManager.readMessage(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -449,6 +455,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 getPresenter().jumpMaterials(mS);
             }
         });
+        textToSpeechManager.readMessage(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -457,7 +464,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehFinishFaildSure(String message) {
         state = 2;
         ToastUtils.showMessage(this, message);
-
+        textToSpeechManager.readMessage(message);
         DialogUtils.showConfirmDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -472,7 +479,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehFinishFailedWithoutSure(String message) {
         state = 2;
         ToastUtils.showMessage(this, message);
-
+        textToSpeechManager.readMessage(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -480,13 +487,14 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void sureCompleteIssueSucess(String message) {
         ToastUtils.showMessage(this, message);
+        textToSpeechManager.readMessage(message);
         tv_hint.setText(message);
     }
 
     @Override
     public void sureCompleteIssueFailed(String message) {
         ToastUtils.showMessage(this, message);
-
+        textToSpeechManager.readMessage(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
         DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
