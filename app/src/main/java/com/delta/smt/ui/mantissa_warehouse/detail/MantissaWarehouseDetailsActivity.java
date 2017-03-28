@@ -147,7 +147,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        mToolbarTitle.setText(R.string.ｍantissa＿warehouse＿stock);
+        mToolbarTitle.setText(R.string.mantissa＿warehouse＿stock);
         tvWorkOrder.setText("工单：" + work_order);
         tvLineName.setText("线别：" + line_name);
         tvLineNum.setText("面别：" + side);

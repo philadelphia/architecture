@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -28,7 +27,6 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FeederSupplyItem;
-import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
@@ -119,9 +117,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
         lineName = intent.getStringExtra(Constant.LINE_NAME);
-        tv_workOrder.setText("工单:" + workId);
-        tv_line.setText("线别: " + lineName);
-        tv_side.setText("面别：" + side);
+        tv_workOrder.setText("工单:   " + workId);
+        tv_line.setText("线别:    " + lineName);
+        tv_side.setText("面别:    " + side);
         Log.i(TAG, "workId==: " + workId);
         Log.i(TAG, "side==: " + side);
         Log.i(TAG, "lineName==: " + lineName);
@@ -143,11 +141,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("备料");
-        dataList.add(new FeederSupplyItem(" ", " ", "  ", " ", "", 0));
+        dataList.add(new FeederSupplyItem());
         CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
-                holder.itemView.setBackgroundColor(Color.GRAY);
+                holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
             }
 
             @Override

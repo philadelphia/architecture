@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -61,9 +62,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     RecyclerView recyclerview;
     @Inject
     WarningManger warningManger;
-    //List<String> workOrderIDCacheList = new ArrayList<>();
-    String workOrderID = "";
-    List<String> status = new ArrayList<>();
+  
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     private List<ModuleUpWarningItem.RowsBean> dataList = new ArrayList<>();
@@ -79,7 +78,6 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.PLUG_MOD_ALARM_FLAG, getClass());
-
 
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
@@ -140,7 +138,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         dataList.clear();
         List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
         for (int i = 0; i < rows.size(); i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             try {
                 Date parse = format.parse(rows.get(i).getOnline_plan_start_time());
                 rows.get(i).setEnd_time(parse.getTime());
@@ -155,7 +153,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     }
 
     @Override
-    public void onFalied(ModuleUpWarningItem data) {
+    public void onFailed(ModuleUpWarningItem data) {
         ToastUtils.showMessage(this, data.getMsg());
     }
 
@@ -302,45 +300,6 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         return super.onOptionsItemSelected(item);
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constant.ACTIVITY_REQUEST_WORK_ITEM_ID) {
-            if (resultCode == Constant.ACTIVITY_RESULT_WORK_ITEM_ID) {
-                String result = data.getStringExtra(Constant.WORK_ITEM_ID);
-
-                for (int i = 0; i < dataList.size(); i++) {
-                    if (dataList.get(i).getWork_order().equals(result)) {
-                        ModuleUpWarningItem.RowsBean rb = dataList.get(i);
-                        rb.setStart_time_plan("");
-                        dataList.set(i, rb);
-                    }
-                }
-                myAdapter.notifyDataSetChanged();
-                //deleteItemByWorkItemID(result);
-                //deleteWorkOrderIDCacheList(result);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }*/
-
-    /*public void deleteItemByWorkItemID(String workItemID){
-        for(ModuleUpWarningItem.RowsBean list_item:dataList){
-            if(list_item.getWork_order().equals(workItemID)){
-                dataList.remove(list_item);
-                break;
-            }
-        }
-        myAdapter.notifyDataSetChanged();
-    }*/
-
-    /*public void deleteWorkOrderIDCacheList(String workOrderID){
-        for (String item:workOrderIDCacheList){
-            if(item.equals(workOrderID)){
-                dataList.remove(item);
-                break;
-            }
-        }
-    }*/
 
     public String getWorkOrderIDCacheStr(List<String> workOrderIDCacheList) {
         String res = "";

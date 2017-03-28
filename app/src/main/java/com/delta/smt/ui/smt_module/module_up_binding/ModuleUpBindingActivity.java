@@ -74,6 +74,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     StatusLayout statusLayout;
     @BindView(R.id.automatic_upload)
     AppCompatCheckBox automaticUpload;
+
+
+    @BindView(R.id.tv_work_order)
+    TextView tv_workOrder;
+    @BindView(R.id.tv_side)
+    TextView tv_side;
+    @BindView(R.id.tv_Line)
+    TextView tv_line;
+
     int state = 1;
     //private Snackbar mSnackbar = null;
     @BindView(R.id.showMessage)
@@ -109,6 +118,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         linName = intent.getStringExtra(Constant.LINE_NAME);
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
+        tv_workOrder.setText(workItemID);
+        tv_side.setText(side);
+        tv_line.setText(linName);
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
@@ -137,18 +149,17 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("上模组");
 
-        recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyTitle.setLayoutManager(new LinearLayoutManager(getContext()));
         recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        dataList.add(new ModuleUpBindingItem.RowsBean("工单", "料号", "流水码", "FeederID", "模组料站", "", ""));
+        dataList.add(new ModuleUpBindingItem.RowsBean("料号", "FeederID", "模组料站"));
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_materialID, item.getMaterial_no());
-                holder.setText(R.id.tv_feederID, item.getFeeder_id());
-                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_line_name, "线别");
-                holder.setText(R.id.tv_side, "面别");
+//                holder.setText(R.id.tv_materialID, item.getMaterial_no());
+//                holder.setText(R.id.tv_feederID, item.getFeeder_id());
+//                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+
             }
 
             @Override
@@ -171,8 +182,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_line_name, linName);
-                holder.setText(R.id.tv_side, side);
+
             }
 
             @Override
@@ -202,7 +212,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void onFalied(ModuleUpBindingItem data) {
+    public void onFailed(ModuleUpBindingItem data) {
         ToastUtils.showMessage(this, data.getMsg());
     }
 
@@ -333,6 +343,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onScanSuccess(String barcode) {
+        showMessage.setVisibility(View.GONE);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:

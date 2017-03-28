@@ -2,7 +2,6 @@ package com.delta.smt.ui.feeder.warning.supply.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.Result;
 

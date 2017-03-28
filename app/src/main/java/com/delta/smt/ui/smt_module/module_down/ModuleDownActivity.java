@@ -59,7 +59,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     RecyclerView recyclerview;
     @Inject
     WarningManger warningManger;
-    String workOrderID = "";
+
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     private List<ModuleDownWarningItem.RowsBean> dataList = new ArrayList<>();
@@ -161,7 +161,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     }
 
     @Override
-    public void onFalied(ModuleDownWarningItem data) {
+    public void onFailed(ModuleDownWarningItem data) {
         ToastUtils.showMessage(this, data.getMsg());
     }
 

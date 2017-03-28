@@ -47,7 +47,7 @@
             app:suffixTextColor="#000000"
             app:suffixTextSize="@dimen/px_12"
             app:timeTextColor="#000000"
-            app:timeTextSize="@dimen/px_80"
+            app:timeTextSize="@dimen/px_60"
             />
         </com.zhy.autolayout.AutoLinearLayout>
 </LinearLayout>
