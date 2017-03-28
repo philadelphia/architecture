@@ -238,19 +238,17 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("预警Sample");
+        warningEntity.setTitle("下模组预警:");
         String content ="";
         try {
             JSONArray jsonArray = new JSONArray(warningMessage);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
-                int type = jsonObject.getInt("type");
-                //可能有多种预警的情况
-                if (type == Constant.MODULE_DOWN_WARNING) {
+
                     Object message1 = jsonObject.get("message");
                     content=content+message1+"\n";
 
-                }
+
             }
             warningEntity.setContent(content + "\n");
             datas.add(warningEntity);

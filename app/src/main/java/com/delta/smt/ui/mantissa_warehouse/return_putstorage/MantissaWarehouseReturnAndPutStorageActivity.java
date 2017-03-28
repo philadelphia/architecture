@@ -33,8 +33,6 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import me.yokeyword.fragmentation.SupportFragment;
 
@@ -62,15 +60,12 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     private SupportFragment currentFragment;
     private String[] titles;
     private int currentTab = 0;
-
-    @Inject
     WarningManger warningManger;
     private WarningDialog warningDialog;
     private DialogLayout dialogLayout;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-
     }
 
     @Override

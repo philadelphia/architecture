@@ -140,7 +140,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("Feeder预警");
+        warningEntity.setTitle("Feeder预警:");
         String content ="";
         try {
             JSONArray jsonArray = new JSONArray(warningMessage);
