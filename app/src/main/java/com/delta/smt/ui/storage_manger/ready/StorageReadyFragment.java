@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.libs.adapter.ItemOnclick;
@@ -50,7 +51,7 @@ import static com.delta.smt.R.id.recyclerView;
  */
 
 public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
-        implements StorageReadyContract.View, ItemOnclick<StorageReady>,WarningManger.OnWarning {
+        implements StorageReadyContract.View, ItemOnclick<StorageReady>, WarningManger.OnWarning {
     @BindView(recyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.statusLayout)
@@ -116,36 +117,31 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
 
     @Override
     public void onDestroy() {
-        warningManger.sendMessage(new SendMessage(Constant.WAREH_ALARM_FLAG +"_" +wareHouseName,1));
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_ALARM_FLAG + "_" + wareHouseName, 1));
         super.onDestroy();
     }
+
 
     @Override
     protected void initData() {
 
-        wareHouseName = getArguments().getString(Constant.WARE_HOUSE_NAME);
+        wareHouseName =  SpUtil.getStringSF(getmActivity(),Constant.STORAGE_NAME);
+
         Map<String, String> map = new HashMap<>();
         map.put("part", wareHouseName);
         Gson gson = new Gson();
         mS = gson.toJson(map);
         Log.i("aaa", "argument== " + mS);
         //接收那种预警
-        warningManger.addWarning(Constant.WAREH_ALARM_FLAG +"_" +wareHouseName, getmActivity().getClass());
+        warningManger.addWarning(Constant.WAREH_ALARM_FLAG + "_" + wareHouseName, getmActivity().getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(Constant.WAREH_ALARM_FLAG +"_" +wareHouseName,0));
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_ALARM_FLAG + "_" + wareHouseName, 0));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-//        if (warningDialog == null) {
-//            warningDialog = createDialog("sdfsdf");
-//        }
-//        if (!warningDialog.isShowing()) {
-//            warningDialog.show();
-//        }
-//        updateMessage(warningDialog,"sdfsfsd");
-    }
 
+    }
 
 
     @Override
@@ -169,6 +165,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
         dataList.addAll(storageReadies);
         adapter.notifyDataSetChanged();
     }
+
     public WarningDialog createDialog(String message) {
 
         final WarningDialog warningDialog = new WarningDialog(getmActivity());
@@ -177,7 +174,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
             public void onclick(View view) {
                 warningManger.setConsume(true);
 
-                    getPresenter().getStorageReady(mS);
+                getPresenter().getStorageReady(mS);
                 warningDialog.dismiss();
             }
         });
@@ -191,7 +188,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
      *
      * @param message
      */
-    private void updateMessage(WarningDialog warningDialog,String message) {
+    private void updateMessage(WarningDialog warningDialog, String message) {
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
@@ -210,8 +207,6 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -227,11 +222,12 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
 //            );
 //            return;
 //        } else {
-            Intent intent = new Intent(getActivity(), StorageDetailsActivity.class);
-            intent.putExtra(Constant.WORK_ORDER, dataList.get(position).getWork_order());
-            intent.putExtra(Constant.SIDE, storageReady.getSide());
-            intent.putExtra(Constant.WARE_HOUSE_NAME, wareHouseName);
-            startActivity(intent);
+        Intent intent = new Intent(getActivity(), StorageDetailsActivity.class);
+        intent.putExtra(Constant.WORK_ORDER, dataList.get(position).getWork_order());
+        intent.putExtra(Constant.SIDE, storageReady.getSide());
+        intent.putExtra(Constant.LINE_NAME, storageReady.getLine_name());
+        intent.putExtra(Constant.WARE_HOUSE_NAME, wareHouseName);
+        startActivity(intent);
         //}
 
     }
@@ -244,6 +240,6 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
         if (!warningDialog.isShowing()) {
             warningDialog.show();
         }
-        updateMessage(warningDialog,warningMessage);
+        updateMessage(warningDialog, warningMessage);
     }
 }

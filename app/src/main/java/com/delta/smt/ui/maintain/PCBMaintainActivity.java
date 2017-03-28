@@ -38,6 +38,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.delta.smt.R.id.status;
+
 
 /**
  * Created by Lin.Hou on 2017-03-13.
@@ -70,6 +72,7 @@ public class PCBMaintainActivity extends BaseActivity<PCBMaintainPresenter> impl
     private int mPosstion;
     private AlertDialog.Builder builder;
     private String mId;
+    private int status=1;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -130,34 +133,55 @@ public class PCBMaintainActivity extends BaseActivity<PCBMaintainPresenter> impl
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        try {
-            PcbFrameLocation mFrameLocation = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
-            if (mList.size() != 0) {
-                int i = 0;
-                for (; i < mList.size(); i++) {
+        switch (status) {
+            case 1:
+                try {
+                    PcbFrameLocation mFrameLocation = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
+                    if (mList.size() != 0) {
+                        int i = 0;
+                        for (; i < mList.size(); i++) {
 
-                    if (mFrameLocation.getSource().equals(mList.get(i).getCode())) {
-                        break;
-                    }
+                            if (mFrameLocation.getSource().equals(mList.get(i).getCode())) {
+                                break;
+                            }
 
-                }
-                if (i < mList.size()) {
-                    mList.get(i).setColor(1);
-                    mPosstion = i;
+                        }
+                        if (i < mList.size()) {
+                            mList.get(i).setColor(1);
+                            mPosstion = i;
 //                    mId = "" + mList.get(i).getId();
-                    mAdapter.notifyDataSetChanged();
-                } else {
-                    ToastUtils.showMessage(this, "未找到该架位，请进入添加架位!");
+                            mAdapter.notifyDataSetChanged();
+                            status=2;
+
+                        } else {
+                            ToastUtils.showMessage(this, "未找到该架位，请进入添加架位!");
+                        }
+                    }
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                    status=1;
+
+//            mList.get(mPosstion).setFramelocation(barcode);
+//            getPresenter().getUpdate(mList.get(mPosstion).getId() + "", barcode);
+                } catch (Exception es) {
+
                 }
-            }
-        } catch (EntityNotFountException e) {
-            e.printStackTrace();
-            mList.get(mPosstion).setFramelocation(barcode);
-            getPresenter().getUpdate(mList.get(mPosstion).getId() + "", barcode);
+                break;
+            case 2:
+                try {
+                    PcbFrameLocation Location = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
+                    mList.get(mPosstion).setFramelocation(Location.getSource());
+                    getPresenter().getUpdate(mList.get(mPosstion).getId() + "", Location.getSource());
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+//            mList.get(mPosstion).setFramelocation(barcode);
+//            getPresenter().getUpdate(mList.get(mPosstion).getId() + "", barcode);
+                } catch (Exception es) {
 
-        } catch (Exception es) {
-
+                }
+                break;
         }
+
 
     }
 
@@ -205,6 +229,7 @@ public class PCBMaintainActivity extends BaseActivity<PCBMaintainPresenter> impl
     public void getUpdate(String wareHouses) {
         SnackbarUtil.showMassage(activityMianview, "绑灯成功");
         getPresenter().getSubshelf(pcbmaintainEd.getText().toString());
+        status=1;
     }
 
     @Override
@@ -229,7 +254,9 @@ public class PCBMaintainActivity extends BaseActivity<PCBMaintainPresenter> impl
         Button cancelbutton = (Button) mUnboundDialog.findViewById(R.id.rollback_cancel);
         affirmbutton.setOnClickListener(this);
         cancelbutton.setOnClickListener(this);
+        mList.get(mPosstion).setColor(0);
         mId=code;
+        status=1;
     }
 
 

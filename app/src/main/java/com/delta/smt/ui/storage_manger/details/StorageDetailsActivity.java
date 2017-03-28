@@ -42,6 +42,7 @@ import com.delta.smt.entity.IssureToWarehBody;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
+import com.delta.smt.manager.TextToSpeechManager;
 import com.delta.smt.ui.storage_manger.details.di.DaggerStorageDetailsComponent;
 import com.delta.smt.ui.storage_manger.details.di.StorageDetailsModule;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsContract;
@@ -89,9 +90,17 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @BindView(R.id.btn_switch)
     CheckBox btnSwitch;
     int state = 1;
+    @BindView(R.id.tv_work_order)
+    TextView tvWorkOrder;
+    @BindView(R.id.tv_line_name)
+    TextView tvLineName;
+    @BindView(R.id.tv_line_num)
+    TextView tvLineNum;
+    @BindView(R.id.textView)
+    TextView textView;
     private List<StorageDetails> dataList = new ArrayList<>();
     private List<StorageDetails> dataList2 = new ArrayList<>();
-    private List<StorageDetails> undebitDataList = new ArrayList<>();
+    private List<StorageDetails> unDebitDataList = new ArrayList<>();
     private CommonBaseAdapter<StorageDetails> title_adapter;
     private CommonBaseAdapter<StorageDetails> content_adapter;
     private BarCodeParseIpml barCodeImp;
@@ -108,6 +117,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private BottomSheetDialog bottomSheetDialog;
     private CommonBaseAdapter<StorageDetails> undoList_adapter;
     private String mS;
+    private String line_name;
+    private TextToSpeechManager textToSpeechManager;
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -118,9 +130,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     protected void initData() {
+        textToSpeechManager = new TextToSpeechManager(this);
         barCodeImp = new BarCodeParseIpml();
-        work_order = getIntent().getStringExtra(Constant.WORK_ORDER);
         part = getIntent().getStringExtra(Constant.WARE_HOUSE_NAME);
+        work_order = getIntent().getStringExtra(Constant.WORK_ORDER);
+        line_name = getIntent().getStringExtra(Constant.LINE_NAME);
         side = getIntent().getStringExtra(Constant.SIDE);
         Map<String, String> mMap = new HashMap<>();
         mMap.put("part", part);
@@ -150,6 +164,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("仓库" + part);
+        tvWorkOrder.setText("工单：" + work_order);
+        tvLineName.setText("线别：" + line_name);
+        tvLineNum.setText("面别：" + side);
         dataList.add(new StorageDetails("", "", 0, 0));
         btnSwitch.setChecked(ischecked);
         btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -223,6 +240,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 //        Log.e(TAG, "getFailed: "+message);
         //tv_hint.setText(message);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
         content_adapter.notifyDataSetChanged();
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -236,6 +254,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             mTextView2.setText(data.get(0).getCar_name());
             tv_hint.setText("绑定备料车" + data.get(0).getCar_name());
         }
+
         VibratorAndVoiceUtils.correctVoice(this);
         VibratorAndVoiceUtils.correctVibrator(this);
     }
@@ -244,6 +263,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
         issureToWareh(rows);
         tv_hint.setText(rows.getMessage());
+        textToSpeechManager.stop();
+        textToSpeechManager.readMessage(rows.getMessage());
         if (btnSwitch.isChecked()) {
             getPresenter().deduction(mS);
         }
@@ -261,7 +282,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         Button bt_confim = ViewUtils.findView(view, R.id.bt_sheet_confirm);
         bt_cancel.setOnClickListener(this);
         bt_confim.setOnClickListener(this);
-        undoList_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), undebitDataList) {
+        undoList_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), unDebitDataList) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.setText(R.id.tv_number, item.getMaterial_no());
@@ -318,8 +339,14 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         });
     }
 
+    @Override
+    protected void onDestroy() {
+       textToSpeechManager.freeSource();
+        super.onDestroy();
+    }
+
     private void issureToWareh(Result<StorageDetails> rows) {
-        undebitDataList.clear();
+        unDebitDataList.clear();
         isOver = true;
         isHaveIssureOver = false;
         dataList2.clear();
@@ -337,13 +364,13 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
                 isHaveIssureOver = true;
             } else {
-                undebitDataList.add(dataList2.get(i));
+                unDebitDataList.add(dataList2.get(i));
                 isOver = false;
             }
         }
-
         content_adapter.notifyDataSetChanged();
         mRecyContetn.scrollToPosition(position);
+
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -360,8 +387,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void queryMaterailCar(List<MaterialCar.RowsBean> rows) {
         if (rows.size() != 0) {
             mTextView2.setText(rows.get(0).getCar_name());
-            tv_hint.setText(rows.get(0).getCar_name());
+          //  tv_hint.setText(rows.get(0).getCar_name());
         }
+
         state = 2;
 
     }
@@ -370,6 +398,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void queryMaterailCarFailed(String msg) {
         ToastUtils.showMessage(this, msg);
         tv_hint.setText(msg);
+        textToSpeechManager.readMessage(msg);
         state = 1;
 
     }
@@ -399,6 +428,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void jumpMaterialsFailed(String message) {
         ToastUtils.showMessage(this, message);
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -409,6 +439,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         state = 2;
         ToastUtils.showMessage(this, message);
         tv_hint.setText(message);
+        textToSpeechManager.readMessage(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -424,6 +455,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 getPresenter().jumpMaterials(mS);
             }
         });
+        textToSpeechManager.readMessage(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -432,7 +464,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehFinishFaildSure(String message) {
         state = 2;
         ToastUtils.showMessage(this, message);
-
+        textToSpeechManager.readMessage(message);
         DialogUtils.showConfirmDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -447,7 +479,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehFinishFailedWithoutSure(String message) {
         state = 2;
         ToastUtils.showMessage(this, message);
-
+        textToSpeechManager.readMessage(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -455,13 +487,14 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void sureCompleteIssueSucess(String message) {
         ToastUtils.showMessage(this, message);
+        textToSpeechManager.readMessage(message);
         tv_hint.setText(message);
     }
 
     @Override
     public void sureCompleteIssueFailed(String message) {
         ToastUtils.showMessage(this, message);
-
+        textToSpeechManager.readMessage(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
         DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
@@ -538,6 +571,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     tv_hint.setText("请扫描备料车");
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
+                    textToSpeechManager.readMessage("请扫描备料车");
                 }
                 break;
             case 2:
@@ -565,6 +599,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     e.printStackTrace();
                     ToastUtils.showMessage(this, "请扫描对应架位的料盘");
                     tv_hint.setText("请扫描对应架位的料盘");
+                    textToSpeechManager.readMessage("请扫描对应架位的料盘");
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                 }
@@ -629,4 +664,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 break;
         }
     }
+
+
 }

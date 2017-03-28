@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -65,6 +66,7 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<Fuction>, MainContract.View {
 
 
+    private static final int CODE = 100;
     //更新
     private static ProgressDialog progressDialog = null;
     @BindView(R.id.toolbar)
@@ -193,7 +195,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("PCB入库", R.drawable.ic_warehousestorage));
         fuctions.add(new Fuction("PCB盘点", R.drawable.ic_warehouseinventory));
         fuctions.add(new Fuction("PCB发料", R.drawable.ic_warehouseforsending));
-        fuctions.add(new Fuction("PCB维护", R.drawable.ic_warehouseforsending));
+        fuctions.add(new Fuction("PCB维护", R.drawable.ic_pcbsetting));
         fuctions.add(new Fuction("仓库备料", R.drawable.ic_warehouseroompreparation));
         fuctions.add(new Fuction("仓库超领", R.drawable.ic_warehouseroomchaoling));
         fuctions.add(new Fuction("Feeder缓冲区", R.drawable.ic_feederbuffer));
@@ -209,7 +211,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("手补件", R.drawable.ic_handpatch));
         fuctions.add(new Fuction("warningSample", R.drawable.title));
     }
-
+    private void checkTTS() {
+        Intent in = new Intent();
+        in.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(in, CODE);
+    }
     @Override
     protected int getContentViewId() {
         return R.layout.activity_main;
@@ -375,5 +381,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     @OnClick(R.id.tv_setting)
     public void onClick() {
         IntentUtils.showIntent(this, SettingActivity.class);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }

@@ -86,6 +86,12 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     StatusLayout statusLayout;
     @BindView(R.id.btn_switch)
     CheckBox btnSwitch;
+    @BindView(R.id.tv_work_order)
+    TextView tvWorkOrder;
+    @BindView(R.id.tv_line_name)
+    TextView tvLineName;
+    @BindView(R.id.tv_line_num)
+    TextView tvLineNum;
     boolean isOver = true;
     boolean isHaveIssureOver;
     BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
@@ -97,12 +103,16 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> undoList_adapter;
     private MantissaWarehouseReady.RowsBean mMantissaWarehouse;
     private BottomSheetDialog bottomSheetDialog;
-    private String workorder;
+    private String work_order;
     private String lastCar;
     private int flag = 1;
     private String side;
     private boolean ischecked = true;
     private String s;
+    private String line_name;
+    private String material_num = "";
+    private String serial_num = "";
+    private int index = 0;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -116,15 +126,15 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
         Intent intent = this.getIntent();
         mMantissaWarehouse = (MantissaWarehouseReady.RowsBean) intent.getSerializableExtra("item");
-        workorder = mMantissaWarehouse.getWork_order();
+        work_order = mMantissaWarehouse.getWork_order();
         side = mMantissaWarehouse.getSide();
-        WarehouseDetailBean bindBean = new WarehouseDetailBean(side, workorder);
+        line_name = mMantissaWarehouse.getLine_name();
+        WarehouseDetailBean bindBean = new WarehouseDetailBean(side, work_order);
         Gson gson = new Gson();
         s = gson.toJson(bindBean);
         getPresenter().getMantissaWarehouseDetails(s);
-        mCar.setText("");
         //备料车
-        MantissaCarBean car = new MantissaCarBean(workorder, "Mantissa", side);
+        MantissaCarBean car = new MantissaCarBean(work_order, "Mantissa", side);
         String carbean = gson.toJson(car);
         getPresenter().getFindCar(carbean);
         ischecked = SpUtil.getBooleanSF(this, "Mantissa" + "checked");
@@ -137,7 +147,10 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        mToolbarTitle.setText(R.string.ｍantissa＿warehouse＿stock);
+        mToolbarTitle.setText(R.string.mantissa＿warehouse＿stock);
+        tvWorkOrder.setText("工单：" + work_order);
+        tvLineName.setText("线别：" + line_name);
+        tvLineNum.setText("面别：" + side);
         btnSwitch.setChecked(ischecked);
 
         btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -169,6 +182,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 holder.setText(R.id.tv_location, item.getShelf_no());
                 holder.setText(R.id.tv_needNumber, String.valueOf(item.getAmount()));
                 holder.setText(R.id.tv_shipments, String.valueOf(item.getIssue_amount()));
+
+
+                if (item.getMaterial_no().equals(serial_num)) {
+                    index = position;
+                }
                 switch (item.getStatus()) {
                     case 0:
                         holder.itemView.setBackgroundColor(Color.YELLOW);
@@ -211,7 +229,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getBingingCarSucess(MaterialCar car) {
-        mCar.setText("");
         mCar.setText(car.getRows().get(0).getCar_name());
         flag = 2;
         tv_hint.setText(car.getRows().get(0).getCar_name());
@@ -337,7 +354,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
 
         content_adapter.notifyDataSetChanged();
-        mRecyContetn.scrollToPosition(position);
+        mRecyContetn.scrollToPosition(index);
     }
 
     @Override
@@ -449,7 +466,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     LastMaterialCar LastMaterialCar = (LastMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_CAR);
                     lastCar = LastMaterialCar.getSource();
                     Toast.makeText(this, lastCar, Toast.LENGTH_SHORT).show();
-                    MantissaBingingCarBean bindBean = new MantissaBingingCarBean(workorder, "Mantissa", lastCar, side);
+                    MantissaBingingCarBean bindBean = new MantissaBingingCarBean(work_order, "Mantissa", lastCar, side);
                     Gson gson = new Gson();
                     String s = gson.toJson(bindBean);
                     getPresenter().getbingingCar(s);
@@ -465,8 +482,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             case 2:
                 try {
                     MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
-                    String serial_num = materiaBar.getStreamNumber();
-                    String material_num = materiaBar.getDeltaMaterialNumber();
+                    serial_num = materiaBar.getStreamNumber();
+                    material_num = materiaBar.getDeltaMaterialNumber();
                     String unit = materiaBar.getUnit();
                     String vendor = materiaBar.getVendor();
                     String dc = materiaBar.getDC();
@@ -476,7 +493,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     String quantity = materiaBar.getCount();
                     MantissaWarehouseputBean bindBean = new MantissaWarehouseputBean(serial_num, material_num, unit, vendor, dc, lc, trasaction_code, po, quantity);
                     bindBean.setSide(side);
-                    bindBean.setWork_order(workorder);
+                    bindBean.setWork_order(work_order);
                     Gson gson = new Gson();
                     String s = gson.toJson(bindBean);
                     getPresenter().getMantissaWarehouseput(s);

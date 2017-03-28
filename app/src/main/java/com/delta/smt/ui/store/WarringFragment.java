@@ -48,6 +48,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
     private AlertDialog mAffirmDialog;
 
     private List<ItemInfo> mList = new ArrayList<>();
+    private int mPosition;
 
     @Override
     protected void initView() {
@@ -85,20 +86,11 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
                     affirmButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                          mPosition=position;
+                          getPresenter().closeLights(mList.get(position).getAlarminfoId(),0);
                             if (mAffirmDialog.isShowing()){
                                 mAffirmDialog.dismiss();
                             }
-                            ItemInfo itemInfo = mList.get(position);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("workNumber", itemInfo.getWorkNumber());
-                            bundle.putString("machine", itemInfo.getMaterialNumber());
-                            bundle.putString("materialNumber", itemInfo.getMachine());
-                            bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
-                            bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
-                            bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
-                            bundle.putString("mainBoard", itemInfo.getMainBoard());
-                            bundle.putString("subBoard", itemInfo.getSubBoard());
-                            IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
                         }
                     });
                     cabcelButton.setOnClickListener(new View.OnClickListener() {
@@ -180,11 +172,26 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
         }
     }
 
+    @Override
+    public void onColenSucess(String s) {
+
+        ItemInfo itemInfo = mList.get(mPosition);
+        Bundle bundle = new Bundle();
+        bundle.putString("workNumber", itemInfo.getWorkNumber());
+        bundle.putString("machine", itemInfo.getMaterialNumber());
+        bundle.putString("materialNumber", itemInfo.getMachine());
+        bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
+        bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
+        bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
+        bundle.putString("mainBoard", itemInfo.getMainBoard());
+        bundle.putString("subBoard", itemInfo.getSubBoard());
+        IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
+    }
+
 
     @Override
     public void onFailed(String s) {
         ToastUtils.showMessage(getActivity(),s);
-
     }
     @Override
     public void onResume() {

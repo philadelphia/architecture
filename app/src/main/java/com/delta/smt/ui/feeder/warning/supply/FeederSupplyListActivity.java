@@ -73,7 +73,6 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         Log.i(TAG, "initData: ");
         //接收那种预警，没有的话自己定义常量
         warningManger.addWarning(Constant.FEEDER_BUFF_ALARM_FLAG, this.getClass());
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG)));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
@@ -86,9 +85,11 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.GONE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        toolbarTitle.setText("Feeder 暂存区备料");
+        toolbarTitle.setText(R.string.FeederCache);
 
         adapter = new ItemCountViewAdapter<FeederSupplyWarningItem>(this, dataList) {
             @Override
@@ -106,7 +107,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
                 holder.setText(R.id.tv_title, "线别: " + feederSupplyWarningItem.getLineName());
                 holder.setText(R.id.tv_line, "工单号: " + feederSupplyWarningItem.getWorkOrder());
                 holder.setText(R.id.tv_material_station, "面别: " + feederSupplyWarningItem.getSide());
-                holder.setText(R.id.tv_add_count, "状态: " + (feederSupplyWarningItem.getStatus() == 2 ? "未开始备料" : "备料已经完成"));
+                holder.setText(R.id.tv_add_count, "状态: " + (feederSupplyWarningItem.getStatus() == 2 ? "未开始备料" : "备料中"));
             }
 //
 
@@ -126,7 +127,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     @Override
     public void warningComing(String warningMessage) {
         if (warningDialog == null) {
-            warningDialog = createDialog(warningMessage);
+            warningDialog = createDialog();
         }
         if (!warningDialog.isShowing()) {
             warningDialog.show();
@@ -222,32 +223,14 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     }
 
 
-    private WarningDialog createDialog(final String warningMessage) {
-//        DialogLayout dialogLayout = new DialogLayout(this);
-//        //3.传入的是黑色字体的二级标题
-//        dialogLayout.setStrSecondTitle("预警信息");
-//        //4.传入的是一个ArrayList<String>
-//        ArrayList<String> datas = new ArrayList<>();
-//        datas.add("新备料请求:  ");
-//        datas.add("H13----01:00:00");
-//        datas.add("H14----01:20:00");
-//        datas.add("新入库请求: ");
-//        datas.add("20163847536---00:10:11");
-//        dialogLayout.setStrContent(datas);
-//        return new AlertDialog.Builder(this).setCancelable(false).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                getPresenter().getAllSupplyWorkItems();
-//                dialog.dismiss();
-//            }
-//        }).show();
-
+    private WarningDialog createDialog() {
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override
             public void onclick(View view) {
                 warningManger.setConsume(true);
                 onRefresh();
+
             }
         });
         warningDialog.show();
@@ -259,6 +242,8 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     @Override
     public void onResume() {
         warningManger.registerWReceiver(this);
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG),0));
+
         Log.i(TAG, "onResume: ");
         super.onResume();
 
@@ -292,6 +277,8 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         if (null != adapter) {
             adapter.cancelRefreshTime();
         }
+
+        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG), 1));
     }
 
     @Override
@@ -299,9 +286,11 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         FeederSupplyWarningItem feederSupplyWarningItem = dataList.get(position);
         String workItemID = feederSupplyWarningItem.getWorkOrder();
         String side = feederSupplyWarningItem.getSide();
+        String line = feederSupplyWarningItem.getLineName();
         Bundle bundle = new Bundle();
         bundle.putString(Constant.WORK_ITEM_ID, workItemID);
         bundle.putString(Constant.SIDE, side);
+        bundle.putString(Constant.LINE_NAME, line);
         IntentUtils.showIntent(this, FeederSupplyActivity.class, bundle);
     }
 

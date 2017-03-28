@@ -45,6 +45,8 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
     private List<ItemInfo> mList = new ArrayList<>();
     private AlertDialog.Builder builder;
     private AlertDialog mAffirmDialog;
+    private int mPosition;
+
 
     @Override
     protected void initView() {
@@ -83,20 +85,11 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
                     affirmButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            mPosition=position;
+                            getPresenter().closeLights(mList.get(position).getAlarminfoId(),1);
                             if (mAffirmDialog.isShowing()){
                                 mAffirmDialog.dismiss();
                             }
-                            ItemInfo itemInfo = mList.get(position);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("workNumber", itemInfo.getWorkNumber());
-                            bundle.putString("machine", itemInfo.getMaterialNumber());
-                            bundle.putString("materialNumber", itemInfo.getMachine());
-                            bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
-                            bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
-                            bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
-                            bundle.putString("mainBoard", itemInfo.getMainBoard());
-                            bundle.putString("subBoard", itemInfo.getSubBoard());
-                            IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
                         }
                     });
                     cabcelButton.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +133,22 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
         EventBus.getDefault().post(new ArrangeInt(wareHouses.size()));
     }
 
+    @Override
+    public void onColenSucess(String s) {
+
+        ItemInfo itemInfo = mList.get(mPosition);
+        Bundle bundle = new Bundle();
+        bundle.putString("workNumber", itemInfo.getWorkNumber());
+        bundle.putString("machine", itemInfo.getMaterialNumber());
+        bundle.putString("materialNumber", itemInfo.getMachine());
+        bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
+        bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
+        bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
+        bundle.putString("mainBoard", itemInfo.getMainBoard());
+        bundle.putString("subBoard", itemInfo.getSubBoard());
+        IntentUtils.showIntent(getActivity(), WarningListActivity.class, bundle);
+    }
+
     @Subscribe
     public void event(StoreEmptyMessage message) {
         getPresenter().fatchArrange();
@@ -159,6 +168,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
     @Override
     public void onFailed(String s) {
         ToastUtils.showMessage(getActivity(),s);
+
 
     }
     @Override

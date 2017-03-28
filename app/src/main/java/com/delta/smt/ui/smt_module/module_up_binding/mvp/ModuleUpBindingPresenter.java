@@ -41,14 +41,14 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
                         if (moduleUpBindingItems.getRows().size() == 0) {
                             getView().showEmptyView();
-                            getView().onFalied(moduleUpBindingItems);
+                            getView().onFailed(moduleUpBindingItems);
                         }else {
                             getView().showContentView();
                             getView().onSuccess(moduleUpBindingItems);
                         }
 
                     } else {
-                        getView().onFalied(moduleUpBindingItems);
+                        getView().onFailed(moduleUpBindingItems);
                         getView().showErrorView();
                     }
                 }catch(Exception e){

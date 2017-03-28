@@ -31,4 +31,5 @@
     <dimen name="px_180">180px</dimen>
     <dimen name="px_300">300px</dimen>
     <dimen name="px_220">220px</dimen>
+    <dimen name="px_480">480px</dimen>
 </resources>

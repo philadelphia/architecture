@@ -181,6 +181,9 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
             public void onclick(View view) {
                 warningManger.setConsume(true);
                 EventBus.getDefault().post(new SentRefreshRequest());
+                if (warningDialog.isShowing()){
+                    warningDialog.dismiss();
+                }
             }
         });
         warningDialog.show();

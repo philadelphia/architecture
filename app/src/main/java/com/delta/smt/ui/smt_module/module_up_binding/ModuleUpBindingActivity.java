@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -73,6 +74,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     StatusLayout statusLayout;
     @BindView(R.id.automatic_upload)
     AppCompatCheckBox automaticUpload;
+
+
+    @BindView(R.id.tv_work_order)
+    TextView tv_workOrder;
+    @BindView(R.id.tv_side)
+    TextView tv_side;
+    @BindView(R.id.tv_Line)
+    TextView tv_line;
+
     int state = 1;
     //private Snackbar mSnackbar = null;
     @BindView(R.id.showMessage)
@@ -91,6 +101,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String linName;
     private String materialBlockNumber;
     private String serialNo;
+    private String argument;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -107,12 +118,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         linName = intent.getStringExtra(Constant.LINE_NAME);
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
+        tv_workOrder.setText(workItemID);
+        tv_side.setText(side);
+        tv_line.setText(linName);
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
         Gson gson = new Gson();
-        String argument = gson.toJson(map);
-        getPresenter().getAllModuleUpBindingItems(argument);
+        argument = gson.toJson(map);
+
         barCodeIpml.setOnGunKeyPressListener(this);
     }
 
@@ -135,18 +149,17 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("上模组");
 
-        recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyTitle.setLayoutManager(new LinearLayoutManager(getContext()));
         recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        dataList.add(new ModuleUpBindingItem.RowsBean("工单", "料号", "流水码", "FeederID", "模组料站", "", ""));
+        dataList.add(new ModuleUpBindingItem.RowsBean("料号", "FeederID", "模组料站"));
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_materialID, item.getMaterial_no());
-                holder.setText(R.id.tv_feederID, item.getFeeder_id());
-                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_line_name, "线别");
-                holder.setText(R.id.tv_side, "面别");
+//                holder.setText(R.id.tv_materialID, item.getMaterial_no());
+//                holder.setText(R.id.tv_feederID, item.getFeeder_id());
+//                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+
             }
 
             @Override
@@ -169,8 +182,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_line_name, linName);
-                holder.setText(R.id.tv_side, side);
+
             }
 
             @Override
@@ -200,7 +212,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void onFalied(ModuleUpBindingItem data) {
+    public void onFailed(ModuleUpBindingItem data) {
         ToastUtils.showMessage(this, data.getMsg());
     }
 
@@ -319,6 +331,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             e.printStackTrace();
         }
 
+        getPresenter().getAllModuleUpBindingItems(argument);
+
     }
 
     @Override
@@ -329,6 +343,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onScanSuccess(String barcode) {
+        showMessage.setVisibility(View.GONE);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:
@@ -344,8 +359,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         showMessage.setText("该料盘不属于此套工单，请确认工单及扫描是否正确！");
                         showMessage.setVisibility(View.VISIBLE);
                     } else {
-                        VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
-                        VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
+                        if (isMaterialBinded(materialBlockBarCode)){
+                            VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                            VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
+                            Toast.makeText(this, "该料盘已经绑定", Toast.LENGTH_SHORT).show();
+                        }else {
+                            VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
+                            VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
+                        }
+
                         state = 2;
                     }
 
@@ -431,6 +453,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     public void setItemHighLightBasedOnMID(int position) {
         scan_position = position;
+        recyContent.scrollToPosition(position);
         adapter.notifyDataSetChanged();
     }
 
@@ -505,5 +528,19 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 SpUtil.SetStringSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", "false");
             }
         }
+    }
+
+    public boolean isMaterialBinded(MaterialBlockBarCode materialBlockBarCode){
+     boolean flag = false;
+        for (ModuleUpBindingItem.RowsBean rowsBean : dataSource) {
+            if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())){
+                if (rowsBean.getFeeder_id() != null){
+                   flag = true;
+                    break;
+                }
+
+            }
+        }
+        return flag;
     }
 }

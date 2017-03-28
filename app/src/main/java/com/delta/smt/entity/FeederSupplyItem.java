@@ -38,6 +38,10 @@ public class FeederSupplyItem {
     private String serialNumber;
 
 
+    public FeederSupplyItem(){
+
+    }
+
     public FeederSupplyItem(String bindTime, String feederID, String materialID, String serialNumber, String slot, int status) {
         this.bindTime = bindTime;
         this.feederID = feederID;

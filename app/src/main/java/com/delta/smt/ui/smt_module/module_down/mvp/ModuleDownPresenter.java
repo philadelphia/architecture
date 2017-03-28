@@ -37,14 +37,14 @@ public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,
 
                         if (moduleDownWarningItems.getRows().size() == 0) {
                             getView().showEmptyView();
-                            getView().onFalied(moduleDownWarningItems);
+                            getView().onFailed(moduleDownWarningItems);
                         }else {
                             getView().showContentView();
                             getView().onSuccess(moduleDownWarningItems);
                         }
 
                     } else {
-                        getView().onFalied(moduleDownWarningItems);
+                        getView().onFailed(moduleDownWarningItems);
                         getView().showErrorView();
                     }
                 }catch (Exception e){

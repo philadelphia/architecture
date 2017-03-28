@@ -4,6 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     android:background="@drawable/card_background">
         <TextView
             android:id="@+id/content_text"
@@ -15,18 +16,18 @@
             android:layout_marginLeft="@dimen/px_16"
             style="@style/waring_text"
             />
-        <LinearLayout
+        <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical">
         <TextView
             android:id="@+id/time_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/waring_text"
-            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/px_60"
             android:text="@string/timetext"
             android:layout_marginTop="@dimen/px_6"
             />
@@ -46,7 +47,7 @@
             app:suffixTextColor="#000000"
             app:suffixTextSize="@dimen/px_12"
             app:timeTextColor="#000000"
-            app:timeTextSize="@dimen/px_40"
+            app:timeTextSize="@dimen/px_60"
             />
-        </LinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
 </LinearLayout>

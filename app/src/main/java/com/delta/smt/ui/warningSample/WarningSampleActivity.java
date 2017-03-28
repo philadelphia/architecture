@@ -1,15 +1,18 @@
 package com.delta.smt.ui.warningSample;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
 import com.delta.commonlibs.utils.DeviceUuidFactory;
 import com.delta.smt.R;
+import com.delta.smt.app.App;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.SendMessage;
 import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
+import com.delta.smt.service.warningService.WarningActivity;
 import com.delta.smt.ui.login.di.DaggerLoginComponent;
 import com.delta.smt.ui.login.di.LoginModule;
 import com.delta.smt.ui.login.mvp.LoginContract;
@@ -22,6 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -37,6 +42,7 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
     WarningManger warningManger;
     private WarningDialog warningDialog;
     private DialogLayout dialogLayout;
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -62,11 +68,30 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
             warningDialog.show();
         }
         updateMessage("fdsf");
+
+
     }
 
     @Override
     protected void initView() {
 
+        TimerTask timerTask =new TimerTask() {
+            @Override
+            public void run() {
+
+                App.getMainHander().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent1 = new Intent(WarningSampleActivity.this, WarningActivity.class);
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        WarningSampleActivity.this.startActivity(intent1);
+                    }
+                });
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(timerTask,1000,20000);
     }
 
     @Override
@@ -111,6 +136,8 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
     }
 
     public WarningDialog createDialog(String message) {
+
+
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override

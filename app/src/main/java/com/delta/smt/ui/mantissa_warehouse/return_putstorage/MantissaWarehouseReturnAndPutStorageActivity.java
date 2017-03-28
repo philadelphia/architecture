@@ -1,13 +1,12 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -18,15 +17,23 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BacKBarCode;
 import com.delta.smt.entity.PutBarCode;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.MantissaWarehousePutstorageFragment;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.MantissaWarehouseReturnFragment;
 import com.delta.smt.utils.ViewUtils;
 import com.delta.smt.widget.DialogLayout;
+import com.delta.smt.widget.WarningDialog;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import me.yokeyword.fragmentation.SupportFragment;
@@ -56,6 +63,11 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     private String[] titles;
     private int currentTab = 0;
 
+    @Inject
+    WarningManger warningManger;
+    private WarningDialog warningDialog;
+    private DialogLayout dialogLayout;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
 
@@ -66,7 +78,11 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         //此处的Title应该是 从网络获取的数量
         titles = new String[]{"入库", "退入主仓库"};
         //接收那种预警，没有的话自己定义常量
-        WarningManger.getInstance().addWarning(String.valueOf(Constant.STORAGEREAD), getClass());
+        WarningManger.getInstance().addWarning(Constant.WAREH_MANTO_WAREH_ALARM_FLAG, getClass());
+        WarningManger.getInstance().addWarning(Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG, getClass());
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG,0));
+        warningManger.sendMessage(new SendMessage(Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG,0));
+
         //是否接收预警 可以控制预警时机
         WarningManger.getInstance().setReceive(true);
         //关键 初始化预警接口
@@ -166,26 +182,15 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     }
 
     @Override
-    public void warningComing(String warningMessage) {
+    public void warningComing(String message) {
 
-        DialogLayout dialogLayout = new DialogLayout(this);
-        //2.传入的是红色字体的标题
-        dialogLayout.setStrTitle("测试标题");
-        //3.传入的是黑色字体的二级标题
-        dialogLayout.setStrSecondTitle("预警异常");
-        //4.传入的是一个ArrayList<String>
-        ArrayList<String> datas = new ArrayList<>();
-        datas.add("dsfdsf");
-        datas.add("sdfsdf1");
-        datas.add("dsfsdf2");
-        dialogLayout.setStrContent(datas);
-        //5.构建Dialog，setView的时候把这个View set进去。
-        new AlertDialog.Builder(this).setView(dialogLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        }).show();
+        if (warningDialog == null) {
+            warningDialog = createDialog(message);
+        }
+        if(!warningDialog.isShowing()){
+            warningDialog.show();
+        }
+        updateMessage(message);
 
     }
 
@@ -218,4 +223,60 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         }
         //super.onScanSuccess(barcode);
     }
+
+
+    public WarningDialog createDialog(String message) {
+        warningDialog = new WarningDialog(this);
+        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
+            @Override
+            public void onclick(View view) {
+                warningManger.setConsume(true);
+            }
+        });
+        warningDialog.show();
+
+        return warningDialog;
+    }
+
+    /**
+     * type == 9  代表你要发送的是哪个
+     * @param message
+     */
+    private void updateMessage(String message) {
+        List<WaringDialogEntity> datas = warningDialog.getDatas();
+        datas.clear();
+        WaringDialogEntity warningEntity = new WaringDialogEntity();
+        warningEntity.setTitle("入库预警");
+        WaringDialogEntity putstorageEntity = new WaringDialogEntity();
+        putstorageEntity.setTitle("退入主仓库预警");
+        String content ="";
+        String putstoragecontent ="";
+        try {
+            JSONArray jsonArray = new JSONArray(message);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                String type = jsonObject.getString("type");
+                //可能有多种预警的情况
+                if (Constant.WAREH_MANTO_WAREH_ALARM_FLAG.equals(type)) {
+                    Object message1 = jsonObject.get("message");
+                    content=content+message1+"\n";
+                }else {
+                    Object message1 = jsonObject.get("message");
+                    putstoragecontent=putstoragecontent+message1+"\n";
+                }
+            }
+            warningEntity.setContent(content + "\n");
+            putstorageEntity.setContent(putstoragecontent + "\n");
+            datas.add(warningEntity);
+            datas.add(putstorageEntity);
+            warningDialog.notifyData();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 }

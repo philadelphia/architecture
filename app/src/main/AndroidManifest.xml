@@ -38,11 +38,13 @@
             android:name=".MainActivity"
             android:launchMode="standard"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <!-- login activity -->
@@ -122,10 +124,7 @@
             android:name=".ui.store.WarningListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.feeder.wareSelect.WareSelectActivity"
-            android:label="@string/title_activity_feeder_cache_region"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.checkstock.StartWorkAndStopWorkActivity"
             android:launchMode="singleTask"
@@ -140,7 +139,9 @@
         <activity android:name=".ui.feeder.warning.supply.FeederSupplyListActivity" />
         <activity
             android:name=".ui.feeder.handle.feederSupply.FeederSupplyActivity"
-            android:label="feederSupplyActivity" />
+            android:label="feederSupplyActivity">
+
+        </activity>
 
         <!-- shufeng.wu downloadservice -->
         <service android:name=".ui.main.update.DownloadService" />
@@ -199,8 +200,13 @@
             android:name=".service.warningService.WarningDialogActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
+            android:taskAffinity=""></activity>
+        <activity
+            android:name=".service.warningService.WarningActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
             android:taskAffinity=""
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/NoTitle" />
     </application>
 
 </manifest>

@@ -50,15 +50,13 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
         warningManger.setOnRegister(this);
         wsManager.setBaseWebSocketStrategy(baseWebSocketStrategy);
         baseWebSocketStrategy.setWsStatusListener(this);
-
-
     }
 
     public void setConsume(boolean isConsume) {
         warningManger.setConsume(isConsume);
     }
 
-    public void startConntect() {
+    public void startConnect() {
         wsManager.startConnect();
     }
 
@@ -72,7 +70,7 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
         baseWebSocketStrategy.setWsStatusListener(this);
     }
 
-    public void addOnRecieveListener(OnReceiveListener onRecieveLisneter) {
+    public void addOnReceiveListener(OnReceiveListener onRecieveLisneter) {
         onReceiveListeners.add(onRecieveLisneter);
     }
 
@@ -116,7 +114,7 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
 
                     if (topActivity != null) {
                         Log.e(TAG, "onMessage: " + topActivity.getClass().equals(warningManger.getWaringClass(type)));
-                        if (topActivity.getClass().equals(warningManger.getWaringClass(type))) {
+                        if (topActivity.getClass().equals(warningManger.getWaringClass(type))||activityMonitor.getPenultActivity().equals(warningManger.getWaringClass(type))) {
                             //WarningMessage warningMessage = GsonTools.changeGsonToBean(text, WarningMessage.class);
                             if (warningManger.isConsume()) {
                                 jsonArray = null;
@@ -124,7 +122,6 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
                                 warningManger.setConsume(false);
                             }
                             if (!GsonTools.containsJson(jsonArray, text)) {
-
                                 jsonArray.put(jsonObject);
                             }
                             //contents.add(warningMessage);

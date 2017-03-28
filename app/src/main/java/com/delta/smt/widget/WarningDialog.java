@@ -53,11 +53,13 @@ public class WarningDialog extends Dialog {
         Display d = m.getDefaultDisplay();
         android.view.WindowManager.LayoutParams p = getWindow().getAttributes();
         p.height = (int)(d.getHeight() *0.6);
+        p.width= ((int) (d.getWidth() * 0.9));
         p.dimAmount = 0.0f;
         getWindow().setAttributes(p);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+//                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+//                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+//                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
     @Override
@@ -67,12 +69,12 @@ public class WarningDialog extends Dialog {
         initView();
         initData();
         initEvent();
+        this.setCancelable(false);
     }
 
 
     //初始化界面
     private void initView() {
-
         setContentView(R.layout.dialog_warning);
         rv_warning = (RecyclerView) findViewById(R.id.rv_warning);
         bt_sure = (Button) findViewById(R.id.bt_sure);
@@ -115,8 +117,10 @@ public class WarningDialog extends Dialog {
             public void onClick(View view) {
                 if (onClickListener != null) {
                     onClickListener.onclick(view);
+                    if(WarningDialog.this.isShowing()){
+                        WarningDialog.this.dismiss();
+                    }
                 }
-
             }
         });
     }

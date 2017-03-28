@@ -204,7 +204,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
                         //扫码错误时调用的声音和震动
                         VibratorAndVoiceUtils. wrongVibrator (this);
-                        VibratorAndVoiceUtils. wrongVibrator (this);
+                        VibratorAndVoiceUtils. wrongVoice (this);
 //                        ToastUtils.showMessage(getContext(), "旧料盘匹配错误！");
                         Snackbar.make(getCurrentFocus(), "旧料盘匹配错误", Snackbar.LENGTH_SHORT).show();
                     }
@@ -216,15 +216,15 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
                         //扫码正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
-                        VibratorAndVoiceUtils. correctVoice (this);
+                        VibratorAndVoiceUtils.correctVoice (this);
 
                         getPresenter().commitSerialNumber(oldSerialNumber,newSerialNumber);
 
                     }else {
 
                         //扫码错误时调用的声音和震动
-                        VibratorAndVoiceUtils. wrongVibrator (this);
-                        VibratorAndVoiceUtils. wrongVibrator (this);
+                        VibratorAndVoiceUtils.wrongVibrator (this);
+                        VibratorAndVoiceUtils.wrongVoice (this);
 //                        ToastUtils.showMessage(getContext(), "新料盘匹配错误！");
                         Snackbar.make(getCurrentFocus(), "新料盘匹配错误！", Snackbar.LENGTH_SHORT).show();
                     }
@@ -237,7 +237,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
             //扫码错误时调用的声音和震动
             VibratorAndVoiceUtils. wrongVibrator (this);
-            VibratorAndVoiceUtils. wrongVibrator (this);
+            VibratorAndVoiceUtils. wrongVoice (this);
 
 //            ToastUtils.showMessage(getContext(), "请扫描正确的料盘！");
             Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();

@@ -22,6 +22,7 @@ import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.demacia.barcode.BarCodeIpml;
+import com.delta.demacia.barcode.BarcodeFactory;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
@@ -50,7 +51,7 @@ import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BAR
 import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
- * Created by Shufeng.Wu on 2017/1/5.
+ * Created by Shu feng.Wu on 2017/1/5.
  */
 
 public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPresenter> implements ModuleDownDetailsContract.View, BarCodeIpml.OnScanSuccessListener {
@@ -61,34 +62,42 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.recy_title)
-    RecyclerView recyTitle;
+    RecyclerView  recyclerViewTitle;
     @BindView(R.id.recy_content)
-    RecyclerView recyContent;
+    RecyclerView  recyclerViewContent;
     @BindView(R.id.btn_feederMaintain)
     AppCompatButton btnFeederMaintain;
+    @BindView(R.id.tv_work_order)
+    TextView tv_workOrder;
+    @BindView(R.id.tv_side)
+    TextView tv_side;
+    @BindView(R.id.tv_Line)
+    TextView tv_line;
+
+
     String workItemID;
     String side;
     String productNameMain;
     String productName;
-    String linName;
+    String lineName;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapterTitle;
     private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapter;
     private List<ModuleDownDetailsItem.RowsBean> dataList = new ArrayList<>();
     private List<ModuleDownDetailsItem.RowsBean> dataSource = new ArrayList<>();
+    private List<ModuleDownDetailsItem.RowsBean> dataSourceForCheckIn = new ArrayList<>();
     private String mCurrentWorkOrder;
     //SharedPreferences preferences=null;
     private String mCurrentMaterialID;
     private String mCurrentSerialNumber;
     private String mCurrentQuantity;
-    private String mCurrentLocation;
+
     private String mCurrentSlot;
     private int index = -1;
     //二维码
-    private BarCodeIpml barCodeIpml = new BarCodeIpml();
-    private LinearLayoutManager linearLayoutManager;
+    private BarCodeIpml barCodeIpml ;
     private int flag = 1;
+    private String argument;
 
 
     @Override
@@ -98,23 +107,24 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     protected void initData() {
-
+        barCodeIpml = (BarCodeIpml) BarcodeFactory.getBarcode(this);
         Intent intent = this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
-        linName = intent.getStringExtra(Constant.LINE_NAME);
+        lineName = intent.getStringExtra(Constant.LINE_NAME);
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
-
-        /*Map<String, String> map = new HashMap<>();
+        tv_workOrder.setText(workItemID);
+        tv_side.setText(side);
+        tv_line.setText(lineName);
+        Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
         Gson gson = new Gson();
-        String argument = gson.toJson(map);
+        argument = gson.toJson(map);
 
-        getPresenter().getAllModuleDownDetailsItems(argument);*/
+
         barCodeIpml.setOnGunKeyPressListener(this);
-//        // TODO: 2017/2/10
         mCurrentWorkOrder = workItemID;
     }
 
@@ -124,30 +134,31 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
 
-        dataList.add(new ModuleDownDetailsItem.RowsBean("工单", "面别", "料号", "流水码", "Feeder ID", "模组料站", "归属", "下模组时间"));
-        adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
+        dataList.add(new ModuleDownDetailsItem.RowsBean("料号", "流水码", "Feeder ID", "模组料站", "归属"));
+        CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-                holder.setText(R.id.tv_work_order, item.getWork_order());
-                holder.setText(R.id.tv_side, item.getSide());
-                holder.setText(R.id.tv_materialID, item.getMaterial_no());
-                holder.setText(R.id.tv_serialID, item.getSerial_no());
-                holder.setText(R.id.tv_feederID, item.getFeeder_id());
-                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-                holder.setText(R.id.tv_ownership, item.getDest());
-                holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
 
-                if (mCurrentWorkOrder.equals(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())) {
-                    holder.itemView.setBackgroundColor(Color.YELLOW);
-                } else {
-                    holder.itemView.setBackgroundColor(Color.WHITE);
-
-                }
+//                holder.setText(R.id.tv_materialID, item.getMaterial_no());
+//                holder.setText(R.id.tv_serialID, item.getSerial_no());
+//                holder.setText(R.id.tv_feederID, item.getFeeder_id());
+//                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
+//                holder.setText(R.id.tv_ownership, item.getDest());
+//                holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
+//
+//                if (item.getMaterial_no().equals(mCurrentMaterialID) && item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)) {
+//                    holder.itemView.setBackgroundColor(Color.YELLOW);
+//                } else {
+//                    holder.itemView.setBackgroundColor(Color.WHITE);
+//
+//                }
 
             }
 
@@ -156,15 +167,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 return R.layout.item_module_down_details;
             }
         };
-        recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyTitle.setAdapter(adapterTitle);
+         recyclerViewTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+         recyclerViewTitle.setAdapter(adapterTitle);
         adapter = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
 
                 holder.itemView.setBackgroundColor(Color.WHITE);
-                holder.setText(R.id.tv_work_order, item.getWork_order());
-                holder.setText(R.id.tv_side, item.getSide());
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
@@ -178,7 +187,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 } else {
                     holder.setText(R.id.tv_ownership, item.getDest());
                 }
-                holder.setText(R.id.tv_moduleDownTime, item.getUnbind_time());
+
 
                 if (item.getMaterial_no().equalsIgnoreCase(mCurrentMaterialID) && item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)) {
                     Log.i(TAG, "convert: " + item.toString());
@@ -197,10 +206,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
         };
 
-        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
-        recyContent.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
+         recyclerViewContent.setLayoutManager(linearLayoutManager);
 
-        recyContent.setAdapter(adapter);
+         recyclerViewContent.setAdapter(adapter);
     }
 
     @Override
@@ -211,18 +220,28 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onSuccess(ModuleDownDetailsItem data) {
         dataSource.clear();
+        dataSourceForCheckIn.clear();
+
         flag = 1;
         Log.i(TAG, "index: == " + index);
         List<ModuleDownDetailsItem.RowsBean> rowsBean = data.getRows();
         dataSource.addAll(rowsBean);
+        for (ModuleDownDetailsItem.RowsBean bean : dataSource) {
+            if (bean.getDest().equalsIgnoreCase("1"))
+                dataSourceForCheckIn.add(bean);
+        }
         Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size());
+        Log.i(TAG, "onSuccess: 后台返回的待入库数据长度是" + dataSourceForCheckIn.size());
         adapter.notifyDataSetChanged();
-        updateFeederMaintainState();
+        if(dataSourceForCheckIn.isEmpty()){
+            btnFeederMaintain.setEnabled(true);
+        }
+
     }
 
     @Override
     public void onFailed(String message) {
-        flag = 1;
+        flag = 2;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
@@ -294,11 +313,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         } catch (DevicePairedNotFoundException e) {
             e.printStackTrace();
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("work_order", workItemID);
-        map.put("side", side);
-        Gson gson = new Gson();
-        String argument = gson.toJson(map);
+
         getPresenter().getAllModuleDownDetailsItems(argument);
     }
 
@@ -357,7 +372,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
                     mCurrentQuantity = materialBlockBarCode.getCount();
                     adapter.notifyDataSetChanged();
-                    recyContent.scrollToPosition(index);
+                     recyclerViewContent.scrollToPosition(index);
                     Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
                     Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
                     Map<String, String> map = new HashMap<>();
@@ -372,10 +387,19 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     Log.i(TAG, "argument== " + argument);
                     Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
                     if (isMaterialExists(materialBlockBarCode)) {
-                        flag = 2;
+                        if (!dataSourceForCheckIn.isEmpty()){
+                            if(isMaterialInFeederCheckInList(materialBlockBarCode)){
+                                flag = 2;
+                            }else {
+                                ToastUtils.showMessage(this, "请先扫描待入库的料盘");
+                            }
+                        }else {
+                            flag = 2;
+                        }
+
                     } else {
                         flag = 1;
-                        ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
+                        ToastUtils.showMessage(this, "该料盘不存在此工单，请重新扫描料盘或检查料盘二维码是否损坏");
                     }
                 } catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
@@ -392,7 +416,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             case 2:
                 try {
                     FeederBuffer frameLocation = (FeederBuffer) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER_BUFFER);
-                    mCurrentLocation = frameLocation.getSource();
+                    String mCurrentLocation = frameLocation.getSource();
                     Log.i(TAG, "mCurrentLocation: " + frameLocation.toString());
                     Map<String, String> map = new HashMap<>();
                     map.put("work_order", mCurrentWorkOrder);
@@ -438,7 +462,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 break;
             }
         }
-        btnFeederMaintain.setEnabled(state);
+
 
     }
 
@@ -446,10 +470,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         boolean flag = false;
         for (int i = 0; i < dataSource.size(); i++) {
             ModuleDownDetailsItem.RowsBean item = dataSource.get(i);
-            if (mCurrentMaterialID.equalsIgnoreCase(item.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(item.getSerial_no())){
+            if (material.getDeltaMaterialNumber().equalsIgnoreCase(item.getMaterial_no()) && material.getStreamNumber().equalsIgnoreCase(item.getSerial_no())) {
                 flag = true;
                 break;
-            }else {
+            } else {
                 flag = false;
             }
         }
@@ -464,7 +488,33 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 //            }
 //        }
 //        Log.i(TAG, "isMaterialExists: " + flag);
-        return  flag;
+        return flag;
     }
+
+    public boolean isMaterialInFeederCheckInList(MaterialBlockBarCode material) {
+        boolean flag = false;
+        for (int i = 0; i < dataSourceForCheckIn.size(); i++) {
+            ModuleDownDetailsItem.RowsBean item = dataSourceForCheckIn.get(i);
+            if (material.getDeltaMaterialNumber().equalsIgnoreCase(item.getMaterial_no()) && material.getStreamNumber().equalsIgnoreCase(item.getSerial_no())) {
+                flag = true;
+                break;
+            } else {
+                flag = false;
+            }
+        }
+//        for (ModuleDownDetailsItem.RowsBean rowsBean : dataSource) {
+//            if (mCurrentMaterialID.equalsIgnoreCase(rowsBean.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(rowsBean.getSerial_no())) {
+//                Log.i(TAG, "isMaterialExists: " + rowsBean.toString());
+//                flag = true;
+//                break;
+//            } else {
+//                flag = false;
+//                break;
+//            }
+//        }
+//        Log.i(TAG, "isMaterialExists: " + flag);
+        return flag;
+    }
+
 
 }

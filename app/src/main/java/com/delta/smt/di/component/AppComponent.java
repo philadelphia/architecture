@@ -10,6 +10,7 @@ import com.delta.commonlibs.utils.DeviceUuidFactory;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.di.module.MangerModule;
 import com.delta.smt.di.module.ServiceModule;
+import com.delta.smt.manager.TextToSpeechManager;
 import com.delta.smt.manager.WarningManger;
 
 import javax.inject.Singleton;
@@ -32,6 +33,8 @@ public interface AppComponent {
     WarningManger warningManger();
 
     DeviceUuidFactory deviceUuidFactory();
+
+    TextToSpeechManager TEXT_TO_SPEECH_MANAGER();
 
     //Rxjava错误处理管理类
     RxErrorHandler rxErrorHandler();
