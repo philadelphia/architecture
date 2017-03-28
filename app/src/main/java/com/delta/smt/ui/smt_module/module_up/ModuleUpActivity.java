@@ -250,7 +250,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("预警Sample");
+        warningEntity.setTitle("上模组预警:");
         String content = "";
         try {
             JSONArray jsonArray = new JSONArray(warningMessage);
