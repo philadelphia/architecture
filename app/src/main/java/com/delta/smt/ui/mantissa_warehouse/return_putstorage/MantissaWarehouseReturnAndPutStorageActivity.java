@@ -92,6 +92,13 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     }
 
     @Override
+    public void onDestroy() {
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG,1));
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTISSA_ALARM_FLAG,1));
+        super.onDestroy();
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             currentTab = savedInstanceState.getInt("temp");
@@ -127,6 +134,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         super.onSaveInstanceState(outState);
         Log.e(TAG, "onSaveInstanceState: "+currentTab);
     }
+
 
 
     @Override
