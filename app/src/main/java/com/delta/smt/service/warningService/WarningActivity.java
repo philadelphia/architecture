@@ -53,6 +53,9 @@ public class WarningActivity extends AppCompatActivity {
     private String message = "";
     private Map<String, String> title_type = new HashMap<>();
 
+
+    private List<JSONArray> jsonArrays = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,23 +91,42 @@ public class WarningActivity extends AppCompatActivity {
         Log.e(TAG, "onResume: ");
         datas.clear();
         message = getIntent().getStringExtra(Constant.WARNINGMESSAGE);
-        WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("");
-        String content = "";
         try {
             JSONArray jsonArray = new JSONArray(message);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Object message1 = jsonObject.get("message");
-                content = content + message1 + "\n";
-            }
+            datas.addAll(getWarningEntities(jsonArray));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        warningEntity.setContent(content + "\n");
-        datas.add(warningEntity);
-        notifyData();
         super.onResume();
+    }
+
+
+    private List<WaringDialogEntity> getWarningEntities(JSONArray jsonArray) throws JSONException {
+        List<String> types = new ArrayList<>();
+        List<WaringDialogEntity> waringDialogEntities = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            String string = jsonArray.getString(i);
+            types.add(string);
+            WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
+            if (Constant.titleDatas.containsKey(string)) {
+                waringDialogEntity.setTitle(Constant.titleDatas.get(string));
+            }
+            waringDialogEntities.add(waringDialogEntity);
+        }
+
+        for (int i1 = 0; i1 < types.size(); i1++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                if (types.get(i1).equals(jsonObject.getString("type"))) {
+                    String content = waringDialogEntities.get(i1).getContent();
+                    Object message1 = jsonObject.get("message");
+                    waringDialogEntities.get(i1).setContent(content + message1 + "\n");
+                }
+            }
+        }
+
+        return waringDialogEntities;
     }
 
     //初始化界面
@@ -120,6 +142,7 @@ public class WarningActivity extends AppCompatActivity {
 
     //初始化数据
     private void initData() {
+
 
         waringDialogEntityCommonBaseAdapter = new CommonBaseAdapter<WaringDialogEntity>(this, datas) {
 
