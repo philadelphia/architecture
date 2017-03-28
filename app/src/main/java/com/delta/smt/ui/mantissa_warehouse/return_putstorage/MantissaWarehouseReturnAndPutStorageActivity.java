@@ -80,9 +80,9 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         //接收那种预警，没有的话自己定义常量
         warningManger = WarningManger.getInstance();
         WarningManger.getInstance().addWarning(Constant.WAREH_MANTO_WAREH_ALARM_FLAG, getClass());
-        WarningManger.getInstance().addWarning(Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG, getClass());
+        WarningManger.getInstance().addWarning(Constant.WAREH_MANTISSA_ALARM_FLAG, getClass());
         warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG,0));
-        warningManger.sendMessage(new SendMessage(Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG,0));
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTISSA_ALARM_FLAG,0));
 
         //是否接收预警 可以控制预警时机
         WarningManger.getInstance().setReceive(true);
