@@ -58,7 +58,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     @Inject
-    WarningManger warningManger;
+    WarningManger warningManager;
 
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
@@ -81,12 +81,12 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @Override
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
-        warningManger.addWarning(Constant.UNPLUG_MOD_ALARM_FLAG, getClass());
+        warningManager.addWarning(Constant.UNPLUG_MOD_ALARM_FLAG, getClass());
 
         //是否接收预警 可以控制预警时机
-        warningManger.setReceive(true);
+        warningManager.setReceive(true);
         //关键 初始化预警接口
-        warningManger.setOnWarning(this);
+        warningManager.setOnWarning(this);
 
 
     }
@@ -205,7 +205,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @Override
     protected void onStop() {
-        warningManger.unregisterWReceiver(this);
+        warningManager.unregisterWReceiver(this);
         super.onStop();
     }
 
@@ -215,9 +215,9 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         if (null != myAdapter) {
             myAdapter.startRefreshTime();
         }
-        warningManger.registerWReceiver(this);
+        warningManager.registerWReceiver(this);
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG),0));
+        warningManager.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG),0));
         getPresenter().getAllModuleDownWarningItems();
     }
 
@@ -289,7 +289,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override
             public void onclick(View view) {
-                warningManger.setConsume(true);
+                warningManager.setConsume(true);
                 onRefresh();
 
             }
@@ -316,7 +316,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             myAdapter.cancelRefreshTime();
         }
 
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG),1));
+        warningManager.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG),1));
     }
 
     @Override
