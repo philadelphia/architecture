@@ -191,7 +191,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         } else {
             getPresenter().checkUpdate();
         }
-
         fuctions = new ArrayList<>();
         fuctions.add(new Fuction("PCB入库", R.drawable.ic_warehousestorage));
         fuctions.add(new Fuction("PCB盘点", R.drawable.ic_warehouseinventory));

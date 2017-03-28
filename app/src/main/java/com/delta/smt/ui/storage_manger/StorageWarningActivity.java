@@ -1,6 +1,5 @@
 package com.delta.smt.ui.storage_manger;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -87,7 +86,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        Bundle extras = getIntent().getExtras();
+       // Bundle extras = getIntent().getExtras();
         storage_name = SpUtil.getStringSF(this,Constant.STORAGE_NAME);
         mToolbarTitle.setText("仓库" + storage_name);
         for (int i = 0; i < titles.length; i++) {
@@ -97,7 +96,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
         mTlTitle.addOnTabSelectedListener(this);
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         mStorageReadyFragment = new StorageReadyFragment();
-        mStorageReadyFragment.setArguments(extras);
+      //  mStorageReadyFragment.setArguments(extras);
         mFragmentTransaction.add(R.id.fl_container, mStorageReadyFragment, "备料");
         mFragmentTransaction.show(mStorageReadyFragment).commit();
         // setDispathchKeyEvent(mStorageReadyFragment);

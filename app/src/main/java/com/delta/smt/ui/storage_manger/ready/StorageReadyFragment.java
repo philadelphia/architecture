@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.libs.adapter.ItemOnclick;
@@ -124,7 +125,8 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
     @Override
     protected void initData() {
 
-        wareHouseName = getArguments().getString(Constant.WARE_HOUSE_NAME);
+        wareHouseName =  SpUtil.getStringSF(getmActivity(),Constant.STORAGE_NAME);
+
         Map<String, String> map = new HashMap<>();
         map.put("part", wareHouseName);
         Gson gson = new Gson();
