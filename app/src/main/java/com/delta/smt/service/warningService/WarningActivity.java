@@ -41,6 +41,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.delta.smt.Constant.ENGINEER_FAULT_ALARM_FLAG;
+import static com.delta.smt.Constant.EXCESS_ALARM_FLAG;
+import static com.delta.smt.Constant.FEEDER_BUFF_ALARM_FLAG;
+import static com.delta.smt.Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG;
+import static com.delta.smt.Constant.MANTISSA_WAREHOUSE_ALARM_FLAG;
+import static com.delta.smt.Constant.OFF_LINE_ALARM_FLAG;
+import static com.delta.smt.Constant.OPERATOR_FAULT_ALARM_FLAG;
+import static com.delta.smt.Constant.PCB_WAREH_ISSUE_ALARM_FLAG;
+import static com.delta.smt.Constant.PLUG_MOD_ALARM_FLAG;
+import static com.delta.smt.Constant.PRODUCTION_LINE_ALARM_FLAG;
+import static com.delta.smt.Constant.UNPLUG_MOD_ALARM_FLAG;
+import static com.delta.smt.Constant.WAREH_ALARM_FLAG;
+import static com.delta.smt.Constant.WAREH_MANTISSA_ALARM_FLAG;
+import static com.delta.smt.Constant.WAREH_MANTO_WAREH_ALARM_FLAG;
+
 public class WarningActivity extends AppCompatActivity {
 
     private RecyclerView rv_warning;
@@ -51,7 +66,7 @@ public class WarningActivity extends AppCompatActivity {
     private CommonBaseAdapter waringDialogEntityCommonBaseAdapter;
     private WarningDialog.OnClickListener onClickListener;
     private String message = "";
-    private Map<String, String> title_type = new HashMap<>();
+    public Map<String, String> titleDatas = new HashMap<>();
 
 
     private List<JSONArray> jsonArrays = new ArrayList<>();
@@ -97,6 +112,7 @@ public class WarningActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        notifyData();
         super.onResume();
     }
 
@@ -104,13 +120,18 @@ public class WarningActivity extends AppCompatActivity {
     private List<WaringDialogEntity> getWarningEntities(JSONArray jsonArray) throws JSONException {
         List<String> types = new ArrayList<>();
         List<WaringDialogEntity> waringDialogEntities = new ArrayList<>();
-
         for (int i = 0; i < jsonArray.length(); i++) {
-            String string = jsonArray.getString(i);
-            types.add(string);
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String type = jsonObject.getString("type");
+            if (type.startsWith("1-")) {
+                types.add("1");
+            } else {
+                types.add(type);
+            }
             WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
-            if (Constant.titleDatas.containsKey(string)) {
-                waringDialogEntity.setTitle(Constant.titleDatas.get(string));
+            if (titleDatas.containsKey(type)) {
+                waringDialogEntity.setTitle(titleDatas.get(type));
+                waringDialogEntity.setContent("");
             }
             waringDialogEntities.add(waringDialogEntity);
         }
@@ -143,6 +164,21 @@ public class WarningActivity extends AppCompatActivity {
     //初始化数据
     private void initData() {
 
+
+        titleDatas.put(PCB_WAREH_ISSUE_ALARM_FLAG, "PCB预警");
+        titleDatas.put(WAREH_ALARM_FLAG, "仓库备料预警");
+        titleDatas.put(FEEDER_BUFF_ALARM_FLAG, "Feeder发料预警");
+        titleDatas.put(EXCESS_ALARM_FLAG, "仓库超领预警");
+        titleDatas.put(PLUG_MOD_ALARM_FLAG, "上模组预警");
+        titleDatas.put(ENGINEER_FAULT_ALARM_FLAG, "工程师故障预警");
+        titleDatas.put(OPERATOR_FAULT_ALARM_FLAG, "操作员故障预警");
+        titleDatas.put(PRODUCTION_LINE_ALARM_FLAG, "产线接料预警");
+        titleDatas.put(OFF_LINE_ALARM_FLAG, "线外人员预警");
+        titleDatas.put(UNPLUG_MOD_ALARM_FLAG, "下模组预警");
+        titleDatas.put(WAREH_MANTISSA_ALARM_FLAG, "尾数仓入库预警");
+        titleDatas.put(WAREH_MANTO_WAREH_ALARM_FLAG, "尾数仓退入主仓库预警");
+        titleDatas.put(FEEDER_BUFF_TO_WAREH_ALARM_FLAG, "Feeder缓存区入库预警");
+        titleDatas.put(MANTISSA_WAREHOUSE_ALARM_FLAG, "尾数仓备料预警");
 
         waringDialogEntityCommonBaseAdapter = new CommonBaseAdapter<WaringDialogEntity>(this, datas) {
 
