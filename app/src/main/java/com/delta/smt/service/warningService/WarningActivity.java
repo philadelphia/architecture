@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,7 +50,7 @@ public class WarningActivity extends AppCompatActivity {
     private Context context;
     private CommonBaseAdapter waringDialogEntityCommonBaseAdapter;
     private WarningDialog.OnClickListener onClickListener;
-    private String message="";
+    private String message = "";
     private Map<String, String> title_type = new HashMap<>();
 
     @Override
@@ -67,29 +68,25 @@ public class WarningActivity extends AppCompatActivity {
         initView();
         initData();
         initEvent();
-
-//        ListView listView = (ListView) findViewById(R.id.lv);
-//        listView.setAdapter(new DialogListAdapter(WarningActivity.this));
-////        listView.setAlpha((float)0.2);
-//        DisplayMetrics metrics = getResources().getDisplayMetrics();
-//        LinearLayout layout = (LinearLayout) findViewById(R.id.list_container);
-//        layout.setPadding(metrics.widthPixels/20,metrics.heightPixels/4,metrics.widthPixels/20,0);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         Log.e(TAG, "onNewIntent: ");
         super.onNewIntent(intent);
+        PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+        if (!pm.isScreenOn()) {
+            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP |
+                    PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "bright");
+            wl.acquire();
+            wl.release();
+        }
     }
 
     @Override
     protected void onResume() {
         Log.e(TAG, "onResume: ");
         datas.clear();
-       
         message = getIntent().getStringExtra(Constant.WARNINGMESSAGE);
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("");
@@ -116,7 +113,7 @@ public class WarningActivity extends AppCompatActivity {
         setContentView(R.layout.dialog_warning);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         LinearLayout layout = (LinearLayout) findViewById(R.id.container);
-        layout.setPadding(metrics.widthPixels/20,metrics.heightPixels/6,metrics.widthPixels/20,metrics.heightPixels/6);
+        layout.setPadding(metrics.widthPixels / 20, metrics.heightPixels / 6, metrics.widthPixels / 20, metrics.heightPixels / 6);
         rv_warning = (RecyclerView) findViewById(R.id.rv_warning);
         bt_sure = (Button) findViewById(R.id.bt_sure);
     }
@@ -141,6 +138,7 @@ public class WarningActivity extends AppCompatActivity {
         rv_warning.setLayoutManager(new LinearLayoutManager(context));
         rv_warning.setAdapter(waringDialogEntityCommonBaseAdapter);
     }
+
     public void notifyData() {
         waringDialogEntityCommonBaseAdapter.notifyDataSetChanged();
     }
@@ -160,6 +158,7 @@ public class WarningActivity extends AppCompatActivity {
             }
         });
     }
+
     public interface OnClickListener {
         void onclick(View view);
     }
