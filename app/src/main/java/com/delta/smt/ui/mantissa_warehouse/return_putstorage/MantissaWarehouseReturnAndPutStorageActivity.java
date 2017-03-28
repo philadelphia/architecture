@@ -33,6 +33,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import me.yokeyword.fragmentation.SupportFragment;
 
@@ -60,12 +62,15 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     private SupportFragment currentFragment;
     private String[] titles;
     private int currentTab = 0;
+
+    @Inject
     WarningManger warningManger;
     private WarningDialog warningDialog;
     private DialogLayout dialogLayout;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
+
     }
 
     @Override
@@ -73,10 +78,11 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         //此处的Title应该是 从网络获取的数量
         titles = new String[]{"入库", "退入主仓库"};
         //接收那种预警，没有的话自己定义常量
+        warningManger = WarningManger.getInstance();
         WarningManger.getInstance().addWarning(Constant.WAREH_MANTO_WAREH_ALARM_FLAG, getClass());
-        WarningManger.getInstance().addWarning(Constant.WAREH_MANTISSA_ALARM_FLAG, getClass());
+        WarningManger.getInstance().addWarning(Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG, getClass());
         warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG,0));
-        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTISSA_ALARM_FLAG,0));
+        warningManger.sendMessage(new SendMessage(Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG,0));
 
         //是否接收预警 可以控制预警时机
         WarningManger.getInstance().setReceive(true);
