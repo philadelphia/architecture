@@ -60,7 +60,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     private WarningDialog warningDialog;
 
     @Inject
-    WarningManger warningManger;
+    WarningManger warningManager;
 
 
     @Override
@@ -72,11 +72,11 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     protected void initData() {
         Log.i(TAG, "initData: ");
         //接收那种预警，没有的话自己定义常量
-        warningManger.addWarning(Constant.FEEDER_BUFF_ALARM_FLAG, this.getClass());
+        warningManager.addWarning(Constant.FEEDER_BUFF_ALARM_FLAG, this.getClass());
         //是否接收预警 可以控制预警时机
-        warningManger.setReceive(true);
+        warningManager.setReceive(true);
         //关键 初始化预警接口
-        warningManger.setOnWarning(this);
+        warningManager.setOnWarning(this);
 
     }
 
@@ -228,7 +228,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override
             public void onclick(View view) {
-                warningManger.setConsume(true);
+                warningManager.setConsume(true);
                 onRefresh();
 
             }
@@ -241,8 +241,8 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
 
     @Override
     public void onResume() {
-        warningManger.registerWReceiver(this);
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG),0));
+        warningManager.registerWReceiver(this);
+        warningManager.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG),0));
 
         Log.i(TAG, "onResume: ");
         super.onResume();
@@ -268,7 +268,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         super.onStop();
 
         Log.i(TAG, "onResume: ");
-        warningManger.unregisterWReceiver(this);
+        warningManager.unregisterWReceiver(this);
     }
 
     @Override
@@ -278,7 +278,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
             adapter.cancelRefreshTime();
         }
 
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG), 1));
+        warningManager.sendMessage(new SendMessage(String.valueOf(Constant.FEEDER_BUFF_ALARM_FLAG), 1));
     }
 
     @Override
