@@ -347,6 +347,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                         if (!dataSourceForCheckIn.isEmpty()) {
                             if (isMaterialInFeederCheckInList(materialBlockBarCode)) {
                                 flag = 2;
+                                VibratorAndVoiceUtils.correctVibrator(this);
+                                VibratorAndVoiceUtils.correctVoice(this);
                             } else {
                                 VibratorAndVoiceUtils.wrongVibrator(this);
                                 VibratorAndVoiceUtils.wrongVoice(this);
