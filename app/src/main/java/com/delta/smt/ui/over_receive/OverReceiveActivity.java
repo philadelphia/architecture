@@ -24,8 +24,6 @@ import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
-import com.delta.demacia.barcode.BarCodeIpml;
-import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -71,7 +69,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/15.
  */
 
-public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, BarCodeIpml.OnScanSuccessListener,CompoundButton.OnCheckedChangeListener {
+public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning,CompoundButton.OnCheckedChangeListener {
 
     public String overReceiveAutomaticDebit = null;
     @BindView(R.id.toolbar)
@@ -103,7 +101,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     boolean isAllTimerEnd = true;
     @BindView(R.id.showMessage)
     TextView showMessage;
-    private BarCodeIpml barCodeIpml = new BarCodeIpml();
     private Gson gson = new Gson();
     private CommonBaseAdapter<OverReceiveWarning.RowsBean> adapterTitle;
     private CommonBaseAdapter<OverReceiveWarning.RowsBean> adapter;
@@ -154,7 +151,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         warningManger.setOnWarning(this);
 
         //getPresenter().getAllOverReceiveItems();
-        barCodeIpml.setOnGunKeyPressListener(this);
     }
 
     @Override
@@ -393,26 +389,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     }
 
 
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-
-        if (barCodeIpml.isEventFromBarCode(event)) {
-            barCodeIpml.analysisKeyEvent(event);
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
-    }
-
     @Override
     protected void onResume() {
         warningManger.registerWReceiver(this);
         super.onResume();
-        try {
-            barCodeIpml.hasConnectBarcode();
-        } catch (DevicePairedNotFoundException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void showDialog(String message) {
@@ -441,7 +422,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        barCodeIpml.onComplete();
     }
 
     @Override

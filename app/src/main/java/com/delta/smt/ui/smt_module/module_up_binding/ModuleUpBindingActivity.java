@@ -3,12 +3,12 @@ package com.delta.smt.ui.smt_module.module_up_binding;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -25,8 +25,6 @@ import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
-import com.delta.demacia.barcode.BarCodeIpml;
-import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -55,7 +53,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, BarCodeIpml.OnScanSuccessListener, CompoundButton.OnCheckedChangeListener {
+public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, CompoundButton.OnCheckedChangeListener {
 
     public String moduleUpAutomaticUpload = null;
     @BindView(R.id.toolbar)
@@ -63,13 +61,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.recy_title)
-    RecyclerView recyTitle;
+    RecyclerView recyclerViewTitle;
     @BindView(R.id.recy_content)
-    RecyclerView recyContent;
+    RecyclerView recyclerViewContent;
     @BindView(R.id.btn_upload)
     AppCompatButton btnUpload;
-    /*@BindView(R.id.container)
-    CoordinatorLayout container;*/
+  
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     @BindView(R.id.automatic_upload)
@@ -92,7 +89,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private List<ModuleUpBindingItem.RowsBean> dataList = new ArrayList<>();
     private List<ModuleUpBindingItem.RowsBean> dataSource = new ArrayList<>();
     //二维码
-    private BarCodeIpml barCodeIpml = new BarCodeIpml();
+
     private int scan_position = -1;
     private String workItemID;
     private String side;
@@ -118,16 +115,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         lineName = intent.getStringExtra(Constant.LINE_NAME);
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
-        tv_workOrder.setText("工单:   " + workItemID);
-        tv_line.setText("线别:    " + lineName);
-        tv_side.setText("面别:    " + side);
+        tv_workOrder.setText(getResources().getString(R.string.WorkID) +":   "+ workItemID);
+        tv_line.setText(getResources().getString(R.string.Line) +":   "+  lineName);
+        tv_side.setText(getResources().getString(R.string.Side) +":   "+  side);
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
         Gson gson = new Gson();
         argument = gson.toJson(map);
 
-        barCodeIpml.setOnGunKeyPressListener(this);
     }
 
     @Override
@@ -145,21 +141,19 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("上模组");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
 
-        recyTitle.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        recyclerViewTitle.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         dataList.add(new ModuleUpBindingItem.RowsBean("料号", "FeederID", "模组料站"));
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem.RowsBean item, int position) {
-                holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
-//                holder.setText(R.id.tv_materialID, item.getMaterial_no());
-//                holder.setText(R.id.tv_feederID, item.getFeeder_id());
-//                holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
-
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.c_efefef));
             }
 
             @Override
@@ -168,7 +162,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             }
         };
 
-        recyTitle.setAdapter(adapterTitle);
+        recyclerViewTitle.setAdapter(adapterTitle);
         adapter = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem.RowsBean item, int position) {
@@ -192,7 +186,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
         };
 
-        recyContent.setAdapter(adapter);
+        recyclerViewContent.setAdapter(adapter);
     }
 
     @Override
@@ -221,6 +215,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         ToastUtils.showMessage(this, throwable.getMessage());
     }
 
+    @SuppressWarnings("all")
     @Override
     public void onSuccessBinding(ModuleUpBindingItem data) {
         ToastUtils.showMessage(this, data.getMsg());
@@ -257,9 +252,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     .show();
         }
 
-        /*} else {
 
-        }*/
     }
 
     @Override
@@ -324,13 +317,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     protected void onResume() {
         super.onResume();
-
-        try {
-            barCodeIpml.hasConnectBarcode();
-        } catch (DevicePairedNotFoundException e) {
-            e.printStackTrace();
-        }
-
         getPresenter().getAllModuleUpBindingItems(argument);
 
     }
@@ -338,9 +324,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        barCodeIpml.onComplete();
     }
 
+    @SuppressWarnings("all")
     @Override
     public void onScanSuccess(String barcode) {
         showMessage.setVisibility(View.GONE);
@@ -441,19 +427,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         }
     }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (barCodeIpml.isEventFromBarCode(event)) {
-            barCodeIpml.analysisKeyEvent(event);
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
-    }
-
 
     public void setItemHighLightBasedOnMID(int position) {
         scan_position = position;
-        recyContent.scrollToPosition(position);
+        recyclerViewContent.scrollToPosition(position);
         adapter.notifyDataSetChanged();
     }
 
@@ -502,6 +479,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     }
 
+    @SuppressWarnings("all")
     public boolean isAllFeederBinded() {
         boolean res = true;
         if (dataSource.size() > 0) {
