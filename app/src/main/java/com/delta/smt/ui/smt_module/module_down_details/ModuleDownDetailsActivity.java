@@ -348,6 +348,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                             if (isMaterialInFeederCheckInList(materialBlockBarCode)) {
                                 flag = 2;
                             } else {
+                                VibratorAndVoiceUtils.wrongVibrator(this);
+                                VibratorAndVoiceUtils.wrongVoice(this);
                                 ToastUtils.showMessage(this, "请先扫描待入库的料盘");
                             }
                         } else {
@@ -356,6 +358,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
                     } else {
                         flag = 1;
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
                         ToastUtils.showMessage(this, "该料盘不存在此工单，请重新扫描料盘或检查料盘二维码是否损坏");
                     }
                 } catch (EntityNotFountException e) {
