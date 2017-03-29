@@ -40,7 +40,8 @@
         android:id="@+id/result_alteration"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_30"
-        android:layout_weight="1"
+        android:layout_marginRight="@dimen/px_20"
+        android:layout_weight="2"
         android:text="@string/result_alteration"
         style="@style/button_style"
         />

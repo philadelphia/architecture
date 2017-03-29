@@ -209,7 +209,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("治具借出", R.drawable.ic_lend));
         fuctions.add(new Fuction("治具归还", R.drawable.ic_thereturn));
         fuctions.add(new Fuction("手补件", R.drawable.ic_handpatch));
-        fuctions.add(new Fuction("warningSample", R.drawable.title));
+       // fuctions.add(new Fuction("warningSample", R.drawable.title));
     }
     private void checkTTS() {
         Intent in = new Intent();

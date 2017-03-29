@@ -33,6 +33,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import me.yokeyword.fragmentation.SupportFragment;
 
@@ -60,12 +62,15 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     private SupportFragment currentFragment;
     private String[] titles;
     private int currentTab = 0;
+
+    @Inject
     WarningManger warningManger;
     private WarningDialog warningDialog;
     private DialogLayout dialogLayout;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
+
     }
 
     @Override
@@ -74,10 +79,11 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         titles = new String[]{"入库", "退入主仓库"};
         //接收那种预警，没有的话自己定义常量
         warningManger = WarningManger.getInstance();
-        warningManger.addWarning(Constant.WAREH_MANTO_WAREH_ALARM_FLAG, getClass());
-        warningManger.addWarning(Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG, getClass());
-        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG, 0));
-        warningManger.sendMessage(new SendMessage(Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG, 0));
+        WarningManger.getInstance().addWarning(Constant.WAREH_MANTO_WAREH_ALARM_FLAG, getClass());
+        WarningManger.getInstance().addWarning(Constant.WAREH_MANTISSA_ALARM_FLAG, getClass());
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG,0));
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTISSA_ALARM_FLAG,0));
+
         //是否接收预警 可以控制预警时机
         WarningManger.getInstance().setReceive(true);
         //关键 初始化预警接口
@@ -86,14 +92,20 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     }
 
     @Override
+    public void onDestroy() {
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG,1));
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTISSA_ALARM_FLAG,1));
+        super.onDestroy();
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             currentTab = savedInstanceState.getInt("temp");
         }
-        Log.e(TAG, "onCreate: " + currentTab);
+        Log.e(TAG, "onCreate: "+currentTab);
         super.onCreate(savedInstanceState);
     }
-
     @Override
     protected void initView() {
         mToolbar.setTitle("");
@@ -117,11 +129,12 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        currentTab = mTlTitle.getSelectedTabPosition();
+        currentTab =mTlTitle.getSelectedTabPosition();
         outState.putInt("temp", currentTab);
         super.onSaveInstanceState(outState);
-        Log.e(TAG, "onSaveInstanceState: " + currentTab);
+        Log.e(TAG, "onSaveInstanceState: "+currentTab);
     }
+
 
 
     @Override
@@ -129,13 +142,13 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (tab.getPosition()) {
             case 0:
-                // currentTab = 0;
+               // currentTab = 0;
                 showHideFragment(mMantissaWarehouseReturnFragment, currentFragment);
                 currentFragment = mMantissaWarehouseReturnFragment;
                 Log.e(TAG, "onTabSelected: ");
                 break;
             case 1:
-                // currentTab = 1;
+               // currentTab = 1;
                 showHideFragment(mMantissaWarehousePutstorageFragment, currentFragment);
                 currentFragment = mMantissaWarehousePutstorageFragment;
                 Log.e(TAG, "onTabSelected: ");
@@ -166,7 +179,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         mTlTitle.getTabAt(currentTab).select();
         WarningManger.getInstance().registerWReceiver(this);
         super.onResume();
-        Log.e(TAG, "onResume: " + currentTab);
+        Log.e(TAG, "onResume: "+currentTab);
     }
 
     @Override
@@ -174,7 +187,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         WarningManger.getInstance().unregisterWReceiver(this);
 
         super.onStop();
-        Log.e(TAG, "onStop: " + currentTab);
+        Log.e(TAG, "onStop: "+currentTab);
     }
 
     @Override
@@ -183,7 +196,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         if (warningDialog == null) {
             warningDialog = createDialog(message);
         }
-        if (!warningDialog.isShowing()) {
+        if(!warningDialog.isShowing()){
             warningDialog.show();
         }
         updateMessage(message);
@@ -236,7 +249,6 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     /**
      * type == 9  代表你要发送的是哪个
-     *
      * @param message
      */
     private void updateMessage(String message) {
@@ -246,8 +258,8 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         warningEntity.setTitle("入库预警");
         WaringDialogEntity putstorageEntity = new WaringDialogEntity();
         putstorageEntity.setTitle("退入主仓库预警");
-        String content = "";
-        String putstoragecontent = "";
+        String content ="";
+        String putstoragecontent ="";
         try {
             JSONArray jsonArray = new JSONArray(message);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -256,10 +268,10 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
                 //可能有多种预警的情况
                 if (Constant.WAREH_MANTO_WAREH_ALARM_FLAG.equals(type)) {
                     Object message1 = jsonObject.get("message");
-                    content = content + message1 + "\n";
-                } else {
+                    content=content+message1+"\n";
+                }else {
                     Object message1 = jsonObject.get("message");
-                    putstoragecontent = putstoragecontent + message1 + "\n";
+                    putstoragecontent=putstoragecontent+message1+"\n";
                 }
             }
             warningEntity.setContent(content + "\n");

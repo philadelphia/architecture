@@ -41,6 +41,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.delta.smt.Constant.ENGINEER_FAULT_ALARM_FLAG;
+import static com.delta.smt.Constant.EXCESS_ALARM_FLAG;
+import static com.delta.smt.Constant.FEEDER_BUFF_ALARM_FLAG;
+import static com.delta.smt.Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG;
+import static com.delta.smt.Constant.MANTISSA_WAREHOUSE_ALARM_FLAG;
+import static com.delta.smt.Constant.OFF_LINE_ALARM_FLAG;
+import static com.delta.smt.Constant.OPERATOR_FAULT_ALARM_FLAG;
+import static com.delta.smt.Constant.PCB_WAREH_ISSUE_ALARM_FLAG;
+import static com.delta.smt.Constant.PLUG_MOD_ALARM_FLAG;
+import static com.delta.smt.Constant.PRODUCTION_LINE_ALARM_FLAG;
+import static com.delta.smt.Constant.UNPLUG_MOD_ALARM_FLAG;
+import static com.delta.smt.Constant.WAREH_ALARM_FLAG;
+import static com.delta.smt.Constant.WAREH_MANTISSA_ALARM_FLAG;
+import static com.delta.smt.Constant.WAREH_MANTO_WAREH_ALARM_FLAG;
+
 public class WarningActivity extends AppCompatActivity {
 
     private RecyclerView rv_warning;
@@ -51,7 +66,10 @@ public class WarningActivity extends AppCompatActivity {
     private CommonBaseAdapter waringDialogEntityCommonBaseAdapter;
     private WarningDialog.OnClickListener onClickListener;
     private String message = "";
-    private Map<String, String> title_type = new HashMap<>();
+    public Map<String, String> titleDatas = new HashMap<>();
+
+
+    private List<JSONArray> jsonArrays = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,23 +106,52 @@ public class WarningActivity extends AppCompatActivity {
         Log.e(TAG, "onResume: ");
         datas.clear();
         message = getIntent().getStringExtra(Constant.WARNINGMESSAGE);
-        WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("");
-        String content = "";
         try {
             JSONArray jsonArray = new JSONArray(message);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Object message1 = jsonObject.get("message");
-                content = content + message1 + "\n";
-            }
+            datas.addAll(getWarningEntities(jsonArray));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        warningEntity.setContent(content + "\n");
-        datas.add(warningEntity);
         notifyData();
         super.onResume();
+    }
+
+
+    private List<WaringDialogEntity> getWarningEntities(JSONArray jsonArray) throws JSONException {
+        List<String> types = new ArrayList<>();
+        List<WaringDialogEntity> waringDialogEntities = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String type = jsonObject.getString("type");
+            String[] split = type.split("_");
+            type = split[0];
+            types.add(type);
+            WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
+            if (titleDatas.containsKey(type)) {
+                if (split[1] == null) {
+                    waringDialogEntity.setTitle(titleDatas.get(type));
+                } else {
+                    waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
+                }
+                waringDialogEntity.setContent("");
+            }
+            waringDialogEntities.add(waringDialogEntity);
+        }
+
+        for (int i1 = 0; i1 < types.size(); i1++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String type = jsonObject.getString("type");
+                String[] split = type.split("_");
+                if (types.get(i1).equals(split[0])) {
+                    String content = waringDialogEntities.get(i1).getContent();
+                    Object message1 = jsonObject.get("message");
+                    waringDialogEntities.get(i1).setContent(content + message1 + "\n");
+                }
+            }
+        }
+
+        return waringDialogEntities;
     }
 
     //初始化界面
@@ -120,6 +167,22 @@ public class WarningActivity extends AppCompatActivity {
 
     //初始化数据
     private void initData() {
+
+
+        titleDatas.put(PCB_WAREH_ISSUE_ALARM_FLAG, "PCB预警");
+        titleDatas.put(WAREH_ALARM_FLAG, "仓库备料预警");
+        titleDatas.put(FEEDER_BUFF_ALARM_FLAG, "Feeder发料预警");
+        titleDatas.put(EXCESS_ALARM_FLAG, "仓库超领预警");
+        titleDatas.put(PLUG_MOD_ALARM_FLAG, "上模组预警");
+        titleDatas.put(ENGINEER_FAULT_ALARM_FLAG, "工程师故障预警");
+        titleDatas.put(OPERATOR_FAULT_ALARM_FLAG, "操作员故障预警");
+        titleDatas.put(PRODUCTION_LINE_ALARM_FLAG, "产线接料预警");
+        titleDatas.put(OFF_LINE_ALARM_FLAG, "线外人员预警");
+        titleDatas.put(UNPLUG_MOD_ALARM_FLAG, "下模组预警");
+        titleDatas.put(WAREH_MANTISSA_ALARM_FLAG, "尾数仓入库预警");
+        titleDatas.put(WAREH_MANTO_WAREH_ALARM_FLAG, "尾数仓退入主仓库预警");
+        titleDatas.put(FEEDER_BUFF_TO_WAREH_ALARM_FLAG, "Feeder缓存区入库预警");
+        titleDatas.put(MANTISSA_WAREHOUSE_ALARM_FLAG, "尾数仓备料预警");
 
         waringDialogEntityCommonBaseAdapter = new CommonBaseAdapter<WaringDialogEntity>(this, datas) {
 

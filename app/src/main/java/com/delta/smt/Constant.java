@@ -1,8 +1,5 @@
 package com.delta.smt;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -11,20 +8,7 @@ import java.util.Map;
 
 
 public class Constant {
-    public static final Map<String, String> titleDatas = new HashMap<>();
 
-    {
-        titleDatas.put(PCB_WAREH_ISSUE_ALARM_FLAG,"PCB预警");
-        titleDatas.put(WAREH_ALARM_FLAG,"仓库备料预警");
-        titleDatas.put(FEEDER_BUFF_ALARM_FLAG,"Feeder发料预警");
-        titleDatas.put(PLUG_MOD_ALARM_FLAG,"PLUG_MOD_ALARM_FLAG");
-        titleDatas.put(ENGINEER_FAULT_ALARM_FLAG,"工程师故障预警");
-        titleDatas.put(OPERATOR_FAULT_ALARM_FLAG, "操作员故障预警");
-        titleDatas.put(PRODUCTION_LINE_ALARM_FLAG,"产线接料预警");
-        titleDatas.put(OFF_LINE_ALARM_FLAG,"线外人员预警");
-
-        titleDatas.put(WAREH_MANTISSA_ALARM_FLAG,"");
-    }
 
     public static final String WARNINGRECIEVE = "warning_recieve";
     public static final String WARNINGMESSAGE = "warning_message";
