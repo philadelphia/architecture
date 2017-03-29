@@ -98,7 +98,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String side;
     private String productNameMain;
     private String productName;
-    private String linName;
+    private String lineName;
     private String materialBlockNumber;
     private String serialNo;
     private String argument;
@@ -115,12 +115,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         Intent intent = ModuleUpBindingActivity.this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
-        linName = intent.getStringExtra(Constant.LINE_NAME);
+        lineName = intent.getStringExtra(Constant.LINE_NAME);
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
-        tv_workOrder.setText(workItemID);
-        tv_side.setText(side);
-        tv_line.setText(linName);
+        tv_workOrder.setText("工单:   " + workItemID);
+        tv_line.setText("线别:    " + lineName);
+        tv_side.setText("面别:    " + side);
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);

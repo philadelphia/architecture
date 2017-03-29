@@ -6,138 +6,93 @@
     android:orientation="vertical">
 
 
-        <include layout="@layout/appbar" />
+    <include layout="@layout/appbar" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10px"
+        android:orientation="vertical"
+        android:padding="10px">
+
+
+        <TextView
+            android:id="@+id/tv_work_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10px"
+            android:text="工单："
+            android:textColor="#333333"
+            android:textSize="40px" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="15px"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="85px"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:text="工单："
-                    android:gravity="center"
-                    android:textColor="#333333"
-                    android:textSize="40px" />
-
-                <TextView
-                    android:id="@+id/tv_work_order"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:background="@drawable/textview_border"
-                    android:textColor="#333333"
-                    android:gravity="center"
-                    android:textSize="40px" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="85px"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:text="面别："
-                    android:gravity="center"
-                    android:textColor="#333333"
-                    android:textSize="40px" />
-
-                <TextView
-                    android:id="@+id/tv_side"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:background="@drawable/textview_border"
-                    android:textColor="#333333"
-                    android:textSize="40px" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="85px"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:text="线别："
-                    android:gravity="center"
-                    android:textColor="#333333"
-                    android:textSize="40px" />
-
-                <TextView
-                    android:id="@+id/tv_Line"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:background="@drawable/textview_border"
-                    android:gravity="center"
-                    android:textColor="#333333"
-                    android:textSize="40px" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_side"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="面别："
+                android:textColor="#333333"
+                android:textSize="40px" />
 
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_feederMaintain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:gravity="center"
-                android:enabled="false"
-                android:text="Feeder保养" />
+            <TextView
+                android:id="@+id/tv_Line"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="线别："
+                android:textColor="#333333"
+                android:textSize="40px" />
+
         </LinearLayout>
 
 
-            <HorizontalScrollView
-                android:id="@+id/hr_scrow"
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_feederMaintain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="Feeder保养" />
+    </LinearLayout>
+
+
+    <HorizontalScrollView
+        android:id="@+id/hr_scrow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recy_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.delta.commonlibs.widget.statusLayout.StatusLayout
+                android:id="@+id/statusLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recy_content"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent" />
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recy_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+            </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 
-                    <com.delta.commonlibs.widget.statusLayout.StatusLayout
-                        android:id="@+id/statusLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-
-                    <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recy_content"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
-
-                </LinearLayout>
-            </HorizontalScrollView>
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>

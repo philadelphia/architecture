@@ -30,6 +30,7 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.ui.smt_module.module_down_details.di.DaggerModuleDownDetailsComponent;
@@ -114,9 +115,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         lineName = intent.getStringExtra(Constant.LINE_NAME);
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
-        tv_workOrder.setText(workItemID);
-        tv_side.setText(side);
-        tv_line.setText(lineName);
+        tv_workOrder.setText("工单:   " + workItemID);
+        tv_line.setText("线别:    " + lineName);
+        tv_side.setText("面别:    " + side);
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
@@ -130,7 +131,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     protected void initView() {
-        //headerTitle.setText("下模组");
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
@@ -172,7 +172,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         adapter = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
-
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
@@ -191,9 +190,11 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
                 if (item.getMaterial_no().equalsIgnoreCase(mCurrentMaterialID) && item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)) {
                     Log.i(TAG, "convert: " + item.toString());
+                    Log.i(TAG, "position: " + position);
+
                     holder.itemView.setBackgroundColor(Color.YELLOW);
                     mCurrentSlot = item.getSlot();
-                    index = position;
+
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
@@ -362,7 +363,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onScanSuccess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
-        Log.i(TAG, "barcode == " + barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (flag) {
             case 1:
@@ -371,8 +371,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
                     mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
                     mCurrentQuantity = materialBlockBarCode.getCount();
+                    getMatchedMaterialIndex(materialBlockBarCode);
                     adapter.notifyDataSetChanged();
-                     recyclerViewContent.scrollToPosition(index);
+                    recyclerViewContent.scrollToPosition(index);
+
                     Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
                     Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
                     Map<String, String> map = new HashMap<>();
@@ -464,6 +466,21 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         }
 
 
+    }
+
+    public int getMatchedMaterialIndex(MaterialBlockBarCode material) {
+        int length = dataSource.size();
+
+        for (int i = 0; i < length; i++) {
+            ModuleDownDetailsItem.RowsBean rowsBean = dataSource.get(i);
+            if (rowsBean.getMaterial_no().equalsIgnoreCase(material.getDeltaMaterialNumber() ) && rowsBean.getSerial_no().equalsIgnoreCase(material.getStreamNumber())){
+                index = i;
+                break;
+            }
+        }
+        Log.i(TAG, "getMatchedMaterialIndex: " + index);
+
+        return index;
     }
 
     public boolean isMaterialExists(MaterialBlockBarCode material) {
