@@ -61,7 +61,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         JSONObject jsonObject1=new JSONObject();
             try {
                 jsonObject1.putOpt("partNum",materialBlockBarCodes.get(i).getDeltaMaterialNumber());
-                if("0".equals(materialBlockBarCodes.get(i).getStreamNumber().substring(0,2))) {
+                if("0".equals(materialBlockBarCodes.get(i).getStreamNumber().substring(0,1))) {
                     jsonObject1.putOpt("pcbCode", materialBlockBarCodes.get(i).getStreamNumber().substring(0, 2));
                 }else{
                     jsonObject1.putOpt("pcbCode", materialBlockBarCodes.get(i).getDeltaMaterialNumber().substring(materialBlockBarCodes.get(i).getDeltaMaterialNumber().length()-2, materialBlockBarCodes.get(i).getDeltaMaterialNumber().length()));
@@ -153,7 +153,11 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             JSONObject jsonObject1=new JSONObject();
             try {
                 jsonObject1.putOpt("partNum",materialBlockBarCodes.get(i).getDeltaMaterialNumber());
-                jsonObject1.putOpt("pcbCode",materialBlockBarCodes.get(i).getStreamNumber().substring(0,2));
+                if("0".equals(materialBlockBarCodes.get(i).getStreamNumber().substring(0,1))) {
+                    jsonObject1.putOpt("pcbCode", materialBlockBarCodes.get(i).getStreamNumber().substring(0, 2));
+                }else{
+                    jsonObject1.putOpt("pcbCode", materialBlockBarCodes.get(i).getDeltaMaterialNumber().substring(materialBlockBarCodes.get(i).getDeltaMaterialNumber().length()-2, materialBlockBarCodes.get(i).getDeltaMaterialNumber().length()));
+                }
                 jsonObject1.putOpt("dateCode",materialBlockBarCodes.get(i).getDC());
                 jsonObject1.putOpt("serial",materialBlockBarCodes.get(i).getStreamNumber());
                 jsonObject1.putOpt("count",materialBlockBarCodes.get(i).getCount());
