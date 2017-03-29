@@ -123,7 +123,7 @@ public class WarningActivity extends AppCompatActivity {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             String type = jsonObject.getString("type");
-            if (type.startsWith("1-")) {
+            if (type.startsWith("1_")) {
                 types.add("1");
             } else {
                 types.add(type);
