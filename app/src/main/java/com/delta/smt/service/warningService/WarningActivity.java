@@ -67,10 +67,7 @@ public class WarningActivity extends AppCompatActivity {
     private WarningDialog.OnClickListener onClickListener;
     private String message = "";
     public Map<String, String> titleDatas = new HashMap<>();
-
-
     private List<JSONArray> jsonArrays = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,16 +125,15 @@ public class WarningActivity extends AppCompatActivity {
             types.add(type);
             WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
             if (titleDatas.containsKey(type)) {
-                if (split[1] == null) {
+                if (split.length==1){
                     waringDialogEntity.setTitle(titleDatas.get(type));
-                } else {
+                }else {
                     waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
                 }
                 waringDialogEntity.setContent("");
             }
             waringDialogEntities.add(waringDialogEntity);
         }
-
         for (int i1 = 0; i1 < types.size(); i1++) {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -167,8 +163,6 @@ public class WarningActivity extends AppCompatActivity {
 
     //初始化数据
     private void initData() {
-
-
         titleDatas.put(PCB_WAREH_ISSUE_ALARM_FLAG, "PCB预警");
         titleDatas.put(WAREH_ALARM_FLAG, "仓库备料预警");
         titleDatas.put(FEEDER_BUFF_ALARM_FLAG, "Feeder发料预警");
@@ -183,7 +177,6 @@ public class WarningActivity extends AppCompatActivity {
         titleDatas.put(WAREH_MANTO_WAREH_ALARM_FLAG, "尾数仓退入主仓库预警");
         titleDatas.put(FEEDER_BUFF_TO_WAREH_ALARM_FLAG, "Feeder缓存区入库预警");
         titleDatas.put(MANTISSA_WAREHOUSE_ALARM_FLAG, "尾数仓备料预警");
-
         waringDialogEntityCommonBaseAdapter = new CommonBaseAdapter<WaringDialogEntity>(this, datas) {
 
             @Override
