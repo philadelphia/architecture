@@ -123,14 +123,16 @@ public class WarningActivity extends AppCompatActivity {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             String type = jsonObject.getString("type");
-            if (type.startsWith("1_")) {
-                types.add("1");
-            } else {
-                types.add(type);
-            }
+            String[] split = type.split("_");
+            type = split[0];
+            types.add(type);
             WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
             if (titleDatas.containsKey(type)) {
-                waringDialogEntity.setTitle(titleDatas.get(type));
+                if (split[1] == null) {
+                    waringDialogEntity.setTitle(titleDatas.get(type));
+                } else {
+                    waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
+                }
                 waringDialogEntity.setContent("");
             }
             waringDialogEntities.add(waringDialogEntity);
@@ -139,7 +141,9 @@ public class WarningActivity extends AppCompatActivity {
         for (int i1 = 0; i1 < types.size(); i1++) {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                if (types.get(i1).equals(jsonObject.getString("type"))) {
+                String type = jsonObject.getString("type");
+                String[] split = type.split("_");
+                if (types.get(i1).equals(split[0])) {
                     String content = waringDialogEntities.get(i1).getContent();
                     Object message1 = jsonObject.get("message");
                     waringDialogEntities.get(i1).setContent(content + message1 + "\n");
