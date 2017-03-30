@@ -122,6 +122,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Log.i(TAG, "side==: " + side);
         Log.i(TAG, "lineName==: " + lineName);
 
+        Map<String, String> map = new HashMap<>();
+        map.put("work_order", workId);
+        map.put("side", side);
+
+
+        argument = new Gson().toJson(map);
+        Log.i(TAG, "argument==: " + argument);
+
 
     }
 
