@@ -381,6 +381,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     FeederBuffer frameLocation = (FeederBuffer) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER_BUFFER);
                     String mCurrentLocation = frameLocation.getSource();
                     Log.i(TAG, "mCurrentLocation: " + frameLocation.toString());
+                    VibratorAndVoiceUtils.correctVibrator(this);
+                    VibratorAndVoiceUtils.correctVoice(this);
                     Map<String, String> map = new HashMap<>();
                     map.put("work_order", mCurrentWorkOrder);
                     map.put("side", side);
