@@ -38,6 +38,7 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                     getView().showContentView();
                     getView().onStartWork(success.getMsg());
                 } else {
+                    getView().showContentView();
                     getView().onFailed(success.getMsg());
                 }}
 

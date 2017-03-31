@@ -92,9 +92,11 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("上模组");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
 
         myAdapter = new ItemCountViewAdapter<ModuleUpWarningItem.RowsBean>(this, dataList) {
             @Override
@@ -219,7 +221,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Override
     public void warningComing(String warningMessage) {
         if (warningDialog == null) {
-            warningDialog = createDialog(warningMessage);
+            warningDialog = createDialog();
         }
         if (!warningDialog.isShowing()) {
             warningDialog.show();
@@ -227,7 +229,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         updateMessage(warningMessage);
     }
 
-    public WarningDialog createDialog(String message) {
+    public WarningDialog createDialog() {
 
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
@@ -301,6 +303,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     }
 
 
+    @SuppressWarnings("all")
     public String getWorkOrderIDCacheStr(List<String> workOrderIDCacheList) {
         String res = "";
         if (workOrderIDCacheList.size() > 0) {

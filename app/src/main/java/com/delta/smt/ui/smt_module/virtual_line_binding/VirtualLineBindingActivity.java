@@ -20,8 +20,6 @@ import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
-import com.delta.demacia.barcode.BarCodeIpml;
-import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -49,7 +47,7 @@ import butterknife.OnClick;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View, BarCodeIpml.OnScanSuccessListener{
+public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View{
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -94,7 +92,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     private List<VirtualLineBindingItem.RowsBean> dataList = new ArrayList<>();
     private List<VirtualLineBindingItem.RowsBean> dataSource = new ArrayList<>();
     //二维码
-    private BarCodeIpml barCodeIpml = new BarCodeIpml();
     private int scan_position = -1;
 
     @Override
@@ -117,7 +114,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         Gson gson = new Gson();
         String argument = gson.toJson(map);
         getPresenter().getAllVirtualLineBindingItems(argument);
-        barCodeIpml.setOnGunKeyPressListener(this);
     }
 
     @Override
@@ -258,18 +254,12 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            barCodeIpml.hasConnectBarcode();
-        } catch (DevicePairedNotFoundException e) {
-            e.printStackTrace();
-        }
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        barCodeIpml.onComplete();
     }
 
     @OnClick({R.id.showMessage})
@@ -408,14 +398,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
     }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (barCodeIpml.isEventFromBarCode(event)) {
-            barCodeIpml.analysisKeyEvent(event);
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

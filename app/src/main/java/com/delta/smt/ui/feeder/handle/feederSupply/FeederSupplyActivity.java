@@ -3,6 +3,7 @@ package com.delta.smt.ui.feeder.handle.feederSupply;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -63,9 +64,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @BindView(R.id.btn_upload)
     Button btnUpload;
     @BindView(R.id.recy_title)
-    RecyclerView recyTitle;
+    RecyclerView recyclerViewTitle;
     @BindView(R.id.recy_content)
-    RecyclerView recyContent;
+    RecyclerView recyclerViewContent;
     @BindView(R.id.hr_scrow)
     HorizontalScrollView hrScrow;
     @BindView(R.id.linearLayout)
@@ -83,14 +84,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private List<FeederSupplyItem> dataList = new ArrayList<>();
     private List<FeederSupplyItem> dataSource = new ArrayList<>();
     private boolean isAllHandleOVer = false;
-    private String mCurrentSerialNumber;
-    private String mCurrentMaterialNumber;
-    private int index = -1;
     private String workId;
     private String side;
-    private String lineName;
     private String argument;
-
+    private int index = -1;
+    private MaterialBlockBarCode mCurrentMaterial;
 
     @Override
     protected void handError(String contents) {
@@ -116,13 +114,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Intent intent = getIntent();
         workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
-        lineName = intent.getStringExtra(Constant.LINE_NAME);
-        tv_workOrder.setText("工单:   " + workId);
-        tv_line.setText("线别:    " + lineName);
-        tv_side.setText("面别:    " + side);
+        String lineName = intent.getStringExtra(Constant.LINE_NAME);
+        tv_workOrder.setText(getResources().getString(R.string.WorkID) +":   "+ workId);
+        tv_line.setText(getResources().getString(R.string.Line) +":   "+  lineName);
+        tv_side.setText(getResources().getString(R.string.Side) +":   "+  side);
         Log.i(TAG, "workId==: " + workId);
         Log.i(TAG, "side==: " + side);
         Log.i(TAG, "lineName==: " + lineName);
+
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workId);
         map.put("side", side);
@@ -131,6 +130,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         argument = new Gson().toJson(map);
         Log.i(TAG, "argument==: " + argument);
 
+
     }
 
     @Override
@@ -138,14 +138,17 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.GONE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
+
         toolbarTitle.setText("备料");
         dataList.add(new FeederSupplyItem());
         CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
-                holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.c_efefef));
             }
 
             @Override
@@ -153,14 +156,13 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 return R.layout.feeder_supply_item;
             }
         };
-        recyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyTitle.setAdapter(adapterTitle);
+        recyclerViewTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewTitle.setAdapter(adapterTitle);
 
 
         adapter = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
-//                holder.setText(R.id.tv_location, item.getPosition());
                 holder.setText(R.id.tv_feederID, item.getFeederID());
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_module, item.getSlot());
@@ -180,9 +182,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                         break;
                 }
 
-
-
-
             }
 
             @Override
@@ -191,12 +190,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             }
 
         };
-        recyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        recyContent.setAdapter(adapter);
+        recyclerViewContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        recyclerViewContent.setAdapter(adapter);
 
 
     }
-
 
     @OnClick({R.id.tv_setting, R.id.btn_upload})
     public void onClick(View view) {
@@ -217,7 +215,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
-        recyContent.scrollToPosition(index);
+        if (index != -1){
+            recyclerViewContent.scrollToPosition(getLastMaterialIndex(mCurrentMaterial,dataSource));
+        }
         for (FeederSupplyItem item : dataSource) {
             if (item.getStatus() == 0) {
                 isAllHandleOVer = false;
@@ -239,7 +239,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         }
 
     }
-
 
     @Override
     public void onFailed(String message) {
@@ -305,9 +304,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         super.onScanSuccess(barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         try {
-            MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
-            mCurrentMaterialNumber = materialBlockBarCode.getDeltaMaterialNumber();
-            mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
+            mCurrentMaterial = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+            String mCurrentMaterialNumber = mCurrentMaterial.getDeltaMaterialNumber();
+            String mCurrentSerialNumber = mCurrentMaterial.getStreamNumber();
 
             Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialNumber);
             Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
@@ -316,16 +315,19 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 //            adapter.notifyDataSetChanged();
 
             Map<String, String> map = new HashMap<>();
+            map.put("work_order", workId);
+            map.put("side", side);
             map.put("material_no", mCurrentMaterialNumber);
             map.put("serial_no", mCurrentSerialNumber);
             map.put("work_order", workId);
             map.put("side", side);
 
+            argument = new Gson().toJson(map);
+
             Gson gson = new Gson();
             String argument = gson.toJson(map);
             Log.i(TAG, "argument== " + argument);
-            if (isMaterialExists(materialBlockBarCode)){
-
+            if (isMaterialExists(mCurrentMaterial)){
                 getPresenter().getFeederInsertionToSlotTimeStamp(argument);
             }else {
                 ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
@@ -358,29 +360,30 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         return super.onOptionsItemSelected(item);
     }
 
-
     public boolean isMaterialExists(MaterialBlockBarCode material) {
         boolean flag = false;
-        for (int i = 0; i < dataSource.size(); i++) {
+        int length = dataSource.size();
+        for (int i = 0; i < length; i++) {
             FeederSupplyItem feederSupplyItem = dataSource.get(i);
-            if (mCurrentMaterialNumber.equalsIgnoreCase(feederSupplyItem.getMaterialID()) && mCurrentSerialNumber.equalsIgnoreCase(feederSupplyItem.getSerialNumber())){
+            if (material.getDeltaMaterialNumber().equalsIgnoreCase(feederSupplyItem.getMaterialID()) && material.getStreamNumber().equalsIgnoreCase(feederSupplyItem.getSerialNumber())){
                 flag = true;
                 break;
-            }else {
-                flag = false;
             }
         }
-//        for (ModuleDownDetailsItem.RowsBean rowsBean : dataSource) {
-//            if (mCurrentMaterialID.equalsIgnoreCase(rowsBean.getMaterial_no()) && mCurrentSerialNumber.equalsIgnoreCase(rowsBean.getSerial_no())) {
-//                Log.i(TAG, "isMaterialExists: " + rowsBean.toString());
-//                flag = true;
-//                break;
-//            } else {
-//                flag = false;
-//                break;
-//            }
-//        }
-//        Log.i(TAG, "isMaterialExists: " + flag);
+
         return  flag;
+    }
+
+    public int getLastMaterialIndex(MaterialBlockBarCode material,List<FeederSupplyItem> dataList){
+        int length = dataList.size();
+        for (int i = 0; i < length; i++) {
+            FeederSupplyItem item = dataList.get(i);
+            if (item.getMaterialID().equalsIgnoreCase(material.getDeltaMaterialNumber()) && item.getSerialNumber().equalsIgnoreCase(material.getStreamNumber())){
+                index = i;
+                break;
+            }
+
+        }
+        return index;
     }
 }
