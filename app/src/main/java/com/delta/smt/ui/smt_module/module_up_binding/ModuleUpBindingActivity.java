@@ -375,6 +375,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         getPresenter().getMaterialAndFeederBindingResult(argument);
                     }
                 } catch (EntityNotFountException e) {
+
                     try {
                         parseMaterial(barcode, barCodeParseIpml);
 
