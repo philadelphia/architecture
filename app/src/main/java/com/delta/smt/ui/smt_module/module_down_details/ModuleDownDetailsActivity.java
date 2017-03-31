@@ -18,6 +18,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FeederBuffer;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -92,6 +93,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     private int flag = 1;
     private String argument;
+    private LinearLayoutManager linearLayoutManager;
 
 
     @Override
@@ -184,7 +186,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
         };
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
         recyclerViewContent.setLayoutManager(linearLayoutManager);
         recyclerViewContent.setAdapter(adapter);
     }
@@ -203,6 +205,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         Log.i(TAG, "index: == " + index);
         List<ModuleDownDetailsItem.RowsBean> rowsBean = data.getRows();
         dataSource.addAll(rowsBean);
+
         for (ModuleDownDetailsItem.RowsBean bean : dataSource) {
             if (bean.getDest().equalsIgnoreCase("1"))
                 dataSourceForCheckIn.add(bean);
@@ -288,7 +291,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         getPresenter().getAllModuleDownDetailsItems(argument);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -322,48 +324,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         switch (flag) {
             case 1:
                 try {
-                    MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
-                    mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
-                    mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
-                    mCurrentQuantity = materialBlockBarCode.getCount();
-                    getMatchedMaterialIndex(materialBlockBarCode);
-                    adapter.notifyDataSetChanged();
-                    recyclerViewContent.scrollToPosition(index);
-
-                    Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
-                    Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
-                    Map<String, String> map = new HashMap<>();
-                    map.put("work_order", mCurrentWorkOrder);
-                    map.put("material_no", materialBlockBarCode.getDeltaMaterialNumber());
-                    map.put("serial_no", materialBlockBarCode.getStreamNumber());
-                    map.put("side", side);
-                    map.put("qty", mCurrentQuantity);
-                    map.put("slot", mCurrentSlot);
-                    Gson gson = new Gson();
-                    String argument = gson.toJson(map);
-                    Log.i(TAG, "argument== " + argument);
-                    Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
-                    if (isMaterialExists(materialBlockBarCode)) {
-                        if (!dataSourceForCheckIn.isEmpty()) {
-                            if (isMaterialInFeederCheckInList(materialBlockBarCode)) {
-                                flag = 2;
-                                VibratorAndVoiceUtils.correctVibrator(this);
-                                VibratorAndVoiceUtils.correctVoice(this);
-                            } else {
-                                VibratorAndVoiceUtils.wrongVibrator(this);
-                                VibratorAndVoiceUtils.wrongVoice(this);
-                                ToastUtils.showMessage(this, "请先扫描待入库的料盘");
-                            }
-                        } else {
-                            flag = 2;
-                        }
-
-                    } else {
-                        flag = 1;
-                        VibratorAndVoiceUtils.wrongVibrator(this);
-                        VibratorAndVoiceUtils.wrongVoice(this);
-                        ToastUtils.showMessage(this, "该料盘不存在此工单，请重新扫描料盘或检查料盘二维码是否损坏");
-                    }
+                    parseMaterial(barcode, barCodeParseIpml);
                 } catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
@@ -400,22 +361,71 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
 
                 } catch (EntityNotFountException e1) {
-                    e1.printStackTrace();
-                    VibratorAndVoiceUtils.wrongVibrator(this);
-                    VibratorAndVoiceUtils.wrongVoice(this);
-                    Toast.makeText(this, "请扫描架位", Toast.LENGTH_SHORT).show();
-                    flag = 2;
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    e.printStackTrace();
-                    VibratorAndVoiceUtils.wrongVibrator(this);
-                    VibratorAndVoiceUtils.wrongVoice(this);
-                    Toast.makeText(this, "解析错误,请重新扫描架位", Toast.LENGTH_SHORT).show();
-                    flag = 2;
-                }
+                    try {
+                        parseMaterial(barcode, barCodeParseIpml);
+                    } catch (EntityNotFountException e) {
+                        e.printStackTrace();
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
+                        Toast.makeText(this, "请扫描架位", Toast.LENGTH_SHORT).show();
+                        flag = 2;
 
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
+                        Toast.makeText(this, "解析错误,请重新扫描架位", Toast.LENGTH_SHORT).show();
+                        flag = 2;
+                    }
+
+                }
                 break;
             default:
                 break;
+            }
+    }
+
+    private void parseMaterial(String barcode, BarCodeParseIpml barCodeParseIpml) throws EntityNotFountException {
+        MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+        mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
+        mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
+        mCurrentQuantity = materialBlockBarCode.getCount();
+        getMatchedMaterialIndex(materialBlockBarCode);
+        adapter.notifyDataSetChanged();
+        RecycleViewUtils.scrollToMiddle(linearLayoutManager,index,recyclerViewContent);
+
+        Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
+        Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
+        Map<String, String> map = new HashMap<>();
+        map.put("work_order", mCurrentWorkOrder);
+        map.put("material_no", materialBlockBarCode.getDeltaMaterialNumber());
+        map.put("serial_no", materialBlockBarCode.getStreamNumber());
+        map.put("side", side);
+        map.put("qty", mCurrentQuantity);
+        map.put("slot", mCurrentSlot);
+        Gson gson = new Gson();
+        String argument = gson.toJson(map);
+        Log.i(TAG, "argument== " + argument);
+        Log.i(TAG, "料盘已经扫描完成，接下来扫描料架: ");
+        if (isMaterialExists(materialBlockBarCode)) {
+            if (!dataSourceForCheckIn.isEmpty()) {
+                if (isMaterialInFeederCheckInList(materialBlockBarCode)) {
+                    VibratorAndVoiceUtils.correctVibrator(this);
+                    VibratorAndVoiceUtils.correctVoice(this);
+                } else {
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                    ToastUtils.showMessage(this, "请先扫描待入库的料盘");
+                }
+            }
+                flag = 2;
+
+
+        } else {
+            flag = 1;
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
+            ToastUtils.showMessage(this, "该料盘不存在此工单，请重新扫描料盘或检查料盘二维码是否损坏");
         }
     }
 

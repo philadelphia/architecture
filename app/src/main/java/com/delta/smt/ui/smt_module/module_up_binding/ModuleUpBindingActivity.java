@@ -23,6 +23,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -101,6 +102,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String serialNo;
     private String argument;
     private static final String TAG = "ModuleUpBindingActivity";
+    private LinearLayoutManager linearLayoutManager;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerModuleUpBindingComponent.builder().appComponent(appComponent).moduleUpBindingModule(new ModuleUpBindingModule(this)).build().inject(this);
@@ -149,7 +152,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         }
 
         recyclerViewTitle.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
+        recyclerViewContent.setLayoutManager(linearLayoutManager);
         dataList.add(new ModuleUpBindingItem.RowsBean("料号", "FeederID", "模组料站"));
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataList) {
             @Override
@@ -430,7 +434,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     public void setItemHighLightBasedOnMID(int position) {
         scan_position = position;
-        recyclerViewContent.scrollToPosition(position);
+        RecycleViewUtils.scrollToMiddle(linearLayoutManager, position, recyclerViewContent);
         adapter.notifyDataSetChanged();
     }
 

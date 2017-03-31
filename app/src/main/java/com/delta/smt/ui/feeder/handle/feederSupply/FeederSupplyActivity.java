@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -89,6 +90,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private String argument;
     private int index = -1;
     private MaterialBlockBarCode mCurrentMaterial;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void handError(String contents) {
@@ -190,7 +192,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             }
 
         };
-        recyclerViewContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
+        recyclerViewContent.setLayoutManager(linearLayoutManager);
         recyclerViewContent.setAdapter(adapter);
 
 
@@ -216,7 +219,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
         if (index != -1){
-            recyclerViewContent.scrollToPosition(getLastMaterialIndex(mCurrentMaterial,dataSource));
+            RecycleViewUtils.scrollToMiddle(linearLayoutManager, getLastMaterialIndex(mCurrentMaterial,dataSource), recyclerViewContent );
         }
         for (FeederSupplyItem item : dataSource) {
             if (item.getStatus() == 0) {
