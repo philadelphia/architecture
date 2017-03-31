@@ -10,7 +10,7 @@ import dagger.Component;
  * Author:   Tao.ZT.Zhang
  * Date:     2016/12/21.
  */
-
+@SuppressWarnings("all")
 @ActivityScope
 @Component(modules = SupplyModule.class, dependencies = AppComponent.class)
 public interface SupplyComponent {
