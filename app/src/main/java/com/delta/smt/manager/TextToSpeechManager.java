@@ -3,8 +3,10 @@ package com.delta.smt.manager;
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -23,16 +25,21 @@ public class TextToSpeechManager implements TextToSpeech.OnInitListener {
         this.mBufferedMessages = new ConcurrentLinkedQueue<String>();//实例化队列
         this.mTextToSpeech = new TextToSpeech(this.mContext, this);//实例化TTS
     }
-
     //初始化TTS引擎
     @Override
     public void onInit(int status) {
         Log.i("TextToSpeechManager", String.valueOf(status));
+
+        List<TextToSpeech.EngineInfo> engines = mTextToSpeech.getEngines();
+        for (TextToSpeech.EngineInfo engine : engines) {
+            Log.e("sss", "onInit: "+engine.name);
+        }
+
         if (status == TextToSpeech.SUCCESS) {
             int result = this.mTextToSpeech.setLanguage(Locale.CHINA);//设置识别语音为中文
             if (result == TextToSpeech.LANG_MISSING_DATA
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-              //  Toast.makeText(mContext, "语音数据丢失或不支持", Toast.LENGTH_SHORT).show();
+               Toast.makeText(mContext, "语音数据丢失或不支持", Toast.LENGTH_SHORT).show();
             }
 //            if(result==-1){
 //                this.mTextToSpeech.setLanguage(Locale.ENGLISH);

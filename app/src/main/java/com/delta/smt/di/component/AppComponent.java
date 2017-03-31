@@ -8,6 +8,7 @@ import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.utils.DeviceUuidFactory;
 import com.delta.smt.api.ApiService;
+import com.delta.smt.app.App;
 import com.delta.smt.di.module.MangerModule;
 import com.delta.smt.di.module.ServiceModule;
 import com.delta.smt.manager.TextToSpeechManager;
@@ -33,6 +34,8 @@ public interface AppComponent {
     WarningManger warningManger();
 
     DeviceUuidFactory deviceUuidFactory();
+
+    void inject(App app);
 
     TextToSpeechManager TEXT_TO_SPEECH_MANAGER();
 
