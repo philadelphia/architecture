@@ -33,21 +33,25 @@
             />
         <com.delta.libs.CountTimeView
             android:id="@+id/cv_countView"
-            android:layout_width="@dimen/px_120"
-            android:layout_height="@dimen/px_40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/px_10"
+            android:layout_marginTop="20dp"
             app:isCountUp="false"
             app:isShowDay="false"
             app:isShowHour="true"
-            app:isShowMillisecond="false"
             app:isShowMinute="true"
             app:isShowSecond="true"
+            app:isShowMillisecond="false"
+            app:suffixDayRightMargin="10dp"
             app:suffixGravity="center"
-            app:suffixTextColor="#000000"
-            app:suffixTextSize="@dimen/px_12"
-            app:timeTextColor="#000000"
-            app:timeTextSize="@dimen/px_60"
+            app:suffixHour=":"
+            app:suffixMinute=":"
+            app:suffixTextColor="#e61010"
+            app:suffixTextSize="17sp"
+            app:timeTextColor="#e60b0b"
+            app:timeTextSize="30sp"
             />
         </com.zhy.autolayout.AutoLinearLayout>
 </LinearLayout>
