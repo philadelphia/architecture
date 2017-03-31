@@ -154,8 +154,8 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     public void getMaterialLocationSucess() {
         flag = 2;
         //扫描成功震动并发声
-        VibratorAndVoiceUtils.correctVibrator(getActivity());
-        VibratorAndVoiceUtils.correctVoice(getActivity());
+        VibratorAndVoiceUtils.correctVibrator(getmActivity());
+        VibratorAndVoiceUtils.correctVoice(getmActivity());
         setItemHighLightBasedOnMID(materialNumber);
         mRecyContetn.scrollToPosition(scan_position);
         Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
@@ -183,8 +183,8 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         flag = 1;
         scan_position = -1;
         //扫描成功震动并发声
-        VibratorAndVoiceUtils.correctVibrator(getActivity());
-        VibratorAndVoiceUtils.correctVoice(getActivity());
+        VibratorAndVoiceUtils.correctVibrator(getmActivity());
+        VibratorAndVoiceUtils.correctVoice(getmActivity());
 
     }
 
