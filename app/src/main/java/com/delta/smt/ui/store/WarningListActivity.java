@@ -162,7 +162,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                     Log.e("info", mAmout + "");
                 }
                 holder.setText(R.id.pcb_code, item.getPcbCode());
-                holder.setText(R.id.pcb_time, item.getPcbCode());
+                holder.setText(R.id.pcb_time, item.getDateCode());
 
 //                if ("0".equals(String.valueOf(item.getAmount()))) {
 //
