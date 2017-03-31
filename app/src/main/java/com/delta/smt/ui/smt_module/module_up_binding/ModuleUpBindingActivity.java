@@ -9,6 +9,8 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -32,6 +34,7 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.ui.login.LoginActivity;
 import com.delta.smt.ui.smt_module.module_up_binding.di.DaggerModuleUpBindingComponent;
 import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
@@ -88,8 +91,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private CommonBaseAdapter<ModuleUpBindingItem.RowsBean> adapter;
     private List<ModuleUpBindingItem.RowsBean> dataList = new ArrayList<>();
     private List<ModuleUpBindingItem.RowsBean> dataSource = new ArrayList<>();
-    //二维码
-
     private int scan_position = -1;
     private String workItemID;
     private String side;
@@ -99,7 +100,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String materialBlockNumber;
     private String serialNo;
     private String argument;
-
+    private static final String TAG = "ModuleUpBindingActivity";
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerModuleUpBindingComponent.builder().appComponent(appComponent).moduleUpBindingModule(new ModuleUpBindingModule(this)).build().inject(this);
@@ -197,10 +198,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void onSuccess(ModuleUpBindingItem data) {
         ToastUtils.showMessage(this, data.getMsg());
-
+        state = 1;
         dataSource.clear();
         List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
         dataSource.addAll(rowsBeen);
+        Log.i(TAG, "onSuccess:后台返回的数据长度是： " + dataSource.size());
         adapter.notifyDataSetChanged();
 
     }
@@ -334,39 +336,20 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         switch (state) {
             case 1:
                 try {
-                    MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-
-                    showMessage.setVisibility(View.GONE);
-                    materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                    serialNo = materialBlockBarCode.getStreamNumber();
-                    if (!isExistInDataSourceAndHighLight(materialBlockNumber, serialNo, dataSource)) {
-                        VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
-                        VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                        showMessage.setText("该料盘不属于此套工单，请确认工单及扫描是否正确！");
-                        showMessage.setVisibility(View.VISIBLE);
-                    } else {
-                        if (isMaterialBinded(materialBlockBarCode)){
-                            VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
-                            VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                            Toast.makeText(this, "该料盘已经绑定", Toast.LENGTH_SHORT).show();
-                        }else {
-                            VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
-                            VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
-                        }
-
-                        state = 2;
-                    }
+                    parseMaterial(barcode, barCodeParseIpml);
 
                 } catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                     VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                     showMessage.setText("请先扫描料盘码！");
                     showMessage.setVisibility(View.VISIBLE);
+                    state = 1;
                 } catch (ArrayIndexOutOfBoundsException e) {
                     VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                     VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                     showMessage.setText("请先扫描料盘码！");
                     showMessage.setVisibility(View.VISIBLE);
+                    state = 1;
                 }
                 break;
             case 2:
@@ -393,20 +376,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     }
                 } catch (EntityNotFountException e) {
                     try {
-                        MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                        showMessage.setVisibility(View.GONE);
-                        materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
-                        serialNo = materialBlockBarCode.getStreamNumber();
-                        if (!isExistInDataSourceAndHighLight(materialBlockNumber, serialNo, dataSource)) {
-                            VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
-                            VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                            showMessage.setText("该料盘不属于此套工单，请确认工单及扫描是否正确！");
-                            showMessage.setVisibility(View.VISIBLE);
-                        } else {
-                            VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
-                            VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
-                            state = 2;
-                        }
+                        parseMaterial(barcode, barCodeParseIpml);
 
                     } catch (EntityNotFountException ee) {
                         ee.printStackTrace();
@@ -424,6 +394,35 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     e.printStackTrace();
                 }
                 break;
+        }
+    }
+
+    private void parseMaterial(String barcode, BarCodeParseIpml barCodeParseIpml) throws EntityNotFountException {
+        MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+        Log.i(TAG, "onScanSuccess: "+ barcode);
+        showMessage.setVisibility(View.GONE);
+        materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
+        serialNo = materialBlockBarCode.getStreamNumber();
+        Log.i(TAG, "materialBlockNumber: " + materialBlockNumber);
+        Log.i(TAG, "serialNo: " + serialNo
+        );
+        if (!isExistInDataSourceAndHighLight(materialBlockNumber, serialNo, dataSource)) {
+            VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+            VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
+            showMessage.setText("该料盘不属于此套工单，请确认工单及扫描是否正确！");
+            showMessage.setVisibility(View.VISIBLE);
+            state = 1;
+        } else {
+            if (isMaterialBinded(materialBlockBarCode)){
+                VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
+                Toast.makeText(this, "注意:该料盘已经绑定", Toast.LENGTH_SHORT).show();
+            }else {
+                VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
+                VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
+            }
+            state = 2;
+            Log.i(TAG, "onScanSuccess: "+"开始扫描架位");
         }
     }
 
@@ -512,7 +511,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
      boolean flag = false;
         for (ModuleUpBindingItem.RowsBean rowsBean : dataSource) {
             if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())){
-                if (rowsBean.getFeeder_id() != null){
+                if (!TextUtils.isEmpty(rowsBean.getFeeder_id())){
                    flag = true;
                     break;
                 }
@@ -521,4 +520,5 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         }
         return flag;
     }
+
 }
