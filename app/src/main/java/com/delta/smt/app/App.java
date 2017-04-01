@@ -19,11 +19,10 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.di.component.DaggerAppComponent;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.ActivityState;
+import com.delta.smt.manager.TextToSpeechManager;
 import com.delta.smt.service.warningService.WarningService;
-
+import javax.inject.Inject;
 import timber.log.Timber;
-
-
 /**
  * Created by V.Wenju.Tian on 2016/11/29.
  */
@@ -34,6 +33,8 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     private static int appCount = 0;
     private static Handler mainHander;
 
+    @Inject
+    TextToSpeechManager textToSpeechManager;
     private static Context mContenxt;
 
     public static Context getmContenxt() {
@@ -53,8 +54,9 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
         registerActivityLifecycleCallbacks(this);
         Intent intent = new Intent(this, WarningService.class);
         startService(intent);
-
     }
+
+
 
     public static Handler getMainHander() {
         return mainHander;

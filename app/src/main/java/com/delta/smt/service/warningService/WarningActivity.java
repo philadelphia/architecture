@@ -152,7 +152,6 @@ public class WarningActivity extends AppCompatActivity {
 
     //初始化界面
     private void initView() {
-
         setContentView(R.layout.dialog_warning);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         LinearLayout layout = (LinearLayout) findViewById(R.id.container);

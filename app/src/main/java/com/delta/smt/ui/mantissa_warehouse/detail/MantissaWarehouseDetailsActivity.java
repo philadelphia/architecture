@@ -23,6 +23,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -113,6 +114,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private String material_num = "";
     private String serial_num = "";
     private int index = 0;
+    private LinearLayoutManager content_LinerLayoutManager;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -209,7 +211,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             }
 
         };
-        mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        content_LinerLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
+        mRecyContetn.setLayoutManager(content_LinerLayoutManager);
         mRecyContetn.setAdapter(content_adapter);
         createBottomSheetDialog();
     }
@@ -351,10 +354,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 isOver = false;
             }
         }
-
-
         content_adapter.notifyDataSetChanged();
-        mRecyContetn.scrollToPosition(index);
+        RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecyContetn);
     }
 
     @Override

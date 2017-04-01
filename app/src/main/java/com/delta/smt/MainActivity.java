@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.commonlibs.utils.DeviceUtil;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -184,6 +185,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     @Override
     protected void initData() {
         checkTTS();
+        boolean appInstalled = DeviceUtil.isAppInstalled(this, "com.iflytek.tts");
+
+        Log.e(TAG, "initData: "+appInstalled);
         //6.0以上更新需要判断是否有写WRITE_EXTERNAL_STORAGE权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
