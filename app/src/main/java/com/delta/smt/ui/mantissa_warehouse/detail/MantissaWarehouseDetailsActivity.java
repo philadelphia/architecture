@@ -23,6 +23,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -360,8 +361,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             }
         }
         content_adapter.notifyDataSetChanged();
-        content_LinerLayoutManager.scrollToPositionWithOffset(index,0);
-       // RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecyContetn);
+       //content_LinerLayoutManager.scrollToPositionWithOffset(index,0);
+       RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecyContetn);
     }
 
     @Override
