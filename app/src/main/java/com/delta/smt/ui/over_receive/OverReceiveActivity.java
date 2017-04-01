@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,24 +24,29 @@ import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
-import com.delta.demacia.barcode.BarCodeIpml;
-import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.over_receive.di.DaggerOverReceiveComponent;
 import com.delta.smt.ui.over_receive.di.OverReceiveModule;
 import com.delta.smt.ui.over_receive.mvp.OverReceiveContract;
 import com.delta.smt.ui.over_receive.mvp.OverReceivePresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
+import com.delta.smt.widget.DialogLayout;
+import com.delta.smt.widget.WarningDialog;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,7 +69,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/15.
  */
 
-public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, BarCodeIpml.OnScanSuccessListener,CompoundButton.OnCheckedChangeListener {
+public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, CompoundButton.OnCheckedChangeListener {
 
     public String overReceiveAutomaticDebit = null;
     @BindView(R.id.toolbar)
@@ -95,7 +101,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     boolean isAllTimerEnd = true;
     @BindView(R.id.showMessage)
     TextView showMessage;
-    private BarCodeIpml barCodeIpml = new BarCodeIpml();
+    //private Barcode barCodeIpml = BarcodeFactory.getBarcode(this);
     private Gson gson = new Gson();
     private CommonBaseAdapter<OverReceiveWarning.RowsBean> adapterTitle;
     private CommonBaseAdapter<OverReceiveWarning.RowsBean> adapter;
@@ -124,6 +130,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             });
         }
     };
+    private WarningDialog warningDialog;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -134,19 +141,18 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     protected void initData() {
         automaticDebit.setOnCheckedChangeListener(this);
         overReceiveAutomaticDebit = SpUtil.getStringSF(OverReceiveActivity.this, "over_receive_automatic_debit");
-        //接收那种预警，没有的话自己定义常量
+
+        //接收那种预警
         warningManger.addWarning(Constant.EXCESS_ALARM_FLAG, getClass());
+        //需要定制的信息
+        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG, 0));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
-        getPresenter().getAllOverReceiveItems();
-        barCodeIpml.setOnGunKeyPressListener(this);
-        /*runOnUiThread(new Runnable() {      // UI thread
-            @Override
-            public void run() {
-            }
-        });*/
+
+        //getPresenter().getAllOverReceiveItems();
+        //barCodeIpml.setOnGunKeyPressListener(this);
     }
 
     @Override
@@ -234,16 +240,12 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     public void onSuccess(OverReceiveWarning data) {
-        //Toast.makeText(this, "onSuccess", Toast.LENGTH_SHORT).show();
         ToastUtils.showMessage(this, data.getMsg());
-        //if (data.getMsg().toLowerCase().equals("success")) {
-
         dataSource.clear();
         List<OverReceiveWarning.RowsBean> rowsBeanList = data.getRows();
         dataSource.addAll(rowsBeanList);
         adapter.notifyDataSetChanged();
         timer.schedule(task, 1000, 1000);
-        //
 
     }
 
@@ -299,6 +301,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         });
     }
 
+    /*@Override
+    public void onItemClick(View item, int position) {
+
+    }*/
+
     @OnClick({R.id.manual_debit, R.id.showMessage})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -310,11 +317,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                 break;
         }
     }
-
-    /*@Override
-    public void onItemClick(View item, int position) {
-
-    }*/
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -329,17 +331,74 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     }
 
     @Override
-    public void warningComing(String warningMessage) {
-        showDialog(warningMessage);
+    public void warningComing(String message) {
+        //showDialog(warningMessage);
+        Log.e(TAG, "warningComing: " + message);
+
+        if (warningDialog == null) {
+            warningDialog = createDialog(message);
+        }
+        if (!warningDialog.isShowing()) {
+            warningDialog.show();
+        }
+        updateMessage(message);
     }
+
+
+    public WarningDialog createDialog(String message) {
+        warningDialog = new WarningDialog(this);
+        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
+            @Override
+            public void onclick(View view) {
+                warningManger.setConsume(true);
+                getPresenter().getAllOverReceiveItems();
+                warningDialog.dismiss();
+            }
+        });
+        warningDialog.show();
+
+        return warningDialog;
+    }
+
+    /**
+     * type == 9  代表你要发送的是哪个
+     *
+     * @param message
+     */
+    private void updateMessage(String message) {
+        List<WaringDialogEntity> datas = warningDialog.getDatas();
+        datas.clear();
+        WaringDialogEntity warningEntity = new WaringDialogEntity();
+        warningEntity.setTitle("仓库房超领");
+        String content = "";
+        try {
+            JSONArray jsonArray = new JSONArray(message);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+                //可能有多种预警的情况
+                    Object message1 = jsonObject.get("message");
+                    content = content + message1 + "\n";
+            }
+            warningEntity.setContent(content + "\n");
+            datas.add(warningEntity);
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
 
-        if (barCodeIpml.isEventFromBarCode(event)) {
+        /*if (barCodeIpml.isEventFromBarCode(event)) {
             barCodeIpml.analysisKeyEvent(event);
             return true;
-        }
+        }*/
         return super.dispatchKeyEvent(event);
     }
 
@@ -347,11 +406,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     protected void onResume() {
         warningManger.registerWReceiver(this);
         super.onResume();
-        try {
+        /*try {
             barCodeIpml.hasConnectBarcode();
         } catch (DevicePairedNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void showDialog(String message) {
@@ -380,12 +439,13 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        barCodeIpml.onComplete();
+        //barCodeIpml.onComplete();
     }
 
     @Override
     protected void onStop() {
         warningManger.unregisterWReceiver(this);
+        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG, 1));
         super.onStop();
     }
 

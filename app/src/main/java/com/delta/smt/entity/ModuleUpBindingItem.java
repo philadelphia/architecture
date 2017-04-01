@@ -134,8 +134,20 @@ public class ModuleUpBindingItem {
             this.id = id;
         }
 
+        @Override
+        public String toString() {
+            return "RowsBean{" +
+                    "work_order='" + work_order + '\'' +
+                    ", material_no='" + material_no + '\'' +
+                    ", serial_no='" + serial_no + '\'' +
+                    ", feeder_id='" + feeder_id + '\'' +
+                    ", slot='" + slot + '\'' +
+                    ", qty='" + qty + '\'' +
+                    ", id='" + id + '\'' +
+                    '}';
+        }
 
-        /*private int id;
+/*private int id;
         private String material_num;
         private String serial_num;
         private String feeder_id;

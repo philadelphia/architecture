@@ -58,7 +58,7 @@
     <string name="error_cancel">取消</string>
     <string name="dialogresulttitle">盘点结果</string>
     <string name="result_cancel">继续盘点本架位</string>
-    <string name="result_alteration">完成盘点</string>
+    <string name="result_alteration">完成本架位盘点</string>
     <string name="ToolsFeedBack">治具入架位</string>
     <string name="pcbcheck">PCB库房盘点</string>
     <string name="ProductToolsBarCodePlus">治具二维码:</string>
@@ -87,8 +87,8 @@
     <string name="title_storehint">提示</string>
     <string name="storehint">您确认要进行点灯操作吗？</string>
     <string name="hasComplete">已完成</string>
-    <string name="startAndstop_startwork">开始盘点</string>
-    <string name="startAndstop_stopwork">结束盘点</string>
+    <string name="startAndstop_startwork">开始本次盘点</string>
+    <string name="startAndstop_stopwork">结束本次盘点</string>
     <string name="storage_counttv">数量：</string>
     <string name="continues">继续</string>
     <string name="affirm">确认</string>

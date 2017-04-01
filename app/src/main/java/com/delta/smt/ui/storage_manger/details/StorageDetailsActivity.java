@@ -56,6 +56,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -118,8 +120,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private CommonBaseAdapter<StorageDetails> undoList_adapter;
     private String mS;
     private String line_name;
-    private TextToSpeechManager textToSpeechManager;
-
+    @Inject
+    TextToSpeechManager textToSpeechManager;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -130,7 +132,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     protected void initData() {
-        textToSpeechManager = new TextToSpeechManager(this);
+        //textToSpeechManager = new TextToSpeechManager(App.getmContenxt());
         barCodeImp = new BarCodeParseIpml();
         part = getIntent().getStringExtra(Constant.WARE_HOUSE_NAME);
         work_order = getIntent().getStringExtra(Constant.WORK_ORDER);
@@ -263,8 +265,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
         issureToWareh(rows);
         tv_hint.setText(rows.getMessage());
-        textToSpeechManager.stop();
-        textToSpeechManager.readMessage(rows.getMessage());
+       textToSpeechManager.stop();
+       textToSpeechManager.readMessage(rows.getMessage());
         if (btnSwitch.isChecked()) {
             getPresenter().deduction(mS);
         }
@@ -341,7 +343,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     protected void onDestroy() {
-       textToSpeechManager.freeSource();
+       //textToSpeechManager.freeSource();
         super.onDestroy();
     }
 

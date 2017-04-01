@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
@@ -22,7 +23,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.delta.commonlibs.utils.DeviceUtil;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -64,7 +67,6 @@ import butterknife.OnClick;
 
 
 public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<Fuction>, MainContract.View {
-
 
     private static final int CODE = 100;
     //更新
@@ -182,7 +184,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
     @Override
     protected void initData() {
+        checkTTS();
+        boolean appInstalled = DeviceUtil.isAppInstalled(this, "com.iflytek.tts");
 
+        Log.e(TAG, "initData: "+appInstalled);
         //6.0以上更新需要判断是否有写WRITE_EXTERNAL_STORAGE权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -209,7 +214,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         fuctions.add(new Fuction("治具借出", R.drawable.ic_lend));
         fuctions.add(new Fuction("治具归还", R.drawable.ic_thereturn));
         fuctions.add(new Fuction("手补件", R.drawable.ic_handpatch));
-        fuctions.add(new Fuction("warningSample", R.drawable.title));
+       // fuctions.add(new Fuction("warningSample", R.drawable.title));
     }
     private void checkTTS() {
         Intent in = new Intent();
@@ -223,7 +228,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
     @Override
     public void onItemClick(View view, Fuction item, int position) {
-
 
         switch (item.getTitle()) {
             case "Feeder缓冲区":
@@ -386,5 +390,52 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODE) {
+            switch (resultCode) {
+                case TextToSpeech.Engine.CHECK_VOICE_DATA_PASS:
+                    Toast.makeText(this, "恭喜您，TTS可用", Toast.LENGTH_SHORT).show();
+                   // mTts = new TextToSpeech(this, this);
+                    break;
+                case TextToSpeech.Engine.CHECK_VOICE_DATA_FAIL:// 发音数据已经损坏
+                    // 下载TTS对应的资源
+                    Intent dataIntent = new Intent(
+                            TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                    startActivity(dataIntent);
+                    break;
+
+            }
+        }
     }
+    /**
+     * 安装语音相关资源包
+     */
+    private void installTTS() {
+        AlertDialog.Builder alertInstall = new AlertDialog.Builder(this)
+                .setTitle("缺少语音包")
+                .setMessage("下载语音包")
+                .setPositiveButton("去下载",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                // 下载eyes-free的语音数据包
+                                String ttsDataUrl = "http://eyes-free.googlecode.com/files/tts_3.1_market.apk";
+                                Uri ttsDataUri = Uri.parse(ttsDataUrl);
+                                Intent ttsIntent = new Intent(
+                                        Intent.ACTION_VIEW, ttsDataUri);
+                                startActivity(ttsIntent);
+                            }
+                        })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+        alertInstall.create().show();
+    }
+
 }
+

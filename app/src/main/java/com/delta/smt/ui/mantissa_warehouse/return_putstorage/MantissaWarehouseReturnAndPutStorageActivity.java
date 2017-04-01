@@ -78,16 +78,24 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         //此处的Title应该是 从网络获取的数量
         titles = new String[]{"入库", "退入主仓库"};
         //接收那种预警，没有的话自己定义常量
+        warningManger = WarningManger.getInstance();
         WarningManger.getInstance().addWarning(Constant.WAREH_MANTO_WAREH_ALARM_FLAG, getClass());
-        WarningManger.getInstance().addWarning(Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG, getClass());
+        WarningManger.getInstance().addWarning(Constant.WAREH_MANTISSA_ALARM_FLAG, getClass());
         warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG,0));
-        warningManger.sendMessage(new SendMessage(Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG,0));
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTISSA_ALARM_FLAG,0));
 
         //是否接收预警 可以控制预警时机
         WarningManger.getInstance().setReceive(true);
         //关键 初始化预警接口
         WarningManger.getInstance().setOnWarning(this);
 
+    }
+
+    @Override
+    public void onDestroy() {
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG,1));
+        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTISSA_ALARM_FLAG,1));
+        super.onDestroy();
     }
 
     @Override
@@ -126,6 +134,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         super.onSaveInstanceState(outState);
         Log.e(TAG, "onSaveInstanceState: "+currentTab);
     }
+
 
 
     @Override

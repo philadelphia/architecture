@@ -61,7 +61,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     @Inject
-    WarningManger warningManger;
+    WarningManger warningManager;
   
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
@@ -77,12 +77,12 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Override
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
-        warningManger.addWarning(Constant.PLUG_MOD_ALARM_FLAG, getClass());
+        warningManager.addWarning(Constant.PLUG_MOD_ALARM_FLAG, getClass());
 
         //是否接收预警 可以控制预警时机
-        warningManger.setReceive(true);
+        warningManager.setReceive(true);
         //关键 初始化预警接口
-        warningManger.setOnWarning(this);
+        warningManager.setOnWarning(this);
 
     }
 
@@ -92,9 +92,11 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("上模组");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
 
         myAdapter = new ItemCountViewAdapter<ModuleUpWarningItem.RowsBean>(this, dataList) {
             @Override
@@ -197,16 +199,16 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     protected void onStop() {
-        warningManger.unregisterWReceiver(this);
+        warningManager.unregisterWReceiver(this);
         super.onStop();
     }
 
     @Override
     protected void onResume() {
-        warningManger.registerWReceiver(this);
+        warningManager.registerWReceiver(this);
 
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.PLUG_MOD_ALARM_FLAG), 0));
+        warningManager.sendMessage(new SendMessage(String.valueOf(Constant.PLUG_MOD_ALARM_FLAG), 0));
         if (null != myAdapter) {
             myAdapter.startRefreshTime();
         }
@@ -219,7 +221,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Override
     public void warningComing(String warningMessage) {
         if (warningDialog == null) {
-            warningDialog = createDialog(warningMessage);
+            warningDialog = createDialog();
         }
         if (!warningDialog.isShowing()) {
             warningDialog.show();
@@ -227,13 +229,13 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         updateMessage(warningMessage);
     }
 
-    public WarningDialog createDialog(String message) {
+    public WarningDialog createDialog() {
 
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override
             public void onclick(View view) {
-                warningManger.setConsume(true);
+                warningManager.setConsume(true);
                 onRefresh();
 
 
@@ -250,7 +252,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("预警Sample");
+        warningEntity.setTitle("上模组预警:");
         String content = "";
         try {
             JSONArray jsonArray = new JSONArray(warningMessage);
@@ -284,7 +286,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             myAdapter.cancelRefreshTime();
         }
 
-        warningManger.sendMessage(new SendMessage(String.valueOf(Constant.PLUG_MOD_ALARM_FLAG), 1));
+        warningManager.sendMessage(new SendMessage(String.valueOf(Constant.PLUG_MOD_ALARM_FLAG), 1));
 
     }
 
@@ -301,6 +303,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     }
 
 
+    @SuppressWarnings("all")
     public String getWorkOrderIDCacheStr(List<String> workOrderIDCacheList) {
         String res = "";
         if (workOrderIDCacheList.size() > 0) {
