@@ -361,7 +361,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         }
         content_adapter.notifyDataSetChanged();
         content_LinerLayoutManager.scrollToPositionWithOffset(index,0);
-        //RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecyContetn);
+       // RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecyContetn);
     }
 
     @Override
@@ -413,7 +413,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     public void getFindCarFailed(String message) {
         flag = 1;
         tv_hint.setText(message);
-        //textToSpeechManager.readMessage(message);
+        textToSpeechManager.readMessage(message);
         //ToastUtils.showMessage(this, message);
     }
 
