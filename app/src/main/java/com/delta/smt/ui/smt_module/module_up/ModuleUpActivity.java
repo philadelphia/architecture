@@ -253,14 +253,15 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("上模组预警:");
-        String content = "";
+        StringBuilder sb = new StringBuilder();
         try {
             JSONArray jsonArray = new JSONArray(warningMessage);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                 Object message1 = jsonObject.get("message");
-                content = content + message1 + "\n";
+                sb.append(message1).append("\n");
             }
+            String content = sb.toString();
             warningEntity.setContent(content + "\n");
             datas.add(warningEntity);
             warningDialog.notifyData();
