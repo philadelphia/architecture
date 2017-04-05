@@ -35,6 +35,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -61,6 +62,8 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     EditText mTvLocationName;
     @BindView(R.id.recy_content)
     RecyclerView mRecyContent;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
 
 
     private int flag1 = 1;
@@ -94,24 +97,27 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     protected void initView() {
 
         toolbar.setTitle("");
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        mTvSetting.setVisibility(View.VISIBLE);
+        mTvSetting.setText("重置");
         toolbarTitle.setText("治具入架位");
 
-        adapter=new CommonBaseAdapter<ItemLocationVerfyList>(getContext(), data) {
+        adapter = new CommonBaseAdapter<ItemLocationVerfyList>(getContext(), data) {
             @Override
             protected void convert(CommonViewHolder holder, ItemLocationVerfyList item, int position) {
-                if (position==0){
+                if (position == 0) {
                     holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
-                }else {
-                    holder.setText(R.id.tv_tools_code,item.getBarcode());
-                    holder.setText(R.id.tv_location_code,item.getShelfBarcode());
-                    holder.setText(R.id.tv_location_name,item.getShelfName());
-                    holder.setText(R.id.tv_tools_type,item.getJigTypeName());
-                    holder.setText(R.id.tv_status,item.getLoanStatus());
+                } else {
+                    holder.setText(R.id.tv_tools_code, item.getBarcode());
+                    holder.setText(R.id.tv_location_code, item.getShelfBarcode());
+                    holder.setText(R.id.tv_location_name, item.getShelfName());
+                    holder.setText(R.id.tv_tools_type, item.getJigTypeName());
+                    holder.setText(R.id.tv_status, item.getLoanStatus());
                 }
-                if ("已入架位".equals(item.getLoanStatus())){
+                if ("已入架位".equals(item.getLoanStatus())) {
                     holder.itemView.setBackgroundColor(Color.GREEN);
                 }
 
@@ -122,7 +128,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
                 return R.layout.item_location_success;
             }
         };
-        mRecyContent.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayout.VERTICAL, false));
+        mRecyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mRecyContent.setAdapter(adapter);
 
     }
@@ -211,27 +217,27 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
     @Override
     public int getSubmitResult(JsonLocationVerfyRoot jsonLocationVerfyRoot) {
-        if (jsonLocationVerfyRoot.getCode()==0){
+        if (jsonLocationVerfyRoot.getCode() == 0) {
             data.clear();
-            data.add(0,new ItemLocationVerfyList("治具二维码", "架位二维码", "架位名称", "治具类型", "状态"));
+            data.add(0, new ItemLocationVerfyList("治具二维码", "架位二维码", "架位名称", "治具类型", "状态"));
             for (JsonLocationVerfyList mJ : jsonLocationVerfyRoot.getRows()) {
-                String status=new String();
-                switch (mJ.getLoanStatus()){
+                String status = new String();
+                switch (mJ.getLoanStatus()) {
                     case 1:
-                        status="未确认";
+                        status = "未确认";
                         break;
                     case 2:
-                        status="已确认";
+                        status = "已确认";
                         break;
                     case 3:
-                        status="已归还";
+                        status = "已归还";
                         break;
                     case 4:
-                        status="已入架位";
+                        status = "已入架位";
                         break;
                 }
 
-                ItemLocationVerfyList mItemLocationVerfyList=new ItemLocationVerfyList(mJ.getBarcode(),mJ.getShelfBarcode(),mJ.getShelfName(),mJ.getJigTypeName(),status);
+                ItemLocationVerfyList mItemLocationVerfyList = new ItemLocationVerfyList(mJ.getBarcode(), mJ.getShelfBarcode(), mJ.getShelfName(), mJ.getJigTypeName(), status);
                 data.add(mItemLocationVerfyList);
             }
             adapter.notifyDataSetChanged();
@@ -243,7 +249,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             flag1 = 1;
             SnackbarUtil.showMassage(getRootView(this), "治具入架位已完成，可以进行下一次操作。");
 
-        }else{
+        } else {
             data.clear();
             adapter.notifyDataSetChanged();
             mShiftBarcodeCodeEditText.setText("");
@@ -257,7 +263,6 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     }
 
 
-
     @Override
     public void Fail() {
         SnackbarUtil.showMassage(getRootView(this), "请求的数据不存在!");
@@ -266,5 +271,13 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     }
 
 
+    @OnClick(R.id.tv_setting)
+    public void onClick() {
 
+        mShiftBarcodeCodeEditText.setText("");
+        mProductToolsBarCodeEditText.setText("");
+        mTvLocationName.setText("");
+        SnackbarUtil.showMassage(getRootView(this), "状态已重置，请重新扫治具二维码。");
+        flag1 = 1;
+    }
 }
