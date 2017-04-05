@@ -19,9 +19,11 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.di.component.DaggerAppComponent;
 import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.ActivityState;
-import com.delta.smt.manager.TextToSpeechManager;
 import com.delta.smt.service.warningService.WarningService;
+import com.delta.ttsmanager.TextToSpeechManager;
+
 import javax.inject.Inject;
+
 import timber.log.Timber;
 /**
  * Created by V.Wenju.Tian on 2016/11/29.

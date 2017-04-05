@@ -53,7 +53,7 @@ public class DownloadProgressResponseBody extends ResponseBody {
             public long read(Buffer sink, long byteCount) throws IOException {
                 //增加当前读取的字节数，如果读取完成则返回-1
                 long bytesRead = super.read(sink, byteCount);
-                // read() returns the number of bytes read, or -1 if this source is exhausted.
+                // readMessage() returns the number of bytes readMessage, or -1 if this source is exhausted.
                 totalBytesRead += bytesRead != -1 ? bytesRead : 0;
 
                 //更新通知进度条
