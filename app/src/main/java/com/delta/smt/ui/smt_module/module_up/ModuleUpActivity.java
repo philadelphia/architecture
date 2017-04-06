@@ -117,11 +117,23 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getSide());
                 holder.setText(R.id.tv_product_name_main, "主板: " + moduleUpWarningItem.getProduct_name_main());
                 holder.setText(R.id.tv_product_name, "小板: " + moduleUpWarningItem.getProduct_name());
-                if ("204".equals(moduleUpWarningItem.getStatus())) {
-                    holder.setText(R.id.tv_status, "状态: " + "正在上模组");
-                } else if ("205".equals(moduleUpWarningItem.getStatus())) {
-                    holder.setText(R.id.tv_status, "状态: " + "上模组完成");
+                String status;
+                switch (moduleUpWarningItem.getStatus()){
+                    case "203":
+                        status = "接料完成";
+                        break;
+                    case "204":
+                        status = "正在上模组";
+                        break;
+                    case "205":
+                        status = "上模组完成";
+                        break;
+                    default:
+                        status = "未知";
+                        break;
                 }
+
+                holder.setText(R.id.tv_status, "状态: " + status);
                 holder.setText(R.id.tv_forecast_time, "预计上线时间: " + moduleUpWarningItem.getOnline_plan_start_time());
             }
         };
@@ -237,8 +249,6 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             public void onclick(View view) {
                 warningManager.setConsume(true);
                 onRefresh();
-
-
             }
         });
         warningDialog.show();
