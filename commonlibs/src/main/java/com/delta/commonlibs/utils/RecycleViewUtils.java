@@ -2,6 +2,7 @@ package com.delta.commonlibs.utils;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 /**
  * @description :
@@ -13,8 +14,16 @@ import android.support.v7.widget.RecyclerView;
 public class RecycleViewUtils {
 
     public static void scrollToMiddle(LinearLayoutManager mLinearLayoutManager, int n, RecyclerView mRecyclerView) {
+
+
         int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
         int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
-        mLinearLayoutManager.scrollToPositionWithOffset(n, mRecyclerView.getChildAt((lastItem - firstItem) / 2).getTop());
+        View childAt = mRecyclerView.getChildAt((lastItem - firstItem) / 2);
+        if(childAt!=null){
+
+            mLinearLayoutManager.scrollToPositionWithOffset(n, childAt.getTop());
+        }else {
+            mLinearLayoutManager.scrollToPositionWithOffset(n,0);
+        }
     }
 }

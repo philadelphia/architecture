@@ -69,7 +69,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @BindView(R.id.recy_content)
     RecyclerView recyclerViewContent;
     @BindView(R.id.hr_scrow)
-    HorizontalScrollView hrScrow;
+    HorizontalScrollView hrScrollView;
     @BindView(R.id.linearLayout)
     LinearLayout linearLayout;
     @BindView(R.id.tv_moduleID)
@@ -207,6 +207,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             case R.id.btn_upload:
                 getPresenter().upLoadToMES();
                 break;
+            default:
+                break;
+
         }
     }
 
