@@ -172,8 +172,8 @@ public abstract class BaseApplication extends Application implements ResponseErr
     }
 
     @Override
-    public void hanlderResponseError(Context context, Exception e) {
-        Timber.tag(TAG).w("------------>" + e.getMessage());
+    public void handlerResponseError(Context context, Exception e) {
+        Timber.tag(TAG).w("error" + e.getMessage());
 //        UiUtils.SnackbarText("net error");
         UiUtils.HandError("net error");
     }

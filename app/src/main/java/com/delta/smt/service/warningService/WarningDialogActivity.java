@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseCommonActivity;
 
+
 public class WarningDialogActivity extends BaseCommonActivity {
 
 

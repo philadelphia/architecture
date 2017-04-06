@@ -278,7 +278,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     @Override
     public void showEmptyView() {
         mLayoutStatusLayout1.showEmptyView();
-        mLayoutStatusLayout1.setErrorClick(new View.OnClickListener() {
+        mLayoutStatusLayout1.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getPresenter().getProductionLineDatas();

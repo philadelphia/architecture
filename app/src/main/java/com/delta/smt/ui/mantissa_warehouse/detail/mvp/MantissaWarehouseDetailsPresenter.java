@@ -51,14 +51,12 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
                 try {
                     getView().showErrorView();
                     getView().getFailed(throwable.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         });
 

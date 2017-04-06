@@ -73,6 +73,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
         bundle = new Bundle();
         storeName = SpUtil.getStringSF(this, Constant.STORAGE_NAME);
         getPresenter().getStorageSelect();
+
     }
 
     @Override
@@ -82,6 +83,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("仓库选择");
+
         adapter = new CommonBaseAdapter<StoreEntity>(getBaseContext(), mDataList) {
             @Override
             protected void convert(CommonViewHolder holder, StoreEntity item, int position) {
@@ -139,12 +141,37 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
     public void showErrorView() {
 
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getStorageSelect();
+            }
+        });
+    }
+
+    @Override
+    protected void handError(String contents) {
+        super.handError(contents);
+        statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getStorageSelect();
+            }
+        });
+
     }
 
     @Override
     public void showEmptyView() {
 
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getStorageSelect();
+            }
+        });
     }
 
     @OnClick({R.id.btn_storage_select})

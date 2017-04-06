@@ -361,8 +361,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             }
         }
         content_adapter.notifyDataSetChanged();
-       //content_LinerLayoutManager.scrollToPositionWithOffset(index,0);
-       RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecyContetn);
+        //content_LinerLayoutManager.scrollToPositionWithOffset(index,0);
+        RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecyContetn);
     }
 
     @Override

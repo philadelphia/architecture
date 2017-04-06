@@ -521,12 +521,26 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void showErrorView() {
 
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getStorageDetails(mS);
+                getPresenter().queryMaterailCar(mS);
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
 
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getStorageDetails(mS);
+                getPresenter().queryMaterailCar(mS);
+            }
+        });
     }
 
     @Override

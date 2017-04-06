@@ -35,7 +35,6 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpBindingItem;
-import com.delta.smt.ui.login.LoginActivity;
 import com.delta.smt.ui.smt_module.module_up_binding.di.DaggerModuleUpBindingComponent;
 import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
