@@ -53,7 +53,7 @@
             android:padding="20px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <TextView
+<!--        <TextView
             android:id="@+id/tv_material_station"
             android:textColor="@android:color/black"
             android:text="模组料站：061321"
@@ -61,12 +61,12 @@
             android:textSize="40px"
             android:padding="20px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" />-->
     <TextView
         android:id="@+id/tv_status"
         android:textColor="@android:color/black"
         android:text="状态：即将缺料"
-        android:layout_below="@+id/tv_material_station"
+        android:layout_below="@+id/tv_unused_materials"
         android:textSize="40px"
         android:padding="20px"
         android:layout_width="match_parent"
