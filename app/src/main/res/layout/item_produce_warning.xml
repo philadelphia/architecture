@@ -26,33 +26,47 @@
         android:padding="20px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <TextView
+        android:textColor="@android:color/black"
+        android:text="工单号："
+        android:id="@+id/tv"
+        android:layout_below="@+id/tv_produce_line"
+        android:textSize="40px"
+        android:padding="20px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <com.delta.smt.entity.MarqueeTextView
+            android:layout_toRightOf="@+id/tv"
             android:id="@+id/tv_word_code"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
             android:textColor="@android:color/black"
-            android:text="工单号：1213213132"
+            android:text="1213213132"
             android:layout_below="@+id/tv_produce_line"
             android:textSize="40px"
-            android:padding="20px"
-            android:layout_width="match_parent"
+            android:layout_marginTop="20px"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     <TextView
             android:id="@+id/tv_face"
             android:textColor="@android:color/black"
             android:text="面别：A"
-            android:layout_below="@+id/tv_word_code"
+            android:layout_below="@+id/tv"
             android:textSize="40px"
             android:padding="20px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/tv_unused_materials"
-            android:textColor="@android:color/black"
-            android:text="剩余料量：9000"
-            android:layout_below="@+id/tv_face"
-            android:textSize="40px"
-            android:padding="20px"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_unused_materials"
+        android:textColor="@android:color/black"
+        android:text="剩余料量：9000"
+        android:layout_below="@+id/tv_face"
+        android:textSize="40px"
+        android:padding="20px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 <!--        <TextView
             android:id="@+id/tv_material_station"
             android:textColor="@android:color/black"

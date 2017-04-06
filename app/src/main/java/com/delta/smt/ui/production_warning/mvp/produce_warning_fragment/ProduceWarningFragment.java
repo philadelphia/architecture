@@ -114,7 +114,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                 if ("接料预警".equals(itemWarningInfo.getTitle())) {
                     holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
                     holder.setText(R.id.tv_produce_line, "产线：" + itemWarningInfo.getProductionline());
-                    holder.setText(R.id.tv_word_code, "工单号：" + itemWarningInfo.getWorkcode());
+                    holder.setText(R.id.tv_word_code,itemWarningInfo.getWorkcode());
                     holder.setText(R.id.tv_face, "面别：" + itemWarningInfo.getFace());
                     holder.setText(R.id.tv_unused_materials, "剩余料量：" + itemWarningInfo.getUnusedmaterials());
 //                    holder.setText(R.id.tv_material_station, "模组料站：" + itemWarningInfo.getMaterialstation());
@@ -126,6 +126,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
                     holder.getView(R.id.tv_word_code).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_face).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.tv).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_unused_materials).setVisibility(View.VISIBLE);
 //                    holder.getView(R.id.tv_material_station).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_status).setVisibility(View.VISIBLE);
@@ -139,6 +140,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     holder.getView(R.id.tv_word_code).setVisibility(View.GONE);
                     holder.getView(R.id.tv_face).setVisibility(View.GONE);
                     holder.getView(R.id.tv_unused_materials).setVisibility(View.GONE);
+                    holder.getView(R.id.tv).setVisibility(View.GONE);
 //                    holder.getView(R.id.tv_material_station).setVisibility(View.GONE);
                     holder.getView(R.id.tv_status).setVisibility(View.GONE);
                     holder.getView(R.id.tv_unaccept_materials_num).setVisibility(View.GONE);
