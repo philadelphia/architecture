@@ -12,7 +12,7 @@
         android:gravity="center"
         android:text="料号"
         android:textColor="@android:color/black"
-        android:textSize="40px" />
+        android:textSize="40px"/>
 
     <TextView
         android:id="@+id/tv_material_station"
@@ -22,7 +22,7 @@
         android:gravity="center"
         android:text="模组料站"
         android:textColor="@android:color/black"
-        android:textSize="40px" />
+        android:textSize="40px"/>
 
     <TextView
         android:id="@+id/tv_remain_num"
@@ -34,7 +34,7 @@
         android:textColor="@android:color/black"
         android:textSize="40px" />
 
-    <TextView
+<!--    <TextView
         android:id="@+id/tv_unit"
         android:layout_width="270px"
         android:layout_height="match_parent"
@@ -42,7 +42,7 @@
         android:gravity="center"
         android:text="单位"
         android:textColor="@android:color/black"
-        android:textSize="40px" />
+        android:textSize="40px" />-->
 
     <TextView
         android:id="@+id/tv_location"

@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
@@ -35,7 +37,6 @@ import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseFragment;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
@@ -45,6 +46,7 @@ import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWa
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
+import com.delta.smt.widget.DialogLayout;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -59,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/22.
@@ -66,13 +69,15 @@ import butterknife.BindView;
 
 public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentPresenter>
         implements ProduceWarningFragmentContract.View,
-        BaseActivity.OnBarCodeSuccess, View.OnClickListener, ItemOnclick {
+        BaseActivity.OnBarCodeSuccess, View.OnClickListener, ItemOnclick, SwipeRefreshLayout.OnRefreshListener {
 
 
     @BindView(R.id.ryv_produce_warning)
     RecyclerView mRyvProduceWarning;
     @BindView(R.id.statusLayout)
     StatusLayout mStatusLayout;
+    @BindView(R.id.srf_refresh)
+    SwipeRefreshLayout mSrfRefresh;
 
 
     private ItemCountViewAdapter<ItemWarningInfo> mAdapter;
@@ -109,10 +114,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                 if ("接料预警".equals(itemWarningInfo.getTitle())) {
                     holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
                     holder.setText(R.id.tv_produce_line, "产线：" + itemWarningInfo.getProductionline());
-                    holder.setText(R.id.tv_word_code, "工单号：" + itemWarningInfo.getWorkcode());
+                    holder.setText(R.id.tv_word_code,itemWarningInfo.getWorkcode());
                     holder.setText(R.id.tv_face, "面别：" + itemWarningInfo.getFace());
                     holder.setText(R.id.tv_unused_materials, "剩余料量：" + itemWarningInfo.getUnusedmaterials());
-                    holder.setText(R.id.tv_material_station, "模组料站：" + itemWarningInfo.getMaterialstation());
+//                    holder.setText(R.id.tv_material_station, "模组料站：" + itemWarningInfo.getMaterialstation());
                     holder.setText(R.id.tv_status, "状态：" + itemWarningInfo.getStatus());
                     holder.setText(R.id.tv_unaccept_materials_num, "该线别待接料数：" + itemWarningInfo.getConnectMaterialCount());
 
@@ -121,8 +126,9 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
                     holder.getView(R.id.tv_word_code).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_face).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.tv).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_unused_materials).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.tv_material_station).setVisibility(View.VISIBLE);
+//                    holder.getView(R.id.tv_material_station).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_status).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_unaccept_materials_num).setVisibility(View.VISIBLE);
                 } else {
@@ -134,7 +140,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     holder.getView(R.id.tv_word_code).setVisibility(View.GONE);
                     holder.getView(R.id.tv_face).setVisibility(View.GONE);
                     holder.getView(R.id.tv_unused_materials).setVisibility(View.GONE);
-                    holder.getView(R.id.tv_material_station).setVisibility(View.GONE);
+                    holder.getView(R.id.tv).setVisibility(View.GONE);
+//                    holder.getView(R.id.tv_material_station).setVisibility(View.GONE);
                     holder.getView(R.id.tv_status).setVisibility(View.GONE);
                     holder.getView(R.id.tv_unaccept_materials_num).setVisibility(View.GONE);
 
@@ -149,7 +156,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mRyvProduceWarning.setLayoutManager(new LinearLayoutManager(getContext()));
         mRyvProduceWarning.setAdapter(mAdapter);
         mAdapter.setOnItemTimeOnclick(this);
-
+        mSrfRefresh.setOnRefreshListener(this);
     }
 
     @Override
@@ -254,8 +261,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     public void getItemWarningDatasFailed(String message) {
 /*        ToastUtils.showMessage(getContext(), message);*/
         if ("Error".equals(message)) {
-            Snackbar.make(getActivity().getCurrentFocus(),this.getString(R.string.server_error_message),Snackbar.LENGTH_LONG).show();
-        }else {
+            Snackbar.make(getActivity().getCurrentFocus(), this.getString(R.string.server_error_message), Snackbar.LENGTH_LONG).show();
+        } else {
             Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
         }
     }
@@ -264,7 +271,6 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     public void getItemWarningConfirmSuccess() {
         getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
     }
-
 
 
     //item点击事件处理
@@ -283,6 +289,9 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 //                makePopupWindow();
             Bundle bundle = new Bundle();
             bundle.putString(Constant.ACCEPT_MATERIALS_LINES, mItemWarningInfo.getProductionline());
+            bundle.putString(Constant.ACCEPT_MATERIALS_WORK, mItemWarningInfo.getWorkcode());
+            bundle.putString(Constant.ACCEPT_MATERIALS_FACE, mItemWarningInfo.getFace());
+            bundle.putString(Constant.ACCEPT_MATERIALS_NUM, mItemWarningInfo.getConnectMaterialCount());
             IntentUtils.showIntent(getmActivity(), AcceptMaterialsActivity.class, bundle);
             id = String.valueOf(mItemWarningInfo.getId());
 
@@ -503,4 +512,25 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         });
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    //下拉刷新
+    @Override
+    public void onRefresh() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+                mSrfRefresh.setRefreshing(false);
+            }
+        });
+
+
+    }
 }

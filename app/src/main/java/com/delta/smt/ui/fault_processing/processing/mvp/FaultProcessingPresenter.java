@@ -80,9 +80,9 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
 //                    getView().getFalutMessageFailed(falutMesages.getMsg());
 //                }
 //            }
-//        }, new Action1<Throwable>() {
+//        }, new Action1<UnifyThrowable>() {
 //            @Override
-//            public void call(Throwable throwable) {
+//            public void call(UnifyThrowable throwable) {
 //                try {
 //                    getView().showErrorView();
 //                    getView().getFalutMessageFailed(throwable.getMessage());

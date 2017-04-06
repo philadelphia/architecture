@@ -42,13 +42,13 @@ import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseputBean;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.WarehouseDetailBean;
-import com.delta.smt.manager.TextToSpeechManager;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.DaggerMantissaWarehouseDetailsComponent;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsModule;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsContract;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.delta.smt.utils.ViewUtils;
+import com.delta.ttsmanager.TextToSpeechManager;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -361,8 +361,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             }
         }
         content_adapter.notifyDataSetChanged();
-       //content_LinerLayoutManager.scrollToPositionWithOffset(index,0);
-       RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecyContetn);
+        //content_LinerLayoutManager.scrollToPositionWithOffset(index,0);
+        RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecyContetn);
     }
 
     @Override

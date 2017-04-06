@@ -2,6 +2,7 @@ package com.delta.smt.ui.production_warning.mvp.accept_materials_detail;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -40,7 +42,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  */
 
 public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresenter>
-        implements AcceptMaterialsContract.View{
+        implements AcceptMaterialsContract.View {
 
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -48,8 +50,6 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     TextView mTvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar mToolbar;
-    @BindView(R.id.tv_line_type)
-    TextView mTvLineType;
     @BindView(R.id.tv_material_station_num)
     TextView mTvMaterialStationNum;
     @BindView(R.id.recy_title)
@@ -58,18 +58,25 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     RecyclerView mRecyContent;
     @BindView(R.id.hr_scrow)
     HorizontalScrollView mHrScrow;
+    @BindView(R.id.tv_line)
+    TextView mTvLine;
+    @BindView(R.id.tv_face)
+    TextView mTvFace;
+    @BindView(R.id.tv_work_order)
+    TextView mTvWorkOrder;
 
     private CommonBaseAdapter<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> adapter;
     private CommonBaseAdapter<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> adapter1;
-    private List<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> dataList=new ArrayList();
-    private List<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> dataList1=new ArrayList();
+    private List<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> dataList = new ArrayList();
+    private List<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> dataList1 = new ArrayList();
 
-    private final String TAG="AcceptMaterialsActivity";
+    private final String TAG = "AcceptMaterialsActivity";
 
-    private String lines;
-    private String materialNumber,oldSerialNumber,newSerialNumber;
+    private String lines,work,face,material_number;
+    private String materialNumber, oldSerialNumber, newSerialNumber;
     private String streamNumber;
-    private int tag=0;
+    private int tag = 0;
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerAcceptMaterialsCompnent.builder().appComponent(appComponent)
@@ -78,14 +85,22 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
     @Override
     protected void initData() {
-        lines=getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_LINES);
-        Log.e(TAG, "initData: "+lines );
+        lines = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_LINES);
+        work = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_WORK);
+        face = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_FACE);
+        material_number = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_NUM);
+        Log.e(TAG, "initData: " + lines);
         getPresenter().getItemDatas(lines);
 
     }
 
     @Override
     protected void initView() {
+
+        mTvLine.setText("线别："+lines);
+        mTvMaterialStationNum.setText("待接料料站："+material_number);
+        mTvFace.setText("面别："+face);
+        mTvWorkOrder.setText("工单号："+work);
 
         //初始化titile
         mToolbar.setTitle("");
@@ -111,14 +126,14 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         mRecyTitle.setAdapter(adapter);
 
         //初始化item的适配器
-        adapter1=new CommonBaseAdapter<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean>(getContext(),dataList1) {
+        adapter1 = new CommonBaseAdapter<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean>(getContext(), dataList1) {
             @Override
             protected void convert(CommonViewHolder holder, ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean item, int position) {
-                holder.setText(R.id.tv_material_id,item.getPartNumber());
-                holder.setText(R.id.tv_material_station,item.getSlot());
-                holder.setText(R.id.tv_remain_num,String.valueOf(item.getQuantity()));
-                holder.setText(R.id.tv_unit,item.getUnit());
-                holder.setText(R.id.tv_location,item.getLocation());
+                holder.setText(R.id.tv_material_id, item.getPartNumber());
+                holder.setText(R.id.tv_material_station, item.getSlot());
+                holder.setText(R.id.tv_remain_num, String.valueOf(item.getQuantity()));
+//                holder.setText(R.id.tv_unit,item.getUnit());
+                holder.setText(R.id.tv_location, item.getLocation());
 
                 holder.itemView.setBackgroundColor(Color.YELLOW);
 
@@ -129,7 +144,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 return R.layout.accept_material_detail_item;
             }
         };
-        mRecyContent.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        mRecyContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyContent.setAdapter(adapter1);
 
 
@@ -150,7 +165,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                getPresenter().requestCloseLight(String.valueOf(mTvLineType.getText()));
+                getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
                 finish();
                 break;
 
@@ -163,9 +178,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     //返回键监听
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode==KeyEvent.KEYCODE_BACK)
-        {
-            getPresenter().requestCloseLight(String.valueOf(mTvLineType.getText()));
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -175,56 +189,56 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     public void onScanSuccess(String barcode) {
         //二维码识别和解析
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        Log.e(TAG, "onScanSuccess: "+barcode);
+        Log.e(TAG, "onScanSuccess: " + barcode);
 
         try {
             MaterialBlockBarCode mMaterialBlockBarCode =
                     (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
 
-            materialNumber =mMaterialBlockBarCode.getDeltaMaterialNumber();
-            streamNumber=mMaterialBlockBarCode.getStreamNumber();
-            Log.e(TAG, "onScanSuccess: "+"料号：" + materialNumber);
-            Log.e(TAG, "onScanSuccess: "+"流水号："+streamNumber);
-            Log.e(TAG, "onScanSuccess: "+dataList1.get(0).getId());
+            materialNumber = mMaterialBlockBarCode.getDeltaMaterialNumber();
+            streamNumber = mMaterialBlockBarCode.getStreamNumber();
+            Log.e(TAG, "onScanSuccess: " + "料号：" + materialNumber);
+            Log.e(TAG, "onScanSuccess: " + "流水号：" + streamNumber);
+            Log.e(TAG, "onScanSuccess: " + dataList1.get(0).getId());
 
-            if(materialNumber!=null&&streamNumber!=null){
-                if (tag==0){
+            if (materialNumber != null && streamNumber != null) {
+                if (tag == 0) {
                     if (dataList1.get(0).getPartNumber().equals(materialNumber)
-                            &&dataList1.get(0).getSerialNumber().equals(streamNumber)
-                            ){
+                            && dataList1.get(0).getSerialNumber().equals(streamNumber)
+                            ) {
                         tag++;
-                        oldSerialNumber=streamNumber;
+                        oldSerialNumber = streamNumber;
 
                         //扫码正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
-                        VibratorAndVoiceUtils. correctVoice (this);
+                        VibratorAndVoiceUtils.correctVoice(this);
 //                        ToastUtils.showMessage(getContext(), "旧料盘匹配正确，请扫新料盘！");
                         Snackbar.make(getCurrentFocus(), "旧料盘匹配正确，请扫新料盘！", Snackbar.LENGTH_SHORT).show();
-                    }else{
+                    } else {
 
                         //扫码错误时调用的声音和震动
-                        VibratorAndVoiceUtils. wrongVibrator (this);
-                        VibratorAndVoiceUtils. wrongVoice (this);
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
 //                        ToastUtils.showMessage(getContext(), "旧料盘匹配错误！");
                         Snackbar.make(getCurrentFocus(), "旧料盘匹配错误", Snackbar.LENGTH_SHORT).show();
                     }
-                }else{
-                    if(dataList1.get(0).getPartNumber().equals(materialNumber)
-                            &&!dataList1.get(0).getSerialNumber().equals(streamNumber)){
-                        tag=0;
-                        newSerialNumber=streamNumber;
+                } else {
+                    if (dataList1.get(0).getPartNumber().equals(materialNumber)
+                            && !dataList1.get(0).getSerialNumber().equals(streamNumber)) {
+                        tag = 0;
+                        newSerialNumber = streamNumber;
 
                         //扫码正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
-                        VibratorAndVoiceUtils.correctVoice (this);
+                        VibratorAndVoiceUtils.correctVoice(this);
 
-                        getPresenter().commitSerialNumber(oldSerialNumber,newSerialNumber);
+                        getPresenter().commitSerialNumber(oldSerialNumber, newSerialNumber);
 
-                    }else {
+                    } else {
 
                         //扫码错误时调用的声音和震动
-                        VibratorAndVoiceUtils.wrongVibrator (this);
-                        VibratorAndVoiceUtils.wrongVoice (this);
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
 //                        ToastUtils.showMessage(getContext(), "新料盘匹配错误！");
                         Snackbar.make(getCurrentFocus(), "新料盘匹配错误！", Snackbar.LENGTH_SHORT).show();
                     }
@@ -236,13 +250,13 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         } catch (EntityNotFountException e) {
 
             //扫码错误时调用的声音和震动
-            VibratorAndVoiceUtils. wrongVibrator (this);
-            VibratorAndVoiceUtils. wrongVoice (this);
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
 
 //            ToastUtils.showMessage(getContext(), "请扫描正确的料盘！");
             Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
             materialNumber = null;
-            streamNumber=null;
+            streamNumber = null;
             e.printStackTrace();
         }
     }
@@ -251,8 +265,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     @Override
     public void getAcceptMaterialsItemDatas(ItemAcceptMaterialDetail itemAcceptMaterialDetail) {
 
-        mTvLineType.setText(itemAcceptMaterialDetail.getRows().getLine());
-        mTvMaterialStationNum.setText(String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
+//        mTvLineType.setText(itemAcceptMaterialDetail.getRows().getLine());
+//        mTvMaterialStationNum.setText(String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
 
         dataList1.clear();
         dataList1.addAll(itemAcceptMaterialDetail.getRows().getLineMaterialEntities());
@@ -265,15 +279,15 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     public void getItemDatasFailed(String message) {
 //        ToastUtils.showMessage(this,message);
         if ("Error".equals(message)) {
-            Snackbar.make(getCurrentFocus(),this.getString(R.string.server_error_message),Snackbar.LENGTH_LONG).show();
-        }else {
+            Snackbar.make(getCurrentFocus(), this.getString(R.string.server_error_message), Snackbar.LENGTH_LONG).show();
+        } else {
             Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void showMessage(String message) {
-        ToastUtils.showMessage(this,message);
+        ToastUtils.showMessage(this, message);
     }
 
 
@@ -286,4 +300,10 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     }
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

@@ -42,13 +42,13 @@ import com.delta.smt.entity.IssureToWarehBody;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.StorageDetails;
-import com.delta.smt.manager.TextToSpeechManager;
 import com.delta.smt.ui.storage_manger.details.di.DaggerStorageDetailsComponent;
 import com.delta.smt.ui.storage_manger.details.di.StorageDetailsModule;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsContract;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.delta.smt.utils.ViewUtils;
+import com.delta.ttsmanager.TextToSpeechManager;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -132,7 +132,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     protected void initData() {
-        //textToSpeechManager = new TextToSpeechManager(App.getmContenxt());
+        //textToSpeechManager = new RawTextToSpeech(App.getmContenxt());
         barCodeImp = new BarCodeParseIpml();
         part = getIntent().getStringExtra(Constant.WARE_HOUSE_NAME);
         work_order = getIntent().getStringExtra(Constant.WORK_ORDER);
@@ -265,8 +265,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
         issureToWareh(rows);
         tv_hint.setText(rows.getMessage());
-       textToSpeechManager.stop();
-       textToSpeechManager.readMessage(rows.getMessage());
+        textToSpeechManager.stop();
+        textToSpeechManager.readMessage(rows.getMessage());
         if (btnSwitch.isChecked()) {
             getPresenter().deduction(mS);
         }
@@ -343,7 +343,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     protected void onDestroy() {
-       //textToSpeechManager.freeSource();
+        //textToSpeechManager.freeSource();
         super.onDestroy();
     }
 
@@ -389,7 +389,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void queryMaterailCar(List<MaterialCar.RowsBean> rows) {
         if (rows.size() != 0) {
             mTextView2.setText(rows.get(0).getCar_name());
-          //  tv_hint.setText(rows.get(0).getCar_name());
+            //  tv_hint.setText(rows.get(0).getCar_name());
         }
 
         state = 2;
@@ -521,12 +521,26 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void showErrorView() {
 
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getStorageDetails(mS);
+                getPresenter().queryMaterailCar(mS);
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
 
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getStorageDetails(mS);
+                getPresenter().queryMaterailCar(mS);
+            }
+        });
     }
 
     @Override

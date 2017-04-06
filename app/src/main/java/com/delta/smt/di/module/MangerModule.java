@@ -2,8 +2,9 @@ package com.delta.smt.di.module;
 
 import android.content.Context;
 
-import com.delta.smt.manager.TextToSpeechManager;
 import com.delta.smt.manager.WarningManger;
+import com.delta.ttsmanager.RawTextToSpeech;
+import com.delta.ttsmanager.TextToSpeechManager;
 
 import javax.inject.Singleton;
 
@@ -29,6 +30,8 @@ public class MangerModule {
     @Singleton
     @Provides
     TextToSpeechManager provderTextSpeechManager(Context context) {
-        return new TextToSpeechManager(context);
+        TextToSpeechManager textToSpeechManager = new TextToSpeechManager();
+        textToSpeechManager.setOnSpeakListener(new RawTextToSpeech(context));
+        return textToSpeechManager;
     }
 }

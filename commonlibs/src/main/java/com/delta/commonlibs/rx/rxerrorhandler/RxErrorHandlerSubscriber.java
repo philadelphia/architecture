@@ -1,5 +1,9 @@
 package com.delta.commonlibs.rx.rxerrorhandler;
 
+import android.widget.Toast;
+
+import com.delta.commonlibs.utils.NetworkUtil;
+
 import rx.Subscriber;
 
 /**
@@ -15,8 +19,24 @@ public abstract class RxErrorHandlerSubscriber<T> extends Subscriber<T> {
     }
 
     @Override
+    public void onStart() {
+        //可以加载loading
+        if (!NetworkUtil.isNetworkConnected(rxErrorHandler.getContext())) {
+
+            Toast.makeText(rxErrorHandler.getContext(), "当前网络不可用，请检查网络情况", Toast.LENGTH_SHORT).show();
+            // **一定要主动调用下面这一句**
+
+        }
+
+
+        // 显示进度条
+        super.onStart();
+    }
+
+    @Override
     public void onCompleted() {
 
+        //结束loading
     }
 
     @Override

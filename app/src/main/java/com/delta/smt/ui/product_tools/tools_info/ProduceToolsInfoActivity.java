@@ -19,7 +19,6 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.JsonProductToolsLocationRoot;
 import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.Product_mToolsInfo;
