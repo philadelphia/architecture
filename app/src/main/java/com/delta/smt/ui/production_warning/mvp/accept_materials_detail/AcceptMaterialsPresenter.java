@@ -57,7 +57,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
     }
 
 
-    //提交扫码成功数据
+    //提交新旧料盘数据
     public void commitSerialNumber(String oldSerialNumber, String newSerialNumber){
         Log.e("aaa", "commitSerialNumber:old: "+oldSerialNumber );
         Log.e("aaa", "commitSerialNumber:new: "+newSerialNumber );
@@ -65,6 +65,49 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         Map<String, String> map = new HashMap<>();
         map.put("oldSerialNumber", oldSerialNumber);
         map.put("newSerialNumber", newSerialNumber);
+        String argu = new Gson().toJson(map);
+
+
+        getModel().commitSerialNumber(argu).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                if ("0".equals(result.getCode())) {
+                    getView().commitSerialNumberSucess();
+                }else{
+                    getView().getItemDatasFailed(result.getMessage());
+                    Log.e("aaa", "请求错误 "+result.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().getItemDatasFailed("Error");
+                    Log.e("aaa", "请求异常 "+throwable.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    //提交料盘，feeder，料站成功数据
+    public void commitarcoderDate(String partNumber, String slot
+    ,String feeder,String line,String serialNumber,String barcode){
+        Log.e("eee", "partNumber: "+partNumber );
+        Log.e("eee", "slot: "+slot );
+        Log.e("eee", "feeder: "+feeder );
+        Log.e("eee", "line: "+line );
+        Log.e("eee", "serialNumber: "+serialNumber );
+        Log.e("eee", "barcode: "+barcode );
+
+        Map<String, String> map = new HashMap<>();
+        map.put("partNumber", partNumber);
+        map.put("slot", slot);
+        map.put("feeder", feeder);
+        map.put("line", line);
+        map.put("serialNumber", serialNumber);
+        map.put("barcode", barcode);
         String argu = new Gson().toJson(map);
 
 
