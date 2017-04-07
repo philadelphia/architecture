@@ -114,6 +114,8 @@ public class WarningSocketPresenter extends WsStatusListener implements Activity
 
                     if (topActivity != null) {
                         Log.e(TAG, "onMessage: " + topActivity.getClass().equals(warningManger.getWaringClass(type)));
+                        String[] split = type.split("_");
+                        type = split[0];
                         if (topActivity.getClass().equals(warningManger.getWaringClass(type))||activityMonitor.getPenultActivity().equals(warningManger.getWaringClass(type))) {
                             //WarningMessage warningMessage = GsonTools.changeGsonToBean(text, WarningMessage.class);
                             if (warningManger.isConsume()) {
