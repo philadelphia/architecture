@@ -255,7 +255,22 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     getPresenter().getputinstrage(s);
                     Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
-                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描架位！");
+                   // SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描架位！");
+
+                    try {
+                        MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+                        materialNumber = materiaBar.getDeltaMaterialNumber();
+                        serialNum = materiaBar.getStreamNumber();
+
+                        MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
+                        Gson gson = new Gson();
+                        String s = gson.toJson(bindBean);
+
+                        getPresenter().getMaterialLocation(s);
+                    } catch (EntityNotFountException ee) {
+                        SnackbarUtil.showMassage(mRecyContetn, "此处不能识别此码！");
+                    }
+
 
                 }
                 break;
