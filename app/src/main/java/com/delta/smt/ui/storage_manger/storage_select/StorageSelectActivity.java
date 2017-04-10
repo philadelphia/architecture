@@ -103,6 +103,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
             }
         };
         adapter.setOnItemClickListener(this);
+        //recyclerView.addItemDecoration(new SpacesItemDecoration(50,3));
         recyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(), 3));
         recyclerView.setAdapter(adapter);
     }
@@ -233,5 +234,31 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
         return super.onOptionsItemSelected(item);
     }
 
+
+//    class  SpacesItemDecoration extends RecyclerView.ItemDecoration{
+//
+//        private  int space;
+//        private int lines;
+//
+//        public SpacesItemDecoration(int space,int lines) {
+//            this.space = space;
+//            this.lines=lines;
+//        }
+//
+//        @Override
+//        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+//
+//
+//
+//            outRect.left=space;
+//           // outRect.right=space;
+//            outRect.bottom=space;
+//            //这两行是为了上下间距相同
+//        if(parent.getChildAdapterPosition(view)%lines==0){
+//            outRect.top=space;
+//        }
+//
+//        }
+//    }
 
 }

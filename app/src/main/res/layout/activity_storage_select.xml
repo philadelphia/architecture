@@ -16,23 +16,24 @@
         android:fitsSystemWindows="true">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40px"></android.support.v7.widget.RecyclerView>
+                android:layout_height="0dp"
+                android:layout_marginTop="40px"
+                android:layout_weight="1"></android.support.v7.widget.RecyclerView>
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_storage_select"
                 android:layout_width="250px"
                 android:layout_height="96px"
                 android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="130px"
-                android:layout_marginTop="453px"
+                android:layout_marginBottom="100px"
+                android:layout_marginTop="100px"
                 android:background="@drawable/btn_selector"
                 android:gravity="center"
                 android:text="@string/confirm"

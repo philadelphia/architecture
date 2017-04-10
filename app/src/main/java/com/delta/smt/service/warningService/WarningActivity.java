@@ -123,16 +123,18 @@ public class WarningActivity extends AppCompatActivity {
             String[] split = type.split("_");
             type = split[0];
             types.add(type);
-            WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
-            if (titleDatas.containsKey(type)) {
-                if (split.length==1){
-                    waringDialogEntity.setTitle(titleDatas.get(type));
-                }else {
-                    waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
+            if(!types.contains(type)){
+                WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
+                if (titleDatas.containsKey(type)) {
+                    if (split.length==1){
+                        waringDialogEntity.setTitle(titleDatas.get(type));
+                    }else {
+                        waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
+                    }
+                    waringDialogEntity.setContent("");
                 }
-                waringDialogEntity.setContent("");
+                waringDialogEntities.add(waringDialogEntity);
             }
-            waringDialogEntities.add(waringDialogEntity);
         }
         for (int i1 = 0; i1 < types.size(); i1++) {
             for (int i = 0; i < jsonArray.length(); i++) {
