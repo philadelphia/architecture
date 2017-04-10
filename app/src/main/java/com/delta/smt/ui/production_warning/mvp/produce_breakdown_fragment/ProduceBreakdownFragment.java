@@ -37,13 +37,13 @@ import butterknife.ButterKnife;
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
-public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragmentPresenter> implements ProduceBreakdownFragmentContract.View{
+public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragmentPresenter> implements ProduceBreakdownFragmentContract.View, SwipeRefreshLayout.OnRefreshListener {
 
 
     @BindView(R.id.ryv_produce_breakdown)
     RecyclerView mRyvProduceBreakdown;
-/*    @BindView(R.id.srf_refresh)
-    SwipeRefreshLayout mSrfRefresh;*/
+    @BindView(R.id.srf_refresh)
+    SwipeRefreshLayout mSrfRefresh;
     private ItemCountViewAdapter<ItemBreakDown> mAdapter;
     private List<ItemBreakDown> datas = new ArrayList<>();
 
@@ -86,7 +86,7 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
 
         mRyvProduceBreakdown.setLayoutManager(new LinearLayoutManager(getContext()));
         mRyvProduceBreakdown.setAdapter(mAdapter);
-//        mSrfRefresh.setOnRefreshListener(this);
+        mSrfRefresh.setOnRefreshListener(this);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
         return rootView;
     }
 
-/*    @Override
+    @Override
     public void onRefresh() {
         new Handler().post(new Runnable() {
             @Override
@@ -189,5 +189,5 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
                 mSrfRefresh.setRefreshing(false);
             }
         });
-    }*/
+    }
 }

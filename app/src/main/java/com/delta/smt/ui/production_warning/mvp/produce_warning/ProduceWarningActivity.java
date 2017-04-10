@@ -279,8 +279,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     private void updateMessage(String message) {
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         List<String> types = new ArrayList<>();
-        List<String> content=new ArrayList<>();
-//        String content = "";
+//        List<String> content=new ArrayList<>();
+        String content = "";
         datas.clear();
 
         try {
@@ -295,8 +295,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                 if(!types.contains(type)){
                     types.add(type);
                     WaringDialogEntity warningEntity = new WaringDialogEntity();
-                    warningEntity.setTitle(type+"的预警信息");
-                    warningEntity.setContent(jsonObject.getString("message"));
+//                    warningEntity.setTitle(type+"的预警信息");
+//                    warningEntity.setContent(jsonObject.getString("message"));
                     datas.add(warningEntity);
                 }
 
@@ -306,10 +306,15 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     String type = jsonObject.getString("type");
                     String[] split = type.split("_");
-                    if (types.get(i1).equals(split[0])) {
-                        String content1 = datas.get(i1).getContent();
+                    if (types.get(i1).equals(split[1])) {
+
+                        if (datas.get(i1).getContent()!=null) {
+                            content = datas.get(i1).getContent();
+                        }
+
                         Object message1 = jsonObject.get("message");
-                        datas.get(i1).setContent(content1 + message1 + "\n");
+                        datas.get(i1).setTitle(types.get(i1)+"的预警信息");
+                        datas.get(i1).setContent(content+message1 + "\n");
                     }
                 }
             }
@@ -371,6 +376,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
         return waringDialogEntities;
     }
+
     public WarningDialog createDialog(String message) {
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
