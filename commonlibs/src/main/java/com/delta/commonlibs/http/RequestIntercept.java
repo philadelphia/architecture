@@ -1,7 +1,9 @@
 package com.delta.commonlibs.http;
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.delta.commonlibs.utils.NetworkUtil;
 import com.delta.commonlibs.utils.ZipHelper;
 
 import java.io.ByteArrayOutputStream;
@@ -28,11 +30,23 @@ public class RequestIntercept implements Interceptor {
 
     public RequestIntercept(GlobeHttpHandler handler, Context context) {
         this.mHandler = handler;
+        this.context = context;
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
 
+
+        if (!NetworkUtil.isNetworkConnected(context)) {
+
+
+            Intent intent = new Intent("com.delta.smt");
+            intent.putExtra("type", "showToast");
+            intent.putExtra("content", "此网络不可用，请检查网络！");
+            intent.putExtra("long", false);
+            context.sendBroadcast(intent);
+            // ToastUtils.showMessage(context,"dsf");
+        }
         Request request = chain.request();
         Buffer requestbuffer = new Buffer();
         if (request.body() != null) {
