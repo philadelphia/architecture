@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.smt.app.App;
 import com.delta.smt.entity.EventNothing;
 import com.zhy.autolayout.AutoFrameLayout;
@@ -206,6 +207,10 @@ public abstract class BaseCommonActivity extends SupportActivity {
                     case "handError"://处理错误
                         String contents = intent.getStringExtra("content");
                         handError(contents);
+                        break;
+                    case"showToast":
+                        String toastText = intent.getStringExtra("content");
+                        ToastUtils.showMessage(BaseCommonActivity.this,toastText);
                         break;
                     case "killAll":
                         LinkedList<BaseCommonActivity> copy;

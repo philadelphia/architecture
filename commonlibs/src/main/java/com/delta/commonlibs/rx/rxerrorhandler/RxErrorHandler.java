@@ -49,9 +49,7 @@ public class RxErrorHandler {
     }
 
     public void handleError(Throwable e)
-
     {
-
         if (responseErrorListener != null) {
             UnifyThrowable ex;
             if (e instanceof HttpException) {
