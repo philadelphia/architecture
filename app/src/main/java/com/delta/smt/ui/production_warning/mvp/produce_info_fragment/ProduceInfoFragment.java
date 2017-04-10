@@ -41,13 +41,13 @@ import butterknife.ButterKnife;
  */
 
 public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresenter>
-        implements ProduceInfoFragmentContract.View, CommonBaseAdapter.OnItemClickListener<ItemInfo>, SwipeRefreshLayout.OnRefreshListener {
+        implements ProduceInfoFragmentContract.View, CommonBaseAdapter.OnItemClickListener<ItemInfo> {
 
 
     @BindView(R.id.ryv_produce_info)
     RecyclerView mRyvProduceInfo;
-    @BindView(R.id.srf_refresh)
-    SwipeRefreshLayout mSrfRefresh;
+/*    @BindView(R.id.srf_refresh)
+    SwipeRefreshLayout mSrfRefresh;*/
     private CommonBaseAdapter<ItemInfo> mAdapter;
     private List<ItemInfo> datas = new ArrayList<>();
 
@@ -85,7 +85,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         mRyvProduceInfo.setLayoutManager(new LinearLayoutManager(getContext()));
         mRyvProduceInfo.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
-        mSrfRefresh.setOnRefreshListener(this);
+//        mSrfRefresh.setOnRefreshListener(this);
 
     }
 
@@ -189,7 +189,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         return rootView;
     }
 
-
+/*
     //下拉刷新
     @Override
     public void onRefresh() {
@@ -200,5 +200,5 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
                 mSrfRefresh.setRefreshing(false);
             }
         });
-    }
+    }*/
 }

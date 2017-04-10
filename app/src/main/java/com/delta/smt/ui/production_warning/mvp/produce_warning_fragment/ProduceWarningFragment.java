@@ -241,15 +241,13 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         datas.clear();
 
         for (int i = 0; i < itemWarningInfo.size(); i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-            try {
-                Date parse = format.parse(itemWarningInfo.get(i).getTime());
-                Log.e("aaa", "getItemWarningDatas: " + parse.getTime());
-                itemWarningInfo.get(i).setEnd_time(parse.getTime());
+/*            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+                Date parse = format.parse(itemWarningInfo.get(i).getTime());*/
+                Log.e("aaa", "getItemWarningDatas: " + itemWarningInfo.get(i).getTime());
+                long time=System.currentTimeMillis();
+                itemWarningInfo.get(i).setEnd_time(time+itemWarningInfo.get(i).getTime()*1000);
                 itemWarningInfo.get(i).setEntityId(i);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+
         }
 
         datas.addAll(itemWarningInfo);
