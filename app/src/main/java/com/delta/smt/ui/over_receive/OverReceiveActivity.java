@@ -151,7 +151,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         //关键 初始化预警接口
         warningManger.setOnWarning(this);
 
-        //getPresenter().getAllOverReceiveItems();
+        getPresenter().getAllOverReceiveItems();
         //barCodeIpml.setOnGunKeyPressListener(this);
     }
 
@@ -439,13 +439,14 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        warningManger.unregisterWReceiver(this);
+        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG, 1));
         //barCodeIpml.onComplete();
     }
 
     @Override
     protected void onStop() {
-        warningManger.unregisterWReceiver(this);
-        warningManger.sendMessage(new SendMessage(Constant.EXCESS_ALARM_FLAG, 1));
+
         super.onStop();
     }
 
@@ -514,4 +515,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             }
         }
     }
+
+
 }
