@@ -211,8 +211,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                             ) {
                         flag++;
                         oldSerialNumber = streamNumber;
-
-                        //扫码正确时调用的声音和震动
+6
+                        //扫码 正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
                         VibratorAndVoiceUtils.correctVoice(this);
                         Snackbar.make(getCurrentFocus(), "旧料盘匹配正确，请扫新料盘！", Snackbar.LENGTH_SHORT).show();
@@ -316,11 +316,11 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
         else if (flag==3){
 
-            slot=barcode;
+/*            slot=barcode;
             flag=0;
-            getPresenter().commitarcoderDate(dataList1.get(0).getPartNumber(),slot,feeder,lines,serialNumber,barcode1);
+            getPresenter().commitarcoderDate(dataList1.get(0).getPartNumber(),slot,feeder,lines,serialNumber,barcode1);*/
 
-/*            //料站
+            //料站
             try {
 
                 MaterialStation mMaterialStation= (MaterialStation) barCodeParseIpml.getEntity(barcode,BarCodeType.MATERIAL_STATION);
@@ -335,7 +335,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
                 Snackbar.make(getCurrentFocus(), "请扫描正确的料站！", Snackbar.LENGTH_SHORT).show();
                 e.printStackTrace();
-            }*/
+            }
 
         }
 

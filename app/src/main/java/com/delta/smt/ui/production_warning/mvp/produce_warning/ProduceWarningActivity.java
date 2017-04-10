@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.WrapperListAdapter;
 
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
@@ -86,7 +87,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     private WarningDialog alertDialog;
     private boolean item_run_tag = false;
     private String lastWarningMessage;
-
+    public Map<String, String> titleDatas = new HashMap<>();
     private int warning_number, breakdown_number, info_number;
 
     @Override
@@ -183,16 +184,19 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     @Override
     protected void onStop() {
         Log.e(TAG, "onStop: ");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
         warningManger.unregisterWReceiver(this);
         for (int mI = 0; mI < line.length; mI++) {
             //需要定制的信息
 //            warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"-"+line[mI], 0));
             warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"_"+line[mI],1));
         }
-
-        super.onStop();
+        super.onDestroy();
     }
-
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -274,12 +278,55 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     private void updateMessage(String message) {
         List<WaringDialogEntity> datas = warningDialog.getDatas();
-        datas.clear();
-        WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("预警信息");
+        List<String> types = new ArrayList<>();
+//        List<String> content=new ArrayList<>();
         String content = "";
+        datas.clear();
+
         try {
-            JSONArray jsonArray = new JSONArray(message);
+            JSONArray jsonArray= new JSONArray(message);
+            for (int mI = 0; mI < jsonArray.length(); mI++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(mI);
+                String type = jsonObject.getString("type");
+                String[] split = type.split("_");
+                if(split.length>1){
+                    type = split[1];
+                }
+                if(!types.contains(type)){
+                    types.add(type);
+                    WaringDialogEntity warningEntity = new WaringDialogEntity();
+//                    warningEntity.setTitle(type+"的预警信息");
+//                    warningEntity.setContent(jsonObject.getString("message"));
+                    datas.add(warningEntity);
+                }
+
+            }
+            for (int i1 = 0; i1 < types.size(); i1++) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String type = jsonObject.getString("type");
+                    String[] split = type.split("_");
+                    if (types.get(i1).equals(split[1])) {
+
+                        if (datas.get(i1).getContent()!=null) {
+                            content = datas.get(i1).getContent();
+                        }
+
+                        Object message1 = jsonObject.get("message");
+                        datas.get(i1).setTitle(types.get(i1)+"的预警信息");
+                        datas.get(i1).setContent(content+message1 + "\n");
+                    }
+                }
+            }
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+/*        try {
+
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
 
@@ -292,7 +339,42 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
             warningDialog.notifyData();
         } catch (JSONException e) {
             e.printStackTrace();
+        }*/
+    }
+    private List<WaringDialogEntity> getWarningEntities(JSONArray jsonArray) throws JSONException {
+        List<String> types = new ArrayList<>();
+        List<WaringDialogEntity> waringDialogEntities = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String type = jsonObject.getString("type");
+            String[] split = type.split("_");
+            type = split[0];
+            types.add(type);
+            WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
+            if (titleDatas.containsKey(type)) {
+                if (split.length==1){
+                    waringDialogEntity.setTitle(titleDatas.get(type));
+                }else {
+                    waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
+                }
+                waringDialogEntity.setContent("");
+            }
+            waringDialogEntities.add(waringDialogEntity);
         }
+        for (int i1 = 0; i1 < types.size(); i1++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String type = jsonObject.getString("type");
+                String[] split = type.split("_");
+                if (types.get(i1).equals(split[0])) {
+                    String content = waringDialogEntities.get(i1).getContent();
+                    Object message1 = jsonObject.get("message");
+                    waringDialogEntities.get(i1).setContent(content + message1 + "\n");
+                }
+            }
+        }
+
+        return waringDialogEntities;
     }
 
     public WarningDialog createDialog(String message) {
