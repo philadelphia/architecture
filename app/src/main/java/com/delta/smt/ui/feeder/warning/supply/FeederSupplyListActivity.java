@@ -136,26 +136,23 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     }
 
     private void updateMessage(String warningMessage) {
-
-        List<WaringDialogEntity> datas = warningDialog.getDatas();
-        datas.clear();
+        List<WaringDialogEntity> dataList = warningDialog.getDatas();
+        dataList.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("Feeder预警:");
-        String content ="";
+       StringBuilder sb = new StringBuilder();
         try {
             JSONArray jsonArray = new JSONArray(warningMessage);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
-
                 //可能有多种预警的情况
-
                     Object message1 = jsonObject.get("message");
-                    content=content+message1+"\n";
-
+                    sb.append(message1).append("\n");
 
             }
+            String content = sb.toString();
             warningEntity.setContent(content + "\n");
-            datas.add(warningEntity);
+            dataList.add(warningEntity);
             warningDialog.notifyData();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -266,7 +263,6 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     @Override
     protected void onStop() {
         super.onStop();
-
         Log.i(TAG, "onResume: ");
         warningManager.unregisterWReceiver(this);
     }
@@ -309,7 +305,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     }
 
 
-    public void onRefresh(){
+    private void onRefresh(){
         getPresenter().getAllSupplyWorkItems();
     }
 

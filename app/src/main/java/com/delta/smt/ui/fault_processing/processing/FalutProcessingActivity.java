@@ -220,12 +220,24 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     public void showErrorView() {
 
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getFaultProcessingMessages(paramter);
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
 
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getFaultProcessingMessages(paramter);
+            }
+        });
     }
 
     @OnClick({R.id.tv_setting})

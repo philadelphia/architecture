@@ -58,9 +58,9 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 //                    getView().showErrorView();
 //                }
 //            }
-//        }, new Action1<Throwable>() {
+//        }, new Action1<UnifyThrowable>() {
 //            @Override
-//            public void call(Throwable throwable) {
+//            public void call(UnifyThrowable throwable) {
 //                try {
 //                    getView().onFailed(throwable.getMessage());
 //                } catch (Exception e) {

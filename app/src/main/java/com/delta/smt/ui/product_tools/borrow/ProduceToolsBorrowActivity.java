@@ -1,7 +1,6 @@
 package com.delta.smt.ui.product_tools.borrow;
 
 import android.content.Intent;
-import android.net.http.LoggingEventHandler;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +18,6 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ProductWorkItem;
-import com.delta.smt.ui.product_tools.MyCompare;
 import com.delta.smt.ui.product_tools.borrow.di.DaggerProduceToolsBorrowComponent;
 import com.delta.smt.ui.product_tools.borrow.di.ProduceToolsBorrowModule;
 import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowContract;
@@ -27,13 +25,10 @@ import com.delta.smt.ui.product_tools.borrow.mvp.ProduceToolsBorrowPresenter;
 import com.delta.smt.ui.product_tools.tools_info.ProduceToolsInfoActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 
-import static com.delta.smt.R.id.logo;
-import static com.delta.smt.R.id.statusLayout;
 import static com.delta.smt.base.BaseApplication.getContext;
 
 /**

@@ -116,6 +116,10 @@ public class Constant {
     public static String FAULT_ID = "fault_id";
     public static String PRODUCTION_LINE = "production_line";
     public static String ACCEPT_MATERIALS_LINES = "accept_materials_line";
+    public static String ACCEPT_MATERIALS_NUM = "accept_materials_num";
+    public static String ACCEPT_MATERIALS_FACE = "accept_materials_face";
+    public static String ACCEPT_MATERIALS_WORK = "accept_materials_work";
+
     public static String CONDITION = null;
 
     //后台需要判断的字段

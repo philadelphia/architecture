@@ -1,6 +1,7 @@
 package com.delta.commonlibs.di.module;
 
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.delta.commonlibs.http.GlobeHttpHandler;
@@ -97,8 +98,8 @@ public class ClientModule {
 
     @Singleton
     @Provides
-    Interceptor provideIntercept() {
-        return new RequestIntercept(mHandler);//打印请求信息的拦截器
+    Interceptor provideIntercept(Context context) {
+        return new RequestIntercept(mHandler, context);//打印请求信息的拦截器
     }
 
     /**
@@ -166,7 +167,7 @@ public class ClientModule {
         builder.connectTimeout(TOME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TOME_OUT, TimeUnit.SECONDS)
                 .cache(cache)//设置缓存
-                .addNetworkInterceptor(intercept);
+                .addInterceptor(intercept);
         if (mInterceptors != null && mInterceptors.length > 0) {//如果外部提供了interceptor的数组则遍历添加
             for (Interceptor interceptor : mInterceptors) {
                 builder.addInterceptor(interceptor);

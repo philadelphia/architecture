@@ -177,12 +177,24 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
     public void showErrorView() {
 
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getMantissaWarehouseReadies();
+            }
+        });
     }
 
     @Override
     public void showEmptyView() {
 
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getMantissaWarehouseReadies();
+            }
+        });
     }
 
     @Override

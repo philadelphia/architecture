@@ -1,6 +1,9 @@
 package com.delta.commonlibs.http;
-import android.util.Log;
 
+import android.content.Context;
+import android.content.Intent;
+
+import com.delta.commonlibs.utils.NetworkUtil;
 import com.delta.commonlibs.utils.ZipHelper;
 
 import java.io.ByteArrayOutputStream;
@@ -23,13 +26,27 @@ import static com.delta.commonlibs.utils.CharactorHandler.jsonFormat;
  */
 public class RequestIntercept implements Interceptor {
     private GlobeHttpHandler mHandler;
+    private Context context;
 
-    public RequestIntercept(GlobeHttpHandler handler) {
+    public RequestIntercept(GlobeHttpHandler handler, Context context) {
         this.mHandler = handler;
+        this.context = context;
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
+
+
+        if (!NetworkUtil.isNetworkConnected(context)) {
+
+
+            Intent intent = new Intent("com.delta.smt");
+            intent.putExtra("type", "showToast");
+            intent.putExtra("content", "此网络不可用，请检查网络！");
+            intent.putExtra("long", false);
+            context.sendBroadcast(intent);
+            // ToastUtils.showMessage(context,"dsf");
+        }
         Request request = chain.request();
         Buffer requestbuffer = new Buffer();
         if (request.body() != null) {
@@ -39,7 +56,7 @@ public class RequestIntercept implements Interceptor {
         }
 
         if (mHandler != null)//在请求服务器之前可以拿到request,做一些操作比如给request添加header,如果不做操作则返回参数中的request
-            request = mHandler.onHttpRequestBefore(chain,request);
+            request = mHandler.onHttpRequestBefore(chain, request);
 
         //打印url信息
         Timber.tag("Request").w("Sending Request %s on %n Params --->  %s%n Connection ---> %s%n Headers ---> %s", request.url()
@@ -89,12 +106,10 @@ public class RequestIntercept implements Interceptor {
             }
             bodyString = clone.readString(charset);
         }
-
-        Log.e("-------", "intercept: "+bodyString);
         Timber.tag("Result").w(jsonFormat(bodyString));
 
         if (mHandler != null)//这里可以比客户端提前一步拿到服务器返回的结果,可以做一些操作,比如token超时,重新获取
-           return mHandler.onHttpResultResponse(bodyString,chain,originalResponse);
+            return mHandler.onHttpResultResponse(bodyString, chain, originalResponse);
 
         return originalResponse;
     }

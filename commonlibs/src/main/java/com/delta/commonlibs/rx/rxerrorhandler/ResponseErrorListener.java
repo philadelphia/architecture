@@ -10,5 +10,5 @@ import android.content.Context;
 
 
 public interface ResponseErrorListener {
-    void hanlderResponseError(Context context, Exception e);
+    void handlerResponseError(Context context, Exception e);
 }

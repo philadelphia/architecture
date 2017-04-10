@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -69,8 +70,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     public static String timeStamp() {
         long time = System.currentTimeMillis();
-        String t = String.valueOf(time);
-        return t;
+        return String.valueOf(time);
     }
 
     @Override
@@ -95,11 +95,12 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     protected void initView() {
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("下模组");
-
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
         myAdapter = new ItemCountViewAdapter<ModuleDownWarningItem.RowsBean>(this, dataList) {
             @Override
             protected int getCountViewId() {
@@ -142,7 +143,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             if (TextUtils.isEmpty(rowsList.get(i).getUnplug_mod_actual_finish_time())) {
                 rowsList.get(i).setCreat_time(System.currentTimeMillis());
             } else {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                 try {
                     Date parse = format.parse(rowsList.get(i).getUnplug_mod_actual_finish_time());
                     rowsList.get(i).setCreat_time(parse.getTime());
@@ -239,17 +240,18 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         datas.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("下模组预警:");
-        String content ="";
+
+        StringBuilder sb = new StringBuilder();
         try {
             JSONArray jsonArray = new JSONArray(warningMessage);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
-
                     Object message1 = jsonObject.get("message");
-                    content=content+message1+"\n";
+                   sb.append(message1).append("\n");
 
 
             }
+            String content = sb.toString();
             warningEntity.setContent(content + "\n");
             datas.add(warningEntity);
             warningDialog.notifyData();
@@ -332,7 +334,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     public String date2TimeStamp(String date_str, String format) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
             return String.valueOf(sdf.parse(date_str).getTime());
         } catch (Exception e) {
             e.printStackTrace();

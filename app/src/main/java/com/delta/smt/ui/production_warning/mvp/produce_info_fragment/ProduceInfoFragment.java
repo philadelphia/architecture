@@ -1,18 +1,22 @@
 package com.delta.smt.ui.production_warning.mvp.produce_info_fragment;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
@@ -21,6 +25,7 @@ import com.delta.smt.ui.production_warning.di.produce_info_fragment.DaggerProduc
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.ProduceInfoFragmentModule;
 import com.delta.smt.ui.production_warning.item.ItemInfo;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
+import com.delta.smt.widget.DialogLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,21 +34,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/22.
  */
 
 public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresenter>
-    implements ProduceInfoFragmentContract.View, CommonBaseAdapter.OnItemClickListener<ItemInfo> {
-
-
+        implements ProduceInfoFragmentContract.View, CommonBaseAdapter.OnItemClickListener<ItemInfo> {
 
 
     @BindView(R.id.ryv_produce_info)
     RecyclerView mRyvProduceInfo;
+/*    @BindView(R.id.srf_refresh)
+    SwipeRefreshLayout mSrfRefresh;*/
     private CommonBaseAdapter<ItemInfo> mAdapter;
-    private List<ItemInfo> datas=new ArrayList<>();
+    private List<ItemInfo> datas = new ArrayList<>();
 
 
     DialogLayout mDialogLayout;
@@ -63,12 +69,12 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
     @Override
     protected void initView() {
-        mAdapter=new CommonBaseAdapter<ItemInfo>(getContext(),datas) {
+        mAdapter = new CommonBaseAdapter<ItemInfo>(getContext(), datas) {
             @Override
             protected void convert(CommonViewHolder holder, ItemInfo item, int position) {
-                holder.setText(R.id.tv_title,item.getTitle());
-                holder.setText(R.id.tv_produce_line,"产线："+item.getProduceline());
-                holder.setText(R.id.tv_info,"消息："+item.getInfo());
+                holder.setText(R.id.tv_title, item.getTitle());
+                holder.setText(R.id.tv_produce_line, "产线：" + item.getProduceline());
+                holder.setText(R.id.tv_info, "消息：" + item.getInfo());
             }
 
             @Override
@@ -79,6 +85,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         mRyvProduceInfo.setLayoutManager(new LinearLayoutManager(getContext()));
         mRyvProduceInfo.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
+//        mSrfRefresh.setOnRefreshListener(this);
 
     }
 
@@ -90,12 +97,10 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     }
 
 
-
     @Override
     protected int getContentViewId() {
         return R.layout.fragment_produce_info;
     }
-
 
 
     @Override
@@ -109,8 +114,8 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     @Override
     public void getItemInfoDatasFailed(String message) {
         if ("Error".equals(message)) {
-            Snackbar.make(getActivity().getCurrentFocus(),this.getString(R.string.server_error_message),Snackbar.LENGTH_LONG).show();
-        }else {
+            Snackbar.make(getActivity().getCurrentFocus(), this.getString(R.string.server_error_message), Snackbar.LENGTH_LONG).show();
+        } else {
             Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
         }
     }
@@ -124,8 +129,8 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     @Override
     public void onItemClick(View view, final ItemInfo item, int position) {
         EventBus.getDefault().post(new BroadcastCancel());
-        AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
-        mDialogLayout =new DialogLayout(getContext());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        mDialogLayout = new DialogLayout(getContext());
         mDialogLayout.setStrSecondTitle("请求确认");
         final ArrayList<String> datas = new ArrayList<>();
 
@@ -146,7 +151,7 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
                     public void onClick(DialogInterface dialog, int which) {
 
                         String id = String.valueOf(item.getId());
-                        Log.i("ProduceInfoFragment",id);
+                        Log.i("ProduceInfoFragment", id);
                         getPresenter().getItemInfoConfirm(id);
 
                         item.setInfo("操作完成");
@@ -169,10 +174,31 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
 
     //Activity预警广播触发事件处理
     @Subscribe
-    public void event(ProduceWarningMessage produceWarningMessage){
+    public void event(ProduceWarningMessage produceWarningMessage) {
         if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
             getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
         }
         Log.e(TAG, "event3: ");
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+/*
+    //下拉刷新
+    @Override
+    public void onRefresh() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
+                mSrfRefresh.setRefreshing(false);
+            }
+        });
+    }*/
 }
