@@ -94,6 +94,22 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     private String materialPlate, feederId, materialStation, id;
 
+    //注入初始化
+    @Override
+    protected void componentInject(AppComponent appComponent) {
+        DaggerProduceWarningFragmentCompnent.builder().appComponent(appComponent).
+                produceWarningFragmentModule(new ProduceWarningFragmentModule(this)).build().inject(this);
+    }
+
+    @Override
+    protected void initData() {
+        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
+
+        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
+            getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+        }
+    }
+
     @Override
     protected void initView() {
         Log.i(TAG, "initView: ");
@@ -161,14 +177,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mSrfRefresh.setOnRefreshListener(this);
     }
 
-    @Override
-    protected void initData() {
-        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
 
-        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
-            getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -223,14 +232,6 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             mAdapter.cancelRefreshTime();
         }
     }
-
-    //注入初始化
-    @Override
-    protected void componentInject(AppComponent appComponent) {
-        DaggerProduceWarningFragmentCompnent.builder().appComponent(appComponent).
-                produceWarningFragmentModule(new ProduceWarningFragmentModule(this)).build().inject(this);
-    }
-
 
     @Override
     protected int getContentViewId() {
@@ -330,7 +331,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 //    }
 
 
-    private void makePopupWindow() {
+/*    private void makePopupWindow() {
         mPopupWindow = new PopupWindow(mDialogLayout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setOutsideTouchable(false);
 
@@ -356,7 +357,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mPopupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
 
 
-    }
+    }*/
 
     @Override
     public void onScanSuccess(String barcode) {
@@ -504,12 +505,12 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void showEmptyView() {
         mStatusLayout.showEmptyView();
-        mStatusLayout.setErrorClick(new View.OnClickListener() {
+/*        mStatusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
             }
-        });
+        });*/
     }
 
     @Override
