@@ -36,7 +36,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.multibindings.ElementsIntoSet;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -228,7 +227,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         Snackbar.make(getCurrentFocus(), "新料盘扫描成功，请扫Feeder。", Snackbar.LENGTH_SHORT).show();
 
                     }else {
-                        Snackbar.make(getCurrentFocus(), "扫描新料盘错误！", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(getCurrentFocus(), "与第一条的料号匹配错误！", Snackbar.LENGTH_SHORT).show();
                         flag=0;
                     }
 

@@ -108,6 +108,7 @@ public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonAc
     @Override
     public void onScanSuccess(String barcode) {
 
+        Log.e(TAG, "onScanSuccess: "+barcode);
         if (events.size() != 0) {
             Log.e(TAG, "onScanSuccess: "+events.size());
             for (OnBarCodeSuccess event : events) {

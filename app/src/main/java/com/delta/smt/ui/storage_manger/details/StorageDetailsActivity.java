@@ -155,7 +155,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     protected void initView() {
-
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
