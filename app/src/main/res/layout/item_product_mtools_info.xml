@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+<com.zhy.autolayout.AutoLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="85px">
 
     <TextView
@@ -9,14 +11,11 @@
         android:layout_weight="5"
         android:gravity="center"
         android:text="@string/TurnNumber"
+        android:background="@drawable/textview_border"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/TurnNumber"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
@@ -24,14 +23,11 @@
         android:layout_weight="8"
         android:gravity="center"
         android:text="@string/ProductToolsBarCode"
+        android:background="@drawable/textview_border"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/ProductToolsBarCode"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
@@ -39,20 +35,18 @@
         android:layout_weight="8"
         android:gravity="center"
         android:text="@string/ProductToolsType"
+        android:background="@drawable/textview_border"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/ProductToolsType"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="8"
         android:gravity="center"
+        android:background="@drawable/textview_border"
         android:text="@string/ProductToolsLocation"
         android:textColor="#333333"
         android:textSize="35px"

@@ -50,7 +50,7 @@ public class ProduceWarningPresenter extends BasePresenter<ProduceWarningContrac
                     }
 
                 }else {
-                    getView().getTitleDatasFailed(produceWarning.getMsg());
+//                    getView().getTitleDatasFailed(produceWarning.getMsg());
                     Log.i("aaa", produceWarning.getMsg());
                 }
 
@@ -61,7 +61,7 @@ public class ProduceWarningPresenter extends BasePresenter<ProduceWarningContrac
 
                 try {
                     getView().showErrorView();
-                    getView().getTitleDatasFailed("Error");
+//                    getView().getTitleDatasFailed("Error");
                     Log.i("aaa", throwable.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();

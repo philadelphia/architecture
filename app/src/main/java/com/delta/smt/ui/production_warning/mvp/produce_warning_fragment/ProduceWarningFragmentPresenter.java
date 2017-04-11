@@ -48,6 +48,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
 
                 }else {
                     getView().getItemWarningDatasFailed(itemWarningInfos.getMsg());
+                    getView().showErrorView();
                 }
             }
         }, new Action1<Throwable>() {

@@ -108,10 +108,7 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
 
                 if (position == 0) {
 
-                    holder.setBackgroundColor(R.id.TurnNumber, 0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.ProductToolsBarCode, 0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.ProductToolsType, 0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.ProductToolsLocation, 0xFFf2f2f2);
+                    holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
 
                 } else {
 

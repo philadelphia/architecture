@@ -1,6 +1,7 @@
 package com.delta.smt.ui.product_tools.borrow;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -82,25 +83,8 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
 
                 if (position == 0) {
 
-                    holder.setBackgroundColor(R.id.WorkNumber, 0xFFf2f2f2);
+                    holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
 
-                    holder.setBackgroundColor(R.id.MainBroad, 0xFFf2f2f2);
-
-                    holder.setBackgroundColor(R.id.LittleBroad, 0xFFf2f2f2);
-
-                    holder.setBackgroundColor(R.id.PWB_Code, 0xFFf2f2f2);
-
-                    holder.setBackgroundColor(R.id.FormMaterialNumber, 0xFFf2f2f2);
-
-                    holder.setBackgroundColor(R.id.Line, 0xFFf2f2f2);
-
-                    holder.setBackgroundColor(R.id.PWB_MaterialNumber, 0xFFf2f2f2);
-
-                    holder.setBackgroundColor(R.id.Cover, 0xFFf2f2f2);
-
-                    holder.setBackgroundColor(R.id.PlanOnLineTime, 0xFFf2f2f2);
-
-                    holder.setBackgroundColor(R.id.ProductToolsStatus, 0xFFf2f2f2);
 
                 } else {
 
@@ -125,26 +109,9 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
                     holder.setText(R.id.ProductToolsStatus, item.getProductStatus());
 
                     if (item.getProductStatus().equals(getString(R.string.AreReady))) {
+                        holder.itemView.setBackgroundColor(Color.GREEN);
 
-                        holder.setBackgroundColor(R.id.WorkNumber, 0xFF3B9D43);
 
-                        holder.setBackgroundColor(R.id.MainBroad, 0xFF3B9D43);
-
-                        holder.setBackgroundColor(R.id.LittleBroad, 0xFF3B9D43);
-
-                        holder.setBackgroundColor(R.id.PWB_Code, 0xFF3B9D43);
-
-                        holder.setBackgroundColor(R.id.FormMaterialNumber, 0xFF3B9D43);
-
-                        holder.setBackgroundColor(R.id.Line, 0xFF3B9D43);
-
-                        holder.setBackgroundColor(R.id.PWB_MaterialNumber, 0xFF3B9D43);
-
-                        holder.setBackgroundColor(R.id.Cover, 0xFF3B9D43);
-
-                        holder.setBackgroundColor(R.id.PlanOnLineTime, 0xFF3B9D43);
-
-                        holder.setBackgroundColor(R.id.ProductToolsStatus, 0xFF3B9D43);
                     }
                 }
             }
