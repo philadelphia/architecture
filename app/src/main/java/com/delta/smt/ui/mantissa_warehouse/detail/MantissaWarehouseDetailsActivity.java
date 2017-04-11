@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,9 +70,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
-    RecyclerView mRecyContetn;
-    @BindView(R.id.hr_scrow)
-    HorizontalScrollView mHrScrow;
+    RecyclerView mRecycleContent;
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
     @BindView(R.id.tv_setting)
@@ -217,8 +214,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
         };
         content_LinerLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
-        mRecyContetn.setLayoutManager(content_LinerLayoutManager);
-        mRecyContetn.setAdapter(content_adapter);
+        mRecycleContent.setLayoutManager(content_LinerLayoutManager);
+        mRecycleContent.setAdapter(content_adapter);
         createBottomSheetDialog();
     }
 
@@ -362,7 +359,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         }
         content_adapter.notifyDataSetChanged();
         //content_LinerLayoutManager.scrollToPositionWithOffset(index,0);
-        RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecyContetn);
+        RecycleViewUtils.scrollToMiddle(content_LinerLayoutManager, index, mRecycleContent);
     }
 
     @Override

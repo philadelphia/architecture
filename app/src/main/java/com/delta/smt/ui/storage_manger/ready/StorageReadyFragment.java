@@ -26,7 +26,6 @@ import com.delta.smt.ui.storage_manger.ready.di.DaggerStorageReadyComponent;
 import com.delta.smt.ui.storage_manger.ready.di.StorageReadyModule;
 import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyContract;
 import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyPresenter;
-import com.delta.smt.utils.ViewUtils;
 import com.delta.smt.widget.WarningDialog;
 import com.google.gson.Gson;
 
@@ -125,7 +124,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
     @Override
     protected void initData() {
 
-        wareHouseName =  SpUtil.getStringSF(getmActivity(),Constant.STORAGE_NAME);
+        wareHouseName = SpUtil.getStringSF(getmActivity(), Constant.STORAGE_NAME);
 
         Map<String, String> map = new HashMap<>();
         map.put("part", wareHouseName);
@@ -151,8 +150,8 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
 
 
     @Override
-    public void getStorageReadySucess(List<StorageReady> storageReadies) {
-        ViewUtils.showContentView(statusLayout, storageReadies);
+    public void getStorageReadySuccess(List<StorageReady> storageReadies) {
+        //ViewUtils.showContentView(statusLayout, storageReadies);
         dataList.clear();
         for (int i = 0; i < storageReadies.size(); i++) {
             storageReadies.get(i).setEnd_time(storageReadies.get(i).getRemain_time() * 1000 + System.currentTimeMillis());
@@ -213,6 +212,39 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
     public void getStorageReadyFailed(String message) {
 
 
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getStorageReady(mS);
+            }
+        });
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+
+        statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getStorageReady(mS);
+            }
+        });
     }
 
     @Override

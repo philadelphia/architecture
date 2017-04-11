@@ -10,7 +10,7 @@ package com.delta.ttsmanager;
 public class TextToSpeechManager implements OnSpeakListener {
 
     private OnSpeakListener onSpeakListener;
-    private boolean isRead=true;
+    private boolean isRead = true;
 
     public void setOnSpeakListener(OnSpeakListener onSpeakListener) {
         this.onSpeakListener = onSpeakListener;
@@ -32,7 +32,7 @@ public class TextToSpeechManager implements OnSpeakListener {
     @Override
     public void readMessage(String message) {
 
-        if(isRead){
+        if (isRead) {
 
             onSpeakListener.readMessage(message);
         }

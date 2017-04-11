@@ -12,6 +12,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 import com.delta.commonlibs.R;
+import com.delta.commonlibs.utils.SingleClick;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 public class StatusLayout extends AutoRelativeLayout {
@@ -168,19 +169,22 @@ public class StatusLayout extends AutoRelativeLayout {
      * @param pClick 点击回调
      */
     public void setNoNetClick(OnClickListener pClick) {
-        if (noNetwrokView == null) {
-            throw new NullPointerException("view not inflate");
+        if (SingleClick.isSingle(2000)) {
+            if (noNetwrokView == null) {
+                throw new NullPointerException("view not inflate");
+            }
+            if (pClick != null) {
+                noNetwrokView.findViewById(R.id.vs_nn_root).setOnClickListener(pClick);
+            } else {
+                noNetwrokView.findViewById(R.id.vs_nn_root).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        openWifiSetting(getContext());
+                    }
+                });
+            }
         }
-        if (pClick != null) {
-            noNetwrokView.findViewById(R.id.vs_nn_root).setOnClickListener(pClick);
-        } else {
-            noNetwrokView.findViewById(R.id.vs_nn_root).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    openWifiSetting(getContext());
-                }
-            });
-        }
+
     }
 
     /**
@@ -189,11 +193,13 @@ public class StatusLayout extends AutoRelativeLayout {
      * @param pClick 回调
      */
     public void setLoadingClick(OnClickListener pClick) {
-        if (pClick != null) {
-            if (loadingView == null) {
-                throw new NullPointerException("view not inflate");
+        if (SingleClick.isSingle(2000)) {
+            if (pClick != null) {
+                if (loadingView == null) {
+                    throw new NullPointerException("view not inflate");
+                }
+                loadingView.findViewById(R.id.vs_le_root).setOnClickListener(pClick);
             }
-            loadingView.findViewById(R.id.vs_le_root).setOnClickListener(pClick);
         }
     }
 
@@ -203,11 +209,13 @@ public class StatusLayout extends AutoRelativeLayout {
      * @param pClick 点击回调
      */
     public void setErrorClick(OnClickListener pClick) {
-        if (pClick != null) {
-            if (loadingWrongView == null) {
-                throw new NullPointerException("view not inflate");
+        if (SingleClick.isSingle(2000)) {
+            if (pClick != null) {
+                if (loadingWrongView == null) {
+                    throw new NullPointerException("view not inflate");
+                }
+                loadingWrongView.findViewById(R.id.vs_lf_root).setOnClickListener(pClick);
             }
-            loadingWrongView.findViewById(R.id.vs_lf_root).setOnClickListener(pClick);
         }
     }
 
@@ -217,11 +225,13 @@ public class StatusLayout extends AutoRelativeLayout {
      * @param pClick 点击回调
      */
     public void setEmptyClick(OnClickListener pClick) {
-        if (pClick != null) {
-            if (noDataView == null) {
-                throw new NullPointerException("view not inflate");
+        if (SingleClick.isSingle(2000)) {
+            if (pClick != null) {
+                if (noDataView == null) {
+                    throw new NullPointerException("view not inflate");
+                }
+                noDataView.findViewById(R.id.vs_nd_root).setOnClickListener(pClick);
             }
-            noDataView.findViewById(R.id.vs_nd_root).setOnClickListener(pClick);
         }
     }
 

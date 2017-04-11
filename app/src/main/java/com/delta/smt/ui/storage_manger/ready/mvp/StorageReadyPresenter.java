@@ -7,6 +7,7 @@ import com.delta.smt.entity.StorageReady;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -25,21 +26,34 @@ public class StorageReadyPresenter extends BasePresenter<StorageReadyContract.Mo
 
     public void getStorageReady (String content){
 
-        getModel().getStorageReady(content).subscribe(new Action1<Result<StorageReady>>() {
+        getModel().getStorageReady(content).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<Result<StorageReady>>() {
               @Override
                public void call(Result<StorageReady> storageReadies) {
                   if ("0".equals(storageReadies.getCode())) {
-                      getView().getStorageReadySucess(storageReadies.getRows());
+
+                      getView().getStorageReadySuccess(storageReadies.getRows());
+                      if(storageReadies.getRows().size()==0){
+                          getView().showEmptyView();
+                      }else {
+                          getView().showContentView();
+                      }
                   } else {
+                      getView().showErrorView();
                       getView().getStorageReadyFailed(storageReadies.getMessage());
 
                   }
                  }
-                },new Action1<Throwable>() {
+                }, new Action1<Throwable>() {
             @Override
-            public void call(Throwable thorwable) {
+            public void call(Throwable throwable) {
 
-                getView().getStorageReadyFailed(thorwable.getMessage());
+                getView().getStorageReadyFailed(throwable.getMessage());
+                getView().showErrorView();
 
             }
         });

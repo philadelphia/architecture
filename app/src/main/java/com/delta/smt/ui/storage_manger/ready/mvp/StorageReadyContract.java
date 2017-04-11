@@ -15,7 +15,7 @@ import rx.Observable;
 
 public interface StorageReadyContract {
 
-    interface Model extends IModel{
+    interface Model extends IModel {
 
         Observable<Result<StorageReady>> getStorageReady(String content);
 
@@ -23,8 +23,16 @@ public interface StorageReadyContract {
 
     interface View extends IView {
 
-        void getStorageReadySucess(List<StorageReady> storageReadies);
+        void getStorageReadySuccess(List<StorageReady> storageReadies);
+
         void getStorageReadyFailed(String message);
 
+        void showLoadingView();
+
+        void showEmptyView();
+
+        void showContentView();
+
+        void showErrorView();
     }
 }
