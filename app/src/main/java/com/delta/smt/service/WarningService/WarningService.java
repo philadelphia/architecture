@@ -123,8 +123,8 @@ public class WarningService extends IntentService implements WarningSocketPresen
     public void OnForeground(String text) {
         Log.e(TAG, "OnForeground: " + text);
         Intent intent = new Intent();
-        intent.setAction(Constant.WARNINGRECIEVE);
-        intent.putExtra(Constant.WARNINGMESSAGE, text);
+        intent.setAction(Constant.WARNING_RECEIVE);
+        intent.putExtra(Constant.WARNING_MESSAGE, text);
         sendBroadcast(intent);
 
     }
@@ -138,7 +138,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
     public void OnBackground(final String message) {
 
         Intent intent = new Intent(WarningService.this, WarningActivity.class);
-        intent.putExtra(Constant.WARNINGMESSAGE, message);
+        intent.putExtra(Constant.WARNING_MESSAGE, message);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 

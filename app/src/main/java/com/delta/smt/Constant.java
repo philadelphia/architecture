@@ -10,22 +10,10 @@ package com.delta.smt;
 public class Constant {
 
 
-    public static final String WARNINGRECIEVE = "warning_recieve";
-    public static final String WARNINGMESSAGE = "warning_message";
-    public static final String WAKE = "wake";
+    public static final String WARNING_RECEIVE = "warning_receive";
+    public static final String WARNING_MESSAGE = "warning_message";
     //预警
-    public static final int PCBWARNING = 0;
-    public static final int GENERATEDWARNING = 2;
-    public static final int FAULTWARNING = 1;
-    public static final int HANDPARHTSWARNING = 3;
-    public static final int SAMPLEWARING = 13;
-    public static final int PRODUCE_WARNING = 5;
-    public static final int FEEDER_SUPPLY_WARNING = 7;
     public static final int HAND_ADD = 6;
-    public static final int MODULE_UP_WARNING = 10;
-    public static final int MODULE_DOWN_WARNING = 11;
-
-    public static final int STORAGEREAD = 4;
 
     //工单ID
     public static final String WORK_ITEM_ID = "WorkItemID";
@@ -47,11 +35,11 @@ public class Constant {
     public static final String WARE_HOUSE_NAME = "wareHouseName";
 
     //预警
-    public static final String PCB_WAREH_ISSUE_ALARM_FLAG = String.valueOf(0);
+    public static final String PCB_WARE_ISSUE_ALARM_FLAG = String.valueOf(0);
     /**
      * 进行小仓库发料预警
      */
-    public static final String WAREH_ALARM_FLAG = String.valueOf(1);
+    public static final String WARE_ALARM_FLAG = String.valueOf(1);
     /**
      * 进行小仓库超领预警
      */
@@ -91,11 +79,11 @@ public class Constant {
     /**
      * 进行尾数仓退入主仓库预警
      */
-    public static final String WAREH_MANTO_WAREH_ALARM_FLAG = String.valueOf(11);
+    public static final String WARE_MAIN_WARE_ALARM_FLAG = String.valueOf(11);
     /**
      * 进行Feeder缓存区入库预警
      */
-    public static final String FEEDER_BUFF_TO_WAREH_ALARM_FLAG = String.valueOf(12);
+    public static final String FEEDER_BUFF_TO_WARE_ALARM_FLAG = String.valueOf(12);
     /**
      *
      */

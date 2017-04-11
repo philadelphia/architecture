@@ -23,7 +23,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.commonlibs.utils.DeviceUtil;
 import com.delta.commonlibs.utils.IntentUtils;
@@ -33,7 +32,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.Download;
-import com.delta.smt.entity.Fuction;
+import com.delta.smt.entity.Function;
 import com.delta.smt.entity.Update;
 import com.delta.smt.ui.checkstock.StartWorkAndStopWorkActivity;
 import com.delta.smt.ui.feeder.warning.supply.FeederSupplyListActivity;
@@ -66,7 +65,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<Fuction>, MainContract.View {
+public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<Function>, MainContract.View {
 
     private static final int CODE = 100;
     //更新
@@ -82,7 +81,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     TextView tvSetting;
     @BindView(R.id.drawer_layout)
     LinearLayout drawerLayout;
-    private List<Fuction> fuctions;
+    private List<Function> functionList;
     private LocalBroadcastManager bManager;
     private String downloadStr = null;
     private AlertDialog retryAlertDialog = null;
@@ -162,16 +161,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     protected void initView() {
         toolbarTitle.setText("首页");
         tvSetting.setVisibility(View.VISIBLE);
-        CommonBaseAdapter<Fuction> adapter = new CommonBaseAdapter<Fuction>(this, fuctions) {
+        CommonBaseAdapter<Function> adapter = new CommonBaseAdapter<Function>(this, functionList) {
             @Override
-            protected void convert(CommonViewHolder holder, Fuction item, int position) {
+            protected void convert(CommonViewHolder holder, Function item, int position) {
                 holder.setImageResource(R.id.iv_function, item.getId());
                 Log.e(TAG, "convert: " + item);
                 holder.setText(R.id.tv_function, item.getTitle());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, Fuction item) {
+            protected int getItemViewLayoutId(int position, Function item) {
                 return R.layout.item_function;
             }
         };
@@ -196,25 +195,25 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         } else {
             getPresenter().checkUpdate();
         }
-        fuctions = new ArrayList<>();
-        fuctions.add(new Fuction("PCB入库", R.drawable.ic_warehousestorage));
-        fuctions.add(new Fuction("PCB盘点", R.drawable.ic_warehouseinventory));
-        fuctions.add(new Fuction("PCB发料", R.drawable.ic_warehouseforsending));
-        fuctions.add(new Fuction("PCB维护", R.drawable.ic_pcbsetting));
-        fuctions.add(new Fuction("仓库备料", R.drawable.ic_warehouseroompreparation));
-        fuctions.add(new Fuction("仓库超领", R.drawable.ic_warehouseroomchaoling));
-        fuctions.add(new Fuction("Feeder缓冲区", R.drawable.ic_feederbuffer));
-        //fuctions.add(new Fuction("尾数仓备料", R.drawable.ic_mantissawarehousestock));
-        fuctions.add(new Fuction("上模组", R.drawable.ic_onthemodule));
-        fuctions.add(new Fuction("下模组", R.drawable.ic_themodule));
-        fuctions.add(new Fuction("故障处理", R.drawable.ic_faulthandling));
-        fuctions.add(new Fuction("尾数仓入库及退料", R.drawable.ic_return));
-        fuctions.add(new Fuction("生产中预警", R.drawable.ic_warning));
-        fuctions.add(new Fuction("治具入架位", R.drawable.ic_intherack));
-        fuctions.add(new Fuction("治具借出", R.drawable.ic_lend));
-        fuctions.add(new Fuction("治具归还", R.drawable.ic_thereturn));
-        fuctions.add(new Fuction("手补件", R.drawable.ic_handpatch));
-       // fuctions.add(new Fuction("warningSample", R.drawable.title));
+        functionList = new ArrayList<>();
+        functionList.add(new Function("PCB入库", R.drawable.ic_warehousestorage));
+        functionList.add(new Function("PCB盘点", R.drawable.ic_warehouseinventory));
+        functionList.add(new Function("PCB发料", R.drawable.ic_warehouseforsending));
+        functionList.add(new Function("PCB维护", R.drawable.ic_pcbsetting));
+        functionList.add(new Function("仓库备料", R.drawable.ic_warehouseroompreparation));
+        functionList.add(new Function("仓库超领", R.drawable.ic_warehouseroomchaoling));
+        functionList.add(new Function("Feeder缓冲区", R.drawable.ic_feederbuffer));
+        //functionList.add(new Function("尾数仓备料", R.drawable.ic_mantissawarehousestock));
+        functionList.add(new Function("上模组", R.drawable.ic_onthemodule));
+        functionList.add(new Function("下模组", R.drawable.ic_themodule));
+        functionList.add(new Function("故障处理", R.drawable.ic_faulthandling));
+        functionList.add(new Function("尾数仓入库及退料", R.drawable.ic_return));
+        functionList.add(new Function("生产中预警", R.drawable.ic_warning));
+        functionList.add(new Function("治具入架位", R.drawable.ic_intherack));
+        functionList.add(new Function("治具借出", R.drawable.ic_lend));
+        functionList.add(new Function("治具归还", R.drawable.ic_thereturn));
+        functionList.add(new Function("手补件", R.drawable.ic_handpatch));
+       // functionList.add(new Function("warningSample", R.drawable.title));
     }
     private void checkTTS() {
         Intent in = new Intent();
@@ -227,7 +226,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     }
 
     @Override
-    public void onItemClick(View view, Fuction item, int position) {
+    public void onItemClick(View view, Function item, int position) {
 
         switch (item.getTitle()) {
             case "Feeder缓冲区":
@@ -393,7 +392,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         if (requestCode == CODE) {
             switch (resultCode) {
                 case TextToSpeech.Engine.CHECK_VOICE_DATA_PASS:
-                    Toast.makeText(this, "恭喜您，TTS可用", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(this, "恭喜您，TTS可用", Toast.LENGTH_SHORT).show();
                    // mTts = new TextToSpeech(this, this);
                     break;
                 case TextToSpeech.Engine.CHECK_VOICE_DATA_FAIL:// 发音数据已经损坏

@@ -136,6 +136,11 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
 
     //返回关灯请求
     public void requestCloseLight(String line){
+        // XXX wenming.huang
+        String[] temp = line.split("线别：");
+        Log.d("onKeyDown",temp[1]);
+        line = temp[1];
+
         Log.e(TAG, "requestCloseLight: "+line );
         Map<String,String> map=new HashMap<>();
         map.put("line",line);

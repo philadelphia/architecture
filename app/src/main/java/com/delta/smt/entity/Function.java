@@ -5,11 +5,11 @@ package com.delta.smt.entity;
  * @autHor :  V.Wenju.Tian
  * @date : 2017/1/15 16:17
  */
-public class Fuction {
+public class Function {
     String title;
     int id;
 
-    public Fuction(String title, int id) {
+    public Function(String title, int id) {
         this.title = title;
         this.id = id;
     }

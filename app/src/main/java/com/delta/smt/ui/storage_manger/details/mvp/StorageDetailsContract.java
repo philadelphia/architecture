@@ -41,11 +41,11 @@ public interface StorageDetailsContract {
 
     interface View extends IView {
 
-        void getSucess(Result<StorageDetails> storageDetailses);
+        void getSuccess(Result<StorageDetails> storageDetailses);
 
         void getFailed(String message);
 
-        void bindMaterialCarSucess(List<BindPrepCarIDByWorkOrderResult.RowsBean> data);
+        void bindMaterialCarSuccess(List<BindPrepCarIDByWorkOrderResult.RowsBean> data);
 
         void issureToWarehSuccess(Result<StorageDetails> rows);
 

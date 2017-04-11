@@ -109,7 +109,7 @@ public class WarningManger {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra(Constant.WARNINGMESSAGE);
+            String message = intent.getStringExtra(Constant.WARNING_MESSAGE);
             Log.e(TAG, "onReceive: " + message);
 
             if (WarningManger.getInstance().isReceived()) {
@@ -128,7 +128,7 @@ public class WarningManger {
             if (mBroadcastReceiver == null) {
                 mBroadcastReceiver = new WarningBroadcastReceiver();
             }
-            IntentFilter filter = new IntentFilter(Constant.WARNINGRECIEVE);
+            IntentFilter filter = new IntentFilter(Constant.WARNING_RECEIVE);
             context.registerReceiver(mBroadcastReceiver, filter);
         } catch (Exception e) {
             e.printStackTrace();

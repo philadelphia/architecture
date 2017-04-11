@@ -44,17 +44,17 @@ import java.util.Map;
 import static com.delta.smt.Constant.ENGINEER_FAULT_ALARM_FLAG;
 import static com.delta.smt.Constant.EXCESS_ALARM_FLAG;
 import static com.delta.smt.Constant.FEEDER_BUFF_ALARM_FLAG;
-import static com.delta.smt.Constant.FEEDER_BUFF_TO_WAREH_ALARM_FLAG;
+import static com.delta.smt.Constant.FEEDER_BUFF_TO_WARE_ALARM_FLAG;
 import static com.delta.smt.Constant.MANTISSA_WAREHOUSE_ALARM_FLAG;
 import static com.delta.smt.Constant.OFF_LINE_ALARM_FLAG;
 import static com.delta.smt.Constant.OPERATOR_FAULT_ALARM_FLAG;
-import static com.delta.smt.Constant.PCB_WAREH_ISSUE_ALARM_FLAG;
+import static com.delta.smt.Constant.PCB_WARE_ISSUE_ALARM_FLAG;
 import static com.delta.smt.Constant.PLUG_MOD_ALARM_FLAG;
 import static com.delta.smt.Constant.PRODUCTION_LINE_ALARM_FLAG;
 import static com.delta.smt.Constant.UNPLUG_MOD_ALARM_FLAG;
-import static com.delta.smt.Constant.WAREH_ALARM_FLAG;
+import static com.delta.smt.Constant.WARE_ALARM_FLAG;
 import static com.delta.smt.Constant.WAREH_MANTISSA_ALARM_FLAG;
-import static com.delta.smt.Constant.WAREH_MANTO_WAREH_ALARM_FLAG;
+import static com.delta.smt.Constant.WARE_MAIN_WARE_ALARM_FLAG;
 
 public class WarningActivity extends AppCompatActivity {
 
@@ -102,7 +102,7 @@ public class WarningActivity extends AppCompatActivity {
     protected void onResume() {
         Log.e(TAG, "onResume: ");
         datas.clear();
-        message = getIntent().getStringExtra(Constant.WARNINGMESSAGE);
+        message = getIntent().getStringExtra(Constant.WARNING_MESSAGE);
         try {
             JSONArray jsonArray = new JSONArray(message);
             datas.addAll(getWarningEntities(jsonArray));
@@ -164,8 +164,8 @@ public class WarningActivity extends AppCompatActivity {
 
     //初始化数据
     private void initData() {
-        titleDatas.put(PCB_WAREH_ISSUE_ALARM_FLAG, "PCB预警");
-        titleDatas.put(WAREH_ALARM_FLAG, "仓库备料预警");
+        titleDatas.put(PCB_WARE_ISSUE_ALARM_FLAG, "PCB预警");
+        titleDatas.put(WARE_ALARM_FLAG, "仓库备料预警");
         titleDatas.put(FEEDER_BUFF_ALARM_FLAG, "Feeder发料预警");
         titleDatas.put(EXCESS_ALARM_FLAG, "仓库超领预警");
         titleDatas.put(PLUG_MOD_ALARM_FLAG, "上模组预警");
@@ -175,8 +175,8 @@ public class WarningActivity extends AppCompatActivity {
         titleDatas.put(OFF_LINE_ALARM_FLAG, "线外人员预警");
         titleDatas.put(UNPLUG_MOD_ALARM_FLAG, "下模组预警");
         titleDatas.put(WAREH_MANTISSA_ALARM_FLAG, "尾数仓入库预警");
-        titleDatas.put(WAREH_MANTO_WAREH_ALARM_FLAG, "尾数仓退入主仓库预警");
-        titleDatas.put(FEEDER_BUFF_TO_WAREH_ALARM_FLAG, "Feeder缓存区入库预警");
+        titleDatas.put(WARE_MAIN_WARE_ALARM_FLAG, "尾数仓退入主仓库预警");
+        titleDatas.put(FEEDER_BUFF_TO_WARE_ALARM_FLAG, "Feeder缓存区入库预警");
         titleDatas.put(MANTISSA_WAREHOUSE_ALARM_FLAG, "尾数仓备料预警");
         waringDialogEntityCommonBaseAdapter = new CommonBaseAdapter<WaringDialogEntity>(this, datas) {
 

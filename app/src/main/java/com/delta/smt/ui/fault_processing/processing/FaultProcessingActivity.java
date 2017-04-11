@@ -59,7 +59,7 @@ import butterknife.OnClick;
  * @date : 2017/1/4 20:02
  */
 
-public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresenter> implements FalutProcessingContract.View, WarningManger.OnWarning, ItemOnclick<RowsBean>, Toolbar.OnMenuItemClickListener, View.OnClickListener {
+public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresenter> implements FalutProcessingContract.View, WarningManger.OnWarning, ItemOnclick<RowsBean>, Toolbar.OnMenuItemClickListener, View.OnClickListener {
     @BindView(R.id.rv_faultProcessing)
     RecyclerView rvFaultProcessing;
     @BindView(R.id.toolbar)
@@ -70,15 +70,15 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     StatusLayout statusLayout;
     @Inject
     WarningManger warningManger;
-    private List<RowsBean> datas = new ArrayList<>();
-    List<SolutionMessage.RowsBean> solutionDatas = new ArrayList<>();
+    private List<RowsBean> rowsBeen = new ArrayList<>();
+    List<SolutionMessage.RowsBean> solutionDataList = new ArrayList<>();
     // private CommonBaseAdapter<RowsBean> mMyAdapter;
     CommonBaseAdapter<SolutionMessage.RowsBean> dialog_adapter;
     private String lines;
     private LinearLayoutManager manager;
     private ItemCountViewAdapter<RowsBean> mMyAdapter;
     private FaultParameter faultParameter;
-    private String paramter;
+    private String parameter;
     private BottomSheetDialog bottomSheetDialog;
     private TextView tv_sheet_title;
     private RowsBean item = new RowsBean();
@@ -94,7 +94,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         lines = getIntent().getExtras().getString(Constant.PRODUCTION_LINE);
         faultParameter = new FaultParameter();
         faultParameter.setLines(lines);
-        paramter = GsonTools.createGsonString(faultParameter);
+        parameter = GsonTools.createGsonString(faultParameter);
         warningManger.addWarning(Constant.ENGINEER_FAULT_ALARM_FLAG, this.getClass());
         warningManger.setReceive(true);
         warningManger.setOnWarning(this);
@@ -104,7 +104,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     @Override
     protected void onResume() {
         super.onResume();
-        getPresenter().getFaultProcessingMessages(paramter);
+        getPresenter().getFaultProcessingMessages(parameter);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         toolbarTitle.setText("故障处理预警");
         toolbar.setOnMenuItemClickListener(this);
 
-        mMyAdapter = new ItemCountViewAdapter<RowsBean>(this, datas) {
+        mMyAdapter = new ItemCountViewAdapter<RowsBean>(this, rowsBeen) {
             @Override
             protected int getCountViewId() {
                 return R.id.cv_countView;
@@ -128,12 +128,12 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
             }
 
             @Override
-            protected void convert(ItemTimeViewHolder holder, RowsBean falutMesage, int position) {
-                holder.setText(R.id.tv_line, "产线：" + falutMesage.getLine());
-                holder.setText(R.id.tv_name, falutMesage.getProcess() + "-" + falutMesage.getFaultMessage());
-                holder.setText(R.id.tv_processing, "制程：" + falutMesage.getProcess());
-                holder.setText(R.id.tv_faultMessage, "故障信息：" + falutMesage.getFaultMessage());
-                holder.setText(R.id.tv_code, "故障代码：" + falutMesage.getFaultCode());
+            protected void convert(ItemTimeViewHolder holder, RowsBean faultMessage, int position) {
+                holder.setText(R.id.tv_line, "产线：" + faultMessage.getLine());
+                holder.setText(R.id.tv_name, faultMessage.getProcess() + "-" + faultMessage.getFaultMessage());
+                holder.setText(R.id.tv_processing, "制程：" + faultMessage.getProcess());
+                holder.setText(R.id.tv_faultMessage, "故障信息：" + faultMessage.getFaultMessage());
+                holder.setText(R.id.tv_code, "故障代码：" + faultMessage.getFaultCode());
             }
         };
         manager = new LinearLayoutManager(this);
@@ -171,10 +171,10 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
 
     @Override
-    public void getFalutMessgeSucess(FaultMessage falutMesage) {
+    public void getFaultMessageSuccess(FaultMessage faultMessage) {
         SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-        datas.clear();
-        List<RowsBean> rows = falutMesage.getRows();
+        rowsBeen.clear();
+        List<RowsBean> rows = faultMessage.getRows();
         for (int i = 0; i < rows.size(); i++) {
             try {
                 Date parse = format.parse(rows.get(i).getCreateTime());
@@ -185,22 +185,22 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
             }
         }
 
-        datas.addAll(rows);
+        rowsBeen.addAll(rows);
         mMyAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void getFalutMessageFailed(String message) {
+    public void getFaultMessageFailed(String message) {
 
         SnackbarUtil.show(statusLayout, getString(R.string.server_error_message));
     }
 
     @Override
-    public void getSolutionMessageSucess(List<SolutionMessage.RowsBean> rowsBeen) {
+    public void getSolutionMessageSuccess(List<SolutionMessage.RowsBean> rowsBeen) {
 
 
-        solutionDatas.clear();
-        solutionDatas.addAll(rowsBeen);
+        solutionDataList.clear();
+        solutionDataList.addAll(rowsBeen);
         dialog_adapter.notifyDataSetChanged();
 
     }
@@ -223,7 +223,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getFaultProcessingMessages(paramter);
+                getPresenter().getFaultProcessingMessages(parameter);
             }
         });
     }
@@ -235,7 +235,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getFaultProcessingMessages(paramter);
+                getPresenter().getFaultProcessingMessages(parameter);
             }
         });
     }
@@ -270,11 +270,11 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.FAULT_CODE, item.getFaultCode());
-                IntentUtils.showIntent(FalutProcessingActivity.this, FaultProcessingAddActivity.class, bundle);
+                IntentUtils.showIntent(FaultProcessingActivity.this, FaultProcessingAddActivity.class, bundle);
                 bottomSheetDialog.dismiss();
             }
         });
-        dialog_adapter = new CommonBaseAdapter<SolutionMessage.RowsBean>(this, solutionDatas) {
+        dialog_adapter = new CommonBaseAdapter<SolutionMessage.RowsBean>(this, solutionDataList) {
             @Override
             protected void convert(CommonViewHolder holder, SolutionMessage.RowsBean item, int position) {
 
@@ -306,7 +306,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
                 bundle.putString(Constant.FAULT_CODE, rowsBean.getFaultCode());
                 bundle.putString(Constant.FAULT_SOLUTION_ID, String.valueOf(rowsBean.getId()));
                 bundle.putString(Constant.FAULT_SOLUTION_NAME, rowsBean.getName());
-                IntentUtils.showIntent(FalutProcessingActivity.this, FaultSolutionDetailActivity.class, bundle);
+                IntentUtils.showIntent(FaultProcessingActivity.this, FaultSolutionDetailActivity.class, bundle);
                 bottomSheetDialog.dismiss();
 
             }
@@ -330,11 +330,11 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
     }
 
     @Override
-    public void onItemClick(final View Itemview, final RowsBean item, int position) {
+    public void onItemClick(final View ItemView, final RowsBean item, int position) {
 
         getPresenter().getSolution(item.getFaultCode());
         this.item = item;
-        solutionDatas.clear();
+        solutionDataList.clear();
         tv_sheet_title.setText(item.getFaultType() + " " + item.getFaultCode());
         bottomSheetDialog.show();
 //        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.mystyle);
@@ -353,12 +353,12 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 //
 //                Bundle bundle = new Bundle();
 //                bundle.putString(Constant.FAULT_CODE, item.getFaultCode());
-//                IntentUtils.showIntent(FalutProcessingActivity.this, FaultProcessingAddActivity.class, bundle);
+//                IntentUtils.showIntent(FaultProcessingActivity.this, FaultProcessingAddActivity.class, bundle);
 //                dialog.dismiss();
 //            }
 //        });
 //        Log.e(TAG, "onItemClick: " + rv_ll.toString());
-//        dialog_adapter = new CommonBaseAdapter<SolutionMessage.RowsBean>(this, solutionDatas) {
+//        dialog_adapter = new CommonBaseAdapter<SolutionMessage.RowsBean>(this, solutionDataList) {
 //            @Override
 //            protected void convert(CommonViewHolder holder, SolutionMessage.RowsBean item, int position) {
 //
@@ -385,7 +385,7 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
 //                bundle.putString(Constant.FAULT_CODE, rowsBean.getFaultCode());
 //                bundle.putString(Constant.FAULT_SOLUTION_ID, String.valueOf(rowsBean.getId()));
 //                bundle.putString(Constant.FAULT_SOLUTION_NAME, rowsBean.getName());
-//                IntentUtils.showIntent(FalutProcessingActivity.this, FaultSolutionDetailActivity.class, bundle);
+//                IntentUtils.showIntent(FaultProcessingActivity.this, FaultSolutionDetailActivity.class, bundle);
 //                dialog.dismiss();
 //
 //            }
@@ -415,8 +415,8 @@ public class FalutProcessingActivity extends BaseActivity<FaultProcessingPresent
             default:
                 break;
         }
-        paramter = GsonTools.createGsonString(faultParameter);
-        getPresenter().getFaultProcessingMessages(paramter);
+        parameter = GsonTools.createGsonString(faultParameter);
+        getPresenter().getFaultProcessingMessages(parameter);
         return true;
     }
 

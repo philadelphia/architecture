@@ -92,9 +92,9 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
 
 
         //接收那种预警
-        warningManger.addWarning(Constant.PCB_WAREH_ISSUE_ALARM_FLAG, getClass());
+        warningManger.addWarning(Constant.PCB_WARE_ISSUE_ALARM_FLAG, getClass());
         //需要定制的信息
-        warningManger.sendMessage(new SendMessage(Constant.PCB_WAREH_ISSUE_ALARM_FLAG,0));
+        warningManger.sendMessage(new SendMessage(Constant.PCB_WARE_ISSUE_ALARM_FLAG,0));
         //是否接收预警 可以控制预警时机
         warningManger.setReceive(true);
         //关键 初始化预警接口
@@ -258,7 +258,7 @@ public class StoreIssueActivity extends BaseActivity<StorePresenter> implements 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        warningManger.sendMessage(new SendMessage(Constant.PCB_WAREH_ISSUE_ALARM_FLAG,1));
+        warningManger.sendMessage(new SendMessage(Constant.PCB_WARE_ISSUE_ALARM_FLAG,1));
     }
 
     @Subscribe
