@@ -3,6 +3,7 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -210,12 +211,26 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     public void showErrorView() {
 
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getMantissaWarehouseReturn();
+            }
+        });
+
     }
 
     @Override
     public void showEmptyView() {
 
-        statusLayout.showEmptyView();
+        statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getMantissaWarehouseReturn();
+            }
+        });
+
     }
 
 

@@ -625,12 +625,26 @@ public class MantissaWarehousePutstorageFragment extends
     public void showErrorView() {
 
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getMantissaWarehousePutstorage();
+            }
+        });
+
     }
 
     @Override
     public void showEmptyView() {
 
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getMantissaWarehousePutstorage();
+            }
+        });
+
     }
 
 
