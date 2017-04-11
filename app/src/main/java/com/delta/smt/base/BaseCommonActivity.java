@@ -208,9 +208,13 @@ public abstract class BaseCommonActivity extends SupportActivity {
                         String contents = intent.getStringExtra("content");
                         handError(contents);
                         break;
-                    case"showToast":
+                    case "showToast":
                         String toastText = intent.getStringExtra("content");
-                        ToastUtils.showMessage(BaseCommonActivity.this,toastText);
+                        if (intent.getBooleanExtra("long", false)) {
+                            ToastUtils.showMessageLong(BaseCommonActivity.this, toastText);
+                        } else {
+                            ToastUtils.showMessage(BaseCommonActivity.this, toastText);
+                        }
                         break;
                     case "killAll":
                         LinkedList<BaseCommonActivity> copy;

@@ -38,14 +38,11 @@ public class RequestIntercept implements Interceptor {
 
 
         if (!NetworkUtil.isNetworkConnected(context)) {
-
-
             Intent intent = new Intent("com.delta.smt");
             intent.putExtra("type", "showToast");
             intent.putExtra("content", "此网络不可用，请检查网络！");
             intent.putExtra("long", false);
             context.sendBroadcast(intent);
-            // ToastUtils.showMessage(context,"dsf");
         }
         Request request = chain.request();
         Buffer requestbuffer = new Buffer();

@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,8 +72,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
     RecyclerView mRecyContetn;
-    @BindView(R.id.hr_scrow)
-    HorizontalScrollView mHrScrow;
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
     @BindView(R.id.tv_setting)
