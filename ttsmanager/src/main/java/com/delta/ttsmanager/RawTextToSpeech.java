@@ -3,7 +3,6 @@ package com.delta.ttsmanager;
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +39,7 @@ public class RawTextToSpeech implements TextToSpeech.OnInitListener, OnSpeakList
             int result = this.mTextToSpeech.setLanguage(Locale.CHINA);//设置识别语音为中文
             if (result == TextToSpeech.LANG_MISSING_DATA
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Toast.makeText(mContext, "语音数据丢失或不支持", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(mContext, "语音数据丢失或不支持", Toast.LENGTH_SHORT).show();
             }
             synchronized (this) {
                 this.mIsReady = true;//设置标识符为true

@@ -76,7 +76,6 @@ dependencies {
 
     compile rootProject.ext.dependencies["familiarrecycler"]
     compile rootProject.ext.dependencies["lombok"]
-    compile files('libs/java-websocket-1.3.0.jar')
     compile project(':countTime')
     compile project(':websocketmanager')
     compile project(':ttsmanager')

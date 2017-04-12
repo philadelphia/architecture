@@ -9,19 +9,17 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="8"
+        android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="@string/WordNumber"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/WorkNumber"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
+        android:background="@drawable/textview_border"
         android:layout_height="match_parent"
         android:layout_weight="10"
         android:gravity="center"
@@ -30,13 +28,10 @@
         android:textSize="35px"
         android:id="@+id/MainBroad"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
+        android:background="@drawable/textview_border"
         android:layout_height="match_parent"
         android:layout_weight="14"
         android:gravity="center"
@@ -49,6 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0"
+        android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="@string/PCB_Code"
         android:textColor="#333333"
@@ -59,21 +55,19 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0"
+        android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="@string/FormMaterialNumber"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/FormMaterialNumber"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="8"
+        android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="@string/Line"
         android:textColor="#333333"
@@ -91,10 +85,6 @@
         android:textSize="35px"
         />
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
@@ -102,35 +92,30 @@
         android:layout_weight="8"
         android:gravity="center"
         android:text="@string/Cover"
+        android:background="@drawable/textview_border"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/Cover"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="20"
         android:gravity="center"
+        android:background="@drawable/textview_border"
         android:text="@string/PlanOnLineTime"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/PlanOnLineTime"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="13"
         android:gravity="center"
+        android:background="@drawable/textview_border"
         android:text="@string/Status"
         android:textColor="#333333"
         android:textSize="35px"

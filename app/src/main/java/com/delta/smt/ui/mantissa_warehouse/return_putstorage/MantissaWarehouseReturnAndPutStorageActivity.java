@@ -79,9 +79,9 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         titles = new String[]{"入库", "退入主仓库"};
         //接收那种预警，没有的话自己定义常量
         warningManger = WarningManger.getInstance();
-        WarningManger.getInstance().addWarning(Constant.WAREH_MANTO_WAREH_ALARM_FLAG, getClass());
+        WarningManger.getInstance().addWarning(Constant.WARE_MAIN_WARE_ALARM_FLAG, getClass());
         WarningManger.getInstance().addWarning(Constant.WAREH_MANTISSA_ALARM_FLAG, getClass());
-        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG,0));
+        warningManger.sendMessage(new SendMessage(Constant.WARE_MAIN_WARE_ALARM_FLAG,0));
         warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTISSA_ALARM_FLAG,0));
 
         //是否接收预警 可以控制预警时机
@@ -93,7 +93,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     @Override
     public void onDestroy() {
-        warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTO_WAREH_ALARM_FLAG,1));
+        warningManger.sendMessage(new SendMessage(Constant.WARE_MAIN_WARE_ALARM_FLAG,1));
         warningManger.sendMessage(new SendMessage(Constant.WAREH_MANTISSA_ALARM_FLAG,1));
         super.onDestroy();
     }
@@ -266,7 +266,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                 String type = jsonObject.getString("type");
                 //可能有多种预警的情况
-                if (Constant.WAREH_MANTO_WAREH_ALARM_FLAG.equals(type)) {
+                if (Constant.WARE_MAIN_WARE_ALARM_FLAG.equals(type)) {
                     Object message1 = jsonObject.get("message");
                     content=content+message1+"\n";
                 }else {

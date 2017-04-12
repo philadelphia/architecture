@@ -9,29 +9,23 @@
         android:layout_weight="2"
         android:gravity="center"
         android:text="@string/TurnNumber"
+        android:background="@drawable/textview_border"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/TurnNumber"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="4"
         android:gravity="center"
+        android:background="@drawable/textview_border"
         android:text="@string/ProductToolsBarCode"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/ProductToolsBarCode"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
@@ -39,14 +33,11 @@
         android:layout_weight="4"
         android:gravity="center"
         android:text="@string/WordNumber"
+        android:background="@drawable/textview_border"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/WorkNumber"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
@@ -54,20 +45,18 @@
         android:layout_weight="3"
         android:gravity="center"
         android:text="@string/ProductToolsType"
+        android:background="@drawable/textview_border"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/ProductToolsType"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
         android:gravity="center"
+        android:background="@drawable/textview_border"
         android:text="@string/Status"
         android:textColor="#333333"
         android:textSize="35px"

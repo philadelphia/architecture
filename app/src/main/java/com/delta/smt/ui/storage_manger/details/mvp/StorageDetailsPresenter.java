@@ -42,7 +42,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
                         getView().showEmptyView();
                     } else {
                         getView().showContentView();
-                        getView().getSucess(storageDetailses);
+                        getView().getSuccess(storageDetailses);
                     }
 
                 } else {
@@ -95,7 +95,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             public void call(BindPrepCarIDByWorkOrderResult result) {
 
                 if ("0".equalsIgnoreCase(result.getCode())) {
-                    getView().bindMaterialCarSucess(result.getRows());
+                    getView().bindMaterialCarSuccess(result.getRows());
                 } else {
                     getView().bindMaterialCarFailed(result.getMsg());
                 }

@@ -5,7 +5,6 @@ import android.util.Log;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.JsonProductRequestToolsList;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
-import com.delta.smt.entity.JsonProductToolsLocationRoot;
 import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyList;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
@@ -23,47 +22,54 @@ import rx.functions.Action1;
  * Created by Shaoqiang.Zhang on 2017/1/10.
  */
 
-public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoContract.Model,ProduceToolsInfoContract.View>{
+public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoContract.Model, ProduceToolsInfoContract.View> {
 
 
     String status;
+
     @Inject
     public ProduceToolsInfoPresenter(ProduceToolsInfoContract.Model model, ProduceToolsInfoContract.View mView) {
         super(model, mView);
     }
+
     //刚进入页面时获取治具信息
-    public void getToolsInfo(String condition){
+    public void getToolsInfo(String condition) {
 
         getView().showLoadingView();
 
-        getModel().getProductToolsInfoItem(1000000000,1,condition).subscribe(new Action1<JsonProductRequestToolsRoot>() {
+        getModel().getProductToolsInfoItem(1000000000, 1, condition).subscribe(new Action1<JsonProductRequestToolsRoot>() {
             @Override
             public void call(JsonProductRequestToolsRoot jsonProductRequestToolsRoot) {
                 //getView().getToolsInfo();
                 getView().showContentView();
-                List<JsonProductRequestToolsList> rows=jsonProductRequestToolsRoot.getRows();
-                List<ProductToolsInfo> data=new ArrayList<>();
-                int size=0;
-                for(JsonProductRequestToolsList j:rows){
+                List<JsonProductRequestToolsList> rows = jsonProductRequestToolsRoot.getRows();
+                List<ProductToolsInfo> data = new ArrayList<>();
+                int size = 0;
+                for (JsonProductRequestToolsList j : rows) {
                     size++;
-                    String toolsStatus="";
-                    switch (j.getLoanStatus()){
-                        case 0:toolsStatus="准备中";
+                    String toolsStatus = "";
+                    switch (j.getLoanStatus()) {
+                        case 0:
+                            toolsStatus = "准备中";
                             break;
-                        case 1:toolsStatus="待發";
+                        case 1:
+                            toolsStatus = "待發";
                             break;
-                        case 2:toolsStatus="已借出";
+                        case 2:
+                            toolsStatus = "已借出";
                             break;
-                        case 3:toolsStatus="待确定";
+                        case 3:
+                            toolsStatus = "待确定";
                             break;
-                        default:toolsStatus="状态未知";
+                        default:
+                            toolsStatus = "状态未知";
                     }
 
-                        ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),j.getShelfName(),"更多",toolsStatus,String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
-                        data.add(p);
+                    ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getBarcode(), j.getJigTypeName(), j.getShelfName(), "更多", toolsStatus, String.valueOf(j.getJigTypeID()), String.valueOf(j.getJigID()));
+                    data.add(p);
 
 
-                    Log.e("-------===-------->>>",j.toString());
+                    Log.e("-------===-------->>>", j.toString());
 
                 }
                 getView().getToolsInfo(data);
@@ -71,13 +77,19 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().getFail(throwable.getMessage());
+                try {
+                    getView().getFail(throwable.getMessage());
+                } catch (Exception e) {
+
+                }
+
             }
         });
 
     }
+
     //点击确定，开始扫描
-    public void getToolsVerfy(String condition){
+    public void getToolsVerfy(String condition) {
 
         getModel().getProductToolsVerfy(condition).doOnSubscribe(new Action0() {
             @Override
@@ -88,33 +100,32 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             @Override
             public void call(JsonProductToolsVerfyRoot jsonProductToolsVerfyRoot) {
 
-                if (jsonProductToolsVerfyRoot.getCode()==0){
-                    List<ProductToolsInfo> data=new ArrayList<>();
+                if (jsonProductToolsVerfyRoot.getCode() == 0) {
+                    List<ProductToolsInfo> data = new ArrayList<>();
 
-                    List<JsonProductToolsVerfyList> rows=jsonProductToolsVerfyRoot.getRows();
+                    List<JsonProductToolsVerfyList> rows = jsonProductToolsVerfyRoot.getRows();
                     getView().showContentView();
-                    int size=0;
-                    for(JsonProductToolsVerfyList j:rows){
+                    int size = 0;
+                    for (JsonProductToolsVerfyList j : rows) {
                         size++;
-                        if (j.getLoanStatus()==1) {
-                            status="待取";
-                        }else {
-                            status=j.getStatName();
+                        if (j.getLoanStatus() == 1) {
+                            status = "待取";
+                        } else {
+                            status = j.getStatName();
 
                         }
 
-                        ProductToolsInfo p=new ProductToolsInfo(String.valueOf(size),j.getBarcode(),j.getJigTypeName(),"","更多",status,String.valueOf(j.getJigTypeID()),String.valueOf(j.getJigID()));
+                        ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getBarcode(), j.getJigTypeName(), "", "更多", status, String.valueOf(j.getJigTypeID()), String.valueOf(j.getJigID()));
                         data.add(p);
 
                     }
 
                     getView().getToolsVerfy(data);
-                }else {
+                } else {
 
                     getView().getFail(jsonProductToolsVerfyRoot.getMessage());
                     getView().showContentView();
                 }
-
 
 
             }
@@ -122,7 +133,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             @Override
             public void call(Throwable throwable) {
                 try {
-                    Log.i(TAG, "call: "+throwable.getMessage());
+                    Log.i(TAG, "call: " + throwable.getMessage());
                     getView().getFail(throwable.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -134,7 +145,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
     }
 
     //扫描完成上传数据
-    public void getToolsBorrowSubmit(String param){
+    public void getToolsBorrowSubmit(String param) {
 
         getModel().getProductToolsBorrowSubmit(param).doOnSubscribe(new Action0() {
             @Override

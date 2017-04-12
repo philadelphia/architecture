@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -74,8 +76,10 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
     private String lines,work,face,material_number;
     private String materialNumber, oldSerialNumber, newSerialNumber;
+    private String slot,feeder,serialNumber,barcode1;
     private String streamNumber;
     private int tag = 0;
+    private int flag= 0;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -88,7 +92,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         lines = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_LINES);
         work = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_WORK);
         face = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_FACE);
-        material_number = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_NUM);
+//        material_number = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_NUM);
         Log.e(TAG, "initData: " + lines);
         getPresenter().getItemDatas(lines);
 
@@ -98,7 +102,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     protected void initView() {
 
         mTvLine.setText("线别："+lines);
-        mTvMaterialStationNum.setText("待接料料站："+material_number);
+//        mTvMaterialStationNum.setText("待接料料站："+material_number);
         mTvFace.setText("面别："+face);
         mTvWorkOrder.setText("工单号："+work);
 
@@ -190,11 +194,159 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         //二维码识别和解析
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         Log.e(TAG, "onScanSuccess: " + barcode);
+        if (flag==0) {
 
-        try {
+            try {
+                MaterialBlockBarCode mMaterialBlockBarCode =
+                        (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                materialNumber = mMaterialBlockBarCode.getDeltaMaterialNumber();
+                streamNumber = mMaterialBlockBarCode.getStreamNumber();
+                Log.e(TAG, "onScanSuccess: " + "料号：" + materialNumber);
+                Log.e(TAG, "onScanSuccess: " + "流水号：" + streamNumber);
+
+                if (materialNumber != null && streamNumber != null) {
+
+/*                    if (dataList1.get(0).getPartNumber().equals(materialNumber)
+                            ) {
+                        flag++;
+                        oldSerialNumber = streamNumber;
+6
+                        //扫码 正确时调用的声音和震动
+                        VibratorAndVoiceUtils.correctVibrator(this);
+                        VibratorAndVoiceUtils.correctVoice(this);
+                        Snackbar.make(getCurrentFocus(), "旧料盘匹配正确，请扫新料盘！", Snackbar.LENGTH_SHORT).show();
+
+                    } else {*/
+                    if (dataList1.get(0).getPartNumber().equals(materialNumber)){
+                        serialNumber=streamNumber;
+                        barcode1=barcode;
+                        flag=flag+2;
+                        //扫码正确时调用的声音和震动
+                        VibratorAndVoiceUtils.correctVibrator(this);
+                        VibratorAndVoiceUtils.correctVoice(this);
+                        Snackbar.make(getCurrentFocus(), "新料盘扫描成功，请扫Feeder。", Snackbar.LENGTH_SHORT).show();
+
+                    }else {
+                        Snackbar.make(getCurrentFocus(), "与第一条的料号匹配错误！", Snackbar.LENGTH_SHORT).show();
+                        flag=0;
+                    }
+
+
+                }
+
+            } catch (EntityNotFountException e) {
+
+                //扫码错误时调用的声音和震动
+                VibratorAndVoiceUtils.wrongVibrator(this);
+                VibratorAndVoiceUtils.wrongVoice(this);
+
+                Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
+                this.materialNumber = null;
+                this.streamNumber = null;
+                e.printStackTrace();
+            }
+        }
+
+/*        if (flag==1){
+
+            try {
+                MaterialBlockBarCode mMaterialBlockBarCode =
+                        (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                materialNumber = mMaterialBlockBarCode.getDeltaMaterialNumber();
+                streamNumber = mMaterialBlockBarCode.getStreamNumber();
+
+                if (dataList1.get(0).getPartNumber().equals(materialNumber)
+                        ) {
+                    flag = 0;
+                    newSerialNumber = streamNumber;
+
+                    //扫码正确时调用的声音和震动
+                    VibratorAndVoiceUtils.correctVibrator(this);
+                    VibratorAndVoiceUtils.correctVoice(this);
+
+                    getPresenter().commitSerialNumber(oldSerialNumber, newSerialNumber);
+
+                } else {
+
+                    //扫码错误时调用的声音和震动
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                    Snackbar.make(getCurrentFocus(), "新料盘匹配错误,请扫描正确的新料盘！", Snackbar.LENGTH_SHORT).show();
+                }
+            } catch (EntityNotFountException e) {
+
+                //扫码错误时调用的声音和震动
+                VibratorAndVoiceUtils.wrongVibrator(this);
+                VibratorAndVoiceUtils.wrongVoice(this);
+
+                Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
+                materialNumber = null;
+                streamNumber = null;
+                e.printStackTrace();
+            }
+
+
+
+        }*/
+
+        else if (flag==2){
+            //feeder号
+            try {
+                Feeder mFeeder= (Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
+                feeder=barcode;
+
+                flag++;
+
+                //扫码错误时调用的声音和震动
+                VibratorAndVoiceUtils.correctVibrator(this);
+                VibratorAndVoiceUtils.correctVoice(this);
+                Snackbar.make(getCurrentFocus(), "扫描feeder正确，请扫描料站", Snackbar.LENGTH_SHORT).show();
+            } catch (EntityNotFountException e) {
+                //扫码错误时调用的声音和震动
+                VibratorAndVoiceUtils.wrongVibrator(this);
+                VibratorAndVoiceUtils.wrongVoice(this);
+
+                Snackbar.make(getCurrentFocus(), "请扫描正确的feeder号！", Snackbar.LENGTH_SHORT).show();
+                e.printStackTrace();
+
+            }
+
+        }
+
+        else if (flag==3){
+
+/*            slot=barcode;
+            flag=0;
+            getPresenter().commitarcoderDate(dataList1.get(0).getPartNumber(),slot,feeder,lines,serialNumber,barcode1);*/
+
+            //料站
+            try {
+
+                MaterialStation mMaterialStation= (MaterialStation) barCodeParseIpml.getEntity(barcode,BarCodeType.MATERIAL_STATION);
+                slot=barcode;
+                flag=0;
+                getPresenter().commitarcoderDate(dataList1.get(0).getPartNumber(),slot,feeder,lines,serialNumber,barcode1);
+
+            } catch (EntityNotFountException e) {
+                //扫码错误时调用的声音和震动
+                VibratorAndVoiceUtils.wrongVibrator(this);
+                VibratorAndVoiceUtils.wrongVoice(this);
+
+                Snackbar.make(getCurrentFocus(), "请扫描正确的料站！", Snackbar.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
+
+
+
+/*        try {
             MaterialBlockBarCode mMaterialBlockBarCode =
                     (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-
             materialNumber = mMaterialBlockBarCode.getDeltaMaterialNumber();
             streamNumber = mMaterialBlockBarCode.getStreamNumber();
             Log.e(TAG, "onScanSuccess: " + "料号：" + materialNumber);
@@ -215,6 +367,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 //                        ToastUtils.showMessage(getContext(), "旧料盘匹配正确，请扫新料盘！");
                         Snackbar.make(getCurrentFocus(), "旧料盘匹配正确，请扫新料盘！", Snackbar.LENGTH_SHORT).show();
                     } else {
+
 
                         //扫码错误时调用的声音和震动
                         VibratorAndVoiceUtils.wrongVibrator(this);
@@ -258,15 +411,15 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             materialNumber = null;
             streamNumber = null;
             e.printStackTrace();
-        }
+        }*/
     }
 
     //请求item列表数据
     @Override
     public void getAcceptMaterialsItemDatas(ItemAcceptMaterialDetail itemAcceptMaterialDetail) {
 
-//        mTvLineType.setText(itemAcceptMaterialDetail.getRows().getLine());
-//        mTvMaterialStationNum.setText(String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
+
+        mTvMaterialStationNum.setText("待接料料站："+String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
 
         dataList1.clear();
         dataList1.addAll(itemAcceptMaterialDetail.getRows().getLineMaterialEntities());
@@ -295,7 +448,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     @Override
     public void commitSerialNumberSucess() {
 //        ToastUtils.showMessage(getContext(), "新料盘匹配正确，接料完成！");
-        Snackbar.make(getCurrentFocus(), "新料盘匹配正确，接料完成！", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getCurrentFocus(), "扫描正确，接料完成！", Snackbar.LENGTH_SHORT).show();
         getPresenter().getItemDatas(lines);
     }
 

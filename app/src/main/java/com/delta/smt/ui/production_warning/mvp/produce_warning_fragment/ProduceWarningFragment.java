@@ -94,6 +94,22 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     private String materialPlate, feederId, materialStation, id;
 
+    //注入初始化
+    @Override
+    protected void componentInject(AppComponent appComponent) {
+        DaggerProduceWarningFragmentCompnent.builder().appComponent(appComponent).
+                produceWarningFragmentModule(new ProduceWarningFragmentModule(this)).build().inject(this);
+    }
+
+    @Override
+    protected void initData() {
+        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
+
+        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
+            getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+        }
+    }
+
     @Override
     protected void initView() {
         Log.i(TAG, "initView: ");
@@ -114,7 +130,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                 if ("接料预警".equals(itemWarningInfo.getTitle())) {
                     holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
                     holder.setText(R.id.tv_produce_line, "产线：" + itemWarningInfo.getProductionline());
-                    holder.setText(R.id.tv_word_code,itemWarningInfo.getWorkcode());
+                    holder.setText(R.id.tv_work_code,itemWarningInfo.getWorkcode());
                     holder.setText(R.id.tv_face, "面别：" + itemWarningInfo.getFace());
                     holder.setText(R.id.tv_unused_materials, "剩余料量：" + itemWarningInfo.getUnusedmaterials());
 //                    holder.setText(R.id.tv_material_station, "模组料站：" + itemWarningInfo.getMaterialstation());
@@ -124,7 +140,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     holder.getView(R.id.tv_make_process).setVisibility(View.GONE);
                     holder.getView(R.id.tv_warning_message).setVisibility(View.GONE);
 
-                    holder.getView(R.id.tv_word_code).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.tv_work_code).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_face).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv).setVisibility(View.VISIBLE);
                     holder.getView(R.id.tv_unused_materials).setVisibility(View.VISIBLE);
@@ -137,7 +153,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     holder.setText(R.id.tv_make_process, "制程：" + itemWarningInfo.getMakeprocess());
                     holder.setText(R.id.tv_warning_message, "预警信息：" + itemWarningInfo.getWarninginfo());
 
-                    holder.getView(R.id.tv_word_code).setVisibility(View.GONE);
+                    holder.getView(R.id.tv_work_code).setVisibility(View.GONE);
                     holder.getView(R.id.tv_face).setVisibility(View.GONE);
                     holder.getView(R.id.tv_unused_materials).setVisibility(View.GONE);
                     holder.getView(R.id.tv).setVisibility(View.GONE);
@@ -149,6 +165,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     holder.getView(R.id.tv_warning_message).setVisibility(View.VISIBLE);
 
                 }
+                TextView work=holder.getView(R.id.tv_work_code);
+                work.setSelected(true);
             }
 
 
@@ -159,14 +177,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mSrfRefresh.setOnRefreshListener(this);
     }
 
-    @Override
-    protected void initData() {
-        Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
 
-        if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
-            getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -222,14 +233,6 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         }
     }
 
-    //注入初始化
-    @Override
-    protected void componentInject(AppComponent appComponent) {
-        DaggerProduceWarningFragmentCompnent.builder().appComponent(appComponent).
-                produceWarningFragmentModule(new ProduceWarningFragmentModule(this)).build().inject(this);
-    }
-
-
     @Override
     protected int getContentViewId() {
         return R.layout.fragment_produce_warning;
@@ -241,15 +244,13 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         datas.clear();
 
         for (int i = 0; i < itemWarningInfo.size(); i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-            try {
-                Date parse = format.parse(itemWarningInfo.get(i).getTime());
-                Log.e("aaa", "getItemWarningDatas: " + parse.getTime());
-                itemWarningInfo.get(i).setEnd_time(parse.getTime());
+/*            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+                Date parse = format.parse(itemWarningInfo.get(i).getTime());*/
+                Log.e("aaa", "getItemWarningDatas: " + itemWarningInfo.get(i).getTime());
+                long time=System.currentTimeMillis();
+                itemWarningInfo.get(i).setEnd_time(time+itemWarningInfo.get(i).getTime()*1000);
                 itemWarningInfo.get(i).setEntityId(i);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+
         }
 
         datas.addAll(itemWarningInfo);
@@ -330,7 +331,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 //    }
 
 
-    private void makePopupWindow() {
+/*    private void makePopupWindow() {
         mPopupWindow = new PopupWindow(mDialogLayout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setOutsideTouchable(false);
 
@@ -356,7 +357,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mPopupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
 
 
-    }
+    }*/
 
     @Override
     public void onScanSuccess(String barcode) {
@@ -504,12 +505,12 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Override
     public void showEmptyView() {
         mStatusLayout.showEmptyView();
-        mStatusLayout.setErrorClick(new View.OnClickListener() {
+/*        mStatusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
             }
-        });
+        });*/
     }
 
     @Override

@@ -5,46 +5,58 @@
               android:layout_height="match_parent">
     <include layout="@layout/appbar" />
 
-<!--    <LinearLayout
+    <LinearLayout
         android:orientation="horizontal"
-        android:padding="10dp"
+        android:padding="40px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="线别："
-            android:textSize="50px"
-            android:layout_width="wrap_content"
+            android:text="线别：**"
+            android:textSize="40px"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            />
+            android:id="@+id/tv_line"/>
         <TextView
-            android:text="**"
-            android:textSize="50px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_line_type"/>
-        <TextView
-            android:text="待接料料站："
-            android:textSize="50px"
-            android:layout_marginLeft="150px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <TextView
-            android:text="**"
-            android:textSize="50px"
-            android:layout_width="wrap_content"
+            android:text="待接料料站：**"
+            android:textSize="40px"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/tv_material_station_num"/>
-    </LinearLayout>-->
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="horizontal"
+        android:padding="40px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="面别：**"
+            android:textSize="40px"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_face"/>
+        <TextView
+            android:text="工单号：**"
+            android:textSize="40px"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_work_order"/>
+    </LinearLayout>
+
+<!--    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="40px">
         <TextView
             android:text="线别：**"
             android:textSize="40px"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_line"/>
@@ -52,6 +64,7 @@
         <TextView
             android:text="带接料料站：**"
             android:textSize="40px"
+            android:layout_weight="1"
             android:layout_marginLeft="40px"
             android:layout_toRightOf="@+id/tv_line"
             android:layout_width="wrap_content"
@@ -78,7 +91,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_work_order"/>
 
-    </RelativeLayout>
+    </RelativeLayout>-->
+
     <HorizontalScrollView
         android:id="@+id/hr_scrow"
         android:layout_width="match_parent"

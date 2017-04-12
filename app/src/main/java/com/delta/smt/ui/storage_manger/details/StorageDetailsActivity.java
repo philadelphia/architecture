@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,8 +72,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
     RecyclerView mRecyContetn;
-    @BindView(R.id.hr_scrow)
-    HorizontalScrollView mHrScrow;
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
     @BindView(R.id.tv_setting)
@@ -109,19 +106,17 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private String work_order;
     private String part;
     private MaterialBlockBarCode materialblockbarcode;
-    private String currentDeltaMaterialNumber = "";
-    private int currentPostion = -1;
     private String side;
     private boolean isHaveIssureOver;
-    private boolean ischecked = true;
+    private boolean ischeck = true;
     private boolean isOver;
-    private String unSendingMessage;
     private BottomSheetDialog bottomSheetDialog;
     private CommonBaseAdapter<StorageDetails> undoList_adapter;
     private String mS;
     private String line_name;
     @Inject
     TextToSpeechManager textToSpeechManager;
+    private String currentDeltaMaterialNumber;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -147,7 +142,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         Log.i("aaa", mS);
         getPresenter().getStorageDetails(mS);
         getPresenter().queryMaterailCar(mS);
-        ischecked = SpUtil.getBooleanSF(this, part + "checked");
+        ischeck = SpUtil.getBooleanSF(this, part + "checked");
 
     }
 
@@ -160,7 +155,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     protected void initView() {
-
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -170,7 +164,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         tvLineName.setText("线别：" + line_name);
         tvLineNum.setText("面别：" + side);
         dataList.add(new StorageDetails("", "", 0, 0));
-        btnSwitch.setChecked(ischecked);
+        btnSwitch.setChecked(ischeck);
         btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -233,7 +227,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     @Override
-    public void getSucess(Result<StorageDetails> storageDetails) {
+    public void getSuccess(Result<StorageDetails> storageDetails) {
         issureToWareh(storageDetails);
     }
 
@@ -249,7 +243,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     @Override
-    public void bindMaterialCarSucess(List<BindPrepCarIDByWorkOrderResult.RowsBean> data) {
+    public void bindMaterialCarSuccess(List<BindPrepCarIDByWorkOrderResult.RowsBean> data) {
         //绑定料车成功状态2
         state = 2;
         if (data.size() != 0) {
@@ -583,11 +577,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 } catch (Exception e) {
                     e.printStackTrace();
                     state = 1;
-                    ToastUtils.showMessage(this, "请扫描备料车");
-                    tv_hint.setText("请扫描备料车");
+                    ToastUtils.showMessage(this, "扫描有误，请扫描备料车");
+                    tv_hint.setText("扫描有误，请扫描备料车");
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
-                    textToSpeechManager.readMessage("请扫描备料车");
+                    textToSpeechManager.readMessage("扫描有误，请扫描备料车");
                 }
                 break;
             case 2:

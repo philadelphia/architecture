@@ -1,4 +1,4 @@
-package com.delta.smt.entity;
+package com.delta.smt.widget;
 
 import android.content.Context;
 import android.graphics.Rect;

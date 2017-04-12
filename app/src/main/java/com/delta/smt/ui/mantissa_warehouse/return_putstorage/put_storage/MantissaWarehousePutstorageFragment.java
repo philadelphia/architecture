@@ -431,7 +431,24 @@ public class MantissaWarehousePutstorageFragment extends
                     getPresenter().getBindingLabel(s);
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
-                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描标签！");
+                    //SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描标签！");
+
+                    bl_shelf_no = false;
+                    LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
+                    lastLocation = lastMaterialCar.getSource();
+                    for (int i = 0; i < dataList2.size(); i++) {
+                        if (lastLocation.equals(dataList2.get(i).getShelf_no())) {
+                            bl_shelf_no = true;
+                        }
+                    }
+                    if (bl_shelf_no == true) {
+                        flag = 2;
+                        Toast.makeText(baseActiviy, "已扫描架位", Toast.LENGTH_SHORT).show();
+                        setItemHighLightBasedOnMID(lastLocation);
+                    } else {
+                        SnackbarUtil.showMassage(mRecyContetn, "暂无此架位！");
+                    }
+
                 }
                 break;
 
@@ -608,12 +625,26 @@ public class MantissaWarehousePutstorageFragment extends
     public void showErrorView() {
 
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getMantissaWarehousePutstorage();
+            }
+        });
+
     }
 
     @Override
     public void showEmptyView() {
 
         statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getMantissaWarehousePutstorage();
+            }
+        });
+
     }
 
 

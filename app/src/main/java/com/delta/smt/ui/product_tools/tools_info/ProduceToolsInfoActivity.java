@@ -182,12 +182,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
                 if (position == 0) {
 
-                    holder.setBackgroundColor(R.id.TurnNumber, 0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.ProductToolsBarCode, 0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.ProductToolsType, 0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.ProductToolsLocation, 0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.ReSelect, 0xFFf2f2f2);
-                    holder.setBackgroundColor(R.id.Status, 0xFFf2f2f2);
+                    holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
                     holder.itemView.setVisibility(View.VISIBLE);
 
                 } else {

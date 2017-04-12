@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ViewUtils;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.delta.smt.R;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -36,6 +38,7 @@ public class WarningDialog extends Dialog {
     private Context context;
     private CommonBaseAdapter waringDialogEntityCommonBaseAdapter;
     private OnClickListener onClickListener;
+    private TextView mTv_main_title;
 
     public void setOnClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
@@ -76,8 +79,13 @@ public class WarningDialog extends Dialog {
     //初始化界面
     private void initView() {
         setContentView(R.layout.dialog_warning);
+        mTv_main_title = (TextView) findViewById(R.id.waring_main_title);
         rv_warning = (RecyclerView) findViewById(R.id.rv_warning);
         bt_sure = (Button) findViewById(R.id.bt_sure);
+    }
+
+    public void setMainTitle(String message) {
+        mTv_main_title.setText(message);
     }
 
     //初始化数据

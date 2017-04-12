@@ -8,45 +8,36 @@
         android:layout_height="match_parent"
         android:layout_weight="6"
         android:gravity="center"
+        android:background="@drawable/textview_border"
         android:text="@string/TurnNumber"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/TurnNumber"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="20"
         android:gravity="center"
+        android:background="@drawable/textview_border"
         android:text="@string/ProductToolsBarCode"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/ProductToolsBarCode"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="15"
         android:gravity="center"
+        android:background="@drawable/textview_border"
         android:text="@string/ProductToolsType"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/ProductToolsType"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
@@ -54,14 +45,11 @@
         android:layout_weight="15"
         android:gravity="center"
         android:text="@string/ProductToolsLocation"
+        android:background="@drawable/textview_border"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/ProductToolsLocation"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
@@ -69,20 +57,18 @@
         android:layout_weight="15"
         android:gravity="center"
         android:text="@string/ReSelect"
+        android:background="@drawable/textview_border"
         android:textColor="#333333"
         android:textSize="35px"
         android:id="@+id/ReSelect"/>
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="#cccccc" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="10"
         android:gravity="center"
+        android:background="@drawable/textview_border"
         android:text="@string/Status"
         android:textColor="#333333"
         android:textSize="35px"

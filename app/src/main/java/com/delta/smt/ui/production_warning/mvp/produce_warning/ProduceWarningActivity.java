@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.WrapperListAdapter;
 
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
@@ -18,6 +19,8 @@ import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
@@ -31,12 +34,18 @@ import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.Produc
 import com.delta.smt.ui.production_warning.mvp.produce_info_fragment.ProduceInfoFragment;
 import com.delta.smt.ui.production_warning.mvp.produce_warning_fragment.ProduceWarningFragment;
 import com.delta.smt.utils.ViewUtils;
+import com.delta.smt.widget.WarningDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -70,13 +79,15 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     private FragmentTransaction mFragmentTransaction;
     private SupportFragment currentFragment;
     private String[] titles;
+    private String lines;
+    private String[] line;
 
     @Inject
     WarningManger warningManger;
-    private AlertDialog alertDialog;
+    private WarningDialog alertDialog;
     private boolean item_run_tag = false;
     private String lastWarningMessage;
-
+    public Map<String, String> titleDatas = new HashMap<>();
     private int warning_number, breakdown_number, info_number;
 
     @Override
@@ -104,12 +115,23 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                     "消息(" + info_number + ")"};
         }
 
-/*        Constant.CONDITION = null;
-        Constant.CONDITION = getIntent().getExtras().getString(Constant.PRODUCTION_LINE);*/
+//        Constant.CONDITION = null;
+/*        if (getIntent().getExtras().getString(Constant.PRODUCTION_LINE)!=null&&!getIntent().getExtras().getString(Constant.PRODUCTION_LINE).equals("")) {
+            Constant.CONDITION = getIntent().getExtras().getString(Constant.PRODUCTION_LINE);
+        }*/
+
+        lines=Constant.CONDITION;
+        line=lines.split(",");
 
 
         //注册广播初始化
-        warningManger.addWarning(String.valueOf(Constant.PRODUCE_WARNING), getClass());
+        warningManger.addWarning(String.valueOf(Constant.PRODUCTION_LINE_ALARM_FLAG), getClass());
+        for (int mI = 0; mI < line.length; mI++) {
+            Log.e("eee", "initData: "+ line[mI]);
+            //需要定制的信息
+            warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"_"+line[mI], 0));
+        }
+
         warningManger.setReceive(true);
         warningManger.setOnWarning(this);
     }
@@ -162,10 +184,19 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     @Override
     protected void onStop() {
         Log.e(TAG, "onStop: ");
-        warningManger.unregisterWReceiver(this);
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        warningManger.unregisterWReceiver(this);
+        for (int mI = 0; mI < line.length; mI++) {
+            //需要定制的信息
+//            warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"-"+line[mI], 0));
+            warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"_"+line[mI],1));
+        }
+        super.onDestroy();
+    }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -228,22 +259,141 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         }
         titles = new String[]{"预警", "故障", "消息"};
     }
-
+    private WarningDialog warningDialog;
 
     //收到预警广播触发的方法
     @Override
-    public void warningComing(String warningMessage) {
-        if (item_run_tag) {
-            lastWarningMessage = warningMessage;
-        } else if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
-            alertDialog = createDialog(warningMessage);
-        } else {
-            alertDialog = createDialog(warningMessage);
+    public void warningComing(String message) {
+        //showDialog(warningMessage);
+        Log.e(TAG, "warningComing: " + message);
+
+        if (warningDialog == null) {
+            warningDialog = createDialog(message);
         }
+        if (!warningDialog.isShowing()) {
+            warningDialog.show();
+        }
+        updateMessage(message);
     }
 
-    private AlertDialog createDialog(final String warningMessage) {
+    private void updateMessage(String message) {
+        List<WaringDialogEntity> datas = warningDialog.getDatas();
+        List<String> types = new ArrayList<>();
+//        List<String> content=new ArrayList<>();
+        String content = "";
+        datas.clear();
+
+        try {
+            JSONArray jsonArray= new JSONArray(message);
+            for (int mI = 0; mI < jsonArray.length(); mI++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(mI);
+                String type = jsonObject.getString("type");
+                String[] split = type.split("_");
+                if(split.length>1){
+                    type = split[1];
+                }
+                if(!types.contains(type)){
+                    types.add(type);
+                    WaringDialogEntity warningEntity = new WaringDialogEntity();
+//                    warningEntity.setTitle(type+"的预警信息");
+//                    warningEntity.setContent(jsonObject.getString("message"));
+                    datas.add(warningEntity);
+                }
+
+            }
+            for (int i1 = 0; i1 < types.size(); i1++) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String type = jsonObject.getString("type");
+                    String[] split = type.split("_");
+                    if (types.get(i1).equals(split[1])) {
+
+                        if (datas.get(i1).getContent()!=null) {
+                            content = datas.get(i1).getContent();
+                        }
+
+                        Object message1 = jsonObject.get("message");
+                        datas.get(i1).setTitle(types.get(i1)+"的预警信息");
+                        datas.get(i1).setContent(content+message1 + "\n");
+                    }
+                }
+            }
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+/*        try {
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+                //可能有多种预警的情况
+                Object message1 = jsonObject.get("message");
+                content = content + message1 + "\n";
+            }
+            warningEntity.setContent(content + "\n");
+            datas.add(warningEntity);
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+    }
+    private List<WaringDialogEntity> getWarningEntities(JSONArray jsonArray) throws JSONException {
+        List<String> types = new ArrayList<>();
+        List<WaringDialogEntity> waringDialogEntities = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String type = jsonObject.getString("type");
+            String[] split = type.split("_");
+            type = split[0];
+            types.add(type);
+            WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
+            if (titleDatas.containsKey(type)) {
+                if (split.length==1){
+                    waringDialogEntity.setTitle(titleDatas.get(type));
+                }else {
+                    waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
+                }
+                waringDialogEntity.setContent("");
+            }
+            waringDialogEntities.add(waringDialogEntity);
+        }
+        for (int i1 = 0; i1 < types.size(); i1++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String type = jsonObject.getString("type");
+                String[] split = type.split("_");
+                if (types.get(i1).equals(split[0])) {
+                    String content = waringDialogEntities.get(i1).getContent();
+                    Object message1 = jsonObject.get("message");
+                    waringDialogEntities.get(i1).setContent(content + message1 + "\n");
+                }
+            }
+        }
+
+        return waringDialogEntities;
+    }
+
+    public WarningDialog createDialog(String message) {
+        warningDialog = new WarningDialog(this);
+        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
+            @Override
+            public void onclick(View view) {
+                warningManger.setConsume(true);
+//                getPresenter().getAllOverReceiveItems();
+                getPresenter().getTitileNumber(initLine());
+                warningDialog.dismiss();
+            }
+        });
+        warningDialog.show();
+
+        return warningDialog;
+    }
+
+    /*private AlertDialog createDialog(final String warningMessage) {
         DialogLayout dialogLayout = new DialogLayout(this);
         //3.传入的是黑色字体的二级标题
         dialogLayout.setStrSecondTitle("预警异常");
@@ -261,7 +411,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                 dialog.dismiss();
             }
         }).show();
-    }
+    }*/
 
     //Fragment点击item触发事件处理
     @Subscribe

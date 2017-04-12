@@ -3,6 +3,7 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -210,12 +211,26 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     public void showErrorView() {
 
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getMantissaWarehouseReturn();
+            }
+        });
+
     }
 
     @Override
     public void showEmptyView() {
 
-        statusLayout.showEmptyView();
+        statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getMantissaWarehouseReturn();
+            }
+        });
+
     }
 
 
@@ -255,7 +270,22 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     getPresenter().getputinstrage(s);
                     Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
-                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描架位！");
+                   // SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描架位！");
+
+                    try {
+                        MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+                        materialNumber = materiaBar.getDeltaMaterialNumber();
+                        serialNum = materiaBar.getStreamNumber();
+
+                        MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
+                        Gson gson = new Gson();
+                        String s = gson.toJson(bindBean);
+
+                        getPresenter().getMaterialLocation(s);
+                    } catch (EntityNotFountException ee) {
+                        SnackbarUtil.showMassage(mRecyContetn, "此处不能识别此码！");
+                    }
+
 
                 }
                 break;

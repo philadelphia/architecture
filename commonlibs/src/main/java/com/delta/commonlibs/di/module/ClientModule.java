@@ -167,7 +167,7 @@ public class ClientModule {
         builder.connectTimeout(TOME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TOME_OUT, TimeUnit.SECONDS)
                 .cache(cache)//设置缓存
-                .addNetworkInterceptor(intercept);
+                .addInterceptor(intercept);
         if (mInterceptors != null && mInterceptors.length > 0) {//如果外部提供了interceptor的数组则遍历添加
             for (Interceptor interceptor : mInterceptors) {
                 builder.addInterceptor(interceptor);

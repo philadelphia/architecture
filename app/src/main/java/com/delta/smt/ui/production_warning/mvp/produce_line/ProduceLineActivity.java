@@ -23,7 +23,7 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.ui.fault_processing.processing.FalutProcessingActivity;
+import com.delta.smt.ui.fault_processing.processing.FaultProcessingActivity;
 import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
 import com.delta.smt.ui.production_warning.di.produce_line.DaggerProduceLineCompnent;
 import com.delta.smt.ui.production_warning.di.produce_line.ProduceLineModule;
@@ -94,7 +94,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         mAdapter = new CommonBaseAdapter<ItemProduceLine>(this, datas) {
             @Override
             protected void convert(CommonViewHolder holder, ItemProduceLine item, int position) {
-                holder.setText(R.id.cb_production_line, "SMT_" + item.getLinename());
+                holder.setText(R.id.cb_production_line, item.getLinename());
                 CheckBox checkBox = holder.getView(R.id.cb_production_line);
                 checkBox.setChecked(item.isChecked());
             }
@@ -141,11 +141,11 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                     Constant.CONDITION = null;
                     return;
                 }
-
+//                mStringBuffer.substring(0,mStringBuffer.length()-2);
                 Log.i("aaa", String.valueOf(mStringBuffer));
                 Constant.CONDITION = mStringBuffer.toString();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.PRODUCTION_LINE, mStringBuffer.toString());
+                bundle.putString(Constant.PRODUCTION_LINE, Constant.CONDITION);
                 switch (type) {
                     case 0:
                         SpUtil.SetStringSF(this, Constant.PRODUCE_WARNING_LINE_NAME, mStringBuffer.toString());
@@ -153,7 +153,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                         break;
                     case 1:
                         SpUtil.SetStringSF(this, Constant.FAULT_PROCESSING_LINE_NAME, mStringBuffer.toString());
-                        IntentUtils.showIntent(this, FalutProcessingActivity.class, bundle);
+                        IntentUtils.showIntent(this, FaultProcessingActivity.class, bundle);
                         break;
                     case 2:
                         SpUtil.SetStringSF(this, Constant.HAND_ADD_LINE_NAME, mStringBuffer.toString());

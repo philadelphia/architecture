@@ -2,7 +2,7 @@ package com.delta.smt.ui.fault_processing.processing.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.ui.fault_processing.processing.FalutProcessingActivity;
+import com.delta.smt.ui.fault_processing.processing.FaultProcessingActivity;
 import dagger.Component;
 
 /**
@@ -13,5 +13,5 @@ import dagger.Component;
 @ActivityScope
 @Component(modules = {FaultProcessingModule.class},dependencies = AppComponent.class)
 public interface FaultProcessingComponent {
-    void inject(FalutProcessingActivity activity);
+    void inject(FaultProcessingActivity activity);
 }

@@ -27,11 +27,11 @@ public interface FalutProcessingContract {
 
     interface View extends IView {
 
-        void getFalutMessgeSucess(FaultMessage falutMesage);
+        void getFaultMessageSuccess(FaultMessage falutMesage);
 
-        void getFalutMessageFailed(String message);
+        void getFaultMessageFailed(String message);
 
-        void getSolutionMessageSucess(List<SolutionMessage.RowsBean> rowsBeen);
+        void getSolutionMessageSuccess(List<SolutionMessage.RowsBean> rowsBeen);
 
         void showLoadingView();
 

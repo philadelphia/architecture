@@ -189,7 +189,6 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         return rootView;
     }
 
-
     //下拉刷新
     @Override
     public void onRefresh() {

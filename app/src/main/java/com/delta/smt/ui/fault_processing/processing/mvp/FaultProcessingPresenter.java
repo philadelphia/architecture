@@ -51,11 +51,11 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
                             getView().showEmptyView();
                         } else {
                             getView().showContentView();
-                            getView().getFalutMessgeSucess(falutMesages);
+                            getView().getFaultMessageSuccess(falutMesages);
                         }
                     } else {
                         getView().showContentView();
-                        getView().getFalutMessageFailed(falutMesages.getMsg());
+                        getView().getFaultMessageFailed(falutMesages.getMsg());
                     }
                 }
             }
@@ -73,11 +73,11 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
 //                        getView().showEmptyView();
 //                    } else {
 //                        getView().showContentView();
-//                        getView().getFalutMessgeSucess(falutMesages);
+//                        getView().getFaultMessageSuccess(falutMesages);
 //                    }
 //                } else {
 //                    getView().showContentView();
-//                    getView().getFalutMessageFailed(falutMesages.getMsg());
+//                    getView().getFaultMessageFailed(falutMesages.getMsg());
 //                }
 //            }
 //        }, new Action1<UnifyThrowable>() {
@@ -85,7 +85,7 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
 //            public void call(UnifyThrowable throwable) {
 //                try {
 //                    getView().showErrorView();
-//                    getView().getFalutMessageFailed(throwable.getMessage());
+//                    getView().getFaultMessageFailed(throwable.getMessage());
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                }
@@ -103,9 +103,9 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
             public void call(SolutionMessage solutionMessage) {
 
                 if ("0".equals(solutionMessage.getCode())) {
-                    getView().getSolutionMessageSucess(solutionMessage.getRows());
+                    getView().getSolutionMessageSuccess(solutionMessage.getRows());
                 } else {
-                    getView().getFalutMessageFailed(solutionMessage.getMsg());
+                    getView().getFaultMessageFailed(solutionMessage.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
@@ -113,7 +113,7 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
             public void call(Throwable throwable) {
 
                 try {
-                    getView().getFalutMessageFailed(throwable.getMessage());
+                    getView().getFaultMessageFailed(throwable.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
