@@ -204,13 +204,13 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 Log.e(TAG, "onScanSuccess: " + "料号：" + materialNumber);
                 Log.e(TAG, "onScanSuccess: " + "流水号：" + streamNumber);
 
-                if (materialNumber != null && streamNumber != null) {
+                if (materialNumber != null && streamNumber != null&&dataList1.get(0).getPartNumber()!=null) {
 
 /*                    if (dataList1.get(0).getPartNumber().equals(materialNumber)
                             ) {
                         flag++;
                         oldSerialNumber = streamNumber;
-6
+
                         //扫码 正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
                         VibratorAndVoiceUtils.correctVoice(this);
