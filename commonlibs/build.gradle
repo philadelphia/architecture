@@ -50,4 +50,5 @@ dependencies {
     compile rootProject.ext.dependencies["eventBus"]
     compile rootProject.ext.dependencies["fragmentation"]
     apt rootProject.ext.dependencies["dagger2-apt-compiler"]
+    compile project(path: ':ttsmanager')
 }

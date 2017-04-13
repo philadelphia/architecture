@@ -13,10 +13,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -44,9 +46,12 @@ import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.utils.PkgInfoUtils;
 import com.delta.smt.utils.StringUtils;
 import com.delta.smt.utils.ViewUtils;
+import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,7 +62,7 @@ import static com.delta.smt.api.API.BASE_URL;
  * Created by Lin.Hou on 2017-01-09.
  */
 
-public class SettingActivity extends BaseActivity<MainPresenter> implements MainContract.View {
+public class SettingActivity extends BaseActivity<MainPresenter> implements MainContract.View, CompoundButton.OnCheckedChangeListener {
 
     //更新
     private static ProgressDialog progressDialog = null;
@@ -70,6 +75,10 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     @BindView(R.id.setting_server_address)
     TextView settingServerAddress;
     Pattern sAddressPattern;
+    @BindView(R.id.sc_speech)
+    SwitchCompat scSpeech;
+    @Inject
+    TextToSpeechManager textToSpeechManager;
     private LocalBroadcastManager bManager;
     private String downloadStr = null;
     private AlertDialog retryAlertDialog = null;
@@ -186,6 +195,9 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("设置");
+        boolean speech_switch = SpUtil.getBooleanSF(this, "speech_switch");
+        scSpeech.setChecked(speech_switch);
+        scSpeech.setOnCheckedChangeListener(this);
     }
 
     private Dialog createDialog() {
@@ -284,6 +296,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                 }
 
                 break;
+
         }
     }
 
@@ -401,5 +414,14 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        SpUtil.SetBooleanSF(this,"speech_switch",isChecked);
+        textToSpeechManager.setRead(isChecked);
+
     }
 }

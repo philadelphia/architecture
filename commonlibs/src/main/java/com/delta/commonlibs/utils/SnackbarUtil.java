@@ -6,13 +6,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.delta.commonlibs.R;
+import com.delta.ttsmanager.TextToSpeechManager;
 
 public class SnackbarUtil {
 
     private static Snackbar snackbar;
 
+
+    public static void showRead(View view , String message,TextToSpeechManager textToSpeechManager){
+        show(view,message);
+        textToSpeechManager.readMessage(message);
+    }
+
     public static void show(View view, String msg) {
-        Snackbar.make(view, msg, Snackbar.LENGTH_LONG);
+        snackbar=Snackbar.make(view, msg, Snackbar.LENGTH_LONG);
         View sv = snackbar.getView();
         TextView tv = (TextView) sv.findViewById(R.id.snackbar_text);
         tv.setGravity(Gravity.CENTER);  // 让文字居中
@@ -20,7 +27,7 @@ public class SnackbarUtil {
     }
 
     public static void showShort(View view, String msg) {
-        Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
+        snackbar=Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
         View sv = snackbar.getView();
         TextView tv = (TextView) sv.findViewById(R.id.snackbar_text);
         tv.setGravity(Gravity.CENTER);  // 让文字居中

@@ -115,22 +115,25 @@ public class WarningActivity extends AppCompatActivity {
 
 
     private List<WaringDialogEntity> getWarningEntities(JSONArray jsonArray) throws JSONException {
+        Log.e(TAG, "getWarningEntities: "+jsonArray.toString());
         List<String> types = new ArrayList<>();
         List<WaringDialogEntity> waringDialogEntities = new ArrayList<>();
+        String content="";
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             String type = jsonObject.getString("type");
+
             String[] split = type.split("_");
             type = split[0];
-            types.add(type);
             if(!types.contains(type)){
+                types.add(type);
                 WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
                 if (titleDatas.containsKey(type)) {
-                    if (split.length==1){
+//                    if (split.length==1){
                         waringDialogEntity.setTitle(titleDatas.get(type));
-                    }else {
-                        waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
-                    }
+//                    }else {
+//                        waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
+//                    }
                     waringDialogEntity.setContent("");
                 }
                 waringDialogEntities.add(waringDialogEntity);
@@ -141,9 +144,13 @@ public class WarningActivity extends AppCompatActivity {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String type = jsonObject.getString("type");
                 String[] split = type.split("_");
-                if (types.get(i1).equals(split[0])) {
-                    String content = waringDialogEntities.get(i1).getContent();
+                if (types.get(i1).equals(split[1])) {
+                    if (waringDialogEntities.get(i1).getContent()!=null) {
+                        content = waringDialogEntities.get(i1).getContent();
+                    }
+
                     Object message1 = jsonObject.get("message");
+                    waringDialogEntities.get(i1).setTitle(types.get(i1)+"的预警信息：");
                     waringDialogEntities.get(i1).setContent(content + message1 + "\n");
                 }
             }
