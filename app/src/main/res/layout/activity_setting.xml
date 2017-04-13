@@ -104,5 +104,33 @@
             android:src="@drawable/ic_settingback"/>
 
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="10px">
+        <TextView
+            android:id="@+id/tv_speech"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px_120"
+            android:background="@drawable/selector_setting_button"
+            android:gravity="center_vertical"
+            android:lineSpacingMultiplier="1.2"
+            android:paddingLeft="38px"
+            android:paddingRight="40px"
+            android:text="语音开关设置"
+            android:textColor="@color/waring_editext"
+            android:textSize="@dimen/px_40" />
 
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/sc_speech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="40px"
+            android:layout_marginTop="50px" />
+
+    </RelativeLayout>
 </LinearLayout>

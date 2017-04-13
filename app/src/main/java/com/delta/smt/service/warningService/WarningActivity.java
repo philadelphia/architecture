@@ -115,6 +115,7 @@ public class WarningActivity extends AppCompatActivity {
 
 
     private List<WaringDialogEntity> getWarningEntities(JSONArray jsonArray) throws JSONException {
+        Log.e(TAG, "getWarningEntities: "+jsonArray.toString());
         List<String> types = new ArrayList<>();
         List<WaringDialogEntity> waringDialogEntities = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -122,15 +123,15 @@ public class WarningActivity extends AppCompatActivity {
             String type = jsonObject.getString("type");
             String[] split = type.split("_");
             type = split[0];
-            types.add(type);
             if(!types.contains(type)){
+                types.add(type);
                 WaringDialogEntity waringDialogEntity = new WaringDialogEntity();
                 if (titleDatas.containsKey(type)) {
-                    if (split.length==1){
+//                    if (split.length==1){
                         waringDialogEntity.setTitle(titleDatas.get(type));
-                    }else {
-                        waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
-                    }
+//                    }else {
+//                        waringDialogEntity.setTitle(split[1] + titleDatas.get(type));
+//                    }
                     waringDialogEntity.setContent("");
                 }
                 waringDialogEntities.add(waringDialogEntity);
