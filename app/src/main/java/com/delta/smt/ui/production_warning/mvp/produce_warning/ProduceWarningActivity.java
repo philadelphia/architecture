@@ -289,14 +289,11 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                 JSONObject jsonObject = jsonArray.getJSONObject(mI);
                 String type = jsonObject.getString("type");
                 String[] split = type.split("_");
-                if(split.length>1){
-                    type = split[1];
-                }
+                type = split[0];
+
                 if(!types.contains(type)){
                     types.add(type);
                     WaringDialogEntity warningEntity = new WaringDialogEntity();
-//                    warningEntity.setTitle(type+"的预警信息");
-//                    warningEntity.setContent(jsonObject.getString("message"));
                     datas.add(warningEntity);
                 }
 
@@ -306,14 +303,17 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     String type = jsonObject.getString("type");
                     String[] split = type.split("_");
-                    if (types.get(i1).equals(split[1])) {
+                    if (types.get(i1).equals(split[0])) {
 
                         if (datas.get(i1).getContent()!=null) {
                             content = datas.get(i1).getContent();
                         }
-
+                        if(Constant.PRODUCTION_LINE_ALARM_FLAG.equals(split[0])){
+                            datas.get(i1).setTitle("接料预警：");
+                        }else{
+                            datas.get(i1).setTitle(types.get(i1)+"的预警信息");
+                        }
                         Object message1 = jsonObject.get("message");
-                        datas.get(i1).setTitle(types.get(i1)+"的预警信息");
                         datas.get(i1).setContent(content+message1 + "\n");
                     }
                 }

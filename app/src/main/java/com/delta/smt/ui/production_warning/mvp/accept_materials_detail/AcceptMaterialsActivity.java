@@ -1,5 +1,6 @@
 package com.delta.smt.ui.production_warning.mvp.accept_materials_detail;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
@@ -18,6 +21,7 @@ import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
@@ -30,9 +34,12 @@ import com.delta.smt.ui.production_warning.di.accept_materials_detail.AcceptMate
 import com.delta.smt.ui.production_warning.di.accept_materials_detail.DaggerAcceptMaterialsCompnent;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
+import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +74,10 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     @BindView(R.id.tv_work_order)
     TextView mTvWorkOrder;
 
+    @Inject
+    TextToSpeechManager textToSpeechManager;
+
+
     private CommonBaseAdapter<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> adapter;
     private CommonBaseAdapter<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> adapter1;
     private List<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> dataList = new ArrayList();
@@ -87,6 +98,9 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 .acceptMaterialsModule(new AcceptMaterialsModule(this)).build().inject(this);
     }
 
+    private View getRootView(Activity context) {
+        return ((ViewGroup) context.findViewById(android.R.id.content)).getChildAt(0);
+    }
     @Override
     protected void initData() {
         lines = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_LINES);
@@ -191,6 +205,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     //扫码成功处理
     @Override
     public void onScanSuccess(String barcode) {
+        textToSpeechManager.stop();
         //二维码识别和解析
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         Log.e(TAG, "onScanSuccess: " + barcode);
@@ -224,10 +239,13 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         //扫码正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
                         VibratorAndVoiceUtils.correctVoice(this);
-                        Snackbar.make(getCurrentFocus(), "新料盘扫描成功，请扫Feeder。", Snackbar.LENGTH_SHORT).show();
+//                        Snackbar.make(getCurrentFocus(), "新料盘扫描成功，请扫Feeder。", Snackbar.LENGTH_SHORT).show();
+                        SnackbarUtil.showRead(getRootView(this), "新料盘扫描成功，请扫Feeder。",textToSpeechManager);
 
                     }else {
-                        Snackbar.make(getCurrentFocus(), "与第一条的料号匹配错误！", Snackbar.LENGTH_SHORT).show();
+//                        Snackbar.make(getCurrentFocus(), "与第一条的料号匹配错误！", Snackbar.LENGTH_SHORT).show();
+//                        textToSpeechManager.readMessage( "与第一条的料号匹配错误！");
+                        SnackbarUtil.showRead(getRootView(this), "与第一条的料号匹配错误！",textToSpeechManager);
                         flag=0;
                     }
 
@@ -240,7 +258,9 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 VibratorAndVoiceUtils.wrongVibrator(this);
                 VibratorAndVoiceUtils.wrongVoice(this);
 
-                Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
+/*                Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
+                textToSpeechManager.readMessage( "请扫描正确的料盘！");*/
+                SnackbarUtil.showRead(getRootView(this), "请扫描正确的料盘！",textToSpeechManager);
                 this.materialNumber = null;
                 this.streamNumber = null;
                 e.printStackTrace();
@@ -300,13 +320,19 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 //扫码错误时调用的声音和震动
                 VibratorAndVoiceUtils.correctVibrator(this);
                 VibratorAndVoiceUtils.correctVoice(this);
-                Snackbar.make(getCurrentFocus(), "扫描feeder正确，请扫描料站", Snackbar.LENGTH_SHORT).show();
+/*                Snackbar.make(getCurrentFocus(), "扫描feeder正确，请扫描料站", Snackbar.LENGTH_SHORT).show();
+                textToSpeechManager.readMessage( "扫描feeder正确，请扫描料站");*/
+
+                SnackbarUtil.showRead(getRootView(this), "扫描feeder正确，请扫描料站",textToSpeechManager);
             } catch (EntityNotFountException e) {
                 //扫码错误时调用的声音和震动
                 VibratorAndVoiceUtils.wrongVibrator(this);
                 VibratorAndVoiceUtils.wrongVoice(this);
 
-                Snackbar.make(getCurrentFocus(), "请扫描正确的feeder号！", Snackbar.LENGTH_SHORT).show();
+/*                Snackbar.make(getCurrentFocus(), "请扫描正确的feeder号！", Snackbar.LENGTH_SHORT).show();
+                textToSpeechManager.readMessage( "请扫描正确的feeder号！");*/
+
+                SnackbarUtil.showRead(getRootView(this), "请扫描正确的feeder号！",textToSpeechManager);
                 e.printStackTrace();
 
             }
@@ -332,7 +358,10 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 VibratorAndVoiceUtils.wrongVibrator(this);
                 VibratorAndVoiceUtils.wrongVoice(this);
 
-                Snackbar.make(getCurrentFocus(), "请扫描正确的料站！", Snackbar.LENGTH_SHORT).show();
+/*                Snackbar.make(getCurrentFocus(), "请扫描正确的料站！", Snackbar.LENGTH_SHORT).show();
+                textToSpeechManager.readMessage( "请扫描正确的料站！");*/
+
+                SnackbarUtil.showRead(getRootView(this), "请扫描正确的料站！",textToSpeechManager);
                 e.printStackTrace();
             }
 
@@ -448,7 +477,9 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     @Override
     public void commitSerialNumberSucess() {
 //        ToastUtils.showMessage(getContext(), "新料盘匹配正确，接料完成！");
-        Snackbar.make(getCurrentFocus(), "扫描正确，接料完成！", Snackbar.LENGTH_SHORT).show();
+/*        Snackbar.make(getCurrentFocus(), "扫描正确，接料完成！", Snackbar.LENGTH_SHORT).show();
+        textToSpeechManager.readMessage( "扫描正确，接料完成！");*/
+        SnackbarUtil.showRead(getRootView(this),"扫描正确，接料完成！",textToSpeechManager);
         getPresenter().getItemDatas(lines);
     }
 
