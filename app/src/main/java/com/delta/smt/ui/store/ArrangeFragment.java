@@ -207,6 +207,13 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().fatchArrange();
+            }
+        });
+
     }
 
     @Override

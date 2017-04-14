@@ -34,7 +34,7 @@
         android:layout_height="@dimen/dp_30"
         android:layout_weight="1"
         android:text="@string/result_cancel"
-        style="@style/button_style"
+        style="@style/pcb_button"
         />
     <Button
         android:id="@+id/result_alteration"
@@ -43,7 +43,8 @@
         android:layout_marginRight="@dimen/px_20"
         android:layout_weight="1"
         android:text="@string/result_alteration"
-        style="@style/button_style"
+        android:layout_marginLeft="@dimen/px_20"
+        style="@style/pcb_button"
         />
 </LinearLayout>
 </LinearLayout>

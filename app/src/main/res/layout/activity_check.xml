@@ -76,14 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-        <Button
-            android:id="@+id/startAndstop_stopwork"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/background"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/px_40"
-            android:text="@string/startAndstop_stopwork"/>
+
     </RelativeLayout>
     </LinearLayout>
     </com.delta.commonlibs.widget.statusLayout.StatusLayout>

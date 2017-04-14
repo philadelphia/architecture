@@ -53,16 +53,6 @@ public class CheckStockModel extends BaseModel<ApiService> implements CheckStock
     }
 
     @Override
-    public Observable<Success> OnEnd() {
-        return getService().onEnd().compose(RxsRxSchedulers.<Success>io_main());
-    }
-
-    @Override
-    public Observable<InventoryExecption> getInventoryException() {
-        return getService().getInventoryException().compose(RxsRxSchedulers.<InventoryExecption>io_main());
-    }
-
-    @Override
     public Observable<Success> getJudgeSuceess(String s) {
         return getService().getJudgeSuccsee(s).compose(RxsRxSchedulers.<Success>io_main());
     }

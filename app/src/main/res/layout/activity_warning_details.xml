@@ -15,6 +15,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px_60"
         android:text="@string/storage_text"
         style="@style/style_storagetv"
         />
@@ -121,37 +122,45 @@
             />
 
     </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
     <android.support.v7.widget.RecyclerView
         android:id="@+id/storage_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/style_storagetv"
-        android:layout_marginTop="@dimen/px_12"
+        android:layout_marginTop="@dimen/px_30"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/px_30"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/px_20"
         >
 
         <Button
             android:id="@+id/storage_submit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            style="@style/button_style"
+            android:layout_height="@dimen/px_120"
+            style="@style/pcb_button"
             android:text="@string/storage_submit"
             />
 
         <Button
             android:id="@+id/storage_clear"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/px_120"
             android:text="@string/storage_clear"
-            style="@style/button_style"
+            style="@style/pcb_button"
+            android:layout_marginLeft="@dimen/px_20"
             android:layout_marginRight="@dimen/px_70"
             />
     </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 </LinearLayout>

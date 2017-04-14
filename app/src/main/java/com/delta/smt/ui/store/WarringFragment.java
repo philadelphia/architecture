@@ -229,6 +229,12 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().fatchWarning();
+            }
+        });
     }
 
     @Override
