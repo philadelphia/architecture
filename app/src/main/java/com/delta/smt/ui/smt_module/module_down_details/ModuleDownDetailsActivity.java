@@ -67,9 +67,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     AppCompatButton btnFeederMaintain;
     @BindView(R.id.tv_work_order)
     TextView tv_workOrder;
-    @BindView(R.id.tv_side)
+    @BindView(R.id.tv_line_name)
     TextView tv_side;
-    @BindView(R.id.tv_Line)
+    @BindView(R.id.tv_line_num)
     TextView tv_line;
 
     String workItemID;
