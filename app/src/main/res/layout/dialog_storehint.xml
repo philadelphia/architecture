@@ -27,25 +27,26 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/px_40"
         android:layout_marginTop="@dimen/px_40"
-        android:orientation="horizontal"
         android:gravity="center_horizontal"
-        >
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/storehint_confirm"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/px_100"
-            android:textSize="@dimen/px_40"
-            android:textColor="@color/textcolor"
+            android:background="@drawable/btn_selector"
             android:text="@string/confirm"
-            android:background="@drawable/btn_selector"/>
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/px_40" />
+
         <Button
             android:id="@+id/storehint_cancel"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/px_100"
-            android:textSize="@dimen/px_40"
-            android:textColor="@color/textcolor"
-            android:text="@string/cancel"
+            android:layout_marginLeft="@dimen/px_70"
             android:background="@drawable/btn_selector"
-            android:layout_marginLeft="@dimen/px_70"/>
+            android:text="@string/cancel"
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/px_40" />
     </LinearLayout>
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.delta.smt.ui.checkstock;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -79,8 +80,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     private AlertDialog.Builder builder;
     private AlertDialog mErrorDialog;
     private AlertDialog mRollbackDialog;
-    private AlertDialog mStopWorkDialog;
-    private AlertDialog mSummarizeDialog;
     private AlertDialog mResultDialog;
     private TextView mResultContent;
     private MaterialBlockBarCode mMaterbarCode;
@@ -103,7 +102,9 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     protected void initData() {
-        FrameLocation=SpUtil.getString(CheckStockActivity.this,"FrameLocation");
+        Bundle bundle = getIntent().getExtras();
+        FrameLocation=bundle.getString("FrameLocation");
+
     }
 
     @Override
@@ -187,7 +188,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     VibratorAndVoiceUtils.correctVoice(this);
                     if (mFrameLocation != null) {
                         cargonTv.setText(mFrameLocation.getSource());
-                        SpUtil.SetString(CheckStockActivity.this, "FrameLocation", mFrameLocation.getSource());
                         getPresenter().fetchCheckStock(mFrameLocation.getSource());
                         status = 2;
                     }
@@ -205,8 +205,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case 2:
                 try {
                     mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    VibratorAndVoiceUtils.correctVibrator(this);
-                    VibratorAndVoiceUtils.correctVoice(this);
+
                     if (mMaterbarCode != null) {
                         if (dataList.size() != 0) {
                             for (int i = 0; i < dataList.size(); i++) {
@@ -214,6 +213,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                     isChexNumber++;
                                     if (mMaterbarCode.getStreamNumber().equals(dataList.get(i).getBoxSerial())) {
                                         if (Integer.valueOf(mMaterbarCode.getCount()) <= dataList.get(i).getBoundCount()) {
+                                            VibratorAndVoiceUtils.correctVibrator(this);
+                                            VibratorAndVoiceUtils.correctVoice(this);
                                             position = i;
                                             mId = dataList.get(i).getId();
                                             dataList.get(i).setColor(true);
@@ -222,6 +223,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                             getPresenter().fetchCheckStockSuccessNumber(dataList.get(i).getId(), Integer.valueOf(mMaterbarCode.getCount()));
                                             break;
                                         } else {
+                                            VibratorAndVoiceUtils.wrongVibrator(this);
+                                            VibratorAndVoiceUtils.wrongVoice(this);
                                             mId = dataList.get(i).getId();
                                             cargoned.setFocusable(true);
                                             cargoned.setFocusableInTouchMode(true);
@@ -247,6 +250,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                                 }
                             }
                         } else {
+                            VibratorAndVoiceUtils.correctVibrator(this);
+                            VibratorAndVoiceUtils.correctVoice(this);
                             getPresenter().fetchJudgeSuceess(mMaterbarCode.getStreamNumber());
                         }
                         ToastUtils.showMessage(this, "料号：" + mMaterbarCode.getDeltaMaterialNumber() + "\n数量：" + mMaterbarCode.getCount() + "\n单位：" + mMaterbarCode.getUnit() + "\nVendor：" + mMaterbarCode.getVendor() + "\n Data Code：" + mMaterbarCode.getDC() + "\n PCB Code：" + mMaterbarCode.getStreamNumber().substring(0, 2) + "\n 流水号" + mMaterbarCode.getStreamNumber());
@@ -267,13 +272,16 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
             case 3:
                 try {
                     mFrameLocationSuccess = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.PCB_FRAME_LOCATION);
-                    VibratorAndVoiceUtils.correctVibrator(this);
-                    VibratorAndVoiceUtils.correctVoice(this);
+
                         if (mFrameLocationSuccess.getSource().equals(cargonTv.getText())) {
+                            VibratorAndVoiceUtils.correctVibrator(this);
+                            VibratorAndVoiceUtils.correctVoice(this);
                             getPresenter().fetchException(mFrameLocationSuccess.getSource());
                         } else {
                             cargoned.setFocusable(true);
                             if (isChexs) {
+                                VibratorAndVoiceUtils.wrongVibrator(this);
+                                VibratorAndVoiceUtils.wrongVoice(this);
                                 ToastUtils.showMessage(this, "两次扫描架位不一致");
                                 isChexs = false;
                             } else {
@@ -381,22 +389,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     }
 
-    @Override
-    public void onEndSucess() {
-          IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
-//        IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
-    }
-
-    @Override
-    public void onInventoryException(String s) {
-        mSummarizeDialog = builder.create();
-        mSummarizeDialog.show();
-        mSummarizeDialog.setContentView(R.layout.dialog_summarize);
-        TextView textView= (TextView) mSummarizeDialog.findViewById(R.id.dialog_summarize_content);
-        textView.setText(s);
-        mSummarizeDialog.findViewById(R.id.dialog_summarize_cancel).setOnClickListener(this);
-
-    }
 
     @Override
     public void showLoadingView() {
@@ -483,25 +475,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     mRollbackDialog.dismiss();
                 }
                 break;
-            case R.id.stopwork_affirm:
-                if (mStopWorkDialog.isShowing()) {
-                    mStopWorkDialog.dismiss();
-                    SpUtil.SetString(CheckStockActivity.this,"FrameLocation","");
-                    getPresenter().fetchInventoryException();
-                }
 
-                break;
-            case R.id.stopwork_cancel:
-                if (mStopWorkDialog.isShowing()) {
-                    mStopWorkDialog.dismiss();
-                }
-                break;
-            case R.id.dialog_summarize_cancel:
-                if (mSummarizeDialog.isShowing()) {
-                    mSummarizeDialog.dismiss();
-                    getPresenter().onEndSuccess();
-                }
-                break;
             
         }
     }
@@ -534,7 +508,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     }
 
 
-    @OnClick({R.id.cargon_affirm, R.id.startAndstop_stopwork})
+    @OnClick({R.id.cargon_affirm})
     public void onClickButton(View view) {
         switch (view.getId()) {
             case R.id.cargon_affirm:
@@ -557,13 +531,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                     //ToastUtils.showMessage(this,"请先扫描外箱条码");
                 }
                 break;
-            case R.id.startAndstop_stopwork:
-                mStopWorkDialog = builder.create();
-                mStopWorkDialog.show();
-                mStopWorkDialog.setContentView(R.layout.dialog_stopwork);
-                mStopWorkDialog.findViewById(R.id.stopwork_affirm).setOnClickListener(this);
-                mStopWorkDialog.findViewById(R.id.stopwork_cancel).setOnClickListener(this);
-                break;
+
         }
     }
 }

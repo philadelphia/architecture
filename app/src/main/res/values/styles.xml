@@ -25,7 +25,6 @@
     <style name="button_style">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">40px</item>
-        <item name="android:layout_weight">1</item>
         <item name="android:layout_marginLeft">70px</item>
         <item name="android:background">@drawable/btn_selector</item>
 
@@ -54,12 +53,14 @@
         <item name="android:gravity">center_vertical</item>
     </style>
     <style name="pcb_button">
-        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/textcolor</item>
         <item name="android:background">@drawable/btn_frame</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:padding">@dimen/px_0</item>
-        <item name="android:paddingTop">@dimen/px_0</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">@dimen/px_40</item>
+        <item name="android:paddingRight">@dimen/px_40</item>
+
     </style>
 
     <style name="style_title">
@@ -78,7 +79,7 @@
     <style name="waring_text">
         <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/waring_text</item>
-        <item name="android:layout_marginTop">@dimen/px_20</item>
+        <item name="android:layout_marginTop">@dimen/px_60</item>
         <item name="android:layout_marginLeft">@dimen/px_20</item>
     </style>
 
@@ -91,6 +92,9 @@
     <style name="style_storageedi">
         <item name="android:background">@drawable/ed_frame</item>
         <item name="android:layout_marginRight">@dimen/px_16</item>
+        <item name="android:textSize">@dimen/px_40</item>
+        <item name="android:paddingLeft">@dimen/px_20</item>
+
     </style>
     <style name="style_storagetv" >
         <item name="android:textSize">@dimen/px_40</item>

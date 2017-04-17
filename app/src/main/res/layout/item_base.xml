@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -8,26 +8,27 @@
     android:background="@drawable/card_background">
         <TextView
             android:id="@+id/content_text"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+
             android:lineSpacingMultiplier="1.5"
             android:layout_marginTop="@dimen/px_6"
             android:layout_marginLeft="@dimen/px_16"
             style="@style/waring_text"
             />
         <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
         <TextView
             android:id="@+id/time_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/waring_text"
-            android:textSize="@dimen/px_60"
+            android:textSize="@dimen/px_50"
             android:text="@string/timetext"
             android:layout_marginTop="@dimen/px_6"
             />
@@ -51,7 +52,7 @@
             app:suffixTextColor="#e61010"
             app:suffixTextSize="17sp"
             app:timeTextColor="#e60b0b"
-            app:timeTextSize="30sp"
+            app:timeTextSize="20sp"
             />
         </com.zhy.autolayout.AutoLinearLayout>
-</LinearLayout>
+</RelativeLayout>

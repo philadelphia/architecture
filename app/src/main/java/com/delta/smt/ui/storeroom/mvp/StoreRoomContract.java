@@ -15,7 +15,7 @@ public class StoreRoomContract {
     public interface View extends IView{
         void storeSuccess(String s);
         void storeFaild(String s);
-        void lightSuccsee(String s);
+        void lightSuccsee(String log,String s);
         void lightfaild();
         void storageSuccsee();
         void storagefaild(String s);

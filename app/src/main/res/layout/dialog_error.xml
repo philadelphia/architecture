@@ -37,15 +37,16 @@
         android:layout_height="@dimen/dp_30"
         android:layout_weight="1"
         android:text="@string/error_cancel"
-        style="@style/button_style"
+        style="@style/pcb_button"
         />
     <Button
         android:id="@+id/error_alteration"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_30"
         android:layout_weight="1"
+        android:layout_marginLeft="@dimen/px_20"
         android:text="@string/error_alteration"
-        style="@style/button_style"
+        style="@style/pcb_button"
         />
 </LinearLayout>
 </LinearLayout>
