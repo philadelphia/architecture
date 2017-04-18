@@ -71,8 +71,10 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     protected void initView() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
         toolbarTitle.setText("新增处理方案");
     }
 
@@ -111,7 +113,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
             return;
         }
         if (SingleClick.isSingle(5000)) {
-            Map map = new HashMap();
+            Map<String, String> map = new HashMap<>();
             map.put("name", faultName);
             map.put("faultCode", faultCode);
             map.put("faultDetails", content);

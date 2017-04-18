@@ -79,8 +79,11 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     protected void initView() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
         toolbarTitle.setText("故障处理");
         tvTitle.setText(faultSolutionName + ":");
         setSupportActionBar(toolbar);
@@ -148,7 +151,7 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     @OnClick(R.id.button)
     public void onClick() {
         if (SingleClick.isSingle(5000)) {
-            Map map = new HashMap();
+            Map<String, String> map = new HashMap<>();
             map.put("faultId", faultId);
             map.put("solutionId", faultSolutionId);
             map.put("faultCode", faultCode);

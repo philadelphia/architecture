@@ -47,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -111,8 +112,11 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
     protected void initView() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
         toolbarTitle.setText("故障处理预警");
         toolbar.setOnMenuItemClickListener(this);
 
@@ -172,7 +176,7 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     @Override
     public void getFaultMessageSuccess(FaultMessage faultMessage) {
-        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss", Locale.getDefault());
         rowsBeen.clear();
         List<RowsBean> rows = faultMessage.getRows();
         for (int i = 0; i < rows.size(); i++) {
