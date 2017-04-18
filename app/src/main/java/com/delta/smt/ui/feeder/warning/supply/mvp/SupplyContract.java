@@ -15,9 +15,10 @@ import rx.Observable;
  */
 
 public interface SupplyContract {
-    interface View extends IView{
-         void onSuccess(List<FeederSupplyWarningItem> data);
-         void onFailed(String message);
+    interface View extends IView {
+        void onSuccess(List<FeederSupplyWarningItem> data);
+
+        void onFailed(String message);
 
         void showLoadingView();
 
@@ -28,7 +29,7 @@ public interface SupplyContract {
         void showEmptyView();
     }
 
-    interface Model extends IModel{
-         Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
+    interface Model extends IModel {
+        Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
     }
 }

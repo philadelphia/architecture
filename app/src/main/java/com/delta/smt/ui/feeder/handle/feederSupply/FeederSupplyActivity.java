@@ -145,7 +145,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
 
-        toolbarTitle.setText("Feeder备料");
+        toolbarTitle.setText(R.string.FeederSupply);
         dataList.add(new FeederSupplyItem());
         CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
             @Override
