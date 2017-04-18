@@ -187,7 +187,7 @@ public interface ApiService {
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
     //请求接料预警详情页面item数据
-    @GET("lineAlarmFault/lineMaterialConnectDetail")
+    @GET("lineAlarmFault/getLineMaterialConnectDetail")
     Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(@Query("condition") String condition);
 
     //提交新旧流水号
