@@ -2,6 +2,7 @@ package com.delta.smt.ui.fault_processing.processing.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.FaultFilter;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.SolutionMessage;
 
@@ -23,6 +24,8 @@ public interface FalutProcessingContract {
 
 
         Observable<SolutionMessage> getSolutionMessage(String faultCode);
+
+        Observable<FaultFilter> getFaultFilterMessage();
     }
 
     interface View extends IView {
@@ -40,5 +43,9 @@ public interface FalutProcessingContract {
         void showErrorView();
 
         void showEmptyView();
+
+        void getFaultFilterMessageFailed();
+
+        void getFaultFilterMessageSuccess(FaultFilter faultFilter);
     }
 }

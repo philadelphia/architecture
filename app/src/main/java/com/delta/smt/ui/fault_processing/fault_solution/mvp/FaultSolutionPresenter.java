@@ -30,7 +30,7 @@ public class FaultSolutionPresenter extends BasePresenter<FaultSolutionContract.
     public void getDetailSolutionMessage(String id) {
 
         Map<String, String> maps = new HashMap<>();
-        maps.put("id", id);
+        maps.put("solution_name", id);
         id = GsonTools.createGsonString(maps);
         getModel().getDetailSolutionMessage(id).subscribe(new Action1<FaultSolutionMessage>() {
             @Override

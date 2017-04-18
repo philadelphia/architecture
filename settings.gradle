@@ -1,1 +1,1 @@
-include ':app', ':commonlibs', ':countTime', ':websocketmanager', ':ttsmanager'
+include ':app', ':commonlibs', ':countTime', ':websocketmanager', ':ttsmanager', ':dropdownfiltermenu'

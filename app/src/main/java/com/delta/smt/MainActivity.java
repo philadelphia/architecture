@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
@@ -405,36 +404,36 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             }
         }
     }
-    /**
-     * 安装语音相关资源包
-     */
-    private void installTTS() {
-        AlertDialog.Builder alertInstall = new AlertDialog.Builder(this)
-                .setTitle("缺少语音包")
-                .setMessage("下载语音包")
-                .setPositiveButton("去下载",
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                // 下载eyes-free的语音数据包
-                                String ttsDataUrl = "http://eyes-free.googlecode.com/files/tts_3.1_market.apk";
-                                Uri ttsDataUri = Uri.parse(ttsDataUrl);
-                                Intent ttsIntent = new Intent(
-                                        Intent.ACTION_VIEW, ttsDataUri);
-                                startActivity(ttsIntent);
-                            }
-                        })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-        alertInstall.create().show();
-    }
+//    /**
+//     * 安装语音相关资源包
+//     */
+//    private void installTTS() {
+//        AlertDialog.Builder alertInstall = new AlertDialog.Builder(this)
+//                .setTitle("缺少语音包")
+//                .setMessage("下载语音包")
+//                .setPositiveButton("去下载",
+//                        new DialogInterface.OnClickListener() {
+//
+//                            @Override
+//                            public void onClick(DialogInterface dialog,
+//                                                int which) {
+//                                // 下载eyes-free的语音数据包
+//                                String ttsDataUrl = "http://eyes-free.googlecode.com/files/tts_3.1_market.apk";
+//                                Uri ttsDataUri = Uri.parse(ttsDataUrl);
+//                                Intent ttsIntent = new Intent(
+//                                        Intent.ACTION_VIEW, ttsDataUri);
+//                                startActivity(ttsIntent);
+//                            }
+//                        })
+//                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                    }
+//                });
+//        alertInstall.create().show();
+//    }
 
 }
 

@@ -143,9 +143,9 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 }
 //                mStringBuffer.substring(0,mStringBuffer.length()-2);
                 Log.i("aaa", String.valueOf(mStringBuffer));
-                Constant.CONDITION = mStringBuffer.toString();
+//                Constant.CONDITION = mStringBuffer.toString();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.PRODUCTION_LINE, Constant.CONDITION);
+                bundle.putString(Constant.PRODUCTION_LINE,  mStringBuffer.toString());
                 switch (type) {
                     case 0:
                         SpUtil.SetStringSF(this, Constant.PRODUCE_WARNING_LINE_NAME, mStringBuffer.toString());
