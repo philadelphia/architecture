@@ -208,7 +208,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
                 if("0".equals(success.getCode())){
                 getView().onSucessState(success.getMsg());
                 }else {
-                    getView().onFailed(success.getMsg());
+                    getView().onFailedSate(success.getMsg());
                 }
             }
         }, new Action1<Throwable>() {

@@ -91,6 +91,7 @@
     <string name="startAndstop_stopwork">结束本次盘点</string>
     <string name="storage_counttv">数量：</string>
     <string name="continues">继续</string>
+    <string name="uncheck">未盘点的价位</string>
     <string name="affirm">确认</string>
     <string name="dialog_stopwork_content">请确认是否结束盘点！</string>
     <string name="dialog_rollback_content">请确认是否回退到上一个界面！</string>
@@ -111,8 +112,11 @@
     <string name="pcbmaintain_framelocation">架位二维码</string>
     <string name="pcbmaintain_Led">LED二维码</string>
     <string name="pcbmaintainnext">下一个货架</string>
-    <string name="FeederCache">Feeder 暂存区备料</string>
     <string name="WorkID">工单</string>
     <string name="Side">面别</string>
+
+    <!--Feeder 备料-->
+    <string name="FeederSupply">Feeder备料</string>
+    <string name="FeederCache">Feeder 暂存区备料</string>
 
 </resources>

@@ -109,7 +109,6 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
                 holder.setText(R.id.tv_material_station, "面别: " + feederSupplyWarningItem.getSide());
                 holder.setText(R.id.tv_add_count, "状态: " + (feederSupplyWarningItem.getStatus() == 2 ? "未开始备料" : "备料中"));
             }
-//
 
 
         };

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,48 +8,25 @@
     <include layout="@layout/appbar" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10px"
-        android:orientation="vertical"
-        android:padding="10px">
-
-
-        <TextView
-            android:id="@+id/tv_work_order"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10px"
-            android:text="工单："
-            android:textColor="#333333"
-            android:textSize="40px" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15px"
-            android:orientation="horizontal">
+            android:layout_marginBottom="@dimen/px_30"
+            android:layout_marginLeft="@dimen/px_60"
+            android:layout_marginRight="@dimen/px_60"
+            android:layout_marginTop="@dimen/px_60"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_side"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="面别："
-                android:textColor="#333333"
-                android:textSize="40px" />
+            <include layout="@layout/layout_workorder_side_line" />
 
-
-            <TextView
-                android:id="@+id/tv_Line"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="线别："
-                android:textColor="#333333"
-                android:textSize="40px" />
 
         </LinearLayout>
+
 
 
         <android.support.v7.widget.AppCompatButton

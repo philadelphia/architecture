@@ -16,7 +16,7 @@ import java.util.Date;
 
 public class ItemBreakDown extends TimeEntity {
 
-    @SerializedName("faultType")
+    @SerializedName("exception_name")
     private String title;
 
     @SerializedName("line")
@@ -25,13 +25,14 @@ public class ItemBreakDown extends TimeEntity {
     @SerializedName("process")
     private String make_process;
 
-    @SerializedName("faultCode")
+    @SerializedName("slot")
     private String material_station;
 
-    @SerializedName("faultMessage")
+    @SerializedName("child_exception_name")
     private String breakdown_info;
 
-    private String createTime;
+    @SerializedName("duration_time")
+    private Long createTime;
 
     public ItemBreakDown() {
     }
@@ -47,11 +48,11 @@ public class ItemBreakDown extends TimeEntity {
 
 
 
-    public String getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 

@@ -16,7 +16,9 @@
             android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/px_0"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/px_60"
         android:layout_marginBottom="@dimen/px_40"
         >
         <TextView
@@ -32,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/tv_work"
+            android:layout_alignBottom="@id/tv_work"
             style="@style/waring_editext"
             />
         <TextView
@@ -40,7 +43,7 @@
             android:layout_height="wrap_content"
             style="@style/waring_text"
             android:text="@string/tv_pcb"
-            android:layout_below="@id/ed_work"
+            android:layout_below="@id/tv_work"
 
             />
         <TextView
@@ -104,7 +107,8 @@
     </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/px_0"
+            android:layout_weight="3"
             >
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_widget"
@@ -114,18 +118,18 @@
             <include layout="@layout/main_recyclerview"
         />
             </android.support.v4.widget.SwipeRefreshLayout>
+
+        </RelativeLayout>
+
             <Button
                 android:id="@+id/warning_sum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/px_120"
                 android:layout_alignParentBottom="true"
-                android:background="@color/background"
-                android:layout_marginBottom="@dimen/px_20"
-                android:layout_marginLeft="@dimen/px_20"
-                android:layout_marginRight="@dimen/px_20"
+                style="@style/pcb_button"
                 android:text="结束发料"
+                android:layout_gravity="center_horizontal"
                 />
-        </RelativeLayout>
         </LinearLayout>
    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 

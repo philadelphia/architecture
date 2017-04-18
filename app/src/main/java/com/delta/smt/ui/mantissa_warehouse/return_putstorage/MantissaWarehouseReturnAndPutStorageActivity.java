@@ -123,7 +123,6 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         loadMultipleRootFragment(R.id.fl_container, 0, mMantissaWarehouseReturnFragment, mMantissaWarehousePutstorageFragment);
         currentFragment = mMantissaWarehouseReturnFragment;
         mTlTitle.getTabAt(currentTab).select();
-
     }
 
 
@@ -156,6 +155,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
             default:
                 break;
         }
+        mFragmentTransaction.commit();
     }
 
     @Override

@@ -96,6 +96,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     private String mSubBoard;
     private int mSunAmout;
     private int mSingleAmout;
+    private int status=0;
 
 
     @Override
@@ -250,6 +251,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 ////                getPresenter().fetchScheduleOutBound(mAlarminfoId,mWorkNumberString,mMaterialNumberString,mAmoutString);
 //            }
         }
+        status=0;
 
 
     }
@@ -264,6 +266,12 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
             edPcbDemand.setText("0");
         }
 
+    }
+
+    @Override
+    public void onFailedSate(String s) {
+        ToastUtils.showMessage(this, s);
+        status=0;
     }
 
     @Override
@@ -309,71 +317,90 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void onScanSuccess(String barcode) {
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-
-        try {
-            mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-            VibratorAndVoiceUtils.correctVibrator(this);
-            VibratorAndVoiceUtils.correctVoice(this);
-            if (mMaterbarCode.getStreamNumber() != null) {
+        switch (status){
+            case 0:
+                try {
+                    mMaterbarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    VibratorAndVoiceUtils.correctVibrator(this);
+                    VibratorAndVoiceUtils.correctVoice(this);
+                    if (mMaterbarCode.getStreamNumber() != null) {
 //                    getPresenter().fetchPcbNumber(mMaterbarCode.getStreamNumber());
-                if (mList != null) {
-                    for (int i = 0; i < mList.size(); i++) {
-                        if (mList.get(i).getBoxSerial().equals(mMaterbarCode.getStreamNumber())) {
-                            mId = mList.get(i).getId();
-                            mAdapterposition = i;
-                            if (!mList.get(i).isDelivery()) {
-                                mList.get(i).setDelivery(true);
-                                if (mAmoutString > 0) {
-                                    if (mList.get(i).getCount() > mAmoutString) {
-                                        //ToastUtils.showMessage(this, mList.get(i).getCount() - mAmoutString);
-                                        if (mIsAlarmInfo) {
-                                            getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
+                        if (mList != null) {
+                            for (int i = 0; i < mList.size(); i++) {
+                                if (mList.get(i).getBoxSerial().equals(mMaterbarCode.getStreamNumber())) {
+                                    mId = mList.get(i).getId();
+                                    mAdapterposition = i;
+                                    if (!mList.get(i).isDelivery()) {
+                                        mList.get(i).setDelivery(true);
+                                        if (mAmoutString > 0) {
+                                            if (mList.get(i).getCount() > mAmoutString) {
+                                                //ToastUtils.showMessage(this, mList.get(i).getCount() - mAmoutString);
+                                                if (mIsAlarmInfo) {
+                                                    VibratorAndVoiceUtils.correctVibrator(this);
+                                                    VibratorAndVoiceUtils.correctVoice(this);
+                                                    getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 0);
 
+                                                } else {
+                                                    VibratorAndVoiceUtils.correctVibrator(this);
+                                                    VibratorAndVoiceUtils.correctVoice(this);
+                                                    getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 1);
+                                                }
+                                            } else {
+                                                if (mIsAlarmInfo) {
+                                                    VibratorAndVoiceUtils.correctVibrator(this);
+                                                    VibratorAndVoiceUtils.correctVoice(this);
+                                                    getPresenter().fetchPcbSuccess(mAlarminfoId, mList.get(i).getCount(), mId, 0);
+
+                                                } else {
+                                                    VibratorAndVoiceUtils.correctVibrator(this);
+                                                    VibratorAndVoiceUtils.correctVoice(this);
+                                                    getPresenter().fetchPcbSuccess(mAlarminfoId, mList.get(i).getCount(), mId, 1);
+
+                                                }
+                                            }
+                                            if (mAmoutString - mList.get(i).getCount() < 0) {
+                                                VibratorAndVoiceUtils.correctVibrator(this);
+                                                VibratorAndVoiceUtils.correctVoice(this);
+                                                ToastUtils.showMessage(this, "请拆箱取出" + (mAmoutString) + "片", 10000);
+                                            }
+                                            mList.get(i).setLevel(3);
+                                            mAdapter.notifyDataSetChanged();
                                         } else {
-                                            getPresenter().fetchPcbSuccess(mAlarminfoId, mAmoutString, mId, 1);
-                                        }
-                                    } else {
-                                        if (mIsAlarmInfo) {
-                                            getPresenter().fetchPcbSuccess(mAlarminfoId, mList.get(i).getCount(), mId, 0);
-
-                                        } else {
-                                            getPresenter().fetchPcbSuccess(mAlarminfoId, mList.get(i).getCount(), mId, 1);
-
+                                            VibratorAndVoiceUtils.wrongVibrator(this);
+                                            VibratorAndVoiceUtils.wrongVoice(this);
+                                            SnackbarUtil.showMassage(activityMianview, "这箱料已经发过了，请不要反复扫码");
                                         }
                                     }
-                                    if (mAmoutString - mList.get(i).getCount() < 0) {
-                                        ToastUtils.showMessage(this, "请拆箱取出" + (mAmoutString) + "片", 10000);
-                                    }
-                                    mList.get(i).setLevel(3);
-                                    mAdapter.notifyDataSetChanged();
-                                } else {
-                                    SnackbarUtil.showMassage(activityMianview, "这箱料已经发过了，请不要反复扫码");
                                 }
                             }
+
                         }
                     }
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+
+                } catch (Exception e) {
 
                 }
-            }
-        } catch (EntityNotFountException e) {
-            e.printStackTrace();
-            try {
-                mFramebarCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
-                VibratorAndVoiceUtils.correctVibrator(this);
-                VibratorAndVoiceUtils.correctVoice(this);
+                break;
+            case 1:
+                try {
+                    mFramebarCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
+                    VibratorAndVoiceUtils.correctVibrator(this);
+                    VibratorAndVoiceUtils.correctVoice(this);
+                    getPresenter().closeLight(mFramebarCode.getSource());
 
-                getPresenter().closeLight(mFramebarCode.getSource());
+                } catch (EntityNotFountException e1) {
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                    e1.printStackTrace();
 
-            } catch (EntityNotFountException e1) {
-                VibratorAndVoiceUtils.wrongVibrator(this);
-                VibratorAndVoiceUtils.wrongVoice(this);
-                e1.printStackTrace();
+                } catch (Exception es) {
 
-            } catch (Exception es) {
-
-            }
-        } catch (Exception e) {
-
+                }
+                break;
         }
 
 
@@ -392,6 +419,12 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
+        if (mIsAlarmInfo) {
+            getPresenter().fetchAlarminfoOutBound(mAlarminfoId, mWorkNumberString, mMaterialNumberString, mAmoutString);
+        } else {
+            getPresenter().fetchScheduleOutBound(mAlarminfoId, mWorkNumberString, mMaterialNumberString, mAmoutString);
+        }
+
     }
 
     @Override

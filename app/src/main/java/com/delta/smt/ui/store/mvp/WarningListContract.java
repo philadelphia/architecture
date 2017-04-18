@@ -19,6 +19,7 @@ public class WarningListContract {
         void onFailed(String s);
         void onSucessState(String s);
         void onSucessStates(String s);
+        void onFailedSate(String s);
         void onOutSubmit(String s);
         void onOutSuccess(List<OutBound.DataBean> dataBeanList);
         void getNumberSucces(PcbNumber.DataBean dataBean);

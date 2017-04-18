@@ -76,6 +76,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     StatusLayout statusLayout;
 
     AlertDialog.Builder builder;
+    private int status=0;
 
     private boolean isButtonOnclick = false;
     private StringBuffer stringBuffer = new StringBuffer();
@@ -144,79 +145,90 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     @Override
     public void onScanSuccess(String barcode) {
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-        try {
-            mBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-            VibratorAndVoiceUtils.correctVibrator (this);
-            VibratorAndVoiceUtils.correctVoice(this);
-            Log.e("barcode", mBarCode.getDeltaMaterialNumber());
+        switch (status){
+            case 0:
+                try {
+                    mBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
 
-            if(materialBlockBarCodes.size() ==0) {
-                materialBlockBarCodes.add(mBarCode);
-                ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
-                materialsList.add(threeOfMaterial);
-                mShortLisrAdapter.notifyDataSetChanged();
-                storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
-                storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
-                storageDatacodeed.setText(mBarCode.getDC());
-                storageCounted.setText(mBarCode.getCount());
+                    Log.e("barcode", mBarCode.getDeltaMaterialNumber());
+                    if(materialBlockBarCodes.size() ==0) {
+                        materialBlockBarCodes.add(mBarCode);
+                        ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
+                        materialsList.add(threeOfMaterial);
+                        mShortLisrAdapter.notifyDataSetChanged();
+                        storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
+                        storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
+                        storageDatacodeed.setText(mBarCode.getDC());
+                        storageCounted.setText(mBarCode.getCount());
 
-            }else{
-                int i=0;
-                int  materialBlockBarCodesize=materialBlockBarCodes.size();
-                for (;i<materialBlockBarCodesize;i++){
-                    if (mBarCode.getStreamNumber().equals(materialBlockBarCodes.get(i).getStreamNumber())){
-                    break;
+                    }else{
+                        int i=0;
+                        int  materialBlockBarCodesize=materialBlockBarCodes.size();
+                        for (;i<materialBlockBarCodesize;i++){
+                            if (mBarCode.getStreamNumber().equals(materialBlockBarCodes.get(i).getStreamNumber())){
+                                break;
+                            }
+
+
+                        }
+                        if (i<materialBlockBarCodesize){
+                            VibratorAndVoiceUtils.wrongVibrator(this);
+                            VibratorAndVoiceUtils.wrongVoice(this);
+                            ToastUtils.showMessage(getApplication(),"请确认是否扫描的同一个标签!!");
+                        }else {
+                            VibratorAndVoiceUtils.correctVibrator (this);
+                            VibratorAndVoiceUtils.correctVoice(this);
+                            materialBlockBarCodes.add(mBarCode);
+                            ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
+                            materialsList.add(threeOfMaterial);
+                            mShortLisrAdapter.notifyDataSetChanged();
+                            storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
+                            storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
+                            storageDatacodeed.setText(mBarCode.getDC());
+                            storageCounted.setText(mBarCode.getCount());
+                        }
+
                     }
 
-
-                }
-                if (i<materialBlockBarCodesize){
-                    ToastUtils.showMessage(getApplication(),"请确认是否扫描的同一个标签!!");
-                }else {
-                    materialBlockBarCodes.add(mBarCode);
-                    ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
-                    materialsList.add(threeOfMaterial);
-                    mShortLisrAdapter.notifyDataSetChanged();
-                    storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
-                    storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
-                    storageDatacodeed.setText(mBarCode.getDC());
-                    storageCounted.setText(mBarCode.getCount());
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                    status=1;
                 }
 
-
-
-
-
-            }
-
-} catch (EntityNotFountException e) {
-
-            e.printStackTrace();
-            try {
-               PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
+                break;
+            case 1:
+                try {
+                    PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
 //                Pattern pattern = Pattern.compile(myResEx);
 //                Matcher matcher = pattern.matcher(barcode);
 //                boolean isMatcher = matcher.matches();
 //                if (isMatcher) {
-                    VibratorAndVoiceUtils.correctVibrator(this);
-                    VibratorAndVoiceUtils.correctVoice(this);
+
                     storageIded.setText(barcode);
                     if (materialBlockBarCodes.size() < 11 && materialBlockBarCodes.size() != 0) {
                         if (!TextUtils.isEmpty(storageIded.getText())) {
+                            VibratorAndVoiceUtils.correctVibrator(this);
+                            VibratorAndVoiceUtils.correctVoice(this);
                             getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
                         }
                     } else {
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
                         storageIded.setText(null);
                         SnackbarUtil.showMassage(warningActivityMain, "请先扫描外箱条码，再扫描架位");
                     }
 
 
-            } catch (Exception e1) {
-                e1.printStackTrace();
-                VibratorAndVoiceUtils.wrongVibrator(this);
-                VibratorAndVoiceUtils.wrongVoice(this);
-            }
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                }
+                break;
         }
+
 
     }
 
@@ -241,8 +253,8 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     }
 
     @Override
-    public void lightSuccsee(String s) {
-        SnackbarUtil.showMassage(warningActivityMain,"点灯成功，请放置到固定架位");
+    public void lightSuccsee(String log,String s) {
+        SnackbarUtil.showMassage(warningActivityMain,log);
         for (int i=0;i<materialsList.size();i++){
         ThreeOfMaterial threeOfMaterial = materialsList.get(i);
         threeOfMaterial.setPrice(s);
@@ -277,6 +289,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         storageSubmit.setEnabled(true);
         storageClear.setBackgroundColor(this.getResources().getColor(R.color.background));
         storageClear.setEnabled(true);
+        status=0;
 
     }
 
@@ -300,6 +313,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         storageSubmit.setEnabled(true);
         storageClear.setBackgroundColor(this.getResources().getColor(R.color.background));
         storageClear.setEnabled(true);
+        status=0;
     }
 
     @Override

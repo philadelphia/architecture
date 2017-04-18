@@ -126,10 +126,12 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
         //注册广播初始化
         warningManger.addWarning(String.valueOf(Constant.PRODUCTION_LINE_ALARM_FLAG), getClass());
+        warningManger.addWarning(String.valueOf(Constant.OPERATOR_FAULT_ALARM_FLAG), getClass());
         for (int mI = 0; mI < line.length; mI++) {
             Log.e("eee", "initData: "+ line[mI]);
             //需要定制的信息
             warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"_"+line[mI], 0));
+            warningManger.sendMessage(new SendMessage(Constant.OPERATOR_FAULT_ALARM_FLAG+"_"+line[mI], 0));
         }
 
         warningManger.setReceive(true);
@@ -194,6 +196,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
             //需要定制的信息
 //            warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"-"+line[mI], 0));
             warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"_"+line[mI],1));
+            warningManger.sendMessage(new SendMessage(Constant.OPERATOR_FAULT_ALARM_FLAG+"_"+line[mI],1));
         }
         super.onDestroy();
     }
@@ -310,8 +313,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                         }
                         if(Constant.PRODUCTION_LINE_ALARM_FLAG.equals(split[0])){
                             datas.get(i1).setTitle("接料预警：");
-                        }else{
-                            datas.get(i1).setTitle(types.get(i1)+"的预警信息");
+                        }else if(Constant.OPERATOR_FAULT_ALARM_FLAG.equals(split[0])){
+                            datas.get(i1).setTitle("操作员故障预警：");
                         }
                         Object message1 = jsonObject.get("message");
                         datas.get(i1).setContent(content+message1 + "\n");
