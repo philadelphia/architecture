@@ -55,7 +55,7 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     private CommonBaseAdapter<FaultSolutionMessage.RowsBean> adapter;
     private String faultCode;
     private String faultId;
-    private String faultSolutionId;
+    private String lineName;
     private String faultSolutionName;
     private int size;
 
@@ -68,22 +68,19 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     @Override
     protected void initData() {
         Bundle extras = getIntent().getExtras();
-        faultSolutionId = extras.getString(Constant.FAULT_SOLUTION_ID);
+        lineName = extras.getString(Constant.FAULT_PROCESSING_LINE_NAME);
         faultCode = extras.getString(Constant.FAULT_CODE);
-        faultId = extras.getString(Constant.FAULT_ID);
+        //faultId = extras.getString(Constant.FAULT_ID);
         faultSolutionName = extras.getString(Constant.FAULT_SOLUTION_NAME);
-        getPresenter().getDetailSolutionMessage(faultSolutionId);
+        getPresenter().getDetailSolutionMessage(faultSolutionName);
     }
 
     @Override
     protected void initView() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("故障处理");
         tvTitle.setText(faultSolutionName + ":");
         setSupportActionBar(toolbar);
@@ -92,10 +89,10 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
             protected void convert(CommonViewHolder holder, FaultSolutionMessage.RowsBean item, int position) {
 
                 if (size == 1) {
-                    holder.setText(R.id.tv_step_content, item.getContent());
+                    holder.setText(R.id.tv_step_content, item.getPath());
                 } else {
 
-                    holder.setText(R.id.tv_step_content, item.getOrderNum() + "." + item.getContent());
+                    holder.setText(R.id.tv_step_content, position+1 + "." + item.getPath());
                 }
 
             }
@@ -151,10 +148,10 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     @OnClick(R.id.button)
     public void onClick() {
         if (SingleClick.isSingle(5000)) {
-            Map<String, String> map = new HashMap<>();
-            map.put("faultId", faultId);
-            map.put("solutionId", faultSolutionId);
-            map.put("faultCode", faultCode);
+            Map map = new HashMap();
+            map.put("solution_name", faultSolutionName);
+            map.put("exception_code", faultCode);
+            map.put("line", lineName);
             getPresenter().resolveFault(GsonTools.createGsonString(map));
         }
     }

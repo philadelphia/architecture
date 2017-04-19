@@ -2,7 +2,6 @@ package com.delta.smt.entity;
 
 import com.delta.libs.adapter.TimeEntity;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,26 +13,16 @@ import java.util.List;
 
 public class FaultMessage {
 
+
     /**
      * code : 0
      * msg : Success
-     * rows : [{"faultType":"回焊炉-炉温过低","line":"H13","process":"回焊炉","faultMessage":"炉温过低","faultCode":"H-00001","isOk":0,"createTime":"Jan 17, 2017 4:50:08 PM","id":2},{"faultType":"AOI-直通率过低","line":"H13","process":"AOI","faultMessage":"直通率过低","faultCode":"AOI-00001","isOk":0,"createTime":"Jan 17, 2017 4:51:37 PM","id":3}]
+     * rows : {"failures":[{"exception_name":"贴片机故障-贴片","line":"ST01","duration_time":61662,"process":"ICT","child_exception_name":"贴片","exception_code":"T-0001"}],"filters":[{"main_exception_name":"贴片机故障"},{"main_exception_name":"回焊炉故障"},{"main_exception_name":"AOI故障"},{"main_exception_name":"ICT故障"}]}
      */
 
     private String code;
     private String msg;
-    /**
-     * faultType : 回焊炉-炉温过低
-     * line : H13
-     * process : 回焊炉
-     * faultMessage : 炉温过低
-     * faultCode : H-00001
-     * isOk : 0
-     * createTime : Jan 17, 2017 4:50:08 PM
-     * id : 2
-     */
-
-    private List<RowsBean> rows;
+    private RowsBean rows;
 
     public String getCode() {
         return code;
@@ -51,95 +40,114 @@ public class FaultMessage {
         this.msg = msg;
     }
 
-    public List<RowsBean> getRows() {
+    public RowsBean getRows() {
         return rows;
     }
 
-    public void setRows(List<RowsBean> rows) {
+    public void setRows(RowsBean rows) {
         this.rows = rows;
     }
 
-    public static class RowsBean extends TimeEntity implements Serializable {
-        private String faultType;
-        private String line;
-        private String process;
-        private String faultMessage;
-        private String faultCode;
-        private int isOk;
-        private String createTime;
-        private int id;
-        private Long durationTime;
+    public static class RowsBean {
+        private List<FailuresBean> failures;
+        private List<FiltersBean> filters;
 
-        public Long getDurationTime() {
-            return durationTime;
+        public List<FailuresBean> getFailures() {
+            return failures;
         }
 
-        public String getFaultType() {
-            return faultType;
+        public void setFailures(List<FailuresBean> failures) {
+            this.failures = failures;
         }
 
-        public void setFaultType(String faultType) {
-            this.faultType = faultType;
+        public List<FiltersBean> getFilters() {
+            return filters;
         }
 
-        public String getLine() {
-            return line;
+        public void setFilters(List<FiltersBean> filters) {
+            this.filters = filters;
         }
 
-        public void setDurationTime(Long durationTime) {
-            this.durationTime = durationTime;
+        public static class FailuresBean extends TimeEntity {
+            /**
+             * exception_name : 贴片机故障-贴片
+             * line : ST01
+             * duration_time : 61662
+             * process : ICT
+             * child_exception_name : 贴片
+             * exception_code : T-0001
+             */
+
+            private String exception_name;
+            private String line;
+            private int duration_time;
+            private String process;
+            private String child_exception_name;
+            private String exception_code;
+
+            public String getException_name() {
+                return exception_name;
+            }
+
+            public void setException_name(String exception_name) {
+                this.exception_name = exception_name;
+            }
+
+            public String getLine() {
+                return line;
+            }
+
+            public void setLine(String line) {
+                this.line = line;
+            }
+
+            public int getDuration_time() {
+                return duration_time;
+            }
+
+            public void setDuration_time(int duration_time) {
+                this.duration_time = duration_time;
+            }
+
+            public String getProcess() {
+                return process;
+            }
+
+            public void setProcess(String process) {
+                this.process = process;
+            }
+
+            public String getChild_exception_name() {
+                return child_exception_name;
+            }
+
+            public void setChild_exception_name(String child_exception_name) {
+                this.child_exception_name = child_exception_name;
+            }
+
+            public String getException_code() {
+                return exception_code;
+            }
+
+            public void setException_code(String exception_code) {
+                this.exception_code = exception_code;
+            }
         }
 
-        public void setLine(String line) {
-            this.line = line;
-        }
+        public static class FiltersBean {
+            /**
+             * main_exception_name : 贴片机故障
+             */
 
-        public String getProcess() {
-            return process;
-        }
+            private String main_exception_name;
 
-        public void setProcess(String process) {
-            this.process = process;
-        }
+            public String getMain_exception_name() {
+                return main_exception_name;
+            }
 
-        public String getFaultMessage() {
-            return faultMessage;
-        }
-
-        public void setFaultMessage(String faultMessage) {
-            this.faultMessage = faultMessage;
-        }
-
-        public String getFaultCode() {
-            return faultCode;
-        }
-
-        public void setFaultCode(String faultCode) {
-            this.faultCode = faultCode;
-        }
-
-        public int getIsOk() {
-            return isOk;
-        }
-
-        public void setIsOk(int isOk) {
-            this.isOk = isOk;
-        }
-
-        public String getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(String createTime) {
-            this.createTime = createTime;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
+            public void setMain_exception_name(String main_exception_name) {
+                this.main_exception_name = main_exception_name;
+            }
         }
     }
 }
