@@ -131,4 +131,9 @@ public class Constant {
     public static final String FAILURE_START_ISSUE_STRING = "有未完成的发料工单，不允许再次开始发料";
     public static final String SCAN_FAILED = "扫描有误，请确认所扫二维码";
 
+    /**
+     * 品管确认
+     */
+    public static final String QUALITY_MANAGE = "quality_manage";
+
 }

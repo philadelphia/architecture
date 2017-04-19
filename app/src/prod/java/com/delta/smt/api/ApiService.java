@@ -41,6 +41,7 @@ import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProduceWarning;
+import com.delta.smt.entity.QualityManage;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
 import com.delta.smt.entity.SolutionMessage;
@@ -498,6 +499,10 @@ public interface ApiService {
     //尾数仓查料盘入库
     @GET("SMM/MantissaStorage/mantissaStorage")
     Observable<MantissaWarehouseReturnResult> getputinstrage(@Query("condition") String bind);
+
+    //品管确认列表查询
+    @GET("SMM/LineQuality/getQualityList")
+    Observable<QualityManage> getQualityList(@Query("condition") String bind);
 
     /**
      * @description :

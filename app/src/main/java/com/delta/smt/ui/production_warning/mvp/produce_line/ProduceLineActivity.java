@@ -29,6 +29,7 @@ import com.delta.smt.ui.production_warning.di.produce_line.DaggerProduceLineComp
 import com.delta.smt.ui.production_warning.di.produce_line.ProduceLineModule;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
+import com.delta.smt.ui.quality_manage.QualityManageActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +77,9 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 break;
             case 2:
                 lineNames = SpUtil.getStringSF(this, Constant.HAND_ADD_LINE_NAME);
+                break;
+            case 3:
+                lineNames = SpUtil.getStringSF(this, Constant.QUALITY_MANAGE);
                 break;
         }
     }
@@ -158,6 +162,10 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                     case 2:
                         SpUtil.SetStringSF(this, Constant.HAND_ADD_LINE_NAME, mStringBuffer.toString());
                         IntentUtils.showIntent(this, HandAddActivity.class, bundle);
+                        break;
+                    case 3:
+                        SpUtil.SetStringSF(this, Constant.QUALITY_MANAGE, mStringBuffer.toString());
+                        IntentUtils.showIntent(this, QualityManageActivity.class, bundle);
                         break;
                 }
                 break;
