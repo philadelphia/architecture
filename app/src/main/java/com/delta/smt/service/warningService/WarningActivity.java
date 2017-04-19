@@ -144,13 +144,12 @@ public class WarningActivity extends AppCompatActivity {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String type = jsonObject.getString("type");
                 String[] split = type.split("_");
-                if (types.get(i1).equals(split[1])) {
+                if (types.get(i1).equals(split[0])) {
                     if (waringDialogEntities.get(i1).getContent()!=null) {
                         content = waringDialogEntities.get(i1).getContent();
                     }
 
                     Object message1 = jsonObject.get("message");
-                    waringDialogEntities.get(i1).setTitle(types.get(i1)+"的预警信息：");
                     waringDialogEntities.get(i1).setContent(content + message1 + "\n");
                 }
             }
