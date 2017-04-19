@@ -87,7 +87,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20px"
-            app:isCountUp="false"
+            app:isCountUp="true"
             app:isShowDay="true"
             app:isShowHour="true"
             app:isShowMillisecond="false"

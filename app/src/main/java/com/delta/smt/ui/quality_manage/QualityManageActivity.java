@@ -185,6 +185,12 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
     @Override
     public void getQualityListSuccess(List<QualityManage.RowsBean> qualityManage) {
         dataList.clear();
+
+        for (int i = 0; i < qualityManage.size(); i++) {
+            qualityManage.get(i).setCreat_time(System.currentTimeMillis() - qualityManage.get(i).getDuration_time() * 1000);
+            qualityManage.get(i).setEntityId(i);
+        }
+
         dataList.addAll(qualityManage);
         adapter.notifyDataSetChanged();
     }
