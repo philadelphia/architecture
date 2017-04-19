@@ -53,7 +53,7 @@ public abstract class BaseFragment<p extends BasePresenter> extends SupportFragm
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         application = (App) (getActivity().getApplication());
-        componentInject(application.getAppComponent());//依赖注入
+        componentInject(App.getAppComponent());//依赖注入
         rootView = inflater.inflate(getContentViewId(), container, false);
         bind = ButterKnife.bind(this, rootView);
         initData();

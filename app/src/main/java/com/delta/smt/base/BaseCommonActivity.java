@@ -249,11 +249,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
             return false;
         if (TextUtils.isEmpty(currentActivityName))
             throw new IllegalArgumentException();
-        if (topActivityName.equals(currentActivityName)) {
-            return true;
-        } else {
-            return false;
-        }
+        return topActivityName.equals(currentActivityName);
     }
 
 }

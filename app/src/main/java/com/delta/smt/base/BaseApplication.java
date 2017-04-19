@@ -45,15 +45,15 @@ public abstract class BaseApplication extends Application implements ResponseErr
         }
         AutoLayoutConifg.getInstance().useDeviceSize();
         mApplication = this;
-        this.mClientModule = ClientModule//用于提供okhttp和retrofit的单列
+        mClientModule = ClientModule//用于提供okhttp和retrofit的单列
                 .buidler()
                 .baseurl(getBaseUrl())
                 .globeHttpHandler(getHttpHandler())
                 .interceptors(getInterceptors())
                 .responseErroListener(getResponseErrorListener())
                 .build();
-        this.mAppModule = new AppModule(this);//提供application
-        this.serviceModule = new ServiceModule();
+        mAppModule = new AppModule(this);//提供application
+        serviceModule = new ServiceModule();
     }
 
 
