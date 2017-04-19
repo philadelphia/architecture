@@ -212,6 +212,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         functionList.add(new Function("治具借出", R.drawable.ic_lend));
         functionList.add(new Function("治具归还", R.drawable.ic_thereturn));
         functionList.add(new Function("手补件", R.drawable.ic_handpatch));
+        functionList.add(new Function("品管确认", R.drawable.ic_handpatch));
        // functionList.add(new Function("warningSample", R.drawable.title));
     }
     private void checkTTS() {
@@ -287,6 +288,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 break;
             case "治具入架位":
                 IntentUtils.showIntent(this, ProduceToolsLocationActivity.class);
+                break;
+            case "品管确认":
+                bundle = new Bundle();
+                bundle.putInt(Constant.SELECT_TYPE, 3);
+                IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
                 break;
             default:
                 break;
