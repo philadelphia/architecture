@@ -1,7 +1,6 @@
 package com.delta.smt.ui.production_warning.mvp.produce_line;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -138,26 +137,26 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 }
                 if (TextUtils.isEmpty(mStringBuffer.toString())) {
                     ToastUtils.showMessage(this, "请选择产线！");
-                    Constant.CONDITION = null;
+                    //Constant.CONDITION = null;
                     return;
                 }
 //                mStringBuffer.substring(0,mStringBuffer.length()-2);
                 Log.i("aaa", String.valueOf(mStringBuffer));
 //                Constant.CONDITION = mStringBuffer.toString();
-                Bundle bundle = new Bundle();
-                bundle.putString(Constant.PRODUCTION_LINE,  mStringBuffer.toString());
+//                Bundle bundle = new Bundle();
+//                bundle.putString(Constant.PRODUCTION_LINE,  mStringBuffer.toString());
                 switch (type) {
                     case 0:
                         SpUtil.SetStringSF(this, Constant.PRODUCE_WARNING_LINE_NAME, mStringBuffer.toString());
-                        IntentUtils.showIntent(this, ProduceWarningActivity.class, bundle);
+                        IntentUtils.showIntent(this, ProduceWarningActivity.class);
                         break;
                     case 1:
                         SpUtil.SetStringSF(this, Constant.FAULT_PROCESSING_LINE_NAME, mStringBuffer.toString());
-                        IntentUtils.showIntent(this, FaultProcessingActivity.class, bundle);
+                        IntentUtils.showIntent(this, FaultProcessingActivity.class);
                         break;
                     case 2:
                         SpUtil.SetStringSF(this, Constant.HAND_ADD_LINE_NAME, mStringBuffer.toString());
-                        IntentUtils.showIntent(this, HandAddActivity.class, bundle);
+                        IntentUtils.showIntent(this, HandAddActivity.class);
                         break;
                 }
                 break;
