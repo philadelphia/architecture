@@ -164,7 +164,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                         break;
                     case 3:
                         SpUtil.SetStringSF(this, Constant.QUALITY_MANAGE, mStringBuffer.toString());
-                        IntentUtils.showIntent(this, QualityManageActivity.class, bundle);
+                        IntentUtils.showIntent(this, QualityManageActivity.class);
                         break;
                 }
                 break;
