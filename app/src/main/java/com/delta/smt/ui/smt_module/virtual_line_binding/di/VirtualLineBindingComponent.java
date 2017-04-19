@@ -13,5 +13,5 @@ import dagger.Component;
 @ActivityScope
 @Component(modules = VirtualLineBindingModule.class, dependencies = AppComponent.class)
 public interface VirtualLineBindingComponent {
-    public void inject(VirtualLineBindingActivity virtualLineBindingActivity);
+    void inject(VirtualLineBindingActivity virtualLineBindingActivity);
 }

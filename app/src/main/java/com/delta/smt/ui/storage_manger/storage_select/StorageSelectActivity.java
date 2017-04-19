@@ -88,7 +88,7 @@ public class StorageSelectActivity extends BaseActivity<StorageSelectPresenter> 
             @Override
             protected void convert(CommonViewHolder holder, StoreEntity item, int position) {
                 holder.setText(R.id.chcekbox, item.getName());
-                CheckBox box = (CheckBox) holder.getView(R.id.chcekbox);
+                CheckBox box = holder.getView(R.id.chcekbox);
                 box.setTag(position);
                 if (item.getName().equals(storeName)) {
                     box.setChecked(true);

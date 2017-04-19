@@ -54,7 +54,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
-    private List<FeederSupplyWarningItem> dataList = new ArrayList<>();
+    private final List<FeederSupplyWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<FeederSupplyWarningItem> adapter;
     private static final String TAG = "FeederSupplyList";
     private WarningDialog warningDialog;

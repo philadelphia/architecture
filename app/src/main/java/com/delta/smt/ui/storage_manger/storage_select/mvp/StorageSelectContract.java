@@ -26,6 +26,6 @@ public interface StorageSelectContract {
     interface Model extends IModel{
         Observable<Result<StoreEntity>> getStorageSelect();
 
-    };
+    }
 
 }
