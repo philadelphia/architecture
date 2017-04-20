@@ -112,8 +112,11 @@
     <string name="pcbmaintain_framelocation">架位二维码</string>
     <string name="pcbmaintain_Led">LED二维码</string>
     <string name="pcbmaintainnext">下一个货架</string>
-    <string name="FeederCache">Feeder 暂存区备料</string>
     <string name="WorkID">工单</string>
     <string name="Side">面别</string>
+
+    <!--Feeder 备料-->
+    <string name="FeederSupply">Feeder备料</string>
+    <string name="FeederCache">Feeder 暂存区备料</string>
 
 </resources>

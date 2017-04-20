@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.Timer;
@@ -206,7 +207,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                 holder.setText(R.id.tv_shelfPositionID, item.getShelf_no());
                 holder.setText(R.id.tv_demandAmount, item.getAmount());
 
-                SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                 sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
                 long beginDate = Long.parseLong(item.getRemain_time())*1000;
                 String sd = sdf.format(new Date(beginDate));

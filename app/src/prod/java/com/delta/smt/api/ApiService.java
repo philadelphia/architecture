@@ -6,6 +6,7 @@ import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.ExceptionsBean;
+import com.delta.smt.entity.FaultFilter;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.entity.FeederCheckInItem;
@@ -41,6 +42,7 @@ import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProduceWarning;
+import com.delta.smt.entity.QualityManage;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
 import com.delta.smt.entity.SolutionMessage;
@@ -120,7 +122,6 @@ public interface ApiService {
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
 
-
     //超领
     @GET("SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
@@ -166,7 +167,6 @@ public interface ApiService {
     Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("condition") String condition);
 
 
-
     /**
      * @description :
      * 1.生产中预警
@@ -187,7 +187,7 @@ public interface ApiService {
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
     //请求接料预警详情页面item数据
-    @GET("lineAlarmFault/lineMaterialConnectDetail")
+    @GET("lineAlarmFault/getLineMaterialConnectDetail")
     Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(@Query("condition") String condition);
 
     //提交新旧流水号
@@ -254,7 +254,7 @@ public interface ApiService {
     Observable<AllQuery> getArrange();//获取所有排程信息
 
     @GET("pcb/management/outbound/lights/close")
-    Observable<Success> closeLights(@Query("id") int id,@Query("type")int type);//退出后又进入
+    Observable<Success> closeLights(@Query("id") int id, @Query("type") int type);//退出后又进入
 
     @GET("pcb/management/outbound/alarm/bill")
     Observable<OutBound> outBound(@Query("id") int id, @Query("sapWorkOrderId") String sapWorkOrderId, @Query("partNum") String partNum, @Query("amount") int amount);//预警仓库发料清单
@@ -289,7 +289,7 @@ public interface ApiService {
     Observable<Success> getScheduleSuccessState(@Query("scheduleId") int scheduleId);//预警出库完成
 
     @GET("pcb/management/outbound/alternative/bill")
-    Observable<OutBound> getRefresh(@Query("id") int id,@Query("partNum")String partNum,@Query("offset") int offset,@Query("type") int type);
+    Observable<OutBound> getRefresh(@Query("id") int id, @Query("partNum") String partNum, @Query("offset") int offset, @Query("type") int type);
 
     @GET("pcb/inventory/start")
     Observable<Success> onStartWork();//开始盘点
@@ -326,11 +326,12 @@ public interface ApiService {
 
     @GET("/pcb/subshelf")
     Observable<LedLight> getSubshelf(@Query("shelfSerial") String s);
+
     @GET("pcb/subshelf/update")
-    Observable<Success> getUpdate(@Query("id") String id,@Query("lightSerial") String lightSerial);
+    Observable<Success> getUpdate(@Query("id") String id, @Query("lightSerial") String lightSerial);
+
     @GET("/webapi/pcb/subshelf/unbound")
     Observable<Success> getUnbound(@Query("param") String id);
-
 
 
     //Observable<List<MantissaWarehousePutstorage>> getBeginput();
@@ -344,20 +345,23 @@ public interface ApiService {
      * @date : 2017/1/21 13:53
      */
     //故障处理预警
-    @GET("lineAlarmFault/getSeriousFaultInfos")
+    @GET("SMM/Linefailure/getSeriousFaultInfos")
     Observable<FaultMessage> getFalutMessages(@Query("condition") String s);
 
-    @GET("lineAlarmFault/faultSolutionList")
+    @GET("SMM/Linefailure/faultSolutionList")
     Observable<SolutionMessage> getSolutionMessage(@Query("condition") String s);
 
-    @GET("lineAlarmFault/faultSolutionDetailList")
+    @GET("SMM/Linefailure/faultSolutionDetailList")
     Observable<FaultSolutionMessage> getDetailSolutionMessage(@Query("condition") String s);
 
-    @GET("lineAlarmFault/resolveFault")
+    @GET("SMM/Linefailure/resolveFault")
     Observable<BaseEntity> resolveFault(@Query("condition") String content);
 
-    @GET("lineAlarmFault/addFaultSolution")
+    @GET("SMM/Linefailure/addFaultSolution")
     Observable<BaseEntity> addSolution(@Query("condition") String content);
+
+    @GET("SMM/Linefailure/getFilters")
+    Observable<FaultFilter> getFaultFilterMessage();
 
     //仓库房
     @GET("SMM/WareHIssue/qPrepCarIDByWorkOrder")
@@ -498,6 +502,10 @@ public interface ApiService {
     //尾数仓查料盘入库
     @GET("SMM/MantissaStorage/mantissaStorage")
     Observable<MantissaWarehouseReturnResult> getputinstrage(@Query("condition") String bind);
+
+    //品管确认列表查询
+    @GET("SMM/LineQuality/getQualityList")
+    Observable<QualityManage> getQualityList(@Query("condition") String bind);
 
     /**
      * @description :

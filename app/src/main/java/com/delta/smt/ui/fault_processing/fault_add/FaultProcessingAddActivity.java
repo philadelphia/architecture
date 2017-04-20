@@ -112,9 +112,9 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         }
         if (SingleClick.isSingle(5000)) {
             Map map = new HashMap();
-            map.put("name", faultName);
-            map.put("faultCode", faultCode);
-            map.put("faultDetails", content);
+            map.put("solution_name", faultName);
+            map.put("exception_code", faultCode);
+            map.put("solution_detail", content);
             getPresenter().addSolution(GsonTools.createGsonString(map));
         }
 

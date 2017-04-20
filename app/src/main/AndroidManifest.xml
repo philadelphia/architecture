@@ -86,6 +86,9 @@
         <activity
             android:name=".ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.quality_manage.QualityManageActivity"
+            android:screenOrientation="portrait" />
 
         <!-- production warning activity -->
         <activity
@@ -149,7 +152,7 @@
         <!-- shufen.wu FileProvider -->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="delta.smart_smt.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

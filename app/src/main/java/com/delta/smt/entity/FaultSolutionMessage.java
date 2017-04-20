@@ -11,32 +11,16 @@ import java.util.List;
 
 public class FaultSolutionMessage {
 
+
     /**
-     * code : 0
      * msg : Success
-     * rows : [{"faultSolutionId":1,"content":"启动AOI检测软件","orderNum":1,"creater":"admin","createTime":"Jan 17, 2017 3:04:58 PM","id":1},{"faultSolutionId":1,"content":"选择当前操作的程式","orderNum":2,"creater":"admin","createTime":"Jan 17, 2017 3:05:39 PM","id":2},{"faultSolutionId":1,"content":"点击运行按钮","orderNum":3,"creater":"admin","id":3}]
+     * rows : [{"path":"asdf"}]
+     * code : 0
      */
 
-    private String code;
     private String msg;
-    /**
-     * faultSolutionId : 1
-     * content : 启动AOI检测软件
-     * orderNum : 1
-     * creater : admin
-     * createTime : Jan 17, 2017 3:04:58 PM
-     * id : 1
-     */
-
+    private String code;
     private List<RowsBean> rows;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public String getMsg() {
         return msg;
@@ -44,6 +28,14 @@ public class FaultSolutionMessage {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public List<RowsBean> getRows() {
@@ -55,59 +47,18 @@ public class FaultSolutionMessage {
     }
 
     public static class RowsBean {
-        private int faultSolutionId;
-        private String content;
-        private int orderNum;
-        private String creater;
-        private String createTime;
-        private int id;
+        /**
+         * path : asdf
+         */
 
-        public int getFaultSolutionId() {
-            return faultSolutionId;
+        private String path;
+
+        public String getPath() {
+            return path;
         }
 
-        public void setFaultSolutionId(int faultSolutionId) {
-            this.faultSolutionId = faultSolutionId;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public int getOrderNum() {
-            return orderNum;
-        }
-
-        public void setOrderNum(int orderNum) {
-            this.orderNum = orderNum;
-        }
-
-        public String getCreater() {
-            return creater;
-        }
-
-        public void setCreater(String creater) {
-            this.creater = creater;
-        }
-
-        public String getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(String createTime) {
-            this.createTime = createTime;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
+        public void setPath(String path) {
+            this.path = path;
         }
     }
 }

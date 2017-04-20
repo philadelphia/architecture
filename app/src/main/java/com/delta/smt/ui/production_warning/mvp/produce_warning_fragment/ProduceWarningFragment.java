@@ -133,9 +133,15 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     holder.setText(R.id.tv_work_code,itemWarningInfo.getWorkcode());
                     holder.setText(R.id.tv_face, "面别：" + itemWarningInfo.getFace());
                     holder.setText(R.id.tv_unused_materials, "剩余料量：" + itemWarningInfo.getUnusedmaterials());
-//                    holder.setText(R.id.tv_material_station, "模组料站：" + itemWarningInfo.getMaterialstation());
-                    holder.setText(R.id.tv_status, "状态：" + itemWarningInfo.getStatus());
                     holder.setText(R.id.tv_unaccept_materials_num, "该线别待接料数：" + itemWarningInfo.getConnectMaterialCount());
+//                    holder.setText(R.id.tv_material_station, "模组料站：" + itemWarningInfo.getMaterialstation());
+                    if (itemWarningInfo.getStatus().equals("1")) {
+                        holder.setText(R.id.tv_status, "状态："+"即将缺料");
+                    }else {
+                        holder.setText(R.id.tv_status, "状态："+"已经缺料");
+                    }
+//                    holder.setText(R.id.tv_status, "状态：" + itemWarningInfo.getStatus());
+
 
                     holder.getView(R.id.tv_make_process).setVisibility(View.GONE);
                     holder.getView(R.id.tv_warning_message).setVisibility(View.GONE);

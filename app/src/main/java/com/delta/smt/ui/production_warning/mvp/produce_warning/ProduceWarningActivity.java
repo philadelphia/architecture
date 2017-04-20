@@ -1,31 +1,27 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
-import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.WrapperListAdapter;
 
 import com.delta.commonlibs.utils.GsonTools;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.entity.SendMessage;
-import com.delta.smt.entity.WaringDialogEntity;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
-import com.delta.smt.entity.ProduceWarningMessage;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.production_warning.di.produce_warning.DaggerTitleNumberCompent;
 import com.delta.smt.ui.production_warning.di.produce_warning.TitleNumberModule;
@@ -36,13 +32,11 @@ import com.delta.smt.ui.production_warning.mvp.produce_warning_fragment.ProduceW
 import com.delta.smt.utils.ViewUtils;
 import com.delta.smt.widget.WarningDialog;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,17 +113,18 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 /*        if (getIntent().getExtras().getString(Constant.PRODUCTION_LINE)!=null&&!getIntent().getExtras().getString(Constant.PRODUCTION_LINE).equals("")) {
             Constant.CONDITION = getIntent().getExtras().getString(Constant.PRODUCTION_LINE);
         }*/
-
-        lines=Constant.CONDITION;
+        lines= SpUtil.getStringSF(this,Constant.PRODUCE_WARNING_LINE_NAME);
         line=lines.split(",");
 
 
         //注册广播初始化
         warningManger.addWarning(String.valueOf(Constant.PRODUCTION_LINE_ALARM_FLAG), getClass());
+        warningManger.addWarning(String.valueOf(Constant.OPERATOR_FAULT_ALARM_FLAG), getClass());
         for (int mI = 0; mI < line.length; mI++) {
             Log.e("eee", "initData: "+ line[mI]);
             //需要定制的信息
             warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"_"+line[mI], 0));
+            warningManger.sendMessage(new SendMessage(Constant.OPERATOR_FAULT_ALARM_FLAG+"_"+line[mI], 0));
         }
 
         warningManger.setReceive(true);
@@ -194,6 +189,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
             //需要定制的信息
 //            warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"-"+line[mI], 0));
             warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"_"+line[mI],1));
+            warningManger.sendMessage(new SendMessage(Constant.OPERATOR_FAULT_ALARM_FLAG+"_"+line[mI],1));
         }
         super.onDestroy();
     }
@@ -310,8 +306,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
                         }
                         if(Constant.PRODUCTION_LINE_ALARM_FLAG.equals(split[0])){
                             datas.get(i1).setTitle("接料预警：");
-                        }else{
-                            datas.get(i1).setTitle(types.get(i1)+"的预警信息");
+                        }else if(Constant.OPERATOR_FAULT_ALARM_FLAG.equals(split[0])){
+                            datas.get(i1).setTitle("操作员故障预警：");
                         }
                         Object message1 = jsonObject.get("message");
                         datas.get(i1).setContent(content+message1 + "\n");
@@ -451,7 +447,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     public String initLine() {
         Map<String, String> map = new HashMap<>();
-        map.put("lines", Constant.CONDITION);
+        map.put("lines",lines);
         String line = GsonTools.createGsonString(map);
         return line;
     }
