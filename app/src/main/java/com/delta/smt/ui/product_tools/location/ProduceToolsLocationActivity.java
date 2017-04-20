@@ -154,7 +154,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         super.onScanSuccess(barcode);
         if (flag1 != 0) {
             try {
-                mString = new String();
+                mString = "";
                 mString = "[\"{\\\"barcode\\\":\\\"" + barcode + "\\\",\\\"userID\\\":" + ID + "}\"]";
                 Log.i(TAG, "onScanSuccess: " + mString);
                 getPresenter().getLocation(mString);
@@ -171,7 +171,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             try {
                 if (shelfBarcode != null) {
                     if (shelfBarcode.equals(barcode)) {
-                        mString = new String();
+                        mString = "";
                         mString = "[\"{\\\"jigBarcode\\\":\\\"" + tools + "\\\",\\\"shelfBarcode\\\":\\\"" + barcode + "\\\", \\\"userID\\\":" + ID + "}\"]";
                         Log.i(TAG, "onScanSuccess: " + mString);
                         getPresenter().getSubmitResult(mString);
@@ -219,7 +219,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             data.clear();
             data.add(0, new ItemLocationVerfyList("治具二维码", "架位二维码", "架位名称", "治具类型", "状态"));
             for (JsonLocationVerfyList mJ : jsonLocationVerfyRoot.getRows()) {
-                String status = new String();
+                String status = "";
                 switch (mJ.getLoanStatus()) {
                     case 1:
                         status = "未确认";

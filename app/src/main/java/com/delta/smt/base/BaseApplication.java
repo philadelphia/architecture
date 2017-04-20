@@ -30,7 +30,7 @@ import timber.log.Timber;
  */
 public abstract class BaseApplication extends Application implements ResponseErrorListener {
     static private BaseApplication mApplication;
-    public LinkedList<BaseCommonActivity> mActivityList;
+    private LinkedList<BaseCommonActivity> mActivityList;
     private static ClientModule mClientModule;
     private static AppModule mAppModule;
     private static ServiceModule serviceModule;

@@ -1,11 +1,9 @@
 package com.delta.smt.ui.hand_add.mvp;
 
-import android.support.v7.widget.LinearSmoothScroller;
 import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.smt.R;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.google.gson.Gson;

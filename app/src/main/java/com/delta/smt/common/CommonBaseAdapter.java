@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,7 @@ import com.delta.commonlibs.animation.AnimationType;
 import com.delta.commonlibs.utils.AnimationUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -32,7 +31,7 @@ public abstract class CommonBaseAdapter<T> extends RecyclerView.Adapter<CommonVi
     /**
      * Base config
      */
-    public List<T> mData;
+    private List<T> mData;
     private Context mContext;
     private LayoutInflater mInflater;
 
@@ -47,7 +46,7 @@ public abstract class CommonBaseAdapter<T> extends RecyclerView.Adapter<CommonVi
     /**
      * View type
      */
-    private Map<Integer, Integer> layoutIdMap, viewTypeMap;
+    private SparseArray<Integer> layoutIdMap, viewTypeMap;
     private int mCurrentViewTypeValue = 0x0107;
 
     /**
@@ -74,8 +73,8 @@ public abstract class CommonBaseAdapter<T> extends RecyclerView.Adapter<CommonVi
 
     public CommonBaseAdapter(Context context, List<T> data) {
         mData = null == data ? new ArrayList<T>() : data;
-        layoutIdMap = new HashMap<>();
-        viewTypeMap = new HashMap<>();
+        layoutIdMap = new SparseArray<>();
+        viewTypeMap = new SparseArray<>();
         mContext = context;
         mInflater = LayoutInflater.from(context);
     }
@@ -108,12 +107,13 @@ public abstract class CommonBaseAdapter<T> extends RecyclerView.Adapter<CommonVi
         } else {
             int currentPosition = position - getHeaderViewCount();
             int currentLayoutId = getItemViewLayoutId(currentPosition, mData.get(currentPosition));
-            if (!viewTypeMap.containsKey(currentLayoutId)) {
+            if (viewTypeMap.get(currentLayoutId) == null) {
                 mCurrentViewTypeValue++;
-                viewTypeMap.put(currentLayoutId, mCurrentViewTypeValue);
-                layoutIdMap.put(viewTypeMap.get(currentLayoutId), currentLayoutId);
+                viewTypeMap.put(currentLayoutId,mCurrentViewTypeValue);
+                layoutIdMap.put(viewTypeMap.get(currentLayoutId),currentLayoutId);
             }
             return viewTypeMap.get(currentLayoutId);
+
         }
     }
 

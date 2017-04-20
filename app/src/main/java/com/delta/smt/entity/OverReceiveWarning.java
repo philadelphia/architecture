@@ -149,11 +149,7 @@ public class OverReceiveWarning {
         }
     }
 
-    /**
-     * code : 0
-     * msg : Success
-     * rows : {"isSuccess":true,"message":"unknow","data":[{"line":"H-01","material_num":"4020108700","shevles":"A1D001","re_quantity":"1470","rest_time":"1","status":"等待超领发料","issure_quantity":0},{"line":"H-01","material_num":"3460016900","shevles":"A1E005","re_quantity":"1490","rest_time":"0","status":"","issure_quantity":0},{"line":"H-01","material_num":"4020108400","shevles":"A1D001","re_quantity":"1490","rest_time":"0","status":"","issure_quantity":0}]}
-     *//*
+    /*
 
     private String code;
     private String msg;
@@ -184,11 +180,7 @@ public class OverReceiveWarning {
     }
 
     public static class RowsBean {
-        *//**
-     * isSuccess : true
-     * message : unknow
-     * data : [{"line":"H-01","material_num":"4020108700","shevles":"A1D001","re_quantity":"1470","rest_time":"1","status":"等待超领发料","issure_quantity":0},{"line":"H-01","material_num":"3460016900","shevles":"A1E005","re_quantity":"1490","rest_time":"0","status":"","issure_quantity":0},{"line":"H-01","material_num":"4020108400","shevles":"A1D001","re_quantity":"1490","rest_time":"0","status":"","issure_quantity":0}]
-     *//*
+        *//*
 
 
 

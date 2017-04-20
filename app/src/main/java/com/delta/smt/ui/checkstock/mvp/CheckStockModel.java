@@ -5,7 +5,6 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.ExceptionsBean;
-import com.delta.smt.entity.InventoryExecption;
 import com.delta.smt.entity.Success;
 
 import rx.Observable;

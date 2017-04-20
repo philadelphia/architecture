@@ -11,8 +11,6 @@ import javax.inject.Inject;
 import rx.functions.Action0;
 import rx.functions.Action1;
 
-import static com.squareup.haha.perflib.Type.INT;
-
 /**
  * Created by Lin.Hou on 2016-12-26.
  */
@@ -104,15 +102,15 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                 if ("0".equals(success.getCode())) {
                     if (success.getMsg().contains("Success")) {
                         for (int i = 0; i < success.getRows().size(); i++) {
-                            switch (Integer.valueOf(success.getRows().get(i).getStatus())) {
+                            switch (success.getRows().get(i).getStatus()) {
                                 case 0:
                                 case 1:
                                 case 2:
                                 case 3:
-                                    errorBuffer.append("\n " + success.getRows().get(i).getPartNum() + "\b 少料 \b" + (success.getRows().get(i).getBoundCount() - success.getRows().get(i).getRealCount()));
+                                    errorBuffer.append("\n ").append(success.getRows().get(i).getPartNum()).append("\b 少料 \b").append(success.getRows().get(i).getBoundCount() - success.getRows().get(i).getRealCount());
                                     break;
                                 case 4:
-                                    errorBuffer.append("\n " + success.getRows().get(i).getPartNum() + "\b 多料 \b" + (success.getRows().get(i).getBoundCount() - success.getRows().get(i).getBoundCount()));
+                                    errorBuffer.append("\n ").append(success.getRows().get(i).getPartNum()).append("\b 多料 \b").append(success.getRows().get(i).getBoundCount() - success.getRows().get(i).getBoundCount());
                                     break;
 
                             }

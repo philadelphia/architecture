@@ -1,14 +1,7 @@
 package com.delta.smt.ui.production_warning.item;
 
-import android.util.Log;
-
 import com.delta.libs.adapter.TimeEntity;
-import com.delta.smt.entity.CountDownEntity;
 import com.google.gson.annotations.SerializedName;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/26.

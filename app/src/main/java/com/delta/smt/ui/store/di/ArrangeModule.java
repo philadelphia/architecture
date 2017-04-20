@@ -13,7 +13,7 @@ import dagger.Provides;
  */
 @Module
 public class ArrangeModule {
-    ArrangeContract.View view;
+    private ArrangeContract.View view;
     public ArrangeModule(ArrangeContract.View view){
         this.view=view;
     }

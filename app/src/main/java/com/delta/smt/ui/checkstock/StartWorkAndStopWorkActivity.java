@@ -21,7 +21,6 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.CheckStockDemo;
 import com.delta.smt.entity.OnGoing;
 import com.delta.smt.ui.checkstock.di.DaggerStartWorkComponent;
 import com.delta.smt.ui.checkstock.di.StartWorkModule;

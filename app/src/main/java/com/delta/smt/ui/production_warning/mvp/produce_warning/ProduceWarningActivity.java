@@ -1,16 +1,13 @@
 package com.delta.smt.ui.production_warning.mvp.produce_warning;
 
-import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.WrapperListAdapter;
 
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
@@ -21,11 +18,9 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.entity.SendMessage;
 import com.delta.smt.entity.WaringDialogEntity;
-import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
-import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.production_warning.di.produce_warning.DaggerTitleNumberCompent;
 import com.delta.smt.ui.production_warning.di.produce_warning.TitleNumberModule;
@@ -36,13 +31,11 @@ import com.delta.smt.ui.production_warning.mvp.produce_warning_fragment.ProduceW
 import com.delta.smt.utils.ViewUtils;
 import com.delta.smt.widget.WarningDialog;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

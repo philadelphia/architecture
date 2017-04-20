@@ -13,7 +13,7 @@ import dagger.Provides;
  */
 @Module
 public class AcceptMaterialsModule {
-    AcceptMaterialsContract.View mView;
+    private AcceptMaterialsContract.View mView;
 
     public AcceptMaterialsModule(AcceptMaterialsContract.View mView){
         this.mView=mView;

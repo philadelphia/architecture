@@ -66,11 +66,11 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
     protected void initData() {
 
         lines = SpUtil.getStringSF(this,Constant.QUALITY_MANAGE);
-        Map hmap = new HashMap();
+        Map<String, String> hmap = new HashMap();
         hmap.put("lines",lines);
         Gson gson = new Gson();
         String s = gson.toJson(hmap);
-        getPresenter().getQualityList(s.toString());
+        getPresenter().getQualityList(s);
 
     }
 

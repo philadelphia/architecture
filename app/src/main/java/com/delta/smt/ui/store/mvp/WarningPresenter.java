@@ -9,6 +9,7 @@ import com.delta.smt.entity.Success;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -37,8 +38,8 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
                 getView().showContentView();
                 if ("0".equals(itemInfos.getCode())) {
                     if (itemInfos.getMsg().contains("Success")) {
-                        List<ItemInfo> itemInfoList = new ArrayList<ItemInfo>();
-                        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+                        List<ItemInfo> itemInfoList = new ArrayList<>();
+                        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss", Locale.getDefault());
                         for (int i = 0; i < itemInfos.getRows().size(); i++) {
                             ItemInfo itemInfo = new ItemInfo();
                             itemInfo.setEntityId(i);

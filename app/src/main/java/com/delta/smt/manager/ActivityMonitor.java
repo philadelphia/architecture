@@ -24,9 +24,9 @@ public class ActivityMonitor {
     private static final ActivityState[] STRICT_ACTIVE_ORDER = {ActivityState.DESTROYED, ActivityState.STOPPED, ActivityState.PAUSED, ActivityState.CREATED, ActivityState.STARTED, ActivityState.RESUMED};
     private static boolean sDebug = true;
     private static boolean sStrictForeground = true;
-    private List<ActivityEntry> mActivityEntries = new ArrayList<ActivityEntry>();
+    private List<ActivityEntry> mActivityEntries = new ArrayList<>();
     private boolean mAppForeground;
-    private List<OnAppStateChangeListener> mOnAppStateChangeListeners = new CopyOnWriteArrayList<OnAppStateChangeListener>();
+    private List<OnAppStateChangeListener> mOnAppStateChangeListeners = new CopyOnWriteArrayList<>();
     private List<OnActivityTopListener> onActivityTopListeners = new CopyOnWriteArrayList<>();
     private Activity monitorActivity;
 
@@ -228,7 +228,7 @@ public class ActivityMonitor {
         ActivityState mState;
 
         ActivityEntry(Activity activity, ActivityState activityState) {
-            mActivityRef = new WeakReference<Activity>(activity);
+            mActivityRef = new WeakReference<>(activity);
             mState = activityState;
         }
 
