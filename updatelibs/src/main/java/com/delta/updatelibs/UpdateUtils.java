@@ -68,6 +68,8 @@ public class UpdateUtils {
                     mapUpdateInfo.put("versionCode", "0");
                     mapUpdateInfo.put("description", "");
                     mapUpdateInfo.put("url", "");
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
             }
         }.start();
@@ -104,6 +106,8 @@ public class UpdateUtils {
                     mapUpdateInfo.put("versionCode", "0");
                     mapUpdateInfo.put("description", "");
                     mapUpdateInfo.put("url", "");
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
 
                 getUpdateInfo(mContext, authority, label);
