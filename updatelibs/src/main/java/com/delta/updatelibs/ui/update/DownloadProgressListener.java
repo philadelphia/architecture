@@ -1,4 +1,4 @@
-package com.delta.smt.ui.main.update;
+package com.delta.updatelibs.ui.update;
 
 /**
  * 更新

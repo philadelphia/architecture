@@ -1,4 +1,4 @@
-package com.delta.smt.ui.main.update;
+package com.delta.updatelibs.ui.update;
 
 import java.io.IOException;
 

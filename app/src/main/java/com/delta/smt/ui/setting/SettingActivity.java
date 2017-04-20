@@ -2,19 +2,13 @@ package com.delta.smt.ui.setting;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +21,6 @@ import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
-import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.api.API;
 import com.delta.smt.app.App;
@@ -35,18 +28,15 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.base.BaseApplication;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.di.component.DaggerAppComponent;
-import com.delta.smt.entity.Download;
-import com.delta.smt.entity.Update;
 import com.delta.smt.service.warningService.WarningService;
 import com.delta.smt.ui.main.di.DaggerMainComponent;
 import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
 import com.delta.smt.ui.main.mvp.MainPresenter;
-import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.utils.PkgInfoUtils;
-import com.delta.smt.utils.StringUtils;
 import com.delta.smt.utils.ViewUtils;
 import com.delta.ttsmanager.TextToSpeechManager;
+import com.delta.updatelibs.UpdateUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,8 +54,6 @@ import static com.delta.smt.api.API.BASE_URL;
 
 public class SettingActivity extends BaseActivity<MainPresenter> implements MainContract.View, CompoundButton.OnCheckedChangeListener {
 
-    //更新
-    private static ProgressDialog progressDialog = null;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
@@ -79,78 +67,12 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     SwitchCompat scSpeech;
     @Inject
     TextToSpeechManager textToSpeechManager;
-    private LocalBroadcastManager bManager;
-    private String downloadStr = null;
-    private AlertDialog retryAlertDialog = null;
     private View dialog_view;
     private EditText et_ip;
     private EditText et_port;
     private Dialog dialog;
     private String ip;
     private String port;
-    //更新状态
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if (intent.getAction().equals(Constant.MESSAGE_PROGRESS)) {
-
-                Download download = intent.getParcelableExtra("download");
-                int progress = download.getProgress();
-                if (download.getProgress() == 100) {
-
-                    progressDialog.setMessage("下载成功");
-                    progressDialog.setProgress(progress);
-                    progressDialog.setProgressNumberFormat(
-                            StringUtils.getDataSize(download.getCurrentFileSize())
-                                    + "/" +
-                                    StringUtils.getDataSize(download.getTotalFileSize()));
-
-
-                } else {
-                    progressDialog.setProgress(progress);
-                    progressDialog.setProgressNumberFormat(
-                            StringUtils.getDataSize(download.getCurrentFileSize())
-                                    + "/" +
-                                    StringUtils.getDataSize(download.getTotalFileSize()));
-
-                }
-            } else if (intent.getAction().equals(Constant.MESSAGE_DIALOG_DISMISS)) {
-                progressDialog.dismiss();
-            } else if (intent.getAction().equals(Constant.MESSAGE_FAILED)) {
-                progressDialog.setMessage("下载失败");
-                progressDialog.setCancelable(true);
-                if (retryAlertDialog == null) {
-                    retryAlertDialog = new AlertDialog.Builder(SettingActivity.this)
-                            .setTitle("提示")
-                            .setMessage("下载失败，请重试或取消更新！")
-                            .setCancelable(false)
-                            .setPositiveButton("重试", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    progressDialog.dismiss();
-                                    //显示ProgerssDialog
-                                    showProgerssDialog(SettingActivity.this);
-                                    getPresenter().download(SettingActivity.this, downloadStr);
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    progressDialog.dismiss();
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .create();
-                }
-                if (!retryAlertDialog.isShowing()) {
-                    retryAlertDialog.show();
-                }
-
-            }
-        }
-    };
 
     @Override
     protected int getContentViewId() {
@@ -184,13 +106,6 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         } else {
             settingServerAddress.setText("配置服务器地址" + "\n(" + API.BASE_URL + ")");
         }
-//        if (SpUtil.getStringSF(SettingActivity.this, "server_address") == null) {
-//            settingServerAddress.setText("配置服务器地址" + "\n(" + BASE_URL + ")");
-//        } else if ("".equals(SpUtil.getStringSF(SettingActivity.this, "server_address"))) {
-//            settingServerAddress.setText("配置服务器地址" + "()");
-//        } else {
-//            settingServerAddress.setText("配置服务器地址" + "\n(" + SpUtil.getStringSF(SettingActivity.this, "server_address") + ")");
-//        }
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -268,15 +183,15 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setting_update:
-
-                DownloadService.isUpdating = false;
-                //6.0以上更新需要判断是否有写WRITE_EXTERNAL_STORAGE权限
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                if (ContextCompat.checkSelfPermission(SettingActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
-                    //申请WRITE_EXTERNAL_STORAGE权限
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+                    //手动更新时申请WRITE_EXTERNAL_STORAGE权限，设置requestPermissions方法参数requestCode设置为6
+                    int requestCode = 6;
+                    ActivityCompat.requestPermissions(SettingActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
                 } else {
-                    getPresenter().checkUpdate();
+                    //检查更新，第三个参数为1
+                    UpdateUtils.checkUpdateInfo(getApplication(), SettingActivity.this.getPackageName() + ".fileprovider", 1);
+                    Log.i(TAG, "onClick: " + SettingActivity.this.getPackageName());
                 }
                 break;
             case R.id.setting_server_address:
@@ -300,107 +215,15 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         }
     }
 
-    //展示app更新提示对话框
-    @Override
-    public void checkExistUpdateDialog(final Update update) {
-        if (Integer.parseInt(update.getVersionCode()) > PkgInfoUtils.getVersionCode(SettingActivity.this)) {
-            if (!DownloadService.isUpdating) {
-                new AlertDialog.Builder(this)
-                        .setTitle("发现新版本 " + update.getVersion())
-                        .setMessage(update.getDescription())
-                        .setCancelable(false)
-                        .setPositiveButton("更新", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                downloadStr = update.getUrl();
-                                //显示ProgerssDialog
-                                showProgerssDialog(SettingActivity.this);
-                                getPresenter().download(SettingActivity.this, downloadStr);
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                DownloadService.isUpdating = true;
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create()
-                        .show();
-            }
-
-
-        } else {
-            if (!DownloadService.isUpdating) {
-                new AlertDialog.Builder(this)
-                        .setTitle("未发现新版本！")
-                        .setCancelable(false)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //显示ProgerssDialog
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create()
-                        .show();
-            }
-
-        }
-    }
-
-    //运行时权限请求回调方法
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 0: {
-                //如果权限请求通过
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getPresenter().checkUpdate();
-                    //如果权限请求不通过
-                } else {
-                }
-                return;
-            }
-        }
-    }
-
-    //显示更新ProgerssDialog
-    private void showProgerssDialog(Context context) {
-        registerReceiver();
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("更新");
-        progressDialog.setIcon(android.R.drawable.ic_dialog_info);
-        progressDialog.setMessage("正在下载更新...");
-        progressDialog.setCancelable(false);
-        progressDialog.setMax(100);
-        progressDialog.show();
-    }
-
-    //更新
-    private void registerReceiver() {
-
-        bManager = LocalBroadcastManager.getInstance(this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constant.MESSAGE_PROGRESS);
-        intentFilter.addAction(Constant.MESSAGE_DIALOG_DISMISS);
-        intentFilter.addAction(Constant.MESSAGE_FAILED);
-        bManager.registerReceiver(broadcastReceiver, intentFilter);
-
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
         //更新
         //解除注册时，使用注册时的manager解绑
-        if (broadcastReceiver != null && bManager != null) {
+        /*if (broadcastReceiver != null && bManager != null) {
             bManager.unregisterReceiver(broadcastReceiver);
-        }
+        }*/
 
     }
 
@@ -423,5 +246,22 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         SpUtil.SetBooleanSF(this,"speech_switch",isChecked);
         textToSpeechManager.setRead(isChecked);
 
+    }
+
+    //运行时权限请求回调方法
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            //手动检查更新时请求WRITE_EXTERNAL_STORAGE权限对应回调
+            case 6:
+                //如果权限请求通过
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //手动检查更新，checkUpdateInfo方法第三个参数设置为1
+                    UpdateUtils.checkUpdateInfo(getApplication(), SettingActivity.this.getPackageName() + ".fileprovider", 1);
+                } else {
+                }
+                break;
+        }
     }
 }

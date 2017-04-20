@@ -21,6 +21,7 @@ import com.delta.smt.manager.ActivityMonitor;
 import com.delta.smt.manager.ActivityState;
 import com.delta.smt.service.warningService.WarningService;
 import com.delta.ttsmanager.TextToSpeechManager;
+import com.delta.updatelibs.UpdateUtils;
 
 import javax.inject.Inject;
 
@@ -34,13 +35,28 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     public static AppComponent appComponent;
     private static int appCount = 0;
     private static Handler mainHander;
-
+    private static Context mContenxt;
     @Inject
     TextToSpeechManager textToSpeechManager;
-    private static Context mContenxt;
 
     public static Context getmContenxt() {
         return mContenxt;
+    }
+
+    public static Handler getMainHander() {
+        return mainHander;
+    }
+
+    public static AppComponent getAppComponent() {
+        return appComponent;
+    }
+
+    public static int getAppCount() {
+        return appCount;
+    }
+
+    public static boolean isForeground() {
+        return getAppCount() > 0;
     }
 
     @Override
@@ -56,12 +72,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
         registerActivityLifecycleCallbacks(this);
         Intent intent = new Intent(this, WarningService.class);
         startService(intent);
-    }
-
-
-
-    public static Handler getMainHander() {
-        return mainHander;
+        UpdateUtils.init("http://172.22.34.198:8809/mobile/DG3_Release/smt_pda/update/");
     }
 
     @Override
@@ -79,18 +90,6 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
 
         }
         return API.BASE_URL;
-    }
-
-    public static AppComponent getAppComponent() {
-        return appComponent;
-    }
-
-    public static int getAppCount() {
-        return appCount;
-    }
-
-    public static boolean isForeground() {
-        return getAppCount() > 0;
     }
 
     @Override

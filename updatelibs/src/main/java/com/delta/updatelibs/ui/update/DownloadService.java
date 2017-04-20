@@ -1,4 +1,4 @@
-package com.delta.smt.ui.main.update;
+package com.delta.updatelibs.ui.update;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -11,22 +11,21 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.delta.smt.Constant;
-import com.delta.smt.api.ApiService;
-import com.delta.smt.entity.Download;
-import com.delta.smt.ui.main.di.update.DaggerUpdateComponent;
-import com.delta.smt.ui.main.di.update.UpdateClientModule;
-import com.delta.smt.ui.main.di.update.UpdateServiceModule;
-import com.delta.smt.utils.FileUtils;
-import com.delta.smt.utils.StringUtils;
+import com.delta.updatelibs.Constant;
+import com.delta.updatelibs.entity.Download;
+import com.delta.updatelibs.service.UpdateService;
+import com.delta.updatelibs.utils.FileUtils;
+import com.delta.updatelibs.utils.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -39,17 +38,34 @@ import rx.schedulers.Schedulers;
  */
 
 public class DownloadService extends IntentService {
+    public static boolean isUpdating = false;
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      */
     int downloadCount = 0;
+    Download download;
+    //@Inject
+    UpdateService updateService;
     private String urlStrl;
+    private String authority;
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
-    Download download;
-    @Inject
-    ApiService apiService;
-    public static boolean isUpdating = false;
+    DownloadProgressInterceptor interceptor = new DownloadProgressInterceptor(new DownloadProgressListener() {
+        @Override
+        public void update(long bytesRead, long contentLength, boolean done) {
+            //不频繁发送通知，防止通知栏下拉卡顿
+            int progress = (int) ((bytesRead * 100) / contentLength);
+            if ((downloadCount == 0) || progress > downloadCount) {
+                downloadCount += 1;
+                download = new Download();
+                download.setTotalFileSize(contentLength);
+                download.setCurrentFileSize(bytesRead);
+                download.setProgress(progress);
+
+                sendNotification(download);
+            }
+        }
+    });
 
     public DownloadService() {
         super("DownloadService");
@@ -65,7 +81,18 @@ public class DownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         urlStrl = intent.getStringExtra("urlStr");
         //注入更新用ApiService
-        DaggerUpdateComponent.builder().updateClientModule(new UpdateClientModule(urlStrl, interceptor)).updateServiceModule(new UpdateServiceModule()).build().inject(this);
+        //DaggerUpdateComponent.builder().updateClientModule(new UpdateClientModule(urlStrl, interceptor)).updateServiceModule(new UpdateServiceModule()).build().inject(this);
+        authority = intent.getStringExtra("authority");
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(StringUtils.getHostName(urlStrl))
+                .client(new OkHttpClient.Builder()
+                        .addInterceptor(interceptor)
+                        .retryOnConnectionFailure(true)
+                        .connectTimeout(30, TimeUnit.SECONDS)
+                        .build())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+        updateService = retrofit.create(UpdateService.class);
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
@@ -75,24 +102,8 @@ public class DownloadService extends IntentService {
 
         notificationManager.notify(0, notificationBuilder.build());
         download();
+
     }
-
-    DownloadProgressInterceptor interceptor = new DownloadProgressInterceptor(new DownloadProgressListener() {
-        @Override
-        public void update(long bytesRead, long contentLength, boolean done) {
-            //不频繁发送通知，防止通知栏下拉卡顿
-            int progress = (int) ((bytesRead * 100) / contentLength);
-            if ((downloadCount == 0) || progress > downloadCount) {
-                downloadCount +=1;
-                download = new Download();
-                download.setTotalFileSize(contentLength);
-                download.setCurrentFileSize(bytesRead);
-                download.setProgress(progress);
-
-                sendNotification(download);
-            }
-        }
-    });
 
     private void sendIntent(Download download) {
 
@@ -119,7 +130,7 @@ public class DownloadService extends IntentService {
         if (file.exists()) {
             file.delete();
         }
-        apiService.download(urlStrl)
+        updateService.download(urlStrl)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<ResponseBody, InputStream>() {
                     @Override
@@ -200,7 +211,7 @@ public class DownloadService extends IntentService {
             context.startActivity(intents);
         } else {
             if (file.exists()) {
-                Uri uri = FileProvider.getUriForFile(context, "delta.smart_smt.fileprovider", file);
+                Uri uri = FileProvider.getUriForFile(context, authority, file);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addCategory("android.intent.category.DEFAULT");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
