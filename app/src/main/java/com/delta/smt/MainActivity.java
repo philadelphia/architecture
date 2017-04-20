@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
@@ -141,6 +140,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         functionList.add(new Function("治具借出", R.drawable.ic_lend));
         functionList.add(new Function("治具归还", R.drawable.ic_thereturn));
         functionList.add(new Function("手补件", R.drawable.ic_handpatch));
+        functionList.add(new Function("品管确认", R.drawable.ic_handpatch));
        // functionList.add(new Function("warningSample", R.drawable.title));
     }
     private void checkTTS() {
@@ -217,6 +217,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "治具入架位":
                 IntentUtils.showIntent(this, ProduceToolsLocationActivity.class);
                 break;
+            case "品管确认":
+                bundle = new Bundle();
+                bundle.putInt(Constant.SELECT_TYPE, 3);
+                IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
+                break;
             default:
                 break;
         }
@@ -277,36 +282,36 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             }
         }
     }
-    /**
-     * 安装语音相关资源包
-     */
-    private void installTTS() {
-        AlertDialog.Builder alertInstall = new AlertDialog.Builder(this)
-                .setTitle("缺少语音包")
-                .setMessage("下载语音包")
-                .setPositiveButton("去下载",
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                // 下载eyes-free的语音数据包
-                                String ttsDataUrl = "http://eyes-free.googlecode.com/files/tts_3.1_market.apk";
-                                Uri ttsDataUri = Uri.parse(ttsDataUrl);
-                                Intent ttsIntent = new Intent(
-                                        Intent.ACTION_VIEW, ttsDataUri);
-                                startActivity(ttsIntent);
-                            }
-                        })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-        alertInstall.create().show();
-    }
+//    /**
+//     * 安装语音相关资源包
+//     */
+//    private void installTTS() {
+//        AlertDialog.Builder alertInstall = new AlertDialog.Builder(this)
+//                .setTitle("缺少语音包")
+//                .setMessage("下载语音包")
+//                .setPositiveButton("去下载",
+//                        new DialogInterface.OnClickListener() {
+//
+//                            @Override
+//                            public void onClick(DialogInterface dialog,
+//                                                int which) {
+//                                // 下载eyes-free的语音数据包
+//                                String ttsDataUrl = "http://eyes-free.googlecode.com/files/tts_3.1_market.apk";
+//                                Uri ttsDataUri = Uri.parse(ttsDataUrl);
+//                                Intent ttsIntent = new Intent(
+//                                        Intent.ACTION_VIEW, ttsDataUri);
+//                                startActivity(ttsIntent);
+//                            }
+//                        })
+//                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                    }
+//                });
+//        alertInstall.create().show();
+//    }
 
 }
 

@@ -108,14 +108,12 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
         datas.clear();
 
         for (int i = 0; i < itemBreakDown.size(); i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-            try {
-                Date parse = format.parse(itemBreakDown.get(i).getCreateTime());
-                itemBreakDown.get(i).setCreat_time(parse.getTime());
+/*            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+                Date parse = format.parse(itemBreakDown.get(i).getCreateTime());*/
+                Log.e(TAG, "getItemBreakdownDatas: "+ itemBreakDown.get(i).getCreateTime());
+                long time=System.currentTimeMillis();
+                itemBreakDown.get(i).setCreat_time(time-itemBreakDown.get(i).getCreateTime()*1000);
                 itemBreakDown.get(i).setEntityId(i);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
         }
 
         datas.addAll(itemBreakDown);

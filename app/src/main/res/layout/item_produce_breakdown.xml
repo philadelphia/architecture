@@ -72,7 +72,6 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/time_remain"
-            android:layout_gravity="center"
             android:text="故障持续时间："
             android:singleLine="true"
             android:textColor="#ff0000"

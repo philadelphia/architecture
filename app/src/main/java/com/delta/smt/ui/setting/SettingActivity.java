@@ -245,7 +245,6 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
 
         SpUtil.SetBooleanSF(this,"speech_switch",isChecked);
         textToSpeechManager.setRead(isChecked);
-
     }
 
     //运行时权限请求回调方法

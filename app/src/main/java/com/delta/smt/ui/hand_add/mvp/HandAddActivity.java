@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
@@ -78,7 +79,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     @Override
     protected void initData() {
 
-        producelines = getIntent().getExtras().getString(Constant.PRODUCTION_LINE);
+        producelines = SpUtil.getStringSF(this,Constant.HAND_ADD_LINE_NAME);
         Log.e("aaa", producelines);
         //设置接收哪种预警
         mWarningManger.addWarning(String.valueOf(Constant.HAND_ADD), getClass());

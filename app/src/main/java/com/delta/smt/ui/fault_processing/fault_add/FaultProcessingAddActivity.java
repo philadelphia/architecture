@@ -71,10 +71,8 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     protected void initView() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("新增处理方案");
     }
 
@@ -113,10 +111,10 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
             return;
         }
         if (SingleClick.isSingle(5000)) {
-            Map<String, String> map = new HashMap<>();
-            map.put("name", faultName);
-            map.put("faultCode", faultCode);
-            map.put("faultDetails", content);
+            Map map = new HashMap();
+            map.put("solution_name", faultName);
+            map.put("exception_code", faultCode);
+            map.put("solution_detail", content);
             getPresenter().addSolution(GsonTools.createGsonString(map));
         }
 

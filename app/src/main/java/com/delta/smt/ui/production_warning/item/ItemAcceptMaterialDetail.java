@@ -1,5 +1,7 @@
 package com.delta.smt.ui.production_warning.item;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -91,8 +93,10 @@ public class ItemAcceptMaterialDetail {
              */
 
             private String line;
+            @SerializedName("material_no")
             private String partNumber;
             private String slot;
+            @SerializedName("qty")
             private int quantity;
             private String serialNumber;
             private String unit;
