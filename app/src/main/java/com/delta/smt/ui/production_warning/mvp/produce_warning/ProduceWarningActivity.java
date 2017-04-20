@@ -10,17 +10,18 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.GsonTools;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoTabLayout;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.entity.SendMessage;
-import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BroadcastBegin;
 import com.delta.smt.entity.BroadcastCancel;
+import com.delta.smt.entity.SendMessage;
+import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.production_warning.di.produce_warning.DaggerTitleNumberCompent;
 import com.delta.smt.ui.production_warning.di.produce_warning.TitleNumberModule;
@@ -112,8 +113,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 /*        if (getIntent().getExtras().getString(Constant.PRODUCTION_LINE)!=null&&!getIntent().getExtras().getString(Constant.PRODUCTION_LINE).equals("")) {
             Constant.CONDITION = getIntent().getExtras().getString(Constant.PRODUCTION_LINE);
         }*/
-
-        lines=Constant.CONDITION;
+        lines= SpUtil.getStringSF(this,Constant.PRODUCE_WARNING_LINE_NAME);
         line=lines.split(",");
 
 
@@ -447,7 +447,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     public String initLine() {
         Map<String, String> map = new HashMap<>();
-        map.put("lines", Constant.CONDITION);
+        map.put("lines",lines);
         String line = GsonTools.createGsonString(map);
         return line;
     }

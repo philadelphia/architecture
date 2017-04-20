@@ -1,14 +1,9 @@
 package com.delta.smt.ui.main.mvp;
 
-import android.content.Context;
-
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.smt.entity.Update;
 
 import javax.inject.Inject;
-
-import rx.functions.Action1;
 
 /**
  * @description :
@@ -24,7 +19,7 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
     }
 
     //更新检查
-    public void checkUpdate() {
+    /*public void checkUpdate() {
         getModel().getUpdate().subscribe(new Action1<Update>() {
 
             @Override
@@ -37,11 +32,11 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
 
             }
         });
-    }
+    }*/
 
     //更新下载
-    public void download(Context context, String urlStr) {
+    /*public void download(Context context, String urlStr) {
         long fileSize;
         getModel().download(context, urlStr);
-    }
+    }*/
 }

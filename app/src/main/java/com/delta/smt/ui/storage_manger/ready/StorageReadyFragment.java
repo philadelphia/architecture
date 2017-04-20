@@ -167,6 +167,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
 
     public WarningDialog createDialog(String message) {
 
+        Log.e(TAG, "createDialog: "+message);
         final WarningDialog warningDialog = new WarningDialog(getmActivity());
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override

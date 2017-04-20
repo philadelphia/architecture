@@ -73,10 +73,11 @@ dependencies {
     provided rootProject.ext.dependencies["design"]
     compile rootProject.ext.dependencies["countdownview"]
     compile rootProject.ext.dependencies["barcodecollector"]
-
     compile rootProject.ext.dependencies["familiarrecycler"]
     compile rootProject.ext.dependencies["lombok"]
     compile project(':countTime')
     compile project(':websocketmanager')
     compile project(':ttsmanager')
+    compile project(':dropdownfiltermenu')
+    compile project(':updatelibs')
 }

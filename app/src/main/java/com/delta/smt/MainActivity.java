@@ -1,20 +1,14 @@
 package com.delta.smt;
 
 import android.Manifest;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,16 +25,13 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.common.GridItemDecoration;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.Download;
 import com.delta.smt.entity.Function;
-import com.delta.smt.entity.Update;
 import com.delta.smt.ui.checkstock.StartWorkAndStopWorkActivity;
 import com.delta.smt.ui.feeder.warning.supply.FeederSupplyListActivity;
 import com.delta.smt.ui.main.di.DaggerMainComponent;
 import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
 import com.delta.smt.ui.main.mvp.MainPresenter;
-import com.delta.smt.ui.main.update.DownloadService;
 import com.delta.smt.ui.maintain.PCBMaintainActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
 import com.delta.smt.ui.over_receive.OverReceiveActivity;
@@ -55,8 +46,7 @@ import com.delta.smt.ui.storage_manger.storage_select.StorageSelectActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
 import com.delta.smt.ui.storeroom.StoreRoomActivity;
 import com.delta.smt.ui.warningSample.WarningSampleActivity;
-import com.delta.smt.utils.PkgInfoUtils;
-import com.delta.smt.utils.StringUtils;
+import com.delta.updatelibs.UpdateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +58,6 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity<MainPresenter> implements CommonBaseAdapter.OnItemClickListener<Function>, MainContract.View {
 
     private static final int CODE = 100;
-    //更新
-    private static ProgressDialog progressDialog = null;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @Nullable
@@ -82,73 +70,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     @BindView(R.id.drawer_layout)
     LinearLayout drawerLayout;
     private List<Function> functionList;
-    private LocalBroadcastManager bManager;
-    private String downloadStr = null;
-    private AlertDialog retryAlertDialog = null;
     private Bundle bundle;
-    //更新状态
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
 
-            if (intent.getAction().equals(Constant.MESSAGE_PROGRESS)) {
-
-                Download download = intent.getParcelableExtra("download");
-                int progress = download.getProgress();
-                if (download.getProgress() == 100) {
-
-                    progressDialog.setMessage("下载成功");
-                    progressDialog.setProgress(progress);
-                    progressDialog.setProgressNumberFormat(
-                            StringUtils.getDataSize(download.getCurrentFileSize())
-                                    + "/" +
-                                    StringUtils.getDataSize(download.getTotalFileSize()));
-
-
-                } else {
-                    progressDialog.setProgress(progress);
-                    progressDialog.setProgressNumberFormat(
-                            StringUtils.getDataSize(download.getCurrentFileSize())
-                                    + "/" +
-                                    StringUtils.getDataSize(download.getTotalFileSize()));
-
-                }
-            } else if (intent.getAction().equals(Constant.MESSAGE_DIALOG_DISMISS)) {
-                progressDialog.dismiss();
-            } else if (intent.getAction().equals(Constant.MESSAGE_FAILED)) {
-                progressDialog.setMessage("下载失败");
-                progressDialog.setCancelable(true);
-                if (retryAlertDialog == null) {
-
-                    retryAlertDialog = new AlertDialog.Builder(MainActivity.this)
-                            .setTitle("提示")
-                            .setMessage("下载失败，请重试或取消更新！")
-                            .setCancelable(false)
-                            .setPositiveButton("重试", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    progressDialog.dismiss();
-                                    //显示ProgerssDialog
-                                    showProgerssDialog(MainActivity.this);
-                                    getPresenter().download(MainActivity.this, downloadStr);
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    progressDialog.dismiss();
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .create();
-                }
-                if (!retryAlertDialog.isShowing()) {
-                    retryAlertDialog.show();
-                }
-            }
-        }
-    };
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -183,18 +106,22 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
     @Override
     protected void initData() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //程序启动时申请WRITE_EXTERNAL_STORAGE权限，设置requestPermissions方法参数requestCode为5
+            int requestCode = 5;
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
+//如果已经授权WRITE_EXTERNAL_STORAGE权限
+        } else {
+            //检查更新，第三个参数为0
+            UpdateUtils.checkUpdateInfo(getApplication(), this.getPackageName() + ".fileprovider", 0);
+            Log.i(TAG, "onClick: " + this.getPackageName());
+        }
         checkTTS();
         boolean appInstalled = DeviceUtil.isAppInstalled(this, "com.iflytek.tts");
 
-        Log.e(TAG, "initData: "+appInstalled);
-        //6.0以上更新需要判断是否有写WRITE_EXTERNAL_STORAGE权限
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-        } else {
-            getPresenter().checkUpdate();
-        }
+        Log.e(TAG, "initData: " + appInstalled);
+
         functionList = new ArrayList<>();
         functionList.add(new Function("PCB入库", R.drawable.ic_warehousestorage));
         functionList.add(new Function("PCB盘点", R.drawable.ic_warehouseinventory));
@@ -300,89 +227,33 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         }
     }
 
-    //展示app更新提示对话框
-    @Override
-    public void checkExistUpdateDialog(final Update update) {
-
-        if (Integer.parseInt(update.getVersionCode()) > PkgInfoUtils.getVersionCode(MainActivity.this)) {
-
-            if (!DownloadService.isUpdating) {
-                new AlertDialog.Builder(this)
-                        .setTitle("发现新版本 " + update.getVersion())
-                        .setMessage(update.getDescription())
-                        .setCancelable(false)
-                        .setPositiveButton("更新", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                downloadStr = update.getUrl();
-                                //显示ProgerssDialog
-                                showProgerssDialog(MainActivity.this);
-                                getPresenter().download(MainActivity.this, downloadStr);
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                DownloadService.isUpdating = true;
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create()
-                        .show();
-            }
-        }
-    }
-
     //运行时权限请求回调方法
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case 0: {
+            //程序启动时请求WRITE_EXTERNAL_STORAGE权限对应回调
+            case 5:
                 //如果权限请求通过
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getPresenter().checkUpdate();
-                    //如果权限请求不通过
+                    //程序启动时检查更新，checkUpdateInfo方法第三个参数设置为0
+                    UpdateUtils.checkUpdateInfo(getApplication(), MainActivity.this.getPackageName() + ".fileprovider", 0);
                 } else {
                 }
-            }
+                break;
         }
     }
 
-    //显示更新ProgerssDialog
-    private void showProgerssDialog(Context context) {
-        registerReceiver();
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("更新");
-        progressDialog.setIcon(android.R.drawable.ic_dialog_info);
-        progressDialog.setMessage("正在下载更新...");
-        progressDialog.setCancelable(false);
-        progressDialog.setMax(100);
-        progressDialog.show();
-    }
 
-    //更新
-    private void registerReceiver() {
-
-        bManager = LocalBroadcastManager.getInstance(this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constant.MESSAGE_PROGRESS);
-        intentFilter.addAction(Constant.MESSAGE_DIALOG_DISMISS);
-        intentFilter.addAction(Constant.MESSAGE_FAILED);
-        bManager.registerReceiver(broadcastReceiver, intentFilter);
-
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //更新
         //解除注册时，使用注册时的manager解绑
-        if (broadcastReceiver != null && bManager != null) {
+        /*if (broadcastReceiver != null && bManager != null) {
             bManager.unregisterReceiver(broadcastReceiver);
-        }
+        }*/
 
     }
 
@@ -411,36 +282,36 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             }
         }
     }
-    /**
-     * 安装语音相关资源包
-     */
-    private void installTTS() {
-        AlertDialog.Builder alertInstall = new AlertDialog.Builder(this)
-                .setTitle("缺少语音包")
-                .setMessage("下载语音包")
-                .setPositiveButton("去下载",
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                // 下载eyes-free的语音数据包
-                                String ttsDataUrl = "http://eyes-free.googlecode.com/files/tts_3.1_market.apk";
-                                Uri ttsDataUri = Uri.parse(ttsDataUrl);
-                                Intent ttsIntent = new Intent(
-                                        Intent.ACTION_VIEW, ttsDataUri);
-                                startActivity(ttsIntent);
-                            }
-                        })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-        alertInstall.create().show();
-    }
+//    /**
+//     * 安装语音相关资源包
+//     */
+//    private void installTTS() {
+//        AlertDialog.Builder alertInstall = new AlertDialog.Builder(this)
+//                .setTitle("缺少语音包")
+//                .setMessage("下载语音包")
+//                .setPositiveButton("去下载",
+//                        new DialogInterface.OnClickListener() {
+//
+//                            @Override
+//                            public void onClick(DialogInterface dialog,
+//                                                int which) {
+//                                // 下载eyes-free的语音数据包
+//                                String ttsDataUrl = "http://eyes-free.googlecode.com/files/tts_3.1_market.apk";
+//                                Uri ttsDataUri = Uri.parse(ttsDataUrl);
+//                                Intent ttsIntent = new Intent(
+//                                        Intent.ACTION_VIEW, ttsDataUri);
+//                                startActivity(ttsIntent);
+//                            }
+//                        })
+//                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                    }
+//                });
+//        alertInstall.create().show();
+//    }
 
 }
 
