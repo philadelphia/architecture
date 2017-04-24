@@ -56,7 +56,7 @@ public class QualityManage {
          * duration_time : 7707078
          */
 
-        private int quality_id;
+        private String quality_id;
         private String line;
         private String slot;
         private int status;
@@ -64,11 +64,11 @@ public class QualityManage {
         private int real_amount;
         private int duration_time;
 
-        public int getQuality_id() {
+        public String getQuality_id() {
             return quality_id;
         }
 
-        public void setQuality_id(int quality_id) {
+        public void setQuality_id(String quality_id) {
             this.quality_id = quality_id;
         }
 

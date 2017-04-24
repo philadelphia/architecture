@@ -507,6 +507,10 @@ public interface ApiService {
     @GET("SMM/LineQuality/getQualityList")
     Observable<QualityManage> getQualityList(@Query("condition") String bind);
 
+    //品管确认列表查询
+    @GET("SMM/LineQuality/confirmQualityOK")
+    Observable<QualityManage> getQualityOK(@Query("condition") String bind);
+
     /**
      * @description :
      * 1.更新

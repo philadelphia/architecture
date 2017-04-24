@@ -119,7 +119,7 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
     }
 
     @Override
-    public void onItemClick(View item, QualityManage.RowsBean rowsBean, int position) {
+    public void onItemClick(View item, final QualityManage.RowsBean rowsBean, int position) {
 
         dialog = new AlertDialog.Builder(this).setTitle("提示")//设置对话框标题
 
@@ -130,7 +130,11 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
 
                     public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
 
-                        //getPresenter().getYesok();
+                        Map hmap = new HashMap();
+                        hmap.put("quality_id",rowsBean.getQuality_id());
+                        Gson gson = new Gson();
+                        String s = gson.toJson(hmap);
+                        getPresenter().getYesok(s);
 
                     }
 
@@ -165,7 +169,12 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
         mStatusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //getPresenter().getMantissaWarehouseReadies();
+                lines = SpUtil.getStringSF(v.getContext(),Constant.QUALITY_MANAGE);
+                Map hmap = new HashMap();
+                hmap.put("lines",lines);
+                Gson gson = new Gson();
+                String s = gson.toJson(hmap);
+                getPresenter().getQualityList(s.toString());
             }
         });
     }
@@ -177,7 +186,12 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
         mStatusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  getPresenter().getMantissaWarehouseReadies();
+                lines = SpUtil.getStringSF(v.getContext(),Constant.QUALITY_MANAGE);
+                Map hmap = new HashMap();
+                hmap.put("lines",lines);
+                Gson gson = new Gson();
+                String s = gson.toJson(hmap);
+                getPresenter().getQualityList(s.toString());
             }
         });
     }
@@ -197,6 +211,23 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
 
     @Override
     public void getQualityListFailed(String message) {
+
+    }
+
+    @Override
+    public void getokSuccess() {
+        lines = SpUtil.getStringSF(this,Constant.QUALITY_MANAGE);
+        Map hmap = new HashMap();
+        hmap.put("lines",lines);
+        Gson gson = new Gson();
+        String s = gson.toJson(hmap);
+        getPresenter().getQualityList(s.toString());
+        dataList.clear();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getokFailed(String message) {
 
     }
 
