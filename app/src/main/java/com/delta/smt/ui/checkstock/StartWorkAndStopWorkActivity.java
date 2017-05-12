@@ -38,7 +38,7 @@ import butterknife.OnClick;
  * Created by Lin.Hou on 2017-02-10.
  */
 
-public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopWorkPresenter> implements StartWorkAndStopWorkContract.View,View.OnClickListener{
+public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopWorkPresenter> implements StartWorkAndStopWorkContract.View, View.OnClickListener {
     @BindView(R.id.startAndstop_startwork)
     Button startAndstopStartwork;
     @BindView(R.id.toolbar)
@@ -51,11 +51,17 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     AutoLinearLayout goneView;
     @BindView(R.id.startAndstop_text)
     TextView startAndstopText;
+    @BindView(R.id.startAndstop_uncheckedlist)
+    RecyclerView startAndstopUncheckedlist;
+    @BindView(R.id.startAndstop_checkedlist)
+    RecyclerView startAndstopCheckedlist;
     private AlertDialog mStopWorkDialog;
     private AlertDialog.Builder builder;
     private AlertDialog mSummarizeDialog;
-    private AlertDialog unCheckDialog;
-    private List<OnGoing.RowsBean.CompletedSubShelfBean> list=new ArrayList<>();
+    private List<OnGoing.RowsBean.CompletedSubShelfBean> mUnCheckedList = new ArrayList<>();
+    private List<OnGoing.RowsBean.CompletedSubShelfBean> mCheckedList = new ArrayList<>();
+    private RecyclerView.Adapter mUnCheckedadapter;
+    private RecyclerView.Adapter mCheckedadapter;
 
 //    private String mFrameLocation;
 
@@ -77,8 +83,37 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(this.getResources().getString(R.string.pcbcheck));
-        builder = new AlertDialog.Builder(this);
         getPresenter().OnGoing();
+        mUnCheckedadapter= new CommonBaseAdapter<OnGoing.RowsBean.CompletedSubShelfBean>(this, mUnCheckedList) {
+            @Override
+            protected void convert(CommonViewHolder holder, OnGoing.RowsBean.CompletedSubShelfBean item, int position) {
+                holder.setText(R.id.uncheck_text,item.getSubshelf());
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, OnGoing.RowsBean.CompletedSubShelfBean item) {
+                return R.layout.item_uncheck;
+            }
+        };
+
+        startAndstopUncheckedlist.setLayoutManager(new GridLayoutManager(this,4));
+        startAndstopUncheckedlist.setAdapter(mUnCheckedadapter);
+        mUnCheckedadapter.notifyDataSetChanged();
+        mCheckedadapter= new CommonBaseAdapter<OnGoing.RowsBean.CompletedSubShelfBean>(this, mCheckedList) {
+            @Override
+            protected void convert(CommonViewHolder holder, OnGoing.RowsBean.CompletedSubShelfBean item, int position) {
+                holder.setText(R.id.uncheck_text,item.getSubshelf());
+
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, OnGoing.RowsBean.CompletedSubShelfBean item) {
+                return R.layout.item_uncheck;
+            }
+        };
+        startAndstopCheckedlist.setLayoutManager(new GridLayoutManager(this,4));
+        startAndstopCheckedlist.setAdapter(mCheckedadapter);
+
 
     }
 
@@ -99,7 +134,7 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         return R.layout.activity_startworkandstopwork;
     }
 
-    @OnClick({R.id.startAndstop_startwork,R.id.startAndstop_continue,R.id.startAndstop_cancel})
+    @OnClick({R.id.startAndstop_startwork, R.id.startAndstop_continue, R.id.startAndstop_cancel})
     public void onClicks(View view) {
 
         switch (view.getId()) {
@@ -107,31 +142,34 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
                 getPresenter().StartWork();
                 break;
             case R.id.startAndstop_continue:
-                final Intent intent=new Intent(this, CheckStockActivity.class);
-                Bundle bundle=new Bundle();
-                bundle.putString("FrameLocation",startAndstopText.getText().toString());
-                intent.putExtra("bundle",bundle);
+                final Intent intent = new Intent(this, CheckStockActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("FrameLocation", startAndstopText.getText().toString());
+                intent.putExtra("bundle", bundle);
                 startActivity(intent);
                 break;
-            case R.id.startAndstop_uncheck:
-                unCheckDialog = builder.create();
-                unCheckDialog.show();
-                unCheckDialog.setContentView(R.layout.dialog_uncheck);
-                RecyclerView dialogRecycler = (RecyclerView) unCheckDialog.findViewById(R.id.dialog_recycler);
-                CommonBaseAdapter<OnGoing.RowsBean.CompletedSubShelfBean> adapter=new CommonBaseAdapter<OnGoing.RowsBean.CompletedSubShelfBean>(this,list) {
-                    @Override
-                    protected void convert(CommonViewHolder holder, OnGoing.RowsBean.CompletedSubShelfBean item, int position) {
-                        holder.setText(R.id.uncheck_text,item.getSubshelf());
-                    }
-
-                    @Override
-                    protected int getItemViewLayoutId(int position, OnGoing.RowsBean.CompletedSubShelfBean item) {
-                        return R.layout.item_uncheck;
-                    }
-                };
-                dialogRecycler.setLayoutManager(new GridLayoutManager(this,4));
-                dialogRecycler.setAdapter(adapter);
-                break;
+//            case R.id.startAndstop_uncheck:
+//                unCheckDialog = builder.create();
+//                View view1=LayoutInflater.from(this).inflate(R.layout.dialog_uncheck,null);
+//                unCheckDialog.setContentView(view1);
+//                unCheckDialog.show();
+//                RecyclerView dialogRecycler = (RecyclerView) view1.findViewById(R.id.dialog_recycler);
+//                CommonBaseAdapter<OnGoing.RowsBean.CompletedSubShelfBean> adapter=new CommonBaseAdapter<OnGoing.RowsBean.CompletedSubShelfBean>(this,list) {
+//                    @Override
+//                    protected void convert(CommonViewHolder holder, OnGoing.RowsBean.CompletedSubShelfBean item, int position) {
+//                        if(item.getStatus()==0){
+//                        holder.setText(R.id.uncheck_text,item.getSubshelf());
+//                        }
+//                    }
+//
+//                    @Override
+//                    protected int getItemViewLayoutId(int position, OnGoing.RowsBean.CompletedSubShelfBean item) {
+//                        return R.layout.item_uncheck;
+//                    }
+//                };
+//                dialogRecycler.setLayoutManager(new GridLayoutManager(this,4));
+//                dialogRecycler.setAdapter(adapter);
+//                break;
             case R.id.startAndstop_cancel:
                 mStopWorkDialog = builder.create();
                 mStopWorkDialog.show();
@@ -142,19 +180,21 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
 
         }
     }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-      case R.id.stopwork_affirm:
-      if (mStopWorkDialog.isShowing()) {
-        mStopWorkDialog.dismiss();
-        SpUtil.SetString(StartWorkAndStopWorkActivity.this,"FrameLocation","");
-        getPresenter().fetchInventoryException();}
+        switch (v.getId()) {
+            case R.id.stopwork_affirm:
+                if (mStopWorkDialog.isShowing()) {
+                    mStopWorkDialog.dismiss();
+                    SpUtil.SetString(StartWorkAndStopWorkActivity.this, "FrameLocation", "");
+                    getPresenter().fetchInventoryException();
+                }
                 break;
-      case R.id.stopwork_cancel:
-      if (mStopWorkDialog.isShowing()) {
-        mStopWorkDialog.dismiss();
-        }
+            case R.id.stopwork_cancel:
+                if (mStopWorkDialog.isShowing()) {
+                    mStopWorkDialog.dismiss();
+                }
                 break;
             case R.id.dialog_summarize_cancel:
                 if (mSummarizeDialog.isShowing()) {
@@ -162,7 +202,7 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
                     getPresenter().onEndSuccess();
                 }
                 break;
-    }
+        }
     }
 
     @Override
@@ -172,8 +212,7 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     }
 
     @Override
-    public void onStartWork(String s)
-    {
+    public void onStartWork(String s) {
         startActivity(new Intent(this, CheckStockActivity.class));
 
     }
@@ -184,10 +223,21 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         goneView.setVisibility(View.VISIBLE);
         goneView.setGravity(Gravity.CENTER);
         startAndstopText.setText(s);
-        this.list=list;
+        mUnCheckedList.addAll(list);
+        mCheckedList.addAll(list);
+        for (int i=0;i<mUnCheckedList.size();i++){
+            if (mUnCheckedList.get(i).getStatus()==2||mUnCheckedList.get(i).getStatus()==1){
+                mUnCheckedList.remove(mUnCheckedList.get(i));
+
+            }}
+        for (int j=0;j<mCheckedList.size();j++){
+            if (mCheckedList.get(j).getStatus()!=2){
+                mCheckedList.remove(mCheckedList.get(j));
+            }}
+        mCheckedadapter.notifyDataSetChanged();
+        mUnCheckedadapter.notifyDataSetChanged();
 
     }
-
 
 
     @Override
@@ -230,10 +280,11 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         mSummarizeDialog = builder.create();
         mSummarizeDialog.show();
         mSummarizeDialog.setContentView(R.layout.dialog_summarize);
-        TextView textView= (TextView) mSummarizeDialog.findViewById(R.id.dialog_summarize_content);
+        TextView textView = (TextView) mSummarizeDialog.findViewById(R.id.dialog_summarize_content);
         textView.setText(s);
         mSummarizeDialog.findViewById(R.id.dialog_summarize_cancel).setOnClickListener(this);
     }
+
     @Override
     public void onEndSucess() {
         IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);

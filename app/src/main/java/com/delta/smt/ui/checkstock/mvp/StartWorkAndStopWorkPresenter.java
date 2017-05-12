@@ -62,10 +62,10 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                 if ("0".equals(onGoing.getCode())) {
                     getView().showContentView();
                     for (int i=0;i<onGoing.getRows().getCompletedSubShelf().size();i++){
-                        if (onGoing.getRows().getCompletedSubShelf().get(i).getStatus()==2){
+                        if (onGoing.getRows().getCompletedSubShelf().get(i).getStatus()==1){
                             getView().ongoingSuccess(onGoing.getRows().getCompletedSubShelf().get(i).getSubshelf(),onGoing.getRows().getCompletedSubShelf());
                         }else {
-                           // getView().ongoingSuccess("盘点有问题请联系管理员",onGoing.getRows().getCompletedSubShelf());
+                           getView().ongoingSuccess("",onGoing.getRows().getCompletedSubShelf());
                         }
                     }
 
