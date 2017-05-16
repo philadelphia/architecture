@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.delta.commonlibs.utils.IntentUtils;
-import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -145,6 +145,7 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
                 final Intent intent = new Intent(this, CheckStockActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("FrameLocation", startAndstopText.getText().toString());
+                Log.d("info",startAndstopText.getText().toString());
                 intent.putExtra("bundle", bundle);
                 startActivity(intent);
                 break;
@@ -187,7 +188,6 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
             case R.id.stopwork_affirm:
                 if (mStopWorkDialog.isShowing()) {
                     mStopWorkDialog.dismiss();
-                    SpUtil.SetString(StartWorkAndStopWorkActivity.this, "FrameLocation", "");
                     getPresenter().fetchInventoryException();
                 }
                 break;
@@ -229,11 +229,17 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
             if (mUnCheckedList.get(i).getStatus()==2||mUnCheckedList.get(i).getStatus()==1){
                 mUnCheckedList.remove(mUnCheckedList.get(i));
 
-            }}
-        for (int j=0;j<mCheckedList.size();j++){
+            }else {
+                i++;
+            }
+        }
+        for (int j=0;j<mCheckedList.size();){
             if (mCheckedList.get(j).getStatus()!=2){
                 mCheckedList.remove(mCheckedList.get(j));
-            }}
+            }else{
+                j++;
+            }
+        }
         mCheckedadapter.notifyDataSetChanged();
         mUnCheckedadapter.notifyDataSetChanged();
 

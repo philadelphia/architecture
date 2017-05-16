@@ -16,6 +16,7 @@ import rx.functions.Action1;
  */
 @ActivityScope
 public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndStopWorkContract.Model,StartWorkAndStopWorkContract.View> {
+    private boolean isTrue=true;
     @Inject
     public StartWorkAndStopWorkPresenter(StartWorkAndStopWorkContract.Model model, StartWorkAndStopWorkContract.View mView) {
         super(model, mView);
@@ -51,6 +52,7 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
     }
 
     public void OnGoing(){
+
         getModel().ongoing().doOnSubscribe(new Action0() {
             @Override
             public void call() {
@@ -64,9 +66,11 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                     for (int i=0;i<onGoing.getRows().getCompletedSubShelf().size();i++){
                         if (onGoing.getRows().getCompletedSubShelf().get(i).getStatus()==1){
                             getView().ongoingSuccess(onGoing.getRows().getCompletedSubShelf().get(i).getSubshelf(),onGoing.getRows().getCompletedSubShelf());
-                        }else {
-                           getView().ongoingSuccess("",onGoing.getRows().getCompletedSubShelf());
+                            isTrue=false;
                         }
+                    }
+                    if (isTrue) {
+                        getView().ongoingSuccess("", onGoing.getRows().getCompletedSubShelf());
                     }
 
                 } else {
