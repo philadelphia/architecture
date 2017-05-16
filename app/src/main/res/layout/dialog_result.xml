@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/textcolor"
@@ -18,7 +18,7 @@
         android:padding="@dimen/dp_5"
         style="@style/dialogStyle"
         />
-<LinearLayout
+<com.zhy.autolayout.AutoLinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -26,13 +26,13 @@
     <View
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_30"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         />
     <Button
         android:id="@+id/result_cancel"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_30"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:text="@string/result_cancel"
         style="@style/pcb_button"
         />
@@ -41,10 +41,10 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_30"
         android:layout_marginRight="@dimen/px_20"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:text="@string/result_alteration"
         android:layout_marginLeft="@dimen/px_20"
         style="@style/pcb_button"
         />
-</LinearLayout>
-</LinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

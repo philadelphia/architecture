@@ -17,7 +17,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/px_0"
-        android:layout_weight="1"
+        android:layout_weight="1.2"
         android:layout_marginLeft="@dimen/px_60"
         android:layout_marginBottom="@dimen/px_40"
         >
@@ -109,6 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/px_0"
             android:layout_weight="3"
+
             >
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_widget"

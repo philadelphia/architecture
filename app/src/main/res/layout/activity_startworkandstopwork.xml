@@ -44,7 +44,7 @@
                         android:paddingLeft="@dimen/px_20"
                         android:paddingRight="@dimen/px_20"
                         android:textSize="@dimen/px_40"
-                        android:text="已经盘点的架位"
+                        android:text="当前盘点的架位"
                         />
                 <TextView
                     android:id="@+id/startAndstop_text"
@@ -104,7 +104,7 @@
                     </com.zhy.autolayout.AutoLinearLayout>
                 <Button
                     android:id="@+id/startAndstop_continue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/px_120"
                     android:layout_marginTop="@dimen/px_40"
                     style="@style/pcb_button"
@@ -113,7 +113,7 @@
 
                 <Button
                     android:id="@+id/startAndstop_cancel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/px_120"
                     android:layout_marginTop="@dimen/px_40"
                     style="@style/pcb_button"

@@ -65,8 +65,10 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                     getView().showContentView();
                     for (int i=0;i<onGoing.getRows().getCompletedSubShelf().size();i++){
                         if (onGoing.getRows().getCompletedSubShelf().get(i).getStatus()==1){
-                            getView().ongoingSuccess(onGoing.getRows().getCompletedSubShelf().get(i).getSubshelf(),onGoing.getRows().getCompletedSubShelf());
-                            isTrue=false;
+                            if (isTrue) {
+                                getView().ongoingSuccess(onGoing.getRows().getCompletedSubShelf().get(i).getSubshelf(), onGoing.getRows().getCompletedSubShelf());
+                                isTrue = false;
+                            }
                         }
                     }
                     if (isTrue) {

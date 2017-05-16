@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -78,6 +79,7 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
 
     @Override
     protected void initView() {
+        builder=new AlertDialog.Builder(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -173,10 +175,11 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
 //                break;
             case R.id.startAndstop_cancel:
                 mStopWorkDialog = builder.create();
+                View view1=LayoutInflater.from(this).inflate(R.layout.dialog_stopwork,null);
                 mStopWorkDialog.show();
-                mStopWorkDialog.setContentView(R.layout.dialog_stopwork);
-                mStopWorkDialog.findViewById(R.id.stopwork_affirm).setOnClickListener(this);
-                mStopWorkDialog.findViewById(R.id.stopwork_cancel).setOnClickListener(this);
+                mStopWorkDialog.setContentView(view1);
+                view1.findViewById(R.id.stopwork_affirm).setOnClickListener(this);
+                view1.findViewById(R.id.stopwork_cancel).setOnClickListener(this);
                 break;
 
         }
@@ -223,23 +226,18 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         goneView.setVisibility(View.VISIBLE);
         goneView.setGravity(Gravity.CENTER);
         startAndstopText.setText(s);
-        mUnCheckedList.addAll(list);
-        mCheckedList.addAll(list);
-        for (int i=0;i<mUnCheckedList.size();i++){
-            if (mUnCheckedList.get(i).getStatus()==2||mUnCheckedList.get(i).getStatus()==1){
-                mUnCheckedList.remove(mUnCheckedList.get(i));
-
-            }else {
-                i++;
-            }
-        }
-        for (int j=0;j<mCheckedList.size();){
-            if (mCheckedList.get(j).getStatus()!=2){
-                mCheckedList.remove(mCheckedList.get(j));
+        mCheckedList.clear();
+        mUnCheckedList.clear();
+        for (int i=0;i<list.size();i++){
+            if (list.get(i).getStatus()==2){
+               mCheckedList.add(list.get(i));
+            }else if (list.get(i).getStatus()==1){
+               Log.i("info",list.get(i).getShelf());
             }else{
-                j++;
+                mUnCheckedList.add(list.get(i));
             }
         }
+
         mCheckedadapter.notifyDataSetChanged();
         mUnCheckedadapter.notifyDataSetChanged();
 
