@@ -195,19 +195,15 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         Log.i(TAG, "upLoadFile: argu===  " + argu);
 
 
-//        / 创建 RequestBody，用于封装 请求RequestBody
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        // 创建 RequestBody，用于封装 请求RequestBody
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-// MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part body =
-                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+        // MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-// 添加描述
+        // 添加描述
         String descriptionString = "hello, 这是文件描述";
-        RequestBody description =
-                RequestBody.create(
-                        MediaType.parse("multipart/form-data"), descriptionString);
+        RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
 
 
         getPresenter().upLoadFile(requestFile, body, argu);
@@ -231,7 +227,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         Log.i(TAG, "files size is ==:" + files.length);
         List<File> fileList = Arrays.asList(files);
         for (File file : fileList) {
-            Log.i(TAG, "fileName: " + file.getName() + "File Size===" + file.length());
+            Log.i(TAG, "fileName: " + file.getName() + "\t" + "File Size: " + file.length());
         }
 
 
@@ -282,12 +278,8 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     public void onSuccess(String message) {
         Log.i(TAG, "onSuccess: " + message);
         content = message;
-//        mWebView.loadDataWithBaseURL(null, message, "text/html","UTF-8", null);
-//        richEditor.loadDataWithBaseURL(null, message, "text/html", "UTF-8", null);
         richEditor.setHtml(message);
         richEditor.setInputEnabled(false);
-        Log.i(TAG, "getHtml: " + richEditor.getHtml());
-//
     }
 
 
