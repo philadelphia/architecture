@@ -4,7 +4,13 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.BaseEntity;
+import com.delta.smt.entity.Result;
+import com.delta.smt.entity.ResultFault;
+import com.delta.smt.entity.ResultString;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.http.Multipart;
 import rx.Observable;
 
 /**
@@ -26,5 +32,17 @@ public class FaultProcessingAddModel extends BaseModel<ApiService> implements Fa
 
         return getService().addSolution(ids).compose(RxsRxSchedulers.<BaseEntity>io_main());
     }
+
+    @Override
+    public Observable<ResultString<String>> getTemplateContent(String fileName) {
+        return getService().getTemplateContent(fileName).compose(RxsRxSchedulers.<ResultString<String>>io_main());
+    }
+
+    @Override
+    public Observable<ResultFault> upLoadFile(RequestBody requestBody, MultipartBody.Part part, String argument) {
+        return getService().upLoadFile(requestBody, part, argument).compose(RxsRxSchedulers.<ResultFault>io_main());
+    }
+
+
 
 }

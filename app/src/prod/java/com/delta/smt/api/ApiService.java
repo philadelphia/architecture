@@ -44,7 +44,9 @@ import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.QualityManage;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.ResultFault;
 import com.delta.smt.entity.ResultFeeder;
+import com.delta.smt.entity.ResultString;
 import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -60,13 +62,19 @@ import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
@@ -357,8 +365,21 @@ public interface ApiService {
     @GET("SMM/Linefailure/resolveFault")
     Observable<BaseEntity> resolveFault(@Query("condition") String content);
 
+
     @GET("SMM/Linefailure/addFaultSolution")
     Observable<BaseEntity> addSolution(@Query("condition") String content);
+
+    //获取模板内容
+
+    @GET("SMM/Linefailure/getHtmlContent")
+    Observable<ResultString<String>> getTemplateContent(@Query("condition") String fileName);
+
+    //上传文件
+    @Multipart
+    @POST("webapi/SMM/Linefailure/uploadFiles")
+    Observable<ResultFault> upLoadFile(@Part("description") RequestBody description,
+                                       @Part MultipartBody.Part file,
+                                       @Query("param") String argument);
 
     @GET("SMM/Linefailure/getFilters")
     Observable<FaultFilter> getFaultFilterMessage();

@@ -80,4 +80,7 @@ dependencies {
     compile project(':ttsmanager')
     compile project(':dropdownfiltermenu')
     compile project(':updatelibs')
+
+    compile 'org.jsoup:jsoup:1.10.2'
+    compile 'jp.wasabeef:richeditor-android:1.2.2'
 }

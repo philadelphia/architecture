@@ -23,6 +23,7 @@
         android:persistent="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!--
              autolayout meta
                  将设计图的宽高配置后,配合AutoLauout控件使用,在设计图尺寸以外的其它尺寸手机上,也能达到和设计图一样的效果
@@ -39,11 +40,13 @@
             android:launchMode="standard"
             android:screenOrientation="portrait">
 
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
 
         </activity>
 
@@ -64,7 +67,20 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.fault_processing.fault_add.FaultProcessingAddActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.fault_processing.fault_add.AlertActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/mystyle" >
+        </activity>
 
         <!-- StorageWarningActivity  liuzhenyu -->
         <activity
@@ -118,7 +134,6 @@
             android:name=".ui.checkstock.CheckStockActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.maintain.PCBMaintainActivity"
             android:launchMode="singleTask"
@@ -127,7 +142,6 @@
             android:name=".ui.store.WarningListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.checkstock.StartWorkAndStopWorkActivity"
             android:launchMode="singleTask"
@@ -142,12 +156,11 @@
         <activity android:name=".ui.feeder.warning.supply.FeederSupplyListActivity" />
         <activity
             android:name=".ui.feeder.handle.feederSupply.FeederSupplyActivity"
-            android:label="feederSupplyActivity">
-
-        </activity>
+            android:label="feederSupplyActivity"></activity>
 
         <!-- shufeng.wu downloadservice -->
-        <service android:name=".ui.main.update.DownloadService" />
+        <!--                 <service android:name=".ui.main.update.DownloadService" /> -->
+
 
         <!-- shufen.wu FileProvider -->
         <provider
@@ -203,13 +216,14 @@
             android:name=".service.warningService.WarningDialogActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
-            android:taskAffinity=""></activity>
+            android:taskAffinity="" />
         <activity
             android:name=".service.warningService.WarningActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:taskAffinity=""
             android:theme="@style/NoTitle" />
+
     </application>
 
 </manifest>

@@ -118,5 +118,7 @@
     <!--Feeder 备料-->
     <string name="FeederSupply">Feeder备料</string>
     <string name="FeederCache">Feeder 暂存区备料</string>
+    <string name="edit_complete">编辑完成并上传</string>
+    <string name="title_activity_alert">AlertActivity</string>
 
 </resources>
