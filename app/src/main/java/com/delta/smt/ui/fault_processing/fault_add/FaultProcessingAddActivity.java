@@ -1,30 +1,21 @@
 package com.delta.smt.ui.fault_processing.fault_add;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.JavascriptInterface;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
-import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
@@ -32,7 +23,6 @@ import com.delta.smt.ui.fault_processing.fault_add.di.DaggerFaultProcessingAddCo
 import com.delta.smt.ui.fault_processing.fault_add.di.FaultProcessingAddModule;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddContract;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddPresenter;
-import com.delta.smt.utils.Content2HtmlHelper;
 import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
@@ -42,15 +32,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.richeditor.RichEditor;
 import okhttp3.MediaType;
