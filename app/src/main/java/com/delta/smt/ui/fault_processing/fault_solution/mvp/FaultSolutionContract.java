@@ -4,6 +4,8 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.FaultSolutionMessage;
+import com.delta.smt.entity.ResultFault;
+import com.delta.smt.entity.ResultString;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ import rx.Observable;
 public interface FaultSolutionContract {
 
     interface Model extends IModel {
-        Observable<FaultSolutionMessage> getDetailSolutionMessage(String productLines);
+        Observable<BaseEntity<String>> getDetailSolutionMessage(String productLines);
 
 
         Observable<BaseEntity> resolveFault(String content);
@@ -33,6 +35,12 @@ public interface FaultSolutionContract {
         void getMessageFailed(String message);
 
         void resolveFaultSucess(String message);
+
+        void onSuccess(String message);
+
+        void onFailed(String message);
+
+
 
 
     }

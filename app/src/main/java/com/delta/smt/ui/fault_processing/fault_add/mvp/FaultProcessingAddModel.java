@@ -34,8 +34,8 @@ public class FaultProcessingAddModel extends BaseModel<ApiService> implements Fa
     }
 
     @Override
-    public Observable<ResultString<String>> getTemplateContent(String fileName) {
-        return getService().getTemplateContent(fileName).compose(RxsRxSchedulers.<ResultString<String>>io_main());
+    public Observable<BaseEntity<String>> getTemplateContent(String fileName) {
+        return getService().getTemplateContent(fileName).compose(RxsRxSchedulers.<BaseEntity<String>>io_main());
     }
 
     @Override

@@ -27,20 +27,17 @@ public class FaultSolutionPresenter extends BasePresenter<FaultSolutionContract.
         super(model, mView);
     }
 
-    public void getDetailSolutionMessage(String id) {
+    public void getDetailSolutionMessage(String fileName) {
 
-        Map<String, String> maps = new HashMap<>();
-        maps.put("solution_name", id);
-        id = GsonTools.createGsonString(maps);
-        getModel().getDetailSolutionMessage(id).subscribe(new Action1<FaultSolutionMessage>() {
+        getModel().getDetailSolutionMessage(fileName).subscribe(new Action1<BaseEntity<String>>() {
             @Override
-            public void call(FaultSolutionMessage falutMesages) {
+            public void call(BaseEntity<String> message) {
 
-                if ("0".equals(falutMesages.getCode())) {
-                    getView().getDetailSolutionMessage(falutMesages.getRows());
+                if ("0".equals(message.getCode())) {
+                    getView().onSuccess(message.getT());
                 } else {
 
-                    getView().getMessageFailed(falutMesages.getMsg());
+                    getView().getMessageFailed(message.getMsg());
                 }
             }
         }, new Action1<Throwable>() {

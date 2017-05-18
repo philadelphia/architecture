@@ -372,7 +372,7 @@ public interface ApiService {
     //获取模板内容
 
     @GET("SMM/Linefailure/getHtmlContent")
-    Observable<ResultString<String>> getTemplateContent(@Query("condition") String fileName);
+    Observable<BaseEntity<String>> getTemplateContent(@Query("condition") String fileName);
 
     //上传文件
     @Multipart

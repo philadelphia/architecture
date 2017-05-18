@@ -23,7 +23,7 @@ public interface FaultProcessingAddContract {
 
     interface Model extends IModel {
         Observable<BaseEntity> addSolution(String contents);
-        Observable<ResultString<String>> getTemplateContent(String fileName);
+        Observable<BaseEntity<String>> getTemplateContent(String fileName);
         Observable<ResultFault> upLoadFile(RequestBody requestBody, MultipartBody.Part part, String argument);
 
 
@@ -36,6 +36,8 @@ public interface FaultProcessingAddContract {
         void onSuccess(String message);
 
         void onFailed(String message);
+
+        void showMessage(String  message);
 
     }
 }

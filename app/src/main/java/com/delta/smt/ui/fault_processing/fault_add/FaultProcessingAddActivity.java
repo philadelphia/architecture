@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +25,6 @@ import com.delta.smt.ui.fault_processing.fault_add.di.FaultProcessingAddModule;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddContract;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddPresenter;
 import com.google.gson.Gson;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -149,14 +149,19 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
                 finish();
                 break;
             case R.id.action_complete:
+                editText.setGravity(Gravity.CENTER_VERTICAL);
                 editText.clearFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 //show softKeyBoard
                 imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                 horizontalScrollView.setVisibility(View.GONE);
 
+                fileName = editText.getText().toString();
+                if (TextUtils.isEmpty(editText.getText())) {
+                    ToastUtils.showMessage(this, "请输入方案名称", Toast.LENGTH_SHORT);
+                    return false;
+                }
                 saveHtmlToFile(richEditor.getHtml());
-                printFiles(this);
                 upLoadFile(file);
                 break;
 
@@ -172,32 +177,37 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         return super.onOptionsItemSelected(item);
     }
 
-    private void upLoadFile(File file) {
-        StringBuilder url = new StringBuilder("[\"{");
+    private void upLoadFile(File file){
 
-        String argu = url.append("\"solution_name\":")
-                .append("\"").append(fileName).append("\"")
+        StringBuilder url = new StringBuilder("[\"{");
+        String argu = url.append("\\\"solution_name\\\":")
+                .append("\\\"").append(file.getName()).append("\\\"")
                 .append(",")
-                .append("\"solution_detail\"").append(":").append("\"")
-                .append("").append("\"")
+                .append("\\\"solution_detail\\\"").append(":").append("\\\"")
+                .append("").append("\\\"")
                 .append(",")
-                .append("\"exception_code\"").append(":").append("\"")
-                .append(faultCode).append("\"}\"")
+                .append("\\\"exception_code\\\"").append(":").append("\\\"")
+                .append(faultCode).append("\\\"}\"")
                 .append(",{")
                 .append("\"$type\"").append(":").append("\"java.io.File\"")
                 .append(",")
                 .append("\"$value\"")
                 .append(":[")
                 .append("\"$FILE:")
-                .append(fileName)
+                .append(file.getName())
                 .append("\"")
                 .append("]}]").toString();
-        Log.i(TAG, "upLoadFile: argu===  " + argu);
+        Log.i(TAG, "argu: " + argu);
 
 
         // 创建 RequestBody，用于封装 请求RequestBody
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-
+        try {
+            long size = requestFile.contentLength();
+            Log.i(TAG, "upLoadFile size: " + size);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // MultipartBody.Part is used to send also the actual file name
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
@@ -207,6 +217,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
 
         getPresenter().upLoadFile(requestFile, body, argu);
+//        getPresenter().upLoadFile(requestFile, body, list2.toString());
     }
 
 
@@ -222,27 +233,12 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
     }
 
-    private void printFiles(Context context) {
-        File[] files = context.getExternalCacheDir().listFiles();
-        Log.i(TAG, "files size is ==:" + files.length);
-        List<File> fileList = Arrays.asList(files);
-        for (File file : fileList) {
-            Log.i(TAG, "fileName: " + file.getName() + "\t" + "File Size: " + file.length());
-        }
-
-
-    }
-
     private boolean saveHtmlToFile(String html) {
         Log.i(TAG, "saveHtmlToFile: " + html);
-        fileName = editText.getText().toString();
-        if (TextUtils.isEmpty(editText.getText())) {
-            ToastUtils.showMessage(this, "请输入方案名称", Toast.LENGTH_SHORT);
-            return false;
-        }
+
         // 5 写入html文件
-//        file = new File(this.getFilesDir(), fileName);
-        file = new File(this.getExternalCacheDir(), fileName);
+        // file = new File(this.getFilesDir(), fileName);
+        file = new File(this.getExternalCacheDir(), fileName+".html");
         FileOutputStream fos = null;
         BufferedWriter bw = null;
         try {
@@ -355,6 +351,11 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     @Override
     public void onFailed(String message) {
         ToastUtils.showMessage(this, message);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
 

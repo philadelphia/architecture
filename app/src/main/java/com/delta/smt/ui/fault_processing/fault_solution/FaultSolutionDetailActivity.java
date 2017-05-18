@@ -1,9 +1,9 @@
 package com.delta.smt.ui.fault_processing.fault_solution;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -15,13 +15,13 @@ import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
-import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.ui.fault_processing.fault_solution.di.DaggerFaultSolutionComponent;
 import com.delta.smt.ui.fault_processing.fault_solution.di.FaultSolutionModule;
 import com.delta.smt.ui.fault_processing.fault_solution.mvp.FaultSolutionContract;
 import com.delta.smt.ui.fault_processing.fault_solution.mvp.FaultSolutionPresenter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,19 +45,16 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     TextView tvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    @BindView(R.id.rv_content)
-    RecyclerView rvContent;
-    List<FaultSolutionMessage.RowsBean> datas = new ArrayList<>();
+    @BindView(R.id.webView)
+    WebView mWebView;
     @BindView(R.id.button)
     Button button;
-    private CommonBaseAdapter<FaultSolutionMessage.RowsBean> adapter;
+
     private String faultCode;
     private String faultId;
     private String lineName;
     private String faultSolutionName;
-    private int size;
+    private static final String TAG = "FaultSolutionDetailActi";
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -72,7 +69,10 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
         faultCode = extras.getString(Constant.FAULT_CODE);
         //faultId = extras.getString(Constant.FAULT_ID);
         faultSolutionName = extras.getString(Constant.FAULT_SOLUTION_NAME);
-        getPresenter().getDetailSolutionMessage(faultSolutionName);
+        Map<String, String> map = new HashMap<>();
+        map.put("fileName", faultSolutionName);
+        String param = new Gson().toJson(map);
+        getPresenter().getDetailSolutionMessage(param);
     }
 
     @Override
@@ -82,28 +82,9 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("故障处理");
-        tvTitle.setText(faultSolutionName + ":");
+
         setSupportActionBar(toolbar);
-        adapter = new CommonBaseAdapter<FaultSolutionMessage.RowsBean>(this, datas) {
-            @Override
-            protected void convert(CommonViewHolder holder, FaultSolutionMessage.RowsBean item, int position) {
 
-                if (size == 1) {
-                    holder.setText(R.id.tv_step_content, item.getPath());
-                } else {
-
-                    holder.setText(R.id.tv_step_content, position+1 + "." + item.getPath());
-                }
-
-            }
-
-            @Override
-            protected int getItemViewLayoutId(int position, FaultSolutionMessage.RowsBean item) {
-                return R.layout.item_detail_solution;
-            }
-        };
-        rvContent.setLayoutManager(new LinearLayoutManager(this));
-        rvContent.setAdapter(adapter);
 
     }
 
@@ -127,10 +108,6 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
 
     @Override
     public void getDetailSolutionMessage(List<FaultSolutionMessage.RowsBean> rowsBean) {
-        size = rowsBean.size();
-        datas.clear();
-        datas.addAll(rowsBean);
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -142,6 +119,17 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     public void resolveFaultSucess(String message) {
         ToastUtils.showMessage(this, message);
         finish();
+    }
+
+    @Override
+    public void onSuccess(String message) {
+        Log.i(TAG, "onSuccess: " + message);
+        mWebView.loadDataWithBaseURL(null, message, "text/html","UTF-8", null);
+
+    }
+
+    @Override
+    public void onFailed(String message) {
     }
 
 

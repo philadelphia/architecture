@@ -54,12 +54,12 @@ public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAd
 
     public void getTemplateContent(String fileName) {
         Log.i(TAG, "getTemplateContent: ");
-        getModel().getTemplateContent(fileName).subscribe(new Action1<ResultString<String>>() {
+        getModel().getTemplateContent(fileName).subscribe(new Action1<BaseEntity<String>>() {
             @Override
-            public void call(ResultString<String> stringResult) {
+            public void call(BaseEntity<String> stringResult) {
                 if (stringResult.getCode().equalsIgnoreCase("0")){
                     Log.i(TAG, "response code== " + stringResult.getCode());
-                    getView().onSuccess(stringResult.getRows());
+                    getView().onSuccess(stringResult.getT());
                 }
 
             }
@@ -79,7 +79,7 @@ public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAd
             @Override
             public void call(ResultFault result) {
                 if (result.getCode().equalsIgnoreCase("0")){
-                    getView().onSuccess("上传成功");
+                    getView().showMessage("上传成功");
                 }else {
                     getView().onFailed("上传失败");
                 }
@@ -89,7 +89,7 @@ public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAd
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed("上传失败" + throwable.getMessage());
+                getView().showMessage("上传失败" + throwable.getMessage());
             }
         });
     }

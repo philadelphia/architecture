@@ -5,6 +5,8 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.FaultSolutionMessage;
+import com.delta.smt.entity.ResultString;
+import com.delta.smt.utils.StringUtils;
 
 import rx.Observable;
 
@@ -22,10 +24,10 @@ public class FaultSolutionModel extends BaseModel<ApiService> implements FaultSo
     }
 
     @Override
-    public Observable<FaultSolutionMessage> getDetailSolutionMessage(String ids) {
+    public Observable<BaseEntity<String>> getDetailSolutionMessage(String ids) {
 
 
-        return getService().getDetailSolutionMessage(ids).compose(RxsRxSchedulers.<FaultSolutionMessage>io_main());
+        return getService().getTemplateContent(ids).compose(RxsRxSchedulers.<BaseEntity<String>>io_main());
     }
 
     @Override

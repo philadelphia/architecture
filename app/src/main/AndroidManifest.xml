@@ -40,13 +40,11 @@
             android:launchMode="standard"
             android:screenOrientation="portrait">
 
-            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
 
         </activity>
 
@@ -69,18 +67,14 @@
             android:name=".ui.fault_processing.fault_add.FaultProcessingAddActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
+         <!--   <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
-        <activity
-            android:name=".ui.fault_processing.fault_add.AlertActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/mystyle" >
-        </activity>
+
 
         <!-- StorageWarningActivity  liuzhenyu -->
         <activity
