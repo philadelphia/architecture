@@ -55,16 +55,16 @@ public class FaultSolutionPresenter extends BasePresenter<FaultSolutionContract.
             public void call(BaseEntity baseEntity) {
 
                 if ("0".equals(baseEntity.getCode())) {
-                    getView().resolveFaultSucess(baseEntity.getMsg());
+                    getView().resolveFaultSuccess(baseEntity.getMsg());
                 } else {
-                    getView().resolveFaultSucess(baseEntity.getMsg());
+                    getView().resolveFaultSuccess(baseEntity.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
 
-                getView().resolveFaultSucess(throwable.getMessage());
+                getView().resolveFaultSuccess(throwable.getMessage());
             }
         });
 

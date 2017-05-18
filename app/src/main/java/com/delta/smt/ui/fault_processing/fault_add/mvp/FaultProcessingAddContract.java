@@ -39,5 +39,6 @@ public interface FaultProcessingAddContract {
 
         void showMessage(String  message);
 
+        void upLoadFileSuccess();
     }
 }

@@ -34,7 +34,7 @@ public interface FaultSolutionContract {
 
         void getMessageFailed(String message);
 
-        void resolveFaultSucess(String message);
+        void resolveFaultSuccess(String message);
 
         void onSuccess(String message);
 

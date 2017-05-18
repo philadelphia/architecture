@@ -14,7 +14,6 @@ import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.ui.fault_processing.fault_solution.di.DaggerFaultSolutionComponent;
@@ -22,8 +21,6 @@ import com.delta.smt.ui.fault_processing.fault_solution.di.FaultSolutionModule;
 import com.delta.smt.ui.fault_processing.fault_solution.mvp.FaultSolutionContract;
 import com.delta.smt.ui.fault_processing.fault_solution.mvp.FaultSolutionPresenter;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +30,7 @@ import butterknife.OnClick;
 
 /**
  * @description :
- * @autHor :  V.Wenju.Tian
+ * @author :  V.Wenju.Tian
  * @date : 2017/1/9 19:18
  */
 
@@ -51,7 +48,6 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     Button button;
 
     private String faultCode;
-    private String faultId;
     private String lineName;
     private String faultSolutionName;
     private static final String TAG = "FaultSolutionDetailActi";
@@ -67,7 +63,6 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
         Bundle extras = getIntent().getExtras();
         lineName = extras.getString(Constant.FAULT_PROCESSING_LINE_NAME);
         faultCode = extras.getString(Constant.FAULT_CODE);
-        //faultId = extras.getString(Constant.FAULT_ID);
         faultSolutionName = extras.getString(Constant.FAULT_SOLUTION_NAME);
         Map<String, String> map = new HashMap<>();
         map.put("fileName", faultSolutionName);
@@ -79,8 +74,10 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     protected void initView() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
         toolbarTitle.setText("故障处理");
 
         setSupportActionBar(toolbar);
@@ -116,7 +113,7 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     }
 
     @Override
-    public void resolveFaultSucess(String message) {
+    public void resolveFaultSuccess(String message) {
         ToastUtils.showMessage(this, message);
         finish();
     }
@@ -130,13 +127,14 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
 
     @Override
     public void onFailed(String message) {
+
     }
 
 
     @OnClick(R.id.button)
     public void onClick() {
         if (SingleClick.isSingle(5000)) {
-            Map map = new HashMap();
+            Map<String, String> map = new HashMap<>();
             map.put("solution_name", faultSolutionName);
             map.put("exception_code", faultCode);
             map.put("line", lineName);

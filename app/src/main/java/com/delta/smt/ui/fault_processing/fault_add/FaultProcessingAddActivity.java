@@ -32,9 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -46,7 +44,7 @@ import okhttp3.RequestBody;
 
 /**
  * @description :
- * @autHor :  V.Wenju.Tian
+ * @author :  V.Wenju.Tian
  * @date : 2017/1/9 19:40
  */
 
@@ -124,8 +122,10 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     protected void initView() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
         toolbarTitle.setText("新增处理方案");
 
 
@@ -179,25 +179,24 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
     private void upLoadFile(File file){
 
-        StringBuilder url = new StringBuilder("[\"{");
-        String argu = url.append("\\\"solution_name\\\":")
-                .append("\\\"").append(file.getName()).append("\\\"")
-                .append(",")
-                .append("\\\"solution_detail\\\"").append(":").append("\\\"")
-                .append("").append("\\\"")
-                .append(",")
-                .append("\\\"exception_code\\\"").append(":").append("\\\"")
-                .append(faultCode).append("\\\"}\"")
-                .append(",{")
-                .append("\"$type\"").append(":").append("\"java.io.File\"")
-                .append(",")
-                .append("\"$value\"")
-                .append(":[")
-                .append("\"$FILE:")
-                .append(file.getName())
-                .append("\"")
-                .append("]}]").toString();
-        Log.i(TAG, "argu: " + argu);
+        String argument = "[\"{" + "\\\"solution_name\\\":" +
+                "\\\"" + file.getName() + "\\\"" +
+                "," +
+                "\\\"solution_detail\\\"" + ":" + "\\\"" +
+                "" + "\\\"" +
+                "," +
+                "\\\"exception_code\\\"" + ":" + "\\\"" +
+                faultCode + "\\\"}\"" +
+                ",{" +
+                "\"$type\"" + ":" + "\"java.io.File\"" +
+                "," +
+                "\"$value\"" +
+                ":[" +
+                "\"$FILE:" +
+                file.getName() +
+                "\"" +
+                "]}]";
+        Log.i(TAG, "argu: " + argument);
 
 
         // 创建 RequestBody，用于封装 请求RequestBody
@@ -213,11 +212,11 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
         // 添加描述
         String descriptionString = "hello, 这是文件描述";
-        RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
+        @SuppressWarnings("UnusedAssignment") RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
 
 
-        getPresenter().upLoadFile(requestFile, body, argu);
-//        getPresenter().upLoadFile(requestFile, body, list2.toString());
+        getPresenter().upLoadFile(requestFile, body, argument);
+//
     }
 
 
@@ -263,9 +262,9 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return false;
         }
 
+        return false;
 
     }
 
@@ -356,6 +355,11 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     @Override
     public void showMessage(String message) {
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void upLoadFileSuccess() {
+        this.finish();
     }
 
 

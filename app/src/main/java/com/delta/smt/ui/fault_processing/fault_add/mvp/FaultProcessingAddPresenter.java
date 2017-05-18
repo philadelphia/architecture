@@ -79,7 +79,7 @@ public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAd
             @Override
             public void call(ResultFault result) {
                 if (result.getCode().equalsIgnoreCase("0")){
-                    getView().showMessage("上传成功");
+                    getView().upLoadFileSuccess();
                 }else {
                     getView().onFailed("上传失败");
                 }
