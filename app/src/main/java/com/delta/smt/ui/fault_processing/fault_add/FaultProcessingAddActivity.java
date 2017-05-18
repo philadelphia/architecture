@@ -1,10 +1,14 @@
 package com.delta.smt.ui.fault_processing.fault_add;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +21,7 @@ import android.widget.Toast;
 
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.di.component.AppComponent;
@@ -25,6 +30,7 @@ import com.delta.smt.ui.fault_processing.fault_add.di.FaultProcessingAddModule;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddContract;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddPresenter;
 import com.google.gson.Gson;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,14 +49,13 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
- * @description :
  * @author :  V.Wenju.Tian
+ * @description :
  * @date : 2017/1/9 19:40
  */
 
 
 public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddPresenter> implements FaultProcessingAddContract.View {
-    private String content;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.tv_setting)
@@ -103,7 +108,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     ImageButton actionInsertLink;
 
     private String fileName = null;
-    private String faultCode = "主故障-111";
+    private String faultCode = "";
     private File file;
 
     @Override
@@ -114,8 +119,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
     @Override
     protected void initData() {
-//        faultCode = getIntent().getExtras().getString(Constant.FAULT_CODE);
-//
+        faultCode = getIntent().getExtras().getString(Constant.FAULT_CODE);
     }
 
     @Override
@@ -177,7 +181,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         return super.onOptionsItemSelected(item);
     }
 
-    private void upLoadFile(File file){
+    private void upLoadFile(File file) {
 
         String argument = "[\"{" + "\\\"solution_name\\\":" +
                 "\\\"" + file.getName() + "\\\"" +
@@ -237,7 +241,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
         // 5 写入html文件
         // file = new File(this.getFilesDir(), fileName);
-        file = new File(this.getExternalCacheDir(), fileName+".html");
+        file = new File(this.getExternalCacheDir(), fileName + ".html");
         FileOutputStream fos = null;
         BufferedWriter bw = null;
         try {
@@ -272,7 +276,6 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     @Override
     public void onSuccess(String message) {
         Log.i(TAG, "onSuccess: " + message);
-        content = message;
         richEditor.setHtml(message);
         richEditor.setInputEnabled(false);
     }
@@ -363,4 +366,30 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     }
 
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.i(TAG, "richEditor: " + richEditor.isInEditMode());
+        Log.i(TAG, "editText: " + editText.isFocused());
+        if (richEditor.isInEditMode() || editText.isFocused()) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    AlertDialog alertDialog = new AlertDialog.Builder(this).setTitle("警告")
+                            .setMessage("你即将要退出当前页面?")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                        onBackPressed();
+                                }
+                            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).create();
+                    alertDialog.show();
+                    return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

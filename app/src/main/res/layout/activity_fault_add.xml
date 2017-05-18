@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@android:color/black"
+            android:background="@color/c_428bca"
             android:visibility="invisible">
 
             <LinearLayout
@@ -163,6 +163,7 @@
                     android:layout_height="48dp"
                     android:background="@null"
                     android:contentDescription="@null"
+                    android:visibility="gone"
                     android:src="@drawable/insert_image" />
 
                 <ImageButton

@@ -8,7 +8,7 @@ import dagger.Component;
 
 /**
  * @description :
- * @autHor :  V.Wenju.Tian
+ * @author : V.Wenju.Tian
  * @date : 2017/1/4 20:49
  */
 @ActivityScope
