@@ -101,8 +101,9 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     protected void initData() {
-        Bundle bundle = getIntent().getExtras();
-        FrameLocation=bundle.getString("FrameLocation");
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+        if (bundle!=null){
+        FrameLocation=bundle.getString("FrameLocation");}
 
     }
 
