@@ -373,7 +373,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void issureToWarehFinishSuccess(String msg) {
 
-        ToastUtils.showMessage(this, msg);
+        ToastUtils.showMessage(this, "发料完成");
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
