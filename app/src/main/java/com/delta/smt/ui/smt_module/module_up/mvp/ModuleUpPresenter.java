@@ -2,6 +2,7 @@ package com.delta.smt.ui.smt_module.module_up.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
@@ -29,22 +30,20 @@ public class ModuleUpPresenter extends BasePresenter<ModuleUpContract.Model,Modu
                     e.printStackTrace();
                 }
             }
-        }).subscribe(new Action1<ModuleUpWarningItem>() {
+        }).subscribe(new Action1<Result<ModuleUpWarningItem>>() {
             @Override
-            public void call(ModuleUpWarningItem moduleUpWarningItems) {
+            public void call(Result<ModuleUpWarningItem> moduleUpWarningItemResult) {
                 try{
-                    if ("0".equals(moduleUpWarningItems.getCode())) {
+                    if (0 == moduleUpWarningItemResult.getCode()) {
 
-                        if (moduleUpWarningItems.getRows().size() == 0) {
+                        if (moduleUpWarningItemResult.getRows().size() == 0) {
                             getView().showEmptyView();
-                            getView().onFailed(moduleUpWarningItems);
                         }else {
                             getView().showContentView();
-                            getView().onSuccess(moduleUpWarningItems);
+                            getView().onSuccess(moduleUpWarningItemResult.getRows());
                         }
 
                     } else {
-                        getView().onFailed(moduleUpWarningItems);
                         getView().showErrorView();
                     }
                 }catch (Exception e){

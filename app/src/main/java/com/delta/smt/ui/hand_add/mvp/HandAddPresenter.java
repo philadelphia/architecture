@@ -80,7 +80,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
         getModel().getItemHandAddConfirm(mS).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
-                if (result.getCode().equals("0")) {
+                if (result.getCode() == 0) {
                     getItemHandAddDatas(line);
                 }else {
                     getView().getItemHandAddDatasFailed(result.getMessage());

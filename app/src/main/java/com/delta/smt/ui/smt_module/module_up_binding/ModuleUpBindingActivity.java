@@ -41,6 +41,11 @@ import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,10 +92,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     //private Snackbar mSnackbar = null;
     @BindView(R.id.showMessage)
     TextView showMessage;
-    private CommonBaseAdapter<ModuleUpBindingItem.RowsBean> adapterTitle;
-    private CommonBaseAdapter<ModuleUpBindingItem.RowsBean> adapter;
-    private List<ModuleUpBindingItem.RowsBean> dataList = new ArrayList<>();
-    private List<ModuleUpBindingItem.RowsBean> dataSource = new ArrayList<>();
+    private CommonBaseAdapter<ModuleUpBindingItem> adapterTitle;
+    private CommonBaseAdapter<ModuleUpBindingItem> adapter;
+    private List<ModuleUpBindingItem> dataList = new ArrayList<>();
+    private List<ModuleUpBindingItem> dataSource = new ArrayList<>();
     private int scan_position = -1;
     private String workItemID;
     private String side;
@@ -124,8 +129,14 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
-        Gson gson = new Gson();
-        argument = gson.toJson(map);
+        JsonArray jsonArray = new JsonArray();
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("work_order", workItemID);
+        jsonObject.addProperty("side", side);
+        jsonArray.add(jsonObject);
+
+        argument = jsonArray.toString();
 
     }
 
@@ -153,23 +164,24 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         recyclerViewTitle.setLayoutManager(new LinearLayoutManager(getContext()));
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
         recyclerViewContent.setLayoutManager(linearLayoutManager);
-        dataList.add(new ModuleUpBindingItem.RowsBean("料号", "FeederID", "模组料站"));
-        adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataList) {
+//        dataList.add(new ModuleUpBindingItem("料号", "FeederID", "模组料站"));
+        dataList.add(new ModuleUpBindingItem());
+        adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, ModuleUpBindingItem.RowsBean item, int position) {
+            protected void convert(CommonViewHolder holder, ModuleUpBindingItem item, int position) {
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.c_efefef));
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ModuleUpBindingItem.RowsBean item) {
+            protected int getItemViewLayoutId(int position, ModuleUpBindingItem item) {
                 return R.layout.item_module_up_binding;
             }
         };
 
         recyclerViewTitle.setAdapter(adapterTitle);
-        adapter = new CommonBaseAdapter<ModuleUpBindingItem.RowsBean>(this, dataSource) {
+        adapter = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataSource) {
             @Override
-            protected void convert(CommonViewHolder holder, ModuleUpBindingItem.RowsBean item, int position) {
+            protected void convert(CommonViewHolder holder, ModuleUpBindingItem item, int position) {
                 if (scan_position == -1) {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 } else if (scan_position == position) {
@@ -184,7 +196,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ModuleUpBindingItem.RowsBean item) {
+            protected int getItemViewLayoutId(int position, ModuleUpBindingItem item) {
                 return R.layout.item_module_up_binding;
             }
 
@@ -199,11 +211,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void onSuccess(ModuleUpBindingItem data) {
-        ToastUtils.showMessage(this, data.getMsg());
+    public void onSuccess(List<ModuleUpBindingItem> data) {
         state = 1;
         dataSource.clear();
-        List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
+        List<ModuleUpBindingItem> rowsBeen = data;
         dataSource.addAll(rowsBeen);
         Log.i(TAG, "onSuccess:后台返回的数据长度是： " + dataSource.size());
         adapter.notifyDataSetChanged();
@@ -211,8 +222,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void onFailed(ModuleUpBindingItem data) {
-        ToastUtils.showMessage(this, data.getMsg());
+    public void onFailed(String  message) {
+        ToastUtils.showMessage(this, message);
     }
 
     @Override
@@ -222,15 +233,14 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @SuppressWarnings("all")
     @Override
-    public void onSuccessBinding(ModuleUpBindingItem data) {
-        ToastUtils.showMessage(this, data.getMsg());
+    public void onSuccessBinding(List<ModuleUpBindingItem> dataSource) {
 
-        if (data.getMsg().toLowerCase().equals("success")) {
-            showMessage.setText(dataSource.get(scan_position).getSlot() + "绑定成功！");
-            showMessage.setVisibility(View.VISIBLE);
-        }
+//        if (data.getMsg().toLowerCase().equals("success")) {
+//            showMessage.setText(dataSource.get(scan_position).getSlot() + "绑定成功！");
+//            showMessage.setVisibility(View.VISIBLE);
+//        }
         dataSource.clear();
-        List<ModuleUpBindingItem.RowsBean> rowsBeen = data.getRows();
+        List<ModuleUpBindingItem> rowsBeen = dataSource;
         dataSource.addAll(rowsBeen);
         scan_position = -1;
         adapter.notifyDataSetChanged();
@@ -260,10 +270,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     }
 
-    @Override
-    public void onFailedBinding(ModuleUpBindingItem data) {
-        ToastUtils.showMessage(this, data.getMsg());
-    }
+//    @Override
+//    public void onFailedBinding(ModuleUpBindingItem data) {
+//        ToastUtils.showMessage(this, data.getMsg());
+//    }
 
     @Override
     public void showLoadingView() {
@@ -367,14 +377,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     } else {
                         VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
                         VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
-                        Map<String, String> map = new HashMap<>();
-                        map.put("work_order", workItemID);
-                        map.put("material_no", materialBlockNumber);
-                        map.put("feeder_id", barcode);
-                        map.put("serial_no", serialNo);
-                        map.put("side", side);
-                        Gson gson = new Gson();
-                        String argument = gson.toJson(map);
+                        JsonArray jsonArray = new JsonArray();
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("work_order", workItemID);
+                        jsonObject.addProperty("material_no", materialBlockNumber);
+                        jsonObject.addProperty("feeder_id", barcode);
+                        jsonObject.addProperty("serial_no", serialNo);
+                        jsonObject.addProperty("side", side);
+                        jsonArray.add(jsonObject);
+                        String argument = jsonArray.toString();
                         getPresenter().getMaterialAndFeederBindingResult(argument);
                     }
                 } catch (EntityNotFountException e) {
@@ -449,7 +460,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean isExistInDataSourceAndHighLight(String item_m, String item_s, List<ModuleUpBindingItem.RowsBean> list) {
+    public boolean isExistInDataSourceAndHighLight(String item_m, String item_s, List<ModuleUpBindingItem> list) {
         if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getMaterial_no().equals(item_m) && list.get(i).getSerial_no().equals(item_s)) {
@@ -465,11 +476,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
 
-    public boolean isFeederExistInDataSource(String item, List<ModuleUpBindingItem.RowsBean> list) {
+    public boolean isFeederExistInDataSource(String item, List<ModuleUpBindingItem> list) {
 
         if (list.size() > 0) {
 
-            for (ModuleUpBindingItem.RowsBean list_item : list) {
+            for (ModuleUpBindingItem list_item : list) {
 
                 if (list_item.getFeeder_id() != null && list_item.getFeeder_id().equals(item)) {
                     return true;
@@ -486,7 +497,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     public boolean isAllFeederBinded() {
         boolean res = true;
         if (dataSource.size() > 0) {
-            for (ModuleUpBindingItem.RowsBean listItem : dataSource) {
+            for (ModuleUpBindingItem listItem : dataSource) {
                 if (listItem.getFeeder_id() != null && listItem.getFeeder_id().length() > 0) {
                 } else {
                     res = false;
@@ -513,7 +524,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     public boolean isMaterialBinded(MaterialBlockBarCode materialBlockBarCode){
      boolean flag = false;
-        for (ModuleUpBindingItem.RowsBean rowsBean : dataSource) {
+        for (ModuleUpBindingItem rowsBean : dataSource) {
             if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())){
                 if (!TextUtils.isEmpty(rowsBean.getFeeder_id())){
                    flag = true;

@@ -95,7 +95,6 @@ public interface ApiService {
     //  tao.zt.zhang
 
     //  获取feeder入库列表
-//    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     @GET("SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
@@ -142,20 +141,20 @@ public interface ApiService {
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     //上模组排程
-    @GET("SMM/plugmod/getProductionLines")
-    Observable<ModuleUpWarningItem> getModuleUpWarningItems();
+    @GET("ams/smm/plugmodcontroller/getproductionlines")
+    Observable<Result<ModuleUpWarningItem>> getModuleUpWarningItems();
 
     //对应工单的上模组列表
-    @GET("SMM/plugmod/getModsByWordOrder")
-    Observable<ModuleUpBindingItem> getModuleUpBindingItems(@Query("condition") String condition);
+    @GET("ams/smm/plugmodcontroller/getmodsbywordorder")
+    Observable<Result<ModuleUpBindingItem>> getModuleUpBindingItems(@Query("condition") String condition);
 
     //上模组,料盘feeder绑定
     @GET("SMM/plugmod/updateMod")
-    Observable<ModuleUpBindingItem> getMaterialAndFeederBindingResult(@Query("condition") String condition);
+    Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(@Query("condition") String condition);
 
     //下模组排程
-    @GET("SMM/unplugmod/getProductionLines")
-    Observable<ModuleDownWarningItem> getModuleDownWarningItems();
+    @GET("ams/smm/unplugmodcontroller/getproductionlines")
+    Observable<Result<ModuleDownWarningItem>> getModuleDownWarningItems();
 
     //虚拟线体绑定列表
     @GET("SMM/unplugmod/getModelList")

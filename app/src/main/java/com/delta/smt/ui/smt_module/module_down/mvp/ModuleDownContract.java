@@ -3,6 +3,9 @@ package com.delta.smt.ui.smt_module.module_down.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.ModuleDownWarningItem;
+import com.delta.smt.entity.Result;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -13,9 +16,9 @@ import rx.Observable;
 public interface ModuleDownContract {
     interface View extends IView {
 
-        void onSuccess(ModuleDownWarningItem data);
+        void onSuccess(List<ModuleDownWarningItem> data);
 
-        void onFailed(ModuleDownWarningItem data);
+        void onFailed(String message);
 
         void onNetFailed(Throwable throwable);
 
@@ -30,6 +33,6 @@ public interface ModuleDownContract {
     }
 
     interface Model extends IModel {
-        Observable<ModuleDownWarningItem> getAllModuleDownWarningItems();
+        Observable<Result<ModuleDownWarningItem>> getAllModuleDownWarningItems();
     }
 }

@@ -119,7 +119,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result<StorageDetails> issureToWarehResult) {
 
-                if ("0".equalsIgnoreCase(issureToWarehResult.getCode())) {
+                if (0 == issureToWarehResult.getCode()) {
 
                     if (issureToWarehResult.getRows().size() == 0) {
                         getView().showEmptyView();
@@ -184,7 +184,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
         getModel().jumpMaterials(mS).subscribe(new Action1<Result<StorageDetails>>() {
             @Override
             public void call(Result<StorageDetails> storageDetailsResult) {
-                if ("0".equalsIgnoreCase(storageDetailsResult.getCode())) {
+                if (0 == storageDetailsResult.getCode()) {
                     getView().jumpMaterialsSuccess(storageDetailsResult);
                 } else {
                     getView().jumpMaterialsFailed(storageDetailsResult.getMessage());
