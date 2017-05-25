@@ -540,16 +540,20 @@ public interface ApiService {
     Observable<MantissaWarehousePutstorageResult> getYesok();
 
     //尾数仓入库
-    @GET("SMM/MantissaStorage/qMantissaStorageList")
+    @GET("ams/smm/mantissastorage/qmantissastoragelist")
     Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
 
     //尾数仓查询料盘的位置
-    @GET("SMM/MantissaStorage/findshelf")
-    Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/mantissastorage/findshelf")
+    Observable<MantissaWarehouseReturnResult> getMaterialLocation(@Field("value") String bind);
 
     //尾数仓查料盘入库
-    @GET("SMM/MantissaStorage/mantissaStorage")
-    Observable<MantissaWarehouseReturnResult> getputinstrage(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/mantissastorage/mantissastorage")
+    Observable<MantissaWarehouseReturnResult> getputinstrage(@Field("value") String bind);
 
     //品管确认列表查询
     @GET("SMM/LineQuality/getQualityList")
