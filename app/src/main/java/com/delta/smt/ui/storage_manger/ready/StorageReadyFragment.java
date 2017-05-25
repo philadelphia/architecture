@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
@@ -27,7 +28,6 @@ import com.delta.smt.ui.storage_manger.ready.di.StorageReadyModule;
 import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyContract;
 import com.delta.smt.ui.storage_manger.ready.mvp.StorageReadyPresenter;
 import com.delta.smt.widget.WarningDialog;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -128,8 +128,8 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
 
         Map<String, String> map = new HashMap<>();
         map.put("part", wareHouseName);
-        Gson gson = new Gson();
-        mS = gson.toJson(map);
+
+        mS = GsonTools.createGsonListString(map);
         Log.i("aaa", "argument== " + mS);
         //接收那种预警
         warningManger.addWarning(Constant.WARE_ALARM_FLAG + "_" + wareHouseName, getmActivity().getClass());
@@ -154,7 +154,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
         //ViewUtils.showContentView(statusLayout, storageReadies);
         dataList.clear();
         for (int i = 0; i < storageReadies.size(); i++) {
-            storageReadies.get(i).setEnd_time(storageReadies.get(i).getRemain_time() * 1000 + System.currentTimeMillis());
+            storageReadies.get(i).setEnd_time(Math.round(storageReadies.get(i).getRemain_time() * 1000) + System.currentTimeMillis());
             storageReadies.get(i).setEntityId(i);
             if (storageReadies.get(i).getStatus() == 0) {
                 Collections.swap(storageReadies, 0, i);
@@ -167,7 +167,7 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
 
     public WarningDialog createDialog(String message) {
 
-        Log.e(TAG, "createDialog: "+message);
+        Log.e(TAG, "createDialog: " + message);
         final WarningDialog warningDialog = new WarningDialog(getmActivity());
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override

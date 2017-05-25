@@ -21,6 +21,7 @@ public class StorageSelectPresenter extends BasePresenter<StorageSelectContract.
 
     public void getStorageSelect() {
 
+
         getModel().getStorageSelect().subscribe(new RxErrorHandlerSubscriber<Result<StoreEntity>>(rxErrorHandler) {
             @Override
             public void onStart() {

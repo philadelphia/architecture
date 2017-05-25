@@ -48,7 +48,6 @@ import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.delta.smt.utils.ViewUtils;
 import com.delta.ttsmanager.TextToSpeechManager;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,8 +136,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         mMap.put("part", part);
         mMap.put("work_order", work_order);
         mMap.put("side", side);
-        Gson mGson = new Gson();
-        mS = mGson.toJson(mMap);
+        mS = GsonTools.createGsonListString(mMap);
         Log.i("aaa", mS);
         getPresenter().getStorageDetails(mS);
         getPresenter().queryMaterailCar(mS);
@@ -573,7 +571,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     maps.put("part", part);
                     maps.put("side", side);
                     maps.put("pre_car", car.getSource());
-                    getPresenter().bindBoundPrepCar(GsonTools.createGsonString(maps));
+                    getPresenter().bindBoundPrepCar(GsonTools.createGsonListString(maps));
                 } catch (Exception e) {
                     e.printStackTrace();
                     state = 1;
@@ -603,7 +601,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     issureToWarehBody.setSide(side);
                     issureToWarehBody.setPart(part);
                     currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
-                    getPresenter().issureToWareh(GsonTools.createGsonString(issureToWarehBody));
+                    getPresenter().issureToWareh(GsonTools.createGsonListString(issureToWarehBody));
 
                 } catch (Exception e) {
                     e.printStackTrace();

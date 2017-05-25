@@ -1,7 +1,7 @@
 ext {
     //有重用的地方写在这里面，保证代码一致
     android = [compileSdkVersion       : 24,
-               buildToolsVersion       : "24.0.0",
+               buildToolsVersion       : "25.0.0",
                minSdkVersion           : 16,
                targetSdkVersion        : 22,
                versionCode             : 6,
@@ -55,9 +55,9 @@ ext {
             "barcodecollector"       : "com.drc-bj:BarCodeCollector:1.0.26-SNAPSHOT",
             "lombok"                 : "org.projectlombok:lombok:1.16.6",
 
-            "mockito-core"           :"org.mockito:mockito-core：${android["androidSupportSdkVersion"]}",
-            "mockito"                :"com.google.dexmaker:dexmaker-mockito:1.2",
-            "mockito-all"            :"org.mockito:mockito-all${android[ "androidSupportSdkVersion"]}"
-
+            "mockito-core"           : "org.mockito:mockito-core：${android["androidSupportSdkVersion"]}",
+            "mockito"                : "com.google.dexmaker:dexmaker-mockito:1.2",
+            "mockito-all"            : "org.mockito:mockito-all${android["androidSupportSdkVersion"]}",
+            "stetho"                 : "com.facebook.stetho:stetho:1.4.2"
     ]
 }
