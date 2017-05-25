@@ -1,7 +1,5 @@
 package com.delta.smt.entity;
 
-import java.util.List;
-
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -13,72 +11,36 @@ public class MaterialCar {
 
 
     /**
-     * code : 0
-     * msg : Success
-     * rows : [{"id":1,"car_name":"SMT-01","type":0}]
-     */
-
-    private String code;
-    private String msg;
-    /**
      * id : 1
      * car_name : SMT-01
      * type : 0
      */
 
-    private List<RowsBean> rows;
+    private int id;
+    private String car_name;
+    private int type;
 
-    public String getCode() {
-        return code;
+    public int getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getCar_name() {
+        return car_name;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setCar_name(String car_name) {
+        this.car_name = car_name;
     }
 
-    public List<RowsBean> getRows() {
-        return rows;
+    public int getType() {
+        return type;
     }
 
-    public void setRows(List<RowsBean> rows) {
-        this.rows = rows;
-    }
-
-    public static class RowsBean {
-        private int id;
-        private String car_name;
-        private int type;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getCar_name() {
-            return car_name;
-        }
-
-        public void setCar_name(String car_name) {
-            this.car_name = car_name;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
+    public void setType(int type) {
+        this.type = type;
     }
 }

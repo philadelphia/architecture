@@ -71,6 +71,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
@@ -382,55 +383,58 @@ public interface ApiService {
     Observable<FaultFilter> getFaultFilterMessage();
 
     //查询指定工单备料车ID
-    @GET("smm/warehissue/qprepcaridbyworkorder")
-    Observable<MaterialCar> queryMaterialCar(@Query("condition") String content);
+    @GET("ams/smm/warehissue/qprepcaridbyworkorder")
+    Observable<Result<MaterialCar>> queryMaterialCar(@Query("condition") String content);
 
     //绑定指定工单备料车ID
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/bindprepcaridbyworkorder")
+    @POST("ams/smm/warehissue/bindprepcaridbyworkorder")
     Observable<BindPrepCarIDByWorkOrderResult> bindMaterialCar(@Field("value") String content);
 
+    //发料
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/issuretowareh")
+    @POST("ams/smm/warehissue/issuretowareh")
     Observable<Result<StorageDetails>> issureToWareh(@Field("value") String content);
 
+    //完成仓库发料
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/issuretowarehfinish")
+    @POST("ams/smm/warehissue/issuretowarehfinish")
     Observable<IssureToWarehFinishResult> issureToWarehFinish(@Field("value") String content);
 
     //开始某个小仓库指定工单发料
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/startwarehissure")
+    @POST("ams/smm/warehissue/startwarehissure")
     Observable<Result<StorageDetails>> getStorageDetails(@Field("value") String argument);
 
+    //调料盘
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/jumpmaterials")
+    @PUT("ams/smm/warehissue/jumpmaterials")
     Observable<Result<StorageDetails>> jumpMaterials(@Field("value") String mS);
 
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/surecompleteissue")
+    @POST("ams/smm/warehissue/surecompleteissue")
     Observable<IssureToWarehFinishResult> sureCompleteIssue();
 
     //仓库房扣账
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/deduction")
+    @POST("ams/smm/warehissue/deduction")
     Observable<Result> deduction(@Field("value") String mS);
 
     //尾数仓备料
-    @GET("smm/issuemana/querymantiss")
+    @GET("ams/smm/issuemana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
 
     //尾数仓备料详情
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/startmantississue")
+    @POST("ams/smm/warehissue/startmantississue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Field("value") String bind);
 
     //料盘绑定标签
@@ -438,39 +442,39 @@ public interface ApiService {
     Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query("condition") String bind);
 
     //查询尾数仓备料车
-    @GET("smm/warehissue/qprepcaridbyworkorder")
-    Observable<MaterialCar> getFindCar(@Query("condition") String bind);
+    @GET("ams/smm/warehissue/qprepcaridbyworkorder")
+    Observable<Result<MaterialCar>> getFindCar(@Query("condition") String bind);
 
     //绑定尾数仓备料车
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/bindprepcaridbyworkorder")
-    Observable<MaterialCar> getbingingCar(@Field("value") String bind);
+    @POST("ams/smm/warehissue/bindprepcaridbyworkorder")
+    Observable<Result<MaterialCar>> getbingingCar(@Field("value") String bind);
 
     //尾数仓发料
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/mantississue")
+    @POST("ams/smm/warehissue/mantississue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(@Field("value") String bind);
 
     //尾数仓扣账
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/deduction")
+    @POST("ams/smm/warehissue/deduction")
     Observable<Result> debit();
 
     //尾数仓发料完成
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("smm/warehissue/completemantississue")
+    @POST("ams/smm/warehissue/completemantississue")
     Observable<IssureToWarehFinishResult> getMantissaWareOver(@Field("value") String s);
 
     //仓库房备料和尾数仓选择
-    @GET("smm/issuemana/querywarehousepart")
+    @GET("ams/smm/issuemana/querywarehousepart")
     Observable<Result<StoreEntity>> getStorageSelect();
 
     //根据小仓库分区查询需要备料的工单列表
-    @GET("smm/issuemana/queryworkorder")
+    @GET("ams/smm/issuemana/queryworkorder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
     //TODO shaoqiang,8Interfance
@@ -556,7 +560,7 @@ public interface ApiService {
     Observable<QualityManage> getQualityOK(@Query("condition") String bind);
 
     /**
-     * @description :
+     *  @description :
      * 1.更新
      * 2.超领
      * 3.上模组

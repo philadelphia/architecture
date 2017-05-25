@@ -58,7 +58,7 @@ public class MantissaWarehouseReady implements Serializable {
         private String work_order;
         private String side;
         private int status;
-        private int remain_time;
+        private double remain_time;
 
         public String getLine_name() {
             return line_name;
@@ -92,11 +92,11 @@ public class MantissaWarehouseReady implements Serializable {
             this.status = status;
         }
 
-        public int getRemain_time() {
+        public double getRemain_time() {
             return remain_time;
         }
 
-        public void setRemain_time(int remain_time) {
+        public void setRemain_time(double remain_time) {
             this.remain_time = remain_time;
         }
     }
