@@ -114,12 +114,12 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private int flag = 1;
     private String side;
     private boolean isChecked = true;
-    private String s;
     private String line_name;
     private String material_num = "";
     private String serial_num = "";
     private int index = 0;
     private LinearLayoutManager content_LinerLayoutManager;
+    private String gsonListString;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -137,7 +137,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         side = mMantissaWarehouse.getSide();
         line_name = mMantissaWarehouse.getLine_name();
         WarehouseDetailBean bindBean = new WarehouseDetailBean(side, work_order);
-        String gsonListString = GsonTools.createGsonListString(bindBean);
+        gsonListString = GsonTools.createGsonListString(bindBean);
         getPresenter().getMantissaWarehouseDetails(gsonListString);
         //备料车
         MantissaCarBean car = new MantissaCarBean(work_order, "Mantissa", side);
@@ -267,7 +267,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 //            getPresenter().debit();
         }
         if (isOver) {
-            getPresenter().getMantissaWareOver(s);
+            getPresenter().getMantissaWareOver(gsonListString);
         }
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
