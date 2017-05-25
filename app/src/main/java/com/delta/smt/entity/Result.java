@@ -8,8 +8,8 @@ import java.util.List;
  * Created by Tao.ZT.Zhang on 2016/12/29.
  */
 
-public class Result <T> {
-    @SerializedName("msg")
+public class Result<T> {
+    @SerializedName(value = "msg", alternate = {"message"})
     private String message;
     private String code;
     private List<T> rows;

@@ -22,10 +22,12 @@ import com.delta.smt.manager.ActivityState;
 import com.delta.smt.service.warningService.WarningService;
 import com.delta.ttsmanager.TextToSpeechManager;
 import com.delta.updatelibs.UpdateUtils;
+import com.facebook.stetho.Stetho;
 
 import javax.inject.Inject;
 
 import timber.log.Timber;
+
 /**
  * Created by V.Wenju.Tian on 2016/11/29.
  */
@@ -65,6 +67,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
         new DeviceUuidFactory(this);
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            Stetho.initializeWithDefaults(this);
         }
         mContenxt = this;
         mainHander = new Handler(Looper.getMainLooper());

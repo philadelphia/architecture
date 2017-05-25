@@ -22,6 +22,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
@@ -48,7 +49,6 @@ import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsPr
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.delta.smt.utils.ViewUtils;
 import com.delta.ttsmanager.TextToSpeechManager;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,13 +134,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         side = mMantissaWarehouse.getSide();
         line_name = mMantissaWarehouse.getLine_name();
         WarehouseDetailBean bindBean = new WarehouseDetailBean(side, work_order);
-        Gson gson = new Gson();
-        s = gson.toJson(bindBean);
-        getPresenter().getMantissaWarehouseDetails(s);
+        String gsonListString = GsonTools.createGsonListString(bindBean);
+        getPresenter().getMantissaWarehouseDetails(gsonListString);
         //备料车
         MantissaCarBean car = new MantissaCarBean(work_order, "Mantissa", side);
-        String carbean = gson.toJson(car);
-        getPresenter().getFindCar(carbean);
+        getPresenter().getFindCar(GsonTools.createGsonListString(car));
         isChecked = SpUtil.getBooleanSF(this, "Mantissa" + "checked");
     }
 
@@ -475,9 +473,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     lastCar = LastMaterialCar.getSource();
                     Toast.makeText(this, lastCar, Toast.LENGTH_SHORT).show();
                     MantissaBingingCarBean bindBean = new MantissaBingingCarBean(work_order, "Mantissa", lastCar, side);
-                    Gson gson = new Gson();
-                    String s = gson.toJson(bindBean);
-                    getPresenter().getbingingCar(s);
+                    getPresenter().getbingingCar(GsonTools.createGsonListString(bindBean));
                 } catch (EntityNotFountException e) {
                     ToastUtils.showMessage(this, getString(R.string.scan_remain_car_message));
                     textToSpeechManager.readMessage(getString(R.string.scan_remain_car_message));
@@ -503,9 +499,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     MantissaWarehouseputBean bindBean = new MantissaWarehouseputBean(serial_num, material_num, unit, vendor, dc, lc, trasaction_code, po, quantity);
                     bindBean.setSide(side);
                     bindBean.setWork_order(work_order);
-                    Gson gson = new Gson();
-                    String s = gson.toJson(bindBean);
-                    getPresenter().getMantissaWarehouseput(s);
+                    getPresenter().getMantissaWarehouseput(GsonTools.createGsonListString(bindBean));
 
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -11,6 +11,7 @@ import com.delta.commonlibs.rx.rxerrorhandler.ResponseErrorListener;
 import com.delta.smt.BuildConfig;
 import com.delta.smt.di.module.ServiceModule;
 import com.delta.smt.utils.UiUtils;
+import com.facebook.stetho.Stetho;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
 import java.util.LinkedList;
@@ -42,6 +43,7 @@ public abstract class BaseApplication extends Application implements ResponseErr
         super.onCreate();
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            Stetho.initializeWithDefaults(this);
         }
         AutoLayoutConifg.getInstance().useDeviceSize();
         mApplication = this;
@@ -138,6 +140,8 @@ public abstract class BaseApplication extends Application implements ResponseErr
      * @return
      */
     public static Interceptor[] getInterceptors() {
+//        return new Interceptor[]{new StethoInterceptor()}
+//                ;
         return null;
     }
 

@@ -53,8 +53,8 @@ android {
         disable "ResourceType"
         abortOnError false
     }
-
-    buildToolsVersion '25.0.0'
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
 }
 
 dependencies {

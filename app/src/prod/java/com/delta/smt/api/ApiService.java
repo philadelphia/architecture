@@ -46,7 +46,6 @@ import com.delta.smt.entity.QualityManage;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFault;
 import com.delta.smt.entity.ResultFeeder;
-import com.delta.smt.entity.ResultString;
 import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -65,8 +64,6 @@ import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -384,70 +381,96 @@ public interface ApiService {
     @GET("SMM/Linefailure/getFilters")
     Observable<FaultFilter> getFaultFilterMessage();
 
-    //仓库房
-    @GET("SMM/WareHIssue/qPrepCarIDByWorkOrder")
+    //查询指定工单备料车ID
+    @GET("smm/warehissue/qprepcaridbyworkorder")
     Observable<MaterialCar> queryMaterialCar(@Query("condition") String content);
 
-    @GET("SMM/WareHIssue/bindPrepCarIDByWorkOrder")
-    Observable<BindPrepCarIDByWorkOrderResult> bindMaterialCar(@Query("condition") String content);
+    //绑定指定工单备料车ID
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/bindprepcaridbyworkorder")
+    Observable<BindPrepCarIDByWorkOrderResult> bindMaterialCar(@Field("value") String content);
 
-    @GET("SMM/WareHIssue/issureToWareh")
-    Observable<Result<StorageDetails>> issureToWareh(@Query("condition") String content);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/issuretowareh")
+    Observable<Result<StorageDetails>> issureToWareh(@Field("value") String content);
 
-    @GET("SMM/WareHIssue/issureToWarehFinish")
-    Observable<IssureToWarehFinishResult> issureToWarehFinish(@Query("condition") String content);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/issuretowarehfinish")
+    Observable<IssureToWarehFinishResult> issureToWarehFinish(@Field("value") String content);
 
-    @GET("SMM/WareHIssue/startWareHIssure")
-    Observable<Result<StorageDetails>> getStorageDetails(@Query("condition") String argument);
+    //开始某个小仓库指定工单发料
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/startwarehissure")
+    Observable<Result<StorageDetails>> getStorageDetails(@Field("value") String argument);
 
-    @GET("SMM/WareHIssue/jumpMaterials")
-    Observable<Result<StorageDetails>> jumpMaterials(@Query("condition") String mS);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/jumpmaterials")
+    Observable<Result<StorageDetails>> jumpMaterials(@Field("value") String mS);
 
-    @GET("SMM/WareHIssue/sureCompleteIssue")
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/surecompleteissue")
     Observable<IssureToWarehFinishResult> sureCompleteIssue();
 
     //仓库房扣账
-    @GET("SMM/WareHIssue/deduction")
-    Observable<Result> deduction(@Query("condition") String mS);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/deduction")
+    Observable<Result> deduction(@Field("value") String mS);
 
     //尾数仓备料
-    @GET("SMM/IssueMana/querymantiss")
+    @GET("smm/issuemana/querymantiss")
     Observable<MantissaWarehouseReady> getMantissaWarehouseReadyDates();
 
     //尾数仓备料详情
-    @GET("SMM/WareHIssue/startMantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/startmantississue")
+    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Field("value") String bind);
 
     //料盘绑定标签
     @GET("SMM/ManToWareh/materBoundLabel")
     Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query("condition") String bind);
 
     //查询尾数仓备料车
-    @GET("SMM/WareHIssue/qPrepCarIDByWorkOrder")
+    @GET("smm/warehissue/qprepcaridbyworkorder")
     Observable<MaterialCar> getFindCar(@Query("condition") String bind);
 
     //绑定尾数仓备料车
-    @GET("SMM/WareHIssue/bindPrepCarIDByWorkOrder")
-    Observable<MaterialCar> getbingingCar(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/bindprepcaridbyworkorder")
+    Observable<MaterialCar> getbingingCar(@Field("value") String bind);
 
     //尾数仓发料
-    @GET("SMM/WareHIssue/mantissIssue")
-    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/mantississue")
+    Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(@Field("value") String bind);
 
     //尾数仓扣账
-    @GET("SMM/WareHIssue/deduction")
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/deduction")
     Observable<Result> debit();
 
     //尾数仓发料完成
-    @GET("SMM/WareHIssue/completeMantissIssue")
-    Observable<IssureToWarehFinishResult> getMantissaWareOver(@Query("condition") String s);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("smm/warehissue/completemantississue")
+    Observable<IssureToWarehFinishResult> getMantissaWareOver(@Field("value") String s);
 
     //仓库房备料和尾数仓选择
-    @GET("SMM/IssueMana/queryWarehousePart")
+    @GET("smm/issuemana/querywarehousepart")
     Observable<Result<StoreEntity>> getStorageSelect();
 
     //根据小仓库分区查询需要备料的工单列表
-    @GET("SMM/IssueMana/queryWorkOrder")
+    @GET("smm/issuemana/queryworkorder")
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
     //TODO shaoqiang,8Interfance
