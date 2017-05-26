@@ -258,11 +258,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
 
     @Override
-    public void getMantissaWarehouseputSucess(MantissaWarehouseDetailsResult rows) {
+    public void getMantissaWarehouseputSuccess(MantissaWarehouseDetailsResult rows) {
 
         issureToWareh(rows);
         tv_hint.setText(rows.getMsg());
-        textToSpeechManager.readMessage(rows.getMsg());
+       // textToSpeechManager.readMessage(rows.getMsg());
         if (btnSwitch.isChecked()) {
 //            getPresenter().debit();
         }
@@ -383,7 +383,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getMantissaWareOverSucess(IssureToWarehFinishResult issureToWarehFinishResult) {
+    public void getMantissaWareOverSuccess(IssureToWarehFinishResult issureToWarehFinishResult) {
         Toast.makeText(this, issureToWarehFinishResult.getMsg(), Toast.LENGTH_SHORT).show();
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);

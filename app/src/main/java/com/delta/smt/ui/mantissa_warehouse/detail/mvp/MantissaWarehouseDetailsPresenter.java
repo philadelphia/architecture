@@ -134,7 +134,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             public void call(MantissaWarehouseDetailsResult mantissaWarehouseDetails) {
 
                 if ("0".equals(mantissaWarehouseDetails.getCode())) {
-                    getView().getMantissaWarehouseputSucess(mantissaWarehouseDetails);
+                    getView().getMantissaWarehouseputSuccess(mantissaWarehouseDetails);
                     if (mantissaWarehouseDetails.getRows().size() == 0) {
                         getView().showEmptyView();
                     } else {
@@ -169,7 +169,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void call(IssureToWarehFinishResult issureToWarehFinishResult) {
                 if ("0".equals(issureToWarehFinishResult.getCode())) {
-                    getView().getMantissaWareOverSucess(issureToWarehFinishResult);
+                    getView().getMantissaWareOverSuccess(issureToWarehFinishResult);
                 } else {
                     getView().getMantissaWareOverFailed(issureToWarehFinishResult.getMsg());
                 }
