@@ -247,6 +247,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         if (data.size() != 0) {
             mTextView2.setText(data.get(0).getCar_name());
             tv_hint.setText("绑定备料车" + data.get(0).getCar_name());
+            textToSpeechManager.readMessage("绑定备料车" + data.get(0).getCar_name());
         }
 
         VibratorAndVoiceUtils.correctVoice(this);
@@ -260,7 +261,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         textToSpeechManager.stop();
         textToSpeechManager.readMessage(rows.getMessage());
         if (btnSwitch.isChecked()) {
-            getPresenter().deduction(mS);
+            //getPresenter().deduction(mS);
         }
         if (isOver) {
             getPresenter().issureToWarehFinish(mS);
@@ -372,18 +373,17 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void issureToWarehFinishSuccess(String msg) {
 
-        ToastUtils.showMessage(this, msg);
+        ToastUtils.showMessage(this, "发料完成");
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
 
     @Override
-    public void queryMaterailCar(List<MaterialCar.RowsBean> rows) {
+    public void queryMaterailCar(List<MaterialCar> rows) {
         if (rows.size() != 0) {
             mTextView2.setText(rows.get(0).getCar_name());
             //  tv_hint.setText(rows.get(0).getCar_name());
         }
-
         state = 2;
 
     }
@@ -400,9 +400,14 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void bindMaterialCarFailed(String msg) {
         state = 1;
-        mTextView2.setText("无");
-        // tv_hint.setText(msg);
+
+        //
+        // mTextView2.setText(msg);
+        tv_hint.setText(msg);
         ToastUtils.showMessage(this, msg);
+        textToSpeechManager.readMessage(msg);
+
+
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -412,7 +417,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         issureToWareh(result);
         tv_hint.setText(result.getMessage());
         if (btnSwitch.isChecked()) {
-            getPresenter().deduction(mS);
+            // getPresenter().deduction(mS);
         }
         if (isOver) {
             getPresenter().issureToWarehFinish(mS);
@@ -565,7 +570,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 BackupMaterialCar car = null;
                 try {
                     car = ((BackupMaterialCar) barCodeImp.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
-                    mTextView2.setText(car.getSource());
+                    //mTextView2.setText(car.getSource());
                     Map<String, String> maps = new HashMap<>();
                     maps.put("work_order", work_order);
                     maps.put("part", part);
@@ -651,7 +656,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     bottomSheetDialog.show();
                 }
             } else {
-                getPresenter().deduction(mS);
+                // getPresenter().deduction(mS);
             }
 
         }
@@ -665,7 +670,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 bottomSheetDialog.dismiss();
                 break;
             case R.id.bt_sheet_confirm:
-                getPresenter().deduction(mS);
+                // getPresenter().deduction(mS);
                 bottomSheetDialog.dismiss();
                 break;
             default:

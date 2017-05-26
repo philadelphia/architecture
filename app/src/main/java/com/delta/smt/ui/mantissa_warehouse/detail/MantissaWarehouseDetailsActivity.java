@@ -41,6 +41,7 @@ import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseputBean;
 import com.delta.smt.entity.MaterialCar;
+import com.delta.smt.entity.Result;
 import com.delta.smt.entity.WarehouseDetailBean;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.DaggerMantissaWarehouseDetailsComponent;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsModule;
@@ -98,6 +99,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     boolean isOver = true;
     boolean isHaveIsSureOver;
     BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+    @BindView(R.id.textView)
+    TextView textView;
     private List<MantissaWarehouseDetailsResult.RowsBean> dataList = new ArrayList();
     private List<MantissaWarehouseDetailsResult.RowsBean> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> title_adapter;
@@ -154,6 +157,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         tvLineName.setText("线别：" + line_name);
         tvLineNum.setText("面别：" + side);
         btnSwitch.setChecked(isChecked);
+        textView.setText("余料车：");
 
         btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -231,18 +235,23 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getBingingCarSucess(MaterialCar car) {
+    public void getBingingCarSucess(Result<MaterialCar> car) {
         mCar.setText(car.getRows().get(0).getCar_name());
         flag = 2;
         tv_hint.setText(car.getRows().get(0).getCar_name());
+        textToSpeechManager.readMessage("绑定余料车" + car.getRows().get(0).getCar_name());
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
 
 
     @Override
-    public void getBingingCarFailed(String message) {
+    public void getBingingCarFailed(String msg) {
         flag = 1;
+        tv_hint.setText(msg);
+        // tv_hint.setText(msg);
+        ToastUtils.showMessage(this, msg);
+        textToSpeechManager.readMessage(msg);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -255,7 +264,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         tv_hint.setText(rows.getMsg());
         textToSpeechManager.readMessage(rows.getMsg());
         if (btnSwitch.isChecked()) {
-            getPresenter().debit();
+//            getPresenter().debit();
         }
         if (isOver) {
             getPresenter().getMantissaWareOver(s);
@@ -390,12 +399,12 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getFindCarSucess(MaterialCar car) {
+    public void getFindCarSucess(Result<MaterialCar> car) {
         String rows = car.getRows().get(0).getCar_name();
-        tv_hint.setText(car.getMsg());
+        tv_hint.setText(rows);
         mCar.setText(rows);
         flag = 2;
-        textToSpeechManager.readMessage(car.getMsg());
+
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -471,7 +480,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 try {
                     LastMaterialCar LastMaterialCar = (LastMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_CAR);
                     lastCar = LastMaterialCar.getSource();
-                    Toast.makeText(this, lastCar, Toast.LENGTH_SHORT).show();
                     MantissaBingingCarBean bindBean = new MantissaBingingCarBean(work_order, "Mantissa", lastCar, side);
                     getPresenter().getbingingCar(GsonTools.createGsonListString(bindBean));
                 } catch (EntityNotFountException e) {
@@ -548,7 +556,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                         bottomSheetDialog.show();
                     }
                 } else {
-                    getPresenter().debit();
+                    // getPresenter().debit();
                 }
 
             }
@@ -569,4 +577,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 break;
         }
     }
+
+
 }

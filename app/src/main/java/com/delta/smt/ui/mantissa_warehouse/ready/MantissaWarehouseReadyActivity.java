@@ -145,7 +145,8 @@ public class MantissaWarehouseReadyActivity extends BaseActivity<MantissaWarehou
 
         dataList.clear();
         for (int i = 0; i < mantissaWarehouseReadies.size(); i++) {
-            mantissaWarehouseReadies.get(i).setEnd_time(System.currentTimeMillis() + mantissaWarehouseReadies.get(i).getRemain_time() * 1000);
+            mantissaWarehouseReadies.get(i).setEnd_time(System.currentTimeMillis() + Math.round(mantissaWarehouseReadies.get(i).getRemain_time()) * 1000)
+            ;
             mantissaWarehouseReadies.get(i).setEntityId(i);
             if (mantissaWarehouseReadies.get(i).getStatus() == 0) {
                 Collections.swap(mantissaWarehouseReadies, 0, i);

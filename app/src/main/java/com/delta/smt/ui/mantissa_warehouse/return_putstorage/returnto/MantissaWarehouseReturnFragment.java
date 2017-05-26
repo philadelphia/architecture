@@ -12,6 +12,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
@@ -39,6 +40,7 @@ import java.util.List;
 import butterknife.BindView;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
+import static com.delta.commonlibs.utils.GsonTools.createGsonListString;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
@@ -250,8 +252,9 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
 
                     MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
-                    Gson gson = new Gson();
-                    String s = gson.toJson(bindBean);
+//                    Gson gson = new Gson();
+//                    String s = gson.toJson(bindBean);
+                    String s = GsonTools.createGsonListString(bindBean);
 
                     getPresenter().getMaterialLocation(s);
                 } catch (EntityNotFountException e) {
@@ -264,8 +267,11 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     lastCar = lastMaterialCar.getSource();
 
                     WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar);
-                    Gson gson = new Gson();
-                    String s = gson.toJson(bindBean);
+//                    Gson gson = new Gson();
+//                    String s = gson.toJson(bindBean);
+
+                    String s = GsonTools.createGsonListString(bindBean);
+
 
                     getPresenter().getputinstrage(s);
                     Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
