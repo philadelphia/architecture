@@ -42,7 +42,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                     @Override
                     public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
 
-                        if (feederSupplyItemResult.getCode().equalsIgnoreCase("0")) {
+                        if (feederSupplyItemResult.getCode() == 0) {
                             if (feederSupplyItemResult.getRows().size() == 0) {
                                 getView().showEmptyView();
                                 getView().onFailed(feederSupplyItemResult.getMessage());
@@ -83,7 +83,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
             @Override
             public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
-                if (feederSupplyItemResult.getCode().equals("0")) {
+                if (feederSupplyItemResult.getCode() == 0) {
                     if (feederSupplyItemResult.getRows().size() == 0) {
                         getView().showEmptyView();
                         getView().onFailed(feederSupplyItemResult.getMessage());

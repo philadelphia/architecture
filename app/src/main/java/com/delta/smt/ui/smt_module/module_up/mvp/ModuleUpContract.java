@@ -3,6 +3,9 @@ package com.delta.smt.ui.smt_module.module_up.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.Result;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -13,9 +16,9 @@ import rx.Observable;
 public interface ModuleUpContract {
     interface View extends IView {
 
-        void onSuccess(ModuleUpWarningItem data);
+        void onSuccess(List<ModuleUpWarningItem> dataSource);
 
-        void onFailed(ModuleUpWarningItem data);
+        void onFailed(String message);
 
         void onNetFailed(Throwable throwable);
 
@@ -30,6 +33,6 @@ public interface ModuleUpContract {
     }
 
     interface Model extends IModel {
-        Observable<ModuleUpWarningItem> getAllModuleUpWarningItems();
+        Observable<Result<ModuleUpWarningItem>> getAllModuleUpWarningItems();
     }
 }

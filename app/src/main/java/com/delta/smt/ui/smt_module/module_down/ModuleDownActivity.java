@@ -1,6 +1,7 @@
 package com.delta.smt.ui.smt_module.module_down;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -48,7 +49,7 @@ import butterknife.BindView;
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implements ModuleDownContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleDownWarningItem.RowsBean> {
+public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implements ModuleDownContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleDownWarningItem> {
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -63,8 +64,8 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    private List<ModuleDownWarningItem.RowsBean> dataList = new ArrayList<>();
-    private ItemCountViewAdapter<ModuleDownWarningItem.RowsBean> myAdapter;
+    private List<ModuleDownWarningItem> dataList = new ArrayList<>();
+    private ItemCountViewAdapter<ModuleDownWarningItem> myAdapter;
 
     private WarningDialog warningDialog;
 
@@ -101,7 +102,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
-        myAdapter = new ItemCountViewAdapter<ModuleDownWarningItem.RowsBean>(this, dataList) {
+        myAdapter = new ItemCountViewAdapter<ModuleDownWarningItem>(this, dataList) {
             @Override
             protected int getCountViewId() {
                 return R.id.cv_countView;
@@ -113,7 +114,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             }
 
             @Override
-            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, ModuleDownWarningItem.RowsBean moduleUpWarningItem, int position) {
+            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, ModuleDownWarningItem moduleUpWarningItem, int position) {
 
                 holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine_name());
                 holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
@@ -136,9 +137,9 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     }
 
     @Override
-    public void onSuccess(ModuleDownWarningItem data) {
+    public void onSuccess(List<ModuleDownWarningItem> dataSource) {
         dataList.clear();
-        List<ModuleDownWarningItem.RowsBean> rowsList = data.getRows();
+        List<ModuleDownWarningItem> rowsList = dataSource;
         for (int i = 0; i < rowsList.size(); i++) {
             if (TextUtils.isEmpty(rowsList.get(i).getUnplug_mod_actual_finish_time())) {
                 rowsList.get(i).setCreat_time(System.currentTimeMillis());
@@ -157,13 +158,13 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         }
         dataList.addAll(rowsList);
         myAdapter.notifyDataSetChanged();
-        ToastUtils.showMessage(this, data.getMsg());
+//        ToastUtils.showMessage(this, );
 
     }
 
     @Override
-    public void onFailed(ModuleDownWarningItem data) {
-        ToastUtils.showMessage(this, data.getMsg());
+    public void onFailed(String message) {
+        ToastUtils.showMessage(this, message);
     }
 
     @Override
@@ -343,13 +344,13 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     }
 
     @Override
-    public void onItemClick(View item, ModuleDownWarningItem.RowsBean rowsBean, int position) {
+    public void onItemClick(View item, ModuleDownWarningItem rowsBean, int position) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constant.WORK_ITEM_ID, dataList.get(position).getWork_order());
-        bundle.putString(Constant.PRODUCT_NAME_MAIN, dataList.get(position).getProduct_name_main());
-        bundle.putString(Constant.PRODUCT_NAME, dataList.get(position).getProduct_name());
-        bundle.putString(Constant.SIDE, dataList.get(position).getSide());
-        bundle.putString(Constant.LINE_NAME, dataList.get(position).getLine_name());
+        bundle.putString(Constant.WORK_ITEM_ID, rowsBean.getWork_order());
+        bundle.putString(Constant.PRODUCT_NAME_MAIN, rowsBean.getProduct_name_main());
+        bundle.putString(Constant.PRODUCT_NAME, rowsBean.getProduct_name());
+        bundle.putString(Constant.SIDE, rowsBean.getSide());
+        bundle.putString(Constant.LINE_NAME, rowsBean.getLine_name());
 
         //Intent intent = new Intent(this, ModuleUpBindingActivity.class);
         //intent.putExtras(bundle);

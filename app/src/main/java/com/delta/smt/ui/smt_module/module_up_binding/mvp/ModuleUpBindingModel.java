@@ -4,6 +4,7 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.entity.Result;
 
 import rx.Observable;
 
@@ -18,13 +19,13 @@ public class ModuleUpBindingModel extends BaseModel<ApiService> implements Modul
     }
 
     @Override
-    public Observable<ModuleUpBindingItem> getAllModuleUpBindingItems(String str) {
+    public Observable<Result<ModuleUpBindingItem>> getAllModuleUpBindingItems(String str) {
 
-        return getService().getModuleUpBindingItems(str).compose(RxsRxSchedulers.<ModuleUpBindingItem>io_main());
+        return getService().getModuleUpBindingItems(str).compose(RxsRxSchedulers.<Result<ModuleUpBindingItem>>io_main());
     }
 
     @Override
-    public Observable<ModuleUpBindingItem> getMaterialAndFeederBindingResult(String str) {
-        return getService().getMaterialAndFeederBindingResult(str).compose(RxsRxSchedulers.<ModuleUpBindingItem>io_main());
+    public Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str) {
+        return getService().getMaterialAndFeederBindingResult(str).compose(RxsRxSchedulers.<Result<ModuleUpBindingItem>>io_main());
     }
 }

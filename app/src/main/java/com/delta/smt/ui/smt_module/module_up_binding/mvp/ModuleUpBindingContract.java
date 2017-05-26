@@ -3,6 +3,9 @@ package com.delta.smt.ui.smt_module.module_up_binding.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.entity.Result;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -13,15 +16,13 @@ import rx.Observable;
 public interface ModuleUpBindingContract {
     interface View extends IView {
 
-        void onSuccess(ModuleUpBindingItem data);
+        void onSuccess(List<ModuleUpBindingItem> dataSource);
 
-        void onFailed(ModuleUpBindingItem data);
+        void onFailed(String  message);
 
         void onNetFailed(Throwable throwable);
 
-        void onSuccessBinding(ModuleUpBindingItem data);
-
-        void onFailedBinding(ModuleUpBindingItem data);
+        void onSuccessBinding(List<ModuleUpBindingItem> dataSource) ;
 
         void showLoadingView();
 
@@ -34,8 +35,8 @@ public interface ModuleUpBindingContract {
     }
 
     interface Model extends IModel {
-        Observable<ModuleUpBindingItem> getAllModuleUpBindingItems(String str);
+        Observable<Result<ModuleUpBindingItem>> getAllModuleUpBindingItems(String str);
 
-        Observable<ModuleUpBindingItem> getMaterialAndFeederBindingResult(String str);
+        Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str);
     }
 }

@@ -11,20 +11,20 @@ import java.util.List;
 public class Result<T> {
     @SerializedName(value = "msg", alternate = {"message"})
     private String message;
-    private String code;
+    private int code;
     private List<T> rows;
 
-    public Result(String code, String message, List<T> rows) {
+    public Result(int code, String message, List<T> rows) {
         this.code = code;
         this.message = message;
         this.rows = rows;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

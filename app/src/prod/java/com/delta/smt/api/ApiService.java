@@ -93,7 +93,6 @@ public interface ApiService {
     //  tao.zt.zhang
 
     //  获取feeder入库列表
-//    @GET("http://172.17.52.29:8081/SMM/FeederBuffStorage/qFeederBuffStorageList")
     @GET("SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
@@ -103,8 +102,8 @@ public interface ApiService {
 
 
     //重置Feeder发料状态
-    @GET("SMM/Buffer/completeBufferIssue")
-    Observable<ResultFeeder> resetFeederSupplyStatus(@Query("condition") String contidion);
+    @GET("ams/smm/buffer/completebufferissue")
+    Observable<ResultFeeder> resetFeederSupplyStatus(@Query("value") String contidion);
 
 
     //获取下模组列表
@@ -112,16 +111,16 @@ public interface ApiService {
     Observable<ModuleDownDetailsItem> getDownModuleList(@Query("condition") String condition);
 
     //获取所有的Feeder备料工单列表
-    @GET("SMM/Buffer/querySchedule")
+    @GET("ams/smm/buffer/queryschedule")
     Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
 
     //获取指定工单的Feeder备料列表
-    @GET("SMM/Buffer/startBufferIssue")
-    Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("condition") String workID);
+    @POST("ams/smm/buffer/startbufferissue")
+    Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("value") String value);
 
     //获取Feeder备料时间
-    @GET("SMM/Buffer/bufferIssue")
-    Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("condition") String condition);
+    @POST("/ams/smm/buffer/bufferissue")
+    Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("value") String condition);
 
     //上传feeder备料上模组结果
     @GET("SMM/Buffer/completeBufferIssue")
@@ -140,37 +139,37 @@ public interface ApiService {
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     //上模组排程
-    @GET("SMM/plugmod/getProductionLines")
-    Observable<ModuleUpWarningItem> getModuleUpWarningItems();
+    @GET("ams/smm/plugmodcontroller/getproductionlines")
+    Observable<Result<ModuleUpWarningItem>> getModuleUpWarningItems();
 
     //对应工单的上模组列表
-    @GET("SMM/plugmod/getModsByWordOrder")
-    Observable<ModuleUpBindingItem> getModuleUpBindingItems(@Query("condition") String condition);
+    @GET("ams/smm/plugmodcontroller/getmodsbywordorder")
+    Observable<Result<ModuleUpBindingItem>> getModuleUpBindingItems(@Query("condition") String condition);
 
     //上模组,料盘feeder绑定
-    @GET("SMM/plugmod/updateMod")
-    Observable<ModuleUpBindingItem> getMaterialAndFeederBindingResult(@Query("condition") String condition);
+    @GET("ams/smm/plugmodcontroller/updatemod")
+    Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(@Query("condition") String condition);
 
     //下模组排程
-    @GET("SMM/unplugmod/getProductionLines")
-    Observable<ModuleDownWarningItem> getModuleDownWarningItems();
+    @GET("ams/smm/unplugmodcontroller/getproductionlines")
+    Observable<Result<ModuleDownWarningItem>> getModuleDownWarningItems();
 
     //虚拟线体绑定列表
-    @GET("SMM/unplugmod/getModelList")
+    @GET("ams/smm/unplugmodcontroller/getmodellist")
     Observable<VirtualLineBindingItem> getVirtualLineBindingItems(@Query("condition") String condition);
 
     //虚拟线体绑定接口
-    @GET("SMM/unplugmod/bindVirtualLine")
+    @GET("ams/smm/unplugmodcontroller/bindvirtualline")
     Observable<VirtualLineBindingItem> getVirtualBindingResult(@Query("condition") String condition);
 
 
     //对应工单的下模组列表
-    @GET("SMM/unplugmod/getModsByWordOrder")
-    Observable<ModuleDownDetailsItem> getModuleDownDetailsItems(@Query("condition") String condition);
+    @GET("/ams/smm/unplugmodcontroller/getmodsbywordorder")
+    Observable<Result<ModuleDownDetailsItem>> getModuleDownDetailsItems(@Query("condition") String condition);
 
     //Feeder保养
-    @GET("SMM/unplugmod/feederMaintain")
-    Observable<ModuleDownMaintain> getModuleDownMaintainResult(@Query("condition") String condition);
+    @GET("ams/smm/unplugmodcontroller/feedermaintain")
+    Observable<Result> getModuleDownMaintainResult(@Query("condition") String condition);
 
 
     /**
