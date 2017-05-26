@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Tao.ZT.Zhang on 2016/12/26.
  */
 
-public class FeederSupplyWarningItem extends TimeEntity{
+   public class FeederSupplyWarningItem extends TimeEntity{
     @SerializedName("line_name")
     private String lineName;
     @SerializedName("work_order")
@@ -15,9 +15,9 @@ public class FeederSupplyWarningItem extends TimeEntity{
     private String side;
     private int status;
     @SerializedName("remain_time")
-    private long remainTime;
+    private double remainTime;
 
-    public FeederSupplyWarningItem( String lineName, long remainTime, String side, int status, String workOrder) {
+    public FeederSupplyWarningItem( String lineName, double remainTime, String side, int status, String workOrder) {
         this.lineName = lineName;
         this.remainTime = remainTime;
         this.side = side;
@@ -33,7 +33,7 @@ public class FeederSupplyWarningItem extends TimeEntity{
         this.lineName = lineName;
     }
 
-    public long getRemainTime() {
+    public double getRemainTime() {
         return remainTime;
     }
 

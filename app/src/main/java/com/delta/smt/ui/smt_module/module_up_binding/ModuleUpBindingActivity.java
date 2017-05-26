@@ -107,6 +107,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String argument;
     private static final String TAG = "ModuleUpBindingActivity";
     private LinearLayoutManager linearLayoutManager;
+    private String quantaty;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -291,11 +292,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> map = new HashMap<>();
-                map.put("work_order", workItemID);
-                map.put("side", side);
-                Gson gson = new Gson();
-                String argument = gson.toJson(map);
                 getPresenter().getAllModuleUpBindingItems(argument);
             }
         });
@@ -307,11 +303,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> map = new HashMap<>();
-                map.put("work_order", workItemID);
-                map.put("side", side);
-                Gson gson = new Gson();
-                String argument = gson.toJson(map);
                 getPresenter().getAllModuleUpBindingItems(argument);
             }
         });
@@ -384,6 +375,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         jsonObject.addProperty("feeder_id", barcode);
                         jsonObject.addProperty("serial_no", serialNo);
                         jsonObject.addProperty("side", side);
+                        jsonObject.addProperty("qty", quantaty);
                         jsonArray.add(jsonObject);
                         String argument = jsonArray.toString();
                         getPresenter().getMaterialAndFeederBindingResult(argument);
@@ -418,6 +410,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         showMessage.setVisibility(View.GONE);
         materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
         serialNo = materialBlockBarCode.getStreamNumber();
+        quantaty =  materialBlockBarCode.getCount();
         Log.i(TAG, "materialBlockNumber: " + materialBlockNumber);
         Log.i(TAG, "serialNo: " + serialNo
         );
@@ -437,7 +430,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
             }
             state = 2;
-            Log.i(TAG, "onScanSuccess: "+"开始扫描架位");
+            Log.i(TAG, "onScanSuccess: "+"开始扫描Feeder");
         }
     }
 

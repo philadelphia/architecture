@@ -5,6 +5,7 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
+import com.delta.smt.entity.Result;
 
 import rx.Observable;
 
@@ -18,22 +19,22 @@ public class ModuleDownDetailsModel extends BaseModel<ApiService> implements Mod
     }
 
     @Override
-    public Observable<ModuleDownDetailsItem> getAllModuleDownDetailsItems(String str) {
-        return getService().getModuleDownDetailsItems(str).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
+    public Observable<Result<ModuleDownDetailsItem>> getAllModuleDownDetailsItems(String str) {
+        return getService().getModuleDownDetailsItems(str).compose(RxsRxSchedulers.<Result<ModuleDownDetailsItem>>io_main());
     }
 
     @Override
-    public Observable<ModuleDownMaintain> getModuleDownMaintainResult(String str) {
-        return getService().getModuleDownMaintainResult(str).compose(RxsRxSchedulers.<ModuleDownMaintain>io_main());
+    public Observable<Result> getModuleDownMaintainResult(String str) {
+        return getService().getModuleDownMaintainResult(str).compose(RxsRxSchedulers.<Result>io_main());
     }
 
-    @Override
-    public Observable<ModuleDownDetailsItem> getDownModuleList(String condition) {
-        return getService().getDownModuleList(condition).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
-    }
-
-    @Override
-    public Observable<ModuleDownDetailsItem> getFeederCheckInTime(String condition) {
-        return getService().getFeederCheckInTime(condition).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
-    }
+//    @Override
+//    public Observable<ModuleDownDetailsItem> getDownModuleList(String condition) {
+//        return getService().getDownModuleList(condition).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
+//    }
+//
+//    @Override
+//    public Observable<ModuleDownDetailsItem> getFeederCheckInTime(String condition) {
+//        return getService().getFeederCheckInTime(condition).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
+//    }
 }
