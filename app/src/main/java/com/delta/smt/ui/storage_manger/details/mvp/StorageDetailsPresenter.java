@@ -41,7 +41,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result<StorageDetails> storageDetailses) {
 
-                if ("0".equals(storageDetailses.getCode())) {
+                if (0==storageDetailses.getCode()) {
 
                     if (storageDetailses.getRows().size() == 0) {
                         getView().showEmptyView();
@@ -74,7 +74,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
         getModel().queryMaterialCar(content).subscribe(new RxErrorHandlerSubscriber<Result<MaterialCar>>(rxErrorHandler) {
             @Override
             public void onNext(Result<MaterialCar> materialCarResult) {
-                if ("0".equals(materialCarResult.getCode())) {
+                if (0==materialCarResult.getCode()) {
                     getView().queryMaterailCar(materialCarResult.getRows());
                 } else {
                     getView().queryMaterailCarFailed(materialCarResult.getMessage());
@@ -203,7 +203,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result result) {
 
-                if ("0".equals(result.getCode())) {
+                if (0==result.getCode()) {
                     getView().deductionSuccess();
                 } else {
                     getView().deductionFailed(result.getMessage());

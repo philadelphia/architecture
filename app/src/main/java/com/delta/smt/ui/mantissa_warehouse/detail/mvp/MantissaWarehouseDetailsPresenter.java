@@ -199,7 +199,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void call(Result result) {
 
-                if ("0".equals(result.getCode())) {
+                if (0 == result.getCode()) {
                     getView().debitSuccess();
                 } else {
                     getView().debitFailed(result.getMessage());
