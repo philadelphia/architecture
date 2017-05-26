@@ -23,7 +23,7 @@ public interface StorageDetailsContract {
 
         Observable<Result<StorageDetails>> getStorageDetails(String content);
 
-        Observable<MaterialCar> queryMaterialCar(String content);
+        Observable<Result<MaterialCar>> queryMaterialCar(String content);
 
         Observable<BindPrepCarIDByWorkOrderResult> bindMaterialCar(String content);
 
@@ -51,7 +51,7 @@ public interface StorageDetailsContract {
 
         void issureToWarehFinishSuccess(String msg);
 
-        void queryMaterailCar(List<MaterialCar.RowsBean> rows);
+        void queryMaterailCar(List<MaterialCar> rows);
 
         void queryMaterailCarFailed(String msg);
 

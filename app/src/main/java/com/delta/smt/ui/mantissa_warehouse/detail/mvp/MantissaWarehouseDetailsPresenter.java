@@ -66,14 +66,14 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
     public void getFindCar(String str) {
 
 
-        getModel().getFindCar(str).subscribe(new Action1<MaterialCar>() {
+        getModel().getFindCar(str).subscribe(new Action1<Result<MaterialCar>>() {
             @Override
-            public void call(MaterialCar car) {
+            public void call(Result<MaterialCar> car) {
 
                 if ("0".equals(car.getCode())) {
                     getView().getFindCarSucess(car);
                 } else {
-                    getView().getFindCarFailed(car.getMsg());
+                    getView().getFindCarFailed(car.getMessage());
                 }
 
             }
@@ -95,14 +95,14 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
 
     public void getbingingCar(String str) {
 
-        getModel().getBingingCar(str).subscribe(new Action1<MaterialCar>() {
+        getModel().getBingingCar(str).subscribe(new Action1<Result<MaterialCar>>() {
             @Override
-            public void call(MaterialCar car) {
+            public void call(Result<MaterialCar> car) {
 
                 if ("0".equals(car.getCode())) {
                     getView().getBingingCarSucess(car);
                 } else {
-                    getView().getBingingCarFailed(car.getMsg());
+                    getView().getBingingCarFailed(car.getMessage());
                 }
 
             }

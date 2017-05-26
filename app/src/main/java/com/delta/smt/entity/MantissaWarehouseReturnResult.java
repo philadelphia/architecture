@@ -11,12 +11,12 @@ public class MantissaWarehouseReturnResult {
 
     /**
      * code : 0
-     * msg : Success
+     * message : Success
      * rows : [{"shelves":"D33E-01","material_num":"4020108700","work_order":"20171011","status":0},{"shelves":"D33E-02","material_num":"3460016900","work_order":"20171011","status":0},{"shelves":"","material_num":"4020108400","work_order":"20171011","status":0}]
      */
 
     private String code;
-    private String msg;
+    private String message;
     private List<MantissaWarehouseReturn> rows;
 
     public String getCode() {
@@ -27,12 +27,12 @@ public class MantissaWarehouseReturnResult {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getmessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setmessage(String message) {
+        this.message = message;
     }
 
     public List<MantissaWarehouseReturn> getRows() {

@@ -28,8 +28,8 @@ public class StorageDetailsModel extends BaseModel<ApiService> implements Storag
 
 
     @Override
-    public Observable<MaterialCar> queryMaterialCar(String content) {
-        return getService().queryMaterialCar(content).compose(RxsRxSchedulers.<MaterialCar>io_main());
+    public Observable<Result<MaterialCar>> queryMaterialCar(String content) {
+        return getService().queryMaterialCar(content).compose(RxsRxSchedulers.<Result<MaterialCar>>io_main());
     }
 
     @Override

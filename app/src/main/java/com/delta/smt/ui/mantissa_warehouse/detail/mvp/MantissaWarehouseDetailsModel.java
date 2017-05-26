@@ -27,13 +27,13 @@ public class MantissaWarehouseDetailsModel extends BaseModel<ApiService> impleme
     }
 
     @Override
-    public Observable<MaterialCar> getFindCar(String str) {
-        return getService().getFindCar(str).compose(RxsRxSchedulers.<MaterialCar>io_main());
+    public Observable<Result<MaterialCar>> getFindCar(String str) {
+        return getService().getFindCar(str).compose(RxsRxSchedulers.<Result<MaterialCar>>io_main());
     }
 
     @Override
-    public Observable<MaterialCar> getBingingCar(String str) {
-        return getService().getbingingCar(str).compose(RxsRxSchedulers.<MaterialCar>io_main());
+    public Observable<Result<MaterialCar>> getBingingCar(String str) {
+        return getService().getbingingCar(str).compose(RxsRxSchedulers.<Result<MaterialCar>>io_main());
     }
 
     @Override

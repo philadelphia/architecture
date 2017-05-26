@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -19,6 +21,7 @@ public class BindPrepCarIDByWorkOrderResult {
      */
 
     private String code;
+    @SerializedName("message")
     private String msg;
     /**
      * id : 1

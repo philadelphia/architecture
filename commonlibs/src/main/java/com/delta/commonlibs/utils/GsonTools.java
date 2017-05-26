@@ -24,12 +24,23 @@ public class GsonTools {
         return gsonString;
     }
 
+    /**
+     *  map集合添加到json数组
+     * @param datas
+     * @param <T>
+     * @return
+     */
     public static <T extends Object> String createGsonListString(Map<String, T> datas) {
         List<Map<String, T>> list = new ArrayList<>();
         list.add(datas);
         return createGsonString(list);
     }
 
+    /**
+     * 对象添加到json数组
+     * @param datas
+     * @return
+     */
     public static String createGsonListString(Object datas) {
         List<Object> list = new ArrayList<>();
         list.add(datas);
@@ -44,6 +55,12 @@ public class GsonTools {
         return createGsonString(maps);
     }
 
+    /**
+     * 键值对的形式添加json数组
+     * @param keys
+     * @param values
+     * @return
+     */
     public static String createGsonListString(String[] keys, Object[] values) {
         Map<String, Object> maps = new HashMap<>();
         for (int i = 0; i < keys.length; i++) {
