@@ -262,7 +262,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
         issureToWareh(rows);
         tv_hint.setText(rows.getMsg());
-       // textToSpeechManager.readMessage(rows.getMsg());
+        // textToSpeechManager.readMessage(rows.getMsg());
         if (btnSwitch.isChecked()) {
 //            getPresenter().debit();
         }
@@ -400,11 +400,10 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getFindCarSucess(Result<MaterialCar> car) {
-        String rows = car.getRows().get(0).getCar_name();
-        tv_hint.setText(rows);
-        mCar.setText(rows);
+        String carName = car.getRows().get(0).getCar_name();
+        tv_hint.setText(carName);
+        mCar.setText(carName);
         flag = 2;
-
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }

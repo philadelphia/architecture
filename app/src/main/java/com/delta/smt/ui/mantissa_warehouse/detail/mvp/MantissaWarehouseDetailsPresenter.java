@@ -70,7 +70,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void call(Result<MaterialCar> car) {
 
-                if ("0".equals(car.getCode())) {
+                if (0==car.getCode()) {
                     getView().getFindCarSucess(car);
                 } else {
                     getView().getFindCarFailed(car.getMessage());
@@ -99,7 +99,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void call(Result<MaterialCar> car) {
 
-                if ("0".equals(car.getCode())) {
+                if (0==car.getCode()) {
                     getView().getBingingCarSucess(car);
                 } else {
                     getView().getBingingCarFailed(car.getMessage());
