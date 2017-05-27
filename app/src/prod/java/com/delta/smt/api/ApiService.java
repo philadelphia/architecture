@@ -180,7 +180,7 @@ public interface ApiService {
      * @date : 2017/1/21 14:41
      */
     //请求产线列表数据
-    @GET("SMM/LineManage/queryLines")
+    @GET("ams/smm/linemanage/querylines")
     Observable<Result<ItemProduceLine>> getLineDatas();
 
     //请求预警，故障，消息的item数量
