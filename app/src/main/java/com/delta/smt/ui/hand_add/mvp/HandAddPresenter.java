@@ -1,11 +1,9 @@
 package com.delta.smt.ui.hand_add.mvp;
 
-import android.support.v7.widget.LinearSmoothScroller;
 import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.smt.R;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.google.gson.Gson;
@@ -82,7 +80,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
         getModel().getItemHandAddConfirm(mS).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
-                if (result.getCode().equals("0")) {
+                if (result.getCode() == 0) {
                     getItemHandAddDatas(line);
                 }else {
                     getView().getItemHandAddDatasFailed(result.getMessage());

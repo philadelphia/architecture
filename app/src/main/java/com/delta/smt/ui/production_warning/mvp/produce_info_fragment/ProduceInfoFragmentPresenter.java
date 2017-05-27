@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
-import com.delta.smt.Constant;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
 import com.google.gson.Gson;

@@ -1,8 +1,12 @@
 package com.delta.smt.ui.smt_module.module_down_details.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
+import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
+import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
@@ -14,9 +18,13 @@ import rx.functions.Action1;
  */
 
 public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsContract.Model,ModuleDownDetailsContract.View> {
+
+    private RxErrorHandler rxErrorHandler;
+
     @Inject
-    public ModuleDownDetailsPresenter(ModuleDownDetailsContract.Model model, ModuleDownDetailsContract.View mView) {
+    public ModuleDownDetailsPresenter(ModuleDownDetailsContract.Model model, ModuleDownDetailsContract.View mView, RxErrorHandler rxErrorHandler) {
         super(model, mView);
+        this.rxErrorHandler = rxErrorHandler;
     }
 
     public void getAllModuleDownDetailsItems(String str){
@@ -29,20 +37,21 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                     e.printStackTrace();
                 }
             }
-        }).subscribe(new Action1<ModuleDownDetailsItem>() {
+        }).subscribe(new Action1<Result<ModuleDownDetailsItem>>() {
             @Override
-            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
+            public void call(Result<ModuleDownDetailsItem> moduleDownDetailsItemResult) {
                 try{
-                    if ("0".equals(moduleDownDetailsItem.getCode())) {
-                        if (moduleDownDetailsItem.getRows().size() == 0) {
+                    if ( 0 == moduleDownDetailsItemResult.getCode()) {
+                        if (moduleDownDetailsItemResult.getRows().size() == 0) {
                             getView().showEmptyView();
-                            getView().onFailed(moduleDownDetailsItem.getMsg());
+                            getView().onResult(moduleDownDetailsItemResult.getMessage());
                         }else {
                             getView().showContentView();
-                            getView().onSuccess(moduleDownDetailsItem);
+                            getView().onResult(moduleDownDetailsItemResult.getMessage());
+                            getView().onSuccess(moduleDownDetailsItemResult.getRows());
                         }
                     } else {
-                        getView().onFailed(moduleDownDetailsItem.getMsg());
+                        getView().onFailed(moduleDownDetailsItemResult.getMessage());
                         getView().showErrorView();
                     }
                 }catch (Exception e){
@@ -63,53 +72,48 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
     }
 
     public void getAllModuleDownMaintainResult(String str){
-        getModel().getModuleDownMaintainResult(str).subscribe(new Action1<ModuleDownMaintain>() {
+        getModel().getModuleDownMaintainResult(str).subscribe(new RxErrorHandlerSubscriber<Result>(rxErrorHandler) {
             @Override
-            public void call(ModuleDownMaintain moduleDownMaintain) {
-                if ("0".equals(moduleDownMaintain.getCode())) {
-                    getView().onSuccessMaintain(moduleDownMaintain);
-                } else {
-                    getView().onFailMaintain(moduleDownMaintain);
-                }
+            public void onNext(Result result) {
+                    getView().onMaintainResult(result.getMessage());
+            }
 
-            }
-        }, new Action1<Throwable>() {
             @Override
-            public void call(Throwable throwable) {
-                getView().onNetFailed(throwable);
-            }
-        });
+            public void onStart() {
+                super.onStart();
+                getView().showLoadingView();
+            }});
     }
 
-    public  void getDownModuleList(String condition){
-        getModel().getDownModuleList(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
-            @Override
-            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
-                getView().onSuccess(moduleDownDetailsItem);
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-
-            }
-        });
-    }
-
-    public void getFeederCheckInTime(String condition){
-        getModel().getFeederCheckInTime(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
-            @Override
-            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
-                    if (moduleDownDetailsItem.getCode().equalsIgnoreCase("0")){
-                        getView().onSuccess(moduleDownDetailsItem);
-                    }else {
-                        getView().onFailed(moduleDownDetailsItem.getMsg());
-                    }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                getView().onNetFailed(throwable);
-            }
-        });
-    }
+//    public  void getDownModuleList(String condition){
+//        getModel().getDownModuleList(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
+//            @Override
+//            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
+//                getView().onSuccess(moduleDownDetailsItem);
+//            }
+//        }, new Action1<Throwable>() {
+//            @Override
+//            public void call(Throwable throwable) {
+//
+//            }
+//        });
+//    }
+//
+//    public void getFeederCheckInTime(String condition){
+//        getModel().getFeederCheckInTime(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
+//            @Override
+//            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
+//                    if (moduleDownDetailsItem.getCode().equalsIgnoreCase("0")){
+//                        getView().onSuccess(moduleDownDetailsItem);
+//                    }else {
+//                        getView().onFailed(moduleDownDetailsItem.getMsg());
+//                    }
+//            }
+//        }, new Action1<Throwable>() {
+//            @Override
+//            public void call(Throwable throwable) {
+//                getView().onNetFailed(throwable);
+//            }
+//        });
+//    }
 }

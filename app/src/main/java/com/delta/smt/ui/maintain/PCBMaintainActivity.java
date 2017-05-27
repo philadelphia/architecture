@@ -38,8 +38,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.delta.smt.R.id.status;
-
 
 /**
  * Created by Lin.Hou on 2017-03-13.

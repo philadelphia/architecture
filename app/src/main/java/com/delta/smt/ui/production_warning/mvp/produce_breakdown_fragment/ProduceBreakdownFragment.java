@@ -24,10 +24,7 @@ import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningAct
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;

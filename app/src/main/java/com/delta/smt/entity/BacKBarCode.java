@@ -5,7 +5,7 @@ package com.delta.smt.entity;
  */
 
 public class BacKBarCode {
-    String barCode;
+    private String barCode;
 
     public String getBarCode() {
         return barCode;

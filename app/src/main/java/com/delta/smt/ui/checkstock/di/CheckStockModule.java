@@ -14,7 +14,7 @@ import dagger.Provides;
 @Module
 public class CheckStockModule {
 
-    CheckStockContract.View view;
+    private CheckStockContract.View view;
     public CheckStockModule(CheckStockContract.View view){
         this.view=view;
     }

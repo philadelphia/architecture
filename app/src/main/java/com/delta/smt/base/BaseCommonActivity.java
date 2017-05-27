@@ -39,7 +39,7 @@ import me.yokeyword.fragmentation.SupportActivity;
 
 public abstract class BaseCommonActivity extends SupportActivity {
     public static final String ACTION_RECEIVER_ACTIVITY = "com.delta.smt";
-    public static final String IS_NOT_ADD_ACTIVITY_LIST = "is_add_activity_list";//是否加入到activity的list，管理
+    private static final String IS_NOT_ADD_ACTIVITY_LIST = "is_add_activity_list";//是否加入到activity的list，管理
     private static final String LAYOUT_LINEARLAYOUT = "LinearLayout";
     private static final String LAYOUT_FRAMELAYOUT = "FrameLayout";
     private static final String LAYOUT_RELATIVELAYOUT = "RelativeLayout";
@@ -219,7 +219,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
                     case "killAll":
                         LinkedList<BaseCommonActivity> copy;
                         synchronized (BaseCommonActivity.class) {
-                            copy = new LinkedList<BaseCommonActivity>(application.getActivityList());
+                            copy = new LinkedList<>(application.getActivityList());
                         }
                         for (BaseCommonActivity baseActivity : copy) {
                             baseActivity.finish();
@@ -249,11 +249,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
             return false;
         if (TextUtils.isEmpty(currentActivityName))
             throw new IllegalArgumentException();
-        if (topActivityName.equals(currentActivityName)) {
-            return true;
-        } else {
-            return false;
-        }
+        return topActivityName.equals(currentActivityName);
     }
 
 }

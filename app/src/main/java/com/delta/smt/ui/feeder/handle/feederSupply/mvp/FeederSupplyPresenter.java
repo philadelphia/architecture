@@ -28,82 +28,36 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         this.rxErrorHandler = rxErrorHandler;
     }
 
-//
-//    //获取对应工单的Feeder备料列表
-//    public void getAllToBeSuppliedFeeders(String workID) {
-//        getModel().getAllToBeSuppliedFeeders(workID).doOnSubscribe(new Action0() {
-//            @Override
-//            public void call() {
-//                try {
-//                    getView().showLoadingView();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).subscribe(new Action1<Result<FeederSupplyItem>>() {
-//            @Override
-//            public void call(Result<FeederSupplyItem> feederSupplyItems) {
-//
-//                if (feederSupplyItems.getCode().equalsIgnoreCase("0")) {
-//                    if (feederSupplyItems.getRows().size() == 0){
-//                        getView().showEmptyView();
-//                        getView().onFailed(feederSupplyItems.getMessage());
-//                    }else {
-//                        getView().showContentView();
-//                        getView().onSuccess(feederSupplyItems.getRows());
-//                    }
-//
-//                } else {
-//                    getView().onFailed(feederSupplyItems.getMessage());
-//                    getView().showErrorView();
-//                }
-//            }
-//        }, new Action1<UnifyThrowable>() {
-//            @Override
-//            public void call(UnifyThrowable throwable) {
-//                try {
-//                    getView().onFailed(throwable.getMessage());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        });
-//    }
 
-
-    //
-//    //获取对应工单的Feeder备料列表
+    //    //获取对应工单的Feeder备料列表
     public void getAllToBeSuppliedFeeders(String workID) {
-        getModel().getAllToBeSuppliedFeeders(workID).doOnSubscribe(new Action0() {
-            @Override
-            public void call() {
-                try {
-                    getView().showLoadingView();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).subscribe(new RxErrorHandlerSubscriber<Result<FeederSupplyItem>>(rxErrorHandler) {
-            @Override
-            public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
-
-                if (feederSupplyItemResult.getCode().equalsIgnoreCase("0")) {
-                    if (feederSupplyItemResult.getRows().size() == 0) {
-                        getView().showEmptyView();
-                        getView().onFailed(feederSupplyItemResult.getMessage());
-                    } else {
-                        getView().showContentView();
-                        getView().onSuccess(feederSupplyItemResult.getRows());
+        getModel().getAllToBeSuppliedFeeders(workID)
+                .subscribe(new RxErrorHandlerSubscriber<Result<FeederSupplyItem>>(rxErrorHandler) {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        getView().showLoadingView();
                     }
 
-                } else {
-                    getView().onFailed(feederSupplyItemResult.getMessage());
-                    getView().showErrorView();
-                }
+                    @Override
+                    public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
 
-            }
-        });
+                        if (feederSupplyItemResult.getCode() == 0) {
+                            if (feederSupplyItemResult.getRows().size() == 0) {
+                                getView().showEmptyView();
+                                getView().onFailed(feederSupplyItemResult.getMessage());
+                            } else {
+                                getView().showContentView();
+                                getView().onSuccess(feederSupplyItemResult.getRows());
+                            }
+
+                        } else {
+                            getView().onFailed(feederSupplyItemResult.getMessage());
+                            getView().showErrorView();
+                        }
+
+                    }
+                });
 
 
     }
@@ -123,16 +77,21 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                     }
                 }).subscribe(new RxErrorHandlerSubscriber<Result<FeederSupplyItem>>(rxErrorHandler) {
             @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
             public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
-                if (feederSupplyItemResult.getCode().equals("0")){
-                    if (feederSupplyItemResult.getRows().size() == 0){
+                if (feederSupplyItemResult.getCode() == 0) {
+                    if (feederSupplyItemResult.getRows().size() == 0) {
                         getView().showEmptyView();
                         getView().onFailed(feederSupplyItemResult.getMessage());
-                    }else {
+                    } else {
                         getView().showContentView();
                         getView().onSuccess(feederSupplyItemResult.getRows());
                     }
-                }else {
+                } else {
                     getView().onFailed(feederSupplyItemResult.getMessage());
                     getView().showErrorView();
 
@@ -142,20 +101,20 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         });
     }
 
-    public void resetFeederSupplyStatus(String condition){
+    public void resetFeederSupplyStatus(String condition) {
         getModel().resetFeederSupplyStatus(condition).subscribe(new Action1<ResultFeeder>() {
             @Override
             public void call(ResultFeeder result) {
-                if (result.getCode().equals("0")){
+                if (result.getCode().equals("0")) {
                     getView().onAllSupplyComplete();
-                }else {
+                } else {
                     getView().onFailed(result.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-            getView().onFailed(throwable.toString());
+                getView().onFailed(throwable.toString());
             }
         });
 

@@ -1,5 +1,7 @@
 package com.delta.smt.ui.storage_manger.ready.mvp;
 
+import android.util.Log;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.Result;
@@ -34,7 +36,9 @@ public class StorageReadyPresenter extends BasePresenter<StorageReadyContract.Mo
         }).subscribe(new Action1<Result<StorageReady>>() {
               @Override
                public void call(Result<StorageReady> storageReadies) {
-                  if ("0".equals(storageReadies.getCode())) {
+
+                  Log.e(TAG, "call: "+storageReadies.toString());
+                  if (0==storageReadies.getCode()) {
 
                       getView().getStorageReadySuccess(storageReadies.getRows());
                       if(storageReadies.getRows().size()==0){

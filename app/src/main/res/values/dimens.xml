@@ -32,4 +32,5 @@
     <dimen name="px_300">300px</dimen>
     <dimen name="px_220">220px</dimen>
     <dimen name="px_480">480px</dimen>
+    <dimen name="px_500">500px</dimen>
 </resources>

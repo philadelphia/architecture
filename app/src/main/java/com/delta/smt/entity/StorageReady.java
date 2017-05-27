@@ -21,7 +21,7 @@ public class StorageReady extends TimeEntity {
     private String work_order;
     private String side;
     private int status;
-    private Long remain_time=0l;
+    private double remain_time = 0L;
 
     public String getLine_name() {
         return line_name;
@@ -55,11 +55,11 @@ public class StorageReady extends TimeEntity {
         this.status = status;
     }
 
-    public Long getRemain_time() {
+    public double getRemain_time() {
         return remain_time;
     }
 
-    public void setRemain_time(Long remain_time) {
+    public void setRemain_time(double remain_time) {
         this.remain_time = remain_time;
     }
 }

@@ -20,9 +20,9 @@ public interface MantissaWarehouseDetailsContract {
 
         Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(String str);
 
-        Observable<MaterialCar> getFindCar(String str);
+        Observable<Result<MaterialCar>> getFindCar(String str);
 
-        Observable<MaterialCar> getBingingCar(String str);
+        Observable<Result<MaterialCar>> getBingingCar(String str);
 
         Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseput(String str);
 
@@ -36,19 +36,19 @@ public interface MantissaWarehouseDetailsContract {
 
         void getFailed(String message);
 
-        void getBingingCarSucess(MaterialCar car);
+        void getBingingCarSucess(Result<MaterialCar> car);
 
         void getBingingCarFailed(String message);
 
-        void getMantissaWarehouseputSucess(MantissaWarehouseDetailsResult mantissaWarehouseDetailses);
+        void getMantissaWarehouseputSuccess(MantissaWarehouseDetailsResult mantissaWarehouseDetailses);
 
         void getMantissaWarehouseputFailed(String message);
 
-        void getMantissaWareOverSucess(IssureToWarehFinishResult issureToWarehFinishResult);
+        void getMantissaWareOverSuccess(IssureToWarehFinishResult issureToWarehFinishResult);
 
         void getMantissaWareOverFailed(String message);
 
-        void getFindCarSucess(MaterialCar car);
+        void getFindCarSucess(Result<MaterialCar> car);
 
         void getFindCarFailed(String message);
 

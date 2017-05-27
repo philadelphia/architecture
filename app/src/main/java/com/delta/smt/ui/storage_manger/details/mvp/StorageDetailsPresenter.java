@@ -2,6 +2,8 @@ package com.delta.smt.ui.storage_manger.details.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
 import com.delta.smt.Constant;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
 import com.delta.smt.entity.IssureToWarehFinishResult;
@@ -20,9 +22,12 @@ import rx.functions.Action1;
 @ActivityScope
 public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContract.Model, StorageDetailsContract.View> {
 
+    private RxErrorHandler rxErrorHandler;
+
     @Inject
-    public StorageDetailsPresenter(StorageDetailsContract.Model model, StorageDetailsContract.View mView) {
+    public StorageDetailsPresenter(StorageDetailsContract.Model model, StorageDetailsContract.View mView, RxErrorHandler rxErrorHandler) {
         super(model, mView);
+        this.rxErrorHandler = rxErrorHandler;
     }
 
     public void getStorageDetails(String content) {
@@ -36,7 +41,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result<StorageDetails> storageDetailses) {
 
-                if ("0".equals(storageDetailses.getCode())) {
+                if (0==storageDetailses.getCode()) {
 
                     if (storageDetailses.getRows().size() == 0) {
                         getView().showEmptyView();
@@ -65,24 +70,14 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
     }
 
     public void queryMaterailCar(String content) {
-        getModel().queryMaterialCar(content).subscribe(new Action1<MaterialCar>() {
-            @Override
-            public void call(MaterialCar materialCar) {
 
-                if ("0".equals(materialCar.getCode())) {
-                    getView().queryMaterailCar(materialCar.getRows());
+        getModel().queryMaterialCar(content).subscribe(new RxErrorHandlerSubscriber<Result<MaterialCar>>(rxErrorHandler) {
+            @Override
+            public void onNext(Result<MaterialCar> materialCarResult) {
+                if (0==materialCarResult.getCode()) {
+                    getView().queryMaterailCar(materialCarResult.getRows());
                 } else {
-                    getView().queryMaterailCarFailed(materialCar.getMsg());
-                }
-
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                try {
-                    getView().queryCarFailed(throwable.getMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    getView().queryMaterailCarFailed(materialCarResult.getMessage());
                 }
             }
         });
@@ -119,7 +114,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result<StorageDetails> issureToWarehResult) {
 
-                if ("0".equalsIgnoreCase(issureToWarehResult.getCode())) {
+                if (0 == issureToWarehResult.getCode()) {
 
                     if (issureToWarehResult.getRows().size() == 0) {
                         getView().showEmptyView();
@@ -184,7 +179,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
         getModel().jumpMaterials(mS).subscribe(new Action1<Result<StorageDetails>>() {
             @Override
             public void call(Result<StorageDetails> storageDetailsResult) {
-                if ("0".equalsIgnoreCase(storageDetailsResult.getCode())) {
+                if (0 == storageDetailsResult.getCode()) {
                     getView().jumpMaterialsSuccess(storageDetailsResult);
                 } else {
                     getView().jumpMaterialsFailed(storageDetailsResult.getMessage());
@@ -208,7 +203,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result result) {
 
-                if ("0".equals(result.getCode())) {
+                if (0==result.getCode()) {
                     getView().deductionSuccess();
                 } else {
                     getView().deductionFailed(result.getMessage());

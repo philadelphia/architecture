@@ -32,6 +32,20 @@
                 android:orientation="vertical"
                 android:visibility="gone"
                 >
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/px_40"
+                        android:paddingLeft="@dimen/px_20"
+                        android:paddingRight="@dimen/px_20"
+                        android:textSize="@dimen/px_40"
+                        android:text="当前盘点的架位"
+                        />
                 <TextView
                     android:id="@+id/startAndstop_text"
                     android:layout_width="wrap_content"
@@ -42,27 +56,66 @@
                     android:background="@drawable/textview_border"
                     android:gravity="center"
                     android:textSize="@dimen/px_40"
-                    />
 
+                    />
+                   </com.zhy.autolayout.AutoLinearLayout>
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/px_40"
+                        android:paddingLeft="@dimen/px_20"
+                        android:paddingRight="@dimen/px_20"
+                        android:textSize="@dimen/px_40"
+                        android:text="未盘点的架位"
+                        />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/startAndstop_uncheckedlist"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/px_500"
+                        android:layout_marginLeft="@dimen/px_40"
+                        android:background="@drawable/textview_border"
+                        />
+                </com.zhy.autolayout.AutoLinearLayout>
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/px_10"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/px_40"
+                        android:paddingLeft="@dimen/px_20"
+                        android:paddingRight="@dimen/px_20"
+                        android:textSize="@dimen/px_40"
+                        android:text="已盘点的架位"
+                        />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/startAndstop_checkedlist"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/px_500"
+                        android:layout_marginLeft="@dimen/px_40"
+                        android:background="@drawable/textview_border"
+                        />
+                    </com.zhy.autolayout.AutoLinearLayout>
                 <Button
                     android:id="@+id/startAndstop_continue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/px_120"
                     android:layout_marginTop="@dimen/px_40"
                     style="@style/pcb_button"
                     android:text="@string/continues"
                     />
-                <Button
-                    android:id="@+id/startAndstop_uncheck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/px_120"
-                    android:layout_marginTop="@dimen/px_40"
-                    style="@style/pcb_button"
-                    android:text="@string/uncheck"
-                    />
+
                 <Button
                     android:id="@+id/startAndstop_cancel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/px_120"
                     android:layout_marginTop="@dimen/px_40"
                     style="@style/pcb_button"

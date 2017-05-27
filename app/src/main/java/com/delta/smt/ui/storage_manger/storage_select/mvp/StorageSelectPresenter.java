@@ -12,14 +12,16 @@ import javax.inject.Inject;
 public class StorageSelectPresenter extends BasePresenter<StorageSelectContract.Model, StorageSelectContract.View> {
 
     private RxErrorHandler rxErrorHandler;
+
     @Inject
     public StorageSelectPresenter(StorageSelectContract.Model model, StorageSelectContract.View mView, RxErrorHandler rxErrorHandler) {
         super(model, mView);
-        this.rxErrorHandler =rxErrorHandler;
+        this.rxErrorHandler = rxErrorHandler;
 
     }
 
     public void getStorageSelect() {
+
 
         getModel().getStorageSelect().subscribe(new RxErrorHandlerSubscriber<Result<StoreEntity>>(rxErrorHandler) {
             @Override
@@ -30,7 +32,7 @@ public class StorageSelectPresenter extends BasePresenter<StorageSelectContract.
 
             @Override
             public void onNext(Result<StoreEntity> storeEntityResult) {
-                if ("0".equals(storeEntityResult.getCode())) {
+                if (0 == storeEntityResult.getCode()) {
                     if (storeEntityResult.getRows().size() == 0) {
                         getView().showEmptyView();
                     } else {

@@ -11,6 +11,7 @@ import com.delta.commonlibs.rx.rxerrorhandler.ResponseErrorListener;
 import com.delta.smt.BuildConfig;
 import com.delta.smt.di.module.ServiceModule;
 import com.delta.smt.utils.UiUtils;
+import com.facebook.stetho.Stetho;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
 import java.util.LinkedList;
@@ -30,7 +31,7 @@ import timber.log.Timber;
  */
 public abstract class BaseApplication extends Application implements ResponseErrorListener {
     static private BaseApplication mApplication;
-    public LinkedList<BaseCommonActivity> mActivityList;
+    private LinkedList<BaseCommonActivity> mActivityList;
     private static ClientModule mClientModule;
     private static AppModule mAppModule;
     private static ServiceModule serviceModule;
@@ -42,18 +43,19 @@ public abstract class BaseApplication extends Application implements ResponseErr
         super.onCreate();
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            Stetho.initializeWithDefaults(this);
         }
         AutoLayoutConifg.getInstance().useDeviceSize();
         mApplication = this;
-        this.mClientModule = ClientModule//用于提供okhttp和retrofit的单列
+        mClientModule = ClientModule//用于提供okhttp和retrofit的单列
                 .buidler()
                 .baseurl(getBaseUrl())
                 .globeHttpHandler(getHttpHandler())
                 .interceptors(getInterceptors())
                 .responseErroListener(getResponseErrorListener())
                 .build();
-        this.mAppModule = new AppModule(this);//提供application
-        this.serviceModule = new ServiceModule();
+        mAppModule = new AppModule(this);//提供application
+        serviceModule = new ServiceModule();
     }
 
 
@@ -138,6 +140,8 @@ public abstract class BaseApplication extends Application implements ResponseErr
      * @return
      */
     public static Interceptor[] getInterceptors() {
+//        return new Interceptor[]{new StethoInterceptor()}
+//                ;
         return null;
     }
 

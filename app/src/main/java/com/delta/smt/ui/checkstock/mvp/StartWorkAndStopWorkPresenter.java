@@ -11,13 +11,12 @@ import javax.inject.Inject;
 import rx.functions.Action0;
 import rx.functions.Action1;
 
-import static com.squareup.haha.perflib.Type.INT;
-
 /**
  * Created by Lin.Hou on 2016-12-26.
  */
 @ActivityScope
 public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndStopWorkContract.Model,StartWorkAndStopWorkContract.View> {
+    private boolean isTrue=true;
     @Inject
     public StartWorkAndStopWorkPresenter(StartWorkAndStopWorkContract.Model model, StartWorkAndStopWorkContract.View mView) {
         super(model, mView);
@@ -53,6 +52,7 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
     }
 
     public void OnGoing(){
+
         getModel().ongoing().doOnSubscribe(new Action0() {
             @Override
             public void call() {
@@ -64,11 +64,15 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                 if ("0".equals(onGoing.getCode())) {
                     getView().showContentView();
                     for (int i=0;i<onGoing.getRows().getCompletedSubShelf().size();i++){
-                        if (onGoing.getRows().getCompletedSubShelf().get(i).getStatus()==2){
-                            getView().ongoingSuccess(onGoing.getRows().getCompletedSubShelf().get(i).getSubshelf(),onGoing.getRows().getCompletedSubShelf());
-                        }else {
-                           // getView().ongoingSuccess("盘点有问题请联系管理员",onGoing.getRows().getCompletedSubShelf());
+                        if (onGoing.getRows().getCompletedSubShelf().get(i).getStatus()==1){
+                            if (isTrue) {
+                                getView().ongoingSuccess(onGoing.getRows().getCompletedSubShelf().get(i).getSubshelf(), onGoing.getRows().getCompletedSubShelf());
+                                isTrue = false;
+                            }
                         }
+                    }
+                    if (isTrue) {
+                        getView().ongoingSuccess("", onGoing.getRows().getCompletedSubShelf());
                     }
 
                 } else {
@@ -104,15 +108,15 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                 if ("0".equals(success.getCode())) {
                     if (success.getMsg().contains("Success")) {
                         for (int i = 0; i < success.getRows().size(); i++) {
-                            switch (Integer.valueOf(success.getRows().get(i).getStatus())) {
+                            switch (success.getRows().get(i).getStatus()) {
                                 case 0:
                                 case 1:
                                 case 2:
                                 case 3:
-                                    errorBuffer.append("\n " + success.getRows().get(i).getPartNum() + "\b 少料 \b" + (success.getRows().get(i).getBoundCount() - success.getRows().get(i).getRealCount()));
+                                    errorBuffer.append("\n ").append(success.getRows().get(i).getPartNum()).append("\b 少料 \b").append(success.getRows().get(i).getBoundCount() - success.getRows().get(i).getRealCount());
                                     break;
                                 case 4:
-                                    errorBuffer.append("\n " + success.getRows().get(i).getPartNum() + "\b 多料 \b" + (success.getRows().get(i).getBoundCount() - success.getRows().get(i).getBoundCount()));
+                                    errorBuffer.append("\n ").append(success.getRows().get(i).getPartNum()).append("\b 多料 \b").append(success.getRows().get(i).getBoundCount() - success.getRows().get(i).getBoundCount());
                                     break;
 
                             }

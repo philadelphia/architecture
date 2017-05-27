@@ -96,14 +96,14 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     public void confirmData() {
 
         mStringBuffer= new StringBuffer();
-        mString=new String();
+        mString= "";
 
         if (data.size()!=0){
             for (int mI = 1; mI < data.size(); mI++) {
                 if (mI==data.size()-1){
-                    mStringBuffer.append("\\\""+data.get(mI).getProductToolsBarCode()+"\\\"");
+                    mStringBuffer.append("\\\"").append(data.get(mI).getProductToolsBarCode()).append("\\\"");
                 }else {
-                    mStringBuffer.append("\\\""+data.get(mI).getProductToolsBarCode()+"\\\"" + ",");
+                    mStringBuffer.append("\\\"").append(data.get(mI).getProductToolsBarCode()).append("\\\"").append(",");
                 }
             }
 

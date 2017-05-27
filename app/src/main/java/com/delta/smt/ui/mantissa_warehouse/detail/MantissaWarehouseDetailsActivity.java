@@ -22,6 +22,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
@@ -40,6 +41,7 @@ import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseputBean;
 import com.delta.smt.entity.MaterialCar;
+import com.delta.smt.entity.Result;
 import com.delta.smt.entity.WarehouseDetailBean;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.DaggerMantissaWarehouseDetailsComponent;
 import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsModule;
@@ -48,7 +50,6 @@ import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsPr
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.delta.smt.utils.ViewUtils;
 import com.delta.ttsmanager.TextToSpeechManager;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +99,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     boolean isOver = true;
     boolean isHaveIsSureOver;
     BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+    @BindView(R.id.textView)
+    TextView textView;
     private List<MantissaWarehouseDetailsResult.RowsBean> dataList = new ArrayList();
     private List<MantissaWarehouseDetailsResult.RowsBean> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseDetailsResult.RowsBean> title_adapter;
@@ -111,12 +114,12 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private int flag = 1;
     private String side;
     private boolean isChecked = true;
-    private String s;
     private String line_name;
     private String material_num = "";
     private String serial_num = "";
     private int index = 0;
     private LinearLayoutManager content_LinerLayoutManager;
+    private String gsonListString;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -134,13 +137,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         side = mMantissaWarehouse.getSide();
         line_name = mMantissaWarehouse.getLine_name();
         WarehouseDetailBean bindBean = new WarehouseDetailBean(side, work_order);
-        Gson gson = new Gson();
-        s = gson.toJson(bindBean);
-        getPresenter().getMantissaWarehouseDetails(s);
+        gsonListString = GsonTools.createGsonListString(bindBean);
+        getPresenter().getMantissaWarehouseDetails(gsonListString);
         //备料车
         MantissaCarBean car = new MantissaCarBean(work_order, "Mantissa", side);
-        String carbean = gson.toJson(car);
-        getPresenter().getFindCar(carbean);
+        getPresenter().getFindCar(GsonTools.createGsonListString(car));
         isChecked = SpUtil.getBooleanSF(this, "Mantissa" + "checked");
     }
 
@@ -156,6 +157,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         tvLineName.setText("线别：" + line_name);
         tvLineNum.setText("面别：" + side);
         btnSwitch.setChecked(isChecked);
+        textView.setText("余料车：");
 
         btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -233,34 +235,39 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getBingingCarSucess(MaterialCar car) {
+    public void getBingingCarSucess(Result<MaterialCar> car) {
         mCar.setText(car.getRows().get(0).getCar_name());
         flag = 2;
         tv_hint.setText(car.getRows().get(0).getCar_name());
+        textToSpeechManager.readMessage("绑定余料车" + car.getRows().get(0).getCar_name());
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
 
 
     @Override
-    public void getBingingCarFailed(String message) {
+    public void getBingingCarFailed(String msg) {
         flag = 1;
+        tv_hint.setText(msg);
+        // tv_hint.setText(msg);
+        ToastUtils.showMessage(this, msg);
+        textToSpeechManager.readMessage(msg);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
 
 
     @Override
-    public void getMantissaWarehouseputSucess(MantissaWarehouseDetailsResult rows) {
+    public void getMantissaWarehouseputSuccess(MantissaWarehouseDetailsResult rows) {
 
         issureToWareh(rows);
         tv_hint.setText(rows.getMsg());
-        textToSpeechManager.readMessage(rows.getMsg());
+        // textToSpeechManager.readMessage(rows.getMsg());
         if (btnSwitch.isChecked()) {
-            getPresenter().debit();
+//            getPresenter().debit();
         }
         if (isOver) {
-            getPresenter().getMantissaWareOver(s);
+            getPresenter().getMantissaWareOver(gsonListString);
         }
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
@@ -376,7 +383,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getMantissaWareOverSucess(IssureToWarehFinishResult issureToWarehFinishResult) {
+    public void getMantissaWareOverSuccess(IssureToWarehFinishResult issureToWarehFinishResult) {
         Toast.makeText(this, issureToWarehFinishResult.getMsg(), Toast.LENGTH_SHORT).show();
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
@@ -392,12 +399,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getFindCarSucess(MaterialCar car) {
-        String rows = car.getRows().get(0).getCar_name();
-        tv_hint.setText(car.getMsg());
-        mCar.setText(rows);
+    public void getFindCarSucess(Result<MaterialCar> car) {
+        String carName = car.getRows().get(0).getCar_name();
+        tv_hint.setText(carName);
+        mCar.setText(carName);
         flag = 2;
-        textToSpeechManager.readMessage(car.getMsg());
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -473,11 +479,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 try {
                     LastMaterialCar LastMaterialCar = (LastMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_CAR);
                     lastCar = LastMaterialCar.getSource();
-                    Toast.makeText(this, lastCar, Toast.LENGTH_SHORT).show();
                     MantissaBingingCarBean bindBean = new MantissaBingingCarBean(work_order, "Mantissa", lastCar, side);
-                    Gson gson = new Gson();
-                    String s = gson.toJson(bindBean);
-                    getPresenter().getbingingCar(s);
+                    getPresenter().getbingingCar(GsonTools.createGsonListString(bindBean));
                 } catch (EntityNotFountException e) {
                     ToastUtils.showMessage(this, getString(R.string.scan_remain_car_message));
                     textToSpeechManager.readMessage(getString(R.string.scan_remain_car_message));
@@ -503,9 +506,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     MantissaWarehouseputBean bindBean = new MantissaWarehouseputBean(serial_num, material_num, unit, vendor, dc, lc, trasaction_code, po, quantity);
                     bindBean.setSide(side);
                     bindBean.setWork_order(work_order);
-                    Gson gson = new Gson();
-                    String s = gson.toJson(bindBean);
-                    getPresenter().getMantissaWarehouseput(s);
+                    getPresenter().getMantissaWarehouseput(GsonTools.createGsonListString(bindBean));
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -554,7 +555,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                         bottomSheetDialog.show();
                     }
                 } else {
-                    getPresenter().debit();
+                    // getPresenter().debit();
                 }
 
             }
@@ -575,4 +576,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 break;
         }
     }
+
+
 }

@@ -13,5 +13,5 @@ import dagger.Component;
 @ActivityScope
 @Component(modules =OverReceiveModule.class, dependencies = AppComponent.class)
 public interface OverReceiveComponent {
-    public void inject(OverReceiveActivity overReceiveActivity);
+    void inject(OverReceiveActivity overReceiveActivity);
 }

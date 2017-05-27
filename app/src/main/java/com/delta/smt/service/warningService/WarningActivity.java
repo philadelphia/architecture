@@ -225,19 +225,17 @@ public class WarningActivity extends AppCompatActivity {
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        if (true) {
-            final View view = getWindow().getDecorView();
-            final WindowManager.LayoutParams lp = (WindowManager.LayoutParams) view.getLayoutParams();
-            lp.gravity = Gravity.CENTER;
+        final View view = getWindow().getDecorView();
+        final WindowManager.LayoutParams lp = (WindowManager.LayoutParams) view.getLayoutParams();
+        lp.gravity = Gravity.CENTER;
 //            lp.width = getResources().getDisplayMetrics().widthPixels / 2;
 //            lp.height = getResources().getDisplayMetrics().heightPixels / 3;
-            if (Build.VERSION.SDK_INT >= 16) {
-                view.setBackground(new BitmapDrawable(getWallPaper()));
-            } else {
-                view.setBackgroundColor(Color.WHITE);
-            }
-            getWindowManager().updateViewLayout(view, lp);
+        if (Build.VERSION.SDK_INT >= 16) {
+            view.setBackground(new BitmapDrawable(getWallPaper()));
+        } else {
+            view.setBackgroundColor(Color.WHITE);
         }
+        getWindowManager().updateViewLayout(view, lp);
     }
 
     @Override

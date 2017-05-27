@@ -44,6 +44,7 @@
         <item name="android:textColor">@color/waring_editext</item>
         <item name="android:padding">@dimen/dp_5</item>
     </style>
+
     <style name="waringTitle">
         <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/ff0000</item>
@@ -52,6 +53,7 @@
         <item name="android:paddingLeft">@dimen/px_50</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+
     <style name="pcb_button">
         <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/textcolor</item>
@@ -96,7 +98,8 @@
         <item name="android:paddingLeft">@dimen/px_20</item>
 
     </style>
-    <style name="style_storagetv" >
+
+    <style name="style_storagetv">
         <item name="android:textSize">@dimen/px_40</item>
         <item name="android:textColor">@color/waring_editext</item>
         <item name="android:layout_marginTop">@dimen/px_40</item>
@@ -128,5 +131,8 @@
         　　
         <item name="android:windowIsTranslucent">true</item>
     </style>
+
     <dimen name="px_25">25px</dimen>
+
+
 </resources>

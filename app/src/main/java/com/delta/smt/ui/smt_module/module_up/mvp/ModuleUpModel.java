@@ -4,6 +4,7 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModuleUpWarningItem;
+import com.delta.smt.entity.Result;
 
 import rx.Observable;
 
@@ -17,7 +18,7 @@ public class ModuleUpModel extends BaseModel<ApiService> implements ModuleUpCont
     }
 
     @Override
-    public Observable<ModuleUpWarningItem> getAllModuleUpWarningItems() {
+    public Observable<Result<ModuleUpWarningItem>> getAllModuleUpWarningItems() {
         /*ModuleUpWarningItem mi = new ModuleUpWarningItem();
         mi.setCode("0");
         mi.setMsg("success");
@@ -33,6 +34,6 @@ public class ModuleUpModel extends BaseModel<ApiService> implements ModuleUpCont
         l.add(r);
         mi.setRows(l);
         return Observable.just(mi);*/
-        return getService().getModuleUpWarningItems().compose(RxsRxSchedulers.<ModuleUpWarningItem>io_main());
+        return getService().getModuleUpWarningItems().compose(RxsRxSchedulers.<Result<ModuleUpWarningItem>>io_main());
     }
 }

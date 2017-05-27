@@ -14,7 +14,7 @@ import rx.Observable;
 
 public interface MantissaWarehousePutstorageContract {
 
-    public interface Model extends IModel {
+    interface Model extends IModel {
 
 
         Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
@@ -35,7 +35,7 @@ public interface MantissaWarehousePutstorageContract {
 
     }
 
-    public interface View extends IView {
+    interface View extends IView {
 
         void getSucessUpdate(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getFailedUpdate(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);

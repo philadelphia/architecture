@@ -135,28 +135,28 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                     if (success.getRows().size()!=0){
                         Log.e("info","-----------------");
                         for (int i=0;i<success.getRows().size();i++){
-                           switch (Integer.valueOf(success.getRows().get(i).getStatus())){
+                           switch (success.getRows().get(i).getStatus()){
                                case 0:
                                case 1:
                                case 2:
-                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                   errorBuffer.append("\n ").append(success.getRows().get(i).getPartNum()).append("误差").append(success.getRows().get(i).getBoundCount() - success.getRows().get(i).getBoundCount());
                                    break;
                                case 3:
-                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                   errorBuffer.append("\n ").append(success.getRows().get(i).getPartNum()).append("误差").append(success.getRows().get(i).getBoundCount() - success.getRows().get(i).getBoundCount());
                                    break;
                                case 4:
-                                   errorBuffer.append("\n "+success.getRows().get(i).getPartNum()+"误差"+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount()));
+                                   errorBuffer.append("\n ").append(success.getRows().get(i).getPartNum()).append("误差").append(success.getRows().get(i).getBoundCount() - success.getRows().get(i).getBoundCount());
                                    break;
                                case 5:
-                                   changeBuffer.append("\n "+success.getRows().get(i).getPartNum()+(success.getRows().get(i).getBoundCount()-success.getRows().get(i).getBoundCount())+"片");
+                                   changeBuffer.append("\n ").append(success.getRows().get(i).getPartNum()).append(success.getRows().get(i).getBoundCount() - success.getRows().get(i).getBoundCount()).append("片");
                                    break;
                                case 6:
-                                   notBuffer.append("\n "+success.getRows().get(i).getPartNum()+"未盘点");
+                                   notBuffer.append("\n ").append(success.getRows().get(i).getPartNum()).append("未盘点");
                                    break;
 
                            }
                         }
-                        fewBuffer.append(errorBuffer.toString()+changeBuffer.toString()+notBuffer.toString());
+                        fewBuffer.append(errorBuffer.toString()).append(changeBuffer.toString()).append(notBuffer.toString());
                         getView().onErrorSucess(fewBuffer.toString());
                     }else {
 

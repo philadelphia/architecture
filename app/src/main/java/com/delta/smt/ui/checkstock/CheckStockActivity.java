@@ -21,7 +21,6 @@ import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.SnackbarUtil;
-import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -102,8 +101,9 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     protected void initData() {
-        Bundle bundle = getIntent().getExtras();
-        FrameLocation=bundle.getString("FrameLocation");
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+        if (bundle!=null){
+        FrameLocation=bundle.getString("FrameLocation");}
 
     }
 

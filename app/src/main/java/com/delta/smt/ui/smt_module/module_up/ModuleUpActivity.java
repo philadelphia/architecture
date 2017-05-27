@@ -43,12 +43,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+
 /**
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
 public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
-        ModuleUpContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleUpWarningItem.RowsBean> {
+        ModuleUpContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleUpWarningItem> {
 
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -65,8 +66,8 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
   
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    private List<ModuleUpWarningItem.RowsBean> dataList = new ArrayList<>();
-    private ItemCountViewAdapter<ModuleUpWarningItem.RowsBean> myAdapter;
+    private List<ModuleUpWarningItem> dataList = new ArrayList<>();
+    private ItemCountViewAdapter<ModuleUpWarningItem> myAdapter;
     private WarningDialog warningDialog;
 
     @Override
@@ -98,7 +99,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
 
-        myAdapter = new ItemCountViewAdapter<ModuleUpWarningItem.RowsBean>(this, dataList) {
+        myAdapter = new ItemCountViewAdapter<ModuleUpWarningItem>(this, dataList) {
             @Override
             protected int getCountViewId() {
                 return R.id.cv_countView;
@@ -110,22 +111,22 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             }
 
             @Override
-            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, ModuleUpWarningItem.RowsBean moduleUpWarningItem, int position) {
+            protected void convert(com.delta.libs.adapter.ItemTimeViewHolder holder, ModuleUpWarningItem moduleUpWarningItem, int position) {
 
-                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLine_name());
-                holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWork_order());
+                holder.setText(R.id.tv_lineID, "线别: " + moduleUpWarningItem.getLineName());
+                holder.setText(R.id.tv_workID, "工单号: " + moduleUpWarningItem.getWorkOrder());
                 holder.setText(R.id.tv_faceID, "面别: " + moduleUpWarningItem.getSide());
-                holder.setText(R.id.tv_product_name_main, "主板: " + moduleUpWarningItem.getProduct_name_main());
-                holder.setText(R.id.tv_product_name, "小板: " + moduleUpWarningItem.getProduct_name());
+                holder.setText(R.id.tv_product_name_main, "主板: " + moduleUpWarningItem.getProductNameMain());
+                holder.setText(R.id.tv_product_name, "小板: " + moduleUpWarningItem.getProductName());
                 String status;
                 switch (moduleUpWarningItem.getStatus()){
-                    case "203":
+                    case 203:
                         status = "接料完成";
                         break;
-                    case "204":
+                    case 204:
                         status = "正在上模组";
                         break;
-                    case "205":
+                    case 205:
                         status = "上模组完成";
                         break;
                     default:
@@ -134,7 +135,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 }
 
                 holder.setText(R.id.tv_status, "状态: " + status);
-                holder.setText(R.id.tv_forecast_time, "预计上线时间: " + moduleUpWarningItem.getOnline_plan_start_time());
+                holder.setText(R.id.tv_forecast_time, "预计上线时间: " + moduleUpWarningItem.getOnlinePlanStartTime());
             }
         };
         myAdapter.setOnItemTimeOnclick(this);
@@ -148,27 +149,26 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     }
 
     @Override
-    public void onSuccess(ModuleUpWarningItem data) {
+    public void onSuccess(List<ModuleUpWarningItem> dataSource) {
         dataList.clear();
-        List<ModuleUpWarningItem.RowsBean> rows = data.getRows();
-        for (int i = 0; i < rows.size(); i++) {
+        int size = dataSource.size();
+        for (int i = 0; i < size; i++) {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             try {
-                Date parse = format.parse(rows.get(i).getOnline_plan_start_time());
-                rows.get(i).setEnd_time(parse.getTime());
-                rows.get(i).setEntityId(i);
+                Date parse = format.parse(dataSource.get(i).getOnlinePlanStartTime());
+                dataSource.get(i).setEnd_time(parse.getTime());
+                dataSource.get(i).setEntityId(i);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-        dataList.addAll(rows);
+        dataList.addAll(dataSource);
         myAdapter.notifyDataSetChanged();
-        ToastUtils.showMessage(this, data.getMsg());
     }
 
     @Override
-    public void onFailed(ModuleUpWarningItem data) {
-        ToastUtils.showMessage(this, data.getMsg());
+    public void onFailed(String message) {
+        ToastUtils.showMessage(this, message);
     }
 
     @Override
@@ -328,13 +328,13 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
 
     @Override
-    public void onItemClick(View item, ModuleUpWarningItem.RowsBean rowsBean, int position) {
+    public void onItemClick(View item, ModuleUpWarningItem moduleUpWarningItem, int position) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constant.WORK_ITEM_ID, dataList.get(position).getWork_order());
-        bundle.putString(Constant.SIDE, dataList.get(position).getSide());
-        bundle.putString(Constant.PRODUCT_NAME_MAIN, dataList.get(position).getProduct_name_main());
-        bundle.putString(Constant.PRODUCT_NAME, dataList.get(position).getProduct_name());
-        bundle.putString(Constant.LINE_NAME, dataList.get(position).getLine_name());
+        bundle.putString(Constant.WORK_ITEM_ID, moduleUpWarningItem.getWorkOrder());
+        bundle.putString(Constant.SIDE, moduleUpWarningItem.getSide());
+        bundle.putString(Constant.PRODUCT_NAME_MAIN, moduleUpWarningItem.getProductNameMain());
+        bundle.putString(Constant.PRODUCT_NAME, moduleUpWarningItem.getProductName());
+        bundle.putString(Constant.LINE_NAME, moduleUpWarningItem.getLineName());
 
         Intent intent = new Intent(this, ModuleUpBindingActivity.class);
         intent.putExtras(bundle);

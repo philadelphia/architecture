@@ -310,6 +310,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
 
     @Override
     public void onCloseLightSucces(String s) {
+        status=0;
 
     }
 
@@ -380,6 +381,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                     e.printStackTrace();
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
+                    status=1;
 
                 } catch (Exception e) {
 
@@ -396,7 +398,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                     e1.printStackTrace();
-
+                    status=0;
                 } catch (Exception es) {
 
                 }

@@ -60,4 +60,44 @@ public class QualityManagePresenter extends BasePresenter<QualityManageContract.
 
     }
 
+    public void getYesok(String quality_id) {
+
+        getModel().QualityOK(quality_id).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<QualityManage>() {
+            @Override
+            public void call(QualityManage qualityManage) {
+
+                if ("0".equals(qualityManage.getCode())) {
+                    if (qualityManage.getRows().size() == 0) {
+                        getView().showEmptyView();
+                    } else {
+                        getView().showContentView();
+                    }
+                    getView().getokSuccess();
+                } else {
+                    getView().showContentView();
+                    getView().getokFailed(qualityManage.getMsg());
+                }
+
+            }
+
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                {
+                    try {
+                        getView().showErrorView();
+                        getView().getokFailed(throwable.getMessage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
 }

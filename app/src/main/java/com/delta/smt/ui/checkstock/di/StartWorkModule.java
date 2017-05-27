@@ -2,7 +2,6 @@ package com.delta.smt.ui.checkstock.di;
 
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.api.ApiService;
-import com.delta.smt.ui.checkstock.mvp.CheckStockContract;
 import com.delta.smt.ui.checkstock.mvp.StartWorkAndStopWorkContract;
 import com.delta.smt.ui.checkstock.mvp.StartWorkAndStopWorkModel;
 

@@ -136,7 +136,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 StringBuffer mStringBuffer = new StringBuffer();
                 for (int mI = 0; mI < datas.size(); mI++) {
                     if (datas.get(mI).isChecked()) {
-                        mStringBuffer.append(datas.get(mI).getLinename() + ",");
+                        mStringBuffer.append(datas.get(mI).getLinename()).append(",");
                     }
                 }
                 if (TextUtils.isEmpty(mStringBuffer.toString())) {

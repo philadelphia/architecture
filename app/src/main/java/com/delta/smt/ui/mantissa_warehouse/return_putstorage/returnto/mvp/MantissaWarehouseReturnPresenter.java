@@ -26,7 +26,7 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             @Override
             public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnes) {
 
-                if("Success".equals(mantissaWarehouseReturnes.getMsg())){
+                if("Success".equals(mantissaWarehouseReturnes.getmessage())){
                     if(mantissaWarehouseReturnes.getRows().size() == 0 ){
                         getView().showEmptyView();
                     }else{
@@ -35,7 +35,7 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
                     }
 
                 }else{
-                    getView().getFailed(mantissaWarehouseReturnes.getMsg());
+                    getView().getFailed(mantissaWarehouseReturnes.getmessage());
                 }
 
             }
@@ -62,10 +62,10 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             @Override
             public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnes) {
 
-                if("Success".equals(mantissaWarehouseReturnes.getMsg())){
+                if("Success".equals(mantissaWarehouseReturnes.getmessage())){
                     getView().getMaterialLocationSucess();
                 }else{
-                    getView().getMaterialLocationFailed(mantissaWarehouseReturnes.getMsg());
+                    getView().getMaterialLocationFailed(mantissaWarehouseReturnes.getmessage());
                 }
 
             }
@@ -91,10 +91,10 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             @Override
             public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnes) {
 
-                if("Success".equals(mantissaWarehouseReturnes.getMsg())){
+                if("Success".equals(mantissaWarehouseReturnes.getmessage())){
                     getView().getputinstrageSucess(mantissaWarehouseReturnes.getRows());
                 }else{
-                    getView().getputinstrageFailed( mantissaWarehouseReturnes.getMsg());
+                    getView().getputinstrageFailed( mantissaWarehouseReturnes.getmessage());
                 }
 
             }

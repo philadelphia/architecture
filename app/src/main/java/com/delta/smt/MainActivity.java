@@ -1,7 +1,6 @@
 package com.delta.smt;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -126,7 +124,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         functionList.add(new Function("PCB入库", R.drawable.ic_warehousestorage));
         functionList.add(new Function("PCB盘点", R.drawable.ic_warehouseinventory));
         functionList.add(new Function("PCB发料", R.drawable.ic_warehouseforsending));
-        functionList.add(new Function("PCB维护", R.drawable.ic_pcbsetting));
+       // functionList.add(new Function("PCB维护", R.drawable.ic_pcbsetting));
         functionList.add(new Function("仓库备料", R.drawable.ic_warehouseroompreparation));
         functionList.add(new Function("仓库超领", R.drawable.ic_warehouseroomchaoling));
         functionList.add(new Function("Feeder缓冲区", R.drawable.ic_feederbuffer));
@@ -140,7 +138,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         functionList.add(new Function("治具借出", R.drawable.ic_lend));
         functionList.add(new Function("治具归还", R.drawable.ic_thereturn));
         functionList.add(new Function("手补件", R.drawable.ic_handpatch));
-        functionList.add(new Function("品管确认", R.drawable.ic_handpatch));
+        functionList.add(new Function("品管确认", R.drawable.ic_quality));
        // functionList.add(new Function("warningSample", R.drawable.title));
     }
     private void checkTTS() {

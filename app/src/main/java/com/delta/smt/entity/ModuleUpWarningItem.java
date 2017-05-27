@@ -1,154 +1,117 @@
 package com.delta.smt.entity;
 
 import com.delta.libs.adapter.TimeEntity;
-
-import java.text.SimpleDateFormat;
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Shufeng.Wu on 2017/1/3.
  */
 
-public class ModuleUpWarningItem {
+public class ModuleUpWarningItem  extends TimeEntity {
 
     /**
-     * code : 0
-     * msg : Success
-     * rows : [{"line":"3","work_order":"1","face":"A","start_time_plan":"Jan 16, 2017 2:36:43 PM"},{"line":"3","work_order":"2","face":"B","start_time_plan":"Jan 17, 2017 1:56:57 PM"}]
+     * work_order_id : 0
+     * line_name : T14
+     * work_order : 2311701702
+
+     * side : A
+     * product_name_main : DPS-650AB-14 C
+     * product_name : DC-3633
+     * online_plan_start_time : NULL
+     * status : 204
      */
 
-    private String code;
-    private String msg;
-    private List<RowsBean> rows;
+    @SerializedName("work_order_id")
+    private int workOrderID;
+    @SerializedName("line_name")
+    private String lineName;
+    @SerializedName("work_order")
+    private String workOrder;
+    private String side;
+    @SerializedName("product_name_main")
+    private String productNameMain;
+    @SerializedName("product_name")
+    private String productName;
 
-    public String getCode() {
-        return code;
+    @SerializedName("online_plan_start_time")
+    private String onlinePlanStartTime;
+    private int status;
+
+    public int getWorkOrderID() {
+        return workOrderID;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setWorkOrderID(int workOrderID) {
+        this.workOrderID = workOrderID;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getLineName() {
+        return lineName;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
     }
 
-    public List<RowsBean> getRows() {
-        return rows;
+    public String getWorkOrder() {
+        return workOrder;
     }
 
-    public void setRows(List<RowsBean> rows) {
-        this.rows = rows;
+    public void setWorkOrder(String workOrder) {
+        this.workOrder = workOrder;
     }
 
-    public static class RowsBean extends TimeEntity {
-        /**
-         * line : 3
-         * work_order : 1
-         * face : A
-         * start_time_plan : Jan 16, 2017 2:36:43 PM
-         */
+    public String getSide() {
+        return side;
+    }
 
-        /*@Override
-        public Long getCountDownLong() {
-            long res = 0;
-            if(online_plan_start_time.length()!=0){
-                long getTime = Long.parseLong(date2TimeStamp(online_plan_start_time, "yyyy-MM-dd HH:mm:ss"));
-                long nowTime = Long.parseLong(timeStamp());
-                if (nowTime < getTime) {
-                    res = getTime - nowTime;
-                } else {
-                    res = 0;
-                }
-            }else{
-                res = 0;
-            }
+    public void setSide(String side) {
+        this.side = side;
+    }
 
-            return res;
-        }*/
+    public String getProductNameMain() {
+        return productNameMain;
+    }
 
-        private String line_name;
-        private String work_order;
-        private String side;
-        private String product_name_main;
-        private String product_name;
-        private String status;
-        private String online_plan_start_time;
+    public void setProductNameMain(String productNameMain) {
+        this.productNameMain = productNameMain;
+    }
 
-        public String getStatus() {
-            return status;
-        }
+    public String getProductName() {
+        return productName;
+    }
 
-        public void setStatus(String status) {
-            this.status = status;
-        }
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
-        public String getLine_name() {
-            return line_name;
-        }
+    public String getOnlinePlanStartTime() {
+        return onlinePlanStartTime;
+    }
 
-        public void setLine_name(String line_name) {
-            this.line_name = line_name;
-        }
+    public void setOnlinePlanStartTime(String onlinePlanStartTime) {
+        this.onlinePlanStartTime = onlinePlanStartTime;
+    }
 
-        public String getSide() {
-            return side;
-        }
+    public int getStatus() {
+        return status;
+    }
 
-        public void setSide(String side) {
-            this.side = side;
-        }
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
-        public String getProduct_name_main() {
-            return product_name_main;
-        }
-
-        public void setProduct_name_main(String product_name_main) {
-            this.product_name_main = product_name_main;
-        }
-
-        public String getProduct_name() {
-            return product_name;
-        }
-
-        public void setProduct_name(String product_name) {
-            this.product_name = product_name;
-        }
-
-        public String getOnline_plan_start_time() {
-            return online_plan_start_time;
-        }
-
-        public void setOnline_plan_start_time(String online_plan_start_time) {
-            this.online_plan_start_time = online_plan_start_time;
-        }
-
-        public String getWork_order() {
-            return work_order;
-        }
-
-        public void setWork_order(String work_order) {
-            this.work_order = work_order;
-        }
-
-        public String date2TimeStamp(String date_str, String format) {
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat(format);
-                return String.valueOf(sdf.parse(date_str).getTime());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return "";
-        }
-
-        public String timeStamp() {
-            long time = System.currentTimeMillis();
-            String t = String.valueOf(time);
-            return t;
-        }
+    @Override
+    public String toString() {
+        return "ModuleUpWarningItem{" +
+                "workOrderID=" + workOrderID +
+                ", lineName='" + lineName + '\'' +
+                ", workOrder='" + workOrder + '\'' +
+                ", side='" + side + '\'' +
+                ", productNameMain='" + productNameMain + '\'' +
+                ", productName='" + productName + '\'' +
+                ", onlinePlanStartTime='" + onlinePlanStartTime + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

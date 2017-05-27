@@ -21,4 +21,9 @@ public class QualityManageModel extends BaseModel<ApiService> implements Quality
         return getService().getQualityList(str).compose(RxsRxSchedulers.<QualityManage>io_main());
     }
 
+    @Override
+    public Observable<QualityManage> QualityOK(String quality_id) {
+        return getService().getQualityOK(quality_id).compose(RxsRxSchedulers.<QualityManage>io_main());
+    }
+
 }

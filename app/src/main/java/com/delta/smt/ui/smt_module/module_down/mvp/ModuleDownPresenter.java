@@ -2,6 +2,7 @@ package com.delta.smt.ui.smt_module.module_down.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.ModuleDownWarningItem;
+import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
@@ -29,23 +30,23 @@ public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,
                     e.printStackTrace();
                 }
             }
-        }).subscribe(new Action1<ModuleDownWarningItem>() {
+        }).subscribe(new Action1<Result<ModuleDownWarningItem>>() {
             @Override
-            public void call(ModuleDownWarningItem moduleDownWarningItems) {
+            public void call(Result<ModuleDownWarningItem> moduleDownWarningItemResult) {
                 try{
-                    if ("0".equals(moduleDownWarningItems.getCode())) {
+                    if (moduleDownWarningItemResult.getCode() == 0) {
 
-                        if (moduleDownWarningItems.getRows().size() == 0) {
+                        if (moduleDownWarningItemResult.getRows().size() == 0) {
                             getView().showEmptyView();
-                            getView().onFailed(moduleDownWarningItems);
+//                            getView().onFailed(moduleDownWarningItemResult);
                         }else {
                             getView().showContentView();
-                            getView().onSuccess(moduleDownWarningItems);
+                            getView().onSuccess(moduleDownWarningItemResult.getRows());
                         }
 
                     } else {
-                        getView().onFailed(moduleDownWarningItems);
                         getView().showErrorView();
+                        getView().onFailed(moduleDownWarningItemResult.getMessage());
                     }
                 }catch (Exception e){
                     e.printStackTrace();

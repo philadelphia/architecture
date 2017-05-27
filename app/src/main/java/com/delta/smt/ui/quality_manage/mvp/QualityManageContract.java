@@ -19,6 +19,7 @@ public interface QualityManageContract {
 
         Observable<QualityManage> getQualityList(String str);
 
+        Observable<QualityManage> QualityOK(String quality_id);
     }
 
     interface View extends IView {
@@ -34,6 +35,10 @@ public interface QualityManageContract {
         void getQualityListSuccess(List<QualityManage.RowsBean> qualityManage);
 
         void getQualityListFailed(String message);
+
+        void getokSuccess();
+
+        void getokFailed(String message);
 
     }
     

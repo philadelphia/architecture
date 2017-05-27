@@ -8,6 +8,7 @@ import com.delta.demacia.barcode.BarCodeIpml;
 import com.delta.demacia.barcode.Barcode;
 import com.delta.demacia.barcode.BarcodeFactory;
 import com.delta.demacia.barcode.exception.DevicePairedNotFoundException;
+import com.delta.smt.app.App;
 import com.delta.smt.di.component.AppComponent;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonAc
     protected void initCData() {
         barCodeIpml = BarcodeFactory.getBarcode(this);
         barCodeIpml.setOnGunKeyPressListener(this);
-        componentInject(getMApplication().getAppComponent());//依赖注入
+        componentInject(App.getAppComponent());//依赖注入
         initData();
     }
 

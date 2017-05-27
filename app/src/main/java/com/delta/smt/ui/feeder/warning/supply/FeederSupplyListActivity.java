@@ -54,7 +54,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     TextView toolbarTitle;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
-    private List<FeederSupplyWarningItem> dataList = new ArrayList<>();
+    private final List<FeederSupplyWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<FeederSupplyWarningItem> adapter;
     private static final String TAG = "FeederSupplyList";
     private WarningDialog warningDialog;
@@ -168,7 +168,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
             FeederSupplyWarningItem entity = data.get(i);
             entity.setEntityId(i);
             long time = System.currentTimeMillis();
-            entity.setEnd_time(time + entity.getRemainTime() * 1000);
+            entity.setEnd_time(Math.round(time + entity.getRemainTime() * 1000));
             Log.e(TAG, "onSuccess: " + entity.toString());
             dataList.add(entity);
 

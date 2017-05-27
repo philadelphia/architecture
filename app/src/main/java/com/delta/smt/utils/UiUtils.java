@@ -365,10 +365,7 @@ public class UiUtils {
     }
 
     public static boolean isEmpty(Object obj) {
-        if (obj == null) {
-            return true;
-        }
-        return false;
+        return obj == null;
     }
 
     private static int mCount;
