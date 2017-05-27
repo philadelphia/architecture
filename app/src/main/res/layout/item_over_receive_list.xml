@@ -8,62 +8,68 @@
         android:layout_width="match_parent"
         android:layout_height="85px">
 
+        <!--线别-->
         <TextView
             android:id="@+id/tv_lineID"
             android:layout_width="100px"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"
             android:gravity="center"
-            android:text="线别"
+            android:text=""
             android:textColor="#333333"
             android:textSize="40px" />
 
+        <!--料号-->
         <TextView
             android:id="@+id/tv_materialID"
             android:layout_width="260px"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"
             android:gravity="center"
-            android:text="料号"
+            android:text=""
             android:textColor="#333333"
             android:textSize="40px" />
 
+        <!--架位-->
         <TextView
             android:id="@+id/tv_shelfPositionID"
             android:layout_width="180px"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"
             android:gravity="center"
-            android:text="架位"
+            android:text=""
             android:textColor="#333333"
             android:textSize="40px" />
 
+        <!--需求量-->
         <TextView
             android:id="@+id/tv_demandAmount"
             android:layout_width="180px"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"
             android:gravity="center"
-            android:text="需求量"
+            android:text=""
             android:textColor="#333333"
             android:textSize="40px" />
 
+        <!--剩余料使用时间-->
         <TextView
             android:id="@+id/tv_materialRemainingUsageTime"
             android:layout_width="320px"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"
             android:gravity="center"
-            android:text="剩余料使用时间"
+            android:text=""
             android:textColor="#333333"
             android:textSize="40px" />
+        <!--状态-->
         <TextView
             android:id="@+id/tv_state"
             android:layout_width="320px"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"
             android:gravity="center"
-            android:text="状态"
+            android:text=""
             android:textColor="#333333"
             android:textSize="40px" />
 
