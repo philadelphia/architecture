@@ -59,7 +59,7 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
 
     List<ProductToolsBack> data = new ArrayList<>();
     CommonBaseAdapter<ProductToolsBack> adapter;
-    int ID = 1001;
+    String ID = "admin";
     String barCode;
 
     @Override
@@ -150,7 +150,7 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
         int i = 0;
         if (j != null) {
             for (JsonProductBackList jp : j) {
-                ProductToolsBack pt = new ProductToolsBack(i + "", jp.getBarcode(), "1001", jp.getJigTypeName(), jp.getStatName());
+                ProductToolsBack pt = new ProductToolsBack(i + "", jp.getJigcode(), "1001", jp.getJigTypeName(), jp.getStatName());
                 p.add(pt);
             }
         }
@@ -189,9 +189,9 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
         try {
 
             this.barCode = barcode;
-            jsonObject.put("barcode", barcode);
-            jsonObject.put("userID", ID);
-            String s = "[\'" + jsonObject.toString() + "\']";
+            jsonObject.put("jigCode", barcode);
+            jsonObject.put("user", ID);
+            String s = jsonObject.toString();
             getPresenter().getData(s);
 
         } catch (JSONException e) {

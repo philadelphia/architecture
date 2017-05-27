@@ -6,17 +6,17 @@ package com.delta.smt.entity;
 
 public class JsonProductToolsLocationList {
 
-    private int shelfID;
+    private int shelfId;
 
-    private int jigTypeID;
+    private int jigTypeId;
 
     private String jigTypeName;
 
     private int shelfType;
 
-    private String shelfBarcode;
+    private String shelfCode;
 
-    private String jigBarcode;
+    private String jigcode;
 
     private int shelfStatus;
 
@@ -36,17 +36,17 @@ public class JsonProductToolsLocationList {
 
     private String updateTime;
 
-    public void setShelfID(int shelfID){
-        this.shelfID = shelfID;
+    public void setShelfId(int shelfId){
+        this.shelfId = shelfId;
     }
-    public int getShelfID(){
-        return this.shelfID;
+    public int getShelfId(){
+        return this.shelfId;
     }
-    public void setJigTypeID(int jigTypeID){
-        this.jigTypeID = jigTypeID;
+    public void setJigTypeId(int jigTypeId){
+        this.jigTypeId = jigTypeId;
     }
-    public int getJigTypeID(){
-        return this.jigTypeID;
+    public int getJigTypeId(){
+        return this.jigTypeId;
     }
     public void setJigTypeName(String jigTypeName){
         this.jigTypeName = jigTypeName;
@@ -60,17 +60,17 @@ public class JsonProductToolsLocationList {
     public int getShelfType(){
         return this.shelfType;
     }
-    public void setShelfBarcode(String shelfBarcode){
-        this.shelfBarcode = shelfBarcode;
+    public void setShelfCode(String shelfCode){
+        this.shelfCode = shelfCode;
     }
-    public String getShelfBarcode(){
-        return this.shelfBarcode;
+    public String getShelfCode(){
+        return this.shelfCode;
     }
-    public void setJigBarcode(String jigBarcode){
-        this.jigBarcode = jigBarcode;
+    public void setJigcode(String jigcode){
+        this.jigcode = jigcode;
     }
-    public String getJigBarcode(){
-        return this.jigBarcode;
+    public String getJigcode(){
+        return this.jigcode;
     }
     public void setShelfStatus(int shelfStatus){
         this.shelfStatus = shelfStatus;

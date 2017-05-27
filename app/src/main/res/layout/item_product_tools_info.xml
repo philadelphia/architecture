@@ -28,15 +28,15 @@
 
 
     <TextView
+        android:id="@+id/ProductToolsType"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="15"
-        android:gravity="center"
         android:background="@drawable/textview_border"
+        android:gravity="center"
         android:text="@string/ProductToolsType"
         android:textColor="#333333"
-        android:textSize="35px"
-        android:id="@+id/ProductToolsType"/>
+        android:textSize="35px" />
 
 
     <TextView

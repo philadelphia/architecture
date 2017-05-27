@@ -6,29 +6,29 @@ package com.delta.smt.entity;
 
 public class JsonProductRequestToolsList {
 
-    private int jigID;
+    private int jigId;
 
-    private String barcode;
+    private String jigcode;
 
     private int loanStatus;
 
     private String shelfName;
 
-    private int jigTypeID;
+    private int jigTypeId;
 
     private String jigTypeName;
 
-    public void setJigID(int jigID){
-        this.jigID = jigID;
+    public void setJigId(int jigId){
+        this.jigId = jigId;
     }
-    public int getJigID(){
-        return this.jigID;
+    public int getJigId(){
+        return this.jigId;
     }
-    public void setBarcode(String barcode){
-        this.barcode = barcode;
+    public void setJigcode(String jigcode){
+        this.jigcode = jigcode;
     }
-    public String getBarcode(){
-        return this.barcode;
+    public String getJigcode(){
+        return this.jigcode;
     }
     public void setLoanStatus(int loanStatus){
         this.loanStatus = loanStatus;
@@ -42,11 +42,11 @@ public class JsonProductRequestToolsList {
     public String getShelfName(){
         return this.shelfName;
     }
-    public void setJigTypeID(int jigTypeID){
-        this.jigTypeID = jigTypeID;
+    public void setJigTypeId(int jigTypeId){
+        this.jigTypeId = jigTypeId;
     }
-    public int getJigTypeID(){
-        return this.jigTypeID;
+    public int getJigTypeId(){
+        return this.jigTypeId;
     }
     public void setJigTypeName(String jigTypeName){
         this.jigTypeName = jigTypeName;
@@ -58,11 +58,11 @@ public class JsonProductRequestToolsList {
     @Override
     public String toString() {
         return "JsonProductRequestToolsList{" +
-                "jigID=" + jigID +
-                ", barcode='" + barcode + '\'' +
+                "jigId=" + jigId +
+                ", jigcode='" + jigcode + '\'' +
                 ", loanStatus=" + loanStatus +
                 ", shelfName='" + shelfName + '\'' +
-                ", jigTypeID=" + jigTypeID +
+                ", jigTypeId=" + jigTypeId +
                 ", jigTypeName='" + jigTypeName + '\'' +
                 '}';
     }

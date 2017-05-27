@@ -6,7 +6,7 @@ package com.delta.smt.entity;
 
 public class JsonProductBorrowList {
 
-    private int orderID;
+    private int id;
 
     private String orderName;
 
@@ -36,11 +36,11 @@ public class JsonProductBorrowList {
 
     private String updateTime;
 
-    public void setOrderID(int orderID){
-        this.orderID = orderID;
+    public void setId(int id){
+        this.id = id;
     }
-    public int getOrderID(){
-        return this.orderID;
+    public int getId(){
+        return this.id;
     }
     public void setOrderName(String orderName){
         this.orderName = orderName;
@@ -130,7 +130,7 @@ public class JsonProductBorrowList {
     @Override
     public String toString() {
         return "JsonProductBorrowList{" +
-                "orderID=" + orderID +
+                "id=" + id +
                 ", orderName='" + orderName + '\'' +
                 ", orderCount=" + orderCount +
                 ", orderType=" + orderType +
