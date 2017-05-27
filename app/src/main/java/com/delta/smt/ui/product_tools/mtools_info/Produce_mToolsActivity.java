@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -25,6 +27,7 @@ import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsPresenter;
 import com.delta.smt.ui.product_tools.tools_info.ProduceToolsInfoActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -86,8 +89,11 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
 
         workNumber=getIntent().getExtras().getString("workNumber");
         jigTypeID=getIntent().getExtras().getString("jigTypeID");
-
-        getPresenter().getData("{\"workOrderID\":"+workNumber+",\"jigTypeID\":"+jigTypeID+"}");
+        Log.e("workOrderId:",workNumber);
+        Log.e("jigTypeId:",jigTypeID);
+        String parme= GsonTools.createGsonString(new String[]{"workOrderId","jigTypeId"},new Object[]{Integer.parseInt(workNumber),Integer.parseInt(jigTypeID)});
+        String page=GsonTools.createGsonString(new String[]{"current","size"},new Object[]{1,999999});
+        getPresenter().getData(parme,page);
 
     }
 

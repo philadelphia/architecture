@@ -102,7 +102,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     boolean isAllTimerEnd = true;
     @BindView(R.id.showMessage)
     TextView showMessage;
-    //private Barcode barCodeIpml = BarcodeFactory.getBarcode(this);
+    //private Barcode barCodeIpml = BarcodeFactory.getJigcode(this);
     private Gson gson = new Gson();
     private CommonBaseAdapter<OverReceiveWarning.RowsBean> adapterTitle;
     private CommonBaseAdapter<OverReceiveWarning.RowsBean> adapter;

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class GsonTools {
 
@@ -25,7 +26,8 @@ public class GsonTools {
     }
 
     /**
-     *  map集合添加到json数组
+     * map集合添加到json数组
+     *
      * @param datas
      * @param <T>
      * @return
@@ -36,8 +38,15 @@ public class GsonTools {
         return createGsonString(list);
     }
 
+    public static < T extends Object>String createGsonWithListString(String key, List<T> value) {
+        Map<String, List<T>> datas = new HashMap<>();
+        datas.put(key, value);
+        return createGsonString(datas);
+    }
+
     /**
      * 对象添加到json数组
+     *
      * @param datas
      * @return
      */
@@ -57,6 +66,7 @@ public class GsonTools {
 
     /**
      * 键值对的形式添加json数组
+     *
      * @param keys
      * @param values
      * @return

@@ -33,11 +33,11 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
     }
 
     //刚进入页面时获取治具信息
-    public void getToolsInfo(String condition) {
+    public void getToolsInfo(String parm) {
 
         getView().showLoadingView();
 
-        getModel().getProductToolsInfoItem(1000000000, 1, condition).subscribe(new Action1<JsonProductRequestToolsRoot>() {
+        getModel().getProductToolsInfoItem(parm).subscribe(new Action1<JsonProductRequestToolsRoot>() {
             @Override
             public void call(JsonProductRequestToolsRoot jsonProductRequestToolsRoot) {
                 //getView().getToolsInfo();
@@ -65,7 +65,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                             toolsStatus = "状态未知";
                     }
 
-                    ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getBarcode(), j.getJigTypeName(), j.getShelfName(), "更多", toolsStatus, String.valueOf(j.getJigTypeID()), String.valueOf(j.getJigID()));
+                    ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getJigcode(), j.getJigTypeName(), j.getShelfName(), "更多", toolsStatus, String.valueOf(j.getJigTypeId()), String.valueOf(j.getJigId()));
                     data.add(p);
 
 
@@ -89,9 +89,9 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
     }
 
     //点击确定，开始扫描
-    public void getToolsVerfy(String condition) {
+    public void getToolsVerfy(String parm) {
 
-        getModel().getProductToolsVerfy(condition).doOnSubscribe(new Action0() {
+        getModel().getProductToolsVerfy(parm).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();
@@ -115,7 +115,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
 
                         }
 
-                        ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getBarcode(), j.getJigTypeName(), "", "更多", status, String.valueOf(j.getJigTypeID()), String.valueOf(j.getJigID()));
+                        ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getJigcode(), j.getJigTypeName(), "", "更多", status, String.valueOf(j.getJigTypeId()), String.valueOf(j.getJigId()));
                         data.add(p);
 
                     }
@@ -145,9 +145,9 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
     }
 
     //扫描完成上传数据
-    public void getToolsBorrowSubmit(String param) {
+    public void getToolsBorrowSubmit(String parm) {
 
-        getModel().getProductToolsBorrowSubmit(param).doOnSubscribe(new Action0() {
+        getModel().getProductToolsBorrowSubmit(parm).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();

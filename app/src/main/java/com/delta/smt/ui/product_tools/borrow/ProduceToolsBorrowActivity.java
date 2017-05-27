@@ -137,9 +137,6 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
         data.clear();
         data.addAll(ProductWorkItemList);
 
-        for (ProductWorkItem mProductWorkItem : data) {
-            Log.e(TAG, "getFormData: "+mProductWorkItem.getOrderName() );
-        }
 /*        //TODO data按时间排序
         MyCompare myCompare = new MyCompare();
         Collections.sort(data, myCompare);*/

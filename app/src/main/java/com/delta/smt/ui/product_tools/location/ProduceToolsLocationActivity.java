@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
@@ -65,7 +65,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
 
     private int flag1 = 1;
-    private int ID = 1001;
+    private String ID = "admin";
 
     private String tools;
     private String shelfBarcode;
@@ -154,10 +154,9 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
         super.onScanSuccess(barcode);
         if (flag1 != 0) {
             try {
-                mString = "";
-                mString = "[\"{\\\"barcode\\\":\\\"" + barcode + "\\\",\\\"userID\\\":" + ID + "}\"]";
-                Log.i(TAG, "onScanSuccess: " + mString);
-                getPresenter().getLocation(mString);
+
+                String param = GsonTools.createGsonString(new String[]{"jigCode", "user"}, new Object[]{barcode, ID});
+                getPresenter().getLocation(param);
                 tools = barcode;
 
             } catch (Exception e) {
@@ -171,11 +170,11 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             try {
                 if (shelfBarcode != null) {
                     if (shelfBarcode.equals(barcode)) {
-                        mString = "";
-                        mString = "[\"{\\\"jigBarcode\\\":\\\"" + tools + "\\\",\\\"shelfBarcode\\\":\\\"" + barcode + "\\\", \\\"userID\\\":" + ID + "}\"]";
-                        Log.i(TAG, "onScanSuccess: " + mString);
-                        getPresenter().getSubmitResult(mString);
+
+                        String param = GsonTools.createGsonString(new String[]{"jigCode", "user", "shelfCode"}, new Object[]{tools, ID, barcode});
+                        getPresenter().getSubmitResult(param);
                         shelfBarcode = barcode;
+
                     } else {
                         SnackbarUtil.showMassage(getRootView(this), "架位二维码不一致，请重新扫描！");
                     }
@@ -198,19 +197,20 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             adapter.notifyDataSetChanged();
             mTvLocationName.setText(param.getRows().getShelfName());
             mProductToolsBarCodeEditText.setText(tools);
-            mShiftBarcodeCodeEditText.setText(param.getRows().getShelfBarcode());
-            shelfBarcode = param.getRows().getShelfBarcode();
+            mShiftBarcodeCodeEditText.setText(param.getRows().getShelfCode());
+            shelfBarcode = param.getRows().getShelfCode();
             SnackbarUtil.showMassage(getRootView(this), "扫描成功，请再扫描其对应的架位二维码!");
             VibratorAndVoiceUtils.correctVibrator(ProduceToolsLocationActivity.this);
             VibratorAndVoiceUtils.correctVoice(ProduceToolsLocationActivity.this);
+            flag1=0;
         } else {
             data.clear();
             adapter.notifyDataSetChanged();
-            SnackbarUtil.showMassage(getRootView(this), "该治具无法完成入架位操作!");
+            SnackbarUtil.showMassage(getRootView(this), "该治具无法完成入架位操作,"+param.getMessage());
             VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
             VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
         }
-        return flag1 = param.getCode();
+        return param.getCode();
     }
 
     @Override
@@ -235,7 +235,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
                         break;
                 }
 
-                ItemLocationVerfyList mItemLocationVerfyList = new ItemLocationVerfyList(mJ.getBarcode(), mJ.getShelfBarcode(), mJ.getShelfName(), mJ.getJigTypeName(), status);
+                ItemLocationVerfyList mItemLocationVerfyList = new ItemLocationVerfyList(mJ.getJigcode(), mJ.getShelfCode(), mJ.getShelfName(), mJ.getJigTypeName(), status);
                 data.add(mItemLocationVerfyList);
             }
             adapter.notifyDataSetChanged();
@@ -253,7 +253,7 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
             mShiftBarcodeCodeEditText.setText("");
             mProductToolsBarCodeEditText.setText("");
             mTvLocationName.setText("");
-            SnackbarUtil.showMassage(getRootView(this), "该治具无法入架位。");
+            SnackbarUtil.showMassage(getRootView(this), "该治具无法入架位,"+jsonLocationVerfyRoot.getMessage());
             flag1 = 1;
         }
 

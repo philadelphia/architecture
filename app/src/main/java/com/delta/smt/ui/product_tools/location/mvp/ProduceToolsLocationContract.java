@@ -5,6 +5,8 @@ import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.JsonLocationVerfyRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
 
+import java.util.HashMap;
+
 import rx.Observable;
 
 /**
