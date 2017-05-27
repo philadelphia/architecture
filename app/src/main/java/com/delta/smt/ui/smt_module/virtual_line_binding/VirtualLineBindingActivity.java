@@ -15,6 +15,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.VirtualModuleID;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -110,8 +111,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
-        Gson gson = new Gson();
-        String argument = gson.toJson(map);
+
+        String argument = GsonTools.createGsonListString(map);
         getPresenter().getAllVirtualLineBindingItems(argument);
     }
 
@@ -327,9 +328,9 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         map.put("side", side);
                         map.put("material_no",materialBlockNumber);
                         map.put("serial_no",serialNo);
-                        map.put("vitual_id",virtualModuleID.getSource());
-                        Gson gson = new Gson();
-                        String argument = gson.toJson(map);
+                        map.put("virtual_id",virtualModuleID.getSource());
+
+                        String argument = GsonTools.createGsonListString(map);
                         getPresenter().getAllVirtualBindingResult(argument);
                         scan1_label = null;
                         VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
@@ -340,9 +341,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         map.put("work_order", workItemID);
                         map.put("side", side);
                         map.put("feeder_id",feederNumber);
-                        map.put("vitual_id",virtualModuleID.getSource());
-                        Gson gson = new Gson();
-                        String argument = gson.toJson(map);
+                        map.put("virtual_id",virtualModuleID.getSource());
+                        String argument = GsonTools.createGsonListString(map);
                         getPresenter().getAllVirtualBindingResult(argument);
                         VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
                         VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);

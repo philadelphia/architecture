@@ -4,6 +4,9 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownMaintain;
+import com.delta.smt.entity.Result;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -14,13 +17,14 @@ import rx.Observable;
 public interface ModuleDownDetailsContract {
     interface View extends IView {
 
-        void onSuccess(ModuleDownDetailsItem data);
+        void onSuccess(List<ModuleDownDetailsItem> data);
 
         void onFailed(String message);
 
-        void onSuccessMaintain(ModuleDownMaintain moduleDownMaintain);
+        void onResult(String message);
 
-        void onFailMaintain(ModuleDownMaintain moduleDownMaintain);
+        void onMaintainResult(String message);
+
 
         void onNetFailed(Throwable throwable);
 
@@ -35,10 +39,10 @@ public interface ModuleDownDetailsContract {
     }
 
     interface Model extends IModel {
-         Observable<ModuleDownDetailsItem> getAllModuleDownDetailsItems(String str);
-         Observable<ModuleDownMaintain> getModuleDownMaintainResult(String str);
-        Observable<ModuleDownDetailsItem> getDownModuleList(String condition);
-        Observable<ModuleDownDetailsItem> getFeederCheckInTime(String condition);
+         Observable<Result<ModuleDownDetailsItem>> getAllModuleDownDetailsItems(String str);
+         Observable<Result> getModuleDownMaintainResult(String str);
+//        Observable<Result<ModuleDownDetailsItem>> getDownModuleList(String condition);
+//        Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition);
 
     }
 }

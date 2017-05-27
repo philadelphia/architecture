@@ -38,7 +38,7 @@ public class StorageReadyPresenter extends BasePresenter<StorageReadyContract.Mo
                public void call(Result<StorageReady> storageReadies) {
 
                   Log.e(TAG, "call: "+storageReadies.toString());
-                  if ("0".equals(storageReadies.getCode())) {
+                  if (0==storageReadies.getCode()) {
 
                       getView().getStorageReadySuccess(storageReadies.getRows());
                       if(storageReadies.getRows().size()==0){

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -127,9 +128,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workId);
         map.put("side", side);
-
-
-        argument = new Gson().toJson(map);
+        argument = GsonTools.createGsonListString(map);
         Log.i(TAG, "argument==: " + argument);
 
 
@@ -239,8 +238,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             map.put("work_order", workId);
             map.put("side", side);
 
-            Gson gson = new Gson();
-            String argument = gson.toJson(map);
+            String argument = GsonTools.createGsonListString(map);
             getPresenter().resetFeederSupplyStatus(argument);
         }
 
@@ -326,12 +324,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             map.put("material_no", mCurrentMaterialNumber);
             map.put("serial_no", mCurrentSerialNumber);
             map.put("work_order", workId);
-            map.put("side", side);
 
-            argument = new Gson().toJson(map);
-
-            Gson gson = new Gson();
-            String argument = gson.toJson(map);
+            argument = GsonTools.createGsonListString(map);
             Log.i(TAG, "argument== " + argument);
             if (isMaterialExists(mCurrentMaterial)){
                 getPresenter().getFeederInsertionToSlotTimeStamp(argument);

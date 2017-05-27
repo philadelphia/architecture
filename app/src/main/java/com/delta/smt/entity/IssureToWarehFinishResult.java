@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * @description :
  * @autHor :  V.Wenju.Tian
@@ -14,6 +16,7 @@ public class IssureToWarehFinishResult {
      */
 
     private String code;
+    @SerializedName("message")
     private String msg;
 
     public String getCode() {

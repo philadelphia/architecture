@@ -114,12 +114,12 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private int flag = 1;
     private String side;
     private boolean isChecked = true;
-    private String s;
     private String line_name;
     private String material_num = "";
     private String serial_num = "";
     private int index = 0;
     private LinearLayoutManager content_LinerLayoutManager;
+    private String gsonListString;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -137,7 +137,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         side = mMantissaWarehouse.getSide();
         line_name = mMantissaWarehouse.getLine_name();
         WarehouseDetailBean bindBean = new WarehouseDetailBean(side, work_order);
-        String gsonListString = GsonTools.createGsonListString(bindBean);
+        gsonListString = GsonTools.createGsonListString(bindBean);
         getPresenter().getMantissaWarehouseDetails(gsonListString);
         //备料车
         MantissaCarBean car = new MantissaCarBean(work_order, "Mantissa", side);
@@ -258,16 +258,16 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
 
     @Override
-    public void getMantissaWarehouseputSucess(MantissaWarehouseDetailsResult rows) {
+    public void getMantissaWarehouseputSuccess(MantissaWarehouseDetailsResult rows) {
 
         issureToWareh(rows);
         tv_hint.setText(rows.getMsg());
-        textToSpeechManager.readMessage(rows.getMsg());
+        // textToSpeechManager.readMessage(rows.getMsg());
         if (btnSwitch.isChecked()) {
 //            getPresenter().debit();
         }
         if (isOver) {
-            getPresenter().getMantissaWareOver(s);
+            getPresenter().getMantissaWareOver(gsonListString);
         }
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
@@ -383,7 +383,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getMantissaWareOverSucess(IssureToWarehFinishResult issureToWarehFinishResult) {
+    public void getMantissaWareOverSuccess(IssureToWarehFinishResult issureToWarehFinishResult) {
         Toast.makeText(this, issureToWarehFinishResult.getMsg(), Toast.LENGTH_SHORT).show();
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
@@ -400,11 +400,10 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getFindCarSucess(Result<MaterialCar> car) {
-        String rows = car.getRows().get(0).getCar_name();
-        tv_hint.setText(rows);
-        mCar.setText(rows);
+        String carName = car.getRows().get(0).getCar_name();
+        tv_hint.setText(carName);
+        mCar.setText(carName);
         flag = 2;
-
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }

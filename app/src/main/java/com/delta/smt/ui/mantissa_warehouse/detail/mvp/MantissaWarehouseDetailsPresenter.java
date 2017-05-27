@@ -70,7 +70,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void call(Result<MaterialCar> car) {
 
-                if ("0".equals(car.getCode())) {
+                if (0==car.getCode()) {
                     getView().getFindCarSucess(car);
                 } else {
                     getView().getFindCarFailed(car.getMessage());
@@ -99,7 +99,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void call(Result<MaterialCar> car) {
 
-                if ("0".equals(car.getCode())) {
+                if (0==car.getCode()) {
                     getView().getBingingCarSucess(car);
                 } else {
                     getView().getBingingCarFailed(car.getMessage());
@@ -134,7 +134,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             public void call(MantissaWarehouseDetailsResult mantissaWarehouseDetails) {
 
                 if ("0".equals(mantissaWarehouseDetails.getCode())) {
-                    getView().getMantissaWarehouseputSucess(mantissaWarehouseDetails);
+                    getView().getMantissaWarehouseputSuccess(mantissaWarehouseDetails);
                     if (mantissaWarehouseDetails.getRows().size() == 0) {
                         getView().showEmptyView();
                     } else {
@@ -169,7 +169,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void call(IssureToWarehFinishResult issureToWarehFinishResult) {
                 if ("0".equals(issureToWarehFinishResult.getCode())) {
-                    getView().getMantissaWareOverSucess(issureToWarehFinishResult);
+                    getView().getMantissaWareOverSuccess(issureToWarehFinishResult);
                 } else {
                     getView().getMantissaWareOverFailed(issureToWarehFinishResult.getMsg());
                 }
@@ -199,7 +199,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void call(Result result) {
 
-                if ("0".equals(result.getCode())) {
+                if (0 == result.getCode()) {
                     getView().debitSuccess();
                 } else {
                     getView().debitFailed(result.getMessage());

@@ -41,7 +41,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result<StorageDetails> storageDetailses) {
 
-                if ("0".equals(storageDetailses.getCode())) {
+                if (0==storageDetailses.getCode()) {
 
                     if (storageDetailses.getRows().size() == 0) {
                         getView().showEmptyView();
@@ -74,7 +74,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
         getModel().queryMaterialCar(content).subscribe(new RxErrorHandlerSubscriber<Result<MaterialCar>>(rxErrorHandler) {
             @Override
             public void onNext(Result<MaterialCar> materialCarResult) {
-                if ("0".equals(materialCarResult.getCode())) {
+                if (0==materialCarResult.getCode()) {
                     getView().queryMaterailCar(materialCarResult.getRows());
                 } else {
                     getView().queryMaterailCarFailed(materialCarResult.getMessage());
@@ -114,7 +114,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result<StorageDetails> issureToWarehResult) {
 
-                if ("0".equalsIgnoreCase(issureToWarehResult.getCode())) {
+                if (0 == issureToWarehResult.getCode()) {
 
                     if (issureToWarehResult.getRows().size() == 0) {
                         getView().showEmptyView();
@@ -179,7 +179,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
         getModel().jumpMaterials(mS).subscribe(new Action1<Result<StorageDetails>>() {
             @Override
             public void call(Result<StorageDetails> storageDetailsResult) {
-                if ("0".equalsIgnoreCase(storageDetailsResult.getCode())) {
+                if (0 == storageDetailsResult.getCode()) {
                     getView().jumpMaterialsSuccess(storageDetailsResult);
                 } else {
                     getView().jumpMaterialsFailed(storageDetailsResult.getMessage());
@@ -203,7 +203,7 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
             @Override
             public void call(Result result) {
 
-                if ("0".equals(result.getCode())) {
+                if (0==result.getCode()) {
                     getView().deductionSuccess();
                 } else {
                     getView().deductionFailed(result.getMessage());

@@ -10,7 +10,7 @@ public class VirtualLineBindingItem {
     /**
      * code : 0
      * msg : Success
-     * rows : [{"vitual_id":"0351234708","model_id":"w543"}]
+     * rows : [{"virtual_id":"0351234708","model_id":"w543"}]
      */
 
     private String code;
@@ -47,21 +47,21 @@ public class VirtualLineBindingItem {
          * model_id : w543
          */
 
-        private String vitual_id;
+        private String virtual_id;
         private String model_id;
 
         public RowsBean(String model_id,String vitual_id ) {
-            this.vitual_id = vitual_id;
+            this.virtual_id = vitual_id;
             this.model_id = model_id;
 
         }
 
         public String getVitual_id() {
-            return vitual_id;
+            return virtual_id;
         }
 
-        public void setVitual_id(String vitual_id) {
-            this.vitual_id = vitual_id;
+        public void setVirtual_id(String virtual_id) {
+            this.virtual_id = virtual_id;
         }
 
         public String getModel_id() {

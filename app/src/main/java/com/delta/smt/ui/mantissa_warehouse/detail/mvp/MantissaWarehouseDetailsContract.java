@@ -40,11 +40,11 @@ public interface MantissaWarehouseDetailsContract {
 
         void getBingingCarFailed(String message);
 
-        void getMantissaWarehouseputSucess(MantissaWarehouseDetailsResult mantissaWarehouseDetailses);
+        void getMantissaWarehouseputSuccess(MantissaWarehouseDetailsResult mantissaWarehouseDetailses);
 
         void getMantissaWarehouseputFailed(String message);
 
-        void getMantissaWareOverSucess(IssureToWarehFinishResult issureToWarehFinishResult);
+        void getMantissaWareOverSuccess(IssureToWarehFinishResult issureToWarehFinishResult);
 
         void getMantissaWareOverFailed(String message);
 

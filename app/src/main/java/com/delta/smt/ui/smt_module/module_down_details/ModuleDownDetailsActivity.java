@@ -18,6 +18,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FeederBuffer;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -79,10 +80,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     String lineName;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    private CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapter;
-    private List<ModuleDownDetailsItem.RowsBean> dataList = new ArrayList<>();
-    private List<ModuleDownDetailsItem.RowsBean> dataSource = new ArrayList<>();
-    private List<ModuleDownDetailsItem.RowsBean> dataSourceForCheckIn = new ArrayList<>();
+    private CommonBaseAdapter<ModuleDownDetailsItem> adapter;
+    private List<ModuleDownDetailsItem> dataList = new ArrayList<>();
+    private List<ModuleDownDetailsItem> dataSource = new ArrayList<>();
+    private List<ModuleDownDetailsItem> dataSourceForCheckIn = new ArrayList<>();
     private String mCurrentWorkOrder;
     private String mCurrentMaterialID;
     private String mCurrentSerialNumber;
@@ -115,10 +116,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
-        Gson gson = new Gson();
-        argument = gson.toJson(map);
-
-
+        argument = GsonTools.createGsonListString(map);
         mCurrentWorkOrder = workItemID;
     }
 
@@ -133,24 +131,24 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         }
         toolbarTitle.setText("下模组");
 
-        dataList.add(new ModuleDownDetailsItem.RowsBean("料号", "流水码", "Feeder ID", "模组料站", "归属"));
-        CommonBaseAdapter<ModuleDownDetailsItem.RowsBean> adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataList) {
+        dataList.add(new ModuleDownDetailsItem("料号", "流水码", "Feeder ID", "模组料站", "归属"));
+        CommonBaseAdapter<ModuleDownDetailsItem> adapterTitle = new CommonBaseAdapter<ModuleDownDetailsItem>(this, dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
+            protected void convert(CommonViewHolder holder, ModuleDownDetailsItem item, int position) {
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.c_efefef));
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ModuleDownDetailsItem.RowsBean item) {
+            protected int getItemViewLayoutId(int position, ModuleDownDetailsItem item) {
                 return R.layout.item_module_down_details;
             }
         };
         recyclerViewTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewTitle.setAdapter(adapterTitle);
 
-        adapter = new CommonBaseAdapter<ModuleDownDetailsItem.RowsBean>(this, dataSource) {
+        adapter = new CommonBaseAdapter<ModuleDownDetailsItem>(this, dataSource) {
             @Override
-            protected void convert(CommonViewHolder holder, ModuleDownDetailsItem.RowsBean item, int position) {
+            protected void convert(CommonViewHolder holder, ModuleDownDetailsItem item, int position) {
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.tv_materialID, item.getMaterial_no());
                 holder.setText(R.id.tv_serialID, item.getSerial_no());
@@ -180,7 +178,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, ModuleDownDetailsItem.RowsBean item) {
+            protected int getItemViewLayoutId(int position, ModuleDownDetailsItem item) {
                 return R.layout.item_module_down_details;
             }
 
@@ -197,16 +195,16 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     }
 
     @Override
-    public void onSuccess(ModuleDownDetailsItem data) {
+    public void onSuccess(List<ModuleDownDetailsItem> data) {
         dataSource.clear();
         dataSourceForCheckIn.clear();
 
         flag = 1;
         Log.i(TAG, "index: == " + index);
-        List<ModuleDownDetailsItem.RowsBean> rowsBean = data.getRows();
+        List<ModuleDownDetailsItem> rowsBean = data;
         dataSource.addAll(rowsBean);
 
-        for (ModuleDownDetailsItem.RowsBean bean : dataSource) {
+        for (ModuleDownDetailsItem bean : dataSource) {
             if (bean.getDest().equalsIgnoreCase("1"))
                 dataSourceForCheckIn.add(bean);
         }
@@ -226,14 +224,16 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     }
 
     @Override
-    public void onSuccessMaintain(ModuleDownMaintain maintain) {
-        ToastUtils.showMessage(this, maintain.getMsg());
+    public void onResult(String message) {
+        ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
     }
 
     @Override
-    public void onFailMaintain(ModuleDownMaintain maintain) {
-        ToastUtils.showMessage(this, maintain.getMsg());
+    public void onMaintainResult(String message) {
+        ToastUtils.showMessage(this,message, Toast.LENGTH_SHORT);
+        statusLayout.showEmptyView();
     }
+
 
     @Override
     public void onNetFailed(Throwable throwable) {
@@ -244,6 +244,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public void showLoadingView() {
         statusLayout.showLoadingView();
     }
+
 
     @Override
     public void showContentView() {
@@ -257,12 +258,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> map = new HashMap<>();
-                map.put("work_order", workItemID);
-                map.put("side", side);
-                Gson gson = new Gson();
-                String argument = gson.toJson(map);
-
                 getPresenter().getAllModuleDownDetailsItems(argument);
             }
         });
@@ -274,12 +269,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> map = new HashMap<>();
-                map.put("work_order", workItemID);
-                map.put("side", side);
-                Gson gson = new Gson();
-                String argument = gson.toJson(map);
-
                 getPresenter().getAllModuleDownDetailsItems(argument);
             }
         });
@@ -310,8 +299,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 Map<String, String> map = new HashMap<>();
                 map.put("work_order", mCurrentWorkOrder);
                 map.put("side", side);
-                Gson gson = new Gson();
-                String argument = gson.toJson(map);
+                String argument = GsonTools.createGsonListString(map);
                 getPresenter().getAllModuleDownMaintainResult(argument);
                 break;
         }
@@ -352,12 +340,11 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     map.put("shelf_no", mCurrentLocation);
                     map.put("qty", mCurrentQuantity);
                     map.put("slot", mCurrentSlot);
-                    Gson gson = new Gson();
-                    String argument = gson.toJson(map);
+                    String argument = GsonTools.createGsonListString(map);
                     Log.i(TAG, "argument== " + argument);
                     Log.i(TAG, "料架已经扫描完成，接下来入库: ");
 
-                    getPresenter().getFeederCheckInTime(argument);
+//                    getPresenter().getFeederCheckInTime(argument);
 
 
                 } catch (EntityNotFountException e1) {
@@ -433,7 +420,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         int length = dataSource.size();
 
         for (int i = 0; i < length; i++) {
-            ModuleDownDetailsItem.RowsBean rowsBean = dataSource.get(i);
+            ModuleDownDetailsItem rowsBean = dataSource.get(i);
             if (rowsBean.getMaterial_no().equalsIgnoreCase(material.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(material.getStreamNumber())) {
                 index = i;
                 break;
@@ -447,7 +434,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public boolean isMaterialExists(MaterialBlockBarCode material) {
         boolean flag = false;
         for (int i = 0; i < dataSource.size(); i++) {
-            ModuleDownDetailsItem.RowsBean item = dataSource.get(i);
+            ModuleDownDetailsItem item = dataSource.get(i);
             if (material.getDeltaMaterialNumber().equalsIgnoreCase(item.getMaterial_no()) && material.getStreamNumber().equalsIgnoreCase(item.getSerial_no())) {
                 flag = true;
                 break;
@@ -462,7 +449,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public boolean isMaterialInFeederCheckInList(MaterialBlockBarCode material) {
         boolean flag = false;
         for (int i = 0; i < dataSourceForCheckIn.size(); i++) {
-            ModuleDownDetailsItem.RowsBean item = dataSourceForCheckIn.get(i);
+            ModuleDownDetailsItem item = dataSourceForCheckIn.get(i);
             if (material.getDeltaMaterialNumber().equalsIgnoreCase(item.getMaterial_no()) && material.getStreamNumber().equalsIgnoreCase(item.getSerial_no())) {
                 flag = true;
                 break;

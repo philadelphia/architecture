@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
@@ -32,23 +33,22 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
                 }
 
             }
-        }).subscribe(new Action1<ModuleUpBindingItem>() {
+        }).subscribe(new Action1<Result<ModuleUpBindingItem>>() {
             @Override
-            public void call(ModuleUpBindingItem moduleUpBindingItems) {
-                //getView().onSuccess(moduleUpBindingItems);
+            public void call(Result<ModuleUpBindingItem> moduleUpBindingItemResult) {
                 try{
-                    if ("0".equals(moduleUpBindingItems.getCode())) {
+                    if (0 == moduleUpBindingItemResult.getCode()) {
 
-                        if (moduleUpBindingItems.getRows().size() == 0) {
+                        if (moduleUpBindingItemResult.getRows().size() == 0) {
                             getView().showEmptyView();
-                            getView().onFailed(moduleUpBindingItems);
+//                            getView().onFailed(moduleUpBindingItems);
                         }else {
                             getView().showContentView();
-                            getView().onSuccess(moduleUpBindingItems);
+                            getView().onSuccess(moduleUpBindingItemResult.getRows());
                         }
 
                     } else {
-                        getView().onFailed(moduleUpBindingItems);
+                        getView().onFailed(moduleUpBindingItemResult.getMessage());
                         getView().showErrorView();
                     }
                 }catch(Exception e){
@@ -56,7 +56,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
                 }
 
             }
-        }, new Action1<Throwable>() {
+        },new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 try {
@@ -83,22 +83,22 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
                     e.printStackTrace();
                 }
             }
-        }).subscribe(new Action1<ModuleUpBindingItem>() {
+        }).subscribe(new Action1<Result<ModuleUpBindingItem>>() {
             @Override
-            public void call(ModuleUpBindingItem moduleUpBindingItem) {
+            public void call(Result<ModuleUpBindingItem> moduleUpBindingItemResult) {
                 try{
-                    if ("0".equals(moduleUpBindingItem.getCode())) {
+                    if (0 == moduleUpBindingItemResult.getCode()) {
 
-                        if (moduleUpBindingItem.getRows().size() == 0) {
+                        if (moduleUpBindingItemResult.getRows().size() == 0) {
                             getView().showEmptyView();
-                            getView().onFailedBinding(moduleUpBindingItem);
+//                            getView().onFailedBinding(moduleUpBindingItem.getMessage());
                         }else {
                             getView().showContentView();
-                            getView().onSuccessBinding(moduleUpBindingItem);
+                            getView().onSuccess(moduleUpBindingItemResult.getRows());
                         }
 
                     } else {
-                        getView().onFailedBinding(moduleUpBindingItem);
+//                        getView().onFailed(moduleUpBindingItem.get);
                         getView().showErrorView();
                     }
                 }catch (Exception e){
