@@ -14,18 +14,18 @@ public class ProductToolsInfo implements Serializable{
     String productToolsLocation;
     String reSelect;
     String status;
-    String jigTypeID;
-    String jigID;
+    String jigTypeId;
+    String jigId;
 
-    public ProductToolsInfo(String turnNumber, String productToolsBarCode, String produceToolsType, String productToolsLocation, String reSelect, String status, String jigTypeID, String jigID) {
+    public ProductToolsInfo(String turnNumber, String productToolsBarCode, String produceToolsType, String productToolsLocation, String reSelect, String status, String jigTypeId, String jigID) {
         this.turnNumber = turnNumber;
         this.productToolsBarCode = productToolsBarCode;
         this.produceToolsType = produceToolsType;
         this.productToolsLocation = productToolsLocation;
         this.reSelect = reSelect;
         this.status = status;
-        this.jigTypeID = jigTypeID;
-        this.jigID = jigID;
+        this.jigTypeId = jigTypeId;
+        this.jigId = jigID;
     }
 
     public String getTurnNumber() {
@@ -76,19 +76,19 @@ public class ProductToolsInfo implements Serializable{
         this.status = status;
     }
 
-    public String getJigTypeID() {
-        return jigTypeID;
+    public String getJigTypeId() {
+        return jigTypeId;
     }
 
-    public void setJigTypeID(String jigTypeID) {
-        this.jigTypeID = jigTypeID;
+    public void setJigTypeId(String jigTypeId) {
+        this.jigTypeId = jigTypeId;
     }
 
-    public String getJigID() {
-        return jigID;
+    public String getJigId() {
+        return jigId;
     }
 
-    public void setJigID(String jigID) {
-        this.jigID = jigID;
+    public void setJigId(String jigId) {
+        this.jigId = jigId;
     }
 }

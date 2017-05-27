@@ -244,8 +244,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                 Map<String, String> map = new HashMap<>();
                 map.put("work_order", workItemID);
                 map.put("side", side);
-                Gson gson = new Gson();
-                String argument = gson.toJson(map);
+                String argument = GsonTools.createGsonListString(map);
                 getPresenter().getAllVirtualLineBindingItems(argument);
             }
         });

@@ -5,6 +5,8 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 
+import java.util.HashMap;
+
 import rx.Observable;
 
 /**
@@ -17,9 +19,9 @@ public class Produce_mToolsModel extends BaseModel<ApiService> implements Produc
     }
 
     @Override
-    public Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(int pageSize,int pageCurrent,String condition_and_jigTypeID) {
+    public Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(String parm,String page) {
         //TODO ZSQgetProduct_mToolsInfo
 
-        return getService().getProduct_mToolsInfo(pageSize,pageCurrent,condition_and_jigTypeID).compose(RxsRxSchedulers.<JsonProduct_mToolsRoot>io_main());
+        return getService().getProduct_mToolsInfo(parm).compose(RxsRxSchedulers.<JsonProduct_mToolsRoot>io_main());
     }
 }

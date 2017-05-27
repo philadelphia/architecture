@@ -32,7 +32,7 @@ public class ProduceLinePresenter extends BasePresenter<ProduceLineContract.Mode
         }).subscribe(new Action1<Result<ItemProduceLine>>() {
             @Override
             public void call(Result<ItemProduceLine> itemProduceLines) {
-                if ("0".equals(itemProduceLines.getCode())) {
+                if (0 == itemProduceLines.getCode()) {
                     if (itemProduceLines.getRows().size() == 0) {
                         getView().showEmptyView();
                     }else {

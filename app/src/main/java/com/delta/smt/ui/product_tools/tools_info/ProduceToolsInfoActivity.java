@@ -11,7 +11,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
@@ -31,6 +33,7 @@ import com.delta.smt.ui.product_tools.tools_info.mvp.ProduceToolsInfoPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -81,7 +84,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     StatusLayout statusLayout;
 
     private StringBuffer mStringBuffer;
-    private String mString;
+    String parm = "";
     List<ProductToolsInfo> data = new ArrayList<>();
     CommonBaseAdapter<ProductToolsInfo> adapter;
     String workNumber;
@@ -90,31 +93,31 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     String TAG = "ProduceToolsInfoActivity";
     Product_mToolsInfo selectItem;
     String barcode;
-    int ID = 1001;
+    String ID = "admin";
 
     @OnClick(R.id.confirm)
     public void confirmData() {
 
-        mStringBuffer= new StringBuffer();
-        mString= "";
-
-        if (data.size()!=0){
+        mStringBuffer = new StringBuffer();
+        if (data.size() != 0) {
             for (int mI = 1; mI < data.size(); mI++) {
-                if (mI==data.size()-1){
+                if (mI == data.size() - 1) {
                     mStringBuffer.append("\\\"").append(data.get(mI).getProductToolsBarCode()).append("\\\"");
-                }else {
+                } else {
                     mStringBuffer.append("\\\"").append(data.get(mI).getProductToolsBarCode()).append("\\\"").append(",");
                 }
             }
 
         }
-        Log.i(TAG, String.valueOf(mStringBuffer));
-        mString="[\"{\\\"workOrderID\\\":"+workNumber+", \\\"jig\\\":["+mStringBuffer.toString()+"]}\"]";
-        Log.i(TAG, "confirmData: "+mString);
-        getPresenter().getToolsVerfy(mString);
+        List<String> datas = new ArrayList<>();
+        for (ProductToolsInfo productToolsInfo : data) {
+            if(!productToolsInfo.getProductToolsBarCode().equals("治具二维码"))
+            datas.add(productToolsInfo.getProductToolsBarCode());
+        }
+        parm = GsonTools.createGsonString(new String[]{"workOrderId", "jig", "user"}, new Object[]{Integer.parseInt(workNumber), datas, ID});
+        getPresenter().getToolsVerfy(parm);
 
     }
-
 
 
     @Override
@@ -132,15 +135,23 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             this.selectItem = (Product_mToolsInfo) this.getIntent().getExtras().getSerializable("Produce_mToolsActivity");
             String workNumber = this.getIntent().getExtras().getString("workNumber");
             this.workNumber = workNumber;
-            getPresenter().getToolsInfo("{\"workOrderID\":" + workNumber + "}");
+            HashMap<String, String> parm = new HashMap<>();
+            parm.put("value", "{\"workOrderId\":" + workNumber + "}");
+            String gsonListString = GsonTools.createGsonString(new String[]{"workOrderId"}, new Object[]{Integer.parseInt(workNumber)});
+            getPresenter().getToolsInfo(gsonListString);
 
         } else {
-            getPresenter().getToolsInfo("{\"workOrderID\":" + workNumber + "}");
+
+            String gsonString = GsonTools.createGsonString(new String[]{"workOrderId"}, new Object[]{Integer.parseInt(workNumber)});
+            getPresenter().getToolsInfo(gsonString);
+
         }
     }
 
     @Override
     protected void initView() {
+
+        ToastUtils.showMessage(this, this.getIntent().getExtras().getString(sourceActivity));
 
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -148,7 +159,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("治具信息");
 
-        mProductToolsWorkItemTextView.setText(this.getIntent().getExtras().getString("OrderName") );
+        mProductToolsWorkItemTextView.setText(this.getIntent().getExtras().getString("OrderName"));
 
         if (this.getIntent().getExtras().getString("MainBroad") != null) {
             mainBroadTextView.setText(this.getIntent().getExtras().getString("MainBroad"));
@@ -197,14 +208,14 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
 
                 }
-
+                Log.e("jigTypeID",item.getJigTypeId());
                 holder.setOnClickListener(R.id.ReSelect, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
                         Bundle bundle = new Bundle();
                         bundle.putString("workNumber", workNumber);
-                        bundle.putString("jigTypeID", item.getJigTypeID());
+                        bundle.putString("jigTypeID", item.getJigTypeId());
                         intent.putExtras(bundle);
                         intent.setClass(ProduceToolsInfoActivity.this, Produce_mToolsActivity.class);
                         startActivity(intent);
@@ -270,7 +281,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                 if (selectItem.getProductToolsType().equals(p.getProduceToolsType())) {
                     p.setProductToolsBarCode(selectItem.getProductToolsBarCode());
                     p.setProductToolsLocation(selectItem.getProductToolsLocation());
-                    p.setJigID(selectItem.getJigID());
+                    p.setJigId(selectItem.getJigID());
                 }
 
             }
@@ -290,7 +301,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             i++;
             data.get(i).setTurnNumber(p.getTurnNumber());
             data.get(i).setProductToolsBarCode(p.getProductToolsBarCode());
-            data.get(i).setJigTypeID(p.getJigTypeID());
+            data.get(i).setJigTypeId(p.getJigTypeId());
             data.get(i).setStatus(p.getStatus());
             data.get(i).setProduceToolsType(p.getProduceToolsType());
 
@@ -333,7 +344,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @Override
     public void getFail(String message) {
-        SnackbarUtil.showMassage(getCurrentFocus(),message);
+        SnackbarUtil.showMassage(getCurrentFocus(), message);
 
     }
 
@@ -353,7 +364,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getToolsVerfy(mString);
+                getPresenter().getToolsVerfy(parm);
             }
         });
     }
@@ -361,9 +372,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
-
-        getPresenter().getToolsBorrowSubmit("[\"{\\\"workOrderID\\\":" + workNumber + ",\\\"barcode\\\":\\\"" + barcode + "\\\",\\\"userID\\\":" + ID + "}\"]");
-
+        String param = GsonTools.createGsonString(new String[]{"workOrderId", "jigCode", "user"}, new Object[]{Integer.parseInt(workNumber), barcode, ID});
+        getPresenter().getToolsBorrowSubmit(param);
         this.barcode = barcode;
 
     }
