@@ -99,21 +99,21 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
 //        });
 //    }
 //
-//    public void getFeederCheckInTime(String condition){
-//        getModel().getFeederCheckInTime(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
-//            @Override
-//            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
-//                    if (moduleDownDetailsItem.getCode().equalsIgnoreCase("0")){
-//                        getView().onSuccess(moduleDownDetailsItem);
-//                    }else {
-//                        getView().onFailed(moduleDownDetailsItem.getMsg());
-//                    }
-//            }
-//        }, new Action1<Throwable>() {
-//            @Override
-//            public void call(Throwable throwable) {
-//                getView().onNetFailed(throwable);
-//            }
-//        });
-//    }
+    public void getFeederCheckInTime(String condition){
+        getModel().getFeederCheckInTime(condition).subscribe(new Action1<Result<ModuleDownDetailsItem>>() {
+            @Override
+            public void call(Result<ModuleDownDetailsItem> moduleDownDetailsItem) {
+                    if (moduleDownDetailsItem.getCode() == 0){
+                        getView().onSuccess(moduleDownDetailsItem.getRows());
+                    }else {
+                        getView().onFailed(moduleDownDetailsItem.getMessage());
+                    }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onNetFailed(throwable);
+            }
+        });
+    }
 }

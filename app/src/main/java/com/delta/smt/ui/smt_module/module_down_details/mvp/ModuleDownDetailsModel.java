@@ -33,8 +33,8 @@ public class ModuleDownDetailsModel extends BaseModel<ApiService> implements Mod
 //        return getService().getDownModuleList(condition).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
 //    }
 //
-//    @Override
-//    public Observable<ModuleDownDetailsItem> getFeederCheckInTime(String condition) {
-//        return getService().getFeederCheckInTime(condition).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
-//    }
+    @Override
+    public Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition) {
+        return getService().getFeederCheckInTime(condition).compose(RxsRxSchedulers.<Result<ModuleDownDetailsItem>>io_main());
+    }
 }

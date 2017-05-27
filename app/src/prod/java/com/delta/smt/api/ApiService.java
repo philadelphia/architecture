@@ -96,9 +96,9 @@ public interface ApiService {
     @GET("SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
-    //获取feeder入库时间
-    @GET("SMM/unplugmod/feederBuffStorage")
-    Observable<ModuleDownDetailsItem> getFeederCheckInTime(@Query("condition") String condition);
+    //feeder入Feeder缓冲区
+    @GET("ams/smm/unplugmodcontroller/feederbuffstorage")
+    Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(@Query("condition") String condition);
 
 
     //重置Feeder发料状态
@@ -119,7 +119,7 @@ public interface ApiService {
     Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("value") String value);
 
     //获取Feeder备料时间
-    @POST("/ams/smm/buffer/bufferissue")
+    @POST("ams/smm/buffer/bufferissue")
     Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("value") String condition);
 
     //上传feeder备料上模组结果

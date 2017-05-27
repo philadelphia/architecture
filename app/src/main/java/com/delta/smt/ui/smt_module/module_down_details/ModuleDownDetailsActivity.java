@@ -344,7 +344,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     Log.i(TAG, "argument== " + argument);
                     Log.i(TAG, "料架已经扫描完成，接下来入库: ");
 
-//                    getPresenter().getFeederCheckInTime(argument);
+                    getPresenter().getFeederCheckInTime(argument);
 
 
                 } catch (EntityNotFountException e1) {
