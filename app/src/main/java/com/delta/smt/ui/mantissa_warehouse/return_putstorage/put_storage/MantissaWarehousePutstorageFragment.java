@@ -3,6 +3,7 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +20,9 @@ import com.delta.buletoothio.barcode.parse.entity.LabelBarcode;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -31,12 +34,10 @@ import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.PutBarCode;
 import com.delta.smt.entity.UpLocation;
 import com.delta.smt.entity.WarehousePutstorageBean;
-
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.DaggerMantissaWarehousePutstorageComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.MantissaWarehousePutstorageModule;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp.MantissaWarehousePutstorageContract;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp.MantissaWarehousePutstoragePresenter;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -93,6 +94,10 @@ public class MantissaWarehousePutstorageFragment extends
     private int onclickBegingButton = 0;
 
     private int scan_position = -1;
+    private int currentStep = -1;
+    public static final int begin = 0;
+    public static final int end = 1;
+
 
     @Override
     protected void initView() {
@@ -168,7 +173,7 @@ public class MantissaWarehousePutstorageFragment extends
     }
 
     @Override
-    public void getFailedUpdate(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message) {
+    public void getFailedUpdate(String message) {
 
     }
 
@@ -226,14 +231,20 @@ public class MantissaWarehousePutstorageFragment extends
     @Override
     public void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
         dataList2.clear();
+        currentStep = begin;
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
+
+        if (dataList2.size() == 0) {
+            return;
+        }
         firstMaterialNumber = dataList2.get(0).getMaterial_no();
     }
 
     @Override
     public void getBeginFailed(String message) {
         dataList2.clear();
+        currentStep = end;
         SnackbarUtil.showMassage(mRecyContetn, message);
     }
 
@@ -257,11 +268,13 @@ public class MantissaWarehousePutstorageFragment extends
     @Override
     public void getonclickBeginButtonSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
         onclickBegingButton = 1;
+        currentStep = end;
         mBegin.setEnabled(false);
     }
 
     @Override
     public void getonclickBeginButtonFailed(String message) {
+        currentStep = begin;
         SnackbarUtil.showMassage(mRecyContetn, message);
     }
 
@@ -289,21 +302,30 @@ public class MantissaWarehousePutstorageFragment extends
     }
 
 
-    @OnClick({R.id.clean, R.id.deduct, R.id.bt_ok, R.id.bt_next,R.id.begin})
+    @OnClick({R.id.clean, R.id.deduct, R.id.bt_ok, R.id.bt_next, R.id.begin})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.clean:
                 getPresenter().getUpdate();
                 break;
             case R.id.deduct:
-                getPresenter().getBeginPut();
-                mClean.setVisibility(View.GONE);
-                mBegin.setEnabled(false);
-                mDeduct.setEnabled(false);
-                mBtOk.setVisibility(View.VISIBLE);
-                mBtNext.setVisibility(View.VISIBLE);
-                beginStorage();
-                flag = 3;
+                if (currentStep == end) {
+                    if (dataList2.size() == 0) {
+                        ToastUtils.showMessage(getActivity(), "当前数据为空！不能入库");
+                        return;
+                    }
+                    getPresenter().getBeginPut();
+                    mClean.setVisibility(View.GONE);
+                    mBegin.setEnabled(false);
+                    mDeduct.setEnabled(false);
+                    mBtOk.setVisibility(View.VISIBLE);
+                    mBtNext.setVisibility(View.VISIBLE);
+                    beginStorage();
+                    flag = 3;
+                } else {
+                    ToastUtils.showMessage(getActivity(), "请点击开始绑定！");
+                }
+
                 break;
 
             case R.id.bt_next:
@@ -317,6 +339,7 @@ public class MantissaWarehousePutstorageFragment extends
 
                 break;
             case R.id.begin:
+
                 getPresenter().getonclickBeginButton();
                 break;
         }
@@ -389,12 +412,10 @@ public class MantissaWarehousePutstorageFragment extends
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
 
 
-
         switch (flag) {
             case 1:
                 try {
-
-                    if(onclickBegingButton == 1) {
+                    if (onclickBegingButton == 1) {
                         //尾数仓架位
                         bl_shelf_no = false;
                         LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
@@ -412,7 +433,7 @@ public class MantissaWarehousePutstorageFragment extends
                             SnackbarUtil.showMassage(mRecyContetn, "暂无此架位！");
                         }
 
-                    }else {
+                    } else {
                         SnackbarUtil.showMassage(mRecyContetn, "请先点击绑定！");
                     }
                 } catch (EntityNotFountException e) {
@@ -426,9 +447,8 @@ public class MantissaWarehousePutstorageFragment extends
                     lableBarCode = lableBar.getSource();
 
                     WarehousePutstorageBean bindBean = new WarehousePutstorageBean(lastLocation, lableBarCode);
-                    Gson gson = new Gson();
-                    String s = gson.toJson(bindBean);
-                    getPresenter().getBindingLabel(s);
+
+                    getPresenter().getBindingLabel(GsonTools.createGsonListString(bindBean));
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
                     //SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描标签！");
@@ -465,9 +485,9 @@ public class MantissaWarehousePutstorageFragment extends
                     if (materialNumber.equals(firstMaterialNumber)) {
                         setItemHighLightBase(materialNumber);
                         UpLocation bindBean = new UpLocation(materialNumber, serialNum);
-                        Gson gson = new Gson();
-                        String s = gson.toJson(bindBean);
-                        getPresenter().getUpLocation(s);
+//                        Gson gson = new Gson();
+//                        String s = gson.toJson(bindBean);
+                        getPresenter().getUpLocation(GsonTools.createGsonListString(bindBean));
                         Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
 
 //                for (int i = 0; i < dataList2.size(); i++) {
@@ -516,6 +536,23 @@ public class MantissaWarehousePutstorageFragment extends
         }
 
     }
+
+
+    @Override
+    protected void onSaveState(Bundle outState) {
+
+
+        super.onSaveState(outState);
+        outState.putInt("onclickBegingButton", onclickBegingButton);
+    }
+
+    @Override
+    protected void onRestoreState(Bundle savedInstanceState) {
+
+        super.onRestoreState(savedInstanceState);
+        onclickBegingButton = savedInstanceState.getInt("onclickBegingButton");
+    }
+
 
     @Override
     public void onScanSuccess(String barcode) {

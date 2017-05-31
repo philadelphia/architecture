@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -18,6 +20,7 @@ public class SolutionMessage {
      */
 
     private String code;
+    @SerializedName("message")
     private String msg;
     /**
      * name : AOI机台发生故障，请联系厂商

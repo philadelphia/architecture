@@ -32,7 +32,6 @@ import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.ModuleDownDetailsItem;
-import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
@@ -59,7 +58,6 @@ import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
-import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -351,35 +349,35 @@ public interface ApiService {
      * @date : 2017/1/21 13:53
      */
     //故障处理预警
-    @GET("SMM/Linefailure/getSeriousFaultInfos")
+    @GET("ams/smm/linefailure/getseriousfaultinfos")
     Observable<FaultMessage> getFalutMessages(@Query("condition") String s);
 
-    @GET("SMM/Linefailure/faultSolutionList")
+    @GET("ams/smm/linefailure/faultsolutionlist")
     Observable<SolutionMessage> getSolutionMessage(@Query("condition") String s);
 
-    @GET("SMM/Linefailure/faultSolutionDetailList")
+    @GET("ams/smm/linefailure/faultsolutiondetaillist")
     Observable<FaultSolutionMessage> getDetailSolutionMessage(@Query("condition") String s);
 
-    @GET("SMM/Linefailure/resolveFault")
+    @GET("ams/smm/linefailure/resolvefault")
     Observable<BaseEntity> resolveFault(@Query("condition") String content);
 
 
-    @GET("SMM/Linefailure/addFaultSolution")
+    @GET("ams/smm/linefailure/addfaultsolution")
     Observable<BaseEntity> addSolution(@Query("condition") String content);
 
     //获取模板内容
 
-    @GET("SMM/Linefailure/getHtmlContent")
+    @GET("ams/smm/linefailure/gethtmlcontent")
     Observable<BaseEntity<String>> getTemplateContent(@Query("condition") String fileName);
 
     //上传文件
     @Multipart
-    @POST("webapi/SMM/Linefailure/uploadFiles")
+    @POST("webapi/ams/smm/linefailure/uploadfiles")
     Observable<ResultFault> upLoadFile(@Part("description") RequestBody description,
                                        @Part MultipartBody.Part file,
                                        @Query("param") String argument);
 
-    @GET("SMM/Linefailure/getFilters")
+    @GET("ams/smm/linefailure/getfilters")
     Observable<FaultFilter> getFaultFilterMessage();
 
     //查询指定工单备料车ID
@@ -438,8 +436,10 @@ public interface ApiService {
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Field("value") String bind);
 
     //料盘绑定标签
-    @GET("SMM/ManToWareh/materBoundLabel")
-    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/mantowareh/materboundlabel")
+    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Field("value") String bind);
 
     //查询尾数仓备料车
     @GET("ams/smm/warehissue/qprepcaridbyworkorder")
@@ -485,18 +485,18 @@ public interface ApiService {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @PUT("ams/jig/life/use/loan/jig")
-    Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Field("value")String parm);
+    Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Field("value") String parm);
 
     //    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @PUT("ams/jig/life/use/loan/jig")
-    Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Field("value")String parm);
+    Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Field("value") String parm);
 
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @PUT("ams/jig/life/use/shelf/verify")
-    Observable<JsonProductToolsLocationRoot> getLocationVerify(@Field("value")String param);
+    Observable<JsonProductToolsLocationRoot> getLocationVerify(@Field("value") String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -523,31 +523,35 @@ public interface ApiService {
 
     //liuzhenyu
     //尾数仓退入主仓库
-    @GET("SMM/ManToWareh/queryReturnedWarehList")
+    @GET("ams/smm/mantowareh/queryreturnedwarehlist")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
 
     //点击清理按钮
-    @GET("SMM/ManToWareh/triggerListUpdate")
+    @GET("ams/smm/mantowareh/triggerlistupdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
     //点击开始绑定
-    @GET("SMM/ManToWareh/startBound")
+
+    @PUT("ams/smm/mantowareh/startbound")
     Observable<MantissaWarehousePutstorageResult> getOnclickBeginButton();
 
     //尾数仓点击开始入库
-    @GET("SMM/ManToWareh/startReturnedWareh")
+    @PUT("ams/smm/mantowareh/startreturnedwareh")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
     //尾数仓点击开始入库上架位完成
-    @GET("SMM/ManToWareh/materToShel")
-    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/mantowareh/matertoshel")
+    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Field("value") String bind);
 
     //确定点击下一个架位
-    @GET("SMM/ManToWareh/sureNextShelf")
+
+    @PUT("ams/smm/mantowareh/surenextshelf")
     Observable<MantissaWarehousePutstorageResult> getYesNext();
 
     //确定点击完成
-    @GET("SMM/ManToWareh/sureComplete")
+    @PUT("ams/smm/mantowareh/surecomplete")
     Observable<MantissaWarehousePutstorageResult> getYesok();
 
     //尾数仓入库

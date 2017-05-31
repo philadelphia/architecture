@@ -80,7 +80,7 @@ public class FaultMessage {
 
             private String exception_name;
             private String line;
-            private int duration_time;
+            private double duration_time;
             private String process;
             private String child_exception_name;
             private String exception_code;
@@ -101,7 +101,7 @@ public class FaultMessage {
                 this.line = line;
             }
 
-            public int getDuration_time() {
+            public double getDuration_time() {
                 return duration_time;
             }
 
