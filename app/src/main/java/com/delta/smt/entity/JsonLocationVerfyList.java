@@ -6,57 +6,57 @@ package com.delta.smt.entity;
 
 public class JsonLocationVerfyList {
 
-    private int jigID;
+    private int jigId;
 
-    private String barcode;
+    private String jigcode;
 
-    private int statID;
+    private int statId;
 
-    private int shelfID;
+    private int shelfId;
 
     private String statName;
 
     private String shelfName;
 
-    private String shelfBarcode;
+    private String shelfCode;
 
-    private int jigTypeID;
+    private int jigTypeId;
 
     private String jigTypeName;
 
     private int loanStatus;
 
     public JsonLocationVerfyList(String barcode, String shelfName, String shelfBarcode, String jigTypeName, int loanStatus) {
-        this.barcode = barcode;
+        this.jigcode = barcode;
         this.shelfName = shelfName;
-        this.shelfBarcode = shelfBarcode;
+        this.shelfCode = shelfBarcode;
         this.jigTypeName = jigTypeName;
         this.loanStatus = loanStatus;
     }
 
-    public void setJigID(int jigID){
-        this.jigID = jigID;
+    public void setJigId(int jigId){
+        this.jigId = jigId;
     }
-    public int getJigID(){
-        return this.jigID;
+    public int getJigId(){
+        return this.jigId;
     }
-    public void setBarcode(String barcode){
-        this.barcode = barcode;
+    public void setJigcode(String jigcode){
+        this.jigcode = jigcode;
     }
-    public String getBarcode(){
-        return this.barcode;
+    public String getJigcode(){
+        return this.jigcode;
     }
-    public void setStatID(int statID){
-        this.statID = statID;
+    public void setStatId(int statId){
+        this.statId = statId;
     }
-    public int getStatID(){
-        return this.statID;
+    public int getStatId(){
+        return this.statId;
     }
-    public void setShelfID(int shelfID){
-        this.shelfID = shelfID;
+    public void setShelfId(int shelfId){
+        this.shelfId = shelfId;
     }
-    public int getShelfID(){
-        return this.shelfID;
+    public int getShelfId(){
+        return this.shelfId;
     }
     public void setStatName(String statName){
         this.statName = statName;
@@ -70,17 +70,17 @@ public class JsonLocationVerfyList {
     public String getShelfName(){
         return this.shelfName;
     }
-    public void setShelfBarcode(String shelfBarcode){
-        this.shelfBarcode = shelfBarcode;
+    public void setShelfCode(String shelfCode){
+        this.shelfCode = shelfCode;
     }
-    public String getShelfBarcode(){
-        return this.shelfBarcode;
+    public String getShelfCode(){
+        return this.shelfCode;
     }
-    public void setJigTypeID(int jigTypeID){
-        this.jigTypeID = jigTypeID;
+    public void setJigTypeId(int jigTypeId){
+        this.jigTypeId = jigTypeId;
     }
-    public int getJigTypeID(){
-        return this.jigTypeID;
+    public int getJigTypeId(){
+        return this.jigTypeId;
     }
     public void setJigTypeName(String jigTypeName){
         this.jigTypeName = jigTypeName;

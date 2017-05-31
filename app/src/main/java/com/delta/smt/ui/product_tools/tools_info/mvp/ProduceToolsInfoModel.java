@@ -7,6 +7,8 @@ import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 
+import java.util.HashMap;
+
 import rx.Observable;
 
 /**
@@ -20,18 +22,18 @@ public class ProduceToolsInfoModel extends BaseModel<ApiService> implements Prod
     }
 
     @Override
-    public Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(int pageSize, int pageCurrent,String condition) {
+    public Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(String parm) {
         //TODO ZSQgetProductToolsInfoItem
-        return getService().getProductToolsInfoItem(condition).compose(RxsRxSchedulers.<JsonProductRequestToolsRoot>io_main());
+        return getService().getProductToolsInfoItem(parm).compose(RxsRxSchedulers.<JsonProductRequestToolsRoot>io_main());
     }
 
     @Override
-    public Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(String param) {
-        return getService().getProductToolsVerfy(param).compose(RxsRxSchedulers.<JsonProductToolsVerfyRoot>io_main());
+    public Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(String parm) {
+        return getService().getProductToolsVerfy(parm).compose(RxsRxSchedulers.<JsonProductToolsVerfyRoot>io_main());
     }
 
     @Override
-    public Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(String param) {
-        return getService().getProductToolsBorrowSubmit(param).compose(RxsRxSchedulers.<JsonProductToolsSubmitRoot>io_main());
+    public Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(String parm) {
+        return getService().getProductToolsBorrowSubmit(parm).compose(RxsRxSchedulers.<JsonProductToolsSubmitRoot>io_main());
     }
 }

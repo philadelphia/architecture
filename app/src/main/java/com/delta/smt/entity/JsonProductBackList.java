@@ -7,11 +7,11 @@ package com.delta.smt.entity;
 public class JsonProductBackList {
     private int jigID;
 
-    private String barcode;
+    private String jigcode;
 
-    private int statID;
+    private int statId;
 
-    private int shelfID;
+    private int shelfId;
 
     private String statName;
 
@@ -19,7 +19,7 @@ public class JsonProductBackList {
 
     private String shelfBarcode;
 
-    private int jigTypeID;
+    private int jigTypeId;
 
     private String jigTypeName;
 
@@ -31,23 +31,23 @@ public class JsonProductBackList {
     public int getJigID(){
         return this.jigID;
     }
-    public void setBarcode(String barcode){
-        this.barcode = barcode;
+    public void setJigcode(String jigcode){
+        this.jigcode = jigcode;
     }
-    public String getBarcode(){
-        return this.barcode;
+    public String getJigcode(){
+        return this.jigcode;
     }
-    public void setStatID(int statID){
-        this.statID = statID;
+    public void setStatId(int statId){
+        this.statId = statId;
     }
-    public int getStatID(){
-        return this.statID;
+    public int getStatId(){
+        return this.statId;
     }
-    public void setShelfID(int shelfID){
-        this.shelfID = shelfID;
+    public void setShelfId(int shelfId){
+        this.shelfId = shelfId;
     }
-    public int getShelfID(){
-        return this.shelfID;
+    public int getShelfId(){
+        return this.shelfId;
     }
     public void setStatName(String statName){
         this.statName = statName;
@@ -67,11 +67,11 @@ public class JsonProductBackList {
     public String getShelfBarcode(){
         return this.shelfBarcode;
     }
-    public void setJigTypeID(int jigTypeID){
-        this.jigTypeID = jigTypeID;
+    public void setJigTypeId(int jigTypeId){
+        this.jigTypeId = jigTypeId;
     }
-    public int getJigTypeID(){
-        return this.jigTypeID;
+    public int getJigTypeId(){
+        return this.jigTypeId;
     }
     public void setJigTypeName(String jigTypeName){
         this.jigTypeName = jigTypeName;

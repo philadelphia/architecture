@@ -42,7 +42,7 @@ public interface ModuleDownDetailsContract {
          Observable<Result<ModuleDownDetailsItem>> getAllModuleDownDetailsItems(String str);
          Observable<Result> getModuleDownMaintainResult(String str);
 //        Observable<Result<ModuleDownDetailsItem>> getDownModuleList(String condition);
-//        Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition);
+        Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition);
 
     }
 }

@@ -7,6 +7,7 @@ import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.ProductToolsInfo;
 
+import java.util.HashMap;
 import java.util.List;
 
 import rx.Observable;
@@ -19,11 +20,11 @@ public interface ProduceToolsInfoContract {
 
     interface Model extends IModel {
 
-        Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(int pageSize, int pageCurrent,String condition);
+        Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(String parm);
 
-        Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(String param);
+        Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(String parm);
 
-        Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(String param);
+        Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(String parm);
     }
 
     interface View extends IView {

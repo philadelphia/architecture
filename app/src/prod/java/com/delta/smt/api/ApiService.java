@@ -59,6 +59,7 @@ import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -96,9 +97,9 @@ public interface ApiService {
     @GET("SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
-    //获取feeder入库时间
-    @GET("SMM/unplugmod/feederBuffStorage")
-    Observable<ModuleDownDetailsItem> getFeederCheckInTime(@Query("condition") String condition);
+    //feeder入Feeder缓冲区
+    @GET("ams/smm/unplugmodcontroller/feederbuffstorage")
+    Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(@Query("condition") String condition);
 
 
     //重置Feeder发料状态
@@ -119,7 +120,7 @@ public interface ApiService {
     Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("value") String value);
 
     //获取Feeder备料时间
-    @POST("/ams/smm/buffer/bufferissue")
+    @POST("ams/smm/buffer/bufferissue")
     Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("value") String condition);
 
     //上传feeder备料上模组结果
@@ -183,7 +184,7 @@ public interface ApiService {
      * @date : 2017/1/21 14:41
      */
     //请求产线列表数据
-    @GET("SMM/LineManage/queryLines")
+    @GET("ams/smm/linemanage/querylines")
     Observable<Result<ItemProduceLine>> getLineDatas();
 
     //请求预警，故障，消息的item数量
@@ -480,36 +481,47 @@ public interface ApiService {
     Observable<Result<StorageReady>> getStorageReadyDates(@Query("condition") String argument);
 
     //TODO shaoqiang,8Interfance
-    @GET("sms/jig/life/schedule/list/page?condition={\"orderStatus\":[3,5]} ")
+    @GET("ams/jig/life/schedule/query?condition=[{\"column\":\"orderStatus\",\"value\": \"3\",\"opt\":\"=\",\"relation\":\"OR\"},{\"column\":\"orderStatus\",\"value\": \"5\",\"opt\":\"=\",\"relation\":\"AND\"}]")
     Observable<JsonProductBorrowRoot> getProductWorkItem();
 
     //    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
-    @GET("sms/jig/life/use/loan/jig")
-    Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Query("condition") String condition);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/jig/life/use/loan/jig")
+    Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Field("value")String parm);
 
     //    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
-    @GET("sms/jig/life/use/loan/jig")
-    Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Query("pageSize") int pageSize, @Query("pageCurrent") int pageCurrent, @Query("condition") String condition_and_jigTypeID);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/jig/life/use/loan/jig")
+    Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Field("value")String parm);
 
-    //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/verify")
-    @GET("webapi/sms/jig/life/use/instore/verify")
-    Observable<JsonProductToolsLocationRoot> getLocationVerify(@Query("param") String param);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/jig/life/use/shelf/verify")
+    Observable<JsonProductToolsLocationRoot> getLocationVerify(@Field("value")String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
-    @GET("webapi/sms/jig/life/use/instore/submit")
-    Observable<JsonLocationVerfyRoot> getLocationSubmit(@Query("param") String param);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/jig/life/use/shelf/submit")
+    Observable<JsonLocationVerfyRoot> getLocationSubmit(@Field("value") String param);
 
-    //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/back/submit")
-    @GET("webapi/sms/jig/life/use/back/submit")
-    Observable<JsonProductBackRoot> getProductToolsBack(@Query("param") String param);
+    @POST("ams/jig/life/use/back/submit")
+    @FormUrlEncoded
+    Observable<JsonProductBackRoot> getProductToolsBack(@Field("value") String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/verify")
-    @GET("webapi/sms/jig/life/use/loan/verify")
-    Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(@Query(("param")) String param);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("/ams/jig/life/use/loan/verify")
+    Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(@Field("value") String parm);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
-    @GET("webapi/sms/jig/life/use/loan/submit")
-    Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(@Query("param") String param);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/jig/life/use/loan/submit")
+    Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(@Field("value") String parm);
 
 
     //liuzhenyu
@@ -566,7 +578,7 @@ public interface ApiService {
     Observable<QualityManage> getQualityOK(@Query("condition") String bind);
 
     /**
-     *  @description :
+     * @description :
      * 1.更新
      * 2.超领
      * 3.上模组

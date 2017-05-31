@@ -5,6 +5,8 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.JsonLocationVerfyRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
 
+import java.util.HashMap;
+
 import javax.inject.Inject;
 
 import rx.functions.Action1;
