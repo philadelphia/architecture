@@ -144,7 +144,10 @@ public abstract class BaseFragment<p extends BasePresenter> extends SupportFragm
             savedState = saveState();
         if (savedState != null) {
             Bundle b = getArguments();
-            b.putBundle("data", savedState);
+            if (b != null) {
+
+                b.putBundle("data", savedState);
+            }
         }
     }
 
@@ -154,7 +157,10 @@ public abstract class BaseFragment<p extends BasePresenter> extends SupportFragm
 
     private boolean restoreStateFromArguments() {
         Bundle b = getArguments();
-        savedState = b.getBundle("data");
+        if (b != null) {
+
+            savedState = b.getBundle("data");
+        }
         if (savedState != null) {
             restoreState();
             return true;
