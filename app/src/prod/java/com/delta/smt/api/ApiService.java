@@ -52,7 +52,7 @@ import com.delta.smt.entity.StoreEntity;
 import com.delta.smt.entity.Success;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
-import com.delta.smt.entity.VirtualLineBindingItem;
+import com.delta.smt.entity.VirtualLineItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
@@ -153,11 +153,11 @@ public interface ApiService {
 
     //虚拟线体绑定列表
     @GET("ams/smm/unplugmodcontroller/getmodellist")
-    Observable<VirtualLineBindingItem> getVirtualLineBindingItems(@Query("condition") String condition);
+    Observable<Result<VirtualLineItem>> getVirtualLineBindingItems(@Query("condition") String condition);
 
     //虚拟线体绑定接口
     @GET("ams/smm/unplugmodcontroller/bindvirtualline")
-    Observable<VirtualLineBindingItem> getVirtualBindingResult(@Query("condition") String condition);
+    Observable<Result<VirtualLineItem>> getVirtualBindingResult(@Query("condition") String condition);
 
 
     //对应工单的下模组列表

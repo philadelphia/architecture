@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -26,7 +27,7 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.VirtualLineBindingItem;
+import com.delta.smt.entity.VirtualLineItem;
 import com.delta.smt.ui.smt_module.module_down_details.ModuleDownDetailsActivity;
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.DaggerVirtualLineBindingComponent;
 import com.delta.smt.ui.smt_module.virtual_line_binding.di.VirtualLineBindingModule;
@@ -57,7 +58,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
     RecyclerView recyContent;
-    List<VirtualLineBindingItem.RowsBean> data_tmp = null;
+    List<VirtualLineItem> data_tmp = null;
     String materialBlockNumber;
     String feederNumber;
     String virtualModuleID;
@@ -87,10 +88,10 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     int state = 1;
     @BindView(R.id.showMessage)
     TextView showMessage;
-    private CommonBaseAdapter<VirtualLineBindingItem.RowsBean> adapterTitle;
-    private CommonBaseAdapter<VirtualLineBindingItem.RowsBean> adapter;
-    private List<VirtualLineBindingItem.RowsBean> dataList = new ArrayList<>();
-    private List<VirtualLineBindingItem.RowsBean> dataSource = new ArrayList<>();
+    private CommonBaseAdapter<VirtualLineItem> adapterTitle;
+    private CommonBaseAdapter<VirtualLineItem> adapter;
+    private List<VirtualLineItem> dataList = new ArrayList<>();
+    private List<VirtualLineItem> dataSource = new ArrayList<>();
     //二维码
     private int scan_position = -1;
 
@@ -131,25 +132,25 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         tv_showLineName.setText("线别："+linName);
         tv_showSide.setText("面别: "+side);
 
-        dataList.add(new VirtualLineBindingItem.RowsBean("模组序号", "虚拟模组ID"));
-        adapterTitle = new CommonBaseAdapter<VirtualLineBindingItem.RowsBean>(this, dataList) {
+        dataList.add(new VirtualLineItem("模组序号", "虚拟模组ID"));
+        adapterTitle = new CommonBaseAdapter<VirtualLineItem>(this, dataList) {
             @Override
-            protected void convert(CommonViewHolder holder, VirtualLineBindingItem.RowsBean item, int position) {
+            protected void convert(CommonViewHolder holder, VirtualLineItem item, int position) {
                 holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
                 holder.setText(R.id.tv_moduleID, item.getModel_id());
                 holder.setText(R.id.tv_virtualModuleID, item.getVitual_id());
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, VirtualLineBindingItem.RowsBean item) {
+            protected int getItemViewLayoutId(int position, VirtualLineItem item) {
                 return R.layout.item_virtual_line_binding;
             }
         };
         recyTitle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyTitle.setAdapter(adapterTitle);
-        adapter = new CommonBaseAdapter<VirtualLineBindingItem.RowsBean>(this, dataSource) {
+        adapter = new CommonBaseAdapter<VirtualLineItem>(this, dataSource) {
             @Override
-            protected void convert(CommonViewHolder holder, VirtualLineBindingItem.RowsBean item, int position) {
+            protected void convert(CommonViewHolder holder, VirtualLineItem item, int position) {
                 if (scan_position == -1) {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 } else if (scan_position == position) {
@@ -162,7 +163,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, VirtualLineBindingItem.RowsBean item) {
+            protected int getItemViewLayoutId(int position, VirtualLineItem item) {
                 return R.layout.item_virtual_line_binding;
             }
 
@@ -177,10 +178,9 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     }
 
     @Override
-    public void onSuccess(VirtualLineBindingItem data) {
-        ToastUtils.showMessage(this, data.getMsg());
+    public void onSuccess(List<VirtualLineItem> data) {
         dataSource.clear();
-        data_tmp = data.getRows();
+        data_tmp = data ;
         dataSource.addAll(data_tmp);
         adapter.notifyDataSetChanged();
         adapterTitle.notifyDataSetChanged();
@@ -200,8 +200,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     }
 
     @Override
-    public void onFalied(VirtualLineBindingItem data) {
-        ToastUtils.showMessage(this, data.getMsg());
+    public void onFailed(String message) {
+        ToastUtils.showMessage(this, message);
     }
 
     @Override
@@ -253,7 +253,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -411,15 +410,15 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     }
 
     //判断是否所有的模组被绑定
-    public boolean isAllModuleBinded(List<VirtualLineBindingItem.RowsBean> rb){
+    public boolean isAllModuleBinded(List<VirtualLineItem> rb){
         boolean res = true;
         if (rb.size()>0){
             for(int i=0;i<rb.size();i++){
-                VirtualLineBindingItem.RowsBean rowsBean = rb.get(i);
-                if(rowsBean.getVitual_id()==null||"".equals(rowsBean.getVitual_id())){
-                    res = false;
-                    break;
-                }
+                VirtualLineItem virtualLineItem = rb.get(i);
+                    if (TextUtils.isEmpty(virtualLineItem.getVitual_id())) {
+                        res = false;
+                        break;
+                    }
             }
         }else{
             res = false;
