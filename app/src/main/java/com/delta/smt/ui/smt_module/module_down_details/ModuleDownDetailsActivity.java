@@ -201,8 +201,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
         flag = 1;
         Log.i(TAG, "index: == " + index);
-        List<ModuleDownDetailsItem> rowsBean = data;
-        dataSource.addAll(rowsBean);
+        dataSource.addAll(data);
 
         for (ModuleDownDetailsItem bean : dataSource) {
             if (bean.getDest().equalsIgnoreCase("1"))

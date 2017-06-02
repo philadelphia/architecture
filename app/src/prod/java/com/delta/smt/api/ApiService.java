@@ -99,7 +99,7 @@ public interface ApiService {
 
 
     //重置Feeder发料状态
-    @GET("ams/smm/buffer/completebufferissue")
+    @POST("ams/smm/buffer/completebufferissue")
     Observable<ResultFeeder> resetFeederSupplyStatus(@Query("value") String contidion);
 
 

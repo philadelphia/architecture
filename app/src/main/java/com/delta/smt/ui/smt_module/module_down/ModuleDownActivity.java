@@ -1,7 +1,6 @@
 package com.delta.smt.ui.smt_module.module_down;
 
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -48,7 +47,6 @@ import butterknife.BindView;
 /**
  * Created by Shufeng.Wu on 2017/1/3.
  */
-
 public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implements ModuleDownContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleDownWarningItem> {
 
     @BindView(R.id.toolbar)
@@ -68,11 +66,6 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     private ItemCountViewAdapter<ModuleDownWarningItem> myAdapter;
 
     private WarningDialog warningDialog;
-
-    public static String timeStamp() {
-        long time = System.currentTimeMillis();
-        return String.valueOf(time);
-    }
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -139,27 +132,24 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @Override
     public void onSuccess(List<ModuleDownWarningItem> dataSource) {
         dataList.clear();
-        List<ModuleDownWarningItem> rowsList = dataSource;
-        for (int i = 0; i < rowsList.size(); i++) {
-            if (TextUtils.isEmpty(rowsList.get(i).getUnplug_mod_actual_finish_time())) {
-                rowsList.get(i).setCreat_time(System.currentTimeMillis());
+        for (int i = 0; i < dataSource.size(); i++) {
+            if (TextUtils.isEmpty(dataSource.get(i).getUnplug_mod_actual_finish_time())) {
+                dataSource.get(i).setCreat_time(System.currentTimeMillis());
             } else {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                 try {
-                    Date parse = format.parse(rowsList.get(i).getUnplug_mod_actual_finish_time());
-                    rowsList.get(i).setCreat_time(parse.getTime());
+                    Date parse = format.parse(dataSource.get(i).getUnplug_mod_actual_finish_time());
+                    dataSource.get(i).setCreat_time(parse.getTime());
 
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
-            rowsList.get(i).setEntityId(i);
+            dataSource.get(i).setEntityId(i);
 
         }
-        dataList.addAll(rowsList);
+        dataList.addAll(dataSource);
         myAdapter.notifyDataSetChanged();
-//        ToastUtils.showMessage(this, );
-
     }
 
     @Override
@@ -227,7 +217,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     @Override
     public void warningComing(String warningMessage) {
         if (warningDialog == null) {
-            warningDialog = createDialog(warningMessage);
+            warningDialog = createDialog();
         }
         if (!warningDialog.isShowing()) {
             warningDialog.show();
@@ -263,29 +253,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
 }
 
-    public WarningDialog createDialog(String message) {
-//        //1.创建这个DialogRelativelayout
-//        DialogLayout dialogLayout = new DialogLayout(this);
-//        //2.传入的是红色字体的标题
-//        dialogLayout.setStrTitle("");
-//        //3.传入的是黑色字体的二级标题
-//        dialogLayout.setStrSecondTitle("下模组提醒");
-//        //4.传入的是一个ArrayList<String>
-//        ArrayList<String> titleList = new ArrayList<>();
-//        titleList.add(message);
-//        dialogLayout.setStrContent(titleList);
-//        //5.构建Dialog，setView的时候把这个View set进去。
-//        new AlertDialog.Builder(this)
-//                .setCancelable(false)
-//                .setView(dialogLayout)
-//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                getPresenter().getAllModuleDownWarningItems();
-//            }
-//        }).show();
-
-
+    public WarningDialog createDialog() {
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override
@@ -326,21 +294,10 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             case android.R.id.home:
                 finish();
                 break;
-
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public String date2TimeStamp(String date_str, String format) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
-            return String.valueOf(sdf.parse(date_str).getTime());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 
     @Override
@@ -351,11 +308,6 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         bundle.putString(Constant.PRODUCT_NAME, rowsBean.getProduct_name());
         bundle.putString(Constant.SIDE, rowsBean.getSide());
         bundle.putString(Constant.LINE_NAME, rowsBean.getLine_name());
-
-        //Intent intent = new Intent(this, ModuleUpBindingActivity.class);
-        //intent.putExtras(bundle);
-        //this.startActivity(intent);
-        //startActivityForResult(intent, Constant.ACTIVITY_REQUEST_WORK_ITEM_ID);
         IntentUtils.showIntent(this, VirtualLineBindingActivity.class, bundle);
     }
 

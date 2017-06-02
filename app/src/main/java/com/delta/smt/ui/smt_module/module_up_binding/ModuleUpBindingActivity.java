@@ -23,6 +23,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -40,12 +41,9 @@ import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +61,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, CompoundButton.OnCheckedChangeListener {
 
-    public String moduleUpAutomaticUpload = null;
+    private String moduleUpAutomaticUpload = null;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
@@ -88,7 +86,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @BindView(R.id.tv_line_name)
     TextView tv_line;
 
-    int state = 1;
+    private int state = 1;
     //private Snackbar mSnackbar = null;
     @BindView(R.id.showMessage)
     TextView showMessage;
@@ -99,8 +97,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private int scan_position = -1;
     private String workItemID;
     private String side;
-    private String productNameMain;
-    private String productName;
+//    private String productNameMain;
+//    private String productName;
     private String lineName;
     private String materialBlockNumber;
     private String serialNo;
@@ -122,23 +120,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
         lineName = intent.getStringExtra(Constant.LINE_NAME);
-        productName = intent.getStringExtra(Constant.PRODUCT_NAME);
-        productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
+//        productName = intent.getStringExtra(Constant.PRODUCT_NAME);
+//        productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
         tv_workOrder.setText(getResources().getString(R.string.WorkID) +":   "+ workItemID);
         tv_line.setText(getResources().getString(R.string.Line) +":   "+  lineName);
         tv_side.setText(getResources().getString(R.string.Side) +":   "+  side);
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
-        JsonArray jsonArray = new JsonArray();
-        JsonObject jsonObject = new JsonObject();
-
-        jsonObject.addProperty("work_order", workItemID);
-        jsonObject.addProperty("side", side);
-        jsonArray.add(jsonObject);
-
-        argument = jsonArray.toString();
-
+        argument = GsonTools.createGsonListString(map);
     }
 
     @Override
@@ -216,8 +206,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         state = 1;
         scan_position = -1;
         dataSource.clear();
-        List<ModuleUpBindingItem> rowsBeen = data;
-        dataSource.addAll(rowsBeen);
+        dataSource.addAll(data);
         Log.i(TAG, "onSuccess:后台返回的数据长度是： " + dataSource.size());
         adapter.notifyDataSetChanged();
 
