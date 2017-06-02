@@ -5,9 +5,7 @@ import android.util.Log;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.BaseEntity;
-import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFault;
-import com.delta.smt.entity.ResultString;
 
 import javax.inject.Inject;
 
@@ -25,6 +23,7 @@ import rx.functions.Action1;
 public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAddContract.Model, FaultProcessingAddContract.View> {
 
     private static final String TAG = "FaultProcessingAddPrese";
+
     @Inject
     public FaultProcessingAddPresenter(FaultProcessingAddContract.Model model, FaultProcessingAddContract.View mView) {
         super(model, mView);
@@ -57,8 +56,7 @@ public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAd
         getModel().getTemplateContent(fileName).subscribe(new Action1<BaseEntity<String>>() {
             @Override
             public void call(BaseEntity<String> stringResult) {
-                if (stringResult.getCode().equalsIgnoreCase("0")){
-                    Log.i(TAG, "response code== " + stringResult.getCode());
+                if (stringResult.getCode().equalsIgnoreCase("0")) {
                     getView().onSuccess(stringResult.getT());
                 }
 
@@ -67,20 +65,20 @@ public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAd
             @Override
             public void call(Throwable throwable) {
 
-                Log.e(TAG, "call: "+throwable.getMessage());
+                Log.e(TAG, "call: " + throwable.getMessage());
                 getView().onFailed(throwable.getMessage());
             }
         });
 
     }
 
-    public void upLoadFile(RequestBody requestBody, MultipartBody.Part part, String argument){
+    public void upLoadFile(RequestBody requestBody, MultipartBody.Part part, String argument) {
         getModel().upLoadFile(requestBody, part, argument).subscribe(new Action1<ResultFault>() {
             @Override
             public void call(ResultFault result) {
-                if (result.getCode().equalsIgnoreCase("0")){
+                if (result.getCode().equalsIgnoreCase("0")) {
                     getView().upLoadFileSuccess();
-                }else {
+                } else {
                     getView().onFailed("上传失败");
                 }
 

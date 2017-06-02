@@ -4,10 +4,10 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.FaultFilter;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.SolutionMessage;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,8 +67,7 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
     public void getSolution(String faultCode) {
         Map<String, String> maps = new HashMap<>();
         maps.put("exception_code", faultCode);
-        faultCode = new Gson().toJson(maps);
-        getModel().getSolutionMessage(faultCode).subscribe(new Action1<SolutionMessage>() {
+        getModel().getSolutionMessage(GsonTools.createGsonListString(maps)).subscribe(new Action1<SolutionMessage>() {
             @Override
             public void call(SolutionMessage solutionMessage) {
 

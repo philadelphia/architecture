@@ -1,5 +1,7 @@
 package com.delta.smt.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -13,6 +15,7 @@ public class MantissaWarehousePutstorageResult {
      */
 
     private String code;
+    @SerializedName("message")
     private String msg;
     private List<MantissaWarehousePutstorage> rows;
 
@@ -32,6 +35,13 @@ public class MantissaWarehousePutstorageResult {
         this.rows = rows;
     }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
 
     public static class MantissaWarehousePutstorage {
         /**

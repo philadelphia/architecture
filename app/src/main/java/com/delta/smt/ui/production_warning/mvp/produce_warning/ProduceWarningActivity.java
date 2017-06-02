@@ -448,7 +448,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
     public String initLine() {
         Map<String, String> map = new HashMap<>();
         map.put("lines",lines);
-        String line = GsonTools.createGsonString(map);
+        String line = GsonTools.createGsonListString(map);
+        Log.e(TAG, "initLine: "+line);
         return line;
     }
 

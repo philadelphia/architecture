@@ -46,7 +46,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
 
     private String TAG = getClass().getSimpleName();
     private BroadcastReceiver mBroadcastReceiver;
-    private App application;
+    private BaseApplication application;
     private Unbinder bind;
 
 
@@ -74,7 +74,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        application = ((App) getApplication());
+        application = ((BaseApplication) getApplication());
         boolean isNotAdd = getIntent().getBooleanExtra(IS_NOT_ADD_ACTIVITY_LIST, false);
         synchronized (BaseCommonActivity.class) {
             if (!isNotAdd)
@@ -113,7 +113,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
     protected abstract void initCData();
 
 
-    public App getMApplication() {
+    public BaseApplication getMApplication() {
         return application;
     }
 

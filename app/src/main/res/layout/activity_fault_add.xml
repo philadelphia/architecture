@@ -16,10 +16,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:gravity="center"
             android:hint="请输入解决方案名称"
             android:padding="30px"
             android:textSize="40px"
-            android:gravity="center_vertical"
             android:visibility="gone" />
 
         <View
@@ -35,7 +35,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/line"
             android:layout_marginTop="30px"
-            android:focusable="false"/>
+            android:focusable="false" />
 
         <HorizontalScrollView
             android:id="@+id/hr_scrow"
@@ -163,8 +163,8 @@
                     android:layout_height="48dp"
                     android:background="@null"
                     android:contentDescription="@null"
-                    android:visibility="gone"
-                    android:src="@drawable/insert_image" />
+                    android:src="@drawable/insert_image"
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/action_insert_link"

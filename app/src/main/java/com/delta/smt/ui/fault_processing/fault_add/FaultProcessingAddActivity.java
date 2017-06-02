@@ -1,6 +1,5 @@
 package com.delta.smt.ui.fault_processing.fault_add;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.Constant;
@@ -29,7 +29,6 @@ import com.delta.smt.ui.fault_processing.fault_add.di.DaggerFaultProcessingAddCo
 import com.delta.smt.ui.fault_processing.fault_add.di.FaultProcessingAddModule;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddContract;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddPresenter;
-import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -230,8 +229,8 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         super.onResume();
         Map<String, String> map = new HashMap<>();
         map.put("fileName", "line_fault");
-        String param = new Gson().toJson(map);
-        getPresenter().getTemplateContent(param);
+
+        getPresenter().getTemplateContent(GsonTools.createGsonListString(map));
 
 
     }

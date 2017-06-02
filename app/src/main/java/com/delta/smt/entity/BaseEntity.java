@@ -17,6 +17,7 @@ public class BaseEntity<T>{
      */
 
     private String code;
+    @SerializedName("message")
     private String msg;
     @SerializedName("rows")
     private T t;

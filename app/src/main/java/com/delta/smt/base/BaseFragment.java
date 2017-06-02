@@ -61,13 +61,6 @@ public abstract class BaseFragment<p extends BasePresenter> extends SupportFragm
         return rootView;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        if (UseEventBus()) {
-            EventBus.getDefault().register(this);
-        }
-        super.onActivityCreated(savedInstanceState);
-    }
 
     //默认不使用
     protected boolean UseEventBus() {
@@ -106,5 +99,104 @@ public abstract class BaseFragment<p extends BasePresenter> extends SupportFragm
             EventBus.getDefault().unregister(this);
         }
         super.onDestroy();
+    }
+
+    Bundle savedState;
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Restore State Here
+        if (UseEventBus()) {
+            EventBus.getDefault().register(this);
+        }
+        if (!restoreStateFromArguments()) {
+            // First Time, Initialize something here
+            onFirstTimeLaunched();
+        }
+    }
+
+    protected void onFirstTimeLaunched() {
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save State Here
+        saveStateToArguments();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Save State Here
+        saveStateToArguments();
+    }
+
+    ////////////////////
+    // Don't Touch !!
+    ////////////////////
+
+    private void saveStateToArguments() {
+        if (getView() != null)
+            savedState = saveState();
+        if (savedState != null) {
+            Bundle b = getArguments();
+            if (b != null) {
+
+                b.putBundle("data", savedState);
+            }
+        }
+    }
+
+    ////////////////////
+    // Don't Touch !!
+    ////////////////////
+
+    private boolean restoreStateFromArguments() {
+        Bundle b = getArguments();
+        if (b != null) {
+
+            savedState = b.getBundle("data");
+        }
+        if (savedState != null) {
+            restoreState();
+            return true;
+        }
+        return false;
+    }
+
+    /////////////////////////////////
+    // Restore Instance State Here
+    /////////////////////////////////
+
+    private void restoreState() {
+        if (savedState != null) {
+            // For Example
+            //tv1.setText(savedState.getString(text));
+            onRestoreState(savedState);
+        }
+    }
+
+    protected void onRestoreState(Bundle savedInstanceState) {
+
+    }
+
+    //////////////////////////////
+    // Save Instance State Here
+    //////////////////////////////
+
+    private Bundle saveState() {
+        Bundle state = new Bundle();
+        // For Example
+        //state.putString(text, tv1.getText().toString());
+        onSaveState(state);
+        return state;
+    }
+
+    protected void onSaveState(Bundle outState) {
+
     }
 }
