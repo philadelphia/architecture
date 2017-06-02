@@ -27,7 +27,6 @@ import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsPresenter;
 import com.delta.smt.ui.product_tools.tools_info.ProduceToolsInfoActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;

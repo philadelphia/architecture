@@ -2,8 +2,6 @@ package com.delta.smt.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 /**
  * Created by Tao.ZT.Zhang on 2016/12/29.
  */

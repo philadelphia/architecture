@@ -5,8 +5,6 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 
-import java.util.HashMap;
-
 import rx.Observable;
 
 /**

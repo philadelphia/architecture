@@ -68,7 +68,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
         getModel().getItemWarningConfirm(condition).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
-                if ("0".equals(result.getCode())) {
+                if (0 == result.getCode()) {
                     getView().getItemWarningConfirmSuccess();
 
                 }else {

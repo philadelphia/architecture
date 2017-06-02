@@ -14,7 +14,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.delta.commonlibs.utils.ToastUtils;
-import com.delta.smt.app.App;
 import com.delta.smt.entity.EventNothing;
 import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;

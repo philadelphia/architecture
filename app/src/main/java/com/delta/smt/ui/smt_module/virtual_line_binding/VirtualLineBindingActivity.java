@@ -55,13 +55,12 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
     @BindView(R.id.recy_title)
-    RecyclerView recyTitle;
+    RecyclerView recyclerViewTitle;
     @BindView(R.id.recy_content)
-    RecyclerView recyContent;
+    RecyclerView recyclerViewContent;
     List<VirtualLineItem> data_tmp = null;
     String materialBlockNumber;
     String feederNumber;
-    String virtualModuleID;
     String serialNo;
     @BindView(R.id.tv_showWorkOrder)
     TextView tv_showWorkOrder;
@@ -146,8 +145,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                 return R.layout.item_virtual_line_binding;
             }
         };
-        recyTitle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyTitle.setAdapter(adapterTitle);
+        recyclerViewTitle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewTitle.setAdapter(adapterTitle);
         adapter = new CommonBaseAdapter<VirtualLineItem>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, VirtualLineItem item, int position) {
@@ -168,8 +167,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
             }
 
         };
-        recyContent.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
-        recyContent.setAdapter(adapter);
+        recyclerViewContent.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
+        recyclerViewContent.setAdapter(adapter);
     }
 
     @Override
@@ -346,8 +345,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
                         scan1_label = null;
                         state = 1;
-                    }else{
-
                     }
 
                 } catch (EntityNotFountException e) {

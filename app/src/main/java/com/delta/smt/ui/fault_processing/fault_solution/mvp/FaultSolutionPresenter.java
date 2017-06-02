@@ -2,12 +2,7 @@ package com.delta.smt.ui.fault_processing.fault_solution.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
-import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.BaseEntity;
-import com.delta.smt.entity.FaultSolutionMessage;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 

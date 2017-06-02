@@ -4,8 +4,6 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.FaultSolutionMessage;
-import com.delta.smt.entity.ResultFault;
-import com.delta.smt.entity.ResultString;
 
 import java.util.List;
 
