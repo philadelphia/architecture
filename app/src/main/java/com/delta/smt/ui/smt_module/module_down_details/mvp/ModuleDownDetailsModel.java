@@ -4,7 +4,6 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModuleDownDetailsItem;
-import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.Result;
 
 import rx.Observable;

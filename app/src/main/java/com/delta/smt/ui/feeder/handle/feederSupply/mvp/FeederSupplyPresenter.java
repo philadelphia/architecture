@@ -84,13 +84,8 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             @Override
             public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
                 if (feederSupplyItemResult.getCode() == 0) {
-                    if (feederSupplyItemResult.getRows().size() == 0) {
-                        getView().showEmptyView();
-                        getView().onFailed(feederSupplyItemResult.getMessage());
-                    } else {
                         getView().showContentView();
                         getView().onSuccess(feederSupplyItemResult.getRows());
-                    }
                 } else {
                     getView().onFailed(feederSupplyItemResult.getMessage());
                     getView().showErrorView();

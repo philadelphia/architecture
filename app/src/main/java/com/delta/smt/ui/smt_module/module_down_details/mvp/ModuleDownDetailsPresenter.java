@@ -3,9 +3,7 @@ package com.delta.smt.ui.smt_module.module_down_details.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
-import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.ModuleDownDetailsItem;
-import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
@@ -75,7 +73,15 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         getModel().getModuleDownMaintainResult(str).subscribe(new RxErrorHandlerSubscriber<Result>(rxErrorHandler) {
             @Override
             public void onNext(Result result) {
-                    getView().onMaintainResult(result.getMessage());
+                if (result.getCode() == 0) {
+                    if (result.getRows().size()==0) {
+                        getView().showEmptyView();
+                    }else {
+                        getView().onMaintainResult(result.getMessage());
+                    }
+                }else {
+                    getView().onFailed(result.getMessage());
+                }
             }
 
             @Override

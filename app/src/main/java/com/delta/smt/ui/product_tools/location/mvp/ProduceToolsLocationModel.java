@@ -6,8 +6,6 @@ import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.JsonLocationVerfyRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
 
-import java.util.HashMap;
-
 import rx.Observable;
 
 /**

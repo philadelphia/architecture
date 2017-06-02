@@ -3,7 +3,8 @@ package com.delta.smt.ui.smt_module.virtual_line_binding.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
-import com.delta.smt.entity.VirtualLineBindingItem;
+import com.delta.smt.entity.Result;
+import com.delta.smt.entity.VirtualLineItem;
 
 import rx.Observable;
 
@@ -17,13 +18,13 @@ public class VirtualLineBindingModel extends BaseModel<ApiService> implements Vi
     }
 
     @Override
-    public Observable<VirtualLineBindingItem> getAllVirtualLineBindingItems(String str) {
-        return getService().getVirtualLineBindingItems(str).compose(RxsRxSchedulers.<VirtualLineBindingItem>io_main());
+    public Observable<Result<VirtualLineItem>> getAllVirtualLineBindingItems(String str) {
+        return getService().getVirtualLineBindingItems(str).compose(RxsRxSchedulers.<Result<VirtualLineItem>>io_main());
     }
 
     @Override
-    public Observable<VirtualLineBindingItem> getVirtualBinding(String str) {
-        return getService().getVirtualBindingResult(str).compose(RxsRxSchedulers.<VirtualLineBindingItem>io_main());
+    public Observable<Result<VirtualLineItem>> getVirtualBinding(String str) {
+        return getService().getVirtualBindingResult(str).compose(RxsRxSchedulers.<Result<VirtualLineItem>>io_main());
     }
 
     /*@Override

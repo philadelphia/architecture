@@ -7,7 +7,6 @@ import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.ProductToolsInfo;
 
-import java.util.HashMap;
 import java.util.List;
 
 import rx.Observable;

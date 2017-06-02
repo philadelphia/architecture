@@ -265,7 +265,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         }
     public void getOutSumbit(int scheduleId){
         Map<String,Integer>map=new HashMap<>();
-        map.put("id",scheduleId);
+        map.put("scheduleId",scheduleId);
         String jsonArray=createGsonListString(map);
         getModel().getOutSubmit(jsonArray).doOnSubscribe(new Action0() {
             @Override
