@@ -214,6 +214,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void onSuccess(List<ModuleUpBindingItem> data) {
         state = 1;
+        scan_position = -1;
         dataSource.clear();
         List<ModuleUpBindingItem> rowsBeen = data;
         dataSource.addAll(rowsBeen);
@@ -235,11 +236,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @SuppressWarnings("all")
     @Override
     public void onSuccessBinding(List<ModuleUpBindingItem> dataSource) {
-
-//        if (data.getMsg().toLowerCase().equals("success")) {
-//            showMessage.setText(dataSource.get(scan_position).getSlot() + "绑定成功！");
-//            showMessage.setVisibility(View.VISIBLE);
-//        }
         dataSource.clear();
         List<ModuleUpBindingItem> rowsBeen = dataSource;
         dataSource.addAll(rowsBeen);
@@ -338,7 +334,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         showMessage.setVisibility(View.GONE);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
-            case 1:
+            case 1:     //扫描料盘
                 try {
                     parseMaterial(barcode, barCodeParseIpml);
 
@@ -356,7 +352,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     state = 1;
                 }
                 break;
-            case 2:
+            case 2:     //扫描Feeder
                 try {
                     Feeder feederCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
                     showMessage.setVisibility(View.GONE);

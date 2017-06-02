@@ -75,7 +75,15 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         getModel().getModuleDownMaintainResult(str).subscribe(new RxErrorHandlerSubscriber<Result>(rxErrorHandler) {
             @Override
             public void onNext(Result result) {
-                    getView().onMaintainResult(result.getMessage());
+                if (result.getCode() == 0) {
+                    if (result.getRows().size()==0) {
+                        getView().showEmptyView();
+                    }else {
+                        getView().onMaintainResult(result.getMessage());
+                    }
+                }else {
+                    getView().onFailed(result.getMessage());
+                }
             }
 
             @Override
