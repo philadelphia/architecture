@@ -25,13 +25,13 @@ public class CheckStockModel extends BaseModel<ApiService> implements CheckStock
     }
 
     @Override
-    public Observable<Success> getCheckStockNumber(int id,int realCount) {
-        return getService().getCheckNumber(id,realCount).compose(RxsRxSchedulers.<Success>io_main());
+    public Observable<Success> getCheckStockNumber(String id) {
+        return getService().getCheckNumber(id).compose(RxsRxSchedulers.<Success>io_main());
     }
 
     @Override
-    public Observable<Success> getError(String boxSerial, String subShelfSerial) {
-        return getService().getError(boxSerial,subShelfSerial).compose(RxsRxSchedulers.<Success>io_main());
+    public Observable<Success> getError(String boxSerial) {
+        return getService().getError(boxSerial).compose(RxsRxSchedulers.<Success>io_main());
     }
 
     @Override

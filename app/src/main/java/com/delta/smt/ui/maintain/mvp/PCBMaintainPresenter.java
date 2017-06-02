@@ -63,10 +63,10 @@ public class PCBMaintainPresenter extends BasePresenter<PCBMaintainContract.Mode
             public void call(Success success) {
                 if ("0".equals(success.getCode())) {
                     getView().showContentView();
-                    getView().getUpdate(success.getMsg());
+                    getView().getUpdate(success.getMessage());
                 } else if("-1".equals(success.getCode())){
                     getView().showContentView();
-                    getView().onFailed(success.getMsg());
+                    getView().onFailed(success.getMessage());
                 }else {
                     getView().showContentView();
                     getView().UnboundDialog(success.getCode());
@@ -106,10 +106,10 @@ public class PCBMaintainPresenter extends BasePresenter<PCBMaintainContract.Mode
             public void call(Success success) {
                 if ("0".equals(success.getCode())) {
                     getView().showContentView();
-                    getView().Unbound(success.getMsg());
+                    getView().Unbound(success.getMessage());
                 } else {
                     getView().showContentView();
-                    getView().onFailed(success.getMsg());
+                    getView().onFailed(success.getMessage());
                 }
             }
         }, new Action1<Throwable>() {

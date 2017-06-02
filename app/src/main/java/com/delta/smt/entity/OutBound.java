@@ -15,7 +15,7 @@ public class OutBound {
      */
 
     private String code;
-    private String msg;
+    private String message;
     /**
      * partNum : 0343352301
      * subShelfSerial : J21-34
@@ -33,12 +33,12 @@ public class OutBound {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public List<DataBean> getRows() {

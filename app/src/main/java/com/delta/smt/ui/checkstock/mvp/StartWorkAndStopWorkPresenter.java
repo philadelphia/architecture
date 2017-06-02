@@ -32,10 +32,10 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
             public void call(Success success) {
                 if ("0".equals(success.getCode())) {
                     getView().showContentView();
-                    getView().onStartWork(success.getMsg());
+                    getView().onStartWork(success.getMessage());
                 } else {
                     getView().showContentView();
-                    getView().onFailed(success.getMsg());
+                    getView().onFailed(success.getMessage());
                 }}
 
     }, new Action1<Throwable>() {
@@ -106,7 +106,7 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                 errorBuffer.append("误差 \n");
                 StringBuffer fewBuffer = new StringBuffer();
                 if ("0".equals(success.getCode())) {
-                    if (success.getMsg().contains("Success")) {
+                    if (success.getMessage().contains("success")) {
                         for (int i = 0; i < success.getRows().size(); i++) {
                             switch (success.getRows().get(i).getStatus()) {
                                 case 0:
@@ -124,7 +124,7 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                         fewBuffer.append(errorBuffer.toString());
                         getView().onInventoryException(fewBuffer.toString());
                     } else {
-                        getView().onFailed(success.getMsg());
+                        getView().onFailed(success.getMessage());
                     }
                 }
             }
@@ -153,7 +153,7 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                         getView().showContentView();
                         getView().onEndSucess();
                     }else {
-                        getView().onFailed(success.getMsg());
+                        getView().onFailed(success.getMessage());
                     }
                 }
             }, new Action1<Throwable>() {

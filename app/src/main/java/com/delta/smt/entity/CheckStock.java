@@ -15,7 +15,7 @@ public class CheckStock {
      */
 
     private String code;
-    private String msg;
+    private String message;
     /**
      * id : 1
      * partNum : 0343362301
@@ -41,12 +41,12 @@ public class CheckStock {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public List<RowsBean> getRows() {

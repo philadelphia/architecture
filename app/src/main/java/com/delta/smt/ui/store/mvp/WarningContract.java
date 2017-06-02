@@ -27,6 +27,6 @@ public class WarningContract {
     }
      public interface Model extends IModel{
          Observable<AllQuery> getWarning();
-         Observable<Success> getArrangeCloneLight(int s,int type);
+         Observable<Success> getArrangeCloneLight(String s);
     }
 }
