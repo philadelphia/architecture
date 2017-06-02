@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
 
         Map<String,String> mMap=new HashMap<>();
         mMap.put("line",line);
-        line=new Gson().toJson(mMap);
+        line=GsonTools.createGsonListString(mMap);
         Log.e("aaa", "getItemDatas: "+line);
         getModel().getAcceptMaterialsItemDatas(line)
                 .subscribe(new Action1<ItemAcceptMaterialDetail>() {
@@ -65,7 +65,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         Map<String, String> map = new HashMap<>();
         map.put("oldSerialNumber", oldSerialNumber);
         map.put("newSerialNumber", newSerialNumber);
-        String argu = new Gson().toJson(map);
+        String argu = GsonTools.createGsonListString(map);
 
 
         getModel().commitSerialNumber(argu).subscribe(new Action1<Result>() {
@@ -108,7 +108,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         map.put("line", line);
         map.put("serialNumber", serialNumber);
         map.put("barcode", barcode);
-        String argu = new Gson().toJson(map);
+        String argu =GsonTools.createGsonListString(map);
 
 
         getModel().commitSerialNumber(argu).subscribe(new Action1<Result>() {
@@ -144,7 +144,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         Log.e(TAG, "requestCloseLight: "+line );
         Map<String,String> map=new HashMap<>();
         map.put("line",line);
-        line=new Gson().toJson(map);
+        line= GsonTools.createGsonListString(map);
 
         getModel().requestCloseLight(line).subscribe(new Action1<Result>() {
             @Override

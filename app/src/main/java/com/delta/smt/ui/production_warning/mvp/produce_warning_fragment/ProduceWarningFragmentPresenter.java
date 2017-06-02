@@ -91,7 +91,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
         getModel().getBarcodeInfo(condition).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
-                if ("0".equals(result.getCode())) {
+                if (0==result.getCode()) {
                     getView().getItemWarningConfirmSuccess();
                 }else {
                     getView().getItemWarningDatasFailed(result.getMessage());

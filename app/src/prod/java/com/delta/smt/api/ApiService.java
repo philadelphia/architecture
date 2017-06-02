@@ -88,9 +88,7 @@ public interface ApiService {
     @POST
     Observable<List<WareHouse>> getAllWareHouse();
 
-
     //  tao.zt.zhang
-
     //  获取feeder入库列表
     @GET("SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
@@ -127,17 +125,14 @@ public interface ApiService {
 
 
     //超领
-    //@GET("SMM/ExcessManagement/qExcessList")
-    @GET("ams/smm/excessmanagement/qexcesslist")
+    @GET("SMM/ExcessManagement/qExcessList")
     Observable<OverReceiveWarning> getOverReceiveItems();
 
-    @Headers({"Content-Type: application/x-www-form-urlencoded"})
-    @FormUrlEncoded
-    @POST("ams/smm/excessmanagement/execessissure")
-    Observable<OverReceiveWarning> getOverReceiveItemSend(@Field("value") String value);
+    @GET("SMM/ExcessManagement/execessIssure")
+    Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
 
 
-    @GET("ams/smm/excessmanagement/debit")
+    @GET("SMM/ExcessManagement/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     //上模组排程
@@ -186,56 +181,62 @@ public interface ApiService {
     Observable<Result<ItemProduceLine>> getLineDatas();
 
     //请求预警，故障，消息的item数量
-    @GET("lineAlarmFault/alarmFaultInfos")
+    @GET("ams/smm/linealarmfault/alarmfaultinfos")
     Observable<ProduceWarning> getTitleDatas(@Query("condition") String condition);
 
     //请求预警中item数据
-    @GET("lineAlarmFault/alarmFaultInfos")
+    @GET("ams/smm/linealarmfault/alarmfaultinfos")
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
     //请求接料预警详情页面item数据
-    @GET("lineAlarmFault/getLineMaterialConnectDetail")
+    @GET("ams/smm/linealarmfault/getlinematerialconnectdetail")
     Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(@Query("condition") String condition);
 
     //提交新旧流水号
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("lineAlarmFault/connectMaterial")
-    Observable<Result> commitSerialNumber(@Field("condition") String condition);
+    @POST("ams/smm/linealarmfault/connectmaterial")
+    Observable<Result> commitSerialNumber(@Field("value") String condition);
 
     //请求关灯
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("lineAlarmFault/offMaterialLight")
-    Observable<Result> requestCloseLight(@Field("condition") String condition);
+    @POST("ams/smm/linealarmfault/offmateriallight")
+    Observable<Result> requestCloseLight(@Field("value") String condition);
 
     //请求故障中item数据
-    @GET("lineAlarmFault/alarmFaultInfos")
+    @GET("ams/smm/linealarmfault/alarmfaultinfos")
     Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
 
     //请求消息中item数据
-    @GET("lineAlarmFault/alarmFaultInfos")
+    @GET("ams/smm/linealarmfault/alarmfaultinfos")
     Observable<ProduceWarning> getItemInfoDatas(@Query("condition") String condition);
 
     //确认信息中item
-    @GET("lineAlarmFault/confirmMessage")
-    Observable<Result> getItemInfoConfirm(@Query("condition") String condition);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/smm/linealarmfault/confirmmessage")
+    Observable<Result> getItemInfoConfirm(@Field("value") String condition);
 
     //确认预警中item
-    @GET("lineAlarmFault/confirmAlarmMessage")
-    Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/smm/linealarmfault/confirmalarmmessage")
+    Observable<Result> getItemWarningConfirm(@Field("value") String condition);
 
     //提交预警中扫码数据
     @GET("lineAlarmFault/relayMaterial")
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
 
     //请求手补件item数据
-    @GET("lineAlarmFault/getPatchMaterial")
+    @GET("ams/smm/linealarmfault/getpatchmaterial")
     Observable<Result<ItemHandAdd>> getItemHandAddDatas(@Query("condition") String condition);
 
     //确认手补件item数据
-    @GET("lineAlarmFault/confirmPatchMaterial")
-    Observable<Result> getItemHandAddConfirm(@Query("condition") String condition);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/smm/linealarmfault/confirmpatchmaterial")
+    Observable<Result> getItemHandAddConfirm(@Field("value") String condition);
 
 
     //接口PCB库房发料

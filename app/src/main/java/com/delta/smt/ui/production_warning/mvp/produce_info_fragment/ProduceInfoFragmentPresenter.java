@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,12 +55,12 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
 
         Map<String, String > map = new HashMap<>();
         map.put("id", condition);
-        condition = new Gson().toJson(map);
+        condition = GsonTools.createGsonListString(map);
 
         getModel().getItemInfoConfirm(condition).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
-                if ("0".equals(result.getCode())) {
+                if (0==result.getCode()) {
                     getView().getItemInfoConfirmSucess();
                     getView().getItemInfoDatasFailed(result.getMessage());
 

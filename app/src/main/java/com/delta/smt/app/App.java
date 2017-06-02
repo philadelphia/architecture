@@ -12,7 +12,6 @@ import android.text.TextUtils;
 
 import com.delta.commonlibs.utils.DeviceUuidFactory;
 import com.delta.commonlibs.utils.SpUtil;
-import com.delta.smt.BuildConfig;
 import com.delta.smt.api.API;
 import com.delta.smt.base.BaseApplication;
 import com.delta.smt.di.component.AppComponent;
@@ -22,11 +21,8 @@ import com.delta.smt.manager.ActivityState;
 import com.delta.smt.service.warningService.WarningService;
 import com.delta.ttsmanager.TextToSpeechManager;
 import com.delta.updatelibs.UpdateUtils;
-import com.facebook.stetho.Stetho;
 
 import javax.inject.Inject;
-
-import timber.log.Timber;
 
 /**
  * Created by V.Wenju.Tian on 2016/11/29.
@@ -65,10 +61,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     public void onCreate() {
         super.onCreate();
         new DeviceUuidFactory(this);
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-            Stetho.initializeWithDefaults(this);
-        }
+
         mContenxt = this;
         mainHander = new Handler(Looper.getMainLooper());
         appComponent = DaggerAppComponent.builder().clientModule(getClientModule()).appModule(getAppModule()).serviceModule(getServiceModule()).build();
