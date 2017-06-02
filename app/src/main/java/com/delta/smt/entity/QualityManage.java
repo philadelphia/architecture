@@ -1,6 +1,7 @@
 package com.delta.smt.entity;
 
 import com.delta.libs.adapter.TimeEntity;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class QualityManage {
      */
 
     private String code;
+    @SerializedName("message")
     private String msg;
     private List<RowsBean> rows;
 
@@ -62,7 +64,7 @@ public class QualityManage {
         private int status;
         private int expected_amount;
         private int real_amount;
-        private int duration_time;
+        private Double duration_time;
 
         public String getQuality_id() {
             return quality_id;
@@ -112,11 +114,11 @@ public class QualityManage {
             this.real_amount = real_amount;
         }
 
-        public int getDuration_time() {
+        public Double getDuration_time() {
             return duration_time;
         }
 
-        public void setDuration_time(int duration_time) {
+        public void setDuration_time(Double duration_time) {
             this.duration_time = duration_time;
         }
     }

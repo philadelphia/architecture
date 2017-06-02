@@ -596,12 +596,14 @@ public interface ApiService {
     Observable<MantissaWarehouseReturnResult> getputinstrage(@Field("value") String bind);
 
     //品管确认列表查询
-    @GET("SMM/LineQuality/getQualityList")
+    @GET("ams/smm/linequality/getqualitylist")
     Observable<QualityManage> getQualityList(@Query("condition") String bind);
 
     //品管确认列表查询
-    @GET("SMM/LineQuality/confirmQualityOK")
-    Observable<QualityManage> getQualityOK(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/smm/linequality/confirmqualityok")
+    Observable<QualityManage> getQualityOK(@Field("value") String bind);
 
     /**
      * @description :

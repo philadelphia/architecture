@@ -43,7 +43,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
         }).subscribe(new Action1<Result<ItemHandAdd>>() {
             @Override
             public void call(Result<ItemHandAdd> itemHandAdds) {
-                if ("0".equals(itemHandAdds.getCode())) {
+                if (0==itemHandAdds.getCode()) {
 
                     if (itemHandAdds.getRows().size() == 0) {
                         getView().showEmptyView();
