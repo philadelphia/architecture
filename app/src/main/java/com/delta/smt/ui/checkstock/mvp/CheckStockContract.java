@@ -35,8 +35,8 @@ public class CheckStockContract {
     }
     public interface Model extends IModel{
         Observable<CheckStock>getCheckStock(String s);
-        Observable<Success>getCheckStockNumber(int id, int realCount);
-        Observable<Success>getError(String boxSerial,String subShelfSerial);
+        Observable<Success>getCheckStockNumber(String id);
+        Observable<Success>getError(String boxSerial);
         Observable<ExceptionsBean>getException(String subShelfCode);
         Observable<Success>getSubmit(String subShelfCode);
         Observable<String>getCheckStockSuccess();

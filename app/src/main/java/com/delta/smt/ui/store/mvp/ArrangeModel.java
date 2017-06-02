@@ -25,8 +25,8 @@ public class ArrangeModel extends BaseModel<ApiService> implements ArrangeContra
     }
 
     @Override
-    public Observable<Success> getArrangeCloneLight(int s,int type) {
-        return getService().closeLights(s,type).compose(RxsRxSchedulers.<Success>io_main());
+    public Observable<Success> getArrangeCloneLight(String s) {
+        return getService().closeLights(s).compose(RxsRxSchedulers.<Success>io_main());
     }
 
 

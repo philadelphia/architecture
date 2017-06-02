@@ -32,7 +32,6 @@ import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.ModuleDownDetailsItem;
-import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
@@ -250,96 +249,117 @@ public interface ApiService {
     Observable<List<ListWarning>> getWarningNumberSuccess();//获取Warning列表的数量
 
 
-    @GET("webapi/pcb/management/inbound/location")
-    Observable<Light> onLight(@Query("param") String s);//点灯操作
+    @GET("ams/pcb/management/inbound/location")
+    Observable<Light> onLight(@Query("condition") String s);//点灯操作
 
-    @GET("webapi/pcb/management/inbound")
-    Observable<Success> putInStorage(@Query("param") String s);//入库操作
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/pcb/management/inbound")
+    Observable<Success> putInStorage(@Field("value") String s);//入库操作
 
-    @GET("pcb/management/alarminfo")
+    @GET("ams/pcb/management/alarminfo")
     Observable<AllQuery> getWarning();//获取所有预警信息
 
-    @GET("pcb/management/scheduleinfo")
+    @GET("ams/pcb/management/scheduleinfo")
     Observable<AllQuery> getArrange();//获取所有排程信息
 
-    @GET("pcb/management/outbound/lights/close")
-    Observable<Success> closeLights(@Query("id") int id, @Query("type") int type);//退出后又进入
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/lights/close")
+    Observable<Success> closeLights(@Field("value") String id);//退出后又进入
 
-    @GET("pcb/management/outbound/alarm/bill")
-    Observable<OutBound> outBound(@Query("id") int id, @Query("sapWorkOrderId") String sapWorkOrderId, @Query("partNum") String partNum, @Query("amount") int amount);//预警仓库发料清单
+    @GET("ams/pcb/management/outbound/alarm/bill")
+    Observable<OutBound> outBound(@Query("condition") String s);//预警仓库发料清单
 
-    @GET("pcb/management/outbound/schedule/bill")
-    Observable<OutBound> getScheduleDetailed(@Query("id") int id, @Query("sapWorkOrderId") String sapWorkOrderId, @Query("partNum") String partNum, @Query("amount") int amount);//获取发料详情列表
+    @GET("ams/pcb/management/outbound/schedule/bill")
+    Observable<OutBound> getScheduleDetailed(@Query("condition") String s);//获取发料详情列表
 
-    @GET("pcb/management/outbound/bill")
-    Observable<OutBound> outBound(@Query("param") String s);//仓库发料清单
+    @GET("ams/pcb/management/outbound/bill")
+    Observable<OutBound> outBounds(@Query("condition") String s);//仓库发料清单
 
     //Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
-    @GET("pcb/management/capacity")
+    @GET("ams/pcb/management/capacity")
     Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
 
     //    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
-    @GET("webapi/pcb/management/outbound")
-    Observable<Success> getPcbSuccess(@Query("param") String s);//出料操作
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/pcb/management/outbound")
+    Observable<Success> getPcbSuccess(@Field("value") String s);//出料操作
 
-    @GET("pcb/management/outbound/light/close")
-    Observable<Success> closeLight(@Query("subShelfCode") String s);//关灯操作
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/light/close")
+    Observable<Success> closeLight(@Field("value") String s);//关灯操作
 
-    @GET("pcb/management/outbound/alarm/submit")
-    Observable<Success> getAlarmOutSubmit(@Query("alarmId") int scheduleId);//提交
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/alarm/submit")
+    Observable<Success> getAlarmOutSubmit(@Field("value") String scheduleId);//提交
 
-    @GET("pcb/management/outbound/schedule/submit")
-    Observable<Success> getOutSubmit(@Query("scheduleId") int scheduleId);//提交
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/schedule/submit")
+    Observable<Success> getOutSubmit(@Field("value") String scheduleId);//提交
 
-    @GET("pcb/management/outbound/alarm/submit")
-    Observable<Success> getAlarmSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId, @Query("alarmId") int alarmId);//预警出库完成
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/alarm/submit")
+    Observable<Success> getAlarmSuccessState(@Field("value") String sapWorkOrderId);//预警出库完成
 
-    @GET("pcb/management/outbound/schedule/submit")
-    Observable<Success> getScheduleSuccessState(@Query("scheduleId") int scheduleId);//预警出库完成
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/schedule/submit")
+    Observable<Success> getScheduleSuccessState(@Field("value") String scheduleId);//预警出库完成
 
-    @GET("pcb/management/outbound/alternative/bill")
-    Observable<OutBound> getRefresh(@Query("id") int id, @Query("partNum") String partNum, @Query("offset") int offset, @Query("type") int type);
+    @GET("ams/pcb/management/outbound/alternative/bill")
+    Observable<OutBound> getRefresh(@Query("condition") String s);
 
-    @GET("pcb/inventory/start")
+    @POST("ams/pcb/inventory/start")
     Observable<Success> onStartWork();//开始盘点
 
-    @GET("pcb/inventory/ongoing")
+    @GET("ams/pcb/inventory/ongoing")
     Observable<OnGoing> onGoing();//盘点界面判断
 
-    @GET("pcb/inventory/end")
+    @PUT("ams/pcb/inventory/end")
     Observable<Success> onEnd();//结束盘点
 
-    @GET("pcb/inventory/detail")
-    Observable<CheckStock> getCheckStock(@Query("subShelfCode") String s);//获取盘点列表
+    @GET("ams/pcb/inventory/detail")
+    Observable<CheckStock> getCheckStock(@Query("condition") String s);//获取盘点列表
 
-    @GET("pcb/inventory/subinventory")
-    Observable<Success> getCheckNumber(@Query("id") int id, @Query("realCount") int realCount);//发送盘点数量
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/inventory/subinventory")
+    Observable<Success> getCheckNumber(@Field("value") String value);//发送盘点数量
 
-    @GET("pcb/inventory/alteration")
-    Observable<Success> getError(@Query("boxSerial") String boxSerial, @Query("subShelfCode") String subShelfCode);//发送盘点异常
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/inventory/alteration")
+    Observable<Success> getError(@Field("value") String values);//发送盘点异常
 
-    @GET("pcb/inventory/sub/exception")
-    Observable<ExceptionsBean> getException(@Query("subShelfCode") String boxSerial);//盘点结果
+    @GET("ams/pcb/inventory/sub/exception")
+    Observable<ExceptionsBean> getException(@Query("condition") String boxSerial);//盘点结果
 
-    @GET("pcb/inventory/exception")
+    @GET("ams/pcb/inventory/exception")
     Observable<InventoryExecption> getInventoryException();//获取总结
 
-    @GET("pcb/inventory/alteration/judge")
-    Observable<Success> getJudgeSuccsee(@Query("boxSerial") String boxSerial);//获取总结
+    @GET("ams/pcb/inventory/alteration/judge")
+    Observable<Success> getJudgeSuccsee(@Query("condition") String boxSerial);
 
-    @GET("pcb/inventory/submit")
+    @GET("ams/pcb/inventory/submit")
+        // TODO: 2017-05-26 查找是否存在 
     Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
 
 
     Observable<String> getCheckStockSuccess();//是否成功?
 
-    @GET("/pcb/subshelf")
+    @GET("ams/pcb/subshelf")
     Observable<LedLight> getSubshelf(@Query("shelfSerial") String s);
 
-    @GET("pcb/subshelf/update")
+    @GET("ams/pcb/subshelf/update")
     Observable<Success> getUpdate(@Query("id") String id, @Query("lightSerial") String lightSerial);
 
-    @GET("/webapi/pcb/subshelf/unbound")
+    @GET("ams/pcb/subshelf/unbound")
     Observable<Success> getUnbound(@Query("param") String id);
 
 

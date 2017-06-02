@@ -217,6 +217,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                         VibratorAndVoiceUtils.wrongVibrator(this);
                         VibratorAndVoiceUtils.wrongVoice(this);
                         storageIded.setText(null);
+                        status=0;
                         SnackbarUtil.showMassage(warningActivityMain, "请先扫描外箱条码，再扫描架位");
                     }
 

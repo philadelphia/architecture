@@ -5,13 +5,16 @@ import android.util.Log;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.Light;
+import com.delta.smt.entity.MaterialBlockBarCodeList;
 import com.delta.smt.entity.Success;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -73,26 +76,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             }
             jsonArray.put(jsonObject1);
         }
-        try {
-            jsonObject.putOpt("data",jsonArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//        Gson gson=new Gson();
-//        ParameterLight pa=new ParameterLight();
-//        List<ParameterLight.DataBean> listData=new ArrayList<>();
-//        for (int i=0;i<materialBlockBarCodes.size();i++){
-//            ParameterLight.DataBean data=new ParameterLight.DataBean();
-//            data.setPartNum(materialBlockBarCodes.get(i).getDeltaMaterialNumber());
-//            data.setPcbCode(materialBlockBarCodes.get(i).getBusinessCode());
-//            data.setDateCode(materialBlockBarCodes.get(i).getDC());
-//            data.setSerial(materialBlockBarCodes.get(i).getStreamNumber());
-//            listData.add(data);
-//        }
-//        pa.setData(listData);
-//        String jsonString="[\'{\"data:\""+gson.toJson(listData).toString()+"}\']";
-//                //.replace("\"","\\\"`");
-        String jsonString="[\'"+jsonObject.toString()+"\']";
+        String jsonString=jsonArray.toString();
         Log.e("info",jsonString);
         getModel().OnLight(jsonString).doOnSubscribe(new Action0() {
             @Override
@@ -104,17 +88,17 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             public void call(Light light) {
                 getView().showContentView();
             if ("0".equals(light.getCode())){
-                if ("当前库存中没有目标相同的料，请放置到一个空位即可!".equals(light.getMsg())){
+                if ("当前库存中没有目标相同的料，请放置到一个空位即可!".equals(light.getMessage())){
                     getView().lightSuccsee("当前库存中没有目标相同的料，请放置到一个空位即可!","N/A");
                     }else {
                     StringBuffer buffer = new StringBuffer();
                     for (int i = 0; i < light.getRows().size(); i++) {
                         buffer.append(light.getRows().get(i).getSubShelfSerial());
                     }
-                    getView().lightSuccsee(light.getMsg(),buffer.toString());
+                    getView().lightSuccsee(light.getMessage(),buffer.toString());
                 }
                 }else {
-             getView().storeFaild(light.getMsg());
+             getView().storeFaild(light.getMessage());
 
 
             }
@@ -133,52 +117,23 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
     }
 
     public  void fatchPutInStorage(List<MaterialBlockBarCode> materialBlockBarCodes,String s){
-//        Gson gson=new Gson();
-//        ParameterLight pa=new ParameterLight();
-//        List<ParameterLight.DataBean> listData=new ArrayList<>();
-//        for (int i=0;i<materialBlockBarCodes.size();i++){
-//            ParameterLight.DataBean data=new ParameterLight.DataBean();
-//            data.setSerial(materialBlockBarCodes.get(i).getStreamNumber());
-//            data.setPartNum(materialBlockBarCodes.get(i).getDeltaMaterialNumber());
-//            data.setPcbCode(materialBlockBarCodes.get(i).getBusinessCode());
-//            data.setDateCode(materialBlockBarCodes.get(i).getDC());
-//            data.setCount(materialBlockBarCodes.get(i).getCount());
-//
-//            listData.add(data);
-//        }
-//        pa.setData(listData);
-        JSONObject jsonObject=new JSONObject();
-        JSONArray jsonArray=new JSONArray();
-        for (int i=0;i<materialBlockBarCodes.size();i++){
-            JSONObject jsonObject1=new JSONObject();
-            try {
-                jsonObject1.putOpt("partNum",materialBlockBarCodes.get(i).getDeltaMaterialNumber());
-                if("0".equals(materialBlockBarCodes.get(i).getStreamNumber().substring(0,1))) {
-                    jsonObject1.putOpt("pcbCode", materialBlockBarCodes.get(i).getStreamNumber().substring(0, 2));
-                }else{
-                    jsonObject1.putOpt("pcbCode", materialBlockBarCodes.get(i).getDeltaMaterialNumber().substring(materialBlockBarCodes.get(i).getDeltaMaterialNumber().length()-2, materialBlockBarCodes.get(i).getDeltaMaterialNumber().length()));
-                }
-                jsonObject1.putOpt("dateCode",materialBlockBarCodes.get(i).getDC());
-                jsonObject1.putOpt("serial",materialBlockBarCodes.get(i).getStreamNumber());
-                jsonObject1.putOpt("count",materialBlockBarCodes.get(i).getCount());
-                jsonObject1.putOpt("unit",materialBlockBarCodes.get(i).getUnit());
-                jsonObject1.putOpt("vender",materialBlockBarCodes.get(i).getVendor());
-                jsonObject1.putOpt("invoiceNum",materialBlockBarCodes.get(i).getInvNo());
-                jsonObject1.putOpt("purchaseOrder",materialBlockBarCodes.get(i).getPO());
-                jsonObject1.putOpt("tradingNum",materialBlockBarCodes.get(i).getBusinessCode());
-                jsonObject1.putOpt("subShelfCode",s);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            jsonArray.put(jsonObject1);
+        MaterialBlockBarCodeList materialBlockBarCodeList=new MaterialBlockBarCodeList();
+        MaterialBlockBarCodeList.MaterialBlockBarCodefo codefo = null;
+        List<MaterialBlockBarCodeList.MaterialBlockBarCodefo> list=new ArrayList<>();
+        for(int i=0;i<materialBlockBarCodes.size();i++){
+            codefo=new MaterialBlockBarCodeList.MaterialBlockBarCodefo();
+            codefo.setSerial(materialBlockBarCodes.get(i).getStreamNumber());
+            codefo.setPartNum(materialBlockBarCodes.get(i).getDeltaMaterialNumber());
+            codefo.setPcbCode(materialBlockBarCodes.get(i).getStreamNumber().substring(0,2));
+            codefo.setDateCode(materialBlockBarCodes.get(i).getDC());
+            codefo.setCount(materialBlockBarCodes.get(i).getCount());
+            codefo.setVender(materialBlockBarCodes.get(i).getVendor());
+            codefo.setUnit(materialBlockBarCodes.get(i).getUnit());
+            codefo.setInvoiceNum(materialBlockBarCodes.get(i).getInvNo());
+            codefo.setSubShelfCode(s);
+            list.add(codefo);
         }
-        try {
-            jsonObject.putOpt("data",jsonArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//        String jsonString=gson.toJson(pa).toString();
-        String jsonString="[\'"+jsonObject.toString()+"\']";
+        String jsonString=GsonTools.createGsonString(list);
         Log.e("info",jsonString);
         getModel().PutInStorage(jsonString).doOnSubscribe(new Action0() {
             @Override
@@ -193,7 +148,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
 
                     getView().storageSuccsee();
                 }else {
-                    getView().storagefaild(storageSuccess.getMsg());
+                    getView().storagefaild(storageSuccess.getMessage());
                 }
 
             }

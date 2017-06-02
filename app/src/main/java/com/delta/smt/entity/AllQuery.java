@@ -21,7 +21,7 @@ public class AllQuery {
      */
 
     private String code;
-    private String msg;
+    private String message;
     private int currentPage;
     private int pageSize;
     private int totalcount;
@@ -47,12 +47,13 @@ public class AllQuery {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public int getCurrentPage() {

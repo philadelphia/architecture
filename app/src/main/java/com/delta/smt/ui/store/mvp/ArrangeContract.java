@@ -26,6 +26,6 @@ public class ArrangeContract {
     }
     public interface Model extends IModel{
         Observable<AllQuery> getArrange();
-        Observable<Success> getArrangeCloneLight(int s,int type);
+        Observable<Success> getArrangeCloneLight(String s);
     }
 }

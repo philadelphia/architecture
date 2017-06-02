@@ -15,7 +15,7 @@ public class Light {
      */
 
     private String code;
-    private String msg;
+    private String message;
     /**
      * shelfSerial : A
      * subShelfSerial : A-1-1
@@ -34,12 +34,12 @@ public class Light {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public List<RowsBean> getRows() {

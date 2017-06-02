@@ -4,14 +4,16 @@ import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.ItemInfo;
 import com.delta.smt.entity.Success;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -38,7 +40,7 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
             public void call(AllQuery itemInfos) {
                 getView().showContentView();
                 if ("0".equals(itemInfos.getCode())){
-                    if (itemInfos.getMsg().contains("Success")){
+                    if (itemInfos.getMessage().contains("success")){
                     List<ItemInfo> itemInfoList=new ArrayList<>();
 
                         SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
@@ -69,7 +71,7 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
 
                     getView().onSucess(itemInfoList);
                 }else {
-                    getView().onFailed(itemInfos.getMsg());
+                    getView().onFailed(itemInfos.getMessage());
                 }}
 
             }
@@ -86,7 +88,12 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
     }
 
     public void closeLights(int s,int type){
-        getModel().getArrangeCloneLight(s,type).doOnSubscribe(new Action0() {
+        Map<String,Integer>map=new HashMap<>();
+        map.put("id",s);
+        map.put("type",type);
+        String json=GsonTools.createGsonListString(map);
+        Log.i("info",json);
+        getModel().getArrangeCloneLight(json).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();
@@ -95,9 +102,9 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
             public void call(Success success) {
                 getView().showContentView();
                 if ("0".equals(success.getCode())){
-                    getView().onColenSucess(success.getMsg());
+                    getView().onColenSucess(success.getMessage());
                 }else {
-                    getView().onFailed(success.getMsg());
+                    getView().onFailed(success.getMessage());
                 }
             }
         }, new Action1<Throwable>() {

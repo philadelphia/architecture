@@ -294,6 +294,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                         VibratorAndVoiceUtils.wrongVibrator(this);
                         VibratorAndVoiceUtils.wrongVoice(this);
                         //SnackbarUtil.showMassage(mianCheckStockActivityView,"请输入数量");
+                        status = 2;
                         ToastUtils.showMessageLong(this, "扫描的架位二维码错误，请重新扫描");
                     }catch(Exception e){
 

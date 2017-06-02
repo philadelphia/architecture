@@ -14,7 +14,7 @@ public class ExceptionsBean {
      * code : 0
      */
 
-    private String msg;
+    private String message;
     private String code;
     /**
      * status : 5
@@ -25,12 +25,12 @@ public class ExceptionsBean {
 
     private List<RowsBean> rows;
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getCode() {
