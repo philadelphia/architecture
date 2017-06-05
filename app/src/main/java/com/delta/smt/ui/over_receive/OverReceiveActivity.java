@@ -534,6 +534,9 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             showMessage.setText("此处不支持此类型码!");
             showMessage.setVisibility(View.VISIBLE);
             e.printStackTrace();
+        } catch (ArrayIndexOutOfBoundsException ee) {
+            ee.printStackTrace();
+
         }
     }
 
