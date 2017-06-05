@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -134,7 +135,7 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
                         Map hmap = new HashMap();
                         hmap.put("quality_id", rowsBean.getQuality_id());
 
-                        String s =GsonTools.createGsonListString(hmap);
+                        String s = GsonTools.createGsonListString(hmap);
                         getPresenter().getYesok(s);
 
                     }
@@ -235,4 +236,16 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
