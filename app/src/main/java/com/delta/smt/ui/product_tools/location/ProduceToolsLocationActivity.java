@@ -69,7 +69,6 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
     private String tools;
     private String shelfBarcode;
-    private String mString;
 
     List<ItemLocationVerfyList> data = new ArrayList<>();
     CommonBaseAdapter<ItemLocationVerfyList> adapter;
