@@ -20,8 +20,11 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:background="@color/background"
+            android:textColor="@color/c_ffffff"
             android:text="手动扣账"
             android:textSize="40px"
+            android:layout_margin="10px"
             />
 
         <CheckBox
