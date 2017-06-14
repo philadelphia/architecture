@@ -33,16 +33,16 @@ public class WarningListContract {
     public interface Model extends IModel{
 
 
-        Observable<OutBound>getOutbound(int id,String sapWorkOrderId,String partNum,int amount);
-        Observable<OutBound> getScheduleDetailed(int id,String sapWorkOrderId, String partNum, int  amount);
+        Observable<OutBound>getOutbound(String sapWorkOrderId);
+        Observable<OutBound> getScheduleDetailed(String sapWorkOrderId);
         Observable<PcbNumber>getPcbNumber(String s);
         Observable<Success>getPcbSuccess(String s);
-        Observable<Success>getAlarmSuccessfulState (String sapWorkOrderId, int alarmId );
-        Observable<Success>getScheduleSuccessState (int scheduleId);
+        Observable<Success>getAlarmSuccessfulState (String sapWorkOrderId);
+        Observable<Success>getScheduleSuccessState (String scheduleId);
         Observable<Success>Closelighting(String subShelfCode);
-        Observable<Success>getOutSubmit(int scheduleId);
-        Observable<Success>getAlarmOutSubmit(int scheduleId);
-        Observable<OutBound>getRefresh(int id,String partNum,int offset,int type);
+        Observable<Success>getOutSubmit(String scheduleId);
+        Observable<Success>getAlarmOutSubmit(String scheduleId);
+        Observable<OutBound>getRefresh(String partNum);
 
 
 

@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.Result;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
 
         Map<String,String> maps=new HashMap<>();
         maps.put("lines",producelines);
-        producelines=new Gson().toJson(maps);
+        producelines=GsonTools.createGsonListString(maps);
         Log.e("aaa", "getItemHandAddDatas: "+producelines );
 
 
@@ -43,7 +43,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
         }).subscribe(new Action1<Result<ItemHandAdd>>() {
             @Override
             public void call(Result<ItemHandAdd> itemHandAdds) {
-                if ("0".equals(itemHandAdds.getCode())) {
+                if (0 == itemHandAdds.getCode()) {
 
                     if (itemHandAdds.getRows().size() == 0) {
                         getView().showEmptyView();
@@ -74,7 +74,7 @@ public class HandAddPresenter extends BasePresenter<HandAddContract.Model,HandAd
 
         Map<String, String> mMap = new HashMap<>();
         mMap.put("id", codition);
-        String mS = new Gson().toJson(mMap);
+        String mS = GsonTools.createGsonListString(mMap);
         Log.i(TAG, mS);
 
         getModel().getItemHandAddConfirm(mS).subscribe(new Action1<Result>() {

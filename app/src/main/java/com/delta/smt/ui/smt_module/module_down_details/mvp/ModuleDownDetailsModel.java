@@ -4,7 +4,6 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.ModuleDownDetailsItem;
-import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.Result;
 
 import rx.Observable;
@@ -33,8 +32,8 @@ public class ModuleDownDetailsModel extends BaseModel<ApiService> implements Mod
 //        return getService().getDownModuleList(condition).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
 //    }
 //
-//    @Override
-//    public Observable<ModuleDownDetailsItem> getFeederCheckInTime(String condition) {
-//        return getService().getFeederCheckInTime(condition).compose(RxsRxSchedulers.<ModuleDownDetailsItem>io_main());
-//    }
+    @Override
+    public Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition) {
+        return getService().getFeederCheckInTime(condition).compose(RxsRxSchedulers.<Result<ModuleDownDetailsItem>>io_main());
+    }
 }

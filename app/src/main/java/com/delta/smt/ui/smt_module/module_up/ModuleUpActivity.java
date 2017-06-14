@@ -46,8 +46,8 @@ import butterknife.BindView;
 
 /**
  * Created by Shufeng.Wu on 2017/1/3.
+ *
  */
-
 public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         ModuleUpContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleUpWarningItem> {
 

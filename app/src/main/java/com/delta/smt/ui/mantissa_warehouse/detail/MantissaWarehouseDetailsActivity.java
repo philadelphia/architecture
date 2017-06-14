@@ -544,21 +544,17 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         }
         if (SingleClick.isSingle(1000)) {
 
-            if (isOver == false) {
-
-                if (isOver == false) {
-
-                    if (bottomSheetDialog.isShowing()) {
-                        bottomSheetDialog.dismiss();
-                    } else {
-                        undoList_adapter.notifyDataSetChanged();
-                        bottomSheetDialog.show();
-                    }
+            if (!isOver) {
+                if (bottomSheetDialog.isShowing()) {
+                    bottomSheetDialog.dismiss();
                 } else {
-                    // getPresenter().debit();
+                    undoList_adapter.notifyDataSetChanged();
+                    bottomSheetDialog.show();
                 }
-
+            } else {
+                // getPresenter().debit();
             }
+
         }
     }
 

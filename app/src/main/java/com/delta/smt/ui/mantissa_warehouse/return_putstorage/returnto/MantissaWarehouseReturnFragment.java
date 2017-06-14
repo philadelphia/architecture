@@ -40,7 +40,6 @@ import java.util.List;
 import butterknife.BindView;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
-import static com.delta.commonlibs.utils.GsonTools.createGsonListString;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
@@ -225,8 +224,8 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     @Override
     public void showEmptyView() {
 
-        statusLayout.showErrorView();
-        statusLayout.setErrorClick(new View.OnClickListener() {
+        statusLayout.showEmptyView();
+        statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getPresenter().getMantissaWarehouseReturn();

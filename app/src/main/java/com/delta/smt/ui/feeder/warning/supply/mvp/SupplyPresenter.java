@@ -11,9 +11,6 @@ import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
-import rx.functions.Action0;
-import rx.functions.Action1;
-
 /**
  * Author:   Tao.ZT.Zhang
  * Date:     2016/12/21.

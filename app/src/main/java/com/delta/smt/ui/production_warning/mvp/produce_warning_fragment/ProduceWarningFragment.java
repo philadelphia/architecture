@@ -23,6 +23,7 @@ import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -43,7 +44,6 @@ import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.delta.smt.widget.DialogLayout;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -123,15 +123,15 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                 if ("接料预警".equals(itemWarningInfo.getTitle())) {
                     holder.setText(R.id.tv_title, itemWarningInfo.getTitle());
                     holder.setText(R.id.tv_produce_line, "产线：" + itemWarningInfo.getProductionline());
-                    holder.setText(R.id.tv_work_code,itemWarningInfo.getWorkcode());
+                    holder.setText(R.id.tv_work_code, itemWarningInfo.getWorkcode());
                     holder.setText(R.id.tv_face, "面别：" + itemWarningInfo.getFace());
                     holder.setText(R.id.tv_unused_materials, "剩余料量：" + itemWarningInfo.getUnusedmaterials());
                     holder.setText(R.id.tv_unaccept_materials_num, "该线别待接料数：" + itemWarningInfo.getConnectMaterialCount());
 //                    holder.setText(R.id.tv_material_station, "模组料站：" + itemWarningInfo.getMaterialstation());
                     if (itemWarningInfo.getStatus().equals("1")) {
-                        holder.setText(R.id.tv_status, "状态："+"即将缺料");
-                    }else {
-                        holder.setText(R.id.tv_status, "状态："+"已经缺料");
+                        holder.setText(R.id.tv_status, "状态：" + "即将缺料");
+                    } else {
+                        holder.setText(R.id.tv_status, "状态：" + "已经缺料");
                     }
 //                    holder.setText(R.id.tv_status, "状态：" + itemWarningInfo.getStatus());
 
@@ -164,7 +164,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                     holder.getView(R.id.tv_warning_message).setVisibility(View.VISIBLE);
 
                 }
-                TextView work=holder.getView(R.id.tv_work_code);
+                TextView work = holder.getView(R.id.tv_work_code);
                 work.setSelected(true);
             }
 
@@ -175,7 +175,6 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mAdapter.setOnItemTimeOnclick(this);
         mSrfRefresh.setOnRefreshListener(this);
     }
-
 
 
     @Override
@@ -245,10 +244,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         for (int i = 0; i < itemWarningInfo.size(); i++) {
 /*            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                 Date parse = format.parse(itemWarningInfo.get(i).getTime());*/
-                Log.e("aaa", "getItemWarningDatas: " + itemWarningInfo.get(i).getTime());
-                long time=System.currentTimeMillis();
-                itemWarningInfo.get(i).setEnd_time(time+itemWarningInfo.get(i).getTime()*1000);
-                itemWarningInfo.get(i).setEntityId(i);
+            Log.e("aaa", "getItemWarningDatas: " + itemWarningInfo.get(i).getTime());
+            long time = System.currentTimeMillis();
+            itemWarningInfo.get(i).setEnd_time(time + Math.round(itemWarningInfo.get(i).getTime()) * 1000);
+            itemWarningInfo.get(i).setEntityId(i);
 
         }
 
@@ -315,8 +314,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
                             Map<String, String> map = new HashMap<>();
                             map.put("id", String.valueOf(mItemWarningInfo.getId()));
-                            Gson gson = new Gson();
-                            String id = gson.toJson(map);
+                            String id = GsonTools.createGsonListString(map);
                             Log.i("ProduceWarningFragment", id);
 
                             getPresenter().getItemWarningConfirm(id);
@@ -437,8 +435,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                         mMap.put("feederId", feederId);
                         mMap.put("materialStation", materialStation);
                         mMap.put("id", id);
-                        Gson mGson = new Gson();
-                        String mS = mGson.toJson(mMap);
+
+                        String mS = GsonTools.createGsonListString(mMap);
                         Log.i("barcode", mS);
                         getPresenter().getBarcodeInfo(mS);
                         //启动接受广播预警

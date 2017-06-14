@@ -32,7 +32,6 @@ import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.ModuleDownDetailsItem;
-import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.ModuleDownWarningItem;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
@@ -53,13 +52,12 @@ import com.delta.smt.entity.StoreEntity;
 import com.delta.smt.entity.Success;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
-import com.delta.smt.entity.VirtualLineBindingItem;
+import com.delta.smt.entity.VirtualLineItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 
-import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -90,20 +88,18 @@ public interface ApiService {
     @POST
     Observable<List<WareHouse>> getAllWareHouse();
 
-
     //  tao.zt.zhang
-
     //  获取feeder入库列表
     @GET("SMM/FeederBuffStorage/qFeederBuffStorageList")
     Observable<Result<FeederCheckInItem>> getAllCheckedInFeeders();
 
-    //获取feeder入库时间
-    @GET("SMM/unplugmod/feederBuffStorage")
-    Observable<ModuleDownDetailsItem> getFeederCheckInTime(@Query("condition") String condition);
+    //feeder入Feeder缓冲区
+    @GET("ams/smm/unplugmodcontroller/feederbuffstorage")
+    Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(@Query("condition") String condition);
 
 
     //重置Feeder发料状态
-    @GET("ams/smm/buffer/completebufferissue")
+    @POST("ams/smm/buffer/completebufferissue")
     Observable<ResultFeeder> resetFeederSupplyStatus(@Query("value") String contidion);
 
 
@@ -120,7 +116,7 @@ public interface ApiService {
     Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("value") String value);
 
     //获取Feeder备料时间
-    @POST("/ams/smm/buffer/bufferissue")
+    @POST("ams/smm/buffer/bufferissue")
     Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("value") String condition);
 
     //上传feeder备料上模组结果
@@ -129,14 +125,18 @@ public interface ApiService {
 
 
     //超领
-    @GET("SMM/ExcessManagement/qExcessList")
+    //超领
+    //@GET("SMM/ExcessManagement/qExcessList")
+    @GET("ams/smm/excessmanagement/qexcesslist")
     Observable<OverReceiveWarning> getOverReceiveItems();
 
-    @GET("SMM/ExcessManagement/execessIssure")
-    Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/excessmanagement/execessissure")
+    Observable<OverReceiveWarning> getOverReceiveItemSend(@Field("value") String value);
 
 
-    @GET("SMM/ExcessManagement/debit")
+    @GET("ams/smm/excessmanagement/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     //上模组排程
@@ -157,11 +157,11 @@ public interface ApiService {
 
     //虚拟线体绑定列表
     @GET("ams/smm/unplugmodcontroller/getmodellist")
-    Observable<VirtualLineBindingItem> getVirtualLineBindingItems(@Query("condition") String condition);
+    Observable<Result<VirtualLineItem>> getVirtualLineBindingItems(@Query("condition") String condition);
 
     //虚拟线体绑定接口
     @GET("ams/smm/unplugmodcontroller/bindvirtualline")
-    Observable<VirtualLineBindingItem> getVirtualBindingResult(@Query("condition") String condition);
+    Observable<Result<VirtualLineItem>> getVirtualBindingResult(@Query("condition") String condition);
 
 
     //对应工单的下模组列表
@@ -181,60 +181,66 @@ public interface ApiService {
      * @date : 2017/1/21 14:41
      */
     //请求产线列表数据
-    @GET("SMM/LineManage/queryLines")
+    @GET("ams/smm/linemanage/querylines")
     Observable<Result<ItemProduceLine>> getLineDatas();
 
     //请求预警，故障，消息的item数量
-    @GET("lineAlarmFault/alarmFaultInfos")
+    @GET("ams/smm/linealarmfault/alarmfaultinfos")
     Observable<ProduceWarning> getTitleDatas(@Query("condition") String condition);
 
     //请求预警中item数据
-    @GET("lineAlarmFault/alarmFaultInfos")
+    @GET("ams/smm/linealarmfault/alarmfaultinfos")
     Observable<ProduceWarning> getItemWarningDatas(@Query("condition") String condition);
 
     //请求接料预警详情页面item数据
-    @GET("lineAlarmFault/getLineMaterialConnectDetail")
+    @GET("ams/smm/linealarmfault/getlinematerialconnectdetail")
     Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(@Query("condition") String condition);
 
     //提交新旧流水号
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("lineAlarmFault/connectMaterial")
-    Observable<Result> commitSerialNumber(@Field("condition") String condition);
+    @POST("ams/smm/linealarmfault/connectmaterial")
+    Observable<Result> commitSerialNumber(@Field("value") String condition);
 
     //请求关灯
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("lineAlarmFault/offMaterialLight")
-    Observable<Result> requestCloseLight(@Field("condition") String condition);
+    @POST("ams/smm/linealarmfault/offmateriallight")
+    Observable<Result> requestCloseLight(@Field("value") String condition);
 
     //请求故障中item数据
-    @GET("lineAlarmFault/alarmFaultInfos")
+    @GET("ams/smm/linealarmfault/alarmfaultinfos")
     Observable<ProduceWarning> getItemBreakDownDatas(@Query("condition") String condition);
 
     //请求消息中item数据
-    @GET("lineAlarmFault/alarmFaultInfos")
+    @GET("ams/smm/linealarmfault/alarmfaultinfos")
     Observable<ProduceWarning> getItemInfoDatas(@Query("condition") String condition);
 
     //确认信息中item
-    @GET("lineAlarmFault/confirmMessage")
-    Observable<Result> getItemInfoConfirm(@Query("condition") String condition);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/smm/linealarmfault/confirmmessage")
+    Observable<Result> getItemInfoConfirm(@Field("value") String condition);
 
     //确认预警中item
-    @GET("lineAlarmFault/confirmAlarmMessage")
-    Observable<Result> getItemWarningConfirm(@Query("condition") String condition);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/smm/linealarmfault/confirmalarmmessage")
+    Observable<Result> getItemWarningConfirm(@Field("value") String condition);
 
     //提交预警中扫码数据
     @GET("lineAlarmFault/relayMaterial")
     Observable<Result> getBarcodeInfo(@Query("condition") String condition);
 
     //请求手补件item数据
-    @GET("lineAlarmFault/getPatchMaterial")
+    @GET("ams/smm/linealarmfault/getpatchmaterial")
     Observable<Result<ItemHandAdd>> getItemHandAddDatas(@Query("condition") String condition);
 
     //确认手补件item数据
-    @GET("lineAlarmFault/confirmPatchMaterial")
-    Observable<Result> getItemHandAddConfirm(@Query("condition") String condition);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/smm/linealarmfault/confirmpatchmaterial")
+    Observable<Result> getItemHandAddConfirm(@Field("value") String condition);
 
 
     //接口PCB库房发料
@@ -247,96 +253,117 @@ public interface ApiService {
     Observable<List<ListWarning>> getWarningNumberSuccess();//获取Warning列表的数量
 
 
-    @GET("webapi/pcb/management/inbound/location")
-    Observable<Light> onLight(@Query("param") String s);//点灯操作
+    @GET("ams/pcb/management/inbound/location")
+    Observable<Light> onLight(@Query("condition") String s);//点灯操作
 
-    @GET("webapi/pcb/management/inbound")
-    Observable<Success> putInStorage(@Query("param") String s);//入库操作
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/pcb/management/inbound")
+    Observable<Success> putInStorage(@Field("value") String s);//入库操作
 
-    @GET("pcb/management/alarminfo")
+    @GET("ams/pcb/management/alarminfo")
     Observable<AllQuery> getWarning();//获取所有预警信息
 
-    @GET("pcb/management/scheduleinfo")
+    @GET("ams/pcb/management/scheduleinfo")
     Observable<AllQuery> getArrange();//获取所有排程信息
 
-    @GET("pcb/management/outbound/lights/close")
-    Observable<Success> closeLights(@Query("id") int id, @Query("type") int type);//退出后又进入
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/lights/close")
+    Observable<Success> closeLights(@Field("value") String id);//退出后又进入
 
-    @GET("pcb/management/outbound/alarm/bill")
-    Observable<OutBound> outBound(@Query("id") int id, @Query("sapWorkOrderId") String sapWorkOrderId, @Query("partNum") String partNum, @Query("amount") int amount);//预警仓库发料清单
+    @GET("ams/pcb/management/outbound/alarm/bill")
+    Observable<OutBound> outBound(@Query("condition") String s);//预警仓库发料清单
 
-    @GET("pcb/management/outbound/schedule/bill")
-    Observable<OutBound> getScheduleDetailed(@Query("id") int id, @Query("sapWorkOrderId") String sapWorkOrderId, @Query("partNum") String partNum, @Query("amount") int amount);//获取发料详情列表
+    @GET("ams/pcb/management/outbound/schedule/bill")
+    Observable<OutBound> getScheduleDetailed(@Query("condition") String s);//获取发料详情列表
 
-    @GET("pcb/management/outbound/bill")
-    Observable<OutBound> outBound(@Query("param") String s);//仓库发料清单
+    @GET("ams/pcb/management/outbound/bill")
+    Observable<OutBound> outBounds(@Query("condition") String s);//仓库发料清单
 
     //Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
-    @GET("pcb/management/capacity")
+    @GET("ams/pcb/management/capacity")
     Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
 
     //    Observable<PcbNumber> getPcbNumber(@Query("serial") String s);//获取实际数量
-    @GET("webapi/pcb/management/outbound")
-    Observable<Success> getPcbSuccess(@Query("param") String s);//出料操作
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/pcb/management/outbound")
+    Observable<Success> getPcbSuccess(@Field("value") String s);//出料操作
 
-    @GET("pcb/management/outbound/light/close")
-    Observable<Success> closeLight(@Query("subShelfCode") String s);//关灯操作
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/light/close")
+    Observable<Success> closeLight(@Field("value") String s);//关灯操作
 
-    @GET("pcb/management/outbound/alarm/submit")
-    Observable<Success> getAlarmOutSubmit(@Query("alarmId") int scheduleId);//提交
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/alarm/submit")
+    Observable<Success> getAlarmOutSubmit(@Field("value") String scheduleId);//提交
 
-    @GET("pcb/management/outbound/schedule/submit")
-    Observable<Success> getOutSubmit(@Query("scheduleId") int scheduleId);//提交
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/schedule/submit")
+    Observable<Success> getOutSubmit(@Field("value") String scheduleId);//提交
 
-    @GET("pcb/management/outbound/alarm/submit")
-    Observable<Success> getAlarmSuccessState(@Query("sapWorkOrderId") String sapWorkOrderId, @Query("alarmId") int alarmId);//预警出库完成
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/alarm/submit")
+    Observable<Success> getAlarmSuccessState(@Field("value") String sapWorkOrderId);//预警出库完成
 
-    @GET("pcb/management/outbound/schedule/submit")
-    Observable<Success> getScheduleSuccessState(@Query("scheduleId") int scheduleId);//预警出库完成
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/management/outbound/schedule/submit")
+    Observable<Success> getScheduleSuccessState(@Field("value") String scheduleId);//预警出库完成
 
-    @GET("pcb/management/outbound/alternative/bill")
-    Observable<OutBound> getRefresh(@Query("id") int id, @Query("partNum") String partNum, @Query("offset") int offset, @Query("type") int type);
+    @GET("ams/pcb/management/outbound/alternative/bill")
+    Observable<OutBound> getRefresh(@Query("condition") String s);
 
-    @GET("pcb/inventory/start")
+    @POST("ams/pcb/inventory/start")
     Observable<Success> onStartWork();//开始盘点
 
-    @GET("pcb/inventory/ongoing")
+    @GET("ams/pcb/inventory/ongoing")
     Observable<OnGoing> onGoing();//盘点界面判断
 
-    @GET("pcb/inventory/end")
+    @PUT("ams/pcb/inventory/end")
     Observable<Success> onEnd();//结束盘点
 
-    @GET("pcb/inventory/detail")
-    Observable<CheckStock> getCheckStock(@Query("subShelfCode") String s);//获取盘点列表
+    @GET("ams/pcb/inventory/detail")
+    Observable<CheckStock> getCheckStock(@Query("condition") String s);//获取盘点列表
 
-    @GET("pcb/inventory/subinventory")
-    Observable<Success> getCheckNumber(@Query("id") int id, @Query("realCount") int realCount);//发送盘点数量
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/inventory/subinventory")
+    Observable<Success> getCheckNumber(@Field("value") String value);//发送盘点数量
 
-    @GET("pcb/inventory/alteration")
-    Observable<Success> getError(@Query("boxSerial") String boxSerial, @Query("subShelfCode") String subShelfCode);//发送盘点异常
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/pcb/inventory/alteration")
+    Observable<Success> getError(@Field("value") String values);//发送盘点异常
 
-    @GET("pcb/inventory/sub/exception")
-    Observable<ExceptionsBean> getException(@Query("subShelfCode") String boxSerial);//盘点结果
+    @GET("ams/pcb/inventory/sub/exception")
+    Observable<ExceptionsBean> getException(@Query("condition") String boxSerial);//盘点结果
 
-    @GET("pcb/inventory/exception")
+    @GET("ams/pcb/inventory/exception")
     Observable<InventoryExecption> getInventoryException();//获取总结
 
-    @GET("pcb/inventory/alteration/judge")
-    Observable<Success> getJudgeSuccsee(@Query("boxSerial") String boxSerial);//获取总结
+    @GET("ams/pcb/inventory/alteration/judge")
+    Observable<Success> getJudgeSuccsee(@Query("condition") String boxSerial);
 
-    @GET("pcb/inventory/submit")
+    @GET("ams/pcb/inventory/submit")
+        // TODO: 2017-05-26 查找是否存在 
     Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
 
 
     Observable<String> getCheckStockSuccess();//是否成功?
 
-    @GET("/pcb/subshelf")
+    @GET("ams/pcb/subshelf")
     Observable<LedLight> getSubshelf(@Query("shelfSerial") String s);
 
-    @GET("pcb/subshelf/update")
+    @GET("ams/pcb/subshelf/update")
     Observable<Success> getUpdate(@Query("id") String id, @Query("lightSerial") String lightSerial);
 
-    @GET("/webapi/pcb/subshelf/unbound")
+    @GET("ams/pcb/subshelf/unbound")
     Observable<Success> getUnbound(@Query("param") String id);
 
 
@@ -351,35 +378,35 @@ public interface ApiService {
      * @date : 2017/1/21 13:53
      */
     //故障处理预警
-    @GET("SMM/Linefailure/getSeriousFaultInfos")
+    @GET("ams/smm/linefailure/getseriousfaultinfos")
     Observable<FaultMessage> getFalutMessages(@Query("condition") String s);
 
-    @GET("SMM/Linefailure/faultSolutionList")
+    @GET("ams/smm/linefailure/faultsolutionlist")
     Observable<SolutionMessage> getSolutionMessage(@Query("condition") String s);
 
-    @GET("SMM/Linefailure/faultSolutionDetailList")
+    @GET("ams/smm/linefailure/faultsolutiondetaillist")
     Observable<FaultSolutionMessage> getDetailSolutionMessage(@Query("condition") String s);
 
-    @GET("SMM/Linefailure/resolveFault")
+    @GET("ams/smm/linefailure/resolvefault")
     Observable<BaseEntity> resolveFault(@Query("condition") String content);
 
 
-    @GET("SMM/Linefailure/addFaultSolution")
+    @GET("ams/smm/linefailure/addfaultsolution")
     Observable<BaseEntity> addSolution(@Query("condition") String content);
 
     //获取模板内容
 
-    @GET("SMM/Linefailure/getHtmlContent")
+    @GET("ams/smm/linefailure/gethtmlcontent")
     Observable<BaseEntity<String>> getTemplateContent(@Query("condition") String fileName);
 
     //上传文件
     @Multipart
-    @POST("webapi/SMM/Linefailure/uploadFiles")
+    @POST("webapi/ams/smm/linefailure/uploadfiles")
     Observable<ResultFault> upLoadFile(@Part("description") RequestBody description,
                                        @Part MultipartBody.Part file,
                                        @Query("param") String argument);
 
-    @GET("SMM/Linefailure/getFilters")
+    @GET("ams/smm/linefailure/getfilters")
     Observable<FaultFilter> getFaultFilterMessage();
 
     //查询指定工单备料车ID
@@ -438,8 +465,10 @@ public interface ApiService {
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Field("value") String bind);
 
     //料盘绑定标签
-    @GET("SMM/ManToWareh/materBoundLabel")
-    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/mantowareh/materboundlabel")
+    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Field("value") String bind);
 
     //查询尾数仓备料车
     @GET("ams/smm/warehissue/qprepcaridbyworkorder")
@@ -485,18 +514,18 @@ public interface ApiService {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @PUT("ams/jig/life/use/loan/jig")
-    Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Field("value")String parm);
+    Observable<JsonProductRequestToolsRoot> getProductToolsInfoItem(@Field("value") String parm);
 
     //    @GET("http://172.22.34.100:8081/sms/jig/life/use/loan/jig")
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @PUT("ams/jig/life/use/loan/jig")
-    Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Field("value")String parm);
+    Observable<JsonProduct_mToolsRoot> getProduct_mToolsInfo(@Field("value") String parm);
 
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @PUT("ams/jig/life/use/shelf/verify")
-    Observable<JsonProductToolsLocationRoot> getLocationVerify(@Field("value")String param);
+    Observable<JsonProductToolsLocationRoot> getLocationVerify(@Field("value") String param);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/instore/submit")
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -523,31 +552,35 @@ public interface ApiService {
 
     //liuzhenyu
     //尾数仓退入主仓库
-    @GET("SMM/ManToWareh/queryReturnedWarehList")
+    @GET("ams/smm/mantowareh/queryreturnedwarehlist")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
 
     //点击清理按钮
-    @GET("SMM/ManToWareh/triggerListUpdate")
+    @GET("ams/smm/mantowareh/triggerlistupdate")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
     //点击开始绑定
-    @GET("SMM/ManToWareh/startBound")
+
+    @PUT("ams/smm/mantowareh/startbound")
     Observable<MantissaWarehousePutstorageResult> getOnclickBeginButton();
 
     //尾数仓点击开始入库
-    @GET("SMM/ManToWareh/startReturnedWareh")
+    @PUT("ams/smm/mantowareh/startreturnedwareh")
     Observable<MantissaWarehousePutstorageResult> getbeginPut();
 
     //尾数仓点击开始入库上架位完成
-    @GET("SMM/ManToWareh/materToShel")
-    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/mantowareh/matertoshel")
+    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Field("value") String bind);
 
     //确定点击下一个架位
-    @GET("SMM/ManToWareh/sureNextShelf")
+
+    @PUT("ams/smm/mantowareh/surenextshelf")
     Observable<MantissaWarehousePutstorageResult> getYesNext();
 
     //确定点击完成
-    @GET("SMM/ManToWareh/sureComplete")
+    @PUT("ams/smm/mantowareh/surecomplete")
     Observable<MantissaWarehousePutstorageResult> getYesok();
 
     //尾数仓入库
@@ -567,12 +600,14 @@ public interface ApiService {
     Observable<MantissaWarehouseReturnResult> getputinstrage(@Field("value") String bind);
 
     //品管确认列表查询
-    @GET("SMM/LineQuality/getQualityList")
+    @GET("ams/smm/linequality/getqualitylist")
     Observable<QualityManage> getQualityList(@Query("condition") String bind);
 
     //品管确认列表查询
-    @GET("SMM/LineQuality/confirmQualityOK")
-    Observable<QualityManage> getQualityOK(@Query("condition") String bind);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @PUT("ams/smm/linequality/confirmqualityok")
+    Observable<QualityManage> getQualityOK(@Field("value") String bind);
 
     /**
      * @description :

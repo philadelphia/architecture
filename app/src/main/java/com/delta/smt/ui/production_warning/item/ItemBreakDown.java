@@ -25,7 +25,7 @@ public class ItemBreakDown extends TimeEntity {
     private String breakdown_info;
 
     @SerializedName("duration_time")
-    private Long createTime;
+    private Double createTime;
 
     public ItemBreakDown() {
     }
@@ -41,11 +41,11 @@ public class ItemBreakDown extends TimeEntity {
 
 
 
-    public Long getCreateTime() {
+    public Double getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Double createTime) {
         this.createTime = createTime;
     }
 

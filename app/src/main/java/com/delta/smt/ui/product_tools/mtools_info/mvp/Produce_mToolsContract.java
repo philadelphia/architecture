@@ -5,7 +5,6 @@ import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.Product_mToolsInfo;
 
-import java.util.HashMap;
 import java.util.List;
 
 import rx.Observable;

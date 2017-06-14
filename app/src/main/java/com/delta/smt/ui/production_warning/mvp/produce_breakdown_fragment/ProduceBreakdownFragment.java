@@ -109,7 +109,7 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
                 Date parse = format.parse(itemBreakDown.get(i).getCreateTime());*/
                 Log.e(TAG, "getItemBreakdownDatas: "+ itemBreakDown.get(i).getCreateTime());
                 long time=System.currentTimeMillis();
-                itemBreakDown.get(i).setCreat_time(time-itemBreakDown.get(i).getCreateTime()*1000);
+                itemBreakDown.get(i).setCreat_time(time-Math.round(itemBreakDown.get(i).getCreateTime())*1000);
                 itemBreakDown.get(i).setEntityId(i);
         }
 

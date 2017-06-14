@@ -3,7 +3,6 @@ package com.delta.smt.entity;
 import com.delta.libs.adapter.TimeEntity;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * Created by Shufeng.Wu on 2017/1/3.

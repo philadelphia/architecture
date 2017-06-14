@@ -114,7 +114,7 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
         faultParameter = new FaultParameter();
         faultParameter.setLines(lines);
         faultParameter.setProcesses("");
-        parameter = GsonTools.createGsonString(faultParameter);
+        parameter = GsonTools.createGsonListString(faultParameter);
         warningManger.addWarning(Constant.ENGINEER_FAULT_ALARM_FLAG, this.getClass());
         warningManger.setReceive(true);
         warningManger.setOnWarning(this);
@@ -157,7 +157,7 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
         popupViews.add(filterRecyclerView);
         View contentView = LayoutInflater.from(this).inflate(R.layout.recycleview_content, null);
         rvFaultProcessing = ViewUtils.findView(contentView, R.id.rv_faultProcessing);
-        statusLayout=ViewUtils.findView(contentView,R.id.statusLayouts);
+        statusLayout = ViewUtils.findView(contentView, R.id.statusLayouts);
         dropDownMenu.setDropDownMenu(Arrays.asList("故障类型"), popupViews, contentView);
         mMyAdapter = new ItemCountViewAdapter<RowsBean.FailuresBean>(this, failuresBeen) {
             @Override
@@ -190,12 +190,12 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
             @Override
             protected void convert(CommonViewHolder holder, FiltersBean item, int position) {
                 holder.setText(R.id.text, item.getMain_exception_name());
-                if(checkPosition ==position){
-                    holder.setTextColor(R.id.text,FaultProcessingActivity.this.getResources().getColor(R.color.c_428bca));
-                    holder.setBackgroundColor(R.id.text,FaultProcessingActivity.this.getResources().getColor(R.color.gray));
-                }else {
-                    holder.setTextColor(R.id.text,FaultProcessingActivity.this.getResources().getColor(R.color.c_111111));
-                    holder.setBackgroundColor(R.id.text,FaultProcessingActivity.this.getResources().getColor(R.color.white));
+                if (checkPosition == position) {
+                    holder.setTextColor(R.id.text, FaultProcessingActivity.this.getResources().getColor(R.color.c_428bca));
+                    holder.setBackgroundColor(R.id.text, FaultProcessingActivity.this.getResources().getColor(R.color.gray));
+                } else {
+                    holder.setTextColor(R.id.text, FaultProcessingActivity.this.getResources().getColor(R.color.c_111111));
+                    holder.setBackgroundColor(R.id.text, FaultProcessingActivity.this.getResources().getColor(R.color.white));
                 }
             }
 
@@ -220,10 +220,10 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
                 if ("故障类型".equals(tabText)) {
                     tabText = "";
                 }
-                checkPosition =position;
+                checkPosition = position;
                 faultFilterAdapter.notifyDataSetChanged();
                 faultParameter.setProcesses(tabText);
-                parameter = GsonTools.createGsonString(faultParameter);
+                parameter = GsonTools.createGsonListString(faultParameter);
                 getPresenter().getFaultProcessingMessages(parameter);
                 dropDownMenu.closeMenu();
             }
@@ -245,7 +245,7 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-       // getMenuInflater().inflate(R.menu.menu_fault_processing, menu);
+        // getMenuInflater().inflate(R.menu.menu_fault_processing, menu);
         return true;
     }
 
@@ -276,13 +276,13 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
         failuresBeen.clear();
         List<RowsBean.FailuresBean> rows = faultMessage.getRows().getFailures();
         for (int i = 0; i < rows.size(); i++) {
-            rows.get(i).setCreat_time(System.currentTimeMillis() - rows.get(i).getDuration_time() * 1000);
+            rows.get(i).setCreat_time(System.currentTimeMillis() - Math.round(rows.get(i).getDuration_time()) * 1000);
             rows.get(i).setEntityId(i);
         }
         failuresBeen.addAll(rows);
         mMyAdapter.notifyDataSetChanged();
         faultFilterDatas.clear();
-        FiltersBean filtersBean=new FiltersBean();
+        FiltersBean filtersBean = new FiltersBean();
         filtersBean.setMain_exception_name("不限");
         faultFilterDatas.add(filtersBean);
         faultFilterDatas.addAll(faultMessage.getRows().getFilters());

@@ -17,6 +17,7 @@ public class ItemAcceptMaterialDetail {
      */
 
     private String code;
+    @SerializedName("message")
     private String msg;
     private RowsBean rows;
 

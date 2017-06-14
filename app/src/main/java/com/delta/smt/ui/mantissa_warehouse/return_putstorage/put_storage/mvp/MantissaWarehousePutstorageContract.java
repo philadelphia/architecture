@@ -38,7 +38,7 @@ public interface MantissaWarehousePutstorageContract {
     interface View extends IView {
 
         void getSucessUpdate(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
-        void getFailedUpdate(MantissaWarehousePutstorageResult.MantissaWarehousePutstorage message);
+        void getFailedUpdate(String message);
 
         void getSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getFailed(String message);

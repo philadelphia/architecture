@@ -4,11 +4,14 @@ import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.CheckStock;
 import com.delta.smt.entity.ExceptionsBean;
 import com.delta.smt.entity.Success;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -25,7 +28,11 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         super(model, mView);
     }
     public void fetchCheckStock(String s){
-        getModel().getCheckStock(s).doOnSubscribe(new Action0() {
+        Map<String,String>map=new HashMap<>();
+        map.put("subShelfCode",s);
+        String json = GsonTools.createGsonListString(map);
+        Log.i("info",json);
+        getModel().getCheckStock(json).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();
@@ -35,12 +42,12 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                 public void call(CheckStock rowsBeen) {
                 if ("0".equals(rowsBeen.getCode())) {
                     getView().showContentView();
-                    if (rowsBeen.getMsg().contains("Success")){
+                    if (rowsBeen.getMessage().contains("success")){
                     List<CheckStock.RowsBean> rows = rowsBeen.getRows();
                     getView().onSucess(rows);
                 } else {
                         getView().showContentView();
-                    getView().onFailed(rowsBeen.getMsg());
+                    getView().onFailed(rowsBeen.getMessage());
                 }}
             }
         }, new Action1<Throwable>() {
@@ -57,7 +64,15 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
     }
 
     public void fetchCheckStockSuccessNumber(int id,int realCount){
-        getModel().getCheckStockNumber(id,realCount).doOnSubscribe(new Action0() {
+        String []key={"id","realCount"};
+        int []values={id,realCount};
+        Map<String,String>map=new HashMap<>();
+        map.put("id",""+id);
+        map.put("realCount",""+realCount);
+
+        String JsonArray=GsonTools.createGsonListString(map);
+        Log.i("info",JsonArray);
+        getModel().getCheckStockNumber(JsonArray).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();
@@ -67,11 +82,11 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             public void call(Success success) {
                 getView().showContentView();
                 if ("0".equals(success.getCode())){
-                    if (success.getMsg().contains("Success")){
-                    getView().onCheckStockNumberSucess(success.getMsg());
+                    if (success.getMessage().contains("success")){
+                    getView().onCheckStockNumberSucess(success.getMessage());
                 }else {
                         getView().showContentView();
-                    getView().onFailed(success.getMsg());
+                    getView().onFailed(success.getMessage());
                 }}
             }
         }, new Action1<Throwable>() {
@@ -88,16 +103,21 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
     }
 
     public void fetchError(String boxSerial, String subShelfSerial){
-        getModel().getError(boxSerial,subShelfSerial).subscribe(new Action1<Success>() {
+        Map<String,String>map=new HashMap<>();
+        map.put("boxSerial",boxSerial);
+        map.put("subShelfCode",""+subShelfSerial);
+        String JsonArray=GsonTools.createGsonListString(map);
+        Log.i("info",JsonArray);
+        getModel().getError(JsonArray).subscribe(new Action1<Success>() {
             @Override
             public void call(Success success) {
             if ("0".equals(success.getCode())){
                 getView().showContentView();
-                if (success.getMsg().contains("Success")){
-                getView().onErrorsSucess(success.getMsg());
+                if (success.getMessage().contains("success")){
+                getView().onErrorsSucess(success.getMessage());
             }else {
                     getView().showContentView();
-                getView().onFailed(success.getMsg());
+                getView().onFailed(success.getMessage());
             }}
             }
         }, new Action1<Throwable>() {
@@ -113,7 +133,11 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         });
     }
     public void fetchException(String boxSerial){
-        getModel().getException(boxSerial).doOnSubscribe(new Action0() {
+        Map<String,String>map=new HashMap<>();
+        map.put("subShelfCode",boxSerial);
+        String json = GsonTools.createGsonListString(map);
+        Log.i("info",json);
+        getModel().getException(json).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();
@@ -164,7 +188,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                     }
                 }else {
                     getView().showContentView();
-                    getView().onFailed(success.getMsg());
+                    getView().onFailed(success.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -190,10 +214,10 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
             public void call(Success success) {
                 getView().showContentView();
                 if ("0".equals(success.getCode())){
-                    if (success.getMsg().contains("Success")){
-                        getView().onErrorsSucess(success.getMsg());
+                    if (success.getMessage().contains("Success")){
+                        getView().onErrorsSucess(success.getMessage());
                 }else {
-                    getView().onFailed(success.getMsg());
+                    getView().onFailed(success.getMessage());
                 }}
             }
         }, new Action1<Throwable>() {
@@ -230,7 +254,11 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
 
 
     public void fetchJudgeSuceess(String s) {
-    getModel().getJudgeSuceess(s).doOnSubscribe(new Action0() {
+        Map<String,String>map=new HashMap<>();
+        map.put("boxSerial",s);
+        String json = GsonTools.createGsonListString(map);
+        Log.i("info",json);
+    getModel().getJudgeSuceess(json).doOnSubscribe(new Action0() {
         @Override
         public void call() {
             getView().showLoadingView();
@@ -240,9 +268,9 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
         public void call(Success success) {
             getView().showContentView();
             if ("0".equals(success.getCode())){
-                getView().JudgeSuceess(success.getMsg());
+                getView().JudgeSuceess(success.getMessage());
             }else{
-                getView().onFailed(success.getMsg());
+                getView().onFailed(success.getMessage());
             }
         }
     }, new Action1<Throwable>() {

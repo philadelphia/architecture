@@ -1,21 +1,23 @@
 package com.delta.smt.ui.store.mvp;
 
+import android.util.Log;
+
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.OutBound;
 import com.delta.smt.entity.PcbNumber;
 import com.delta.smt.entity.Success;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import rx.functions.Action0;
 import rx.functions.Action1;
+
+import static com.delta.commonlibs.utils.GsonTools.createGsonListString;
 
 /**
  * Created by Lin.Hou on 2016-12-27.
@@ -29,7 +31,11 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
 
 
     public void getAlarmSuccessfulState(String sapWorkOrderId, int alarmId){
-        getModel().getAlarmSuccessfulState(sapWorkOrderId,alarmId).doOnSubscribe(new Action0() {
+        Map<String,String>map=new HashMap<>();
+        map.put("id",sapWorkOrderId);
+        map.put("type",""+alarmId);
+        String jsonArray=createGsonListString(map);
+        getModel().getAlarmSuccessfulState(jsonArray).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();
@@ -40,9 +46,9 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
                 getView().showContentView();
                 if ("0".equals(s.getCode())){
 
-                    getView().onSucessStates(s.getMsg());
+                    getView().onSucessStates(s.getMessage());
                     }else {
-                    getView().onFailed(s.getMsg());
+                    getView().onFailed(s.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -58,7 +64,10 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
     public void getScheduleSuccessState( int scheduleId){
-        getModel().getScheduleSuccessState(scheduleId).doOnSubscribe(new Action0() {
+        Map<String,Integer>map=new HashMap<>();
+        map.put("scheduleId ",scheduleId );
+        String jsonArray=createGsonListString(map);
+        getModel().getScheduleSuccessState(jsonArray).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();
@@ -68,8 +77,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             public void call(Success s) {
                 getView().showContentView();
                 if ("0".equals(s.getCode())){
-                    getView().onSucessStates(s.getMsg());}else {
-                    getView().onFailed(s.getMsg());
+                    getView().onSucessStates(s.getMessage());}else {
+                    getView().onFailed(s.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -87,7 +96,14 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
 
 
     public void fetchAlarminfoOutBound(int id, String sapWorkOrderId, String partNum, int amount){
-        getModel().getOutbound(id,sapWorkOrderId,partNum,amount).doOnSubscribe(new Action0() {
+        Map<String,String>map=new HashMap<>();
+        map.put("id",""+id);
+        map.put("sapWorkOrderId",sapWorkOrderId);
+        map.put("partNum",partNum);
+        map.put("amount",""+amount);
+        String s= createGsonListString(map);
+        Log.i("info",s);
+        getModel().getOutbound(s).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();
@@ -100,7 +116,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
                     List<OutBound.DataBean> datalist = outBound.getRows();
             getView().onOutSuccess(datalist);
             }else {
-                getView().onFailed(outBound.getMsg());
+                getView().onFailed(outBound.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -116,7 +132,14 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
     public void fetchScheduleOutBound(int id,String sapWorkOrderId,String partNum,int amount){
-        getModel().getScheduleDetailed(id,sapWorkOrderId,partNum,amount).doOnSubscribe(new Action0() {
+        Map<String,String>map=new HashMap<>();
+        map.put("id",""+id);
+        map.put("sapWorkOrderId",sapWorkOrderId);
+        map.put("partNum",partNum);
+        map.put("amount",""+amount);
+        String s= createGsonListString(map);
+        Log.i("info",s);
+        getModel().getScheduleDetailed(s).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();
@@ -129,7 +152,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
                     List<OutBound.DataBean> datalist = outBound.getRows();
                     getView().onOutSuccess(datalist);
                 }else {
-                    getView().onFailed(outBound.getMsg());
+                    getView().onFailed(outBound.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -158,7 +181,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             if ("0".equals(pcbNumber.getCode())){
                 getView().getNumberSucces(pcbNumber.getRows());
             }else {
-                getView().onFailed(pcbNumber.getMsg());
+                getView().onFailed(pcbNumber.getMessage());
             }
             }
         }, new Action1<Throwable>() {
@@ -175,27 +198,12 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
     }
 
     public void fetchPcbSuccess(int mAlarminfoId,int amout, int id,int type){
-//        Gson gson=new Gson();
-//        List<ParameterOutBound> list=new ArrayList<>();
-//        ParameterOutBound parameterOutBound=new ParameterOutBound(id,amout);
-//        list.add(parameterOutBound);
-        JSONObject json=new JSONObject();
-        JSONArray jsonArray=new JSONArray();
-        JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.putOpt("billId",mAlarminfoId);
-            jsonObject.putOpt("id",id);
-//            jsonObject.putOpt("id",mAlarminfoId);
-//            jsonObject.putOpt("billId",id);
-            jsonObject.putOpt("amount",amout);
-            jsonObject.putOpt("type",type);
-            jsonArray.put(jsonObject);
-            json.putOpt("data",jsonArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        String s="[\'"+json.toString()+"\']";
+        Map<String,Integer>map=new HashMap<>();
+        map.put("billId",mAlarminfoId);
+        map.put("id",id);
+        map.put("amount",amout);
+        map.put("type",type);
+       String s= createGsonListString(map);
         getModel().getPcbSuccess(s).doOnSubscribe(new Action0() {
             @Override
             public void call() {
@@ -206,9 +214,9 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             public void call(Success success) {
                 getView().showContentView();
                 if("0".equals(success.getCode())){
-                getView().onSucessState(success.getMsg());
+                getView().onSucessState(success.getMessage());
                 }else {
-                    getView().onFailedSate(success.getMsg());
+                    getView().onFailedSate(success.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -224,7 +232,10 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
         public void closeLight(String s){
-            getModel().Closelighting(s).doOnSubscribe(new Action0() {
+            Map<String,String>map=new HashMap<>();
+            map.put("subShelfCode",s);
+            String json= createGsonListString(map);
+            getModel().Closelighting(json).doOnSubscribe(new Action0() {
                 @Override
                 public void call() {
                     getView().showContentView();
@@ -234,9 +245,9 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
                 public void call(Success success) {
                     getView().showContentView();
                     if ("0".equals(success.getCode())) {
-                        getView().onCloseLightSucces(success.getMsg());
+                        getView().onCloseLightSucces(success.getMessage());
                     }else{
-                        getView().onFailed(success.getMsg());
+                        getView().onFailed(success.getMessage());
                     }
                 }
             }, new Action1<Throwable>() {
@@ -253,7 +264,10 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             });
         }
     public void getOutSumbit(int scheduleId){
-        getModel().getOutSubmit(scheduleId).doOnSubscribe(new Action0() {
+        Map<String,Integer>map=new HashMap<>();
+        map.put("scheduleId",scheduleId);
+        String jsonArray=createGsonListString(map);
+        getModel().getOutSubmit(jsonArray).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showContentView();
@@ -263,9 +277,9 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             public void call(Success success) {
                 getView().showContentView();
                 if ("0".equals(success.getCode())) {
-                    getView().onOutSubmit(success.getMsg());
+                    getView().onOutSubmit(success.getMessage());
                 }else{
-                    getView().onFailed(success.getMsg());
+                    getView().onFailed(success.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -281,7 +295,11 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
     public void getAlarmOutSumbit(int scheduleId){
-        getModel().getAlarmOutSubmit(scheduleId).doOnSubscribe(new Action0() {
+        Map<String,String>map=new HashMap<>();
+        map.put("alarmId",""+scheduleId);
+        String jsonArray=createGsonListString(map);
+        Log.i("info",jsonArray);
+        getModel().getAlarmOutSubmit(jsonArray).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showContentView();
@@ -291,9 +309,9 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             public void call(Success success) {
                 getView().showContentView();
                 if ("0".equals(success.getCode())) {
-                    getView().onOutSubmit(success.getMsg());
+                    getView().onOutSubmit(success.getMessage());
                 }else{
-                    getView().onFailed(success.getMsg());
+                    getView().onFailed(success.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -310,13 +328,20 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
     }
 
     public void getRefresh(int id, String partNum, int offset, int type){
-        getModel().getRefresh(id,partNum,offset,type).subscribe(new Action1<OutBound>() {
+        Map<String,String>map=new HashMap<>();
+        map.put("id",""+id);
+        map.put("partNum",partNum);
+        map.put("offset",""+offset);
+        map.put("type",""+type);
+        String jsonArray=createGsonListString(map);
+        Log.i("info",jsonArray);
+        getModel().getRefresh(jsonArray).subscribe(new Action1<OutBound>() {
             @Override
             public void call(OutBound outBound) {
                 if ("0".equals(outBound.getCode())) {
                     getView().onOutSuccess(outBound.getRows());
                 } else {
-                    getView().onFailed(outBound.getMsg());
+                    getView().onFailed(outBound.getMessage());
                 }
             }
         }, new Action1<Throwable>() {

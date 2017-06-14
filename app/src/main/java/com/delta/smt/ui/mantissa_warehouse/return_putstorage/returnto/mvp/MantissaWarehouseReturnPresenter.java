@@ -91,7 +91,7 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             @Override
             public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnes) {
 
-                if("Success".equals(mantissaWarehouseReturnes.getmessage())){
+                if("0".equals(mantissaWarehouseReturnes.getCode())){
                     getView().getputinstrageSucess(mantissaWarehouseReturnes.getRows());
                 }else{
                     getView().getputinstrageFailed( mantissaWarehouseReturnes.getmessage());

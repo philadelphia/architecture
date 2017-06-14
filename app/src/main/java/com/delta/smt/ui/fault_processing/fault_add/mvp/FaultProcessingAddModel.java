@@ -4,13 +4,10 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.BaseEntity;
-import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFault;
-import com.delta.smt.entity.ResultString;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.http.Multipart;
 import rx.Observable;
 
 /**

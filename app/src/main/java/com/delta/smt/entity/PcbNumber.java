@@ -13,7 +13,7 @@ public class PcbNumber {
      */
 
     private String code;
-    private String msg;
+    private String message;
     /**
      * id : 1
      * amount : 50
@@ -29,12 +29,12 @@ public class PcbNumber {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public DataBean getRows() {

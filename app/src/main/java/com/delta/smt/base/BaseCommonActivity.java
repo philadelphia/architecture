@@ -14,7 +14,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.delta.commonlibs.utils.ToastUtils;
-import com.delta.smt.app.App;
 import com.delta.smt.entity.EventNothing;
 import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -46,7 +45,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
 
     private String TAG = getClass().getSimpleName();
     private BroadcastReceiver mBroadcastReceiver;
-    private App application;
+    private BaseApplication application;
     private Unbinder bind;
 
 
@@ -74,7 +73,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        application = ((App) getApplication());
+        application = ((BaseApplication) getApplication());
         boolean isNotAdd = getIntent().getBooleanExtra(IS_NOT_ADD_ACTIVITY_LIST, false);
         synchronized (BaseCommonActivity.class) {
             if (!isNotAdd)
@@ -113,7 +112,7 @@ public abstract class BaseCommonActivity extends SupportActivity {
     protected abstract void initCData();
 
 
-    public App getMApplication() {
+    public BaseApplication getMApplication() {
         return application;
     }
 

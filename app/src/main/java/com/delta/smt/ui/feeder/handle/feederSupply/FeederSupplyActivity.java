@@ -35,8 +35,6 @@ import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +83,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private CommonBaseAdapter<FeederSupplyItem> adapter;
     private final List<FeederSupplyItem> dataList = new ArrayList<>();
     private final List<FeederSupplyItem> dataSource = new ArrayList<>();
-    private boolean isAllHandleOVer = false;
     private String workId;
     private String side;
     private String argument;
@@ -223,16 +220,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         if (index != -1){
             RecycleViewUtils.scrollToMiddle(linearLayoutManager, getLastMaterialIndex(mCurrentMaterial,dataSource), recyclerViewContent );
         }
-        for (FeederSupplyItem item : dataSource) {
-            if (item.getStatus() == 0) {
-                isAllHandleOVer = false;
-                break;
-            } else {
-                isAllHandleOVer = true;
-            }
-        }
-
-        if (isAllHandleOVer) {
+        if (data.size() == 0) {
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
             Map<String, String> map = new HashMap<>();
             map.put("work_order", workId);
@@ -289,7 +277,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllToBeSuppliedFeeders(workId);
+                getPresenter().getAllToBeSuppliedFeeders(argument);
             }
         });
 

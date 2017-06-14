@@ -20,7 +20,7 @@ import com.delta.smt.ui.fault_processing.fault_solution.di.DaggerFaultSolutionCo
 import com.delta.smt.ui.fault_processing.fault_solution.di.FaultSolutionModule;
 import com.delta.smt.ui.fault_processing.fault_solution.mvp.FaultSolutionContract;
 import com.delta.smt.ui.fault_processing.fault_solution.mvp.FaultSolutionPresenter;
-import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,8 +66,9 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
         faultSolutionName = extras.getString(Constant.FAULT_SOLUTION_NAME);
         Map<String, String> map = new HashMap<>();
         map.put("fileName", faultSolutionName);
-        String param = new Gson().toJson(map);
-        getPresenter().getDetailSolutionMessage(param);
+        map.put("exception_code", faultCode);
+
+        getPresenter().getDetailSolutionMessage(GsonTools.createGsonListString(map));
     }
 
     @Override
@@ -138,7 +139,7 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
             map.put("solution_name", faultSolutionName);
             map.put("exception_code", faultCode);
             map.put("line", lineName);
-            getPresenter().resolveFault(GsonTools.createGsonString(map));
+            getPresenter().resolveFault(GsonTools.createGsonListString(map));
         }
     }
 }

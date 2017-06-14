@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -65,51 +67,51 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
     @Override
     protected void initData() {
 
-        lines = SpUtil.getStringSF(this,Constant.QUALITY_MANAGE);
+        lines = SpUtil.getStringSF(this, Constant.QUALITY_MANAGE);
         Map<String, String> hmap = new HashMap();
-        hmap.put("lines",lines);
+        hmap.put("lines", lines);
         Gson gson = new Gson();
-        String s = gson.toJson(hmap);
+        String s = GsonTools.createGsonListString(hmap);
         getPresenter().getQualityList(s);
 
     }
 
     @Override
     protected void initView() {
-            mToolbar.setTitle("");
-            setSupportActionBar(mToolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-            mToolbarTitle.setText("品管确认");
-            adapter = new ItemCountViewAdapter<QualityManage.RowsBean>(this, dataList) {
-                @Override
-                protected int getCountViewId() {
-                    return R.id.cv_countView;
-                }
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        mToolbarTitle.setText("品管确认");
+        adapter = new ItemCountViewAdapter<QualityManage.RowsBean>(this, dataList) {
+            @Override
+            protected int getCountViewId() {
+                return R.id.cv_countView;
+            }
 
-                @Override
-                protected int getLayoutId() {
-                    return R.layout.acrivity_quality_manage;
-                }
+            @Override
+            protected int getLayoutId() {
+                return R.layout.acrivity_quality_manage;
+            }
 
-                @Override
-                protected void convert(ItemTimeViewHolder holder, QualityManage.RowsBean item, int position) {
-                    holder.setText(R.id.tv_line_name, "产线名: " + item.getLine());
-                    holder.setText(R.id.tv_order, "料站: " + item.getSlot());
-                    holder.setText(R.id.tv_sides, "缺料量: " + item.getExpected_amount());
-                    holder.setText(R.id.tv_five, "实际补料量: " + item.getReal_amount());
-                    if (1 == item.getStatus()) {
-                        holder.setText(R.id.tv_states, "状态: " + "等待品管核验");
-                        holder.itemView.setBackgroundColor(Color.WHITE);
-                    } else {
-                        holder.setText(R.id.tv_states, "状态：品管已核验");
-                        holder.itemView.setBackgroundColor(Color.YELLOW);
-                    }
+            @Override
+            protected void convert(ItemTimeViewHolder holder, QualityManage.RowsBean item, int position) {
+                holder.setText(R.id.tv_line_name, "产线名: " + item.getLine());
+                holder.setText(R.id.tv_order, "料站: " + item.getSlot());
+                holder.setText(R.id.tv_sides, "缺料量: " + item.getExpected_amount());
+                holder.setText(R.id.tv_five, "实际补料量: " + item.getReal_amount());
+                if (1 == item.getStatus()) {
+                    holder.setText(R.id.tv_states, "状态: " + "等待品管核验");
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                } else {
+                    holder.setText(R.id.tv_states, "状态：品管已核验");
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
                 }
-            };
-            adapter.setOnItemTimeOnclick(this);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mRecyclerView.setAdapter(adapter);
+            }
+        };
+        adapter.setOnItemTimeOnclick(this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(adapter);
 
     }
 
@@ -131,9 +133,9 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
                     public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
 
                         Map hmap = new HashMap();
-                        hmap.put("quality_id",rowsBean.getQuality_id());
-                        Gson gson = new Gson();
-                        String s = gson.toJson(hmap);
+                        hmap.put("quality_id", rowsBean.getQuality_id());
+
+                        String s = GsonTools.createGsonListString(hmap);
                         getPresenter().getYesok(s);
 
                     }
@@ -169,11 +171,11 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
         mStatusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lines = SpUtil.getStringSF(v.getContext(),Constant.QUALITY_MANAGE);
+                lines = SpUtil.getStringSF(v.getContext(), Constant.QUALITY_MANAGE);
                 Map hmap = new HashMap();
-                hmap.put("lines",lines);
-                Gson gson = new Gson();
-                String s = gson.toJson(hmap);
+                hmap.put("lines", lines);
+
+                String s = GsonTools.createGsonListString(hmap);
                 getPresenter().getQualityList(s.toString());
             }
         });
@@ -186,11 +188,10 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
         mStatusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lines = SpUtil.getStringSF(v.getContext(),Constant.QUALITY_MANAGE);
+                lines = SpUtil.getStringSF(v.getContext(), Constant.QUALITY_MANAGE);
                 Map hmap = new HashMap();
-                hmap.put("lines",lines);
-                Gson gson = new Gson();
-                String s = gson.toJson(hmap);
+                hmap.put("lines", lines);
+                String s = GsonTools.createGsonListString(hmap);
                 getPresenter().getQualityList(s.toString());
             }
         });
@@ -201,7 +202,7 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
         dataList.clear();
 
         for (int i = 0; i < qualityManage.size(); i++) {
-            qualityManage.get(i).setCreat_time(System.currentTimeMillis() - qualityManage.get(i).getDuration_time() * 1000);
+            qualityManage.get(i).setCreat_time(System.currentTimeMillis() - Math.round(qualityManage.get(i).getDuration_time()) * 1000);
             qualityManage.get(i).setEntityId(i);
         }
 
@@ -216,11 +217,10 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
 
     @Override
     public void getokSuccess() {
-        lines = SpUtil.getStringSF(this,Constant.QUALITY_MANAGE);
+        lines = SpUtil.getStringSF(this, Constant.QUALITY_MANAGE);
         Map hmap = new HashMap();
-        hmap.put("lines",lines);
-        Gson gson = new Gson();
-        String s = gson.toJson(hmap);
+        hmap.put("lines", lines);
+        String s = GsonTools.createGsonListString(hmap);
         getPresenter().getQualityList(s.toString());
         dataList.clear();
         adapter.notifyDataSetChanged();
@@ -236,4 +236,16 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

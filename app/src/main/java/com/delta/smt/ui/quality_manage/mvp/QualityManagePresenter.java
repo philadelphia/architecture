@@ -72,7 +72,7 @@ public class QualityManagePresenter extends BasePresenter<QualityManageContract.
             public void call(QualityManage qualityManage) {
 
                 if ("0".equals(qualityManage.getCode())) {
-                    if (qualityManage.getRows().size() == 0) {
+                    if ((qualityManage.getRows()==null)||(qualityManage.getRows().size() == 0)) {
                         getView().showEmptyView();
                     } else {
                         getView().showContentView();

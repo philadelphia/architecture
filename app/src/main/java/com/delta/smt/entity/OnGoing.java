@@ -15,7 +15,7 @@ public class OnGoing {
      */
 
     private String code;
-    private String msg;
+    private String message;
     /**
      * id : 1
      * startTime : Apr 13, 2017 9:36:22 AM
@@ -34,12 +34,12 @@ public class OnGoing {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public RowsBean getRows() {

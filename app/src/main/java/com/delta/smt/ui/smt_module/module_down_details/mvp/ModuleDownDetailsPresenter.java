@@ -3,9 +3,7 @@ package com.delta.smt.ui.smt_module.module_down_details.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
-import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.ModuleDownDetailsItem;
-import com.delta.smt.entity.ModuleDownMaintain;
 import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
@@ -75,7 +73,15 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         getModel().getModuleDownMaintainResult(str).subscribe(new RxErrorHandlerSubscriber<Result>(rxErrorHandler) {
             @Override
             public void onNext(Result result) {
-                    getView().onMaintainResult(result.getMessage());
+                if (result.getCode() == 0) {
+                    if (result.getRows().size()==0) {
+                        getView().showEmptyView();
+                    }else {
+                        getView().onMaintainResult(result.getMessage());
+                    }
+                }else {
+                    getView().onFailed(result.getMessage());
+                }
             }
 
             @Override
@@ -99,21 +105,21 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
 //        });
 //    }
 //
-//    public void getFeederCheckInTime(String condition){
-//        getModel().getFeederCheckInTime(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
-//            @Override
-//            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
-//                    if (moduleDownDetailsItem.getCode().equalsIgnoreCase("0")){
-//                        getView().onSuccess(moduleDownDetailsItem);
-//                    }else {
-//                        getView().onFailed(moduleDownDetailsItem.getMsg());
-//                    }
-//            }
-//        }, new Action1<Throwable>() {
-//            @Override
-//            public void call(Throwable throwable) {
-//                getView().onNetFailed(throwable);
-//            }
-//        });
-//    }
+    public void getFeederCheckInTime(String condition){
+        getModel().getFeederCheckInTime(condition).subscribe(new Action1<Result<ModuleDownDetailsItem>>() {
+            @Override
+            public void call(Result<ModuleDownDetailsItem> moduleDownDetailsItem) {
+                    if (moduleDownDetailsItem.getCode() == 0){
+                        getView().onSuccess(moduleDownDetailsItem.getRows());
+                    }else {
+                        getView().onFailed(moduleDownDetailsItem.getMessage());
+                    }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onNetFailed(throwable);
+            }
+        });
+    }
 }

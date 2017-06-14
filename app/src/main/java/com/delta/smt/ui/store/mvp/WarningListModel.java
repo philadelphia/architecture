@@ -21,8 +21,8 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
 
 
     @Override
-    public Observable<OutBound> getOutbound(int id,String sapWorkOrderId,String partNum,int amount) {
-        return getService().outBound(id,sapWorkOrderId,partNum,amount).compose(RxsRxSchedulers.<OutBound>io_main());
+    public Observable<OutBound> getOutbound(String sapWorkOrderId) {
+        return getService().outBound(sapWorkOrderId).compose(RxsRxSchedulers.<OutBound>io_main());
     }
 
     @Override
@@ -35,17 +35,17 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
         return getService().getPcbSuccess(s).compose(RxsRxSchedulers.<Success>io_main());
     }
     @Override
-    public Observable<OutBound> getScheduleDetailed(int id,String sapWorkOrderId, String partNum, int amount) {
-        return getService().getScheduleDetailed(id,sapWorkOrderId,partNum,amount).compose(RxsRxSchedulers.<OutBound>io_main());
+    public Observable<OutBound> getScheduleDetailed(String sapWorkOrderId) {
+        return getService().getScheduleDetailed(sapWorkOrderId).compose(RxsRxSchedulers.<OutBound>io_main());
     }
 
     @Override
-    public Observable<Success> getAlarmSuccessfulState(String sapWorkOrderId, int alarmId) {
-       return getService().getAlarmSuccessState(sapWorkOrderId,alarmId).compose(RxsRxSchedulers.<Success>io_main());
+    public Observable<Success> getAlarmSuccessfulState(String sapWorkOrderId) {
+       return getService().getAlarmSuccessState(sapWorkOrderId).compose(RxsRxSchedulers.<Success>io_main());
     }
 
     @Override
-    public Observable<Success> getScheduleSuccessState(int scheduleId) {
+    public Observable<Success> getScheduleSuccessState(String scheduleId) {
         return getService().getScheduleSuccessState(scheduleId).compose(RxsRxSchedulers.<Success>io_main());
     }
 
@@ -55,17 +55,17 @@ public class WarningListModel extends BaseModel<ApiService> implements WarningLi
     }
 
     @Override
-    public Observable<Success> getOutSubmit(int scheduleId) {
+    public Observable<Success> getOutSubmit(String scheduleId) {
         return getService().getOutSubmit(scheduleId).compose(RxsRxSchedulers.<Success>io_main());
     }
 
     @Override
-    public Observable<Success> getAlarmOutSubmit(int scheduleId) {
+    public Observable<Success> getAlarmOutSubmit(String scheduleId) {
         return getService().getAlarmOutSubmit(scheduleId).compose(RxsRxSchedulers.<Success>io_main());
     }
 
     @Override
-    public Observable<OutBound> getRefresh(int id, String partNum, int offset, int type) {
-        return getService().getRefresh(id,partNum,offset,type).compose(RxsRxSchedulers.<OutBound>io_main());
+    public Observable<OutBound> getRefresh( String partNum) {
+        return getService().getRefresh(partNum).compose(RxsRxSchedulers.<OutBound>io_main());
     }
 }

@@ -26,7 +26,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             @Override
             public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
-                if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                if("0".equals(mantissaWarehousePutstorageResult.getCode())){
                     if(mantissaWarehousePutstorageResult.getrows().size() == 0){
                         getView().showEmptyView();
                     }else {
@@ -57,7 +57,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             @Override
             public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
-                if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                if("0".equals(mantissaWarehousePutstorageResult.getCode())){
 
                     if(mantissaWarehousePutstorageResult.getrows().size() == 0){
                         getView().showEmptyView();
@@ -67,7 +67,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                     }
 
                 }else{
-                    getView().getFailedUpdate(mantissaWarehousePutstorageResult.getrows().get(0));
+                    getView().getFailedUpdate(mantissaWarehousePutstorageResult.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
@@ -88,7 +88,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             @Override
             public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
-                if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                if("0".equals(mantissaWarehousePutstorageResult.getCode())){
                     getView().getBeginSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
                     getView().getBeginFailed(mantissaWarehousePutstorageResult.getMsg());
@@ -112,7 +112,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             @Override
             public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
-                if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                if("0".equals(mantissaWarehousePutstorageResult.getCode())){
                     getView().getYesNextSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
                     getView().getYesNextFailed(mantissaWarehousePutstorageResult.getMsg());
@@ -161,7 +161,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             @Override
             public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
-                if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                if("0".equals(mantissaWarehousePutstorageResult.getCode())){
                     getView().getBingingLableSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
                     getView().getBingingLableFailed(mantissaWarehousePutstorageResult.getMsg());
@@ -188,7 +188,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             @Override
             public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
-                if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                if("0".equals(mantissaWarehousePutstorageResult.getCode())){
                     getView().getUpLocationSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
                     getView().getUpLocationFailed(mantissaWarehousePutstorageResult.getMsg());
@@ -215,7 +215,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
             @Override
             public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
-                if("Success".equals(mantissaWarehousePutstorageResult.getMsg())){
+                if("0".equals(mantissaWarehousePutstorageResult.getCode())){
                     getView().getonclickBeginButtonSucess(mantissaWarehousePutstorageResult.getrows());
                 }else{
                     getView().getonclickBeginButtonFailed(mantissaWarehousePutstorageResult.getMsg());

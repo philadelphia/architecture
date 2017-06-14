@@ -2,6 +2,7 @@ package com.delta.smt.entity;
 
 import com.delta.smt.ui.production_warning.item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class ProduceWarning {
      */
 
     private String code;
+    @SerializedName("message")
     private String msg;
     private RowsBean rows;
 

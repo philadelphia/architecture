@@ -39,8 +39,6 @@ public interface OverReceiveContract {
 
         Observable<OverReceiveWarning> getOverReceiveItemsAfterSend(String str);
 
-        /*public Observable<OverReceiveWarning> getOverReceiveItemsAfterSendArrive(String str);*/
-
         Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     }

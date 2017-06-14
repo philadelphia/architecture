@@ -30,14 +30,13 @@ public class ItemWarningInfo extends TimeEntity {
     @SerializedName("state")
     private String status;
 
-    @SerializedName("quantity")
     private String unusedmaterials;
 
     @SerializedName("slot")
     private String materialstation;
 
     @SerializedName("remainTime")
-    private long time;
+    private Double time;
 
     private String connectMaterialCount;
 
@@ -56,11 +55,11 @@ public class ItemWarningInfo extends TimeEntity {
         this.id=id;
     }
 
-    public Long getTime() {
+    public Double getTime() {
         return time;
     }
 
-    public void setTime(Long time) {
+    public void setTime(Double time) {
         this.time = time;
     }
 
