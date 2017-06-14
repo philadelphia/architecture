@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+                android:background="@color/c_ffffff"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -14,23 +14,26 @@
         <Button
             android:id="@+id/clean"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="100px"
             android:text="手动请求清理列表"
             android:background="@color/background"
             android:textColor="@color/c_ffffff"
-            android:layout_margin="10px"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="30px"
+            android:layout_marginBottom="30px"
             android:textSize="40px"/>
 
         <Button
         android:id="@+id/deduct"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100px"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:background="@color/background"
         android:textColor="@color/c_ffffff"
-        android:layout_margin="10px"
+        android:layout_marginRight="30px"
+        android:layout_marginLeft="10px"
         android:text="开始入库"
         android:textSize="40px"
         />
@@ -39,9 +42,11 @@
             android:id="@+id/begin"
             android:background="@color/background"
             android:textColor="@color/c_ffffff"
-            android:layout_margin="10px"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="30px"
+            android:layout_marginBottom="30px"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="100px"
             android:text="开始绑定"
             android:textSize="40px"
             android:layout_alignParentTop="true"
@@ -84,7 +89,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100px"
         android:layout_marginBottom="10px"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -97,7 +102,7 @@
             <Button
                 android:id="@+id/bt_next"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="100px"
                 android:text="下一个"
                 android:textSize="40px"
                 android:layout_marginRight="20px"

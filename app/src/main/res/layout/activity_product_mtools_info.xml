@@ -7,7 +7,7 @@
     <include layout="@layout/appbar" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="40px"
+        android:layout_marginTop="@dimen/px_magrgTop"
         android:id="@+id/ProductInfoRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

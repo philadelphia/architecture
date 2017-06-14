@@ -20,8 +20,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
-                android:layout_marginTop="40px"
+                android:layout_marginLeft="@dimen/px_margLeft"
+                android:layout_marginTop="@dimen/px_magrgTop"
                 android:text="@string/WorkNumberPlus"
                 android:textColor="#333333"
                 android:textSize="40px" />
@@ -41,7 +41,7 @@
                 android:id="@+id/ProductToolsWorkItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="180px"
+                android:layout_marginLeft="200px"
                 android:layout_marginTop="-50px"
                 android:text="2314123"
                 android:textColor="#333333"
@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
+                android:layout_marginLeft="@dimen/px_margLeft"
                 android:layout_marginTop="30px"
                 android:text="@string/LittleBoard"
                 android:textColor="#333333"
@@ -70,7 +70,7 @@
                 android:id="@+id/LittleBroad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="140px"
+                android:layout_marginLeft="160px"
                 android:layout_marginTop="-50px"
                 android:text="2314123"
                 android:textColor="#333333"
@@ -98,7 +98,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
+                android:layout_marginLeft="@dimen/px_margLeft"
                 android:layout_marginTop="30px"
                 android:text="线别:"
                 android:textColor="#333333"
@@ -117,7 +117,7 @@
                 android:id="@+id/Line"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="140px"
+                android:layout_marginLeft="160px"
                 android:layout_marginTop="-50px"
                 android:text="H-03"
                 android:textColor="#333333"
@@ -136,7 +136,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
+                android:layout_marginLeft="@dimen/px_margLeft"
                 android:layout_marginTop="30px"
                 android:text="PCBCODE:"
                 android:textColor="#333333"
@@ -146,7 +146,7 @@
                 android:id="@+id/PCBCODE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="250px"
+                android:layout_marginLeft="270px"
                 android:layout_marginTop="-50px"
                 android:text="1234"
                 android:textColor="#333333"
@@ -155,7 +155,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="35px"
+                android:layout_marginLeft="@dimen/px_margLeft"
                 android:layout_marginTop="30px"
                 android:text="治具二维码:"
                 android:textColor="#333333"
@@ -167,8 +167,8 @@
                 android:id="@+id/ProductInfoBarCode"
                 android:layout_width="600px"
                 android:layout_height="55px"
-                android:layout_marginLeft="280px"
-                android:layout_marginTop="-50px"
+                android:layout_marginLeft="300px"
+                android:layout_marginTop="-55px"
                 android:background="@drawable/ed_back_white"
                 android:focusable="false" />
 
