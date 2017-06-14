@@ -14,7 +14,7 @@
             app:tabTextColor="@color/c_000000"
             android:layout_width="wrap_content"
             style="@style/abLayout"
-            android:layout_height="32dp">
+            android:layout_height="100px">
 
         </com.delta.commonlibs.widget.autolayout.AutoTabLayout>
     </LinearLayout>

@@ -660,7 +660,9 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void showErrorView() {
-
+        mClean.setVisibility(View.GONE);
+        mDeduct.setVisibility(View.GONE);
+        mBegin.setVisibility(View.GONE);
         statusLayout.showErrorView();
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
@@ -673,7 +675,9 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void showEmptyView() {
-
+        mClean.setVisibility(View.GONE);
+        mDeduct.setVisibility(View.GONE);
+        mBegin.setVisibility(View.GONE);
         statusLayout.showEmptyView();
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
