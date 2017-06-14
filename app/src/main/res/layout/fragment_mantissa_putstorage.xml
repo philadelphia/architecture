@@ -18,7 +18,9 @@
             android:text="手动请求清理列表"
             android:background="@color/background"
             android:textColor="@color/c_ffffff"
-            android:layout_margin="10px"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="30px"
+            android:layout_marginBottom="30px"
             android:textSize="40px"/>
 
         <Button
@@ -30,7 +32,8 @@
         android:layout_alignParentEnd="true"
         android:background="@color/background"
         android:textColor="@color/c_ffffff"
-        android:layout_margin="10px"
+        android:layout_marginRight="30px"
+        android:layout_marginLeft="10px"
         android:text="开始入库"
         android:textSize="40px"
         />
@@ -39,7 +42,9 @@
             android:id="@+id/begin"
             android:background="@color/background"
             android:textColor="@color/c_ffffff"
-            android:layout_margin="10px"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="30px"
+            android:layout_marginBottom="30px"
             android:layout_width="wrap_content"
             android:layout_height="100px"
             android:text="开始绑定"

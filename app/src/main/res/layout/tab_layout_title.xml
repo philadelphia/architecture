@@ -8,7 +8,7 @@
 
         <com.delta.commonlibs.widget.autolayout.AutoTabLayout
             android:id="@+id/tl_title"
-            app:tabSelectedTextColor="@color/c_000000"
+            app:tabSelectedTextColor="@color/c_418BC9"
             android:background="@color/c_cfcfcf"
             app:tabIndicatorColor="@color/c_418BC9"
             app:tabTextColor="@color/c_000000"
