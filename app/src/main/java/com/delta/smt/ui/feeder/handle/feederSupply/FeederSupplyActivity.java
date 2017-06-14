@@ -83,7 +83,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private CommonBaseAdapter<FeederSupplyItem> adapter;
     private final List<FeederSupplyItem> dataList = new ArrayList<>();
     private final List<FeederSupplyItem> dataSource = new ArrayList<>();
-    private boolean isAllHandleOVer = false;
     private String workId;
     private String side;
     private String argument;
