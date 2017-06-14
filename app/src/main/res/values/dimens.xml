@@ -33,4 +33,7 @@
     <dimen name="px_220">220px</dimen>
     <dimen name="px_480">480px</dimen>
     <dimen name="px_500">500px</dimen>
+    <dimen name="px_magrgTop">70px</dimen>
+    <dimen name="px_margLeft">60px</dimen>
+    <dimen name="px_TableHeigh">100px</dimen>
 </resources>
