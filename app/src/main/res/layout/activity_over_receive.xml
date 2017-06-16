@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/c_ffffff"
     android:orientation="vertical">
 
     <TextView
@@ -20,7 +21,7 @@
         android:textSize="@dimen/px_40"
         android:visibility="gone" />
 
-    <LinearLayout
+    <com.zhy.autolayout.AutoLinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,20 +30,23 @@
 
         <include layout="@layout/appbar" />
 
-        <RelativeLayout
+        <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/px_10"
-            android:layout_marginTop="@dimen/px_10">
+            android:layout_marginBottom="30px"
+            android:layout_marginTop="30px">
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/manual_debit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="100px"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/px_20"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:background="@color/background"
                 android:gravity="center"
                 android:text="手动扣账"
+                android:textColor="@color/c_ffffff"
                 android:textSize="@dimen/px_40" />
 
             <android.support.v7.widget.AppCompatCheckBox
@@ -50,19 +54,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/manual_debit"
-                android:layout_marginRight="@dimen/px_40"
+                android:layout_marginRight="10px"
                 android:layout_toLeftOf="@+id/manual_debit"
                 android:checked="false"
                 android:text="自动扣账"
                 android:textSize="@dimen/px_40" />
-        </RelativeLayout>
+        </com.zhy.autolayout.AutoRelativeLayout>
 
         <com.delta.commonlibs.widget.statusLayout.StatusLayout
             android:id="@+id/statusLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
+            <com.zhy.autolayout.AutoRelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -71,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <LinearLayout
+                    <com.zhy.autolayout.AutoLinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -81,7 +85,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
-                        <RelativeLayout
+                        <com.zhy.autolayout.AutoRelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
@@ -89,14 +93,14 @@
                                 android:id="@+id/recy_content"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
-                        </RelativeLayout>
-                    </LinearLayout>
+                        </com.zhy.autolayout.AutoRelativeLayout>
+                    </com.zhy.autolayout.AutoLinearLayout>
                 </HorizontalScrollView>
-            </RelativeLayout>
+            </com.zhy.autolayout.AutoRelativeLayout>
         </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 
 
-    </LinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
     <!--<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -111,5 +115,5 @@
             android:text="超领料盘送达"/>&ndash;&gt;
     </LinearLayout>-->
 
-</RelativeLayout>
+</com.zhy.autolayout.AutoRelativeLayout>
 
