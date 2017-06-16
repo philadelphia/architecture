@@ -270,6 +270,7 @@ public class MantissaWarehousePutstorageFragment extends
         onclickBegingButton = 1;
         currentStep = end;
         mBegin.setEnabled(false);
+       // mBegin.setBackgroundColor(getResources().getColor(R.color.c_cfcfcf));
     }
 
     @Override
@@ -316,6 +317,10 @@ public class MantissaWarehousePutstorageFragment extends
                     }
                     getPresenter().getBeginPut();
                     mClean.setVisibility(View.GONE);
+                    mBegin.setBackgroundColor(getResources().getColor(R.color.c_cfcfcf));
+                    mDeduct.setBackgroundColor(getResources().getColor(R.color.c_cfcfcf));
+                 //  mBegin.setVisibility(View.GONE);
+                  //  mDeduct.setVisibility(View.GONE);
                     mBegin.setEnabled(false);
                     mDeduct.setEnabled(false);
                     mBtOk.setVisibility(View.VISIBLE);
@@ -660,7 +665,9 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void showErrorView() {
-
+        mClean.setVisibility(View.GONE);
+        mDeduct.setVisibility(View.GONE);
+        mBegin.setVisibility(View.GONE);
         statusLayout.showErrorView();
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
@@ -673,7 +680,9 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void showEmptyView() {
-
+        mClean.setVisibility(View.GONE);
+        mDeduct.setVisibility(View.GONE);
+        mBegin.setVisibility(View.GONE);
         statusLayout.showEmptyView();
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override

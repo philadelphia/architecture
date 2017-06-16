@@ -50,6 +50,8 @@
                         android:layout_marginRight="@dimen/px_20"
                         android:gravity="center"
                         android:text="上传到MES"
+                        android:textColor="@color/white"
+                        android:background="@color/delta_blue"
                         android:textSize="@dimen/px_40" />
 
                     <android.support.v7.widget.AppCompatCheckBox

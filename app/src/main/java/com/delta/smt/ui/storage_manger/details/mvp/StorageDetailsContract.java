@@ -3,6 +3,7 @@ package com.delta.smt.ui.storage_manger.details.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
+import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.Result;
@@ -35,8 +36,9 @@ public interface StorageDetailsContract {
 
         Observable<IssureToWarehFinishResult> sureCompleteIssue();
 
-        Observable<Result> deduction(String mS);
+        Observable<Result<DebitData>> deduction(String mS);
 
+        Observable<Result<DebitData>> getDebitDataList(String ms);
     }
 
     interface View extends IView {
@@ -86,9 +88,13 @@ public interface StorageDetailsContract {
 
         void deductionFailed(String message);
 
-        void deductionSuccess();
+        void deductionSuccess(List<DebitData> mRows);
 
         void queryCarFailed(String message);
+
+        void getDebitDataSuccess(Result<DebitData> mDebitDataResult);
+
+        void getDebitDataFaild(String mMessage);
     }
 
 }

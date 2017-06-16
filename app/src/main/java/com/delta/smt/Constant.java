@@ -93,6 +93,7 @@ public class Constant {
     public static final String HAND_ADD_LINE_NAME = "hand_add_line_name";
     public static final String STORAGE_NAME = "storage_name";
     public static final String WORK_ORDER = "work_order";
+    public static final String ACTION ="000" ;
 
     public static String FAULT_SOLUTION_ID = "fault_solution_id";
     /**

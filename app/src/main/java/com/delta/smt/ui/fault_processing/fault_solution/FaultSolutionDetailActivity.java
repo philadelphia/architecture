@@ -66,6 +66,7 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
         faultSolutionName = extras.getString(Constant.FAULT_SOLUTION_NAME);
         Map<String, String> map = new HashMap<>();
         map.put("fileName", faultSolutionName);
+        map.put("exception_code", faultCode);
 
         getPresenter().getDetailSolutionMessage(GsonTools.createGsonListString(map));
     }

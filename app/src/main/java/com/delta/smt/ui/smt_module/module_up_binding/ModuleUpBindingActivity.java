@@ -209,7 +209,23 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         dataSource.addAll(data);
         Log.i(TAG, "onSuccess:后台返回的数据长度是： " + dataSource.size());
         adapter.notifyDataSetChanged();
+        if (isAllItemIsBound(data)){
+            ToastUtils.showMessage(this, "所有料盘上模组已经完成", Toast.LENGTH_SHORT);
+        }
+    }
 
+    private boolean isAllItemIsBound(List<ModuleUpBindingItem> data) {
+        boolean isAllItemBound= false;
+        int size = data.size();
+        for (int i = 0; i < size; i++) {
+            ModuleUpBindingItem item = data.get(i);
+            if (TextUtils.isEmpty(item.getFeeder_id())){
+                isAllItemBound = false;
+                break;
+            }
+            isAllItemBound = true;
+        }
+        return isAllItemBound;
     }
 
     @Override
@@ -321,6 +337,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void onScanSuccess(String barcode) {
         showMessage.setVisibility(View.GONE);
+        Log.i(TAG, "onScanSuccess: " + barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:     //扫描料盘
@@ -363,6 +380,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         jsonObject.addProperty("qty", quantaty);
                         jsonArray.add(jsonObject);
                         String argument = jsonArray.toString();
+                        Log.i(TAG, "argument==  " +argument);
                         getPresenter().getMaterialAndFeederBindingResult(argument);
                     }
                 } catch (EntityNotFountException e) {

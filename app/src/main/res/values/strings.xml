@@ -11,7 +11,7 @@
 
     <!--PCB  库房-->
     <string name="confirm">确定</string>
-    <string name="check_all">全部选择</string>
+    <string name="check_all">全选</string>
     <string name="cancel">取消</string>
     <string name="option_stock">备料</string>
     <string name="option_storage">入库</string>
@@ -101,7 +101,7 @@
 
     <string name="MainBoard">主板:</string>
     <string name="LittleBoard">小板:</string>
-    <string name="unfinished_station">还没有完成发料的料站！</string>
+    <string name="unfinished_station">还没有开始发料，不能扣账！</string>
     <string name="server_error_message"> 无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理员！</string>
     <string name="scan_remain_car_message">请扫描对应余料车</string>
     <string name="scan_corresponding_materials_plate">请扫描对应料盘！</string>
@@ -120,5 +120,8 @@
     <string name="FeederCache">Feeder 暂存区备料</string>
     <string name="edit_complete">编辑完成并上传</string>
     <string name="title_activity_alert">AlertActivity</string>
+    <string name="debit">扣账</string>
+    <string name="debit_hand">手动扣账</string>
+    <string name="debit_auto">自动扣账</string>
 
 </resources>

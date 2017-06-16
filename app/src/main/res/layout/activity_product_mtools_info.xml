@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white_back"
     android:layout_height="match_parent">
 
     <include layout="@layout/appbar" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="80px"
+        android:layout_marginTop="@dimen/px_magrgTop"
         android:id="@+id/ProductInfoRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -24,4 +25,4 @@
         android:background="#00B2EE"
         />
 
-</LinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

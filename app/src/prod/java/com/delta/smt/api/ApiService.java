@@ -5,6 +5,7 @@ import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
 import com.delta.smt.entity.CheckStock;
+import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.ExceptionsBean;
 import com.delta.smt.entity.FaultFilter;
 import com.delta.smt.entity.FaultMessage;
@@ -452,7 +453,7 @@ public interface ApiService {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @POST("ams/smm/warehissue/deduction")
-    Observable<Result> deduction(@Field("value") String mS);
+    Observable<Result<DebitData>> deduction(@Field("value") String mS);
 
     //尾数仓备料
     @GET("ams/smm/issuemana/querymantiss")
@@ -625,6 +626,9 @@ public interface ApiService {
     @Streaming
     @GET
     Observable<ResponseBody> download(@Url String url);
+
+    @GET("ams/smm/warehissue/getnodebit")
+    Observable<Result<DebitData>> getDebitDataList(@Query("condition") String mMs);
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")

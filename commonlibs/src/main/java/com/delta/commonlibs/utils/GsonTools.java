@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+
 
 public class GsonTools {
 
@@ -90,7 +90,6 @@ public class GsonTools {
         Type type = new TypeToken<ArrayList<JsonObject>>() {
         }.getType();
         ArrayList<JsonObject> jsonObjs = new Gson().fromJson(json, type);
-
         ArrayList<T> listOfT = new ArrayList<T>();
         for (JsonObject jsonObj : jsonObjs) {
             listOfT.add(new Gson().fromJson(jsonObj, cls));

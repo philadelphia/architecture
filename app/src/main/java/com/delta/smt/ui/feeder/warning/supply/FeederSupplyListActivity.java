@@ -86,9 +86,9 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.GONE);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(R.string.FeederCache);
 
         adapter = new ItemCountViewAdapter<FeederSupplyWarningItem>(this, dataList) {

@@ -23,6 +23,7 @@ public interface MantissaWarehouseReturnContract {
 
         Observable<MantissaWarehouseReturnResult> getputinstrage(String str);
 
+        Observable<MantissaWarehouseReturnResult> getAutomaticDebit(String str);
     }
 
     interface View extends IView {
@@ -35,6 +36,9 @@ public interface MantissaWarehouseReturnContract {
 
         void getputinstrageSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
         void getputinstrageFailed(String message);
+
+        void getAutomaticDebitSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
+        void getAutomaticDebitFailed(String message);
 
 
         void showLoadingView();

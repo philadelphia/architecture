@@ -277,7 +277,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private void createBottomSheetDialog() {
 
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet, null);
-        RecyclerView mRecyTitle = ViewUtils.findView(view, R.id.rv_sheet_title);
+        RecyclerView mRecyTitle = ViewUtils.findView(view, R.id.rv_sheet);
         RecyclerView mRecycleView = ViewUtils.findView(view, R.id.rv_sheet);
         Button bt_cancel = ViewUtils.findView(view, R.id.bt_sheet_cancel);
         Button bt_confim = ViewUtils.findView(view, R.id.bt_sheet_confirm);

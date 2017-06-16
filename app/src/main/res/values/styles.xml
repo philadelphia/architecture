@@ -134,5 +134,11 @@
 
     <dimen name="px_25">25px</dimen>
 
+    <style name="popupAnimalStyle">
+        <item name="android:windowEnterAnimation">@anim/slide_in_right</item>
+        <!-- 指定显示的动画xml -->
+
+        <item name="android:windowExitAnimation">@anim/slide_out_left</item>
+        </style>
 
 </resources>

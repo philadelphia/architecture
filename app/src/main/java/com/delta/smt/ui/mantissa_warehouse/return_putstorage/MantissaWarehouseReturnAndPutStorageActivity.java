@@ -113,6 +113,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("尾数仓入库及退料");
+        mToolbarTitle.setTextSize(40);
         for (int i = 0; i < titles.length; i++) {
             mTlTitle.addTab(mTlTitle.newTab());
         }
