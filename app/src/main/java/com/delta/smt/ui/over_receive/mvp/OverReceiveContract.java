@@ -39,6 +39,7 @@ public interface OverReceiveContract {
 
         void showEmptyView();
 
+
     }
 
     interface Model extends IModel {
@@ -49,6 +50,8 @@ public interface OverReceiveContract {
         Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
         Observable<OverReceiveDebitList> getNoDebit();
+
+        Observable<OverReceiveDebitList> debit(String value);
 
     }
 }

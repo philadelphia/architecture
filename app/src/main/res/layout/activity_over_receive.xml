@@ -56,6 +56,7 @@
                 android:layout_alignBaseline="@id/manual_debit"
                 android:layout_marginRight="10px"
                 android:layout_toLeftOf="@+id/manual_debit"
+                android:button="@drawable/checkbox_selector"
                 android:checked="false"
                 android:text="自动扣账"
                 android:textSize="@dimen/px_40" />

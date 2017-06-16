@@ -153,4 +153,22 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
             }
         });
     }
+
+    public void debit(String value) {
+        getModel().debit(value).subscribe(new Action1<OverReceiveDebitList>() {
+            @Override
+            public void call(OverReceiveDebitList overReceiveDebitList) {
+                if ("0".equals(overReceiveDebitList.getCode())) {
+                    getView().onGetNoDebitSuccess(overReceiveDebitList);
+                } else {
+                    getView().onGetNoDebitFailed(overReceiveDebitList);
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onGetNoDebitFailed(throwable);
+            }
+        });
+    }
 }
