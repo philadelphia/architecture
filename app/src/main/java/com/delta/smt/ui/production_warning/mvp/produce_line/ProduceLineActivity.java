@@ -85,14 +85,11 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 
     @Override
     protected void initView() {
-
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText("产线选择");
-
-
         //设置Recyleview的adapter
         mAdapter = new CommonBaseAdapter<ItemProduceLine>(this, datas) {
             @Override
@@ -232,8 +229,8 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
     @Override
     public void getFailed(String message) {
         if ("Error".equals(message)) {
-            Snackbar.make(getCurrentFocus(),this.getString(R.string.server_error_message),Snackbar.LENGTH_LONG).show();
-        }else {
+            Snackbar.make(getCurrentFocus(), this.getString(R.string.server_error_message), Snackbar.LENGTH_LONG).show();
+        } else {
             Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
         }
     }
@@ -292,7 +289,6 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
             }
         });
     }
-
 
 
 }
