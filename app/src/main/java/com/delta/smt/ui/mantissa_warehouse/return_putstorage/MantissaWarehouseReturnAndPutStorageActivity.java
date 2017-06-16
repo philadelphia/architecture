@@ -126,6 +126,9 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         mTlTitle.getTabAt(currentTab).select();
     }
 
+    public AutoToolbar getToolbar() {
+        return mToolbar;
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

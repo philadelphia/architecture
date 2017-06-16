@@ -4,6 +4,7 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
+import com.delta.smt.entity.ManualDebitBean;
 
 import rx.Observable;
 
@@ -35,7 +36,7 @@ public class MantissaWarehouseReturnModel extends BaseModel<ApiService> implemen
     }
 
     @Override
-    public Observable<MantissaWarehouseReturnResult> getAutomaticDebit(String str) {
-        return null;
+    public Observable<ManualDebitBean> getManualmaticDebit() {
+        return getService().getManualmaticDebit().compose(RxsRxSchedulers.<ManualDebitBean>io_main());
     }
 }
