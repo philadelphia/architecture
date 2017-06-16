@@ -115,4 +115,32 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
 
     }
 
+    public void getAutomaticDebit(String s) {
+
+        getModel().getAutomaticDebit(s).subscribe(new Action1<MantissaWarehouseReturnResult>() {
+            @Override
+            public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnResult) {
+
+                if("0".equals(mantissaWarehouseReturnResult.getCode())){
+                    getView().getAutomaticDebitSucess(mantissaWarehouseReturnResult.getRows());
+                }else{
+                    getView().getAutomaticDebitFailed( mantissaWarehouseReturnResult.getmessage());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                try {
+                    getView().getAutomaticDebitFailed(throwable.getMessage());
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+    }
 }

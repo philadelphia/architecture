@@ -9,11 +9,14 @@ public class WarehousePutinStorageBean {
     private String material_no;
     private String serial_no;
     private String shelf_no;
+    private String code;
 
-    public WarehousePutinStorageBean(String material_no, String serial_no, String shelf_no) {
+
+    public WarehousePutinStorageBean(String material_no, String serial_no, String shelf_no, String code) {
         this.material_no = material_no;
         this.serial_no = serial_no;
         this.shelf_no = shelf_no;
+        this.code = code;
     }
 
     public String getMaterial_no() {
@@ -38,5 +41,13 @@ public class WarehousePutinStorageBean {
 
     public void setShelf_no(String shelf_no) {
         this.shelf_no = shelf_no;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
