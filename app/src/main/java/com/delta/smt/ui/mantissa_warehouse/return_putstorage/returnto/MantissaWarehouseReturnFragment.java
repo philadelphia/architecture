@@ -4,6 +4,9 @@ import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -14,6 +17,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -38,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
 
@@ -53,6 +58,10 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     RecyclerView mRecyContetn;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
+    @BindView(R.id.button2)
+    Button mButton2;
+    @BindView(R.id.checkBox)
+    CheckBox mCheckBox;
     private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList = new ArrayList();
     private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter;
@@ -65,7 +74,12 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     private String lastCar;
     private String serialNum;
 
+    private String automaticDebit;
+    private String manualDebit;
+    private boolean ischeck = true;
+
     private int scan_position = -1;
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -79,6 +93,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
         getPresenter().getMantissaWarehouseReturn();
 
+        ischeck = SpUtil.getBooleanSF(getContext(),"autochecked");
     }
 
     @Override
@@ -111,15 +126,8 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
 
-                // holder.setText(R.id.tv_workOrder, item.getWork_order());
                 holder.setText(R.id.tv_number, item.getMaterial_no());
-                // holder.setText(R.id.tv_serialNumber, item.getSerial_num());
                 holder.setText(R.id.tv_location, item.getShelf_no());
-                // if("1".equals(item.getStatus())){
-                //  holder.setText(R.id.tv_type, "已入库");
-                //}else if("0".equals(item.getStatus())) {
-                //  holder.setText(R.id.tv_type, "未入库");
-                // }
             }
 
             @Override
@@ -131,6 +139,13 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mRecyContetn.setAdapter(adapter2);
 
+        mCheckBox.setChecked(ischeck);
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SpUtil.SetBooleanSF(getContext(), "autochecked", isChecked);
+            }
+        });
     }
 
     @Override
@@ -187,7 +202,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         //扫描成功震动并发声
         VibratorAndVoiceUtils.correctVibrator(getmActivity());
         VibratorAndVoiceUtils.correctVoice(getmActivity());
-
     }
 
     @Override
@@ -196,6 +210,16 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         //扫描失败震动并发声
         VibratorAndVoiceUtils.wrongVibrator(getActivity());
         VibratorAndVoiceUtils.wrongVoice(getActivity());
+    }
+
+    @Override
+    public void getAutomaticDebitSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns) {
+
+    }
+
+    @Override
+    public void getAutomaticDebitFailed(String message) {
+
     }
 
     @Override
@@ -251,8 +275,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
 
                     MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
-//                    Gson gson = new Gson();
-//                    String s = gson.toJson(bindBean);
                     String s = GsonTools.createGsonListString(bindBean);
 
                     getPresenter().getMaterialLocation(s);
@@ -264,18 +286,22 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 try {
                     LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
                     lastCar = lastMaterialCar.getSource();
+                    automaticDebit = "1";
+                    manualDebit = "0";
 
-                    WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar);
-//                    Gson gson = new Gson();
-//                    String s = gson.toJson(bindBean);
+                    if (mCheckBox.isChecked()) {
+                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, automaticDebit);
+                        String s = GsonTools.createGsonListString(bindBean);
+                        getPresenter().getputinstrage(s);
+                    } else {
+                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, manualDebit);
+                        String s = GsonTools.createGsonListString(bindBean);
+                        getPresenter().getputinstrage(s);
+                    }
 
-                    String s = GsonTools.createGsonListString(bindBean);
-
-
-                    getPresenter().getputinstrage(s);
                     Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
-                   // SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描架位！");
+                    // SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描架位！");
 
                     try {
                         MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
@@ -311,5 +337,13 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         adapter2.notifyDataSetChanged();
     }
 
-
+    @OnClick({R.id.button2, R.id.checkBox})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button2:
+                break;
+            case R.id.checkBox:
+                break;
+        }
+    }
 }
