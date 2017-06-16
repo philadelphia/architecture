@@ -2,14 +2,12 @@ package com.delta.smt.ui.over_receive;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -373,9 +371,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                     createCustomPopWindow();
 
                 }
-                showPopupWindow(toolbar);
+                mCustomPopWindow.showAsDropDown(toolbar);
+                //showPopupWindow(toolbar);
                 if (SingleClick.isSingle(1000)) {
-                    showPopupWindow(toolbar);
+                    //showPopupWindow(toolbar);
+                    mCustomPopWindow.showAsDropDown(toolbar);
                     getPresenter().getNoDebit();
                     //getPresenter().getDebitDataList(mS);
                 }
@@ -709,7 +709,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         }
     }*/
 
-    public void showPopupWindow(View anchor) {
+/*    public void showPopupWindow(View anchor) {
         if (!mCustomPopWindow.isShowing()) {
             if (Build.VERSION.SDK_INT < 24) {
                 mCustomPopWindow.showAsDropDown(anchor);
@@ -723,6 +723,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             }
 
         }
-    }
+    }*/
 
 }
