@@ -594,9 +594,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             createCustomPopWindow();
 
         }
-        mCustomPopWindow.showAsDropDown(mToolbar);
         if (SingleClick.isSingle(1000)) {
-            mCustomPopWindow.showAsDropDown(mToolbar);
             getPresenter().getDebitDataList(mS);
         }
     }
@@ -666,6 +664,10 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                         mListBean.setDemand_qty(mDebitData.getIssue_amount());
                         mDebitCheckedData.add(mListBean);
                     }
+                }
+                if (mDebitCheckedData.size() == 0) {
+                    ToastUtils.showMessage(this, "还未选择口账列表！");
+                    return;
                 }
                 DebitParameters mDebitParameters = new DebitParameters();
                 mDebitParameters.setAction(Constant.ACTION);

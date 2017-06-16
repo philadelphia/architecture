@@ -18,6 +18,7 @@
         android:drawablePadding="15px"
         android:focusable="false"
         android:gravity="center"
+        android:button="@drawable/radio_selector"
         android:textColor="#333333"
         android:textSize="15dp" />
 </LinearLayout>

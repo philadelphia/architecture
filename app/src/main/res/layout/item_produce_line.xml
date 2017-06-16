@@ -5,6 +5,7 @@
     android:layout_height="wrap_content">
 
     <CheckBox
+        android:button="@drawable/checkbox_selector"
         android:text="CheckBox"
         android:textColor="#333333"
         android:clickable="false"
