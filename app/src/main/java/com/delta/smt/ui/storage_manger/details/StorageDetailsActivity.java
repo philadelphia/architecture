@@ -3,15 +3,13 @@ package com.delta.smt.ui.storage_manger.details;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -37,6 +35,8 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
+import com.delta.smt.entity.DebitData;
+import com.delta.smt.entity.DebitParameters;
 import com.delta.smt.entity.IssureToWarehBody;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.Result;
@@ -47,6 +47,7 @@ import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsContract;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.delta.smt.utils.ViewUtils;
+import com.delta.smt.widget.CustomPopWindow;
 import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.ArrayList;
@@ -97,8 +98,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @BindView(R.id.textView)
     TextView textView;
     private List<StorageDetails> dataList = new ArrayList<>();
-    private List<StorageDetails> dataList2 = new ArrayList<>();
+    private List<StorageDetails> mStorageDetailses = new ArrayList<>();
     private List<StorageDetails> unDebitDataList = new ArrayList<>();
+    private List<DebitData> mDebitDatas = new ArrayList<>();
     private CommonBaseAdapter<StorageDetails> title_adapter;
     private CommonBaseAdapter<StorageDetails> content_adapter;
     private BarCodeParseIpml barCodeImp;
@@ -110,12 +112,15 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private boolean ischeck = true;
     private boolean isOver;
     private BottomSheetDialog bottomSheetDialog;
-    private CommonBaseAdapter<StorageDetails> undoList_adapter;
+    private CommonBaseAdapter<DebitData> undoList_adapter;
     private String mS;
     private String line_name;
+    private CustomPopWindow mCustomPopWindow;
+
     @Inject
     TextToSpeechManager textToSpeechManager;
     private String currentDeltaMaterialNumber;
+    private int mToolbarHeight;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -184,7 +189,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         mRecyTitle.setAdapter(title_adapter);
 
 
-        content_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList2) {
+        content_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), mStorageDetailses) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.setText(R.id.tv_number, item.getMaterial_no());
@@ -215,7 +220,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         };
         mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mRecyContetn.setAdapter(content_adapter);
-        createBottomSheetDialog();
+        //createBottomSheetDialog();
 
     }
 
@@ -260,79 +265,63 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         tv_hint.setText(rows.getMessage());
         textToSpeechManager.stop();
         textToSpeechManager.readMessage(rows.getMessage());
-        if (btnSwitch.isChecked()) {
-            //getPresenter().deduction(mS);
-        }
         if (isOver) {
             getPresenter().issureToWarehFinish(mS);
         }
     }
 
-    private void createBottomSheetDialog() {
-
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet, null);
-        RecyclerView rv_title = ViewUtils.findView(view, R.id.rv_sheet_title);
-        RecyclerView mRecycleView = ViewUtils.findView(view, R.id.rv_sheet);
-        Button bt_cancel = ViewUtils.findView(view, R.id.bt_sheet_cancel);
-        Button bt_confim = ViewUtils.findView(view, R.id.bt_sheet_confirm);
-        bt_cancel.setOnClickListener(this);
-        bt_confim.setOnClickListener(this);
-        undoList_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), unDebitDataList) {
-            @Override
-            protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
-                holder.setText(R.id.tv_number, item.getMaterial_no());
-                holder.setText(R.id.tv_location, item.getShelf_no());
-                holder.setText(R.id.tv_needNumber, String.valueOf(item.getAmount()));
-                holder.setText(R.id.tv_shipments, String.valueOf(item.getIssue_amount()));
-                switch (item.getStatus()) {
-                    case 0:
-                        holder.itemView.setBackgroundColor(Color.YELLOW);
-                        break;
-                    case 1:
-                        holder.itemView.setBackgroundColor(Color.WHITE);
-                        break;
-                    case 2:
-                        holder.itemView.setBackgroundColor(Color.GREEN);
-                        break;
-                    case 3:
-                        holder.itemView.setBackgroundColor(Color.RED);
-                        break;
-                }
-            }
-
-            @Override
-            protected int getItemViewLayoutId(int position, StorageDetails item) {
-                return R.layout.details_item;
-            }
-
-        };
-        bottomSheetDialog = new BottomSheetDialog(this);
-        bottomSheetDialog.setContentView(view);
-
-        rv_title.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        rv_title.setAdapter(title_adapter);
-        mRecycleView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
-        mRecycleView.setLayoutManager(linearLayoutManager);
-        mRecycleView.setAdapter(undoList_adapter);
-        //从bottomSheetDialog拿到behavior
-        final BottomSheetBehavior<View> mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheetDialog.getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet));
-        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    bottomSheetDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
-    }
+//    private void createBottomSheetDialog() {
+//
+//        View view = LayoutInflater.from(this).inflate(dialog_bottom_sheet, null);
+//        RecyclerView rv_title = ViewUtils.findView(view, R.id.rv_sheet_title);
+//        RecyclerView mRecycleView = ViewUtils.findView(view, R.id.rv_sheet);
+//        Button bt_cancel = ViewUtils.findView(view, R.id.bt_sheet_cancel);
+//        Button bt_confim = ViewUtils.findView(view, R.id.bt_sheet_confirm);
+//        bt_cancel.setOnClickListener(this);
+//        bt_confim.setOnClickListener(this);
+//        undoList_adapter = new CommonBaseAdapter<DebitData>(getContext(), mDebitDatas) {
+//            @Override
+//            protected void convert(CommonViewHolder holder, DebitData item, int position) {
+//                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
+//                holder.setText(R.id.tv_slot, "架位：" + item.getSlot());
+//                holder.setText(R.id.tv_amount, "需求量：" + String.valueOf(item.getAmount()));
+//                holder.setText(R.id.tv_issue, "已发料量：" + String.valueOf(item.getIssue_amount()));
+//
+//            }
+//
+//            @Override
+//            protected int getItemViewLayoutId(int position, DebitData item) {
+//                return R.layout.details_item;
+//            }
+//
+//        };
+//        bottomSheetDialog = new BottomSheetDialog(this);
+//        bottomSheetDialog.setContentView(view);
+//
+//        rv_title.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+//        rv_title.setAdapter(title_adapter);
+//        mRecycleView.setHasFixedSize(true);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setSmoothScrollbarEnabled(true);
+//        mRecycleView.setLayoutManager(linearLayoutManager);
+//        mRecycleView.setAdapter(undoList_adapter);
+//        //从bottomSheetDialog拿到behavior
+//        final BottomSheetBehavior<View> mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheetDialog.getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet));
+//        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+//                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+//                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//                    bottomSheetDialog.dismiss();
+//                }
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//
+//            }
+//        });
+//    }
 
     @Override
     protected void onDestroy() {
@@ -341,31 +330,28 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     private void issureToWareh(Result<StorageDetails> rows) {
-        unDebitDataList.clear();
+
         isOver = true;
         isHaveIssureOver = false;
-        dataList2.clear();
-        dataList2.addAll(rows.getRows());
+        mStorageDetailses.clear();
+        mStorageDetailses.addAll(rows.getRows());
         int position = 0;
         boolean isFirstUndo = true;
-        for (int i = 0; i < dataList2.size(); i++) {
-            if (dataList2.get(i).getStatus() == 1) {
+        for (int i = 0; i < mStorageDetailses.size(); i++) {
+            if (mStorageDetailses.get(i).getStatus() == 1) {
                 if (isFirstUndo) {
                     position = i;
                     isFirstUndo = false;
                 }
             }
-            if (dataList2.get(i).getStatus() == 2) {
-
+            if (mStorageDetailses.get(i).getStatus() == 2) {
                 isHaveIssureOver = true;
             } else {
-                unDebitDataList.add(dataList2.get(i));
                 isOver = false;
             }
         }
         content_adapter.notifyDataSetChanged();
         mRecyContetn.scrollToPosition(position);
-
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -542,13 +528,16 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void deductionFailed(String message) {
-        ToastUtils.showMessage(this, "扣账失败");
+        ToastUtils.showMessage(this, message);
 
     }
 
     @Override
-    public void deductionSuccess() {
-        ToastUtils.showMessage(this, "扣账成功");
+    public void deductionSuccess(List<DebitData> mRows) {
+
+        mDebitDatas.clear();
+        mDebitDatas.addAll(mRows);
+        undoList_adapter.notifyDataSetChanged();
 
     }
 
@@ -560,6 +549,19 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         content_adapter.notifyDataSetChanged();
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
+    }
+
+    @Override
+    public void getDebitDataSuccess(Result<DebitData> mDebitDataResult) {
+
+        mDebitDatas.clear();
+        mDebitDatas.addAll(mDebitDataResult.getRows());
+        undoList_adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getDebitDataFaild(String mMessage) {
+
     }
 
     @Override
@@ -606,6 +608,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     issureToWarehBody.setWork_order(work_order);
                     issureToWarehBody.setSide(side);
                     issureToWarehBody.setPart(part);
+                    String code = btnSwitch.isChecked() ? "1" : "0";
+                    issureToWarehBody.setCode(code);
                     currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
                     getPresenter().issureToWareh(GsonTools.createGsonListString(issureToWarehBody));
 
@@ -638,6 +642,12 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        mToolbarHeight = mToolbar.getHeight();
+        super.onWindowFocusChanged(hasFocus);
+    }
+
     @OnClick(R.id.button2)
     public void onClick() {
 
@@ -646,21 +656,57 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             ToastUtils.showMessage(this, getString(R.string.unfinished_station));
             return;
         }
-
-        if (SingleClick.isSingle(1000)) {
-            if (isOver == false) {
-
-                if (bottomSheetDialog.isShowing()) {
-                    bottomSheetDialog.dismiss();
-                } else {
-                    undoList_adapter.notifyDataSetChanged();
-                    bottomSheetDialog.show();
-                }
-            } else {
-                // getPresenter().deduction(mS);
-            }
+        if (mCustomPopWindow == null) {
+            createCustomPopWindow();
 
         }
+        mCustomPopWindow.showAsDropDown(mToolbar);
+        if (SingleClick.isSingle(1000)) {
+            mCustomPopWindow.showAsDropDown(mToolbar);
+            getPresenter().getDebitDataList(mS);
+        }
+    }
+
+    private void createCustomPopWindow() {
+        mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_bottom_sheet).enableBlur(true).setStartHeightBlur(100).build();
+        View mContentView = mCustomPopWindow.getContentView();
+        RecyclerView rv_debit = ViewUtils.findView(mContentView, R.id.rv_sheet);
+        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_cancel);
+        Button bt_confim = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
+        Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
+        bt_cancel.setOnClickListener(this);
+        bt_confim.setOnClickListener(this);
+        bt_select_all.setOnClickListener(this);
+        undoList_adapter = new CommonBaseAdapter<DebitData>(getContext(), mDebitDatas) {
+            @Override
+            protected void convert(CommonViewHolder holder, final DebitData item, int position) {
+                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
+                holder.setText(R.id.tv_slot, "架位：" + item.getSlot());
+                holder.setText(R.id.tv_amount, "需求量：" + String.valueOf(item.getAmount()));
+                holder.setText(R.id.tv_issue, "已发料量：" + String.valueOf(item.getIssue_amount()));
+                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
+                mCheckBox.setChecked(item.isChecked());
+                holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCheckBox.setChecked(!item.isChecked());
+                        item.setChecked(!item.isChecked());
+                    }
+                });
+
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, DebitData item) {
+                return R.layout.item_debit_list;
+            }
+
+        };
+        rv_debit.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        rv_debit.setLayoutManager(linearLayoutManager);
+        rv_debit.setAdapter(undoList_adapter);
     }
 
 
@@ -668,11 +714,41 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_sheet_cancel:
-                bottomSheetDialog.dismiss();
+                if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                    mCustomPopWindow.dissmiss();
+                }
                 break;
             case R.id.bt_sheet_confirm:
-                // getPresenter().deduction(mS);
-                bottomSheetDialog.dismiss();
+                List<DebitParameters.ListBean> mDebitCheckedData = new ArrayList<>();
+
+                for (DebitData mDebitData : mDebitDatas) {
+                    if (mDebitData.isChecked()) {
+                        DebitParameters.ListBean mListBean = new DebitParameters.ListBean();
+                        mListBean.setSlot(mDebitData.getSlot());
+                        mListBean.setTotal_qty(mDebitData.getAmount());
+                        mListBean.setMaterial_no(mDebitData.getMaterial_no());
+                        mListBean.setDemand_qty(mDebitData.getIssue_amount());
+                        mDebitCheckedData.add(mListBean);
+                    }
+                }
+                DebitParameters mDebitParameters = new DebitParameters();
+                mDebitParameters.setAction(Constant.ACTION);
+                mDebitParameters.setRfname("124133");
+                mDebitParameters.setWork_order(work_order);
+                mDebitParameters.setSide(side);
+                mDebitParameters.setPart(part);
+                mDebitParameters.setList(mDebitCheckedData);
+                getPresenter().deduction(GsonTools.createGsonListString(mDebitParameters));
+                break;
+            case R.id.bt_sheet_select_all:
+                if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                    if (mDebitDatas != null && mDebitDatas.size() != 0) {
+                        for (DebitData mDebitData : mDebitDatas) {
+                            mDebitData.setChecked(true);
+                        }
+                        undoList_adapter.notifyDataSetChanged();
+                    }
+                }
                 break;
             default:
                 break;

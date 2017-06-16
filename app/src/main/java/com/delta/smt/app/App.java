@@ -22,12 +22,24 @@ import com.delta.smt.service.warningService.WarningService;
 import com.delta.ttsmanager.TextToSpeechManager;
 import com.delta.updatelibs.UpdateUtils;
 
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+import org.acra.sender.HttpSender;
+
 import javax.inject.Inject;
 
 /**
  * Created by V.Wenju.Tian on 2016/11/29.
  */
+@ReportsCrashes(
+        mode = ReportingInteractionMode.TOAST,
+        //resToastText =  R.string.crash_toast_text,
+        formUri = "http://172.22.34.198:8888/acra-smartsmt",
+        httpMethod = HttpSender.Method.PUT,
+        reportType = HttpSender.Type.JSON
 
+)
 public class App extends BaseApplication implements Application.ActivityLifecycleCallbacks {
 
     public static AppComponent appComponent;
@@ -61,7 +73,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     public void onCreate() {
         super.onCreate();
         new DeviceUuidFactory(this);
-
+        ACRA.init(this);
         mContenxt = this;
         mainHander = new Handler(Looper.getMainLooper());
         appComponent = DaggerAppComponent.builder().clientModule(getClientModule()).appModule(getAppModule()).serviceModule(getServiceModule()).build();

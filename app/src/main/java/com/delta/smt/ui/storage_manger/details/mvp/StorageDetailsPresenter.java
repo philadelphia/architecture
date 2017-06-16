@@ -6,6 +6,7 @@ import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
 import com.delta.smt.Constant;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
+import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.Result;
@@ -199,24 +200,14 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
 
 
     public void deduction(String mS) {
-        getModel().deduction(mS).subscribe(new Action1<Result>() {
-            @Override
-            public void call(Result result) {
 
-                if (0==result.getCode()) {
-                    getView().deductionSuccess();
+        getModel().deduction(mS).subscribe(new RxErrorHandlerSubscriber<Result<DebitData>>(rxErrorHandler) {
+            @Override
+            public void onNext(Result<DebitData> mDebitDataResult) {
+                if (0==mDebitDataResult.getCode()) {
+                    getView().deductionSuccess(mDebitDataResult.getRows());
                 } else {
-                    getView().deductionFailed(result.getMessage());
-                }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-
-                try {
-                    getView().deductionFailed(throwable.getMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    getView().deductionFailed(mDebitDataResult.getMessage());
                 }
             }
         });
@@ -243,5 +234,22 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
                 }
             }
         });
+    }
+
+    public void getDebitDataList(String mS) {
+
+        getModel().getDebitDataList(mS).subscribe(new RxErrorHandlerSubscriber<Result<DebitData>>(rxErrorHandler) {
+            @Override
+            public void onNext(Result<DebitData> mDebitDataResult) {
+
+                if(mDebitDataResult.getCode()==0){
+                    getView().getDebitDataSuccess(mDebitDataResult);
+                }else {
+                    getView().getDebitDataFaild(mDebitDataResult.getMessage());
+                }
+            }
+        });
+
+
     }
 }
