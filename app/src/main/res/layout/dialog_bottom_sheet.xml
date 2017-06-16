@@ -16,9 +16,10 @@
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60px"
-        android:layout_marginTop="20px"
+        android:paddingBottom="60px"
+        android:paddingTop="20px"
         android:gravity="center"
+        android:background="#e0ffffff"
         android:orientation="horizontal"
         android:padding="10px">
 
