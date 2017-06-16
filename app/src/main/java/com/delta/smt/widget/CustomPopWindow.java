@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +109,18 @@ public class CustomPopWindow implements PopupWindow.OnDismissListener {
 
     public CustomPopWindow showAsDropDown(View anchor) {
         if (mPopupWindow != null) {
-            mPopupWindow.showAsDropDown(anchor);
+            if (!mPopupWindow.isShowing()) {
+                if (Build.VERSION.SDK_INT < 24) {
+                    mPopupWindow.showAsDropDown(anchor);
+                } else {
+                    // 适配 android 7.0
+                    int[] location = new int[2];
+                    anchor.getLocationOnScreen(location);
+                    int x = location[0];
+                    int y = location[1];
+                    mPopupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, 0, y + mPopupWindow.getHeight() + anchor.getHeight());
+                }
+            }
         }
         return this;
     }
