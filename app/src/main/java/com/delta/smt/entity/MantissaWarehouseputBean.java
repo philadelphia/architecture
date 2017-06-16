@@ -17,6 +17,24 @@ public class MantissaWarehouseputBean {
     private String qty;
     private String work_order;
     private String side;
+    private String part;
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String mCode) {
+        code = mCode;
+    }
+
+    public String getPart() {
+        return part;
+    }
+
+    public void setPart(String mPart) {
+        part = mPart;
+    }
 
     public String getWork_order() {
         return work_order;

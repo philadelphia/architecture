@@ -3,6 +3,7 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
+import com.delta.smt.entity.ManualDebitBean;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface MantissaWarehouseReturnContract {
 
         Observable<MantissaWarehouseReturnResult> getputinstrage(String str);
 
-        Observable<MantissaWarehouseReturnResult> getAutomaticDebit(String str);
+        Observable<ManualDebitBean> getManualmaticDebit();
     }
 
     interface View extends IView {
@@ -37,8 +38,8 @@ public interface MantissaWarehouseReturnContract {
         void getputinstrageSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
         void getputinstrageFailed(String message);
 
-        void getAutomaticDebitSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns);
-        void getAutomaticDebitFailed(String message);
+        void getManualmaticDebitSucess(List<ManualDebitBean.ManualDebit> manualDebits);
+        void getManualmaticDebitFailed(String message);
 
 
         void showLoadingView();

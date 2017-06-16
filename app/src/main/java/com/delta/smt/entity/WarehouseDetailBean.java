@@ -9,10 +9,26 @@ public class WarehouseDetailBean {
     public String getWork_order() {
         return work_order;
     }
+
     private String side;
+    private String part;
+
+    public String getPart() {
+        return part;
+    }
+
+    public void setPart(String mPart) {
+        part = mPart;
+    }
 
     public String getSide() {
         return side;
+    }
+
+    public WarehouseDetailBean(String mSide, String mPart, String mWork_order) {
+        side = mSide;
+        part = mPart;
+        work_order = mWork_order;
     }
 
     public WarehouseDetailBean(String side, String workorder) {

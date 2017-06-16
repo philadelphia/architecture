@@ -3,6 +3,7 @@ package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.FragmentScope;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
+import com.delta.smt.entity.ManualDebitBean;
 
 import javax.inject.Inject;
 
@@ -115,16 +116,16 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
 
     }
 
-    public void getAutomaticDebit(String s) {
+    public void getManualmaticDebit() {
 
-        getModel().getAutomaticDebit(s).subscribe(new Action1<MantissaWarehouseReturnResult>() {
+        getModel().getManualmaticDebit().subscribe(new Action1<ManualDebitBean>() {
             @Override
-            public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnResult) {
+            public void call(ManualDebitBean manualDebitBean) {
 
-                if("0".equals(mantissaWarehouseReturnResult.getCode())){
-                    getView().getAutomaticDebitSucess(mantissaWarehouseReturnResult.getRows());
+                if("0".equals(manualDebitBean.getCode())){
+                    getView().getManualmaticDebitSucess(manualDebitBean.getRows());
                 }else{
-                    getView().getAutomaticDebitFailed( mantissaWarehouseReturnResult.getmessage());
+                    getView().getManualmaticDebitFailed( manualDebitBean.getmessage());
                 }
 
             }
@@ -133,7 +134,7 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
             public void call(Throwable throwable) {
 
                 try {
-                    getView().getAutomaticDebitFailed(throwable.getMessage());
+                    getView().getManualmaticDebitFailed(throwable.getMessage());
                     getView().showErrorView();
                 } catch (Exception e) {
                     e.printStackTrace();
