@@ -4,6 +4,7 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
+import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.Result;
@@ -58,7 +59,12 @@ public class StorageDetailsModel extends BaseModel<ApiService> implements Storag
     }
 
     @Override
-    public Observable<Result> deduction(String mS) {
-        return getService().deduction(mS).compose(RxsRxSchedulers.<Result>io_main());
+    public Observable<Result<DebitData>> deduction(String mS) {
+        return getService().deduction(mS).compose(RxsRxSchedulers.<Result<DebitData>>io_main());
+    }
+
+    @Override
+    public Observable<Result<DebitData>> getDebitDataList(String ms) {
+        return getService().getDebitDataList(ms).compose(RxsRxSchedulers.<Result<DebitData>>io_main());
     }
 }

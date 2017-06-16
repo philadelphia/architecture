@@ -33,6 +33,15 @@ public class IssureToWarehBody {
     private String work_order;
     private String part;
     private String side;
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String mCode) {
+        code = mCode;
+    }
 
     public String getWork_order() {
         return work_order;
