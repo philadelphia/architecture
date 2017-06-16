@@ -1,9 +1,11 @@
 package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -18,6 +20,7 @@ import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.SpUtil;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -28,12 +31,16 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.BacKBarCode;
 import com.delta.smt.entity.MantissaWarehouseReturnBean;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
+import com.delta.smt.entity.ManualDebitBean;
 import com.delta.smt.entity.WarehousePutinStorageBean;
+import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.DaggerMantissaWarehouseReturnComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.MantissaWarehouseReturnModule;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnContract;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
+import com.delta.smt.utils.ViewUtils;
+import com.delta.smt.widget.CustomPopWindow;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -51,7 +58,7 @@ import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BAR
  */
 
 public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter>
-        implements MantissaWarehouseReturnContract.View {
+        implements MantissaWarehouseReturnContract.View, View.OnClickListener {
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
@@ -76,7 +83,12 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     private String automaticDebit;
     private String manualDebit;
-    private boolean ischeck = true;
+    private boolean ischeck = false;
+
+    private CustomPopWindow mCustomPopWindow;
+    private CommonBaseAdapter<ManualDebitBean.ManualDebit> undoList_adapter;
+
+    private MantissaWarehouseReturnAndPutStorageActivity mantissaWarehouseReturnAndPutStorageActivity;
 
     private int scan_position = -1;
 
@@ -89,11 +101,19 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof MantissaWarehouseReturnAndPutStorageActivity){
+             mantissaWarehouseReturnAndPutStorageActivity = (MantissaWarehouseReturnAndPutStorageActivity) context;
+        }
+    }
+
+    @Override
     protected void initData() {
 
         getPresenter().getMantissaWarehouseReturn();
 
-        ischeck = SpUtil.getBooleanSF(getContext(),"autochecked");
+        ischeck = SpUtil.getBooleanSF(getContext(), "autochecked");
     }
 
     @Override
@@ -213,12 +233,54 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     }
 
     @Override
-    public void getAutomaticDebitSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns) {
+    public void getManualmaticDebitSucess(List<ManualDebitBean.ManualDebit> manualDebits) {
+        if (manualDebits.size() == 0) {
 
+            ToastUtils.showMessage(getContext(), "暂无扣账列表！");
+
+        } else {
+
+            mCustomPopWindow = CustomPopWindow.builder().with(getContext()).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                    .setAnimationStyle(R.style.popupAnimalStyle)
+                    .setView(R.layout.dialog_bottom_sheet)
+                    .enableBlur(true).setStartHeightBlur(100).build().showAsDropDown(mantissaWarehouseReturnAndPutStorageActivity.getToolbar());
+
+            View mContentView = mCustomPopWindow.getContentView();
+            RecyclerView rv_debit = ViewUtils.findView(mContentView, R.id.rv_sheet);
+            undoList_adapter = new CommonBaseAdapter<ManualDebitBean.ManualDebit>(getContext(), manualDebits) {
+                @Override
+                protected void convert(CommonViewHolder holder, final ManualDebitBean.ManualDebit item, int position) {
+                    holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
+                    holder.setText(R.id.tv_serial_num, "流水号：" + item.getSerial_no());
+                    final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
+                    mCheckBox.setChecked(item.isChecked());
+                    holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mCheckBox.setChecked(!item.isChecked());
+                            item.setChecked(!item.isChecked());
+                        }
+                    });
+                }
+
+                @Override
+                protected int getItemViewLayoutId(int position, ManualDebitBean.ManualDebit item) {
+                    return R.layout.item_mantissawarehousedebit_list;
+                }
+
+            };
+            rv_debit.setHasFixedSize(true);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+            linearLayoutManager.setSmoothScrollbarEnabled(true);
+            rv_debit.setLayoutManager(linearLayoutManager);
+            rv_debit.setAdapter(undoList_adapter);
+
+
+        }
     }
 
     @Override
-    public void getAutomaticDebitFailed(String message) {
+    public void getManualmaticDebitFailed(String message) {
 
     }
 
@@ -289,7 +351,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     automaticDebit = "1";
                     manualDebit = "0";
 
-                    if (mCheckBox.isChecked()) {
+                    if (ischeck) {
                         WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, automaticDebit);
                         String s = GsonTools.createGsonListString(bindBean);
                         getPresenter().getputinstrage(s);
@@ -337,13 +399,14 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         adapter2.notifyDataSetChanged();
     }
 
-    @OnClick({R.id.button2, R.id.checkBox})
+    @OnClick({R.id.button2})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button2:
+                getPresenter().getManualmaticDebit();
                 break;
-            case R.id.checkBox:
-                break;
+
         }
     }
+
 }

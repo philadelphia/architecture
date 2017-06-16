@@ -31,6 +31,7 @@ import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
+import com.delta.smt.entity.ManualDebitBean;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.ModuleDownWarningItem;
@@ -609,6 +610,10 @@ public interface ApiService {
     @FormUrlEncoded
     @PUT("ams/smm/linequality/confirmqualityok")
     Observable<QualityManage> getQualityOK(@Field("value") String bind);
+
+    //尾数仓获取手动扣账列表
+    @GET("ams/smm/mantissastorage/getnodebit")
+    Observable<ManualDebitBean> getManualmaticDebit();
 
     /**
      * @description :
