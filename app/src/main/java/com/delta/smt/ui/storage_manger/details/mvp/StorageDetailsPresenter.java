@@ -238,17 +238,17 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
 
     public void getDebitDataList(String mS) {
 
-        getModel().getDebitDataList(mS).subscribe(new RxErrorHandlerSubscriber<Result<DebitData>>(rxErrorHandler) {
-            @Override
-            public void onNext(Result<DebitData> mDebitDataResult) {
+            getModel().getDebitDataList(mS).subscribe(new RxErrorHandlerSubscriber<Result<DebitData>>(rxErrorHandler) {
+                @Override
+                public void onNext(Result<DebitData> mDebitDataResult) {
 
-                if(mDebitDataResult.getCode()==0){
-                    getView().getDebitDataSuccess(mDebitDataResult);
-                }else {
-                    getView().getDebitDataFaild(mDebitDataResult.getMessage());
+                    if(mDebitDataResult.getCode()==0){
+                        getView().getDebitDataSuccess(mDebitDataResult.getRows());
+                    }else {
+                        getView().getDebitDataFailed(mDebitDataResult.getMessage());
+                    }
                 }
-            }
-        });
+            });
 
 
     }

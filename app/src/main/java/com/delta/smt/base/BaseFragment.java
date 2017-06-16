@@ -98,7 +98,9 @@ public abstract class BaseFragment<p extends BasePresenter> extends SupportFragm
         if (UseEventBus()) {
             EventBus.getDefault().unregister(this);
         }
+        getPresenter().ondestory();
         super.onDestroy();
+
     }
 
     Bundle savedState;

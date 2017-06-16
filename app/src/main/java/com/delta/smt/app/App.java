@@ -12,6 +12,7 @@ import android.text.TextUtils;
 
 import com.delta.commonlibs.utils.DeviceUuidFactory;
 import com.delta.commonlibs.utils.SpUtil;
+import com.delta.smt.R;
 import com.delta.smt.api.API;
 import com.delta.smt.base.BaseApplication;
 import com.delta.smt.di.component.AppComponent;
@@ -34,11 +35,10 @@ import javax.inject.Inject;
  */
 @ReportsCrashes(
         mode = ReportingInteractionMode.TOAST,
-        //resToastText =  R.string.crash_toast_text,
+        resToastText =  R.string.crash_toast_text,
         formUri = "http://172.22.34.198:8888/acra-smartsmt",
         httpMethod = HttpSender.Method.PUT,
         reportType = HttpSender.Type.JSON
-
 )
 public class App extends BaseApplication implements Application.ActivityLifecycleCallbacks {
 
@@ -70,10 +70,14 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     }
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        ACRA.init(this);
+    }
+    @Override
     public void onCreate() {
         super.onCreate();
         new DeviceUuidFactory(this);
-        ACRA.init(this);
         mContenxt = this;
         mainHander = new Handler(Looper.getMainLooper());
         appComponent = DaggerAppComponent.builder().clientModule(getClientModule()).appModule(getAppModule()).serviceModule(getServiceModule()).build();

@@ -123,5 +123,7 @@
     <string name="debit">扣账</string>
     <string name="debit_hand">手动扣账</string>
     <string name="debit_auto">自动扣账</string>
+    <string name="crash_toast_text">程序崩溃，已上传服务器</string>
+    <string name="bindMatericalcar">绑定备料车</string>
 
 </resources>

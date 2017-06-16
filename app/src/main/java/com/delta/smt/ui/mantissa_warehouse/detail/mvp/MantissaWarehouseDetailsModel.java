@@ -3,6 +3,7 @@ package com.delta.smt.ui.mantissa_warehouse.detail.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MaterialCar;
@@ -49,6 +50,16 @@ public class MantissaWarehouseDetailsModel extends BaseModel<ApiService> impleme
     @Override
     public Observable<Result> debit() {
         return getService().debit().compose(RxsRxSchedulers.<Result>io_main());
+    }
+
+    @Override
+    public Observable<Result<DebitData>> deduction(String mS) {
+        return getService().deduction(mS).compose(RxsRxSchedulers.<Result<DebitData>>io_main());
+    }
+
+    @Override
+    public Observable getDebitDataList(String mS) {
+        return getService().getDebitDataList(mS).compose(RxsRxSchedulers.io_main()) ;
     }
 
 }
