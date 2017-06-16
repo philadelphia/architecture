@@ -49,7 +49,7 @@
                 android:textColor="@color/c_ffffff"
                 android:textSize="@dimen/px_40" />
 
-            <android.support.v7.widget.AppCompatCheckBox
+            <CheckBox
                 android:id="@+id/automatic_debit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

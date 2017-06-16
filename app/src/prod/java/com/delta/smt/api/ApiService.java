@@ -38,6 +38,7 @@ import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.ModuleUpWarningItem;
 import com.delta.smt.entity.OnGoing;
 import com.delta.smt.entity.OutBound;
+import com.delta.smt.entity.OverReceiveDebitList;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.PcbNumber;
@@ -136,6 +137,14 @@ public interface ApiService {
     @POST("ams/smm/excessmanagement/execessissure")
     Observable<OverReceiveWarning> getOverReceiveItemSend(@Field("value") String value);
 
+
+    @GET("ams/smm/excessmanagement/getnodebit")
+    Observable<OverReceiveDebitList> getNoDebit();
+
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/excessmanagement/debit")
+    Observable<OverReceiveWarning> debit(@Field("value") String value);
 
     @GET("ams/smm/excessmanagement/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
