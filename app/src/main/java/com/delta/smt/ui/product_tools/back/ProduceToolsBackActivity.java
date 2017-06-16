@@ -115,7 +115,6 @@ public class ProduceToolsBackActivity extends BaseActivity<ProduceToolsBackPrese
         adapter.setOnItemClickListener(this);
         mProductBorrowRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mProductBorrowRecyclerView.setAdapter(adapter);
-
     }
 
     @Override

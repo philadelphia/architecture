@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="85px"
+    android:layout_height="110px"
     android:id="@+id/item_product_borrow"
     android:orientation="horizontal">
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="8"
+        android:layout_weight="9"
         android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="@string/WordNumber"
@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:background="@drawable/textview_border"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="13"
         android:gravity="center"
         android:text="主板"
         android:textColor="#333333"
@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:background="@drawable/textview_border"
         android:layout_height="match_parent"
-        android:layout_weight="14"
+        android:layout_weight="13"
         android:gravity="center"
         android:text="小板"
         android:textColor="#333333"
@@ -66,7 +66,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="8"
+        android:layout_weight="7"
         android:background="@drawable/textview_border"
         android:gravity="center"
         android:text="@string/Line"
@@ -89,7 +89,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="8"
+        android:layout_weight="6"
         android:gravity="center"
         android:text="@string/Cover"
         android:background="@drawable/textview_border"
@@ -101,7 +101,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="20"
+        android:layout_weight="16"
         android:gravity="center"
         android:background="@drawable/textview_border"
         android:text="@string/PlanOnLineTime"

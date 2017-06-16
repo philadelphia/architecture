@@ -53,7 +53,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                             toolsStatus = "准备中";
                             break;
                         case 1:
-                            toolsStatus = "待發";
+                            toolsStatus = "待发";
                             break;
                         case 2:
                             toolsStatus = "已借出";
@@ -62,7 +62,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                             toolsStatus = "待确定";
                             break;
                         default:
-                            toolsStatus = "状态未知";
+                            toolsStatus = "未知";
                     }
 
                     ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getJigcode(), j.getJigTypeName(), j.getShelfName(), "更多", toolsStatus, String.valueOf(j.getJigTypeId()), String.valueOf(j.getJigId()));

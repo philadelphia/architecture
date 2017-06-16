@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_back"
     android:orientation="vertical">
 
     <include layout="@layout/appbar" />
@@ -16,19 +17,12 @@
             android:layout_width="match_parent"
             android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="60px"
-            android:text="工单生产排程"
-            android:textColor="#333333"
-            android:textSize="40px" />
-
         <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="@dimen/px_magrgTop"
             android:id="@+id/ProductBorrowRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView>
         </LinearLayout>
     </com.delta.commonlibs.widget.statusLayout.StatusLayout>
-</LinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

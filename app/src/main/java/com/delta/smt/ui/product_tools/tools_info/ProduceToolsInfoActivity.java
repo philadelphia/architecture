@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
-import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
@@ -151,8 +150,6 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     protected void initView() {
 
-        ToastUtils.showMessage(this, this.getIntent().getExtras().getString(sourceActivity));
-
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -199,6 +196,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                 } else {
 
                     holder.setBackgroundColor(R.id.ReSelect, 0xFF428bca);
+                    holder.setTextColor(R.id.ReSelect, 0xFFffffff);
                     holder.setText(R.id.TurnNumber, item.getTurnNumber());
                     holder.setText(R.id.ProductToolsBarCode, item.getProductToolsBarCode());
                     holder.setText(R.id.ProductToolsType, item.getProduceToolsType());

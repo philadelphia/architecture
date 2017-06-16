@@ -126,14 +126,18 @@ public interface ApiService {
 
 
     //超领
-    @GET("SMM/ExcessManagement/qExcessList")
+    //超领
+    //@GET("SMM/ExcessManagement/qExcessList")
+    @GET("ams/smm/excessmanagement/qexcesslist")
     Observable<OverReceiveWarning> getOverReceiveItems();
 
-    @GET("SMM/ExcessManagement/execessIssure")
-    Observable<OverReceiveWarning> getOverReceiveItemSend(@Query("condition") String content);
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/excessmanagement/execessissure")
+    Observable<OverReceiveWarning> getOverReceiveItemSend(@Field("value") String value);
 
 
-    @GET("SMM/ExcessManagement/debit")
+    @GET("ams/smm/excessmanagement/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();
 
     //上模组排程

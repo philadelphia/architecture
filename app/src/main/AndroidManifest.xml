@@ -147,10 +147,12 @@
 
         <service android:name=".service.warningService.WarningService" />
 
-        <activity android:name=".ui.feeder.warning.supply.FeederSupplyListActivity" />
+        <activity android:name=".ui.feeder.warning.supply.FeederSupplyListActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.feeder.handle.feederSupply.FeederSupplyActivity"
-            android:label="feederSupplyActivity"></activity>
+            android:label="feederSupplyActivity"
+            android:screenOrientation="portrait"></activity>
 
         <!-- shufeng.wu downloadservice -->
         <!--                 <service android:name=".ui.main.update.DownloadService" /> -->

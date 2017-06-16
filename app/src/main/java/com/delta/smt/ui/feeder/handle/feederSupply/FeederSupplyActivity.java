@@ -1,9 +1,11 @@
 package com.delta.smt.ui.feeder.handle.feederSupply;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -83,7 +85,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private CommonBaseAdapter<FeederSupplyItem> adapter;
     private final List<FeederSupplyItem> dataList = new ArrayList<>();
     private final List<FeederSupplyItem> dataSource = new ArrayList<>();
-    private boolean isAllHandleOVer = false;
     private String workId;
     private String side;
     private String argument;
@@ -242,6 +243,27 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void onAllSupplyComplete() {
         ToastUtils.showMessage(this, "所有Feeder已完成发料", Toast.LENGTH_SHORT);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("所有Feeder已完成发料")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FeederSupplyActivity.this.finish();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).create();
+        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button positiveNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setBackgroundColor(ContextCompat.getColor(this,R.color.delta_blue));
+        positiveNegative.setBackgroundColor(ContextCompat.getColor(this,R.color.delta_blue));
+
+        alertDialog.show();
     }
 
     @Override
