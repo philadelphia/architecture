@@ -2,6 +2,8 @@ package com.delta.smt.ui.smt_module.module_down_details.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.DebitData;
+import com.delta.smt.entity.ModuleDownDebit;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.Result;
 
@@ -18,6 +20,7 @@ public interface ModuleDownDetailsContract {
 
         void onSuccess(List<ModuleDownDetailsItem> data);
 
+        void showModuleDownUnDebitedItemList(List<ModuleDownDebit> data);
         void onFailed(String message);
 
         void onResult(String message);
@@ -42,6 +45,6 @@ public interface ModuleDownDetailsContract {
          Observable<Result> getModuleDownMaintainResult(String str);
 //        Observable<Result<ModuleDownDetailsItem>> getDownModuleList(String condition);
         Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition);
-
+        Observable<Result<ModuleDownDebit>> getModuleListUnDebitList(String condition);
     }
 }

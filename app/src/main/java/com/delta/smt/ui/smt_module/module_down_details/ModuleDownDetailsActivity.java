@@ -3,12 +3,15 @@ package com.delta.smt.ui.smt_module.module_down_details;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +32,8 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.FeederSupplyItem;
+import com.delta.smt.entity.ModuleDownDebit;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.ui.smt_module.module_down_details.di.DaggerModuleDownDetailsComponent;
 import com.delta.smt.ui.smt_module.module_down_details.di.ModuleDownDetailsModule;
@@ -65,6 +70,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     RecyclerView recyclerViewContent;
     @BindView(R.id.btn_feederMaintain)
     AppCompatButton btnFeederMaintain;
+    @BindView(R.id.checkBox)
+    CheckBox checkBox;
+    @BindView(R.id.btn_debitManually)
+    Button btn_debitManually;
     @BindView(R.id.tv_work_order)
     TextView tv_workOrder;
     @BindView(R.id.tv_line_name)
@@ -94,7 +103,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     private int flag = 1;
     private String argument;
     private LinearLayoutManager linearLayoutManager;
-
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -216,6 +224,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     }
 
     @Override
+    public void showModuleDownUnDebitedItemList(List<ModuleDownDebit> data) {
+
+    }
+
+
+    @Override
     public void onFailed(String message) {
         flag = 2;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
@@ -290,15 +304,20 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.btn_feederMaintain})
+    @OnClick({R.id.btn_feederMaintain,R.id.btn_debitManually})
     public void onClick(View view) {
+        Map<String, String> map = new HashMap<>();
+        map.put("work_order", mCurrentWorkOrder);
+        map.put("side", side);
+        String argument = GsonTools.createGsonListString(map);
         switch (view.getId()) {
             case R.id.btn_feederMaintain:
-                Map<String, String> map = new HashMap<>();
-                map.put("work_order", mCurrentWorkOrder);
-                map.put("side", side);
-                String argument = GsonTools.createGsonListString(map);
                 getPresenter().getAllModuleDownMaintainResult(argument);
+                break;
+            case R.id.btn_debitManually:
+                getPresenter().getModuleListUnDebitList(argument);
+                break;
+            default:
                 break;
         }
     }
@@ -338,6 +357,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     map.put("shelf_no", mCurrentLocation);
                     map.put("qty", mCurrentQuantity);
                     map.put("slot", mCurrentSlot);
+                    map.put("code", checkBox.isChecked() ? "1" :"0");
                     String argument = GsonTools.createGsonListString(map);
                     Log.i(TAG, "argument== " + argument);
                     Log.i(TAG, "料架已经扫描完成，接下来入库: ");

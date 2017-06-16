@@ -2,6 +2,7 @@ package com.delta.smt.ui.feeder.handle.feederSupply.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
@@ -19,9 +20,12 @@ public interface FeederSupplyContract {
     interface View extends IView{
          void onSuccess(List<FeederSupplyItem> data);
 
+        void showUnDebitedItemList(List<DebitData> data);
+
          void onFailed(String message);
 
         void onAllSupplyComplete();
+
 
         void onUpLoadFailed(String message);
 
@@ -40,8 +44,13 @@ public interface FeederSupplyContract {
 
         Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(String condition);
 
-        Observable<ResultFeeder> resetFeederSupplyStatus(String condition);
+        Observable<Result> resetFeederSupplyStatus(String condition);
 
          Observable<ResultFeeder> upLoadFeederSupplyResult();
+
+        Observable<Result<DebitData>>  deductionAutomatically(String value);
+
+        Observable<Result<DebitData>>  getUnDebitedItemList(String condition);
+
     }
 }

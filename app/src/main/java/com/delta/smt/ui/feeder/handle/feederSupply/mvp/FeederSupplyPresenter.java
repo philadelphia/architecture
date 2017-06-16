@@ -4,6 +4,8 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
+import com.delta.commonlibs.utils.RxsRxSchedulers;
+import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
@@ -84,11 +86,11 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             @Override
             public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
                 if (feederSupplyItemResult.getCode() == 0) {
-                        getView().showContentView();
-                        getView().onSuccess(feederSupplyItemResult.getRows());
+                    getView().showContentView();
+                    getView().onSuccess(feederSupplyItemResult.getRows());
                 } else {
                     getView().onFailed(feederSupplyItemResult.getMessage());
-                    getView().showErrorView();
+//                    getView().showErrorView();
 
                 }
 
@@ -97,13 +99,13 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
     }
 
     public void resetFeederSupplyStatus(String condition) {
-        getModel().resetFeederSupplyStatus(condition).subscribe(new Action1<ResultFeeder>() {
+        getModel().resetFeederSupplyStatus(condition).subscribe(new Action1<Result>() {
             @Override
-            public void call(ResultFeeder result) {
-                if (result.getCode().equals("0")) {
+            public void call(Result result) {
+                if (0 == result.getCode()) {
                     getView().onAllSupplyComplete();
                 } else {
-                    getView().onFailed(result.getMsg());
+                    getView().onFailed(result.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -129,6 +131,51 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             @Override
             public void call(Throwable throwable) {
 
+            }
+        });
+    }
+
+    //自动扣账
+    public void deductionAutomatically(String value) {
+        getModel().deductionAutomatically(value).subscribe(new Action1<Result<DebitData>>() {
+            @Override
+            public void call(Result<DebitData> debitDataResult) {
+                if (0 == debitDataResult.getCode()) {
+                    getView().showUnDebitedItemList(debitDataResult.getRows());
+                } else {
+                    getView().onFailed(debitDataResult.getMessage());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
+    //获取没有扣账的工单
+    public void getUnDebitedItemList(String condition) {
+        getModel().getUnDebitedItemList(condition).subscribe(new Action1<Result<DebitData>>() {
+            @Override
+            public void call(Result<DebitData> debitDataResult) {
+                if (0 == debitDataResult.getCode()) {
+                    if (debitDataResult.getRows().size() == 0) {
+                        getView().onFailed("没有扣账列表");
+                    } else {
+                        getView().showUnDebitedItemList(debitDataResult.getRows());
+
+                    }
+                } else {
+                    getView().onFailed(debitDataResult.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFailed(throwable.getMessage());
             }
         });
     }

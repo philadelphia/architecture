@@ -6,7 +6,6 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -25,6 +24,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10px"
@@ -68,15 +68,38 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
 
-                    <Button
-                        android:id="@+id/btn_upload"
-                        android:layout_width="wrap_content"
-                        android:layout_height="120px"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:gravity="center"
-                        android:text="上传到MES" />
+                        <CheckBox
+                            android:id="@+id/checkBox"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="自动扣账" />
+
+
+                        <Button
+                            android:id="@+id/btn_debitManually"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:text="手动扣账"
+                            android:layout_weight="1"/>
+
+                        <Button
+                            android:id="@+id/btn_upload"
+                            android:layout_width="0dp"
+                            android:layout_height="120px"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="right"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="上传到MES" />
+
+                    </LinearLayout>
 
 
                 </LinearLayout>
@@ -85,8 +108,7 @@
                 <HorizontalScrollView
                     android:id="@+id/hr_scrow"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"

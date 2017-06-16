@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,9 +73,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     RecyclerView recyclerViewContent;
     @BindView(R.id.btn_upload)
     AppCompatButton btnUpload;
-  
+    @BindView(R.id.linearLayout)
+    LinearLayout linearLayout;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
+    FrameLayout frameLayout;
     @BindView(R.id.automatic_upload)
     AppCompatCheckBox automaticUpload;
 
@@ -203,6 +206,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onSuccess(List<ModuleUpBindingItem> data) {
+        linearLayout.setVisibility(View.VISIBLE);
         state = 1;
         scan_position = -1;
         dataSource.clear();
