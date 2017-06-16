@@ -13,7 +13,6 @@
         android:layout_weight="1"
         android:layout_height="0dp"/>
 
-
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +24,7 @@
 
 
         <Button
-            android:id="@+id/bt_sheet_cancel"
+            android:id="@+id/bt_sheet_back"
             android:layout_width="152px"
             android:layout_height="70px"
             android:background="@drawable/btn_selector"
@@ -33,7 +32,16 @@
             android:text="@string/back"
             android:textColor="@android:color/white"
             android:textSize="40px"/>
-
+        <Button
+            android:id="@+id/bt_sheet_select_cancel"
+            android:layout_width="152px"
+            android:layout_height="70px"
+            android:layout_marginLeft="50px"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@android:color/white"
+            android:textSize="40px"/>
         <Button
             android:id="@+id/bt_sheet_select_all"
             android:layout_width="152px"

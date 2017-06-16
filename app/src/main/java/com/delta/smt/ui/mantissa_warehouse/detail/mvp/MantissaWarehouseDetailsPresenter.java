@@ -2,6 +2,9 @@ package com.delta.smt.ui.mantissa_warehouse.detail.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
+import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MaterialCar;
@@ -19,9 +22,14 @@ import rx.functions.Action1;
 @ActivityScope
 public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWarehouseDetailsContract.Model, MantissaWarehouseDetailsContract.View> {
 
+    private RxErrorHandler mRxErrorHandler;
+
     @Inject
-    public MantissaWarehouseDetailsPresenter(MantissaWarehouseDetailsContract.Model model, MantissaWarehouseDetailsContract.View mView) {
+    public MantissaWarehouseDetailsPresenter(MantissaWarehouseDetailsContract.Model model, MantissaWarehouseDetailsContract.View mView, RxErrorHandler mRxRerrorHander) {
+
         super(model, mView);
+        this.mRxErrorHandler = mRxRerrorHander;
+
     }
 
     public void getMantissaWarehouseDetails(String str) {
@@ -70,7 +78,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void call(Result<MaterialCar> car) {
 
-                if (0==car.getCode()) {
+                if (0 == car.getCode()) {
                     getView().getFindCarSucess(car);
                 } else {
                     getView().getFindCarFailed(car.getMessage());
@@ -99,7 +107,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void call(Result<MaterialCar> car) {
 
-                if (0==car.getCode()) {
+                if (0 == car.getCode()) {
                     getView().getBingingCarSucess(car);
                 } else {
                     getView().getBingingCarFailed(car.getMessage());
@@ -190,32 +198,31 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
 
     }
 
-    /**
-     * 扣账
-     */
-    public void debit() {
 
-        getModel().debit().subscribe(new Action1<Result>() {
+    public void deduction(String mS) {
+        getModel().deduction(mS).subscribe(new RxErrorHandlerSubscriber<Result<DebitData>>(mRxErrorHandler) {
             @Override
-            public void call(Result result) {
-
-                if (0 == result.getCode()) {
-                    getView().debitSuccess();
+            public void onNext(Result<DebitData> mDebitDataResult) {
+                if (0 == mDebitDataResult.getCode()) {
+                    getView().deductionSuccess(mDebitDataResult.getRows());
                 } else {
-                    getView().debitFailed(result.getMessage());
-                }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                try {
-                    getView().debitFailed(throwable.getMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    getView().deductionFailed(mDebitDataResult.getMessage());
                 }
             }
         });
     }
+    public void getDebitDataList(String mS) {
 
+        getModel().getDebitDataList(mS).subscribe(new RxErrorHandlerSubscriber<Result<DebitData>>(mRxErrorHandler) {
+            @Override
+            public void onNext(Result<DebitData> mDebitDataResult) {
 
+                if (mDebitDataResult.getCode() == 0) {
+                    getView().getDebitDataSuccess(mDebitDataResult.getRows());
+                } else {
+                    getView().getDebitDataFailed(mDebitDataResult.getMessage());
+                }
+            }
+        });
+    }
 }

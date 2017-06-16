@@ -2,10 +2,13 @@ package com.delta.smt.ui.mantissa_warehouse.detail.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.Result;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -30,6 +33,10 @@ public interface MantissaWarehouseDetailsContract {
 
 
         Observable<Result> debit();
+
+        Observable<Result<DebitData>> deduction(String mS);
+
+        Observable getDebitDataList(String mS);
     }
 
     interface View extends IView {
@@ -64,8 +71,13 @@ public interface MantissaWarehouseDetailsContract {
 
         void showEmptyView();
 
-        void debitSuccess();
 
-        void debitFailed(String message);
+        void deductionSuccess(List<DebitData> mRows);
+
+        void deductionFailed(String mMessage);
+
+        void getDebitDataSuccess(List<DebitData> mDebitDataResult);
+
+        void getDebitDataFailed(String mMessage);
     }
 }

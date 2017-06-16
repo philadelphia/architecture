@@ -92,9 +92,9 @@ public interface StorageDetailsContract {
 
         void queryCarFailed(String message);
 
-        void getDebitDataSuccess(Result<DebitData> mDebitDataResult);
+        void getDebitDataSuccess(List<DebitData> mDebitDataResult);
 
-        void getDebitDataFaild(String mMessage);
+        void getDebitDataFailed(String mMessage);
     }
 
 }
