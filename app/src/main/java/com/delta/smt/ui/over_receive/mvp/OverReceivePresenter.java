@@ -1,6 +1,7 @@
 package com.delta.smt.ui.over_receive.mvp;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.smt.entity.OverReceiveDebitList;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 
@@ -135,4 +136,21 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
         });
     }
 
+    public void getNoDebit() {
+        getModel().getNoDebit().subscribe(new Action1<OverReceiveDebitList>() {
+            @Override
+            public void call(OverReceiveDebitList overReceiveDebitList) {
+                if ("0".equals(overReceiveDebitList.getCode())) {
+                    getView().onGetNoDebitSuccess(overReceiveDebitList);
+                } else {
+                    getView().onGetNoDebitFailed(overReceiveDebitList);
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onGetNoDebitFailed(throwable);
+            }
+        });
+    }
 }

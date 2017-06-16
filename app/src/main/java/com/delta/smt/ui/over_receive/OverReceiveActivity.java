@@ -2,15 +2,20 @@ package com.delta.smt.ui.over_receive;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +25,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -30,6 +36,7 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.OverReceiveDebitList;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 import com.delta.smt.entity.SendMessage;
@@ -40,6 +47,8 @@ import com.delta.smt.ui.over_receive.di.OverReceiveModule;
 import com.delta.smt.ui.over_receive.mvp.OverReceiveContract;
 import com.delta.smt.ui.over_receive.mvp.OverReceivePresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
+import com.delta.smt.utils.ViewUtils;
+import com.delta.smt.widget.CustomPopWindow;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.widget.WarningDialog;
 import com.google.gson.Gson;
@@ -70,7 +79,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/15.
  */
 
-public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, CompoundButton.OnCheckedChangeListener {
+public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     public String overReceiveAutomaticDebit = null;
     @BindView(R.id.toolbar)
@@ -84,7 +93,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @BindView(R.id.manual_debit)
     AppCompatButton manualDebit;
     @BindView(R.id.automatic_debit)
-    AppCompatCheckBox automaticDebit;
+    CheckBox automaticDebit;
     @Inject
     WarningManger warningManger;
     String materialBlockNumber = "4020108700";
@@ -144,6 +153,9 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         }
     };
     private WarningDialog warningDialog;
+    private CustomPopWindow mCustomPopWindow;
+    private CommonBaseAdapter<OverReceiveDebitList.RowsBean> undoList_adapter;
+    private List<OverReceiveDebitList.RowsBean> mDebitDatas = new ArrayList<>();
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -179,6 +191,8 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         } else {
             automaticDebit.setChecked(true);
         }
+
+
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
@@ -288,6 +302,31 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     }
 
     @Override
+    public void onGetNoDebitSuccess(OverReceiveDebitList overReceiveDebitList) {
+        if (!TextUtils.isEmpty(overReceiveDebitList.getMessage())) {
+            ToastUtils.showMessage(OverReceiveActivity.this, overReceiveDebitList.getMessage());
+        }
+        mDebitDatas.clear();
+        mDebitDatas.addAll(overReceiveDebitList.getRows());
+        undoList_adapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onGetNoDebitFailed(OverReceiveDebitList overReceiveDebitList) {
+        if (!TextUtils.isEmpty(overReceiveDebitList.getMessage())) {
+            ToastUtils.showMessage(OverReceiveActivity.this, overReceiveDebitList.getMessage());
+        }
+    }
+
+    @Override
+    public void onGetNoDebitFailed(Throwable throwable) {
+        if (!TextUtils.isEmpty(throwable.getMessage())) {
+            ToastUtils.showMessage(OverReceiveActivity.this, throwable.getMessage());
+        }
+    }
+
+    @Override
     public void showLoadingView() {
         statusLayout.showLoadingView();
     }
@@ -328,10 +367,25 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.manual_debit:
-                getPresenter().manualDebit();
+                //getPresenter().manualDebit();
+                if (mCustomPopWindow == null) {
+                    createCustomPopWindow();
+
+                }
+                showPopupWindow(toolbar);
+                if (SingleClick.isSingle(1000)) {
+                    showPopupWindow(toolbar);
+                    getPresenter().getNoDebit();
+                    //getPresenter().getDebitDataList(mS);
+                }
+
                 break;
             case R.id.showMessage:
                 showMessage.setVisibility(View.GONE);
+                break;
+
+
+            default:
                 break;
         }
     }
@@ -517,6 +571,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                     map.put("tc", tc);
                     map.put("inv_no", inv_no);
                     map.put("slot", slot);
+                    if (automaticDebit.isChecked()) {
+                        map.put("code", "1");
+                    } else {
+                        map.put("code", "0");
+                    }
                     Gson gson = new Gson();
                     String argument = gson.toJson(map);
                     getPresenter().getOverReceiveItemsAfterSend("[" + argument + "]");
@@ -551,5 +610,93 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         }
     }
 
+    private void createCustomPopWindow() {
+        mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_bottom_over_receive).enableBlur(true).setStartHeightBlur(100).build();
+        View mContentView = mCustomPopWindow.getContentView();
+        RecyclerView rv_debit = ViewUtils.findView(mContentView, R.id.rv_sheet);
+        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_cancel);
+        Button bt_confim = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
+        Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
+        bt_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                    mCustomPopWindow.dissmiss();
+                }
+            }
+        });
+        bt_confim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        bt_select_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                    if (mDebitDatas != null && mDebitDatas.size() != 0) {
+                        for (OverReceiveDebitList.RowsBean mDebitData : mDebitDatas) {
+                            mDebitData.setChecked(true);
+                        }
+                        undoList_adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+        undoList_adapter = new CommonBaseAdapter<OverReceiveDebitList.RowsBean>(getContext(), mDebitDatas) {
+            @Override
+            protected void convert(CommonViewHolder holder, final OverReceiveDebitList.RowsBean item, int position) {
+                holder.setText(R.id.tv_work_order, "工单号：" + item.getWork_order());
+                holder.setText(R.id.tv_side, "面别：" + item.getSide());
+                holder.setText(R.id.tv_material_no, "料号：" + String.valueOf(item.getMaterial_no()));
+                holder.setText(R.id.tv_issue_amount, "已发料量：" + String.valueOf(item.getIssue_amount()));
+                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
+                mCheckBox.setChecked(item.isChecked());
+                holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCheckBox.setChecked(!item.isChecked());
+                        item.setChecked(!item.isChecked());
+                    }
+                });
+
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, OverReceiveDebitList.RowsBean item) {
+                return R.layout.item_debit_overreceive_list;
+            }
+
+        };
+        rv_debit.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        rv_debit.setLayoutManager(linearLayoutManager);
+        rv_debit.setAdapter(undoList_adapter);
+    }
+
+    /*@Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+
+        }
+    }*/
+
+    public void showPopupWindow(View anchor) {
+        if (!mCustomPopWindow.isShowing()) {
+            if (Build.VERSION.SDK_INT < 24) {
+                mCustomPopWindow.showAsDropDown(anchor);
+            } else {
+                // 适配 android 7.0
+                int[] location = new int[2];
+                anchor.getLocationOnScreen(location);
+                int x = location[0];
+                int y = location[1];
+                mCustomPopWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, 0, y + mCustomPopWindow.getHeight() + anchor.getHeight());
+            }
+
+        }
+    }
 
 }

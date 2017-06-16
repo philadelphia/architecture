@@ -2,6 +2,7 @@ package com.delta.smt.ui.over_receive.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.OverReceiveDebitList;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
 
@@ -24,6 +25,12 @@ public interface OverReceiveContract {
 
         void onNetFailed(Throwable throwable);
 
+        void onGetNoDebitSuccess(OverReceiveDebitList overReceiveDebitList);
+
+        void onGetNoDebitFailed(OverReceiveDebitList overReceiveDebitList);
+
+        void onGetNoDebitFailed(Throwable throwable);
+
         void showLoadingView();
 
         void showContentView();
@@ -40,6 +47,8 @@ public interface OverReceiveContract {
         Observable<OverReceiveWarning> getOverReceiveItemsAfterSend(String str);
 
         Observable<OverReceiveDebitResult> getOverReceiveDebit();
+
+        Observable<OverReceiveDebitList> getNoDebit();
 
     }
 }
