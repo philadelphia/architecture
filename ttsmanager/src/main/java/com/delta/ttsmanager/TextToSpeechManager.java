@@ -34,6 +34,7 @@ public class TextToSpeechManager implements OnSpeakListener {
 
         if (isRead) {
 
+            onSpeakListener.stop();
             onSpeakListener.readMessage(message);
         }
     }

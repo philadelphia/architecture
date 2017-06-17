@@ -336,7 +336,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         }
     }
 
-    private void beginEdit() {
+       private void beginEdit() {
         editText.setVisibility(View.VISIBLE);
         editText.requestFocus();
         horizontalScrollView.setVisibility(View.VISIBLE);
