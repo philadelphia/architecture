@@ -624,6 +624,12 @@ public interface ApiService {
     @GET("ams/smm/mantissastorage/getnodebit")
     Observable<ManualDebitBean> getManualmaticDebit();
 
+    //尾数仓手动扣账
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/mantissastorage/mantissastorage")
+    Observable<ManualDebitBean> getdeduction(@Field("value") String bind);
+
     /**
      * @description :
      * 1.更新

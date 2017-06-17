@@ -39,4 +39,9 @@ public class MantissaWarehouseReturnModel extends BaseModel<ApiService> implemen
     public Observable<ManualDebitBean> getManualmaticDebit() {
         return getService().getManualmaticDebit().compose(RxsRxSchedulers.<ManualDebitBean>io_main());
     }
+
+    @Override
+    public Observable<ManualDebitBean> deduction(String str) {
+        return getService().getdeduction(str).compose(RxsRxSchedulers.<ManualDebitBean>io_main());
+    }
 }

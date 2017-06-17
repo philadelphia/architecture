@@ -25,6 +25,8 @@ public interface MantissaWarehouseReturnContract {
         Observable<MantissaWarehouseReturnResult> getputinstrage(String str);
 
         Observable<ManualDebitBean> getManualmaticDebit();
+
+        Observable<ManualDebitBean> deduction(String str);
     }
 
     interface View extends IView {
@@ -40,6 +42,9 @@ public interface MantissaWarehouseReturnContract {
 
         void getManualmaticDebitSucess(List<ManualDebitBean.ManualDebit> manualDebits);
         void getManualmaticDebitFailed(String message);
+
+        void getdeductionSucess(List<ManualDebitBean.ManualDebit> manualDebits);
+        void getdeductionFailed(String message);
 
 
         void showLoadingView();
