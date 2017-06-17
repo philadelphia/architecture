@@ -186,8 +186,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_module, item.getSlot());
                 holder.setText(R.id.tv_timestamp, item.getBindTime());
                 holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待上模组" : " 上模组完成");
-
-
                 switch (item.getStatus()) {
                     case 0:
                         holder.itemView.setBackgroundColor(Color.WHITE);
