@@ -166,7 +166,6 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                         getView().onFailed("没有扣账列表");
                     } else {
                         getView().showUnDebitedItemList(debitDataResult.getRows());
-
                     }
                 } else {
                     getView().onFailed(debitDataResult.getMessage());

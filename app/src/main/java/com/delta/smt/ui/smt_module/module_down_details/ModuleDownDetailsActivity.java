@@ -235,12 +235,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         Log.i(TAG, "扣账列表数据长度: " + data.size());
         unDebitItemList.clear();
         unDebitItemList.addAll(data);
-        unDebitadapter.notifyDataSetChanged();
+
         if (0 == data.size()) {
             ToastUtils.showMessage(this, "没有未扣账列表");
             return;
         }
-
+        unDebitadapter.notifyDataSetChanged();
         popUpWindow.showAsDropDown(toolbar);
     }
 

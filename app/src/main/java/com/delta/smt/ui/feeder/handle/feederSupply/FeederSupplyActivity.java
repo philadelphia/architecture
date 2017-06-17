@@ -285,23 +285,21 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     @Override
     public void showUnDebitedItemList(List<DebitData> data) {
-        if (0 == data.size()) {
-            ToastUtils.showMessage(this, "没有未扣账列表");
-            return;
-        }
+        unDebitItemList.clear();
+        unDebitItemList.addAll(data);
 
         if (popUpWindow == null) {
             createPopupWindow(data);
         }
+
+        unDebitadapter.notifyDataSetChanged();
         popUpWindow.showAsDropDown(toolbar);
 
     }
 
     private void createPopupWindow(final List<DebitData> data) {
         Log.i(TAG, "未扣账的数据长度为: " + data.size());
-        unDebitItemList.clear();
-        unDebitItemList.addAll(data);
-        unDebitadapter.notifyDataSetChanged();
+
         popUpWindow  = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.popupAnimalStyle)
                 .setView(R.layout.dialog_bottom_sheet)
