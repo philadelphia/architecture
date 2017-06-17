@@ -85,7 +85,8 @@
                         <Button
                             android:id="@+id/btn_debitManually"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="120px"
+                            android:background="@color/delta_blue"
                             android:text="手动扣账"
                             android:layout_weight="1"/>
 

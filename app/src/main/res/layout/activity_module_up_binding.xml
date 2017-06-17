@@ -1,77 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/appbar" />
 
-    <com.delta.commonlibs.widget.statusLayout.StatusLayout
-        android:id="@+id/statusLayout"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--title-->
             <LinearLayout
-                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/px_30"
+                    android:layout_marginLeft="@dimen/px_60"
+                    android:layout_marginRight="@dimen/px_60"
+                    android:layout_marginTop="@dimen/px_60"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/px_30"
-                        android:layout_marginLeft="@dimen/px_60"
-                        android:layout_marginRight="@dimen/px_60"
-                        android:layout_marginTop="@dimen/px_60"
-                        android:orientation="vertical">
-
-                        <include layout="@layout/layout_workorder_side_line" />
+                    <include layout="@layout/layout_workorder_side_line" />
 
 
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/rl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/px_10"
-                        android:layout_marginTop="@dimen/px_10">
-
-                        <android.support.v7.widget.AppCompatButton
-                            android:id="@+id/btn_upload"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="@dimen/px_20"
-                            android:background="@color/delta_blue"
-                            android:gravity="center"
-                            android:text="上传到MES"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/px_40" />
-
-                        <android.support.v7.widget.AppCompatCheckBox
-                            android:id="@+id/automatic_upload"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBaseline="@id/btn_upload"
-                            android:layout_marginRight="@dimen/px_40"
-                            android:layout_toLeftOf="@+id/btn_upload"
-                            android:checked="false"
-                            android:text="自动上传到MES"
-                            android:textSize="@dimen/px_40" />
-                    </RelativeLayout>
                 </LinearLayout>
+
+                <!--MES Button/CheckBox-->
+                <LinearLayout
+                    android:id="@+id/rl"
+                    android:layout_width="match_parent"
+                    android:layout_height="200px"
+                    android:gravity="right"
+                    android:layout_marginTop="@dimen/px_10">
+
+
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/automatic_upload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="120px"
+                        android:text="自动上传"
+                        android:layout_marginRight="50px"
+                        android:textSize="@dimen/px_40" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/btn_upload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="120px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="50px"
+                        android:background="@color/delta_blue"
+                        android:gravity="center"
+                        android:text="上传到MES"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/px_40" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <!--content-->
+
+            <com.delta.commonlibs.widget.statusLayout.StatusLayout
+                android:id="@+id/statusLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,29 +97,28 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-
                 </LinearLayout>
-            </LinearLayout>
+            </com.delta.commonlibs.widget.statusLayout.StatusLayout>
+        </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/showMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="bottom|left"
-                android:background="@color/c_000000"
-                android:gravity="center_vertical"
-                android:paddingBottom="40px"
-                android:paddingLeft="10px"
-                android:paddingRight="10px"
-                android:paddingTop="40px"
-                android:text="提示"
-                android:textColor="@color/c_ffffff"
-                android:textSize="@dimen/px_40"
-                android:visibility="gone" />
+        <TextView
+            android:id="@+id/showMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|left"
+            android:background="@color/c_000000"
+            android:gravity="center_vertical"
+            android:paddingBottom="40px"
+            android:paddingLeft="10px"
+            android:paddingRight="10px"
+            android:paddingTop="40px"
+            android:text="提示"
+            android:textColor="@color/c_ffffff"
+            android:textSize="@dimen/px_40"
+            android:visibility="gone" />
+    </FrameLayout>
 
-        </FrameLayout>
-    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 
-</LinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

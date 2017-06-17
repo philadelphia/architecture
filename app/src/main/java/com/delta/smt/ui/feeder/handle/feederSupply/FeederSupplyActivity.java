@@ -107,6 +107,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private LinearLayoutManager linearLayoutManager;
     private boolean isBeginSupply = false;
     private CustomPopWindow popUpWindow;
+    private CommonBaseAdapter<DebitData> unDebitadapter;
+    private final List<DebitData> unDebitItemList = new ArrayList<>();
 
     @Override
     protected void handError(String contents) {
@@ -295,12 +297,13 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         }
         popUpWindow.showAsDropDown(toolbar);
 
-
-
-
     }
 
     private void createPopupWindow(final List<DebitData> data) {
+        Log.i(TAG, "未扣账的数据长度为: " + data.size());
+        unDebitItemList.clear();
+        unDebitItemList.addAll(data);
+        unDebitadapter.notifyDataSetChanged();
         popUpWindow  = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.popupAnimalStyle)
                 .setView(R.layout.dialog_bottom_sheet)
@@ -308,7 +311,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 .build();
         View contentView = popUpWindow.getContentView();
         RecyclerView recyclerView = ViewUtils.findView(contentView, R.id.rv_sheet);
-        Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_cancel);
+        Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_select_cancel);
         Button btn_confirm = ViewUtils.findView(contentView, R.id.bt_sheet_confirm);
         Button btn_selectAll = ViewUtils.findView(contentView, R.id.bt_sheet_select_all);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -351,7 +354,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 }
             }
         });
-        CommonBaseAdapter<DebitData> adapter = new CommonBaseAdapter<DebitData>(this, data) {
+        unDebitadapter = new CommonBaseAdapter<DebitData>(this, data) {
             @Override
             protected void convert(final CommonViewHolder holder, final DebitData item, int position) {
                 holder.setText(R.id.tv_material_id, "料号 :\t" + item.getMaterial_no());
@@ -375,8 +378,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             }
         };
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        adapter.notifyDataSetChanged();
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(unDebitadapter);
+        unDebitadapter.notifyDataSetChanged();
     }
 
     @Override

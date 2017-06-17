@@ -42,6 +42,7 @@ import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -71,15 +72,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     RecyclerView recyclerViewTitle;
     @BindView(R.id.recy_content)
     RecyclerView recyclerViewContent;
-    @BindView(R.id.btn_upload)
-    AppCompatButton btnUpload;
+
     @BindView(R.id.linearLayout)
     LinearLayout linearLayout;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     FrameLayout frameLayout;
     @BindView(R.id.automatic_upload)
-    AppCompatCheckBox automaticUpload;
+    AppCompatCheckBox ckb_automaticUpload;
+    @BindView(R.id.btn_upload)
+    AppCompatButton btn_upLoad_mes;
 
 
     @BindView(R.id.tv_work_order)
@@ -90,18 +92,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     TextView tv_line;
 
     private int state = 1;
-    //private Snackbar mSnackbar = null;
     @BindView(R.id.showMessage)
     TextView showMessage;
     private CommonBaseAdapter<ModuleUpBindingItem> adapterTitle;
     private CommonBaseAdapter<ModuleUpBindingItem> adapter;
-    private List<ModuleUpBindingItem> dataList = new ArrayList<>();
-    private List<ModuleUpBindingItem> dataSource = new ArrayList<>();
+    private final List<ModuleUpBindingItem> dataList = new ArrayList<>();
+    private final List<ModuleUpBindingItem> dataSource = new ArrayList<>();
     private int scan_position = -1;
     private String workItemID;
     private String side;
-//    private String productNameMain;
-//    private String productName;
+
     private String lineName;
     private String materialBlockNumber;
     private String serialNo;
@@ -117,7 +117,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     protected void initData() {
-        automaticUpload.setOnCheckedChangeListener(this);
+        ckb_automaticUpload.setOnCheckedChangeListener(this);
         moduleUpAutomaticUpload = SpUtil.getStringSF(ModuleUpBindingActivity.this, "module_up_automatic_upload");
         Intent intent = ModuleUpBindingActivity.this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
@@ -139,11 +139,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         if (moduleUpAutomaticUpload == null) {
             SpUtil.SetStringSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", "false");
             moduleUpAutomaticUpload = "false";
-            automaticUpload.setChecked(false);
+            ckb_automaticUpload.setChecked(false);
         } else if ("false".equals(moduleUpAutomaticUpload)) {
-            automaticUpload.setChecked(false);
+            ckb_automaticUpload.setChecked(false);
         } else {
-            automaticUpload.setChecked(true);
+            ckb_automaticUpload.setChecked(true);
         }
 
         toolbar.setTitle("");
@@ -155,10 +155,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
 
-        recyclerViewTitle.setLayoutManager(new LinearLayoutManager(getContext()));
-        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
-        recyclerViewContent.setLayoutManager(linearLayoutManager);
-//        dataList.add(new ModuleUpBindingItem("料号", "FeederID", "模组料站"));
         dataList.add(new ModuleUpBindingItem());
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataList) {
             @Override
@@ -171,8 +167,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 return R.layout.item_module_up_binding;
             }
         };
-
+        recyclerViewTitle.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewTitle.setAdapter(adapterTitle);
+
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayout.VERTICAL, false);
+        recyclerViewContent.setLayoutManager(linearLayoutManager);
         adapter = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem item, int position) {
@@ -206,15 +205,29 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onSuccess(List<ModuleUpBindingItem> data) {
-        linearLayout.setVisibility(View.VISIBLE);
+        Log.i(TAG, "onSuccess:后台返回的数据长度是： " + data.size());
         state = 1;
         scan_position = -1;
         dataSource.clear();
         dataSource.addAll(data);
-        Log.i(TAG, "onSuccess:后台返回的数据长度是： " + dataSource.size());
         adapter.notifyDataSetChanged();
         if (isAllItemIsBound(data)){
-            ToastUtils.showMessage(this, "所有料盘上模组已经完成", Toast.LENGTH_SHORT);
+            ToastUtils.showMessage(this, "", Toast.LENGTH_SHORT);
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle("提示")
+                    .setMessage("所有料盘上模组已经完成")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).create();
+            dialog.show();
         }
     }
 
@@ -251,7 +264,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         scan_position = -1;
         adapter.notifyDataSetChanged();
         state = 1;
-        if (isAllFeederBinded()) {
+        if (isAllFeederBound()) {
             new AlertDialog.Builder(this)
                     .setTitle("提示")
                     .setMessage("工单" + workItemID + "上模组完成！")
@@ -275,11 +288,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
 
     }
-
-//    @Override
-//    public void onFailedBinding(ModuleUpBindingItem data) {
-//        ToastUtils.showMessage(this, data.getMsg());
-//    }
 
     @Override
     public void showLoadingView() {
@@ -313,11 +321,20 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         });
     }
 
+    @Override
+    public void showMessage(String message) {
+        ToastUtils.showMessage(this, message);
+    }
+
     @OnClick({R.id.btn_upload, R.id.showMessage})
     public void onClick(View view) {
+        Map<String, String> map = new HashMap<>();
         switch (view.getId()) {
             case R.id.btn_upload:
-                getPresenter().upLoadToMES();
+              map.put("work_order", workItemID);
+              map.put("side", side);
+                String argument = GsonTools.createGsonListString(map);
+                getPresenter().upLoadToMESManually(argument);
                 break;
             case R.id.showMessage:
                 showMessage.setVisibility(View.GONE);
@@ -382,6 +399,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         jsonObject.addProperty("serial_no", serialNo);
                         jsonObject.addProperty("side", side);
                         jsonObject.addProperty("qty", quantaty);
+                        jsonObject.addProperty("code", ckb_automaticUpload.isChecked() ? "1" : "0");
+                        jsonObject.addProperty("is_feeder_buffer", "0");
+
                         jsonArray.add(jsonObject);
                         String argument = jsonArray.toString();
                         Log.i(TAG, "argument==  " +argument);
@@ -428,7 +448,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             showMessage.setVisibility(View.VISIBLE);
             state = 1;
         } else {
-            if (isMaterialBinded(materialBlockBarCode)){
+            if (isMaterialBound(materialBlockBarCode)){
                 VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                 VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                 Toast.makeText(this, "注意:该料盘已经绑定", Toast.LENGTH_SHORT).show();
@@ -494,7 +514,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @SuppressWarnings("all")
-    public boolean isAllFeederBinded() {
+    public boolean isAllFeederBound() {
         boolean res = true;
         if (dataSource.size() > 0) {
             for (ModuleUpBindingItem listItem : dataSource) {
@@ -513,7 +533,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (buttonView == automaticUpload) {
+        if (buttonView == ckb_automaticUpload) {
             if (isChecked) {
                 SpUtil.SetStringSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", "true");
             } else {
@@ -522,7 +542,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         }
     }
 
-    public boolean isMaterialBinded(MaterialBlockBarCode materialBlockBarCode){
+    public boolean isMaterialBound(MaterialBlockBarCode materialBlockBarCode){
      boolean flag = false;
         for (ModuleUpBindingItem rowsBean : dataSource) {
             if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())){

@@ -32,11 +32,14 @@ public interface ModuleUpBindingContract {
 
         void showEmptyView();
 
+        void showMessage(String message);
+
     }
 
     interface Model extends IModel {
         Observable<Result<ModuleUpBindingItem>> getAllModuleUpBindingItems(String str);
 
         Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str);
+        Observable<Result> upLoadToMesManually(String value);
     }
 }

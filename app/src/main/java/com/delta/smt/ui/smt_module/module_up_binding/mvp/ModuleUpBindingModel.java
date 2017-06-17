@@ -28,4 +28,9 @@ public class ModuleUpBindingModel extends BaseModel<ApiService> implements Modul
     public Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str) {
         return getService().getMaterialAndFeederBindingResult(str).compose(RxsRxSchedulers.<Result<ModuleUpBindingItem>>io_main());
     }
+
+    @Override
+    public Observable<Result> upLoadToMesManually(String value) {
+        return getService().upLoadToMesManually(value).compose(RxsRxSchedulers.<Result>io_main());
+    }
 }

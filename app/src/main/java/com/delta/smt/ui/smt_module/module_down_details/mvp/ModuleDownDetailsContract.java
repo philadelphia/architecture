@@ -21,6 +21,7 @@ public interface ModuleDownDetailsContract {
         void onSuccess(List<ModuleDownDetailsItem> data);
 
         void showModuleDownUnDebitedItemList(List<ModuleDownDebit> data);
+
         void onFailed(String message);
 
         void onResult(String message);
@@ -46,5 +47,6 @@ public interface ModuleDownDetailsContract {
 //        Observable<Result<ModuleDownDetailsItem>> getDownModuleList(String condition);
         Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition);
         Observable<Result<ModuleDownDebit>> getModuleListUnDebitList(String condition);
+        Observable<Result<ModuleDownDebit>> debitManually(String value);
     }
 }

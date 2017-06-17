@@ -14,6 +14,18 @@ public class ModuleDownDebit {
     private String material_no;
     private String serial_no;
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    private boolean isChecked;
+
+
+
     public String getMaterial_no() {
         return material_no;
     }

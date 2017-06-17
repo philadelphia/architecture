@@ -140,6 +140,11 @@ public interface ApiService {
     @GET("ams/smm/feederbuffstorage/getnodebit")
     Observable<Result<ModuleDownDebit>> getModuleListUnDebitList(@Query("condition") String condition);
 
+    //下模组手动扣账
+    @POST("ams/smm/feederbuffstorage/deduction")
+    Observable<Result<ModuleDownDebit>> debitManually(@Query("value") String value);
+
+
     //超领
     //超领
     //@GET("SMM/ExcessManagement/qExcessList")
@@ -175,6 +180,8 @@ public interface ApiService {
     @GET("ams/smm/plugmodcontroller/updatemod")
     Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(@Query("condition") String condition);
 
+    @POST("ams/smm/plugmodcontroller/uploadtomes")
+    Observable<Result> upLoadToMesManually(@Query("value") String value);
     //下模组排程
     @GET("ams/smm/unplugmodcontroller/getproductionlines")
     Observable<Result<ModuleDownWarningItem>> getModuleDownWarningItems();

@@ -140,4 +140,22 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                 }
             });
     }
+
+    public void debitManually(String value){
+        getModel().debitManually(value).subscribe(new Action1<Result<ModuleDownDebit>>() {
+            @Override
+            public void call(Result<ModuleDownDebit> moduleDownDebitResult) {
+                if (0 == moduleDownDebitResult.getCode()) {
+                    getView().showModuleDownUnDebitedItemList(moduleDownDebitResult.getRows());
+                } else {
+                    getView().onFailed(moduleDownDebitResult.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                throwable.getMessage();
+            }
+        });
+    }
 }
