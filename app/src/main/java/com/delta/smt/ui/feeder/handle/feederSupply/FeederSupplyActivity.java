@@ -90,9 +90,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     TextView tvModuleID;
     @BindView(R.id.tv_work_order)
     TextView tv_workOrder;
-    @BindView(R.id.tv_side)
+    @BindView(R.id.tv_line_name)
     TextView tv_side;
-    @BindView(R.id.tv_Line)
+    @BindView(R.id.tv_line_num)
     TextView tv_line;
 
 
@@ -249,7 +249,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void onSuccess(List<FeederSupplyItem> data) {
         Log.i(TAG, "onSuccess: ");
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
-        linearLayout.setVisibility(View.VISIBLE);
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
