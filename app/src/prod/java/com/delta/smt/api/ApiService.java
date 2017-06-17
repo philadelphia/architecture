@@ -627,7 +627,7 @@ public interface ApiService {
     //尾数仓手动扣账
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("ams/smm/mantissastorage/mantissastorage")
+    @POST("ams/smm/mantissastorage/deduction")
     Observable<ManualDebitBean> getdeduction(@Field("value") String bind);
 
     /**

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -53,6 +54,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
+import static com.delta.smt.R.id.bt_sheet_confirm;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
@@ -253,7 +255,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getManualmaticDebitFailed(String message) {
-        SnackbarUtil.showMassage(mRecyContetn, message);
+        ToastUtils.showMessage(getContext(), message );
     }
 
     @Override
@@ -270,7 +272,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getdeductionFailed(String message) {
-        SnackbarUtil.showMassage(mRecyContetn, message);
+        ToastUtils.showMessage(getContext(), message);
     }
 
     @Override
@@ -409,9 +411,9 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     mCustomPopWindow.dissmiss();
                 }
                 break;
-            case R.id.bt_sheet_confirm:
+            case bt_sheet_confirm:
                 List<ManualmaticDebitBean> mDebitCheckedData = new ArrayList<>();
-
+                Log.e("bt_sheet_confirm","ddddddddddddd");
                 for (ManualDebitBean.ManualDebit mDebitData : mDebitDatas) {
                     if (mDebitData.isChecked()) {
                         ManualmaticDebitBean mListBean = new ManualmaticDebitBean();
@@ -420,7 +422,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         mDebitCheckedData.add(mListBean);
                     }
                 }
-                getPresenter().deduction(GsonTools.createGsonListString(mDebitCheckedData));
+                getPresenter().deduction(GsonTools.createGsonString(mDebitCheckedData));
                 break;
             case R.id.bt_sheet_select_all:
                 if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
@@ -486,11 +488,11 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
 
         Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
-        Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
+        Button bt_sheet_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
         Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
         ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
         bt_cancel.setOnClickListener(this);
-        bt_confirm.setOnClickListener(this);
+        bt_sheet_confirm.setOnClickListener(this);
         bt_select_all.setOnClickListener(this);
 
     }
