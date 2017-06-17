@@ -4,14 +4,18 @@ package com.delta.smt.ui.feeder.handle.feederSupply;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,18 +35,23 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
+import com.delta.smt.utils.ViewUtils;
+import com.delta.smt.widget.CustomPopWindow;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
@@ -65,6 +74,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     AutoToolbar toolbar;
     @BindView(R.id.btn_upload)
     Button btnUpload;
+    @BindView(R.id.checkBox)
+    CheckBox checkBox;
+    @BindView(R.id.btn_debitManually)
+    Button btn_debitManually;
     @BindView(R.id.recy_title)
     RecyclerView recyclerViewTitle;
     @BindView(R.id.recy_content)
@@ -82,6 +95,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @BindView(R.id.tv_Line)
     TextView tv_line;
 
+
     private CommonBaseAdapter<FeederSupplyItem> adapter;
     private final List<FeederSupplyItem> dataList = new ArrayList<>();
     private final List<FeederSupplyItem> dataSource = new ArrayList<>();
@@ -91,6 +105,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private int index = -1;
     private MaterialBlockBarCode mCurrentMaterial;
     private LinearLayoutManager linearLayoutManager;
+    private boolean isBeginSupply = false;
+    private CustomPopWindow popUpWindow;
+    private CommonBaseAdapter<DebitData> unDebitadapter;
+    private final List<DebitData> unDebitItemList = new ArrayList<>();
 
     @Override
     protected void handError(String contents) {
@@ -117,9 +135,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         workId = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
         String lineName = intent.getStringExtra(Constant.LINE_NAME);
-        tv_workOrder.setText(getResources().getString(R.string.WorkID) +":   "+ workId);
-        tv_line.setText(getResources().getString(R.string.Line) +":   "+  lineName);
-        tv_side.setText(getResources().getString(R.string.Side) +":   "+  side);
+        tv_workOrder.setText(getResources().getString(R.string.WorkID) + ":   " + workId);
+        tv_line.setText(getResources().getString(R.string.Line) + ":   " + lineName);
+        tv_side.setText(getResources().getString(R.string.Side) + ":   " + side);
         Log.i(TAG, "workId==: " + workId);
         Log.i(TAG, "side==: " + side);
         Log.i(TAG, "lineName==: " + lineName);
@@ -145,10 +163,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
         toolbarTitle.setText(R.string.FeederSupply);
         dataList.add(new FeederSupplyItem());
-        CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataList) {
+        CommonBaseAdapter<FeederSupplyItem> adapterTitle = new CommonBaseAdapter<FeederSupplyItem>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.c_efefef));
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.c_efefef));
             }
 
             @Override
@@ -160,7 +178,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         recyclerViewTitle.setAdapter(adapterTitle);
 
 
-        adapter = new CommonBaseAdapter<FeederSupplyItem>(getContext(), dataSource) {
+        adapter = new CommonBaseAdapter<FeederSupplyItem>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, FeederSupplyItem item, int position) {
                 holder.setText(R.id.tv_feederID, item.getFeederID());
@@ -168,7 +186,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_module, item.getSlot());
                 holder.setText(R.id.tv_timestamp, item.getBindTime());
                 holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待上模组" : " 上模组完成");
-
 
 
                 switch (item.getStatus()) {
@@ -194,16 +211,35 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         recyclerViewContent.setLayoutManager(linearLayoutManager);
         recyclerViewContent.setAdapter(adapter);
 
-
     }
 
-    @OnClick({R.id.tv_setting, R.id.btn_upload})
+    @OnClick({R.id.tv_setting, R.id.btn_upload, R.id.btn_debitManually})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_setting:
                 break;
             case R.id.btn_upload:
                 getPresenter().upLoadToMES();
+                break;
+            case R.id.btn_debitManually:
+                if (isBeginSupply) {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("work_order", workId);
+                    map.put("side", side);
+                    map.put("part", "FeederBuffer");
+                    argument = GsonTools.createGsonListString(map);
+                    //获取没有扣账的列表
+                    getPresenter().getUnDebitedItemList(argument);
+                } else {
+                    ToastUtils.showMessage(this, "还未开始发料", Toast.LENGTH_SHORT);
+                }
+                break;
+
+            case R.id.bt_sheet_cancel:
+                break;
+            case R.id.bt_sheet_select_all:
+                break;
+            case R.id.bt_sheet_confirm:
                 break;
             default:
                 break;
@@ -215,12 +251,13 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void onSuccess(List<FeederSupplyItem> data) {
         Log.i(TAG, "onSuccess: ");
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
-
+        linearLayout.setVisibility(View.VISIBLE);
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
-        if (index != -1){
-            RecycleViewUtils.scrollToMiddle(linearLayoutManager, getLastMaterialIndex(mCurrentMaterial,dataSource), recyclerViewContent );
+        isBeginSupply = isBeginSupply(data);
+        if (index != -1) {
+            RecycleViewUtils.scrollToMiddle(linearLayoutManager, getLastMaterialIndex(mCurrentMaterial, dataSource), recyclerViewContent);
         }
         if (data.size() == 0) {
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
@@ -232,6 +269,117 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             getPresenter().resetFeederSupplyStatus(argument);
         }
 
+    }
+
+    private boolean isBeginSupply(List<FeederSupplyItem> data) {
+        int size = data.size();
+        boolean flag = false;
+        FeederSupplyItem feederSupplyItem;
+        for (int i = 0; i < size; i++) {
+            feederSupplyItem = data.get(i);
+            if (1 == feederSupplyItem.getStatus()) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
+
+    @Override
+    public void showUnDebitedItemList(List<DebitData> data) {
+        if (0 == data.size()) {
+            ToastUtils.showMessage(this, "没有未扣账列表");
+            return;
+        }
+
+        if (popUpWindow == null) {
+            createPopupWindow(data);
+        }
+        popUpWindow.showAsDropDown(toolbar);
+
+    }
+
+    private void createPopupWindow(final List<DebitData> data) {
+        Log.i(TAG, "未扣账的数据长度为: " + data.size());
+        unDebitItemList.clear();
+        unDebitItemList.addAll(data);
+        unDebitadapter.notifyDataSetChanged();
+        popUpWindow  = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setAnimationStyle(R.style.popupAnimalStyle)
+                .setView(R.layout.dialog_bottom_sheet)
+//                .enableBlur(true)
+                .build();
+        View contentView = popUpWindow.getContentView();
+        RecyclerView recyclerView = ViewUtils.findView(contentView, R.id.rv_sheet);
+        Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_select_cancel);
+        Button btn_confirm = ViewUtils.findView(contentView, R.id.bt_sheet_confirm);
+        Button btn_selectAll = ViewUtils.findView(contentView, R.id.bt_sheet_select_all);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpWindow.dissmiss();
+            }
+        });
+
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> map = new HashMap<>();
+                Map<String, String> mapItem = new HashMap<>();
+                map.put("work_order", workId);
+                map.put("side", side);
+                List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+
+                for (DebitData debitData : data) {
+                    if (debitData.isChecked())
+                        mapItem.put("slot", debitData.getSlot());
+                        mapItem.put("material_no", debitData.getMaterial_no());
+                        mapItem.put("demand_qty", String.valueOf(debitData.getAmount()));
+                        mapItem.put("total_qty", String.valueOf(debitData.getIssue_amount()));
+                    list.add(mapItem);
+                }
+                map.put("list",list);
+                map.put("part", "FeederBuffer");
+                String argument = GsonTools.createGsonListString(map);
+                Log.i(TAG, "手动扣账参数为:  " + argument);
+                getPresenter().deductionAutomatically(argument);
+            }
+        });
+
+        btn_selectAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (DebitData debitData : data) {
+                    debitData.setChecked(true);
+                }
+            }
+        });
+        unDebitadapter = new CommonBaseAdapter<DebitData>(this, data) {
+            @Override
+            protected void convert(final CommonViewHolder holder, final DebitData item, int position) {
+                holder.setText(R.id.tv_material_id, "料号 :\t" + item.getMaterial_no());
+                holder.setText(R.id.tv_amount, "数量 :\t" + String.valueOf(item.getAmount()));
+                holder.setText(R.id.tv_slot, "料站 :\t" + item.getSlot());
+                holder.setText(R.id.tv_issue, "发料量 :\t" + String.valueOf(item.getIssue_amount()));
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CheckBox checkBox = holder.getView(R.id.cb_debit);
+                        checkBox.setChecked(!item.isChecked());
+                        item.setChecked(!item.isChecked());
+                    }
+                });
+
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, DebitData item) {
+                return R.layout.item_debit_list;
+            }
+        };
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(unDebitadapter);
+        unDebitadapter.notifyDataSetChanged();
     }
 
     @Override
@@ -260,8 +408,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 }).create();
         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         Button positiveNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        positiveButton.setBackgroundColor(ContextCompat.getColor(this,R.color.delta_blue));
-        positiveNegative.setBackgroundColor(ContextCompat.getColor(this,R.color.delta_blue));
+        positiveButton.setBackgroundColor(ContextCompat.getColor(this, R.color.delta_blue));
+        positiveNegative.setBackgroundColor(ContextCompat.getColor(this, R.color.delta_blue));
 
         alertDialog.show();
     }
@@ -335,12 +483,12 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             map.put("material_no", mCurrentMaterialNumber);
             map.put("serial_no", mCurrentSerialNumber);
             map.put("work_order", workId);
-
+            map.put("code", checkBox.isChecked() ? "1" :"0");
             argument = GsonTools.createGsonListString(map);
             Log.i(TAG, "argument== " + argument);
-            if (isMaterialExists(mCurrentMaterial)){
+            if (isMaterialExists(mCurrentMaterial)) {
                 getPresenter().getFeederInsertionToSlotTimeStamp(argument);
-            }else {
+            } else {
                 ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
             }
 
@@ -376,20 +524,20 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         int length = dataSource.size();
         for (int i = 0; i < length; i++) {
             FeederSupplyItem feederSupplyItem = dataSource.get(i);
-            if (material.getDeltaMaterialNumber().equalsIgnoreCase(feederSupplyItem.getMaterialID()) && material.getStreamNumber().equalsIgnoreCase(feederSupplyItem.getSerialNumber())){
+            if (material.getDeltaMaterialNumber().equalsIgnoreCase(feederSupplyItem.getMaterialID()) && material.getStreamNumber().equalsIgnoreCase(feederSupplyItem.getSerialNumber())) {
                 flag = true;
                 break;
             }
         }
 
-        return  flag;
+        return flag;
     }
 
-    private int getLastMaterialIndex(MaterialBlockBarCode material, List<FeederSupplyItem> dataList){
+    private int getLastMaterialIndex(MaterialBlockBarCode material, List<FeederSupplyItem> dataList) {
         int length = dataList.size();
         for (int i = 0; i < length; i++) {
             FeederSupplyItem item = dataList.get(i);
-            if (item.getMaterialID().equalsIgnoreCase(material.getDeltaMaterialNumber()) && item.getSerialNumber().equalsIgnoreCase(material.getStreamNumber())){
+            if (item.getMaterialID().equalsIgnoreCase(material.getDeltaMaterialNumber()) && item.getSerialNumber().equalsIgnoreCase(material.getStreamNumber())) {
                 index = i;
                 break;
             }
@@ -397,4 +545,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         }
         return index;
     }
+
+
 }

@@ -69,8 +69,21 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
         });
     }
 
-    public void upLoadToMES(){
-        Toast.makeText((Context) getView(),"“上传到MES”功能待添加！",Toast.LENGTH_SHORT).show();
+    public void upLoadToMESManually(String value){
+        getModel().upLoadToMesManually(value).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                if (0 == result.getCode()){
+                    getView().showMessage(result.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFailed(throwable.getMessage());
+            }
+        });
+
     }
 
     public void getMaterialAndFeederBindingResult(String str){
@@ -98,8 +111,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
                         }
 
                     } else {
-//                        getView().onFailed(moduleUpBindingItem.get);
-                        getView().showErrorView();
+                        getView().onFailed(moduleUpBindingItemResult.getMessage());
                     }
                 }catch (Exception e){
                     e.printStackTrace();
