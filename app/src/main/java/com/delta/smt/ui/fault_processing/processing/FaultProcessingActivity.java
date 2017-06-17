@@ -158,7 +158,7 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
         View contentView = LayoutInflater.from(this).inflate(R.layout.recycleview_content, null);
         rvFaultProcessing = ViewUtils.findView(contentView, R.id.rv_faultProcessing);
         statusLayout = ViewUtils.findView(contentView, R.id.statusLayouts);
-        dropDownMenu.setDropDownMenu(Arrays.asList("故障类型"), popupViews, contentView);
+        dropDownMenu.setDropDownMenu(Arrays.asList("故障类型：全部"), popupViews, contentView);
         mMyAdapter = new ItemCountViewAdapter<RowsBean.FailuresBean>(this, failuresBeen) {
             @Override
             protected int getCountViewId() {
@@ -189,7 +189,7 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
 
             @Override
             protected void convert(CommonViewHolder holder, FiltersBean item, int position) {
-                holder.setText(R.id.text, item.getMain_exception_name());
+                holder.setText(R.id.text,"故障类型："+item.getMain_exception_name());
                 if (checkPosition == position) {
                     holder.setTextColor(R.id.text, FaultProcessingActivity.this.getResources().getColor(R.color.c_428bca));
                     holder.setBackgroundColor(R.id.text, FaultProcessingActivity.this.getResources().getColor(R.color.gray));
@@ -215,9 +215,9 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
         faultFilterAdapter.setOnItemClickListener(new CommonBaseAdapter.OnItemClickListener<RowsBean.FiltersBean>() {
             @Override
             public void onItemClick(View view, RowsBean.FiltersBean item, int position) {
-                dropDownMenu.setTabText(position == 0 ? "故障类型" : item.getMain_exception_name());
+                dropDownMenu.setTabText(position == 0 ? "故障类型：全部" : "故障类型："+item.getMain_exception_name());
                 String tabText = dropDownMenu.getTabText();
-                if ("故障类型".equals(tabText)) {
+                if ("故障类型：全部".equals(tabText)) {
                     tabText = "";
                 }
                 checkPosition = position;
@@ -501,31 +501,6 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
         bottomSheetDialog.show();
     }
 
-//    @Override
-//    public boolean onMenuItemClick(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_all:
-//                faultParameter.setProcesses("");
-//                break;
-//            case R.id.action_chip:
-//                faultParameter.setProcesses("贴片机");
-//                break;
-//            case R.id.action_reflow:
-//                faultParameter.setProcesses("回焊炉");
-//                break;
-//            case R.id.action_aoi:
-//                faultParameter.setProcesses("AOI");
-//                break;
-//            case R.id.action_ict:
-//                faultParameter.setProcesses("ICT");
-//                break;
-//            default:
-//                break;
-//        }
-//        parameter = GsonTools.createGsonString(faultParameter);
-//        getPresenter().getFaultProcessingMessages(parameter);
-//        return true;
-//    }
 
     @Override
     public void onClick(View view) {
