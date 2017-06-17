@@ -158,7 +158,7 @@ public interface ApiService {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @POST("ams/smm/excessmanagement/debit")
-    Observable<OverReceiveWarning> debit(@Field("value") String value);
+    Observable<OverReceiveDebitList> debit(@Field("value") String value);
 
     @GET("ams/smm/excessmanagement/debit")
     Observable<OverReceiveDebitResult> getOverReceiveDebit();

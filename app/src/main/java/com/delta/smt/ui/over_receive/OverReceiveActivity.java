@@ -2,14 +2,12 @@ package com.delta.smt.ui.over_receive;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +34,7 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.DebitInputPara;
 import com.delta.smt.entity.OverReceiveDebitList;
 import com.delta.smt.entity.OverReceiveDebitResult;
 import com.delta.smt.entity.OverReceiveWarning;
@@ -372,9 +371,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                     createCustomPopWindow();
 
                 }
-                showPopupWindow(toolbar);
+                mCustomPopWindow.showAsDropDown(toolbar);
+                //showPopupWindow(toolbar);
                 if (SingleClick.isSingle(1000)) {
-                    showPopupWindow(toolbar);
+                    //showPopupWindow(toolbar);
+                    mCustomPopWindow.showAsDropDown(toolbar);
                     getPresenter().getNoDebit();
                     //getPresenter().getDebitDataList(mS);
                 }
@@ -611,7 +612,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     }
 
     private void createCustomPopWindow() {
-        mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_bottom_over_receive).enableBlur(true).setStartHeightBlur(100).build();
+        mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_bottom_over_receive)/*.enableBlur(true).setStartHeightBlur(100)*/.build();
         View mContentView = mCustomPopWindow.getContentView();
         RecyclerView rv_debit = ViewUtils.findView(mContentView, R.id.rv_sheet);
         Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_cancel);
@@ -628,7 +629,32 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         bt_confim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<DebitInputPara> list = new ArrayList<>();
+                //for (OverReceiveDebitList.RowsBean rowsBean : mDebitDatas) {
+                for (int i = 0; i < mDebitDatas.size(); i++) {
+                    if (mDebitDatas.get(i).isChecked()) {
+                        DebitInputPara debitInputPara = new DebitInputPara();
+                        debitInputPara.setWork_order(mDebitDatas.get(i).getWork_order());
+                        debitInputPara.setSide(mDebitDatas.get(i).getSide());
+                        debitInputPara.setAction("5");
+                        DebitInputPara.ListBean listBean = new DebitInputPara.ListBean(
+                                mDebitDatas.get(i).getMaterial_no(),
+                                mDebitDatas.get(i).getIssue_amount(),
+                                mDebitDatas.get(i).getIssue_amount()
+                        );
+                        List<DebitInputPara.ListBean> listBeenList = new ArrayList<DebitInputPara.ListBean>();
+                        listBeenList.add(listBean);
+                        debitInputPara.setList(listBeenList);
+                        list.add(debitInputPara);
+                    }
 
+                }
+
+                if (list.size() == 0) {
+                    ToastUtils.showMessage(OverReceiveActivity.this, "还未选择扣账列表！");
+                    return;
+                }
+                getPresenter().debit(new Gson().toJson(list));
             }
         });
         bt_select_all.setOnClickListener(new View.OnClickListener() {
@@ -683,7 +709,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         }
     }*/
 
-    public void showPopupWindow(View anchor) {
+/*    public void showPopupWindow(View anchor) {
         if (!mCustomPopWindow.isShowing()) {
             if (Build.VERSION.SDK_INT < 24) {
                 mCustomPopWindow.showAsDropDown(anchor);
@@ -697,6 +723,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             }
 
         }
-    }
+    }*/
 
 }

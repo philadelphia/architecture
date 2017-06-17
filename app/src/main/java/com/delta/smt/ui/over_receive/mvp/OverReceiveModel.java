@@ -43,5 +43,10 @@ public class OverReceiveModel extends BaseModel<ApiService> implements OverRecei
         return getService().getNoDebit().compose(RxsRxSchedulers.<OverReceiveDebitList>io_main());
     }
 
+    @Override
+    public Observable<OverReceiveDebitList> debit(String value) {
+        return getService().debit(value).compose(RxsRxSchedulers.<OverReceiveDebitList>io_main());
+    }
+
 
 }
