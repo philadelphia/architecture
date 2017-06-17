@@ -35,7 +35,7 @@ import javax.inject.Inject;
  */
 @ReportsCrashes(
         mode = ReportingInteractionMode.TOAST,
-        resToastText =  R.string.crash_toast_text,
+        resToastText = R.string.crash_toast_text,
         formUri = "http://172.22.34.198:8888/acra-smartsmt",
         httpMethod = HttpSender.Method.PUT,
         reportType = HttpSender.Type.JSON
@@ -74,6 +74,7 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
         super.attachBaseContext(base);
         ACRA.init(this);
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -81,6 +82,8 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
         mContenxt = this;
         mainHander = new Handler(Looper.getMainLooper());
         appComponent = DaggerAppComponent.builder().clientModule(getClientModule()).appModule(getAppModule()).serviceModule(getServiceModule()).build();
+        appComponent.inject(this);
+        textToSpeechManager.setRead(SpUtil.getBooleanSF(this, "speech_switch"));
         registerActivityLifecycleCallbacks(this);
         Intent intent = new Intent(this, WarningService.class);
         startService(intent);

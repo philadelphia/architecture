@@ -41,4 +41,5 @@ public interface AppComponent {
 
     //Rxjava错误处理管理类
     RxErrorHandler rxErrorHandler();
+
 }
