@@ -109,6 +109,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private CustomPopWindow popUpWindow;
     private CommonBaseAdapter<DebitData> unDebitadapter;
     private final List<DebitData> unDebitItemList = new ArrayList<>();
+    private boolean isAllItemSupplied = false;
 
     @Override
     protected void handError(String contents) {
@@ -257,6 +258,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             RecycleViewUtils.scrollToMiddle(linearLayoutManager, getLastMaterialIndex(mCurrentMaterial, dataSource), recyclerViewContent);
         }
         if (data.size() == 0) {
+            isAllItemSupplied = true;
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
             Map<String, String> map = new HashMap<>();
             map.put("work_order", workId);
@@ -284,6 +286,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     @Override
     public void showUnDebitedItemList(List<DebitData> data) {
+        if (0 == data.size() && isAllItemSupplied){
+            getPresenter().resetFeederSupplyStatus(argument);
+
+        }
         unDebitItemList.clear();
         unDebitItemList.addAll(data);
 
@@ -337,7 +343,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 map.put("part", "FeederBuffer");
                 String argument = GsonTools.createGsonListString(map);
                 Log.i(TAG, "手动扣账参数为:  " + argument);
-                getPresenter().deductionAutomatically(argument);
+                getPresenter().deductionManually(argument);
             }
         });
 

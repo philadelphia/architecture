@@ -136,7 +136,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
     }
 
     //自动扣账
-    public void deductionAutomatically(String value) {
+    public void deductionManually(String value) {
         getModel().deductionAutomatically(value).subscribe(new Action1<Result<DebitData>>() {
             @Override
             public void call(Result<DebitData> debitDataResult) {
