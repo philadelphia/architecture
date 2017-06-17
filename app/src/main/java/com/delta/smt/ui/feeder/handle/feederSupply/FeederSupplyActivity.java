@@ -287,6 +287,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void showUnDebitedItemList(List<DebitData> data) {
         if (0 == data.size() && isAllItemSupplied){
+            popUpWindow.dissmiss();
             getPresenter().resetFeederSupplyStatus(argument);
 
         }
@@ -312,13 +313,24 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 .build();
         View contentView = popUpWindow.getContentView();
         RecyclerView recyclerView = ViewUtils.findView(contentView, R.id.rv_sheet);
+        Button btn_back = ViewUtils.findView(contentView, R.id.bt_sheet_back);
         Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_select_cancel);
         Button btn_confirm = ViewUtils.findView(contentView, R.id.bt_sheet_confirm);
         Button btn_selectAll = ViewUtils.findView(contentView, R.id.bt_sheet_select_all);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popUpWindow.dissmiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (DebitData debitData : unDebitItemList) {
+                    if (debitData.isChecked())
+                        debitData.setChecked(false);
+                }
+
             }
         });
 
