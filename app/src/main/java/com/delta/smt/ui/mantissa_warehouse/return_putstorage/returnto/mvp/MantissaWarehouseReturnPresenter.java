@@ -144,4 +144,34 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
         });
 
     }
+
+    public void deduction(String gsonListString) {
+
+        getModel().deduction(gsonListString).subscribe(new Action1<ManualDebitBean>() {
+            @Override
+            public void call(ManualDebitBean manualDebitBean) {
+
+                if("0".equals(manualDebitBean.getCode())){
+                    getView().getdeductionSucess(manualDebitBean.getRows());
+                }else{
+                    getView().getdeductionFailed( manualDebitBean.getmessage());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+                try {
+                    getView().getdeductionFailed(throwable.getMessage());
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
+    }
 }

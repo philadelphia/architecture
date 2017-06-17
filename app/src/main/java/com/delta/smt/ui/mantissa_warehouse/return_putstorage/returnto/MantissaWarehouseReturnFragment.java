@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import com.delta.smt.entity.BacKBarCode;
 import com.delta.smt.entity.MantissaWarehouseReturnBean;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.ManualDebitBean;
+import com.delta.smt.entity.ManualmaticDebitBean;
 import com.delta.smt.entity.WarehousePutinStorageBean;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.DaggerMantissaWarehouseReturnComponent;
@@ -52,6 +54,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
+import static com.delta.smt.R.id.bt_sheet_confirm;
 
 /**
  * Created by Zhenyu.Liu on 2016/12/29.
@@ -87,6 +90,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     private CustomPopWindow mCustomPopWindow;
     private CommonBaseAdapter<ManualDebitBean.ManualDebit> undoList_adapter;
+    private List<ManualDebitBean.ManualDebit> mDebitDatas = new ArrayList<>();
 
     private MantissaWarehouseReturnAndPutStorageActivity mantissaWarehouseReturnAndPutStorageActivity;
 
@@ -234,46 +238,16 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getManualmaticDebitSucess(List<ManualDebitBean.ManualDebit> manualDebits) {
-        if (manualDebits.size() == 0) {
+        if (manualDebits.size() == 0 || manualDebits == null) {
 
-            ToastUtils.showMessage(getContext(), "暂无扣账列表！");
+            ToastUtils.showMessage(getContext(), "已完成所有扣账,暂无扣账列表！");
 
         } else {
 
-            mCustomPopWindow = CustomPopWindow.builder().with(getContext()).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                    .setAnimationStyle(R.style.popupAnimalStyle)
-                    .setView(R.layout.dialog_bottom_sheet)
-                    .enableBlur(true).setStartHeightBlur(100).build().showAsDropDown(mantissaWarehouseReturnAndPutStorageActivity.getToolbar());
-
-            View mContentView = mCustomPopWindow.getContentView();
-            RecyclerView rv_debit = ViewUtils.findView(mContentView, R.id.rv_sheet);
-            undoList_adapter = new CommonBaseAdapter<ManualDebitBean.ManualDebit>(getContext(), manualDebits) {
-                @Override
-                protected void convert(CommonViewHolder holder, final ManualDebitBean.ManualDebit item, int position) {
-                    holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
-                    holder.setText(R.id.tv_serial_num, "流水号：" + item.getSerial_no());
-                    final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
-                    mCheckBox.setChecked(item.isChecked());
-                    holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mCheckBox.setChecked(!item.isChecked());
-                            item.setChecked(!item.isChecked());
-                        }
-                    });
-                }
-
-                @Override
-                protected int getItemViewLayoutId(int position, ManualDebitBean.ManualDebit item) {
-                    return R.layout.item_mantissawarehousedebit_list;
-                }
-
-            };
-            rv_debit.setHasFixedSize(true);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-            linearLayoutManager.setSmoothScrollbarEnabled(true);
-            rv_debit.setLayoutManager(linearLayoutManager);
-            rv_debit.setAdapter(undoList_adapter);
+            mCustomPopWindow.showAsDropDown(mantissaWarehouseReturnAndPutStorageActivity.getToolbar());
+            mDebitDatas.clear();
+            mDebitDatas.addAll(manualDebits);
+            undoList_adapter.notifyDataSetChanged();
 
 
         }
@@ -281,7 +255,24 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getManualmaticDebitFailed(String message) {
+        ToastUtils.showMessage(getContext(), message );
+    }
 
+    @Override
+    public void getdeductionSucess(List<ManualDebitBean.ManualDebit> manualDebits) {
+
+        if(manualDebits.size() == 0){
+            mCustomPopWindow.dissmiss();
+            ToastUtils.showMessage(getContext(), "已完成所有扣账！");
+        }
+        mDebitDatas.clear();
+        mDebitDatas.addAll(manualDebits);
+        undoList_adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getdeductionFailed(String message) {
+        ToastUtils.showMessage(getContext(), message);
     }
 
     @Override
@@ -400,13 +391,110 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     }
 
     @OnClick({R.id.button2})
-    public void onClick(View view) {
+    public void onClickone(View view) {
         switch (view.getId()) {
             case R.id.button2:
+
+                if (mCustomPopWindow == null) {
+                    createWindow();
+                }
                 getPresenter().getManualmaticDebit();
                 break;
-
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_sheet_back:
+                if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                    mCustomPopWindow.dissmiss();
+                }
+                break;
+            case bt_sheet_confirm:
+                List<ManualmaticDebitBean> mDebitCheckedData = new ArrayList<>();
+                Log.e("bt_sheet_confirm","ddddddddddddd");
+                for (ManualDebitBean.ManualDebit mDebitData : mDebitDatas) {
+                    if (mDebitData.isChecked()) {
+                        ManualmaticDebitBean mListBean = new ManualmaticDebitBean();
+                        mListBean.setMaterial_no(mDebitData.getMaterial_no());
+                        mListBean.setSerial_no(mDebitData.getSerial_no());
+                        mDebitCheckedData.add(mListBean);
+                    }
+                }
+                getPresenter().deduction(GsonTools.createGsonString(mDebitCheckedData));
+                break;
+            case R.id.bt_sheet_select_all:
+                if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                    if (mDebitDatas != null && mDebitDatas.size() != 0) {
+                        for (ManualDebitBean.ManualDebit mDebitData : mDebitDatas) {
+                            mDebitData.setChecked(true);
+                        }
+                        undoList_adapter.notifyDataSetChanged();
+                    }
+                }
+                break;
+            case R.id.bt_sheet_select_cancel:
+                if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                    if (mDebitDatas != null && mDebitDatas.size() != 0) {
+                        for (ManualDebitBean.ManualDebit mDebitData : mDebitDatas) {
+                            mDebitData.setChecked(false);
+                        }
+                        undoList_adapter.notifyDataSetChanged();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void createWindow(){
+
+        mCustomPopWindow = CustomPopWindow.builder().with(getContext()).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setAnimationStyle(R.style.popupAnimalStyle)
+                .setView(R.layout.dialog_bottom_sheet)
+                .enableBlur(true).setStartHeightBlur(100).build();
+
+        View mContentView = mCustomPopWindow.getContentView();
+        RecyclerView rv_debit = ViewUtils.findView(mContentView, R.id.rv_sheet);
+        undoList_adapter = new CommonBaseAdapter<ManualDebitBean.ManualDebit>(getContext(), mDebitDatas) {
+            @Override
+            protected void convert(CommonViewHolder holder, final ManualDebitBean.ManualDebit item, int position) {
+                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
+                holder.setText(R.id.tv_serial_num, "流水号：" + item.getSerial_no());
+                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
+                mCheckBox.setChecked(item.isChecked());
+                holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCheckBox.setChecked(!item.isChecked());
+                        item.setChecked(!item.isChecked());
+                    }
+                });
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, ManualDebitBean.ManualDebit item) {
+                return R.layout.item_mantissawarehousedebit_list;
+            }
+
+        };
+        rv_debit.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        rv_debit.setLayoutManager(linearLayoutManager);
+        rv_debit.setAdapter(undoList_adapter);
+
+
+        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
+        Button bt_sheet_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
+        Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
+        ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
+        bt_cancel.setOnClickListener(this);
+        bt_sheet_confirm.setOnClickListener(this);
+        bt_select_all.setOnClickListener(this);
+
     }
 
 }
