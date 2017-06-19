@@ -230,13 +230,14 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void showModuleDownUnDebitedItemList(List<ModuleDownDebit> data) {
         Log.i(TAG, "扣账列表数据长度: " + data.size());
-        unDebitItemList.clear();
-        unDebitItemList.addAll(data);
-        unDebitadapter.notifyDataSetChanged();
         if (0 == data.size()) {
             ToastUtils.showMessage(this, "没有未扣账列表");
             return;
         }
+
+        unDebitItemList.clear();
+        unDebitItemList.addAll(data);
+        unDebitadapter.notifyDataSetChanged();
 
         popUpWindow.showAsDropDown(toolbar);
     }

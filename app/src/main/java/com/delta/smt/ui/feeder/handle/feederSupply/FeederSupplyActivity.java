@@ -87,9 +87,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     TextView tvModuleID;
     @BindView(R.id.tv_work_order)
     TextView tv_workOrder;
-    @BindView(R.id.tv_side)
+    @BindView(R.id.tv_line_name)
     TextView tv_side;
-    @BindView(R.id.tv_Line)
+    @BindView(R.id.tv_line_num)
     TextView tv_line;
 
 
@@ -106,6 +106,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private CustomPopWindow popUpWindow;
     private CommonBaseAdapter<DebitData> unDebitadapter;
     private final List<DebitData> unDebitItemList = new ArrayList<>();
+    private boolean isAllItemSupplied = false;
 
     @Override
     protected void handError(String contents) {
@@ -183,8 +184,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_module, item.getSlot());
                 holder.setText(R.id.tv_timestamp, item.getBindTime());
                 holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待上模组" : " 上模组完成");
-
-
                 switch (item.getStatus()) {
                     case 0:
                         holder.itemView.setBackgroundColor(Color.WHITE);
@@ -248,7 +247,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void onSuccess(List<FeederSupplyItem> data) {
         Log.i(TAG, "onSuccess: ");
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
-        linearLayout.setVisibility(View.VISIBLE);
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
@@ -257,6 +255,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             RecycleViewUtils.scrollToMiddle(linearLayoutManager, getLastMaterialIndex(mCurrentMaterial, dataSource), recyclerViewContent);
         }
         if (data.size() == 0) {
+            isAllItemSupplied = true;
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
             Map<String, String> map = new HashMap<>();
             map.put("work_order", workId);
@@ -284,23 +283,26 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     @Override
     public void showUnDebitedItemList(List<DebitData> data) {
-        if (0 == data.size()) {
-            ToastUtils.showMessage(this, "没有未扣账列表");
-            return;
+        if (0 == data.size() && isAllItemSupplied){
+            popUpWindow.dissmiss();
+            getPresenter().resetFeederSupplyStatus(argument);
+
         }
+        unDebitItemList.clear();
+        unDebitItemList.addAll(data);
 
         if (popUpWindow == null) {
             createPopupWindow(data);
         }
+
+        unDebitadapter.notifyDataSetChanged();
         popUpWindow.showAsDropDown(toolbar);
 
     }
 
     private void createPopupWindow(final List<DebitData> data) {
         Log.i(TAG, "未扣账的数据长度为: " + data.size());
-        unDebitItemList.clear();
-        unDebitItemList.addAll(data);
-        unDebitadapter.notifyDataSetChanged();
+
         popUpWindow  = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.popupAnimalStyle)
                 .setView(R.layout.dialog_bottom_sheet)
@@ -308,13 +310,24 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 .build();
         View contentView = popUpWindow.getContentView();
         RecyclerView recyclerView = ViewUtils.findView(contentView, R.id.rv_sheet);
+        Button btn_back = ViewUtils.findView(contentView, R.id.bt_sheet_back);
         Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_select_cancel);
         Button btn_confirm = ViewUtils.findView(contentView, R.id.bt_sheet_confirm);
         Button btn_selectAll = ViewUtils.findView(contentView, R.id.bt_sheet_select_all);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popUpWindow.dissmiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (DebitData debitData : unDebitItemList) {
+                    if (debitData.isChecked())
+                        debitData.setChecked(false);
+                }
+
             }
         });
 
@@ -339,7 +352,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 map.put("part", "FeederBuffer");
                 String argument = GsonTools.createGsonListString(map);
                 Log.i(TAG, "手动扣账参数为:  " + argument);
-                getPresenter().deductionAutomatically(argument);
+                getPresenter().deductionManually(argument);
             }
         });
 

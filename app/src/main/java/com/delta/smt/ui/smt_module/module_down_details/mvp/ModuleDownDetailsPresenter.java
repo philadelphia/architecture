@@ -131,12 +131,14 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                 public void call(Result<ModuleDownDebit> moduleDownDebitResult) {
                     if (0 == moduleDownDebitResult.getCode()){
                         getView().showModuleDownUnDebitedItemList(moduleDownDebitResult.getRows());
+                    }else {
+                        getView().onFailed(moduleDownDebitResult.getMessage());
                     }
                 }
             }, new Action1<Throwable>() {
                 @Override
                 public void call(Throwable throwable) {
-
+                    getView().onFailed(throwable.getMessage());
                 }
             });
     }

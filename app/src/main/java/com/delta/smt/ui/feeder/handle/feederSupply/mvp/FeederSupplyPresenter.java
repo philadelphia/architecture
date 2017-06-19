@@ -136,7 +136,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
     }
 
     //自动扣账
-    public void deductionAutomatically(String value) {
+    public void deductionManually(String value) {
         getModel().deductionAutomatically(value).subscribe(new Action1<Result<DebitData>>() {
             @Override
             public void call(Result<DebitData> debitDataResult) {
@@ -166,7 +166,6 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                         getView().onFailed("没有扣账列表");
                     } else {
                         getView().showUnDebitedItemList(debitDataResult.getRows());
-
                     }
                 } else {
                     getView().onFailed(debitDataResult.getMessage());

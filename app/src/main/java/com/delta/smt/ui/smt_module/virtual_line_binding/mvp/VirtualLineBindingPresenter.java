@@ -85,6 +85,7 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
                         }
                     } else if (virtualLineItemResult.getCode() == -1){
                         getView().onFailed(virtualLineItemResult.getMessage());
+                        getView().showContentView();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

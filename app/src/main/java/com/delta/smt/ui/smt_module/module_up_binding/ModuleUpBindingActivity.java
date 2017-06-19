@@ -125,9 +125,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         lineName = intent.getStringExtra(Constant.LINE_NAME);
 //        productName = intent.getStringExtra(Constant.PRODUCT_NAME);
 //        productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
-        tv_workOrder.setText(getResources().getString(R.string.WorkID) +":   "+ workItemID);
-        tv_line.setText(getResources().getString(R.string.Line) +":   "+  lineName);
-        tv_side.setText(getResources().getString(R.string.Side) +":   "+  side);
+        tv_workOrder.setText(getResources().getString(R.string.WorkID) + ":   " + workItemID);
+        tv_line.setText(getResources().getString(R.string.Line) + ":   " + lineName);
+        tv_side.setText(getResources().getString(R.string.Side) + ":   " + side);
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
@@ -211,7 +211,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
-        if (isAllItemIsBound(data)){
+        if (isAllItemIsBound(data)) {
             ToastUtils.showMessage(this, "", Toast.LENGTH_SHORT);
             AlertDialog dialog = new AlertDialog.Builder(this)
                     .setTitle("提示")
@@ -222,21 +222,21 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
                         }
                     }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                }
-            }).create();
+                        }
+                    }).create();
             dialog.show();
         }
     }
 
     private boolean isAllItemIsBound(List<ModuleUpBindingItem> data) {
-        boolean isAllItemBound= false;
+        boolean isAllItemBound = false;
         int size = data.size();
         for (int i = 0; i < size; i++) {
             ModuleUpBindingItem item = data.get(i);
-            if (TextUtils.isEmpty(item.getFeeder_id())){
+            if (TextUtils.isEmpty(item.getFeeder_id())) {
                 isAllItemBound = false;
                 break;
             }
@@ -246,7 +246,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void onFailed(String  message) {
+    public void onFailed(String message) {
         ToastUtils.showMessage(this, message);
     }
 
@@ -331,8 +331,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         Map<String, String> map = new HashMap<>();
         switch (view.getId()) {
             case R.id.btn_upload:
-              map.put("work_order", workItemID);
-              map.put("side", side);
+                map.put("work_order", workItemID);
+                map.put("side", side);
                 String argument = GsonTools.createGsonListString(map);
                 getPresenter().upLoadToMESManually(argument);
                 break;
@@ -361,7 +361,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         Log.i(TAG, "onScanSuccess: " + barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
-            case 1:     //扫描料盘
+            //扫描料盘
+            case 1:
                 try {
                     parseMaterial(barcode, barCodeParseIpml);
 
@@ -379,34 +380,29 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     state = 1;
                 }
                 break;
-            case 2:     //扫描Feeder
+            //扫描Feeder架位
+            case 2:
                 try {
                     Feeder feederCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
                     showMessage.setVisibility(View.GONE);
-                    if (isFeederExistInDataSource(barcode, dataSource)) {
-                        VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
-                        VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                        showMessage.setText("此Feeder已经被绑定！");
-                        showMessage.setVisibility(View.VISIBLE);
-                    } else {
-                        VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
-                        VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
-                        JsonArray jsonArray = new JsonArray();
-                        JsonObject jsonObject = new JsonObject();
-                        jsonObject.addProperty("work_order", workItemID);
-                        jsonObject.addProperty("material_no", materialBlockNumber);
-                        jsonObject.addProperty("feeder_id", barcode);
-                        jsonObject.addProperty("serial_no", serialNo);
-                        jsonObject.addProperty("side", side);
-                        jsonObject.addProperty("qty", quantaty);
-                        jsonObject.addProperty("code", ckb_automaticUpload.isChecked() ? "1" : "0");
-                        jsonObject.addProperty("is_feeder_buffer", "0");
+                    VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
+                    VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
+                    JsonArray jsonArray = new JsonArray();
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("work_order", workItemID);
+                    jsonObject.addProperty("material_no", materialBlockNumber);
+                    jsonObject.addProperty("feeder_id", barcode);
+                    jsonObject.addProperty("serial_no", serialNo);
+                    jsonObject.addProperty("side", side);
+                    jsonObject.addProperty("qty", quantaty);
+                    jsonObject.addProperty("code", ckb_automaticUpload.isChecked() ? "1" : "0");
+                    jsonObject.addProperty("is_feeder_buffer", "0");
 
-                        jsonArray.add(jsonObject);
-                        String argument = jsonArray.toString();
-                        Log.i(TAG, "argument==  " +argument);
-                        getPresenter().getMaterialAndFeederBindingResult(argument);
-                    }
+                    jsonArray.add(jsonObject);
+                    String argument = jsonArray.toString();
+                    Log.i(TAG, "argument==  " + argument);
+                    getPresenter().getMaterialAndFeederBindingResult(argument);
+
                 } catch (EntityNotFountException e) {
 
                     try {
@@ -433,11 +429,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     private void parseMaterial(String barcode, BarCodeParseIpml barCodeParseIpml) throws EntityNotFountException {
         MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-        Log.i(TAG, "onScanSuccess: "+ barcode);
+        Log.i(TAG, "onScanSuccess: " + barcode);
         showMessage.setVisibility(View.GONE);
         materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
         serialNo = materialBlockBarCode.getStreamNumber();
-        quantaty =  materialBlockBarCode.getCount();
+        quantaty = materialBlockBarCode.getCount();
         Log.i(TAG, "materialBlockNumber: " + materialBlockNumber);
         Log.i(TAG, "serialNo: " + serialNo
         );
@@ -448,16 +444,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             showMessage.setVisibility(View.VISIBLE);
             state = 1;
         } else {
-            if (isMaterialBound(materialBlockBarCode)){
+            if (isMaterialBound(materialBlockBarCode)) {
                 VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                 VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                 Toast.makeText(this, "注意:该料盘已经绑定", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
                 VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
             }
             state = 2;
-            Log.i(TAG, "onScanSuccess: "+"开始扫描Feeder");
+            Log.i(TAG, "onScanSuccess: " + "开始扫描Feeder");
         }
     }
 
@@ -485,24 +481,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getMaterial_no().equals(item_m) && list.get(i).getSerial_no().equals(item_s)) {
                     setItemHighLightBasedOnMID(i);
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            return false;
-        }
-
-    }
-
-
-    public boolean isFeederExistInDataSource(String item, List<ModuleUpBindingItem> list) {
-
-        if (list.size() > 0) {
-
-            for (ModuleUpBindingItem list_item : list) {
-
-                if (list_item.getFeeder_id() != null && list_item.getFeeder_id().equals(item)) {
                     return true;
                 }
             }
@@ -542,12 +520,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         }
     }
 
-    public boolean isMaterialBound(MaterialBlockBarCode materialBlockBarCode){
-     boolean flag = false;
+    public boolean isMaterialBound(MaterialBlockBarCode materialBlockBarCode) {
+        boolean flag = false;
         for (ModuleUpBindingItem rowsBean : dataSource) {
-            if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())){
-                if (!TextUtils.isEmpty(rowsBean.getFeeder_id())){
-                   flag = true;
+            if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())) {
+                if (!TextUtils.isEmpty(rowsBean.getFeeder_id())) {
+                    flag = true;
                     break;
                 }
 
