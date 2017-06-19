@@ -34,7 +34,7 @@ import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
 import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.utils.PkgInfoUtils;
-import com.delta.smt.utils.ViewUtils;
+import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.ttsmanager.TextToSpeechManager;
 import com.delta.updatelibs.UpdateUtils;
 

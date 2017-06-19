@@ -45,8 +45,8 @@ import com.delta.smt.ui.storage_manger.details.di.StorageDetailsModule;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsContract;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.delta.smt.utils.ViewUtils;
-import com.delta.smt.widget.CustomPopWindow;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.ArrayList;

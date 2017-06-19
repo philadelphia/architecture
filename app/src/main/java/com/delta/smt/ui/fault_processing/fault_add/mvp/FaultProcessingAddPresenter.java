@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -22,7 +23,6 @@ import rx.functions.Action1;
 @ActivityScope
 public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAddContract.Model, FaultProcessingAddContract.View> {
 
-    private static final String TAG = "FaultProcessingAddPrese";
 
     @Inject
     public FaultProcessingAddPresenter(FaultProcessingAddContract.Model model, FaultProcessingAddContract.View mView) {
@@ -53,10 +53,16 @@ public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAd
 
     public void getTemplateContent(String fileName) {
         Log.i(TAG, "getTemplateContent: ");
-        getModel().getTemplateContent(fileName).subscribe(new Action1<BaseEntity<String>>() {
+        getModel().getTemplateContent(fileName).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<BaseEntity<String>>() {
             @Override
             public void call(BaseEntity<String> stringResult) {
                 if (stringResult.getCode().equalsIgnoreCase("0")) {
+                    getView().showContentView();
                     getView().onSuccess(stringResult.getT());
                 }
 
@@ -66,6 +72,7 @@ public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAd
             public void call(Throwable throwable) {
 
                 Log.e(TAG, "call: " + throwable.getMessage());
+                getView().showErrorView();
                 getView().onFailed(throwable.getMessage());
             }
         });
@@ -73,13 +80,20 @@ public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAd
     }
 
     public void upLoadFile(RequestBody requestBody, MultipartBody.Part part, String argument) {
-        getModel().upLoadFile(requestBody, part, argument).subscribe(new Action1<ResultFault>() {
+        getModel().upLoadFile(requestBody, part, argument).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingDialog();
+            }
+        }).subscribe(new Action1<ResultFault>() {
             @Override
             public void call(ResultFault result) {
                 if (result.getCode().equalsIgnoreCase("0")) {
                     getView().upLoadFileSuccess();
+                    getView().showLoadingDialogSuccess();
                 } else {
                     getView().onFailed("上传失败");
+                    getView().showLoadingDialogFailed();
                 }
 
 
@@ -88,6 +102,7 @@ public class FaultProcessingAddPresenter extends BasePresenter<FaultProcessingAd
             @Override
             public void call(Throwable throwable) {
                 getView().showMessage("上传失败" + throwable.getMessage());
+                getView().showLoadingDialogFailed();
             }
         });
     }

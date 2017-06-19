@@ -1,4 +1,4 @@
-package com.delta.smt.widget;
+package com.delta.commonlibs.widget;
 
 import android.app.Activity;
 import android.content.Context;
