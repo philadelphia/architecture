@@ -188,6 +188,7 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
             android:clickable="true"
+            android:visibility="gone"
             android:src="@drawable/ic_mode_edit_white_36dp" />
 
     </RelativeLayout>

@@ -3,6 +3,7 @@ package com.delta.smt.ui.fault_processing.fault_add;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -149,7 +151,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 break;
             case R.id.action_complete:
                 editText.setGravity(Gravity.CENTER_VERTICAL);
@@ -277,6 +279,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         Log.i(TAG, "onSuccess: " + message);
         richEditor.setHtml(message);
         richEditor.setInputEnabled(false);
+        beginEdit();
     }
 
 
@@ -330,8 +333,8 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
                 richEditor.insertLink(null, null);
                 break;
             case R.id.floatingActionButton:
-                floatingActionButton.setVisibility(View.GONE);
-                beginEdit();
+//                floatingActionButton.setVisibility(View.GONE);
+
                 break;
         }
     }
@@ -385,7 +388,13 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
                                 }
                             }).create();
+
+                    Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    Button positiveNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    positiveButton.setBackgroundColor(ContextCompat.getColor(this, R.color.delta_blue));
+                    positiveNegative.setBackgroundColor(ContextCompat.getColor(this, R.color.delta_blue));
                     alertDialog.show();
+
                     return true;
             }
         }
