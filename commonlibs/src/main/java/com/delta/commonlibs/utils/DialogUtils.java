@@ -4,12 +4,15 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +49,16 @@ public class DialogUtils {
                 .setPositiveButton("确定", listener)
                 .setNegativeButton("取消", null)
                 .show();
+    }
+
+    public static Dialog showCommonDialogWithDeltaBlue(Context context, String message,
+                                          DialogInterface.OnClickListener listener, @ColorRes int color_resouce_id) {
+        AlertDialog dialog = (AlertDialog) showCommonDialog(context, message, listener);
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button positiveNegative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setBackgroundColor(ContextCompat.getColor(context, color_resouce_id));
+        positiveNegative.setBackgroundColor(ContextCompat.getColor(context,color_resouce_id));
+        return  dialog;
     }
 
     public static Dialog showConfirmDialog(Context context, String message,
