@@ -4,12 +4,22 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.delta.commonlibs.R;
+import com.delta.commonlibs.widget.CustomPopWindow;
+
+import static com.delta.commonlibs.utils.ViewUtils.findView;
 
 /**
  * @author :  V.Wenju.Tian
@@ -64,5 +74,34 @@ public class DialogUtils {
 
         return new AlertDialog.Builder(context).setView(view).setView(view).show();
     }
+
+    public static CustomPopWindow createLoadingDialog(Context mContext, @Nullable String message) {
+
+
+        CustomPopWindow mCustomPopWindow = CustomPopWindow.builder().with(mContext).setView(R.layout.dialog_loading).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setOutsideTouchable(false).setTouchable(false).build();
+        ImageView mPoint = findView(mCustomPopWindow.getContentView(), R.id.point);
+        RotateAnimation ra = new RotateAnimation(0, 360, Animation.RELATIVE_TO_PARENT, 0.37f, Animation.RELATIVE_TO_PARENT, 0.37f);
+        ra.setDuration(2000);
+        TextView tv_loading = ViewUtils.findView(mCustomPopWindow.getContentView(), R.id.tv_loading);
+        if (message != null) {
+
+            tv_loading.setText(message);
+        }
+        ra.setRepeatCount(Animation.INFINITE);
+        ra.setRepeatMode(Animation.RESTART);
+        mPoint.startAnimation(ra);
+        return mCustomPopWindow;
+    }
+
+    public static void loadingViewDismiss(CustomPopWindow mCustomPopWindow) {
+
+        if (mCustomPopWindow != null) {
+            mCustomPopWindow.dissmiss();
+            ImageView mPoint = findView(mCustomPopWindow.getContentView(), R.id.point);
+            mPoint.clearAnimation();
+        }
+    }
+
 
 }

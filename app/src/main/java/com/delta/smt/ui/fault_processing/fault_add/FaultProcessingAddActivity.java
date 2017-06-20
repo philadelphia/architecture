@@ -3,7 +3,6 @@ package com.delta.smt.ui.fault_processing.fault_add;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,16 +12,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -31,6 +32,7 @@ import com.delta.smt.ui.fault_processing.fault_add.di.DaggerFaultProcessingAddCo
 import com.delta.smt.ui.fault_processing.fault_add.di.FaultProcessingAddModule;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddContract;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddPresenter;
+import com.delta.commonlibs.utils.ViewUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -63,8 +65,6 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     TextView tvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
-
-
     @BindView(R.id.editText)
     EditText editText;
     @BindView(R.id.editor)
@@ -73,14 +73,10 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     HorizontalScrollView horizontalScrollView;
     @BindView(R.id.floatingActionButton)
     FloatingActionButton floatingActionButton;
-
-    private static final String TAG = "FaultProcessingAddActiv";
-
     @BindView(R.id.action_bold)
     ImageButton actionBold;
     @BindView(R.id.action_italic)
     ImageButton actionItalic;
-
     @BindView(R.id.action_underline)
     ImageButton actionUnderline;
     @BindView(R.id.action_heading1)
@@ -102,15 +98,17 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     @BindView(R.id.action_insert_numbers)
     ImageButton actionInsertNumbers;
     @BindView(R.id.action_blockquote)
-    ImageButton actionBlockquote;
+    ImageButton actionBlockQuote;
     @BindView(R.id.action_insert_image)
     ImageButton actionInsertImage;
     @BindView(R.id.action_insert_link)
     ImageButton actionInsertLink;
-
+    @BindView(R.id.sl)
+    StatusLayout mSl;
     private String fileName = null;
     private String faultCode = "";
     private File file;
+    private CustomPopWindow mLoadingDialog;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -151,8 +149,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Log.i(TAG, "onOptionsItemSelected: home");
-                onBackPressed();
+                finish();
                 break;
             case R.id.action_complete:
                 editText.setGravity(Gravity.CENTER_VERTICAL);
@@ -215,12 +212,10 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         }
         // MultipartBody.Part is used to send also the actual file name
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-
         // 添加描述
-        String descriptionString = "hello, 这是文件描述";
-        @SuppressWarnings("UnusedAssignment") RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
-
-
+//        String descriptionString = "hello, 这是文件描述";
+//        @SuppressWarnings("UnusedAssignment")
+//        RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
         getPresenter().upLoadFile(requestFile, body, argument);
 //
     }
@@ -232,7 +227,6 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         super.onResume();
         Map<String, String> map = new HashMap<>();
         map.put("fileName", "line_fault");
-
         getPresenter().getTemplateContent(GsonTools.createGsonListString(map));
 
 
@@ -280,6 +274,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         Log.i(TAG, "onSuccess: " + message);
         richEditor.setHtml(message);
         richEditor.setInputEnabled(false);
+        floatingActionButton.setVisibility(View.GONE);
         beginEdit();
     }
 
@@ -334,13 +329,13 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
                 richEditor.insertLink(null, null);
                 break;
             case R.id.floatingActionButton:
-//                floatingActionButton.setVisibility(View.GONE);
-
+                floatingActionButton.setVisibility(View.GONE);
+                beginEdit();
                 break;
         }
     }
 
-       private void beginEdit() {
+    private void beginEdit() {
         editText.setVisibility(View.VISIBLE);
         editText.requestFocus();
         horizontalScrollView.setVisibility(View.VISIBLE);
@@ -365,7 +360,15 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
     @Override
     public void upLoadFileSuccess() {
-        this.finish();
+
+    }
+
+    @Override
+    public void showLoadingView() {
+
+        mSl.showLoadingView();
+        TextView tv_loading = ViewUtils.findView(this, R.id.tv_loading);
+        tv_loading.setText("正在加载模板！");
     }
 
 
@@ -381,7 +384,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                        onBackPressed();
+                                    onBackPressed();
                                 }
                             }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                 @Override
@@ -389,16 +392,58 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
                                 }
                             }).create();
-
-                    Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    Button positiveNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                    positiveButton.setBackgroundColor(ContextCompat.getColor(this, R.color.delta_blue));
-                    positiveNegative.setBackgroundColor(ContextCompat.getColor(this, R.color.delta_blue));
                     alertDialog.show();
-
                     return true;
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void showContentView() {
+        mSl.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+
+        mSl.showErrorView();
+        mSl.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> map = new HashMap<>();
+                map.put("fileName", "line_fault");
+                getPresenter().getTemplateContent(GsonTools.createGsonListString(map));
+            }
+        });
+    }
+
+    @Override
+    public void showLoadingDialog() {
+        if (mLoadingDialog == null) {
+
+            mLoadingDialog = DialogUtils.createLoadingDialog(this, null);
+        }
+        mLoadingDialog.showAtLocation(ViewUtils.getRootViewWithActivity(this), Gravity.CENTER, 0, 0);
+    }
+
+    @Override
+    public void showLoadingDialogSuccess() {
+
+        if (mLoadingDialog != null) {
+            DialogUtils.loadingViewDismiss(mLoadingDialog);
+        }
+        this.finish();
+        ToastUtils.showMessage(this, "上传成功！");
+
+    }
+
+    @Override
+    public void showLoadingDialogFailed() {
+
+        if (mLoadingDialog != null) {
+            DialogUtils.loadingViewDismiss(mLoadingDialog);
+        }
+        ToastUtils.showMessage(this, "上传失败！");
     }
 }

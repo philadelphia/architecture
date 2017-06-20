@@ -3,7 +3,6 @@ package com.delta.smt.ui.smt_module.module_down_details;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,8 +32,6 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.DebitData;
-import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.ModuleDownDebit;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.ui.smt_module.module_down_details.di.DaggerModuleDownDetailsComponent;
@@ -42,8 +39,8 @@ import com.delta.smt.ui.smt_module.module_down_details.di.ModuleDownDetailsModul
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsContract;
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.delta.smt.utils.ViewUtils;
-import com.delta.smt.widget.CustomPopWindow;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

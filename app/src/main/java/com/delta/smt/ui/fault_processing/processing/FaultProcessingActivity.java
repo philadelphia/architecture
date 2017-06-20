@@ -46,7 +46,7 @@ import com.delta.smt.ui.fault_processing.processing.di.DaggerFaultProcessingComp
 import com.delta.smt.ui.fault_processing.processing.di.FaultProcessingModule;
 import com.delta.smt.ui.fault_processing.processing.mvp.FalutProcessingContract;
 import com.delta.smt.ui.fault_processing.processing.mvp.FaultProcessingPresenter;
-import com.delta.smt.utils.ViewUtils;
+import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.smt.widget.WarningDialog;
 
 import org.json.JSONArray;
@@ -62,7 +62,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.delta.smt.utils.ViewUtils.findView;
+import static com.delta.commonlibs.utils.ViewUtils.findView;
 
 /**
  * @description :
@@ -416,6 +416,12 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
     protected void handError(String contents) {
         super.handError(contents);
         statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getFaultProcessingMessages(parameter);
+            }
+        });
     }
 
     private void createBottomSheetDialog() {

@@ -48,8 +48,8 @@ import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsMod
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsContract;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.delta.smt.utils.ViewUtils;
-import com.delta.smt.widget.CustomPopWindow;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.ArrayList;

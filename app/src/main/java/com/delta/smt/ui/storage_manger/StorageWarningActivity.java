@@ -14,7 +14,7 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseCommonActivity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.storage_manger.ready.StorageReadyFragment;
-import com.delta.smt.utils.ViewUtils;
+import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.smt.widget.WarningDialog;
 
 import butterknife.BindView;
