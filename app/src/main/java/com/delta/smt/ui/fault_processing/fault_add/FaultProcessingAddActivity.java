@@ -151,6 +151,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Log.i(TAG, "onOptionsItemSelected: home");
                 onBackPressed();
                 break;
             case R.id.action_complete:

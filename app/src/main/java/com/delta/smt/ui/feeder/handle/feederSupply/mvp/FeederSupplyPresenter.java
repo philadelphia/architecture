@@ -6,6 +6,7 @@ import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.entity.DebitData;
+import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
@@ -98,6 +99,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         });
     }
 
+    //Feeder扣账、入库完成
     public void resetFeederSupplyStatus(String condition) {
         getModel().resetFeederSupplyStatus(condition).subscribe(new Action1<Result>() {
             @Override
@@ -118,24 +120,8 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
     }
 
-    public void upLoadToMES() {
-        getModel().upLoadFeederSupplyResult().subscribe(new Action1<ResultFeeder>() {
-            @Override
-            public void call(ResultFeeder resultFeeder) {
-                if (!resultFeeder.isRows()) {
-                    getView().onUpLoadFailed("上传失败，请手动上传到MES");
-                }
 
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-
-            }
-        });
-    }
-
-    //自动扣账
+    //扣账
     public void deductionManually(String value) {
         getModel().deductionAutomatically(value).subscribe(new Action1<Result<DebitData>>() {
             @Override
@@ -175,6 +161,46 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             @Override
             public void call(Throwable throwable) {
                 getView().onFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
+    //上传Feeder发料到MES
+    public void upLoadFeederSupplyToMES(String value) {
+        getModel().upLoadFeederSupplyToMES(value).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result resultFeeder) {
+
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+    }
+
+    //获取没有上传到MES的数据列表
+    public void getUnUpLoadToMESList(String condition){
+        getModel().getUnUpLoadToMESList(condition).subscribe(new Action1<Result<FeederMESItem>>() {
+            @Override
+            public void call(Result<FeederMESItem> result) {
+                if (0 == result.getCode()){
+                    if (0 == result.getRows().size()){
+                        getView().onFailed(result.getMessage());
+                    }else {
+                        getView().showUnUpLoadToMESItemList(result.getRows());
+                    }
+                }else {
+                    getView().onFailed(result.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
             }
         });
     }

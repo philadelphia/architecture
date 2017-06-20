@@ -41,5 +41,13 @@ public interface ModuleUpBindingContract {
 
         Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str);
         Observable<Result> upLoadToMesManually(String value);
+
+        Observable<Result> getAllItemsNeedTobeUpLoadToMES(String value);
+    }
+
+    interface Model2 extends IModel {
+        Observable<Result> upLoadToMesManually(String value);
+
+        Observable<Result> getAllItemsNeedTobeUpLoadToMES(String value);
     }
 }

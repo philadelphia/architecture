@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -69,7 +70,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     private List<ModuleUpWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<ModuleUpWarningItem> myAdapter;
     private WarningDialog warningDialog;
-
+    private static final String TAG = "ModuleUpActivity";
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerModuleUpComponent.builder().appComponent(appComponent).moduleUpModule(new ModuleUpModule(this)).build().inject(this);
@@ -150,17 +151,21 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     public void onSuccess(List<ModuleUpWarningItem> dataSource) {
+        Log.i(TAG, "onSuccess: 后台返回的数据长度是: " + dataSource.size());
         dataList.clear();
         int size = dataSource.size();
         for (int i = 0; i < size; i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            try {
-                Date parse = format.parse(dataSource.get(i).getOnlinePlanStartTime());
-                dataSource.get(i).setEnd_time(parse.getTime());
-                dataSource.get(i).setEntityId(i);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//            try {
+////                Date parse = format.parse(String.valueOf(dataSource.get(i).getOnlinePlanStartTime()));
+////                Log.i(TAG, "onSuccess: parse " + parse.toString());
+////                dataSource.get(i).setEnd_time(parse.getTime());
+//
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+            dataSource.get(i).setEnd_time(dataSource.get(i).getOnlinePlanStartTime());
+            dataSource.get(i).setEntityId(i);
         }
         dataList.addAll(dataSource);
         myAdapter.notifyDataSetChanged();

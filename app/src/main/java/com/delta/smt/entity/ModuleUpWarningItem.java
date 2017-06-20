@@ -34,7 +34,7 @@ public class ModuleUpWarningItem  extends TimeEntity {
     private String productName;
 
     @SerializedName("online_plan_start_time")
-    private String onlinePlanStartTime;
+    private long onlinePlanStartTime;
     private int status;
 
     public int getWorkOrderID() {
@@ -85,11 +85,11 @@ public class ModuleUpWarningItem  extends TimeEntity {
         this.productName = productName;
     }
 
-    public String getOnlinePlanStartTime() {
+    public long getOnlinePlanStartTime() {
         return onlinePlanStartTime;
     }
 
-    public void setOnlinePlanStartTime(String onlinePlanStartTime) {
+    public void setOnlinePlanStartTime(long onlinePlanStartTime) {
         this.onlinePlanStartTime = onlinePlanStartTime;
     }
 

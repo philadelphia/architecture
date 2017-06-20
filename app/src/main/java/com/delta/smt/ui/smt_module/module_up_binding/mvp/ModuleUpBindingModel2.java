@@ -12,28 +12,20 @@ import rx.Observable;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class ModuleUpBindingModel extends BaseModel<ApiService> implements ModuleUpBindingContract.Model{
+public class ModuleUpBindingModel2 extends BaseModel<ApiService> implements ModuleUpBindingContract.Model2{
 
-    public ModuleUpBindingModel(ApiService apiService) {
+    public ModuleUpBindingModel2(ApiService apiService) {
         super(apiService);
     }
 
-    @Override
-    public Observable<Result<ModuleUpBindingItem>> getAllModuleUpBindingItems(String str) {
 
-        return getService().getModuleUpBindingItems(str).compose(RxsRxSchedulers.<Result<ModuleUpBindingItem>>io_main());
-    }
-
-    @Override
-    public Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str) {
-        return getService().getMaterialAndFeederBindingResult(str).compose(RxsRxSchedulers.<Result<ModuleUpBindingItem>>io_main());
-    }
-
+    //上传到MES
     @Override
     public Observable<Result> upLoadToMesManually(String value) {
         return getService().upLoadToMesManually(value).compose(RxsRxSchedulers.<Result>io_main());
     }
 
+    //获取待上传到MES的列表
     @Override
     public Observable<Result> getAllItemsNeedTobeUpLoadToMES(String value){
        return getService().getAllItemsNeedTobeUpLoadToMES(value).compose(RxsRxSchedulers.<Result>io_main());

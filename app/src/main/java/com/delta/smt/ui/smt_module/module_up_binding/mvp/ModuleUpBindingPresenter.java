@@ -132,4 +132,8 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
             }
         });
     }
+
+    public void getAllItemsNeedTobeUpLoadToMES(String value){
+
+    }
 }
