@@ -3,8 +3,10 @@ package com.delta.smt.ui.smt_module.module_up_binding.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.UpLoadEntity;
 
 import rx.Observable;
 
@@ -32,5 +34,10 @@ public class ModuleUpBindingModel extends BaseModel<ApiService> implements Modul
     @Override
     public Observable<Result> upLoadToMesManually(String value) {
         return getService().upLoadToMesManually(value).compose(RxsRxSchedulers.<Result>io_main());
+    }
+
+    @Override
+    public Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(String mArgument) {
+        return getService().getneeduploadtomesmaterials(mArgument).compose(RxsRxSchedulers.<BaseEntity<UpLoadEntity>>io_main());
     }
 }

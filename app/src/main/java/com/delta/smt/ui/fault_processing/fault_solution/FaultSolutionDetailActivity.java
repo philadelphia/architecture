@@ -53,7 +53,6 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     private String faultCode;
     private String lineName;
     private String faultSolutionName;
-    private static final String TAG = "FaultSolutionDetailActi";
 
     @Override
     protected void componentInject(AppComponent appComponent) {

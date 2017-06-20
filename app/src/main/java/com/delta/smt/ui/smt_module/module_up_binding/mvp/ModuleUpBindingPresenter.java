@@ -1,11 +1,12 @@
 package com.delta.smt.ui.smt_module.module_up_binding.mvp;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import com.delta.commonlibs.base.mvp.BasePresenter;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
+import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
+import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.UpLoadEntity;
 
 import javax.inject.Inject;
 
@@ -17,9 +18,11 @@ import rx.functions.Action1;
  */
 
 public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContract.Model,ModuleUpBindingContract.View> {
+    private RxErrorHandler mRxErrorHandler;
     @Inject
-    public ModuleUpBindingPresenter(ModuleUpBindingContract.Model model, ModuleUpBindingContract.View mView) {
+    public ModuleUpBindingPresenter(ModuleUpBindingContract.Model model, ModuleUpBindingContract.View mView,RxErrorHandler mRxErrorHandler) {
         super(model, mView);
+        this.mRxErrorHandler = mRxErrorHandler;
     }
 
     public void getAllModuleUpBindingItems(String str){
@@ -131,5 +134,22 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
             }
         });
+    }
+
+    public void getneeduploadtomesmaterials(String mArgument) {
+
+        getModel().getneeduploadtomesmaterials(mArgument).subscribe(new RxErrorHandlerSubscriber<BaseEntity<UpLoadEntity>>(mRxErrorHandler) {
+            @Override
+            public void onNext(BaseEntity<UpLoadEntity> mUpLoadEntityResult) {
+
+                if("0".equals(mUpLoadEntityResult.getCode())){
+
+                    getView().getNeedUpLoadToMESMaterialsSuccess(mUpLoadEntityResult.getT());
+                }else{
+                    getView().getNeedUpLoadTOMESMaterislsFailed(mUpLoadEntityResult.getMsg());
+                }
+            }
+        });
+
     }
 }

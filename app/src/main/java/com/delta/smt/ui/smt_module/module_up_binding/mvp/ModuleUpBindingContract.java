@@ -2,8 +2,10 @@ package com.delta.smt.ui.smt_module.module_up_binding.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.UpLoadEntity;
 
 import java.util.List;
 
@@ -34,6 +36,9 @@ public interface ModuleUpBindingContract {
 
         void showMessage(String message);
 
+        void getNeedUpLoadToMESMaterialsSuccess(UpLoadEntity mT);
+
+        void getNeedUpLoadTOMESMaterislsFailed(String mMsg);
     }
 
     interface Model extends IModel {
@@ -41,5 +46,7 @@ public interface ModuleUpBindingContract {
 
         Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str);
         Observable<Result> upLoadToMesManually(String value);
+
+        Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(String mArgument);
     }
 }

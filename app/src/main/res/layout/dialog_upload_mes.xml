@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                     xmlns:tools="http://schemas.android.com/tools"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="match_parent"
+                                     android:orientation="vertical">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/c_cfcfcf"
+            android:padding="30px"
+            android:text="上料列表"
+            android:textColor="@color/c_333333"
+            android:textSize="40px"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_feeder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30px"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/c_cfcfcf"
+            android:padding="30px"
+            android:text="发料列表"
+            android:textColor="@color/c_333333"
+            android:textSize="40px"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_feeder_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30px"/>
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#e0ffffff"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10px"
+        android:paddingBottom="60px"
+        android:paddingTop="20px">
+
+
+        <Button
+            android:id="@+id/bt_sheet_back"
+            android:layout_width="152px"
+            android:layout_height="70px"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:text="@string/back"
+            android:textColor="@android:color/white"
+            android:textSize="40px"/>
+
+        <Button
+            android:id="@+id/bt_sheet_select_cancel"
+            android:layout_width="152px"
+            android:layout_height="70px"
+            android:layout_marginLeft="50px"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@android:color/white"
+            android:textSize="40px"/>
+
+        <Button
+            android:id="@+id/bt_sheet_select_all"
+            android:layout_width="152px"
+            android:layout_height="70px"
+            android:layout_marginLeft="50px"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:text="@string/check_all"
+            android:textColor="@android:color/white"
+            android:textSize="40px"/>
+
+        <Button
+            android:id="@+id/bt_sheet_confirm"
+            android:layout_width="152px"
+            android:layout_height="70px"
+            android:layout_marginLeft="50px"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:text="@string/debit"
+            android:textColor="@android:color/white"
+            android:textSize="40px"/>
+    </com.zhy.autolayout.AutoLinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

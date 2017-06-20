@@ -13,6 +13,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -26,8 +29,11 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
+import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
@@ -37,15 +43,14 @@ import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpBindingItem;
+import com.delta.smt.entity.UpLoadEntity;
 import com.delta.smt.ui.smt_module.module_up_binding.di.DaggerModuleUpBindingComponent;
 import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,6 +114,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private static final String TAG = "ModuleUpBindingActivity";
     private LinearLayoutManager linearLayoutManager;
     private String quantaty;
+    private CustomPopWindow mCustomPopWindow;
+    private CommonBaseAdapter<UpLoadEntity.FeedingListBean> undoList_adapter;
+    private List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
+    private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
+    private CommonBaseAdapter<UpLoadEntity.MaterialListBean> unSend_adapter;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -326,20 +336,129 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         ToastUtils.showMessage(this, message);
     }
 
+    @Override
+    public void getNeedUpLoadToMESMaterialsSuccess(UpLoadEntity mT) {
+
+        mFeedingListBean.clear();
+        mMaterialListBean.clear();
+        mFeedingListBean.addAll(mT.getFeeding_list());
+        mMaterialListBean.addAll(mT.getMaterial_list());
+        undoList_adapter.notifyDataSetChanged();
+        unSend_adapter.notifyDataSetChanged();
+        if (mCustomPopWindow != null) {
+            mCustomPopWindow.showAsDropDown(toolbar);
+        }
+
+    }
+
+    @Override
+    public void getNeedUpLoadTOMESMaterislsFailed(String mMsg) {
+
+    }
+
     @OnClick({R.id.btn_upload, R.id.showMessage})
     public void onClick(View view) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         switch (view.getId()) {
             case R.id.btn_upload:
                 map.put("work_order", workItemID);
                 map.put("side", side);
+                map.put("is_feeder_buffer", 0);
                 String argument = GsonTools.createGsonListString(map);
-                getPresenter().upLoadToMESManually(argument);
+                //getPresenter().upLoadToMESManually(argument);
+                if (mCustomPopWindow == null) {
+                    createCustomPopWindow();
+
+                }
+                if (SingleClick.isSingle(1000)) {
+                    getPresenter().getneeduploadtomesmaterials(argument);
+                }
+
                 break;
             case R.id.showMessage:
                 showMessage.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    private void createCustomPopWindow() {
+        mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_upload_mes).build();
+        View mContentView = mCustomPopWindow.getContentView();
+        RecyclerView rv_feeder = ViewUtils.findView(mContentView, R.id.rv_feeder);
+        RecyclerView rv_feeder_send = ViewUtils.findView(mContentView, R.id.rv_feeder_send);
+        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
+        Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
+        Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
+//        ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
+//        bt_cancel.setOnClickListener(this);
+//        bt_confirm.setOnClickListener(this);
+//        bt_select_all.setOnClickListener(this);
+
+        undoList_adapter = new CommonBaseAdapter<UpLoadEntity.FeedingListBean>(getContext(), mFeedingListBean) {
+            @Override
+            protected void convert(CommonViewHolder holder, final UpLoadEntity.FeedingListBean item, int position) {
+                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
+                holder.setText(R.id.tv_slot, "FeederId：" + item.getFeeder_id());
+                holder.setText(R.id.tv_amount, "流水号：" + String.valueOf(item.getSerial_no()));
+                holder.setText(R.id.tv_issue, "架位：" + String.valueOf(item.getSlot()));
+                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
+                mCheckBox.setChecked(item.isChecked());
+                holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCheckBox.setChecked(!item.isChecked());
+                        item.setChecked(!item.isChecked());
+                    }
+                });
+
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, UpLoadEntity.FeedingListBean item) {
+                return R.layout.item_debit_list;
+
+            }
+
+        };
+        unSend_adapter = new CommonBaseAdapter<UpLoadEntity.MaterialListBean>(getContext(), mMaterialListBean) {
+            @Override
+            protected void convert(CommonViewHolder holder, final UpLoadEntity.MaterialListBean item, int position) {
+                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
+                holder.setText(R.id.tv_slot, "流水号：" + String.valueOf(item.getSerial_no()));
+                holder.setText(R.id.tv_issue, "架位：" + String.valueOf(item.getSlot()));
+                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
+                mCheckBox.setChecked(item.isChecked());
+                holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCheckBox.setChecked(!item.isChecked());
+                        item.setChecked(!item.isChecked());
+                    }
+                });
+
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, UpLoadEntity.MaterialListBean item) {
+                return R.layout.item_feeder_upload;
+            }
+
+        };
+        setAdapter(rv_feeder, undoList_adapter);
+        setAdapter(rv_feeder_send, unSend_adapter);
+//        rv_debit.setHasFixedSize(true);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setSmoothScrollbarEnabled(true);
+//        rv_debit.setLayoutManager(linearLayoutManager);
+//        rv_debit.setAdapter(undoList_adapter);
+    }
+
+    private void setAdapter(RecyclerView rv_debit, CommonBaseAdapter mUndoList_adapter) {
+        rv_debit.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        rv_debit.setLayoutManager(linearLayoutManager);
+        rv_debit.setAdapter(undoList_adapter);
     }
 
     @Override
