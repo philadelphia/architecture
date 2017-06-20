@@ -234,6 +234,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 break;
             case R.id.btn_debitManually:
                 if (isBeginSupply) {
+                    if (popUpWindow == null) {
+                        createPopupWindow(unDebitItemList);
+                    }
                     Map<String, String> map1 = new HashMap<>();
                     map1.put("work_order", workId);
                     map1.put("side", side);
@@ -306,8 +309,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         }
         unDebitItemList.clear();
         unDebitItemList.addAll(data);
-        unDebitadapter.notifyDataSetChanged();
+
         if (popUpWindow != null) {
+            unDebitadapter.notifyDataSetChanged();
             popUpWindow.showAsDropDown(toolbar);
         }
 
@@ -559,19 +563,17 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     @Override
     public void showLoadingView() {
-        statusLayout.setVisibility(View.VISIBLE);
+
         statusLayout.showLoadingView();
     }
 
     @Override
     public void showContentView() {
-        statusLayout.setVisibility(View.VISIBLE);
         statusLayout.showContentView();
     }
 
     @Override
     public void showErrorView() {
-        statusLayout.setVisibility(View.VISIBLE);
         statusLayout.showErrorView();
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
@@ -584,7 +586,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     @Override
     public void showEmptyView() {
-        statusLayout.setVisibility(View.VISIBLE);
         statusLayout.showEmptyView();
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
