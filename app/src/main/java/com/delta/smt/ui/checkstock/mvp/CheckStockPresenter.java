@@ -157,7 +157,6 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                 if ("0".equals(success.getCode())){
                     Log.e("info",""+success.getRows().size());
                     if (success.getRows().size()!=0){
-                        Log.e("info","-----------------");
                         for (int i=0;i<success.getRows().size();i++){
                            switch (success.getRows().get(i).getStatus()){
                                case 0:
@@ -183,7 +182,6 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
                         fewBuffer.append(errorBuffer.toString()).append(changeBuffer.toString()).append(notBuffer.toString());
                         getView().onErrorSucess(fewBuffer.toString());
                     }else {
-
                         getView().onErrorSucess("本架位盘点正常");
                     }
                 }else {

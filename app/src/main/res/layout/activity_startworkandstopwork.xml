@@ -2,6 +2,7 @@
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/textcolor"
     >
     <include layout="@layout/appbar" />
 
@@ -44,25 +45,25 @@
                         android:paddingLeft="@dimen/px_20"
                         android:paddingRight="@dimen/px_20"
                         android:textSize="@dimen/px_40"
-                        android:text="当前盘点的架位"
+                        android:text="当前盘点的架位:"
                         />
                 <TextView
                     android:id="@+id/startAndstop_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/px_40"
+                    android:layout_width="match_parent"
+                    android:layout_height="100px"
                     android:paddingLeft="@dimen/px_20"
                     android:paddingRight="@dimen/px_20"
-                    android:background="@drawable/textview_border"
-                    android:gravity="center"
+                    android:background="@drawable/ed_frame"
+                    android:gravity="center_vertical"
                     android:textSize="@dimen/px_40"
+                    android:layout_marginRight="@dimen/px_40"
 
                     />
                    </com.zhy.autolayout.AutoLinearLayout>
                 <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     >
                     <TextView
                         android:layout_width="wrap_content"
@@ -84,7 +85,7 @@
                 <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:layout_marginTop="@dimen/px_10"
                     >
                     <TextView
@@ -104,22 +105,31 @@
                         android:background="@drawable/textview_border"
                         />
                     </com.zhy.autolayout.AutoLinearLayout>
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/px_60"
+                    >
                 <Button
                     android:id="@+id/startAndstop_continue"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/px_120"
                     android:layout_marginTop="@dimen/px_40"
                     style="@style/pcb_button"
+                    android:textColor="@color/buttoncolor"
                     android:text="@string/continues"
                     />
 
                 <Button
                     android:id="@+id/startAndstop_cancel"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/px_120"
                     android:layout_marginTop="@dimen/px_40"
+                    android:layout_marginLeft="@dimen/px_40"
                     style="@style/pcb_button"
                     android:text="@string/startAndstop_stopwork"/>
+                </com.zhy.autolayout.AutoLinearLayout>
             </com.zhy.autolayout.AutoLinearLayout>
         </com.zhy.autolayout.AutoLinearLayout>
 

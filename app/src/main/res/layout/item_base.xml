@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:background="@drawable/card_background">
+    android:background="@drawable/card_background"
+   >
         <TextView
             android:id="@+id/content_text"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:lineSpacingMultiplier="1.5"
             android:layout_marginTop="@dimen/px_6"
             android:layout_marginLeft="@dimen/px_16"
@@ -38,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/px_30"
             app:isCountUp="false"
             app:isShowDay="false"
             app:isShowHour="true"

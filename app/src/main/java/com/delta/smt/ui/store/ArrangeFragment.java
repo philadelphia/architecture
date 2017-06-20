@@ -1,10 +1,11 @@
 package com.delta.smt.ui.store;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -43,14 +44,12 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
     StatusLayout statusLayout;
     private ItemCountViewAdapter mAdapter;
     private List<ItemInfo> mList = new ArrayList<>();
-    private AlertDialog.Builder builder;
-    private AlertDialog mAffirmDialog;
     private int mPosition;
 
 
     @Override
     protected void initView() {
-        builder = new AlertDialog.Builder(getActivity());
+
         mAdapter = new ItemCountViewAdapter<ItemInfo>(getContext(), mList) {
 
             @Override
@@ -69,6 +68,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
             }
 
         };
+        timeRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         timeRecycler.setAdapter(mAdapter);
         mAdapter.setOnItemTimeOnclick(new com.delta.libs.adapter.ItemOnclick() {
 
@@ -77,29 +77,21 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
                 if (mList.size() == 0) {
 
                 } else {
-                    mAffirmDialog=builder.create();
-                    mAffirmDialog.show();
-                    mAffirmDialog.setContentView(R.layout.dialog_affirm);
-                    Button affirmButton= (Button) mAffirmDialog.findViewById(R.id.dialog_affirm_affirm);
-                    Button cabcelButton= (Button) mAffirmDialog.findViewById(R.id.dialog_affirm_cancel);
-                    affirmButton.setOnClickListener(new View.OnClickListener() {
+                    AlertDialog mAffirmDialog=new AlertDialog.Builder(getContext()).setTitle("提示").setMessage("是否确认备料?").setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
                             mPosition=position;
                             getPresenter().closeLights(mList.get(position).getAlarminfoId(),1);
-                            if (mAffirmDialog.isShowing()){
-                                mAffirmDialog.dismiss();
-                            }
+                            dialog.dismiss();
+
                         }
-                    });
-                    cabcelButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (mAffirmDialog.isShowing()){
-                                mAffirmDialog.dismiss();
-                            }
-                        }
-                    });
+                    }).create();
+                    mAffirmDialog.show();
 
                 }
             }
