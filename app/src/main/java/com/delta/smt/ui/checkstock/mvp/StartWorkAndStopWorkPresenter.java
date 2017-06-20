@@ -78,7 +78,8 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                 } else {
                     getView().showContentView();
                     getView().ongoingFailed();
-                }}
+                }
+            }
 
         }, new Action1<Throwable>() {
             @Override
@@ -107,6 +108,9 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                 StringBuffer fewBuffer = new StringBuffer();
                 if ("0".equals(success.getCode())) {
                     if (success.getMessage().contains("success")) {
+                        if (success.getRows().size()==0){
+                            getView().onInventoryException("全库盘点正常，没有误差");
+                        }else {
                         for (int i = 0; i < success.getRows().size(); i++) {
                             switch (success.getRows().get(i).getStatus()) {
                                 case 0:
@@ -123,6 +127,7 @@ public class StartWorkAndStopWorkPresenter extends BasePresenter<StartWorkAndSto
                         }
                         fewBuffer.append(errorBuffer.toString());
                         getView().onInventoryException(fewBuffer.toString());
+                        }
                     } else {
                         getView().onFailed(success.getMessage());
                     }
