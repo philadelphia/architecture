@@ -4,6 +4,7 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.DebitData;
+import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
@@ -37,10 +38,6 @@ public class FeederSupplyModel extends BaseModel<ApiService> implements FeederSu
         return getService().resetFeederSupplyStatus(condition).compose(RxsRxSchedulers.<Result>io_main());
     }
 
-    @Override
-    public Observable<ResultFeeder> upLoadFeederSupplyResult() {
-        return getService().upLoadFeederSupplyResult().compose(RxsRxSchedulers.<ResultFeeder>io_main());
-    }
 
     @Override
     public Observable<Result<DebitData>> deductionAutomatically(String value) {
@@ -50,6 +47,20 @@ public class FeederSupplyModel extends BaseModel<ApiService> implements FeederSu
     @Override
     public Observable<Result<DebitData>> getUnDebitedItemList(String condition) {
         return getService().getUnDebitedItemList(condition).compose(RxsRxSchedulers.<Result<DebitData>>io_main());
+    }
+
+
+
+
+    @Override
+    public Observable<Result<FeederMESItem>> getUnUpLoadToMESList(String condition) {
+        return getService().getUnUpLoadToMESList(condition).compose(RxsRxSchedulers.<Result<FeederMESItem>>io_main());
+    }
+
+    //上传Feeder发料到MES
+    @Override
+    public Observable<Result> upLoadFeederSupplyToMES(String value) {
+        return getService().upLoadFeederSupplyToMES(value).compose(RxsRxSchedulers.<Result>io_main());
     }
 
 

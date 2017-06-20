@@ -54,7 +54,6 @@ import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.StoreEntity;
 import com.delta.smt.entity.Success;
-import com.delta.smt.entity.UpLoadEntity;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineItem;
@@ -128,6 +127,14 @@ public interface ApiService {
     @GET("SMM/Buffer/completeBufferIssue")
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
+    //获取没有上传到MES的列表
+    @PUT("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    Observable<Result<FeederMESItem>> getUnUpLoadToMESList(@Query("condition") String condition);
+
+    //上传feeder备料到MES
+    @GET("ams/smm/plugmodcontroller/uploadtomes")
+    Observable<Result> upLoadFeederSupplyToMES(String value);
+
 
     //Feeder发料手动扣账
     @POST("ams/smm/warehissue/deduction")
@@ -184,6 +191,9 @@ public interface ApiService {
     @POST("ams/smm/plugmodcontroller/uploadtomes")
     Observable<Result> upLoadToMesManually(@Query("value") String value);
 
+    //获取所有需要上传到MES的数据
+    @POST("")
+    Observable<Result> getAllItemsNeedTobeUpLoadToMES(String value);
     //下模组排程
     @GET("ams/smm/unplugmodcontroller/getproductionlines")
     Observable<Result<ModuleDownWarningItem>> getModuleDownWarningItems();

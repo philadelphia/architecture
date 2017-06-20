@@ -1,6 +1,5 @@
 package com.delta.smt.ui.storeroom;
 
-import android.app.AlertDialog;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -75,7 +74,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
 
-    AlertDialog.Builder builder;
+
     private int status=0;
 
     private boolean isButtonOnclick = false;
@@ -110,18 +109,19 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText(getResources().getString(R.string.pcbku));
-        builder = new AlertDialog.Builder(this);
 //        ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial("料号", "PCB Code", "Data Code","数量");
 //        materialsList.add(threeOfMaterial);
         mShortLisrAdapter = new CommonBaseAdapter<ThreeOfMaterial>(getApplicationContext(), materialsList) {
             @Override
             protected void convert(CommonViewHolder holder, ThreeOfMaterial item, int position) {
+
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.shortList_statistics, item.getDeltaMaterialNumber());
                 holder.setText(R.id.shortList_pcbcode, item.getPcbCode());
                 holder.setText(R.id.shortList_datacode, item.getDataCode());
                 holder.setText(R.id.shortList_count, item.getCount());
                 holder.setText(R.id.shortList_forprices, item.getPrice());
+
             }
 
             @Override

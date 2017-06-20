@@ -8,23 +8,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <include layout="@layout/appbar" />
 
 
         <com.delta.commonlibs.widget.statusLayout.StatusLayout
             android:id="@+id/statusLayout"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10px"
@@ -38,7 +42,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:weightSum="4">
 
                         <CheckBox
                             android:id="@+id/checkBox"
@@ -55,6 +59,14 @@
                             android:background="@color/delta_blue"
                             android:text="手动扣账"
                             android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:id="@+id/checkBox_autoUpLoadToMES"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="自动上传到MES" />
+
 
                         <Button
                             android:id="@+id/btn_upload"
