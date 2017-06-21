@@ -2,8 +2,10 @@ package com.delta.smt.ui.setting;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
@@ -14,12 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.delta.commonlibs.di.module.ClientModule;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.api.API;
@@ -33,8 +37,8 @@ import com.delta.smt.ui.main.di.DaggerMainComponent;
 import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
 import com.delta.smt.ui.main.mvp.MainPresenter;
+import com.delta.smt.utils.DataClearManager;
 import com.delta.smt.utils.PkgInfoUtils;
-import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.ttsmanager.TextToSpeechManager;
 import com.delta.updatelibs.UpdateUtils;
 
@@ -44,9 +48,11 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.smt.api.API.BASE_URL;
+import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
  * Created by Lin.Hou on 2017-01-09.
@@ -67,6 +73,12 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     SwitchCompat scSpeech;
     @Inject
     TextToSpeechManager textToSpeechManager;
+    @BindView(R.id.tv_cache_data)
+    TextView mTvCacheData;
+    @BindView(R.id.imageView2)
+    ImageView mImageView2;
+    @BindView(R.id.tv_speech)
+    TextView mTvSpeech;
     private View dialog_view;
     private EditText et_ip;
     private EditText et_port;
@@ -111,6 +123,11 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         toolbarTitle.setText("设置");
         boolean speech_switch = SpUtil.getBooleanSF(this, "speech_switch");
+        try {
+            mTvCacheData.setText(DataClearManager.getTotalCacheSize(this));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         scSpeech.setChecked(speech_switch);
         scSpeech.setOnCheckedChangeListener(this);
     }
@@ -179,7 +196,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         return DialogUtils.showDefineDialog(this, dialog_view);
     }
 
-    @OnClick({R.id.setting_update, R.id.setting_server_address})
+    @OnClick({R.id.setting_update, R.id.setting_server_address,R.id.setting_cache})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setting_update:
@@ -210,6 +227,19 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                     }
                 }
 
+                break;
+            case R.id.setting_cache:
+                DialogUtils.showCommonDialog(this, "是否清楚缓存？", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DataClearManager.clearAllCache(getContext());
+                        try {
+                            mTvCacheData.setText(DataClearManager.getTotalCacheSize(getContext()));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
                 break;
 
         }
@@ -243,7 +273,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-        SpUtil.SetBooleanSF(this,"speech_switch",isChecked);
+        SpUtil.SetBooleanSF(this, "speech_switch", isChecked);
         textToSpeechManager.setRead(isChecked);
     }
 
@@ -262,5 +292,12 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
