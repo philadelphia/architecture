@@ -55,6 +55,7 @@ import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.StoreEntity;
 import com.delta.smt.entity.Success;
+import com.delta.smt.entity.UpLoadEntity;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineItem;
@@ -682,6 +683,9 @@ public interface ApiService {
 
     @GET("ams/smm/warehissue/getnodebit")
     Observable<Result<DebitData>> getDebitDataList(@Query("condition") String mMs);
+
+    @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(@Query("condition") String mArgument);
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")

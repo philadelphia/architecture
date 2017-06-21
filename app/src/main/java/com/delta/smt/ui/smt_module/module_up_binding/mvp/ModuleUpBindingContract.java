@@ -2,8 +2,10 @@ package com.delta.smt.ui.smt_module.module_up_binding.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.Result;
+import com.delta.smt.entity.UpLoadEntity;
 
 import java.util.List;
 
@@ -18,11 +20,11 @@ public interface ModuleUpBindingContract {
 
         void onSuccess(List<ModuleUpBindingItem> dataSource);
 
-        void onFailed(String  message);
+        void onFailed(String message);
 
         void onNetFailed(Throwable throwable);
 
-        void onSuccessBinding(List<ModuleUpBindingItem> dataSource) ;
+        void onSuccessBinding(List<ModuleUpBindingItem> dataSource);
 
         void showLoadingView();
 
@@ -34,20 +36,22 @@ public interface ModuleUpBindingContract {
 
         void showMessage(String message);
 
+        void getNeedUpLoadToMESMaterialsSuccess(UpLoadEntity mT);
+
+        void getNeedUpLoadTOMESMaterislsFailed(String mMsg);
+
+        void uploadSuccess(String mMessage);
+
+        void upLoadFailed(String mMessage);
     }
 
     interface Model extends IModel {
         Observable<Result<ModuleUpBindingItem>> getAllModuleUpBindingItems(String str);
 
         Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str);
+
         Observable<Result> upLoadToMesManually(String value);
 
-        Observable<Result> getAllItemsNeedTobeUpLoadToMES(String value);
-    }
-
-    interface Model2 extends IModel {
-        Observable<Result> upLoadToMesManually(String value);
-
-        Observable<Result> getAllItemsNeedTobeUpLoadToMES(String value);
+        Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(String mArgument);
     }
 }
