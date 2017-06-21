@@ -19,6 +19,7 @@
 
 
             <TextView
+                android:id="@+id/tv_mount_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/c_cfcfcf"
@@ -35,6 +36,7 @@
                 android:padding="30px"/>
 
             <TextView
+                android:id="@+id/tv_mount_supply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/c_cfcfcf"

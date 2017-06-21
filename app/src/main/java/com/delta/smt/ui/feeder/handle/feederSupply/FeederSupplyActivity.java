@@ -9,9 +9,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -37,7 +37,8 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
-import com.delta.smt.entity.Result;
+import com.delta.smt.entity.UpLoadEntity;
+import com.delta.smt.entity.UploadMESParams;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.DaggerFeederSupplyComponent;
 import com.delta.smt.ui.feeder.handle.feederSupply.di.FeederSupplyModule;
 import com.delta.smt.ui.feeder.handle.feederSupply.mvp.FeederSupplyContract;
@@ -62,7 +63,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Date:     2016/12/21.
  */
 
-public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> implements FeederSupplyContract.View {
+public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> implements FeederSupplyContract.View, View.OnClickListener {
     private static final String TAG = "FeederSupplyActivity";
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
@@ -116,6 +117,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private final List<DebitData> unDebitItemList = new ArrayList<>();
     private final List<FeederMESItem> unUplaodToMESItemList = new ArrayList<>();
     private boolean isAllItemSupplied = false;
+    private CommonBaseAdapter<UpLoadEntity.FeedingListBean> undoList_adapter;
+    private List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
+    private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
+    private CommonBaseAdapter<UpLoadEntity.MaterialListBean> unSend_adapter;
+    private UploadMESParams mUploadMESParamsA;
 
     @Override
     protected void handError(String contents) {
@@ -163,6 +169,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     protected void initView() {
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.tv_setting).setClickable(true);
+        ((TextView) toolbar.findViewById(R.id.tv_setting)).setText("跳过");
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -220,9 +228,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     }
 
     @OnClick({R.id.tv_setting, R.id.btn_upload, R.id.btn_debitManually})
-    public void onClick(View view) {
+    public void onClicks(View view) {
         switch (view.getId()) {
             case R.id.tv_setting:
+                getPresenter().resetFeederSupplyStatus(argument);
+                Map<String, Object> mapp = new HashMap<>();
+                mapp.put("work_order", workId);
+                mapp.put("side", side);
+                getPresenter().jumpMES(GsonTools.createGsonListString(mapp));
                 break;
             case R.id.btn_upload:   //请求待上传到MES的列表
                 Map<String, Object> map = new HashMap<>();
@@ -230,14 +243,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 map.put("side", side);
                 map.put("is_feeder_buffer", 1);
                 if (popUpWindow == null) {
-                    createPopupWindow(unDebitItemList);
+                    createPopupWindowForMES();
                 }
-                getPresenter().getUnUpLoadToMESList(GsonTools.createGsonString(map));
+                getPresenter().getUnUpLoadToMESList(GsonTools.createGsonListString(map));
                 break;
             case R.id.btn_debitManually:    //请求扣账列表
                 if (isBeginSupply) {
                     if (popUpWindow == null) {
-                        createPopupWindow(unDebitItemList);
+                        createPopupWindow();
                     }
                     Map<String, String> map1 = new HashMap<>();
                     map1.put("work_order", workId);
@@ -303,6 +316,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     @Override
     public void showUnDebitedItemList(List<DebitData> data) {
+        Log.i(TAG, "showUnDebitedItemList: ");
         if (isAllItemSupplied) {
             popUpWindow.dissmiss();
             getPresenter().resetFeederSupplyStatus(GsonTools.createGsonListString(argument));
@@ -311,6 +325,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         unDebitItemList.clear();
         unDebitItemList.addAll(data);
 
+        Log.i(TAG, "返回列表长度: " + data.size());
+        Log.i(TAG, "待扣账列表长度: " + unDebitItemList.size());
         if (popUpWindow != null) {
             unDebitadapter.notifyDataSetChanged();
             popUpWindow.showAsDropDown(toolbar);
@@ -319,21 +335,57 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     }
 
     @Override
-    public void showUnUpLoadToMESItemList(List<FeederMESItem> data) {
-        if (0 == data.size() && isAllItemSupplied) {
-            popUpWindow.dissmiss();
+    public void showUnUpLoadToMESItemList(UpLoadEntity mT) {
+        mFeedingListBean.clear();
+        mMaterialListBean.clear();
+        if (mT.getFeeding_list() == null && mT.getMaterial_list() == null) {
+            ToastUtils.showMessage(this, "没有需要上传到MES列表");
+            if (popUpWindow != null && popUpWindow.isShowing()) {
+                popUpWindow.dissmiss();
+            }
+            return;
         }
-        unUplaodToMESItemList.clear();
-        unUplaodToMESItemList.addAll(data);
+        if (mT.getFeeding_list().size() == 0 && mT.getMaterial_list().size() == 0) {
+            ToastUtils.showMessage(this, "没有需要上传到MES列表");
+            if (popUpWindow != null && popUpWindow.isShowing()) {
+                popUpWindow.dissmiss();
+            }
+            return;
+        }
+        if (mT.getFeeding_list() == null || mT.getFeeding_list().size() == 0) {
 
-        if (popUpWindow == null) {
-            createPopupWindowForMES(data);
+            UploadMESParams mUploadMESParams = new UploadMESParams();
+            mUploadMESParams.setSide(side);
+            mUploadMESParams.setIs_feeder_buffer("0");
+            mUploadMESParams.setMes_mode("0");
+            mUploadMESParams.setWork_order(workId);
+            mUploadMESParams.setFeeding_list(mFeedingListBean);
+            if (mT.getMaterial_list() != null) {
+                mUploadMESParams.setMaterial_list(mT.getMaterial_list());
+            }
+            getPresenter().upLoadFeederSupplyToMES(GsonTools.createGsonListString(mUploadMESParams));
         }
+
+        if (mT.getFeeding_list() != null) {
+
+            mFeedingListBean.addAll(mT.getFeeding_list());
+            undoList_adapter.notifyDataSetChanged();
+        }
+
+        if (mT.getMaterial_list() != null) {
+            mMaterialListBean.addAll(mT.getMaterial_list());
+            unSend_adapter.notifyDataSetChanged();
+        }
+
+
+        if (popUpWindow != null) {
+            popUpWindow.showAsDropDown(toolbar);
+        }
+
         popUpWindow.showAsDropDown(toolbar);
     }
 
-    private void createPopupWindowForMES(final List<FeederMESItem> data) {
-        Log.i(TAG, "未上传的数据长度为: " + data.size());
+    private void createPopupWindow() {
 
         popUpWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.popupAnimalStyle)
@@ -346,106 +398,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_select_cancel);
         Button btn_confirm = ViewUtils.findView(contentView, R.id.bt_sheet_confirm);
         Button btn_selectAll = ViewUtils.findView(contentView, R.id.bt_sheet_select_all);
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popUpWindow.dissmiss();
-            }
-        });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (DebitData debitData : unDebitItemList) {
-                    if (debitData.isChecked())
-                        debitData.setChecked(false);
-                }
-
-            }
-        });
-
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Object> map = new HashMap<>();
-                Map<String, String> mapItem = new HashMap<>();
-                map.put("work_order", workId);
-                map.put("side", side);
-                List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-
-                for (FeederMESItem feederMESItem : data) {
-                    if (feederMESItem.isChecked())
-                        mapItem.put("slot", feederMESItem.getSlot());
-                    mapItem.put("material_no", feederMESItem.getMaterialID());
-//                    mapItem.put("demand_qty", String.valueOf(feederSupplyItem.getAmount()));
-//                    mapItem.put("total_qty", String.valueOf(feederSupplyItem.getIssue_amount()));
-                    list.add(mapItem);
-                }
-                map.put("list", list);
-                map.put("part", "FeederBuffer");
-                String argument = GsonTools.createGsonListString(map);
-                Log.i(TAG, "手动扣账参数为:  " + argument);
-                getPresenter().deductionManually(argument);
-            }
-        });
-
-        btn_selectAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (FeederMESItem debitData : data) {
-                    debitData.setChecked(true);
-                }
-            }
-        });
-        unUploadMESAdapter = new CommonBaseAdapter<FeederMESItem>(this, data) {
-            @Override
-            protected void convert(final CommonViewHolder holder, final FeederMESItem item, int position) {
-                holder.setText(R.id.tv_material_id, "料号 :\t" + item.getMaterialID());
-                holder.setText(R.id.tv_amount, "流水号 :\t" + String.valueOf(item.getSerialNumber()));
-                holder.setText(R.id.tv_slot, "料站 :\t" + item.getSlot());
-                holder.setText(R.id.tv_issue, "FeederID :\t" + String.valueOf(item.getFeederID()));
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        CheckBox checkBox = holder.getView(R.id.cb_debit);
-                        checkBox.setChecked(!item.isChecked());
-                        item.setChecked(!item.isChecked());
-                    }
-                });
-
-            }
-
-            @Override
-            protected int getItemViewLayoutId(int position, FeederMESItem item) {
-                return R.layout.item_debit_list;
-            }
-        };
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(unUploadMESAdapter);
-        unUploadMESAdapter.notifyDataSetChanged();
-    }
-
-    private void createPopupWindow(final List<DebitData> data) {
-        Log.i(TAG, "未扣账的数据长度为: " + data.size());
-
-        popUpWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                .setAnimationStyle(R.style.popupAnimalStyle)
-                .setView(R.layout.dialog_bottom_sheet)
-//                .enableBlur(true)
-                .build();
-        View contentView = popUpWindow.getContentView();
-        RecyclerView recyclerView = ViewUtils.findView(contentView, R.id.rv_sheet);
-        Button btn_back = ViewUtils.findView(contentView, R.id.bt_sheet_back);
-        Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_select_cancel);
-        Button btn_confirm = ViewUtils.findView(contentView, R.id.bt_sheet_confirm);
-        Button btn_selectAll = ViewUtils.findView(contentView, R.id.bt_sheet_select_all);
-        btn_back.setOnClickListener(new View.OnClickListener() {
+        btn_back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 popUpWindow.dissmiss();
 
             }
         });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        btn_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (DebitData debitData : unDebitItemList) {
@@ -457,7 +417,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             }
         });
 
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
+        btn_confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Map<String, Object> map = new HashMap<>();
@@ -466,7 +426,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 map.put("side", side);
                 List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 
-                for (DebitData debitData : data) {
+                for (DebitData debitData : unDebitItemList) {
                     if (debitData.isChecked()) {
                         mapItem.put("slot", debitData.getSlot());
                         mapItem.put("material_no", debitData.getMaterial_no());
@@ -476,7 +436,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                     }
 
                 }
-                if (list.size() ==0){
+                if (list.size() == 0) {
                     ToastUtils.showMessage(FeederSupplyActivity.this, "请选择扣账列表");
                     return;
                 }
@@ -488,22 +448,22 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             }
         });
 
-        btn_selectAll.setOnClickListener(new View.OnClickListener() {
+        btn_selectAll.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (DebitData debitData : data) {
+                for (DebitData debitData : unDebitItemList) {
                     debitData.setChecked(true);
                 }
             }
         });
-        unDebitadapter = new CommonBaseAdapter<DebitData>(this, data) {
+        unDebitadapter = new CommonBaseAdapter<DebitData>(this, unDebitItemList) {
             @Override
             protected void convert(final CommonViewHolder holder, final DebitData item, int position) {
                 holder.setText(R.id.tv_material_id, "料号 :\t" + item.getMaterial_no());
                 holder.setText(R.id.tv_amount, "数量 :\t" + String.valueOf(item.getAmount()));
                 holder.setText(R.id.tv_slot, "料站 :\t" + item.getSlot());
                 holder.setText(R.id.tv_issue, "发料量 :\t" + String.valueOf(item.getIssue_amount()));
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                holder.itemView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         CheckBox checkBox = holder.getView(R.id.cb_debit);
@@ -576,7 +536,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
-        statusLayout.setErrorClick(new View.OnClickListener() {
+        statusLayout.setErrorClick(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getPresenter().getAllToBeSuppliedFeeders(workId);
@@ -588,7 +548,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
-        statusLayout.setEmptyClick(new View.OnClickListener() {
+        statusLayout.setEmptyClick(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getPresenter().getAllToBeSuppliedFeeders(argument);
@@ -676,7 +636,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private String getFeederID(String mCurrentMaterialNumber, String mCurrentSerialNumber) {
         for (FeederSupplyItem feederSupplyItem : dataSource) {
 
-            if (feederSupplyItem.getSerialNumber().equalsIgnoreCase(mCurrentMaterialNumber) && feederSupplyItem.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber)) {
+            if (feederSupplyItem.getSerialNumber().equalsIgnoreCase(mCurrentSerialNumber) && feederSupplyItem.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber)) {
                 return feederSupplyItem.getFeederID();
             }
         }
@@ -686,7 +646,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private String getSlot(String mCurrentMaterialNumber, String mCurrentSerialNumber) {
         for (FeederSupplyItem feederSupplyItem : dataSource) {
 
-            if (feederSupplyItem.getSerialNumber().equalsIgnoreCase(mCurrentMaterialNumber) && feederSupplyItem.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber)) {
+            if (feederSupplyItem.getSerialNumber().equalsIgnoreCase(mCurrentSerialNumber) && feederSupplyItem.getMaterialID().equalsIgnoreCase(mCurrentMaterialNumber)) {
                 return feederSupplyItem.getSlot();
             }
         }
@@ -703,7 +663,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
             case R.id.tv_setting:
                 Log.i(TAG, "onOptionsItemSelected: ");
-                getPresenter().resetFeederSupplyStatus(GsonTools.createGsonListString(argument));
+
                 break;
             default:
                 break;
@@ -738,6 +698,135 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         return index;
     }
 
+    private void createPopupWindowForMES() {
+        popUpWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_upload_mes).build();
+        View mContentView = popUpWindow.getContentView();
+        RecyclerView rv_feeder = ViewUtils.findView(mContentView, R.id.rv_feeder);
+        RecyclerView rv_feeder_send = ViewUtils.findView(mContentView, R.id.rv_feeder_send);
+        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
+        Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
+        Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
+        ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
+        bt_cancel.setOnClickListener(this);
+        bt_confirm.setOnClickListener(this);
+        bt_select_all.setOnClickListener(this);
 
+        undoList_adapter = new CommonBaseAdapter<UpLoadEntity.FeedingListBean>(getContext(), mFeedingListBean) {
+            @Override
+            protected void convert(CommonViewHolder holder, final UpLoadEntity.FeedingListBean item, int position) {
+                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
+                holder.setText(R.id.tv_slot, "FeederId：" + item.getFeeder_id());
+                holder.setText(R.id.tv_amount, "流水号：" + String.valueOf(item.getSerial_no()));
+                holder.setText(R.id.tv_issue, "架位：" + String.valueOf(item.getSlot()));
+                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
+                mCheckBox.setChecked(item.isChecked());
+                holder.getView(R.id.al).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCheckBox.setChecked(!item.isChecked());
+                        item.setChecked(!item.isChecked());
+                    }
+                });
+
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, UpLoadEntity.FeedingListBean item) {
+                return R.layout.item_feeder_list;
+
+            }
+
+        };
+        unSend_adapter = new CommonBaseAdapter<UpLoadEntity.MaterialListBean>(getContext(), mMaterialListBean) {
+            @Override
+            protected void convert(CommonViewHolder holder, final UpLoadEntity.MaterialListBean item, int position) {
+                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
+                holder.setText(R.id.tv_slot, "流水号：" + String.valueOf(item.getSerial_no()));
+                holder.setText(R.id.tv_issue, "架位：" + String.valueOf(item.getSlot()));
+                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
+                mCheckBox.setChecked(item.isChecked());
+                holder.getView(R.id.al).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCheckBox.setChecked(!item.isChecked());
+                        item.setChecked(!item.isChecked());
+                    }
+                });
+
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, UpLoadEntity.MaterialListBean item) {
+                return R.layout.item_feeder_upload;
+            }
+
+        };
+        setAdapter(rv_feeder, undoList_adapter);
+        setAdapter(rv_feeder_send, unSend_adapter);
+
+    }
+
+    private void setAdapter(RecyclerView rv_debit, CommonBaseAdapter mUndoList_adapter) {
+        rv_debit.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        rv_debit.setLayoutManager(linearLayoutManager);
+        rv_debit.setAdapter(mUndoList_adapter);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_sheet_back:
+                if (popUpWindow != null && popUpWindow.isShowing()) {
+                    popUpWindow.dissmiss();
+                }
+                break;
+            case R.id.bt_sheet_confirm:
+                List<UpLoadEntity.FeedingListBean> mFeedingListBeans = new ArrayList<>();
+                for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
+                    if (mListBean.isChecked()) {
+                        mFeedingListBeans.add(mListBean);
+                    }
+                }
+                if (mFeedingListBeans.size() == 0) {
+                    ToastUtils.showMessage(this, "请选择上料列表！");
+                    return;
+                }
+                UploadMESParams mUploadMESParams = new UploadMESParams();
+                mUploadMESParams.setSide(side);
+                mUploadMESParams.setWork_order(workId);
+                mUploadMESParams.setIs_feeder_buffer("1");
+                mUploadMESParams.setMes_mode("0");
+                mUploadMESParams.setFeeding_list(mFeedingListBean);
+                mUploadMESParams.setMaterial_list(mMaterialListBean);
+                getPresenter().upLoadFeederSupplyToMES(GsonTools.createGsonListString(mUploadMESParams));
+
+                break;
+            case R.id.bt_sheet_select_all:
+                if (popUpWindow != null && popUpWindow.isShowing()) {
+                    if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
+                        for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
+                            mListBean.setChecked(true);
+                        }
+                        undoList_adapter.notifyDataSetChanged();
+                    }
+                }
+                break;
+            case R.id.bt_sheet_select_cancel:
+                if (popUpWindow != null && popUpWindow.isShowing()) {
+                    if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
+                        for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
+                            mListBean.setChecked(false);
+                        }
+                        undoList_adapter.notifyDataSetChanged();
+                    }
+                }
+
+                break;
+            default:
+                break;
+        }
+    }
 
 }

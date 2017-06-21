@@ -5,11 +5,13 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
+import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
+import com.delta.smt.entity.UpLoadEntity;
 
 import javax.inject.Inject;
 
@@ -120,6 +122,25 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
     }
 
+    public void jumpMES(String value){
+        getModel().jumpMES(value).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                if (0 == result.getCode()) {
+                    getView().onFailed(result.getMessage());
+                } else {
+                    getView().onFailed(result.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                getView().onFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
 
     //扣账
     public void deductionManually(String value) {
@@ -183,18 +204,14 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
     }
 
     //获取没有上传到MES的数据列表
-    public void getUnUpLoadToMESList(String condition){
-        getModel().getUnUpLoadToMESList(condition).subscribe(new Action1<Result<FeederMESItem>>() {
+    public void getUnUpLoadToMESList(String condition) {
+        getModel().getUnUpLoadToMESList(condition).subscribe(new Action1<BaseEntity<UpLoadEntity>>() {
             @Override
-            public void call(Result<FeederMESItem> result) {
-                if (0 == result.getCode()){
-                    if (0 == result.getRows().size()){
-                        getView().onFailed(result.getMessage());
-                    }else {
-                        getView().showUnUpLoadToMESItemList(result.getRows());
-                    }
-                }else {
-                    getView().onFailed(result.getMessage());
+            public void call(BaseEntity<UpLoadEntity> result) {
+                if ("0".equalsIgnoreCase(result.getCode())) {
+                    getView().showUnUpLoadToMESItemList(result.getT());
+                } else {
+                    getView().onFailed(result.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
