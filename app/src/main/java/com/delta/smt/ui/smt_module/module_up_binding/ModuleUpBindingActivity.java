@@ -3,6 +3,7 @@ package com.delta.smt.ui.smt_module.module_up_binding;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
@@ -59,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.commonlibs.utils.SpUtil.getBooleanSF;
@@ -70,6 +72,10 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.rl)
+    LinearLayout mRl;
     private boolean moduleUpAutomaticUpload = false;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
@@ -144,7 +150,23 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
+
         argument = GsonTools.createGsonListString(map);
+    }
+
+    private void JumoOver() {
+        mTvSetting.setText("跳过");
+        mTvSetting.setVisibility(View.VISIBLE);
+        mTvSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> mMap = new HashMap<>();
+
+                mMap.put("work_order", workItemID);
+                mMap.put("side", side);
+                getPresenter().jumpOver(GsonTools.createGsonListString(mMap));
+            }
+        });
     }
 
     @Override
@@ -160,7 +182,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
-
+        JumoOver();
         dataList.add(new ModuleUpBindingItem());
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataList) {
             @Override
@@ -234,7 +256,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     }).create();
             dialog.show();
         }
-        if (moduleUpAutomaticUpload&&mUploadMESParamsA!=null){
+        if (moduleUpAutomaticUpload && mUploadMESParamsA != null) {
             getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParamsA));
         }
     }
@@ -403,7 +425,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void upLoadFailed(String mMessage) {
-        ToastUtils.showMessage(this,mMessage);
+        ToastUtils.showMessage(this, mMessage);
     }
 
 
@@ -770,4 +792,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         return flag;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

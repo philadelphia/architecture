@@ -7,6 +7,7 @@ import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.UpLoadEntity;
+import com.delta.smt.ui.smt_module.JumpOver.JumpOverModule;
 
 import javax.inject.Inject;
 
@@ -19,11 +20,14 @@ import rx.functions.Action1;
 
 public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContract.Model, ModuleUpBindingContract.View> {
     private RxErrorHandler mRxErrorHandler;
+    private JumpOverModule mJumpOverModule;
+
 
     @Inject
-    public ModuleUpBindingPresenter(ModuleUpBindingContract.Model model, ModuleUpBindingContract.View mView, RxErrorHandler mRxErrorHandler) {
+    public ModuleUpBindingPresenter(ModuleUpBindingContract.Model model, ModuleUpBindingContract.View mView, RxErrorHandler mRxErrorHandler, JumpOverModule mJumpOverModule) {
         super(model, mView);
         this.mRxErrorHandler = mRxErrorHandler;
+        this.mJumpOverModule =mJumpOverModule;
     }
 
     public void getAllModuleUpBindingItems(String str) {
@@ -72,6 +76,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
             }
         });
     }
+
 
     public void upLoadToMESManually(String value){
         getModel().upLoadToMesManually(value).subscribe(new Action1<Result>() {
@@ -154,5 +159,15 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
             }
         });
 
+    }
+
+    public void jumpOver(String mGsonListString) {
+        mJumpOverModule.jumpOver(mGsonListString).subscribe(new RxErrorHandlerSubscriber<Result>(mRxErrorHandler) {
+            @Override
+            public void onNext(Result mResult) {
+
+                getView().showMessage(mResult.getMessage());
+            }
+        });
     }
 }

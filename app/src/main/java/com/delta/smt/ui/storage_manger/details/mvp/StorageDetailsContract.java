@@ -34,7 +34,7 @@ public interface StorageDetailsContract {
 
         Observable<Result<StorageDetails>> jumpMaterials(String mS);
 
-        Observable<IssureToWarehFinishResult> sureCompleteIssue();
+        Observable<IssureToWarehFinishResult> sureCompleteIssue(String content);
 
         Observable<Result<DebitData>> deduction(String mS);
 

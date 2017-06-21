@@ -213,8 +213,8 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
         });
     }
 
-    public void sureCompleteIssue() {
-        getModel().sureCompleteIssue().subscribe(new Action1<IssureToWarehFinishResult>() {
+    public void sureCompleteIssue(String content) {
+        getModel().sureCompleteIssue(content).subscribe(new Action1<IssureToWarehFinishResult>() {
             @Override
             public void call(IssureToWarehFinishResult issureToWarehFinishResult) {
 

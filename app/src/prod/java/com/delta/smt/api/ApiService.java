@@ -196,6 +196,7 @@ public interface ApiService {
     //获取所有需要上传到MES的数据
     @POST("")
     Observable<Result> getAllItemsNeedTobeUpLoadToMES(String value);
+
     //下模组排程
     @GET("ams/smm/unplugmodcontroller/getproductionlines")
     Observable<Result<ModuleDownWarningItem>> getModuleDownWarningItems();
@@ -491,7 +492,7 @@ public interface ApiService {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @POST("ams/smm/warehissue/surecompleteissue")
-    Observable<IssureToWarehFinishResult> sureCompleteIssue();
+    Observable<IssureToWarehFinishResult> sureCompleteIssue(@Field("value") String mS);
 
     //仓库房扣账
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -686,6 +687,11 @@ public interface ApiService {
 
     @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
     Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(@Query("condition") String mArgument);
+
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
+    Observable<Result> jumpOver(@Field("value") String bind);
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")
