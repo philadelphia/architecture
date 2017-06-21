@@ -44,6 +44,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.UpLoadEntity;
+import com.delta.smt.entity.UploadMESParams;
 import com.delta.smt.ui.smt_module.module_up_binding.di.DaggerModuleUpBindingComponent;
 import com.delta.smt.ui.smt_module.module_up_binding.di.ModuleUpBindingModule;
 import com.delta.smt.ui.smt_module.module_up_binding.mvp.ModuleUpBindingContract;
@@ -60,15 +61,16 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.delta.commonlibs.utils.SpUtil.getBooleanSF;
 import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, CompoundButton.OnCheckedChangeListener {
+public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
-    private String moduleUpAutomaticUpload = null;
+    private boolean moduleUpAutomaticUpload = false;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
@@ -119,6 +121,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
     private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
     private CommonBaseAdapter<UpLoadEntity.MaterialListBean> unSend_adapter;
+    private UploadMESParams mUploadMESParamsA;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -128,7 +131,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     protected void initData() {
         ckb_automaticUpload.setOnCheckedChangeListener(this);
-        moduleUpAutomaticUpload = SpUtil.getStringSF(ModuleUpBindingActivity.this, "module_up_automatic_upload");
+        moduleUpAutomaticUpload = getBooleanSF(ModuleUpBindingActivity.this, "module_up_automatic_upload");
         Intent intent = ModuleUpBindingActivity.this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
@@ -146,15 +149,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     protected void initView() {
-        if (moduleUpAutomaticUpload == null) {
-            SpUtil.SetStringSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", "false");
-            moduleUpAutomaticUpload = "false";
-            ckb_automaticUpload.setChecked(false);
-        } else if ("false".equals(moduleUpAutomaticUpload)) {
-            ckb_automaticUpload.setChecked(false);
-        } else {
-            ckb_automaticUpload.setChecked(true);
-        }
+        moduleUpAutomaticUpload = SpUtil.getBooleanSF(this, "module_up_automatic_upload");
+        ckb_automaticUpload.setChecked(moduleUpAutomaticUpload);
 
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
@@ -215,7 +211,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onSuccess(List<ModuleUpBindingItem> data) {
-        Log.i(TAG, "onSuccess:后台返回的数据长度是： " + data.size());
         state = 1;
         scan_position = -1;
         dataSource.clear();
@@ -238,6 +233,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         }
                     }).create();
             dialog.show();
+        }
+        if (moduleUpAutomaticUpload&&mUploadMESParamsA!=null){
+            getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParamsA));
         }
     }
 
@@ -268,6 +266,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @SuppressWarnings("all")
     @Override
     public void onSuccessBinding(List<ModuleUpBindingItem> dataSource) {
+
         dataSource.clear();
         List<ModuleUpBindingItem> rowsBeen = dataSource;
         dataSource.addAll(rowsBeen);
@@ -341,10 +340,46 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
         mFeedingListBean.clear();
         mMaterialListBean.clear();
-        mFeedingListBean.addAll(mT.getFeeding_list());
-        mMaterialListBean.addAll(mT.getMaterial_list());
-        undoList_adapter.notifyDataSetChanged();
-        unSend_adapter.notifyDataSetChanged();
+        if (mT.getFeeding_list() == null && mT.getMaterial_list() == null) {
+            ToastUtils.showMessage(this, "没有需要上传到MES列表");
+            if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                mCustomPopWindow.dissmiss();
+            }
+            return;
+        }
+        if (mT.getFeeding_list().size() == 0 && mT.getMaterial_list().size() == 0) {
+            ToastUtils.showMessage(this, "没有需要上传到MES列表");
+            if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                mCustomPopWindow.dissmiss();
+            }
+            return;
+        }
+        if (mT.getFeeding_list() == null || mT.getFeeding_list().size() == 0) {
+
+            UploadMESParams mUploadMESParams = new UploadMESParams();
+            mUploadMESParams.setSide(side);
+            mUploadMESParams.setIs_feeder_buffer("0");
+            mUploadMESParams.setMes_mode("0");
+            mUploadMESParams.setWork_order(workItemID);
+            mUploadMESParams.setFeeding_list(mFeedingListBean);
+            if (mT.getMaterial_list() != null) {
+                mUploadMESParams.setMaterial_list(mT.getMaterial_list());
+            }
+            getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParams));
+        }
+
+        if (mT.getFeeding_list() != null) {
+
+            mFeedingListBean.addAll(mT.getFeeding_list());
+            undoList_adapter.notifyDataSetChanged();
+        }
+
+        if (mT.getMaterial_list() != null) {
+            mMaterialListBean.addAll(mT.getMaterial_list());
+            unSend_adapter.notifyDataSetChanged();
+        }
+
+
         if (mCustomPopWindow != null) {
             mCustomPopWindow.showAsDropDown(toolbar);
         }
@@ -353,11 +388,27 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void getNeedUpLoadTOMESMaterislsFailed(String mMsg) {
-
+        ToastUtils.showMessage(this, mMsg);
     }
 
+    @Override
+    public void uploadSuccess(String mMessage) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("work_order", workItemID);
+        map.put("side", side);
+        map.put("is_feeder_buffer", 0);
+        String argument = GsonTools.createGsonListString(map);
+        getPresenter().getneeduploadtomesmaterials(argument);
+    }
+
+    @Override
+    public void upLoadFailed(String mMessage) {
+        ToastUtils.showMessage(this,mMessage);
+    }
+
+
     @OnClick({R.id.btn_upload, R.id.showMessage})
-    public void onClick(View view) {
+    public void onClicks(View view) {
         Map<String, Object> map = new HashMap<>();
         switch (view.getId()) {
             case R.id.btn_upload:
@@ -365,7 +416,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 map.put("side", side);
                 map.put("is_feeder_buffer", 0);
                 String argument = GsonTools.createGsonListString(map);
-                //getPresenter().upLoadToMESManually(argument);
+                //
                 if (mCustomPopWindow == null) {
                     createCustomPopWindow();
 
@@ -381,6 +432,62 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_sheet_back:
+                if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                    mCustomPopWindow.dissmiss();
+                }
+                break;
+            case R.id.bt_sheet_confirm:
+                List<UpLoadEntity.FeedingListBean> mFeedingListBeans = new ArrayList<>();
+                for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
+                    if (mListBean.isChecked()) {
+
+                        mFeedingListBeans.add(mListBean);
+                    }
+                }
+                if (mFeedingListBeans.size() == 0) {
+                    ToastUtils.showMessage(this, "请选择上料列表！");
+                    return;
+                }
+                UploadMESParams mUploadMESParams = new UploadMESParams();
+                mUploadMESParams.setSide(side);
+                mUploadMESParams.setWork_order(workItemID);
+                mUploadMESParams.setIs_feeder_buffer("0");
+                mUploadMESParams.setMes_mode("0");
+                mUploadMESParams.setFeeding_list(mFeedingListBean);
+                mUploadMESParams.setMaterial_list(mMaterialListBean);
+                getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParams));
+
+                break;
+            case R.id.bt_sheet_select_all:
+                if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                    if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
+                        for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
+                            mListBean.setChecked(true);
+                        }
+                        undoList_adapter.notifyDataSetChanged();
+                    }
+                }
+                break;
+            case R.id.bt_sheet_select_cancel:
+                if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
+                    if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
+                        for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
+                            mListBean.setChecked(false);
+                        }
+                        undoList_adapter.notifyDataSetChanged();
+                    }
+                }
+
+                break;
+            default:
+                break;
+        }
+    }
+
     private void createCustomPopWindow() {
         mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_upload_mes).build();
         View mContentView = mCustomPopWindow.getContentView();
@@ -389,10 +496,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
         Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
         Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
-//        ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
-//        bt_cancel.setOnClickListener(this);
-//        bt_confirm.setOnClickListener(this);
-//        bt_select_all.setOnClickListener(this);
+        ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
+        bt_cancel.setOnClickListener(this);
+        bt_confirm.setOnClickListener(this);
+        bt_select_all.setOnClickListener(this);
 
         undoList_adapter = new CommonBaseAdapter<UpLoadEntity.FeedingListBean>(getContext(), mFeedingListBean) {
             @Override
@@ -415,7 +522,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
             @Override
             protected int getItemViewLayoutId(int position, UpLoadEntity.FeedingListBean item) {
-                return R.layout.item_debit_list;
+                return R.layout.item_feeder_list;
 
             }
 
@@ -458,7 +565,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         rv_debit.setLayoutManager(linearLayoutManager);
-        rv_debit.setAdapter(undoList_adapter);
+        rv_debit.setAdapter(mUndoList_adapter);
     }
 
     @Override
@@ -516,12 +623,22 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     jsonObject.addProperty("qty", quantaty);
                     jsonObject.addProperty("code", ckb_automaticUpload.isChecked() ? "1" : "0");
                     jsonObject.addProperty("is_feeder_buffer", "0");
-
                     jsonArray.add(jsonObject);
                     String argument = jsonArray.toString();
                     Log.i(TAG, "argument==  " + argument);
                     getPresenter().getMaterialAndFeederBindingResult(argument);
-
+                    mUploadMESParamsA = new UploadMESParams();
+                    mUploadMESParamsA.setSide(side);
+                    mUploadMESParamsA.setWork_order(workItemID);
+                    mUploadMESParamsA.setIs_feeder_buffer("0");
+                    mUploadMESParamsA.setMes_mode("0");
+                    UpLoadEntity.FeedingListBean mFeedingListBeanA = new UpLoadEntity.FeedingListBean();
+                    mFeedingListBeanA.setFeeder_id(barcode);
+                    mFeedingListBeanA.setMaterial_no(materialBlockNumber);
+                    mFeedingListBeanA.setSerial_no(serialNo);
+                    List<UpLoadEntity.FeedingListBean> data = new ArrayList<>();
+                    data.add(mFeedingListBeanA);
+                    mUploadMESParamsA.setFeeding_list(data);
                 } catch (EntityNotFountException e) {
 
                     try {
@@ -632,9 +749,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView == ckb_automaticUpload) {
             if (isChecked) {
-                SpUtil.SetStringSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", "true");
+                SpUtil.SetBooleanSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", true);
             } else {
-                SpUtil.SetStringSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", "false");
+                SpUtil.SetBooleanSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", false);
             }
         }
     }

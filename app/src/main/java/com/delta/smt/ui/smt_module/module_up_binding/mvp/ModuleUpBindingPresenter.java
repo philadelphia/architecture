@@ -17,21 +17,22 @@ import rx.functions.Action1;
  * Created by Shufeng.Wu on 2017/1/4.
  */
 
-public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContract.Model,ModuleUpBindingContract.View> {
+public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContract.Model, ModuleUpBindingContract.View> {
     private RxErrorHandler mRxErrorHandler;
+
     @Inject
-    public ModuleUpBindingPresenter(ModuleUpBindingContract.Model model, ModuleUpBindingContract.View mView,RxErrorHandler mRxErrorHandler) {
+    public ModuleUpBindingPresenter(ModuleUpBindingContract.Model model, ModuleUpBindingContract.View mView, RxErrorHandler mRxErrorHandler) {
         super(model, mView);
         this.mRxErrorHandler = mRxErrorHandler;
     }
 
-    public void getAllModuleUpBindingItems(String str){
+    public void getAllModuleUpBindingItems(String str) {
         getModel().getAllModuleUpBindingItems(str).doOnSubscribe(new Action0() {
             @Override
             public void call() {
-                try{
+                try {
                     getView().showLoadingView();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -39,13 +40,13 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
         }).subscribe(new Action1<Result<ModuleUpBindingItem>>() {
             @Override
             public void call(Result<ModuleUpBindingItem> moduleUpBindingItemResult) {
-                try{
+                try {
                     if (0 == moduleUpBindingItemResult.getCode()) {
 
                         if (moduleUpBindingItemResult.getRows().size() == 0) {
                             getView().showEmptyView();
 //                            getView().onFailed(moduleUpBindingItems);
-                        }else {
+                        } else {
                             getView().showContentView();
                             getView().onSuccess(moduleUpBindingItemResult.getRows());
                         }
@@ -54,12 +55,12 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
                         getView().onFailed(moduleUpBindingItemResult.getMessage());
                         getView().showErrorView();
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             }
-        },new Action1<Throwable>() {
+        }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 try {
@@ -77,7 +78,9 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
             @Override
             public void call(Result result) {
                 if (0 == result.getCode()){
-                    getView().showMessage(result.getMessage());
+                    getView().uploadSuccess(result.getMessage());
+                }else{
+                    getView().upLoadFailed(result.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -89,26 +92,26 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
     }
 
-    public void getMaterialAndFeederBindingResult(String str){
+    public void getMaterialAndFeederBindingResult(String str) {
         getModel().getMaterialAndFeederBindingResult(str).doOnSubscribe(new Action0() {
             @Override
             public void call() {
-                try{
+                try {
                     getView().showLoadingView();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).subscribe(new Action1<Result<ModuleUpBindingItem>>() {
             @Override
             public void call(Result<ModuleUpBindingItem> moduleUpBindingItemResult) {
-                try{
+                try {
                     if (0 == moduleUpBindingItemResult.getCode()) {
 
                         if (moduleUpBindingItemResult.getRows().size() == 0) {
                             getView().showEmptyView();
 //                            getView().onFailedBinding(moduleUpBindingItem.getMessage());
-                        }else {
+                        } else {
                             getView().showContentView();
                             getView().onSuccess(moduleUpBindingItemResult.getRows());
                         }
@@ -117,7 +120,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
                         getView().showContentView();
                         getView().onFailed(moduleUpBindingItemResult.getMessage());
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -125,10 +128,10 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                try{
+                try {
                     getView().onNetFailed(throwable);
                     getView().showErrorView();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -142,10 +145,10 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
             @Override
             public void onNext(BaseEntity<UpLoadEntity> mUpLoadEntityResult) {
 
-                if("0".equals(mUpLoadEntityResult.getCode())){
+                if ("0".equals(mUpLoadEntityResult.getCode())) {
 
                     getView().getNeedUpLoadToMESMaterialsSuccess(mUpLoadEntityResult.getT());
-                }else{
+                } else {
                     getView().getNeedUpLoadTOMESMaterislsFailed(mUpLoadEntityResult.getMsg());
                 }
             }

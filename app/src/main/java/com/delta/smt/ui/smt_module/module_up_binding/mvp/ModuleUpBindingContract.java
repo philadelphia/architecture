@@ -20,11 +20,11 @@ public interface ModuleUpBindingContract {
 
         void onSuccess(List<ModuleUpBindingItem> dataSource);
 
-        void onFailed(String  message);
+        void onFailed(String message);
 
         void onNetFailed(Throwable throwable);
 
-        void onSuccessBinding(List<ModuleUpBindingItem> dataSource) ;
+        void onSuccessBinding(List<ModuleUpBindingItem> dataSource);
 
         void showLoadingView();
 
@@ -39,12 +39,17 @@ public interface ModuleUpBindingContract {
         void getNeedUpLoadToMESMaterialsSuccess(UpLoadEntity mT);
 
         void getNeedUpLoadTOMESMaterislsFailed(String mMsg);
+
+        void uploadSuccess(String mMessage);
+
+        void upLoadFailed(String mMessage);
     }
 
     interface Model extends IModel {
         Observable<Result<ModuleUpBindingItem>> getAllModuleUpBindingItems(String str);
 
         Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str);
+
         Observable<Result> upLoadToMesManually(String value);
 
         Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(String mArgument);
