@@ -15,9 +15,12 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.zhy.autolayout.AutoFrameLayout;
+import com.zhy.autolayout.AutoLinearLayout;
+
 import java.util.List;
 
-public class DropDownMenu extends LinearLayout {
+public class DropDownMenu extends AutoLinearLayout {
 
     //顶部菜单布局
     private LinearLayout tabMenuView;
@@ -75,7 +78,7 @@ public class DropDownMenu extends LinearLayout {
         menuTextSize = a.getDimensionPixelSize(R.styleable.DropDownMenu_ddmenuTextSize, menuTextSize);
         menuSelectedIcon = a.getResourceId(R.styleable.DropDownMenu_ddmenuSelectedIcon, menuSelectedIcon);
         menuUnselectedIcon = a.getResourceId(R.styleable.DropDownMenu_ddmenuUnselectedIcon, menuUnselectedIcon);
-        menuHeighPercent = a.getFloat(R.styleable.DropDownMenu_ddmenuMenuHeightPercent,menuHeighPercent);
+        menuHeighPercent = a.getFloat(R.styleable.DropDownMenu_ddmenuMenuHeightPercent, menuHeighPercent);
         a.recycle();
 
         //初始化tabMenuView并添加到tabMenuView
@@ -117,7 +120,7 @@ public class DropDownMenu extends LinearLayout {
         containerView.addView(contentView, 0);
 
         maskView = new View(getContext());
-        maskView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        maskView.setLayoutParams(new AutoFrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         maskView.setBackgroundColor(maskColor);
         maskView.setOnClickListener(new OnClickListener() {
             @Override
@@ -127,12 +130,12 @@ public class DropDownMenu extends LinearLayout {
         });
         containerView.addView(maskView, 1);
         maskView.setVisibility(GONE);
-        if (containerView.getChildAt(2) != null){
+        if (containerView.getChildAt(2) != null) {
             containerView.removeViewAt(2);
         }
 
-        popupMenuViews = new FrameLayout(getContext());
-        popupMenuViews.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (DeviceUtils.getScreenSize(getContext()).y*menuHeighPercent)));
+        popupMenuViews = new AutoFrameLayout(getContext());
+        popupMenuViews.setLayoutParams(new AutoFrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (DeviceUtils.getScreenSize(getContext()).y * menuHeighPercent)));
         popupMenuViews.setVisibility(GONE);
         containerView.addView(popupMenuViews, 2);
 
@@ -148,8 +151,8 @@ public class DropDownMenu extends LinearLayout {
         tab.setSingleLine();
         tab.setEllipsize(TextUtils.TruncateAt.END);
         tab.setGravity(Gravity.CENTER);
-        tab.setTextSize(TypedValue.COMPLEX_UNIT_PX,menuTextSize);
-        tab.setLayoutParams(new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
+        tab.setTextSize(TypedValue.COMPLEX_UNIT_PX, menuTextSize);
+        tab.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
         tab.setTextColor(textUnselectedColor);
         tab.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(menuUnselectedIcon), null);
         tab.setText(tabTexts.get(i));
@@ -182,12 +185,12 @@ public class DropDownMenu extends LinearLayout {
         }
     }
 
-    public String getTabText(){
-        String text="";
+    public String getTabText() {
+        String text = "";
         if (current_tab_position != -1) {
             text = ((TextView) tabMenuView.getChildAt(current_tab_position)).getText().toString();
         }
-        return  text;
+        return text;
     }
 
     public void setTabClickable(boolean clickable) {
@@ -236,7 +239,7 @@ public class DropDownMenu extends LinearLayout {
                 } else {
                     if (current_tab_position == -1) {
                         popupMenuViews.setVisibility(View.VISIBLE);
-                        popupMenuViews.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.dd_menu_in));
+                        popupMenuViews.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_in));
                         maskView.setVisibility(VISIBLE);
                         maskView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_mask_in));
                         popupMenuViews.getChildAt(i / 2).setVisibility(View.VISIBLE);
