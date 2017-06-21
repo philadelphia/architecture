@@ -72,7 +72,7 @@ public class DialogUtils {
 
     public static Dialog showDefineDialog(Context context, View view) {
 
-        return new AlertDialog.Builder(context).setView(view).setView(view).show();
+        return new AlertDialog.Builder(context).setView(view).show();
     }
 
     public static CustomPopWindow createLoadingDialog(Context mContext, @Nullable String message) {

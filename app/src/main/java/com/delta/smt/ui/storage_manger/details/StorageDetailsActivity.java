@@ -159,6 +159,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
         mToolbarTitle.setText("仓库" + part);
+        JumoOver();
         tvWorkOrder.setText("工单：" + work_order);
         tvLineName.setText("线别：" + line_name);
         tvLineNum.setText("面别：" + side);
@@ -216,6 +217,22 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         };
         mRecycleContent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mRecycleContent.setAdapter(content_adapter);
+    }
+
+    private void JumoOver() {
+        mTvSetting.setText("跳过");
+        mTvSetting.setVisibility(View.VISIBLE);
+        mTvSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> mMap = new HashMap<>();
+                mMap.put("part", part);
+                mMap.put("work_order", work_order);
+                mMap.put("side", side);
+                mMap.put("code","A");
+                getPresenter().issureToWarehFinish(GsonTools.createGsonListString(mMap));
+            }
+        });
     }
 
     @Override
@@ -383,7 +400,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         DialogUtils.showConfirmDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                getPresenter().sureCompleteIssue();
+                //getPresenter().sureCompleteIssue();
+                dialogInterface.dismiss();
             }
         });
         VibratorAndVoiceUtils.wrongVibrator(this);
@@ -415,7 +433,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                getPresenter().sureCompleteIssue();
+               dialogInterface.dismiss();
             }
         });
     }
