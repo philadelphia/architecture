@@ -438,6 +438,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         });
     }
 
+
     @Override
     public void showLoadingView() {
         statusLayout.showLoadingView();
