@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -151,6 +152,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workId);
         map.put("side", side);
+        map.put("code", "B");
         argument = GsonTools.createGsonListString(map);
         Log.i(TAG, "argument==: " + argument);
 
@@ -160,7 +162,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     protected void initView() {
         toolbar.setTitle("");
-        toolbar.findViewById(R.id.tv_setting).setVisibility(View.GONE);
+        toolbar.findViewById(R.id.tv_setting).setVisibility(View.VISIBLE);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -222,7 +224,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         switch (view.getId()) {
             case R.id.tv_setting:
                 break;
-            case R.id.btn_upload:   //获取待上传到MES的列表
+            case R.id.btn_upload:   //请求待上传到MES的列表
                 Map<String, Object> map = new HashMap<>();
                 map.put("work_order", workId);
                 map.put("side", side);
@@ -232,7 +234,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 }
                 getPresenter().getUnUpLoadToMESList(GsonTools.createGsonString(map));
                 break;
-            case R.id.btn_debitManually:
+            case R.id.btn_debitManually:    //请求扣账列表
                 if (isBeginSupply) {
                     if (popUpWindow == null) {
                         createPopupWindow(unDebitItemList);
@@ -242,7 +244,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                     map1.put("side", side);
                     map1.put("part", "FeederBuffer");
                     argument = GsonTools.createGsonListString(map1);
-                    //获取没有扣账的列表
                     getPresenter().getUnDebitedItemList(argument);
                 } else {
                     ToastUtils.showMessage(this, "还未开始发料", Toast.LENGTH_SHORT);
@@ -304,7 +305,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void showUnDebitedItemList(List<DebitData> data) {
         if (isAllItemSupplied) {
             popUpWindow.dissmiss();
-            getPresenter().resetFeederSupplyStatus(argument);
+            getPresenter().resetFeederSupplyStatus(GsonTools.createGsonListString(argument));
 
         }
         unDebitItemList.clear();
@@ -700,6 +701,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 finish();
                 break;
 
+            case R.id.tv_setting:
+                Log.i(TAG, "onOptionsItemSelected: ");
+                getPresenter().resetFeederSupplyStatus(GsonTools.createGsonListString(argument));
+                break;
             default:
                 break;
         }
@@ -732,6 +737,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         }
         return index;
     }
+
 
 
 }
