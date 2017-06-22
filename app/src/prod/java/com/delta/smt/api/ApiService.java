@@ -11,7 +11,6 @@ import com.delta.smt.entity.FaultFilter;
 import com.delta.smt.entity.FaultMessage;
 import com.delta.smt.entity.FaultSolutionMessage;
 import com.delta.smt.entity.FeederCheckInItem;
-import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.InventoryExecption;
@@ -108,6 +107,10 @@ public interface ApiService {
     @POST("ams/smm/buffer/completebufferissue")
     Observable<Result> resetFeederSupplyStatus(@Query("value") String contidion);
 
+    //Feeder 发料跳过MES
+    @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
+    Observable<Result> jumpMES(@Query("value") String value);
+
 
     //获取下模组列表
     @GET("SMM/FeederBuffStorage/feederBuffStorage")
@@ -130,12 +133,12 @@ public interface ApiService {
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
     //获取没有上传到MES的列表
-    @PUT("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
-    Observable<Result<FeederMESItem>> getUnUpLoadToMESList(@Query("condition") String condition);
+    @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    Observable<BaseEntity<UpLoadEntity>> getUnUpLoadToMESList(@Query("condition") String condition);
 
     //上传feeder备料到MES
-    @GET("ams/smm/plugmodcontroller/uploadtomes")
-    Observable<Result> upLoadFeederSupplyToMES(String value);
+    @POST("ams/smm/plugmodcontroller/uploadtomes")
+    Observable<Result> upLoadFeederSupplyToMES(@Query("value") String value);
 
 
     //Feeder发料手动扣账

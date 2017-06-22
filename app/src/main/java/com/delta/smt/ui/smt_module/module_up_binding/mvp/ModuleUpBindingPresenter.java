@@ -7,7 +7,7 @@ import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.UpLoadEntity;
-import com.delta.smt.ui.smt_module.JumpOver.JumpOverModule;
+import com.delta.smt.ui.smt_module.JumpOver.JumpOverModel;
 
 import javax.inject.Inject;
 
@@ -20,11 +20,11 @@ import rx.functions.Action1;
 
 public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContract.Model, ModuleUpBindingContract.View> {
     private RxErrorHandler mRxErrorHandler;
-    private JumpOverModule mJumpOverModule;
+    private JumpOverModel mJumpOverModule;
 
 
     @Inject
-    public ModuleUpBindingPresenter(ModuleUpBindingContract.Model model, ModuleUpBindingContract.View mView, RxErrorHandler mRxErrorHandler, JumpOverModule mJumpOverModule) {
+    public ModuleUpBindingPresenter(ModuleUpBindingContract.Model model, ModuleUpBindingContract.View mView, RxErrorHandler mRxErrorHandler, JumpOverModel mJumpOverModule) {
         super(model, mView);
         this.mRxErrorHandler = mRxErrorHandler;
         this.mJumpOverModule =mJumpOverModule;

@@ -519,8 +519,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             protected void convert(CommonViewHolder holder, final DebitData item, int position) {
                 holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
                 holder.setText(R.id.tv_slot, "架位：" + item.getSlot());
-                holder.setText(R.id.tv_amount, "需求量：" + String.valueOf(item.getAmount()));
-                holder.setText(R.id.tv_issue, "已发料量：" + String.valueOf(item.getIssue_amount()));
+                holder.setText(R.id.tv_amount, "需求量：" + String.valueOf(item.getIssue_amount()));
+                holder.setText(R.id.tv_issue, "已发料量：" + String.valueOf(item.getAmount()));
                 final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
                 mCheckBox.setChecked(item.isChecked());
                 holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
@@ -558,9 +558,9 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     if (mDebitData.isChecked()) {
                         DebitParameters.ListBean mListBean = new DebitParameters.ListBean();
                         mListBean.setSlot(mDebitData.getSlot());
-                        mListBean.setTotal_qty(mDebitData.getAmount());
+                        mListBean.setTotal_qty(mDebitData.getIssue_amount());
                         mListBean.setMaterial_no(mDebitData.getMaterial_no());
-                        mListBean.setDemand_qty(mDebitData.getIssue_amount());
+                        mListBean.setDemand_qty(mDebitData.getAmount());
                         mDebitCheckedData.add(mListBean);
                     }
                 }

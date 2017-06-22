@@ -16,10 +16,10 @@ import rx.Observable;
  */
 
 
-public class JumpOverModule extends BaseModel<ApiService> {
+public class JumpOverModel extends BaseModel<ApiService> {
 
     @Inject
-    public JumpOverModule(ApiService mApiService) {
+    public JumpOverModel(ApiService mApiService) {
         super(mApiService);
     }
 

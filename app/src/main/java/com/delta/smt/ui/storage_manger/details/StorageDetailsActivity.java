@@ -159,7 +159,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
         mToolbarTitle.setText("仓库" + part);
-        JumoOver();
+        JumpOver();
         tvWorkOrder.setText("工单：" + work_order);
         tvLineName.setText("线别：" + line_name);
         tvLineNum.setText("面别：" + side);
@@ -219,7 +219,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         mRecycleContent.setAdapter(content_adapter);
     }
 
-    private void JumoOver() {
+    private void JumpOver() {
         mTvSetting.setText("跳过");
         mTvSetting.setVisibility(View.VISIBLE);
         mTvSetting.setOnClickListener(new View.OnClickListener() {
@@ -437,6 +437,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             }
         });
     }
+
 
     @Override
     public void showLoadingView() {
@@ -677,9 +678,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     if (mDebitData.isChecked()) {
                         DebitParameters.ListBean mListBean = new DebitParameters.ListBean();
                         mListBean.setSlot(mDebitData.getSlot());
-                        mListBean.setTotal_qty(mDebitData.getAmount());
+                        mListBean.setTotal_qty(mDebitData.getIssue_amount());
                         mListBean.setMaterial_no(mDebitData.getMaterial_no());
-                        mListBean.setDemand_qty(mDebitData.getIssue_amount());
+                        mListBean.setDemand_qty(mDebitData.getAmount());
                         mDebitCheckedData.add(mListBean);
                     }
                 }

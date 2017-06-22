@@ -47,7 +47,6 @@ import butterknife.BindView;
 
 /**
  * Created by Shufeng.Wu on 2017/1/3.
- *
  */
 public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         ModuleUpContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleUpWarningItem> {
@@ -64,13 +63,14 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     RecyclerView recyclerview;
     @Inject
     WarningManger warningManager;
-  
+
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     private List<ModuleUpWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<ModuleUpWarningItem> myAdapter;
     private WarningDialog warningDialog;
     private static final String TAG = "ModuleUpActivity";
+
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerModuleUpComponent.builder().appComponent(appComponent).moduleUpModule(new ModuleUpModule(this)).build().inject(this);
@@ -120,7 +120,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 holder.setText(R.id.tv_product_name_main, "主板: " + moduleUpWarningItem.getProductNameMain());
                 holder.setText(R.id.tv_product_name, "小板: " + moduleUpWarningItem.getProductName());
                 String status;
-                switch (moduleUpWarningItem.getStatus()){
+                switch (moduleUpWarningItem.getStatus()) {
                     case 203:
                         status = "接料完成";
                         break;
@@ -136,7 +136,11 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 }
 
                 holder.setText(R.id.tv_status, "状态: " + status);
-                holder.setText(R.id.tv_forecast_time, "预计上线时间: " + moduleUpWarningItem.getOnlinePlanStartTime());
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                String date = format.format(moduleUpWarningItem.getOnlinePlanStartTime());
+                Log.i(TAG, "convert: parse " + date);
+                holder.setText(R.id.tv_forecast_time, "预计上线时间: " + date);
+
             }
         };
         myAdapter.setOnItemTimeOnclick(this);

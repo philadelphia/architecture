@@ -464,22 +464,25 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 break;
             case R.id.bt_sheet_confirm:
                 List<UpLoadEntity.FeedingListBean> mFeedingListBeans = new ArrayList<>();
-                for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
-                    if (mListBean.isChecked()) {
+                if(mFeedingListBean.size() != 0){
+                    for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
+                        if (mListBean.isChecked()) {
 
-                        mFeedingListBeans.add(mListBean);
+                            mFeedingListBeans.add(mListBean);
+                        }
+                    }
+                    if (mFeedingListBeans.size() == 0) {
+                        ToastUtils.showMessage(this, "请选择上料列表！");
+                        return;
                     }
                 }
-                if (mFeedingListBeans.size() == 0) {
-                    ToastUtils.showMessage(this, "请选择上料列表！");
-                    return;
-                }
+
                 UploadMESParams mUploadMESParams = new UploadMESParams();
                 mUploadMESParams.setSide(side);
                 mUploadMESParams.setWork_order(workItemID);
                 mUploadMESParams.setIs_feeder_buffer("0");
                 mUploadMESParams.setMes_mode("0");
-                mUploadMESParams.setFeeding_list(mFeedingListBean);
+                mUploadMESParams.setFeeding_list(mFeedingListBeans);
                 mUploadMESParams.setMaterial_list(mMaterialListBean);
                 getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParams));
 
@@ -515,6 +518,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         View mContentView = mCustomPopWindow.getContentView();
         RecyclerView rv_feeder = ViewUtils.findView(mContentView, R.id.rv_feeder);
         RecyclerView rv_feeder_send = ViewUtils.findView(mContentView, R.id.rv_feeder_send);
+        TextView tv_up = ViewUtils.findView(mContentView, R.id.tv_mount_up);
+        TextView tv_supply = ViewUtils.findView(mContentView, R.id.tv_mount_supply);
+        tv_up.setText("上料列表：" + mFeedingListBean.size());
+        tv_supply.setText("发料列表：" + mMaterialListBean.size());
         Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
         Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
         Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
@@ -792,10 +799,5 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         return flag;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 }

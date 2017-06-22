@@ -3,11 +3,13 @@ package com.delta.smt.ui.feeder.handle.feederSupply.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
+import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
+import com.delta.smt.entity.UpLoadEntity;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public interface FeederSupplyContract {
 
         void showUnDebitedItemList(List<DebitData> data);
 
-        void showUnUpLoadToMESItemList(List<FeederMESItem> data);
+        void showUnUpLoadToMESItemList(UpLoadEntity mT );
 
         void onFailed(String message);
 
@@ -50,6 +52,7 @@ public interface FeederSupplyContract {
 
         Observable<Result> resetFeederSupplyStatus(String condition);
 
+        Observable<Result> jumpMES(String condition);
 
 
         Observable<Result<DebitData>> deductionAutomatically(String value);
@@ -59,7 +62,7 @@ public interface FeederSupplyContract {
 
 
         //获取没有上传到MES的列表
-        Observable<Result<FeederMESItem>> getUnUpLoadToMESList(String condition);
+        Observable<BaseEntity<UpLoadEntity>> getUnUpLoadToMESList(String condition);
 
         //上传Feeder发料到MES
         Observable<Result> upLoadFeederSupplyToMES(String value);

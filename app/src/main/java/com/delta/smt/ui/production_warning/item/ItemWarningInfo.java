@@ -29,7 +29,7 @@ public class ItemWarningInfo extends TimeEntity {
 
     @SerializedName("state")
     private String status;
-
+    @SerializedName("unusedMaterials")
     private String unusedmaterials;
 
     @SerializedName("slot")
@@ -37,22 +37,22 @@ public class ItemWarningInfo extends TimeEntity {
 
     @SerializedName("remainTime")
     private Double time;
-
     private String connectMaterialCount;
 
     private int id;
 
 
-    public ItemWarningInfo(){}
+    public ItemWarningInfo() {
+    }
 
-    public ItemWarningInfo(String title,String productionline,
-                           String makeprocess,String warninginfo,
-                           String countdown,Long endtime,int id){
-        this.title=title;
-        this.productionline=productionline;
-        this.makeprocess=makeprocess;
-        this.warninginfo=warninginfo;
-        this.id=id;
+    public ItemWarningInfo(String title, String productionline,
+                           String makeprocess, String warninginfo,
+                           String countdown, Long endtime, int id) {
+        this.title = title;
+        this.productionline = productionline;
+        this.makeprocess = makeprocess;
+        this.warninginfo = warninginfo;
+        this.id = id;
     }
 
     public Double getTime() {
@@ -64,10 +64,9 @@ public class ItemWarningInfo extends TimeEntity {
     }
 
 
-
     public ItemWarningInfo(String title, String productionline, String workcode,
                            String face, String unusedmaterials,
-                           String materialstation,String countdown,Long endtime,int id,
+                           String materialstation, String countdown, Long endtime, int id,
                            String connectMaterialCount) {
         this.title = title;
         this.productionline = productionline;
@@ -75,8 +74,8 @@ public class ItemWarningInfo extends TimeEntity {
         this.face = face;
         this.unusedmaterials = unusedmaterials;
         this.materialstation = materialstation;
-        this.id=id;
-        this.connectMaterialCount=connectMaterialCount;
+        this.id = id;
+        this.connectMaterialCount = connectMaterialCount;
     }
 
 
