@@ -158,7 +158,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workId);
         map.put("side", side);
-        map.put("code", "B");
         argument = GsonTools.createGsonListString(map);
         Log.i(TAG, "argument==: " + argument);
 
