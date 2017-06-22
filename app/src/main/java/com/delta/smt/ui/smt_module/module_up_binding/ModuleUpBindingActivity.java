@@ -237,6 +237,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         scan_position = -1;
         dataSource.clear();
         dataSource.addAll(data);
+        if(dataSource.size() == 0){
+            btn_upLoad_mes.setClickable(false);
+        }
         adapter.notifyDataSetChanged();
         if (isAllItemIsBound(data)) {
             ToastUtils.showMessage(this, "", Toast.LENGTH_SHORT);
