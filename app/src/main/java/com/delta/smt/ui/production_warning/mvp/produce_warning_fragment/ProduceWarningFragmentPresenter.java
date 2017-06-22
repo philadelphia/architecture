@@ -47,14 +47,14 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
 
                 }else {
                     getView().getItemWarningDatasFailed(itemWarningInfos.getMsg());
-                    getView().showErrorView();
+                    //getView().showErrorView();
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().showErrorView();
+                    //getView().showErrorView();
                     getView().getItemWarningDatasFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();

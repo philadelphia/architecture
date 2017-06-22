@@ -24,6 +24,14 @@ public interface ProduceInfoFragmentContract {
         void getItemInfoDatas(List<ItemInfo>itemInfos);
         void getItemInfoDatasFailed(String message);
         void getItemInfoConfirmSucess();
+
+        void showLoadingView();
+
+        void showContentView();
+
+        //void showErrorView();
+
+        void showEmptyView();
     }
 
     interface Model extends IModel {

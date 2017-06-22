@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -48,6 +49,8 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     RecyclerView mRyvProduceInfo;
     @BindView(R.id.srf_refresh)
     SwipeRefreshLayout mSrfRefresh;
+    @BindView(R.id.statusLayout)
+    StatusLayout mStatusLayout;
     private CommonBaseAdapter<ItemInfo> mAdapter;
     private List<ItemInfo> datas = new ArrayList<>();
 
@@ -189,6 +192,26 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         return rootView;
     }
 
+    @Override
+    public void showLoadingView() {
+        mStatusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        mStatusLayout.showContentView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        mStatusLayout.showEmptyView();
+        mStatusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
+            }
+        });
+    }
     //下拉刷新
     @Override
     public void onRefresh() {
