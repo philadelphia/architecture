@@ -9,6 +9,7 @@
         android:text="CheckBox"
         android:textColor="#333333"
         android:clickable="false"
+        android:paddingLeft="30px"
         android:layout_marginBottom="80px"
         android:layout_marginLeft="40px"
         android:layout_marginRight="40px"

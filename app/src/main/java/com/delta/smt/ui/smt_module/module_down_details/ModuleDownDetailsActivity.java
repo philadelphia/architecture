@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,12 +32,15 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.ModuleDownDebit;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.ui.smt_module.module_down_details.di.DaggerModuleDownDetailsComponent;
 import com.delta.smt.ui.smt_module.module_down_details.di.ModuleDownDetailsModule;
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsContract;
 import com.delta.smt.ui.smt_module.module_down_details.mvp.ModuleDownDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -65,6 +71,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     RecyclerView recyclerViewContent;
     @BindView(R.id.btn_feederMaintain)
     AppCompatButton btnFeederMaintain;
+    @BindView(R.id.checkBox)
+    CheckBox checkBox;
+    @BindView(R.id.btn_debitManually)
+    Button btn_debitManually;
     @BindView(R.id.tv_work_order)
     TextView tv_workOrder;
     @BindView(R.id.tv_line_name)
@@ -79,6 +89,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     String lineName;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
+    private CommonBaseAdapter<ModuleDownDebit> unDebitadapter;
     private CommonBaseAdapter<ModuleDownDetailsItem> adapter;
     private List<ModuleDownDetailsItem> dataList = new ArrayList<>();
     private List<ModuleDownDetailsItem> dataSource = new ArrayList<>();
@@ -94,7 +105,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     private int flag = 1;
     private String argument;
     private LinearLayoutManager linearLayoutManager;
-
+    private CustomPopWindow popUpWindow;
+    private List<ModuleDownDebit> unDebitItemList = new ArrayList<>();
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -216,6 +228,96 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     }
 
     @Override
+    public void showModuleDownUnDebitedItemList(List<ModuleDownDebit> data) {
+        Log.i(TAG, "扣账列表数据长度: " + data.size());
+        if (0 == data.size()) {
+            ToastUtils.showMessage(this, "没有未扣账列表");
+            return;
+        }
+
+        unDebitItemList.clear();
+        unDebitItemList.addAll(data);
+        unDebitadapter.notifyDataSetChanged();
+
+        popUpWindow.showAsDropDown(toolbar);
+    }
+
+    private void createPopupWindow() {
+        popUpWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setAnimationStyle(R.style.popupAnimalStyle)
+                .setView(R.layout.dialog_bottom_sheet)
+//                .enableBlur(true)
+                .build();
+        View contentView = popUpWindow.getContentView();
+        RecyclerView recyclerView = ViewUtils.findView(contentView, R.id.rv_sheet);
+        Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_select_cancel);
+        Button btn_confirm = ViewUtils.findView(contentView, R.id.bt_sheet_confirm);
+        Button btn_selectAll = ViewUtils.findView(contentView, R.id.bt_sheet_select_all);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpWindow.dissmiss();
+            }
+        });
+
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> map = new HashMap<>();
+                Map<String, String> mapItem = new HashMap<>();
+                map.put("work_order", workItemID);
+                map.put("side", side);
+                List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+
+                for (ModuleDownDebit debitData : unDebitItemList) {
+                    if (debitData.isChecked())
+                    mapItem.put("material_no", debitData.getMaterial_no());
+                    mapItem.put("serial_no" , String.valueOf(debitData.getSerial_no()));
+                    list.add(mapItem);
+                }
+                map.put("list", list);
+                map.put("part", "FeederBuffer");
+                String argument = GsonTools.createGsonListString(map);
+                Log.i(TAG, "手动扣账参数为:  " + argument);
+                getPresenter().debitManually(argument);
+            }
+        });
+
+        btn_selectAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (ModuleDownDebit debitData : unDebitItemList) {
+                    debitData.setChecked(true);
+                }
+            }
+        });
+        unDebitadapter = new CommonBaseAdapter<ModuleDownDebit>(this, unDebitItemList) {
+            @Override
+            protected void convert(final CommonViewHolder holder, final ModuleDownDebit item, int position) {
+                holder.setText(R.id.tv_material_id, "料号 :\t" + item.getMaterial_no());
+                holder.setText(R.id.tv_serial_num, "流水号 :\t" + item.getSerial_no());
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CheckBox checkBox = holder.getView(R.id.cb_debit);
+                        checkBox.setChecked(!item.isChecked());
+                        item.setChecked(!item.isChecked());
+                    }
+                });
+
+            }
+
+            @Override
+            protected int getItemViewLayoutId(int position, ModuleDownDebit item) {
+                return R.layout.module_down_item_undebit_list;
+            }
+        };
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(unDebitadapter);
+    }
+
+
+    @Override
     public void onFailed(String message) {
         flag = 2;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
@@ -228,7 +330,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     public void onMaintainResult(String message) {
-        ToastUtils.showMessage(this,message, Toast.LENGTH_SHORT);
+        ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
         statusLayout.showEmptyView();
     }
 
@@ -290,15 +392,23 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.btn_feederMaintain})
+    @OnClick({R.id.btn_feederMaintain, R.id.btn_debitManually})
     public void onClick(View view) {
+        Map<String, String> map = new HashMap<>();
+        map.put("work_order", mCurrentWorkOrder);
+        map.put("side", side);
+        String argument = GsonTools.createGsonListString(map);
         switch (view.getId()) {
             case R.id.btn_feederMaintain:
-                Map<String, String> map = new HashMap<>();
-                map.put("work_order", mCurrentWorkOrder);
-                map.put("side", side);
-                String argument = GsonTools.createGsonListString(map);
                 getPresenter().getAllModuleDownMaintainResult(argument);
+                break;
+            case R.id.btn_debitManually:
+                getPresenter().getModuleListUnDebitList(argument);
+                if (popUpWindow == null) {
+                    createPopupWindow();
+                }
+                break;
+            default:
                 break;
         }
     }
@@ -338,6 +448,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     map.put("shelf_no", mCurrentLocation);
                     map.put("qty", mCurrentQuantity);
                     map.put("slot", mCurrentSlot);
+                    map.put("code", checkBox.isChecked() ? "1" : "0");
                     String argument = GsonTools.createGsonListString(map);
                     Log.i(TAG, "argument== " + argument);
                     Log.i(TAG, "料架已经扫描完成，接下来入库: ");
@@ -367,7 +478,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 break;
             default:
                 break;
-            }
+        }
     }
 
     private void parseMaterial(String barcode, BarCodeParseIpml barCodeParseIpml) throws EntityNotFountException {
@@ -377,7 +488,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         mCurrentQuantity = materialBlockBarCode.getCount();
         getMatchedMaterialIndex(materialBlockBarCode);
         adapter.notifyDataSetChanged();
-        RecycleViewUtils.scrollToMiddle(linearLayoutManager,index,recyclerViewContent);
+        RecycleViewUtils.scrollToMiddle(linearLayoutManager, index, recyclerViewContent);
 
         Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
         Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
@@ -403,7 +514,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     ToastUtils.showMessage(this, "请先扫描待入库的料盘");
                 }
             }
-                flag = 2;
+            flag = 2;
 
 
         } else {

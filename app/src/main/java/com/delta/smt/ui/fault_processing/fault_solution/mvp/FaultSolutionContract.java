@@ -39,7 +39,10 @@ public interface FaultSolutionContract {
         void onFailed(String message);
 
 
+        void showLoadingView();
 
+        void showContentView();
 
+        void showErrorView();
     }
 }

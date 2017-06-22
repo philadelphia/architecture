@@ -3,11 +3,13 @@ package com.delta.smt.ui.smt_module.module_down_details.mvp;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
+import com.delta.smt.entity.ModuleDownDebit;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.Result;
 
 import javax.inject.Inject;
 
+import retrofit2.http.Query;
 import rx.functions.Action0;
 import rx.functions.Action1;
 
@@ -119,6 +121,42 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void call(Throwable throwable) {
                 getView().onNetFailed(throwable);
+            }
+        });
+    }
+
+    public void getModuleListUnDebitList(@Query("condition") String condition){
+            getModel().getModuleListUnDebitList(condition).subscribe(new Action1<Result<ModuleDownDebit>>() {
+                @Override
+                public void call(Result<ModuleDownDebit> moduleDownDebitResult) {
+                    if (0 == moduleDownDebitResult.getCode()){
+                        getView().showModuleDownUnDebitedItemList(moduleDownDebitResult.getRows());
+                    }else {
+                        getView().onFailed(moduleDownDebitResult.getMessage());
+                    }
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    getView().onFailed(throwable.getMessage());
+                }
+            });
+    }
+
+    public void debitManually(String value){
+        getModel().debitManually(value).subscribe(new Action1<Result<ModuleDownDebit>>() {
+            @Override
+            public void call(Result<ModuleDownDebit> moduleDownDebitResult) {
+                if (0 == moduleDownDebitResult.getCode()) {
+                    getView().showModuleDownUnDebitedItemList(moduleDownDebitResult.getRows());
+                } else {
+                    getView().onFailed(moduleDownDebitResult.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                throwable.getMessage();
             }
         });
     }

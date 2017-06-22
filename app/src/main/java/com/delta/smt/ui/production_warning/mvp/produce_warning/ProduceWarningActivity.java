@@ -29,7 +29,7 @@ import com.delta.smt.ui.production_warning.item.TitleNumber;
 import com.delta.smt.ui.production_warning.mvp.produce_breakdown_fragment.ProduceBreakdownFragment;
 import com.delta.smt.ui.production_warning.mvp.produce_info_fragment.ProduceInfoFragment;
 import com.delta.smt.ui.production_warning.mvp.produce_warning_fragment.ProduceWarningFragment;
-import com.delta.smt.utils.ViewUtils;
+import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.smt.widget.WarningDialog;
 
 import org.greenrobot.eventbus.Subscribe;

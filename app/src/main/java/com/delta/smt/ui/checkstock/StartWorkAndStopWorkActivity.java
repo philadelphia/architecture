@@ -1,13 +1,16 @@
 package com.delta.smt.ui.checkstock;
 
-import android.app.AlertDialog;
+
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +42,7 @@ import butterknife.OnClick;
  * Created by Lin.Hou on 2017-02-10.
  */
 
-public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopWorkPresenter> implements StartWorkAndStopWorkContract.View, View.OnClickListener {
+public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopWorkPresenter> implements StartWorkAndStopWorkContract.View {
     @BindView(R.id.startAndstop_startwork)
     Button startAndstopStartwork;
     @BindView(R.id.toolbar)
@@ -56,9 +59,6 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
     RecyclerView startAndstopUncheckedlist;
     @BindView(R.id.startAndstop_checkedlist)
     RecyclerView startAndstopCheckedlist;
-    private AlertDialog mStopWorkDialog;
-    private AlertDialog.Builder builder;
-    private AlertDialog mSummarizeDialog;
     private List<OnGoing.RowsBean.CompletedSubShelfBean> mUnCheckedList = new ArrayList<>();
     private List<OnGoing.RowsBean.CompletedSubShelfBean> mCheckedList = new ArrayList<>();
     private RecyclerView.Adapter mUnCheckedadapter;
@@ -79,7 +79,6 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
 
     @Override
     protected void initView() {
-        builder=new AlertDialog.Builder(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -136,6 +135,7 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
         return R.layout.activity_startworkandstopwork;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @OnClick({R.id.startAndstop_startwork, R.id.startAndstop_continue, R.id.startAndstop_cancel})
     public void onClicks(View view) {
 
@@ -151,62 +151,29 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
                 intent.putExtra("bundle", bundle);
                 startActivity(intent);
                 break;
-//            case R.id.startAndstop_uncheck:
-//                unCheckDialog = builder.create();
-//                View view1=LayoutInflater.from(this).inflate(R.layout.dialog_uncheck,null);
-//                unCheckDialog.setContentView(view1);
-//                unCheckDialog.show();
-//                RecyclerView dialogRecycler = (RecyclerView) view1.findViewById(R.id.dialog_recycler);
-//                CommonBaseAdapter<OnGoing.RowsBean.CompletedSubShelfBean> adapter=new CommonBaseAdapter<OnGoing.RowsBean.CompletedSubShelfBean>(this,list) {
-//                    @Override
-//                    protected void convert(CommonViewHolder holder, OnGoing.RowsBean.CompletedSubShelfBean item, int position) {
-//                        if(item.getStatus()==0){
-//                        holder.setText(R.id.uncheck_text,item.getSubshelf());
-//                        }
-//                    }
-//
-//                    @Override
-//                    protected int getItemViewLayoutId(int position, OnGoing.RowsBean.CompletedSubShelfBean item) {
-//                        return R.layout.item_uncheck;
-//                    }
-//                };
-//                dialogRecycler.setLayoutManager(new GridLayoutManager(this,4));
-//                dialogRecycler.setAdapter(adapter);
-//                break;
             case R.id.startAndstop_cancel:
-                mStopWorkDialog = builder.create();
-                View view1=LayoutInflater.from(this).inflate(R.layout.dialog_stopwork,null);
-                mStopWorkDialog.show();
-                mStopWorkDialog.setContentView(view1);
-                view1.findViewById(R.id.stopwork_affirm).setOnClickListener(this);
-                view1.findViewById(R.id.stopwork_cancel).setOnClickListener(this);
+                final AlertDialog builder= new AlertDialog.Builder(this).setMessage("请确认是否结束盘点？").setTitle("提示").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+                        getPresenter().fetchInventoryException();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+
+
+
+                    }
+                }).create();
+                builder.show();
                 break;
 
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.stopwork_affirm:
-                if (mStopWorkDialog.isShowing()) {
-                    mStopWorkDialog.dismiss();
-                    getPresenter().fetchInventoryException();
-                }
-                break;
-            case R.id.stopwork_cancel:
-                if (mStopWorkDialog.isShowing()) {
-                    mStopWorkDialog.dismiss();
-                }
-                break;
-            case R.id.dialog_summarize_cancel:
-                if (mSummarizeDialog.isShowing()) {
-                    mSummarizeDialog.dismiss();
-                    getPresenter().onEndSuccess();
-                }
-                break;
-        }
-    }
 
     @Override
     public void onFailed(String s) {
@@ -281,12 +248,21 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
 
     @Override
     public void onInventoryException(String s) {
-        mSummarizeDialog = builder.create();
+      final AlertDialog mSummarizeDialog= new AlertDialog.Builder(this).setMessage(s).setTitle("提示").setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                     dialog.dismiss();
+                    getPresenter().onEndSuccess();
+
+            }
+        }).create();
         mSummarizeDialog.show();
-        mSummarizeDialog.setContentView(R.layout.dialog_summarize);
-        TextView textView = (TextView) mSummarizeDialog.findViewById(R.id.dialog_summarize_content);
-        textView.setText(s);
-        mSummarizeDialog.findViewById(R.id.dialog_summarize_cancel).setOnClickListener(this);
+
+
+
+
+
+
     }
 
     @Override

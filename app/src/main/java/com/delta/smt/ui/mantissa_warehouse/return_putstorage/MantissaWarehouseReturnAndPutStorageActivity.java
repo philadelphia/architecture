@@ -22,7 +22,7 @@ import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.MantissaWarehousePutstorageFragment;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.MantissaWarehouseReturnFragment;
-import com.delta.smt.utils.ViewUtils;
+import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.widget.WarningDialog;
 

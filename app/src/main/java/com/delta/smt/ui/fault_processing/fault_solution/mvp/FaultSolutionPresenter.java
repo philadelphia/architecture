@@ -6,6 +6,7 @@ import com.delta.smt.entity.BaseEntity;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -24,20 +25,28 @@ public class FaultSolutionPresenter extends BasePresenter<FaultSolutionContract.
 
     public void getDetailSolutionMessage(String fileName) {
 
-        getModel().getDetailSolutionMessage(fileName).subscribe(new Action1<BaseEntity<String>>() {
+        getModel().getDetailSolutionMessage(fileName).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<BaseEntity<String>>() {
             @Override
             public void call(BaseEntity<String> message) {
 
                 if ("0".equals(message.getCode())) {
                     getView().onSuccess(message.getT());
+                    getView().showContentView();
                 } else {
 
+                    getView().showErrorView();
                     getView().getMessageFailed(message.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
+                getView().showErrorView();
                 getView().getMessageFailed(throwable.getMessage());
             }
         });

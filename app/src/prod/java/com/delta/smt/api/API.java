@@ -9,7 +9,7 @@ public class API {
     //public static final String WebSocketURl = "ws://172.22.35.176:9090/websocket";
     //public static  String BASE_URL = "http://dg3smt-server.delta.corp:8081/";
     // public static  String BASE_URL = "http://172.22.34.37:8081/";
-   public static String IP = "10.120.137.39";
+   public static String IP = "172.22.40.25";
     //public static String IP = "172.22.40.36";
     public static String PORT = "8081";
     public static String SOCKET_PORT="9090";

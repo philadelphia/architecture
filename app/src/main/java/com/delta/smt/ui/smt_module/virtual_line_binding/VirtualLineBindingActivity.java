@@ -272,6 +272,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     public void onScanSuccess(String barcode) {
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
+            //扫描料盘
             case 1:
                 try {
                     showMessage.setVisibility(View.GONE);
@@ -313,6 +314,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
 
                 }
                 break;
+            //扫描虚拟线体
             case 2:
                 try {
                     showMessage.setVisibility(View.GONE);

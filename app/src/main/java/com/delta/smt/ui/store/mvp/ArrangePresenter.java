@@ -57,7 +57,7 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
 //                            e.printStackTrace();
 //                        }
 
-                        itemInfo.setText("线别:" +itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号:" + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号:" + itemInfos.getRows().get(i).getPartNum() + "\n" + "主板:" + itemInfos.getRows().get(i).getMainBoard() +  "\n" + "小板："+itemInfos.getRows().get(i).getSubBoard()+ "\n" + "需求量：" + itemInfos.getRows().get(i).getAmount() + "\n" + "状态:" + itemInfos.getRows().get(i).getStatus()+ "\n" + "计划上线时间:"+itemInfos.getRows().get(i).getEndTime());
+                        itemInfo.setText("线别: " +itemInfos.getRows().get(i).getProductLine() + "\n" + "工单号: " + itemInfos.getRows().get(i).getSapWorkOrderId() + "\n" + "PCB料号: " + itemInfos.getRows().get(i).getPartNum() + "\n" + "主板: " + itemInfos.getRows().get(i).getMainBoard() +  "\n" + "小板: "+itemInfos.getRows().get(i).getSubBoard()+ "\n" + "需求量: " + itemInfos.getRows().get(i).getAmount() + "\n" + "状态: " + itemInfos.getRows().get(i).getStatus()+ "\n" + "计划上线时间: "+itemInfos.getRows().get(i).getEndTime());
                         //itemInfo.setEndTime(Long.valueOf(itemInfos.getRows().get(i).getEndTime()));
                         itemInfo.setMainBoard(itemInfos.getRows().get(i).getMainBoard());
                         itemInfo.setSubBoard(itemInfos.getRows().get(i).getSubBoard());

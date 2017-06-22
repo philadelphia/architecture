@@ -372,6 +372,10 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                                             SnackbarUtil.showMassage(activityMianview, "这箱料已经发过了，请不要反复扫码");
                                         }
                                     }
+                                }else {
+                                    VibratorAndVoiceUtils.wrongVibrator(this);
+                                    VibratorAndVoiceUtils.wrongVoice(this);
+
                                 }
                             }
 

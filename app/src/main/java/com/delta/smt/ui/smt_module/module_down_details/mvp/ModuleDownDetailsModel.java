@@ -3,6 +3,7 @@ package com.delta.smt.ui.smt_module.module_down_details.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.ModuleDownDebit;
 import com.delta.smt.entity.ModuleDownDetailsItem;
 import com.delta.smt.entity.Result;
 
@@ -35,5 +36,15 @@ public class ModuleDownDetailsModel extends BaseModel<ApiService> implements Mod
     @Override
     public Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition) {
         return getService().getFeederCheckInTime(condition).compose(RxsRxSchedulers.<Result<ModuleDownDetailsItem>>io_main());
+    }
+
+    @Override
+    public Observable<Result<ModuleDownDebit>> getModuleListUnDebitList(String condition) {
+        return getService().getModuleListUnDebitList(condition).compose(RxsRxSchedulers.<Result<ModuleDownDebit>>io_main());
+    }
+
+    @Override
+    public Observable<Result<ModuleDownDebit>> debitManually(String value) {
+        return getService().debitManually(value).compose(RxsRxSchedulers.<Result<ModuleDownDebit>>io_main());
     }
 }

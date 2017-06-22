@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_warning_main">
+    android:id="@+id/activity_warning_main"
+    android:background="@color/textcolor"
+    >
     <include layout="@layout/appbar"/>
     <com.delta.commonlibs.widget.statusLayout.StatusLayout
         android:id="@+id/statusLayout"
@@ -15,9 +17,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/px_60"
+        android:layout_marginLeft="@dimen/px_20"
         android:text="@string/storage_text"
         style="@style/style_storagetv"
+        android:textSize="@dimen/px_60"
         />
 
     <RelativeLayout
@@ -42,6 +45,8 @@
             android:layout_marginLeft="@dimen/px_80"
             android:layout_toRightOf="@id/storage_pcbtv"
             android:layout_alignBottom="@id/storage_pcbtv"
+            android:hint="请扫描输入料号"
+            android:textColorHint="@color/background"
            />
         <TextView
             android:id="@+id/storage_vendortv"
@@ -61,6 +66,8 @@
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_toRightOf="@id/storage_vendortv"
              android:layout_alignBottom="@id/storage_vendortv"
+            android:hint="请扫描输入P/C"
+            android:textColorHint="@color/background"
             />
 
         <TextView
@@ -81,6 +88,8 @@
             android:layout_toRightOf="@id/storage_datacodetv"
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_alignBottom="@id/storage_datacodetv"
+            android:hint="请扫描输入D/C"
+            android:textColorHint="@color/background"
             />
         <TextView
             android:id="@+id/storage_counttv"
@@ -100,6 +109,8 @@
             android:layout_toRightOf="@id/storage_counttv"
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_alignBottom="@id/storage_counttv"
+            android:hint="请扫描输入数量"
+            android:textColorHint="@color/background"
             />
         <TextView
             android:id="@+id/storage_idtv"
@@ -119,19 +130,23 @@
             android:layout_alignLeft="@id/storage_pcbed"
             android:layout_toRightOf="@id/storage_idtv"
             android:layout_alignBottom="@id/storage_idtv"
+            android:hint="请扫描输入对应架位"
+            android:textColorHint="@color/background"
             />
 
     </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/px_40"
+            android:layout_marginBottom="@dimen/px_30"
             >
     <android.support.v7.widget.RecyclerView
         android:id="@+id/storage_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/style_storagetv"
-        android:layout_marginTop="@dimen/px_30"
+
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -139,7 +154,6 @@
         android:layout_marginTop="@dimen/px_30"
         android:gravity="center"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/px_20"
         >
 
         <Button
