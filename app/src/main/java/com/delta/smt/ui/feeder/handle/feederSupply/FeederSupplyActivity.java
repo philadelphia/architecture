@@ -113,15 +113,12 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private boolean isBeginSupply = false;
     private CustomPopWindow popUpWindow;
     private CommonBaseAdapter<DebitData> unDebitadapter;
-    private CommonBaseAdapter<FeederMESItem> unUploadMESAdapter;
     private final List<DebitData> unDebitItemList = new ArrayList<>();
-    private final List<FeederMESItem> unUplaodToMESItemList = new ArrayList<>();
     private boolean isAllItemSupplied = false;
     private CommonBaseAdapter<UpLoadEntity.FeedingListBean> undoList_adapter;
     private List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
     private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
     private CommonBaseAdapter<UpLoadEntity.MaterialListBean> unSend_adapter;
-    private UploadMESParams mUploadMESParamsA;
 
     @Override
     protected void handError(String contents) {
@@ -228,38 +225,39 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     @OnClick({R.id.tv_setting, R.id.btn_upload, R.id.btn_debitManually})
     public void onClicks(View view) {
+        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map_argument = new HashMap<>();
         switch (view.getId()) {
             case R.id.tv_setting:
-                Map<String, String> mapSkip_debit = new HashMap<>();
-                mapSkip_debit.put("work_order", workId);
-                mapSkip_debit.put("side", side);
-                mapSkip_debit.put("code", "B");
-                getPresenter().resetFeederSupplyStatus(GsonTools.createGsonListString(mapSkip_debit));
-                Map<String, Object> mapp = new HashMap<>();
-                mapp.put("work_order", workId);
-                mapp.put("side", side);
-                getPresenter().jumpMES(GsonTools.createGsonListString(mapp));
-                break;
-            case R.id.btn_upload:   //请求待上传到MES的列表
-                Map<String, Object> map = new HashMap<>();
                 map.put("work_order", workId);
                 map.put("side", side);
-                map.put("is_feeder_buffer", 1);
+                map.put("code", "B");
+                getPresenter().resetFeederSupplyStatus(GsonTools.createGsonListString(map));
+                map.clear();
+                map.put("work_order", workId);
+                map.put("side", side);
+                getPresenter().jumpMES(GsonTools.createGsonListString(map));
+                break;
+            case R.id.btn_upload:   //请求待上传到MES的列表
+                map_argument.clear();
+                map_argument.put("work_order", workId);
+                map_argument.put("side", side);
+                map_argument.put("is_feeder_buffer", 1);
                 if (popUpWindow == null) {
                     createPopupWindowForMES();
                 }
-                getPresenter().getUnUpLoadToMESList(GsonTools.createGsonListString(map));
+                getPresenter().getUnUpLoadToMESList(GsonTools.createGsonListString(map_argument));
                 break;
             case R.id.btn_debitManually:    //请求扣账列表
                 if (isBeginSupply) {
                     if (popUpWindow == null) {
                         createPopupWindow();
                     }
-                    Map<String, String> map1 = new HashMap<>();
-                    map1.put("work_order", workId);
-                    map1.put("side", side);
-                    map1.put("part", "FeederBuffer");
-                    argument = GsonTools.createGsonListString(map1);
+                    map.clear();
+                    map.put("work_order", workId);
+                    map.put("side", side);
+                    map.put("part", "FeederBuffer");
+                    argument = GsonTools.createGsonListString(map);
                     getPresenter().getUnDebitedItemList(argument);
                 } else {
                     ToastUtils.showMessage(this, "还未开始发料", Toast.LENGTH_SHORT);
@@ -385,7 +383,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             popUpWindow.showAsDropDown(toolbar);
         }
 
-        popUpWindow.showAsDropDown(toolbar);
     }
 
     private void createPopupWindow() {

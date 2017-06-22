@@ -488,7 +488,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mStatusLayout.showContentView();
     }
 
-    @Override
+/*    @Override
     public void showErrorView() {
         mStatusLayout.showErrorView();
         mStatusLayout.setErrorClick(new View.OnClickListener() {
@@ -497,17 +497,17 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
                 getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
             }
         });
-    }
+    }*/
 
     @Override
     public void showEmptyView() {
         mStatusLayout.showEmptyView();
-/*        mStatusLayout.setErrorClick(new View.OnClickListener() {
+        mStatusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
             }
-        });*/
+        });
     }
 
     @Override

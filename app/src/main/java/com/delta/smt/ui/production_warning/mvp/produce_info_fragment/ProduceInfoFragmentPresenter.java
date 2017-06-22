@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -27,14 +28,24 @@ public class ProduceInfoFragmentPresenter extends BasePresenter<ProduceInfoFragm
     }
 
     public void getItemInfoDatas(String condition){
-        getModel().getItemInfoDatas(condition).subscribe(new Action1<ProduceWarning>() {
+        getModel().getItemInfoDatas(condition).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<ProduceWarning>() {
             @Override
             public void call(ProduceWarning itemInfos) {
 //                getView().getItemInfoDatas(itemInfos);
                 if ("0".equals(itemInfos.getCode())) {
-                    getView().getItemInfoDatas(itemInfos.getRows().getMessage());
-                    Log.e("aaa", "fagment:信息数量"+String.valueOf(itemInfos.getRows().getMessage().size()) );
 
+                    if (itemInfos.getRows().getMessage().size()==0){
+                        getView().showEmptyView();
+                    }else {
+                        getView().showContentView();
+                        getView().getItemInfoDatas(itemInfos.getRows().getMessage());
+                        Log.e("aaa", "fagment:信息数量" + String.valueOf(itemInfos.getRows().getMessage().size()));
+                    }
                 }else {
                     getView().getItemInfoDatasFailed(itemInfos.getMsg());
                 }

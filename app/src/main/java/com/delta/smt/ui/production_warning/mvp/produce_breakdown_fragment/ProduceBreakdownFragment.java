@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.libs.adapter.ItemCountViewAdapter;
 import com.delta.libs.adapter.ItemTimeViewHolder;
 import com.delta.smt.R;
@@ -41,6 +42,8 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
     RecyclerView mRyvProduceBreakdown;
     @BindView(R.id.srf_refresh)
     SwipeRefreshLayout mSrfRefresh;
+    @BindView(R.id.statusLayout)
+    StatusLayout mStatusLayout;
     private ItemCountViewAdapter<ItemBreakDown> mAdapter;
     private List<ItemBreakDown> datas = new ArrayList<>();
 
@@ -107,10 +110,10 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
         for (int i = 0; i < itemBreakDown.size(); i++) {
 /*            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                 Date parse = format.parse(itemBreakDown.get(i).getCreateTime());*/
-                Log.e(TAG, "getItemBreakdownDatas: "+ itemBreakDown.get(i).getCreateTime());
-                long time=System.currentTimeMillis();
-                itemBreakDown.get(i).setCreat_time(time-Math.round(itemBreakDown.get(i).getCreateTime())*1000);
-                itemBreakDown.get(i).setEntityId(i);
+            Log.e(TAG, "getItemBreakdownDatas: " + itemBreakDown.get(i).getCreateTime());
+            long time = System.currentTimeMillis();
+            itemBreakDown.get(i).setCreat_time(time - Math.round(itemBreakDown.get(i).getCreateTime()) * 1000);
+            itemBreakDown.get(i).setEntityId(i);
         }
 
         datas.addAll(itemBreakDown);
@@ -125,6 +128,27 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
         } else {
             Snackbar.make(getActivity().getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void showLoadingView() {
+        mStatusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        mStatusLayout.showContentView();
+    }
+
+    @Override
+    public void showEmptyView() {
+        mStatusLayout.showEmptyView();
+        mStatusLayout.setEmptyClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().getItemBreakdownDatas(((ProduceWarningActivity) getmActivity()).initLine());
+            }
+        });
     }
 
 

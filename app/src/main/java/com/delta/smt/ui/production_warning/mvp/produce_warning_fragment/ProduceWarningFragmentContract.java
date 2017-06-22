@@ -26,7 +26,7 @@ public interface ProduceWarningFragmentContract{
 
         void showContentView();
 
-        void showErrorView();
+        //void showErrorView();
 
         void showEmptyView();
     }

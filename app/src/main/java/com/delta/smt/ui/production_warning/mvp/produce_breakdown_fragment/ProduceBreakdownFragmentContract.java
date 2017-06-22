@@ -17,6 +17,14 @@ public interface ProduceBreakdownFragmentContract {
     interface View extends IView {
         void getItemBreakdownDatas(List<ItemBreakDown> itemBreakDown);
         void getItemBreakdownDatasFailed(String message);
+
+        void showLoadingView();
+
+        void showContentView();
+
+        //void showErrorView();
+
+        void showEmptyView();
     }
 
     interface Model extends IModel {

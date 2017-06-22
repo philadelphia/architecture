@@ -448,12 +448,18 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     public void getAcceptMaterialsItemDatas(ItemAcceptMaterialDetail itemAcceptMaterialDetail) {
 
 
-        mTvMaterialStationNum.setText("待接料料站："+String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
+        if (itemAcceptMaterialDetail.getRows().getConnectMaterialCount()==0){
+            getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
+            finish();
+        }else {
+            mTvMaterialStationNum.setText("待接料料站："+String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
+            dataList1.clear();
+            dataList1.addAll(itemAcceptMaterialDetail.getRows().getLineMaterialEntities());
+            //对adapter刷新改变
+            adapter1.notifyDataSetChanged();
 
-        dataList1.clear();
-        dataList1.addAll(itemAcceptMaterialDetail.getRows().getLineMaterialEntities());
-        //对adapter刷新改变
-        adapter1.notifyDataSetChanged();
+        }
+
     }
 
     //网络请求失败
