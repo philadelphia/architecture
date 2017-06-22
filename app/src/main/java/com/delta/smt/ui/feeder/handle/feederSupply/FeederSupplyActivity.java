@@ -158,7 +158,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workId);
         map.put("side", side);
-        map.put("code", "B");
         argument = GsonTools.createGsonListString(map);
         Log.i(TAG, "argument==: " + argument);
 
@@ -231,7 +230,11 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void onClicks(View view) {
         switch (view.getId()) {
             case R.id.tv_setting:
-                getPresenter().resetFeederSupplyStatus(argument);
+                Map<String, String> mapSkip_debit = new HashMap<>();
+                mapSkip_debit.put("work_order", workId);
+                mapSkip_debit.put("side", side);
+                mapSkip_debit.put("code", "B");
+                getPresenter().resetFeederSupplyStatus(GsonTools.createGsonListString(mapSkip_debit));
                 Map<String, Object> mapp = new HashMap<>();
                 mapp.put("work_order", workId);
                 mapp.put("side", side);
