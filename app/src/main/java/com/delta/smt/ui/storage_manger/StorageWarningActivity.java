@@ -4,6 +4,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -84,6 +85,7 @@ public class StorageWarningActivity extends BaseCommonActivity implements TabLay
     protected void initCView() {
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
+        mTlTitle.setVisibility(View.GONE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
        // Bundle extras = getIntent().getExtras();
