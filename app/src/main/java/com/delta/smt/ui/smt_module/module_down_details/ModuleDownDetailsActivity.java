@@ -250,13 +250,26 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 .build();
         View contentView = popUpWindow.getContentView();
         RecyclerView recyclerView = ViewUtils.findView(contentView, R.id.rv_sheet);
+
+        Button btn_back = ViewUtils.findView(contentView, R.id.bt_sheet_back);
         Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_select_cancel);
         Button btn_confirm = ViewUtils.findView(contentView, R.id.bt_sheet_confirm);
         Button btn_selectAll = ViewUtils.findView(contentView, R.id.bt_sheet_select_all);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popUpWindow.dissmiss();
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (ModuleDownDebit moduleDownDebit : unDebitItemList) {
+                    if (moduleDownDebit.isChecked())
+                        moduleDownDebit.setChecked(false);
+                }
+                unDebitadapter.notifyDataSetChanged();
             }
         });
 
@@ -289,6 +302,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 for (ModuleDownDebit debitData : unDebitItemList) {
                     debitData.setChecked(true);
                 }
+                unDebitadapter.notifyDataSetChanged();
             }
         });
         unDebitadapter = new CommonBaseAdapter<ModuleDownDebit>(this, unDebitItemList) {
