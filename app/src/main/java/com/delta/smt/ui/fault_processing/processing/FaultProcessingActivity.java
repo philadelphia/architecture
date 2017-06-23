@@ -189,7 +189,7 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
 
             @Override
             protected void convert(CommonViewHolder holder, FiltersBean item, int position) {
-                holder.setText(R.id.text,"故障类型："+item.getMain_exception_name());
+                holder.setText(R.id.text, item.getMain_exception_name());
                 if (checkPosition == position) {
                     holder.setTextColor(R.id.text, FaultProcessingActivity.this.getResources().getColor(R.color.c_428bca));
                     holder.setBackgroundColor(R.id.text, FaultProcessingActivity.this.getResources().getColor(R.color.gray));
@@ -215,7 +215,7 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
         faultFilterAdapter.setOnItemClickListener(new CommonBaseAdapter.OnItemClickListener<RowsBean.FiltersBean>() {
             @Override
             public void onItemClick(View view, RowsBean.FiltersBean item, int position) {
-                dropDownMenu.setTabText(position == 0 ? "故障类型：全部" : "故障类型："+item.getMain_exception_name());
+                dropDownMenu.setTabText(position == 0 ? "故障类型：全部" : "" + item.getMain_exception_name());
                 String tabText = dropDownMenu.getTabText();
                 if ("故障类型：全部".equals(tabText)) {
                     tabText = "";

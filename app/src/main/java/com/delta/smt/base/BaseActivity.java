@@ -67,6 +67,9 @@ public abstract class BaseActivity<p extends BasePresenter> extends BaseCommonAc
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
 
+        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            return  super.dispatchKeyEvent(event);
+        }
         if (barCodeIpml.isEventFromBarCode(event)) {
             barCodeIpml.analysisKeyEvent(event);
             return true;

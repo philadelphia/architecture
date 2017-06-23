@@ -495,20 +495,6 @@ public class MantissaWarehousePutstorageFragment extends
                         getPresenter().getUpLocation(GsonTools.createGsonListString(bindBean));
                         Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
 
-//                for (int i = 0; i < dataList2.size(); i++) {
-//                    if (materialNumber.equals(dataList2.get(i).getMaterial_num()) && serialNum.equals(dataList2.get(i).getSerial_num())) {
-//                        position = i;
-//                        f = true;
-//                        break;
-//                    } else {
-//                        Toast.makeText(getActivity(), "尾数仓暂无此料盘", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                if (f = true) {
-//                    flag = 4;
-//                    f = false;
-//                }
-
                     } else {
                         SnackbarUtil.showMassage(mRecyContetn, "退料顺序有误，请扫描首个料盘");
                     }
@@ -523,18 +509,6 @@ public class MantissaWarehousePutstorageFragment extends
 
                 FrameLocation frameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
                 String mainStore = frameLocation.getSource();
-
-//                if (dataList2.get(position).getShelves().equals(mainStore)) {
-//
-//                UpLocation bindBean = new UpLocation(materialNumber, serialNum, count);
-//                Gson gson = new Gson();
-//                String s = gson.toJson(bindBean);
-//
-//                getPresenter().getUpLocation(s);
-//
-//            } else {
-//                Toast.makeText(getActivity(), "尾数仓暂无此架位", Toast.LENGTH_SHORT).show();
-//            }
 
                 break;
 
@@ -665,9 +639,6 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void showErrorView() {
-        mClean.setVisibility(View.GONE);
-        mDeduct.setVisibility(View.GONE);
-        mBegin.setVisibility(View.GONE);
         statusLayout.showErrorView();
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
@@ -680,9 +651,6 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void showEmptyView() {
-        mClean.setVisibility(View.GONE);
-        mDeduct.setVisibility(View.GONE);
-        mBegin.setVisibility(View.GONE);
         statusLayout.showEmptyView();
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
