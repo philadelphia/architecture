@@ -154,7 +154,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         argument = GsonTools.createGsonListString(map);
     }
 
-    private void JumoOver() {
+    private void jumpOver() {
         mTvSetting.setText("跳过");
         mTvSetting.setVisibility(View.VISIBLE);
         mTvSetting.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +182,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
-        JumoOver();
+        jumpOver();
         dataList.add(new ModuleUpBindingItem());
         adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataList) {
             @Override
