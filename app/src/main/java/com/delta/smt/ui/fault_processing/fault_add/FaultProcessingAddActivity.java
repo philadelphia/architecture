@@ -119,6 +119,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     @Override
     protected void initData() {
         faultCode = getIntent().getExtras().getString(Constant.FAULT_CODE);
+
     }
 
     @Override
@@ -158,7 +159,6 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
                 //show softKeyBoard
                 imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                 horizontalScrollView.setVisibility(View.GONE);
-
                 fileName = editText.getText().toString();
                 if (TextUtils.isEmpty(editText.getText())) {
                     ToastUtils.showMessage(this, "请输入方案名称", Toast.LENGTH_SHORT);
@@ -227,6 +227,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
         super.onResume();
         Map<String, String> map = new HashMap<>();
         map.put("fileName", "line_fault");
+        map.put("exception_code",faultCode);
         getPresenter().getTemplateContent(GsonTools.createGsonListString(map));
 
 
@@ -329,7 +330,6 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
                 richEditor.insertLink(null, null);
                 break;
             case R.id.floatingActionButton:
-                floatingActionButton.setVisibility(View.GONE);
                 beginEdit();
                 break;
         }
@@ -403,7 +403,6 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
     public void showContentView() {
         mSl.showContentView();
     }
-
     @Override
     public void showErrorView() {
 
