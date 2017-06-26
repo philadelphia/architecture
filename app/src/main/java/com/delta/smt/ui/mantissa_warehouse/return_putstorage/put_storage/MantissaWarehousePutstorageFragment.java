@@ -234,6 +234,7 @@ public class MantissaWarehousePutstorageFragment extends
         currentStep = begin;
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
+        Toast.makeText(baseActiviy, "可以开始绑定！", Toast.LENGTH_SHORT).show();
 
         if (dataList2.size() == 0) {
             return;
