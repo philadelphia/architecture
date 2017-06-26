@@ -50,4 +50,14 @@ public class Update {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Update{" +
+                "version='" + version + '\'' +
+                ", versionCode='" + versionCode + '\'' +
+                ", url='" + url + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
