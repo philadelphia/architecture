@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
-    android:layout_height="85px"
+    android:layout_height="100px"
+    android:gravity="center"
+    android:background="@color/c_efefef"
     >
 
     <TextView
@@ -11,7 +13,7 @@
         style="@style/item_textstyle"
         android:layout_width="@dimen/px_240"
         android:layout_height="match_parent"
-        android:text="@string/storage_pcbtv"
+        android:text="@string/storage_pcb"
 
         />
 

@@ -7,10 +7,10 @@
     <!-- padding设置内容区域离边界的间距 -->
     <padding
 
-        android:bottom="20px"
+        android:bottom="10px"
         android:left="20px"
         android:right="20px"
-        android:top="20px" />
+        android:top="10px" />
     <!-- corners设置圆角，只适用于rectangle -->
     <corners android:radius="10px" />
     <!-- stroke设置描边 -->

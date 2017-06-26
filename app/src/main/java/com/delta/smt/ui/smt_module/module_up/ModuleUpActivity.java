@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -46,7 +47,6 @@ import butterknife.BindView;
 
 /**
  * Created by Shufeng.Wu on 2017/1/3.
- *
  */
 public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         ModuleUpContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleUpWarningItem> {
@@ -63,12 +63,13 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     RecyclerView recyclerview;
     @Inject
     WarningManger warningManager;
-  
+
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     private List<ModuleUpWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<ModuleUpWarningItem> myAdapter;
     private WarningDialog warningDialog;
+    private static final String TAG = "ModuleUpActivity";
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -119,7 +120,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 holder.setText(R.id.tv_product_name_main, "主板: " + moduleUpWarningItem.getProductNameMain());
                 holder.setText(R.id.tv_product_name, "小板: " + moduleUpWarningItem.getProductName());
                 String status;
-                switch (moduleUpWarningItem.getStatus()){
+                switch (moduleUpWarningItem.getStatus()) {
                     case 203:
                         status = "接料完成";
                         break;
@@ -135,7 +136,11 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 }
 
                 holder.setText(R.id.tv_status, "状态: " + status);
-                holder.setText(R.id.tv_forecast_time, "预计上线时间: " + moduleUpWarningItem.getOnlinePlanStartTime());
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                String date = format.format(moduleUpWarningItem.getOnlinePlanStartTime());
+                Log.i(TAG, "convert: parse " + date);
+                holder.setText(R.id.tv_forecast_time, "预计上线时间: " + date);
+
             }
         };
         myAdapter.setOnItemTimeOnclick(this);
@@ -150,17 +155,21 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     @Override
     public void onSuccess(List<ModuleUpWarningItem> dataSource) {
+        Log.i(TAG, "onSuccess: 后台返回的数据长度是: " + dataSource.size());
         dataList.clear();
         int size = dataSource.size();
         for (int i = 0; i < size; i++) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            try {
-                Date parse = format.parse(dataSource.get(i).getOnlinePlanStartTime());
-                dataSource.get(i).setEnd_time(parse.getTime());
-                dataSource.get(i).setEntityId(i);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//            try {
+////                Date parse = format.parse(String.valueOf(dataSource.get(i).getOnlinePlanStartTime()));
+////                Log.i(TAG, "onSuccess: parse " + parse.toString());
+////                dataSource.get(i).setEnd_time(parse.getTime());
+//
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+            dataSource.get(i).setEnd_time(dataSource.get(i).getOnlinePlanStartTime());
+            dataSource.get(i).setEntityId(i);
         }
         dataList.addAll(dataSource);
         myAdapter.notifyDataSetChanged();

@@ -48,8 +48,8 @@ import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsMod
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsContract;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.delta.smt.utils.ViewUtils;
-import com.delta.smt.widget.CustomPopWindow;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.ArrayList;
@@ -558,9 +558,9 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     if (mDebitData.isChecked()) {
                         DebitParameters.ListBean mListBean = new DebitParameters.ListBean();
                         mListBean.setSlot(mDebitData.getSlot());
-                        mListBean.setTotal_qty(mDebitData.getAmount());
+                        mListBean.setTotal_qty(mDebitData.getIssue_amount());
                         mListBean.setMaterial_no(mDebitData.getMaterial_no());
-                        mListBean.setDemand_qty(mDebitData.getIssue_amount());
+                        mListBean.setDemand_qty(mDebitData.getAmount());
                         mDebitCheckedData.add(mListBean);
                     }
                 }

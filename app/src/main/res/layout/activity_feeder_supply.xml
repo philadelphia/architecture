@@ -8,23 +8,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <include layout="@layout/appbar" />
 
 
         <com.delta.commonlibs.widget.statusLayout.StatusLayout
             android:id="@+id/statusLayout"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10px"
@@ -38,7 +42,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:weightSum="4">
 
                         <CheckBox
                             android:id="@+id/checkBox"
@@ -51,18 +55,29 @@
                         <Button
                             android:id="@+id/btn_debitManually"
                             android:layout_width="0dp"
-                            android:layout_height="120px"
-                            android:background="@color/delta_blue"
-                            android:text="手动扣账"
+                            android:layout_height="100px"
+                            android:background="@drawable/btn_selector"
+                            android:text="@string/debitManually"
+                            android:textColor="@color/white"
                             android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:id="@+id/checkBox_autoUpLoadToMES"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="@string/upLoadToMESAuto" />
+
 
                         <Button
                             android:id="@+id/btn_upload"
                             android:layout_width="0dp"
-                            android:layout_height="120px"
-                            android:layout_gravity="right"
+                            android:layout_height="100px"
+                            android:layout_gravity="end"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:textColor="@color/white"
+                            android:background="@drawable/btn_selector"
                             android:text="上传到MES" />
 
                     </LinearLayout>
@@ -75,7 +90,8 @@
                 <HorizontalScrollView
                     android:id="@+id/hr_scrow"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px">
 
                     <LinearLayout
                         android:layout_width="match_parent"

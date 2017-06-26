@@ -54,6 +54,7 @@ import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
 import com.delta.smt.entity.StoreEntity;
 import com.delta.smt.entity.Success;
+import com.delta.smt.entity.UpLoadEntity;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineItem;
@@ -106,6 +107,10 @@ public interface ApiService {
     @POST("ams/smm/buffer/completebufferissue")
     Observable<Result> resetFeederSupplyStatus(@Query("value") String contidion);
 
+    //Feeder 发料跳过MES
+    @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
+    Observable<Result> jumpMES(@Query("value") String value);
+
 
     //获取下模组列表
     @GET("SMM/FeederBuffStorage/feederBuffStorage")
@@ -126,6 +131,14 @@ public interface ApiService {
     //上传feeder备料上模组结果
     @GET("SMM/Buffer/completeBufferIssue")
     Observable<ResultFeeder> upLoadFeederSupplyResult();
+
+    //获取没有上传到MES的列表
+    @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    Observable<BaseEntity<UpLoadEntity>> getUnUpLoadToMESList(@Query("condition") String condition);
+
+    //上传feeder备料到MES
+    @POST("ams/smm/plugmodcontroller/uploadtomes")
+    Observable<Result> upLoadFeederSupplyToMES(@Query("value") String value);
 
 
     //Feeder发料手动扣账
@@ -182,6 +195,11 @@ public interface ApiService {
 
     @POST("ams/smm/plugmodcontroller/uploadtomes")
     Observable<Result> upLoadToMesManually(@Query("value") String value);
+
+    //获取所有需要上传到MES的数据
+    @POST("")
+    Observable<Result> getAllItemsNeedTobeUpLoadToMES(String value);
+
     //下模组排程
     @GET("ams/smm/unplugmodcontroller/getproductionlines")
     Observable<Result<ModuleDownWarningItem>> getModuleDownWarningItems();
@@ -477,7 +495,7 @@ public interface ApiService {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @POST("ams/smm/warehissue/surecompleteissue")
-    Observable<IssureToWarehFinishResult> sureCompleteIssue();
+    Observable<IssureToWarehFinishResult> sureCompleteIssue(@Field("value") String mS);
 
     //仓库房扣账
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -669,6 +687,14 @@ public interface ApiService {
 
     @GET("ams/smm/warehissue/getnodebit")
     Observable<Result<DebitData>> getDebitDataList(@Query("condition") String mMs);
+
+    @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(@Query("condition") String mArgument);
+
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
+    Observable<Result> jumpOver(@Field("value") String bind);
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")

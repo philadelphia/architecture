@@ -117,6 +117,10 @@ public class StatusLayout extends AutoRelativeLayout {
     }
 
 
+    public View getLoadingView() {
+        return loadingView;
+    }
+
     /**
      * 显示空视图
      */

@@ -5,7 +5,7 @@
               android:orientation="vertical">
    <include layout="@layout/appbar"/>
    <include
-       android:visibility="gone"
+
        layout="@layout/tab_layout_title"/>
 <FrameLayout
     android:id="@+id/fl_container"

@@ -11,6 +11,7 @@ import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -29,8 +30,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * @description :
  * @author :  V.Wenju.Tian
+ * @description :
  * @date : 2017/1/9 19:18
  */
 
@@ -46,11 +47,12 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     WebView mWebView;
     @BindView(R.id.button)
     Button button;
+    @BindView(R.id.sl)
+    StatusLayout mSl;
 
     private String faultCode;
     private String lineName;
     private String faultSolutionName;
-    private static final String TAG = "FaultSolutionDetailActi";
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -122,13 +124,30 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
     @Override
     public void onSuccess(String message) {
         Log.i(TAG, "onSuccess: " + message);
-        mWebView.loadDataWithBaseURL(null, message, "text/html","UTF-8", null);
+        mWebView.loadDataWithBaseURL(null, message, "text/html", "UTF-8", null);
 
     }
 
     @Override
     public void onFailed(String message) {
 
+    }
+
+    @Override
+    public void showLoadingView() {
+        mSl.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+
+        mSl.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+
+        mSl.showErrorView();
     }
 
 
@@ -142,4 +161,6 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
             getPresenter().resolveFault(GsonTools.createGsonListString(map));
         }
     }
+
+
 }

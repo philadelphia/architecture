@@ -8,6 +8,7 @@ import com.delta.smt.entity.ProduceWarning;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -21,14 +22,24 @@ public class ProduceBreakdownFragmentPresenter extends BasePresenter<ProduceBrea
     }
 
     public void getItemBreakdownDatas(String condition){
-        getModel().getItemBreakdownDatas(condition).subscribe(new Action1<ProduceWarning>() {
+        getModel().getItemBreakdownDatas(condition).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<ProduceWarning>() {
             @Override
             public void call(ProduceWarning itemBreakDowns) {
 //                getView().getItemBreakdownDatas(itemBreakDowns);
                 if (itemBreakDowns.getCode().equals("0")) {
-                    getView().getItemBreakdownDatas(itemBreakDowns.getRows().getFault());
-                    Log.e("aaa", "fagment:故障数量"+String.valueOf(itemBreakDowns.getRows().getFault().size()) );
 
+                    if (itemBreakDowns.getRows().getFault().size()==0){
+                        getView().showEmptyView();
+                    }else {
+                        getView().showContentView();
+                        getView().getItemBreakdownDatas(itemBreakDowns.getRows().getFault());
+                        Log.e("aaa", "fagment:故障数量" + String.valueOf(itemBreakDowns.getRows().getFault().size()));
+                    }
                 }else {
                     getView().getItemBreakdownDatasFailed(itemBreakDowns.getMsg());
                 }

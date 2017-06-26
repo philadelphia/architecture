@@ -6,4 +6,5 @@ package com.delta.commonlibs.base.mvp;
 public interface IView {
 
 
+
 }

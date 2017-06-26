@@ -1,4 +1,4 @@
-package com.delta.smt.utils;
+package com.delta.commonlibs.utils;
 
 import android.app.Activity;
 import android.support.design.widget.TabLayout;
@@ -42,6 +42,9 @@ public class ViewUtils {
         }
     }
 
+    public static View getRootViewWithActivity(Activity mActivity) {
+        return mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+    }
 
 
 }

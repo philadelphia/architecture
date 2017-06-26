@@ -55,7 +55,7 @@ public class FaultProcessingPresenter extends BasePresenter<FalutProcessingContr
                             getView().getFaultMessageSuccess(falutMesages);
                         }
                     } else {
-                        getView().showContentView();
+                        getView().showErrorView();
                         getView().getFaultMessageFailed(falutMesages.getMsg());
                     }
                 }

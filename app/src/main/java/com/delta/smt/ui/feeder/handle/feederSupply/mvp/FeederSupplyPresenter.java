@@ -5,10 +5,13 @@ import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
+import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.DebitData;
+import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFeeder;
+import com.delta.smt.entity.UpLoadEntity;
 
 import javax.inject.Inject;
 
@@ -98,6 +101,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         });
     }
 
+    //Feeder扣账、入库完成
     public void resetFeederSupplyStatus(String condition) {
         getModel().resetFeederSupplyStatus(condition).subscribe(new Action1<Result>() {
             @Override
@@ -118,24 +122,27 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
     }
 
-    public void upLoadToMES() {
-        getModel().upLoadFeederSupplyResult().subscribe(new Action1<ResultFeeder>() {
+    public void jumpMES(String value){
+        getModel().jumpMES(value).subscribe(new Action1<Result>() {
             @Override
-            public void call(ResultFeeder resultFeeder) {
-                if (!resultFeeder.isRows()) {
-                    getView().onUpLoadFailed("上传失败，请手动上传到MES");
+            public void call(Result result) {
+                if (0 == result.getCode()) {
+                    getView().onFailed(result.getMessage());
+                } else {
+                    getView().onFailed(result.getMessage());
                 }
-
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                getView().onFailed(throwable.getMessage());
             }
         });
     }
 
-    //自动扣账
+
+
+    //扣账
     public void deductionManually(String value) {
         getModel().deductionAutomatically(value).subscribe(new Action1<Result<DebitData>>() {
             @Override
@@ -175,6 +182,42 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             @Override
             public void call(Throwable throwable) {
                 getView().onFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
+    //上传Feeder发料到MES
+    public void upLoadFeederSupplyToMES(String value) {
+        getModel().upLoadFeederSupplyToMES(value).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result resultFeeder) {
+
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+    }
+
+    //获取没有上传到MES的数据列表
+    public void getUnUpLoadToMESList(String condition) {
+        getModel().getUnUpLoadToMESList(condition).subscribe(new Action1<BaseEntity<UpLoadEntity>>() {
+            @Override
+            public void call(BaseEntity<UpLoadEntity> result) {
+                if ("0".equalsIgnoreCase(result.getCode())) {
+                    getView().showUnUpLoadToMESItemList(result.getT());
+                } else {
+                    getView().onFailed(result.getMsg());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
             }
         });
     }

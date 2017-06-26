@@ -1,10 +1,10 @@
 package com.delta.smt.ui.store;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -44,15 +44,14 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     private ItemCountViewAdapter mAdapter;
-    private AlertDialog.Builder builder;
-    private AlertDialog mAffirmDialog;
+
 
     private List<ItemInfo> mList = new ArrayList<>();
     private int mPosition;
 
     @Override
     protected void initView() {
-        builder = new AlertDialog.Builder(getActivity());
+
         mAdapter = new ItemCountViewAdapter<ItemInfo>(getActivity(), mList) {
             @Override
             protected int getCountViewId() {
@@ -78,29 +77,21 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
                 if (mList.size() == 0) {
 
                 } else {
-                    mAffirmDialog=builder.create();
+                    AlertDialog mAffirmDialog=new AlertDialog.Builder(getContext()).setTitle("提示").setMessage("是否确认备料?").setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mPosition=position;
+                            getPresenter().closeLights(mList.get(position).getAlarminfoId(),0);
+                            dialog.dismiss();
+
+                        }
+                    }).create();
                     mAffirmDialog.show();
-                    mAffirmDialog.setContentView(R.layout.dialog_affirm);
-                    Button affirmButton= (Button) mAffirmDialog.findViewById(R.id.dialog_affirm_affirm);
-                    Button cabcelButton= (Button) mAffirmDialog.findViewById(R.id.dialog_affirm_cancel);
-                    affirmButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                          mPosition=position;
-                          getPresenter().closeLights(mList.get(position).getAlarminfoId(),0);
-                            if (mAffirmDialog.isShowing()){
-                                mAffirmDialog.dismiss();
-                            }
-                        }
-                    });
-                    cabcelButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (mAffirmDialog.isShowing()){
-                                mAffirmDialog.dismiss();
-                            }
-                        }
-                    });
 
 
                 }

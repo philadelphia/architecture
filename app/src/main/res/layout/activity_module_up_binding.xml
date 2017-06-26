@@ -60,10 +60,10 @@
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/btn_upload"
                         android:layout_width="wrap_content"
-                        android:layout_height="120px"
+                        android:layout_height="100px"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="50px"
-                        android:background="@color/delta_blue"
+                        android:background="@drawable/btn_selector"
                         android:gravity="center"
                         android:text="上传到MES"
                         android:textColor="@color/white"

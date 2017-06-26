@@ -37,5 +37,17 @@ public interface FaultProcessingAddContract {
         void showMessage(String  message);
 
         void upLoadFileSuccess();
+
+        void showLoadingView();
+
+        void showContentView();
+
+        void showErrorView();
+
+        void showLoadingDialog();
+
+        void showLoadingDialogSuccess();
+
+        void showLoadingDialogFailed();
     }
 }

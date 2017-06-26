@@ -25,7 +25,7 @@ import com.delta.smt.ui.store.di.DaggerStoreComponent;
 import com.delta.smt.ui.store.di.StoreModule;
 import com.delta.smt.ui.store.mvp.StoreContract;
 import com.delta.smt.ui.store.mvp.StorePresenter;
-import com.delta.smt.utils.ViewUtils;
+import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.widget.WarningDialog;
 

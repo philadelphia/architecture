@@ -1,8 +1,10 @@
 package com.delta.smt.ui.checkstock;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -51,7 +53,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Lin.Hou on 2016-12-26.
  */
 
-public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implements CheckStockContract.View, View.OnClickListener {
+public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implements CheckStockContract.View {
 
     @BindView(R.id.cargoned)
     EditText cargoned;
@@ -76,10 +78,8 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     private List<CheckStock.RowsBean> dataList = new ArrayList<>();
     private CommonBaseAdapter<CheckStock.RowsBean> mAdapter;
     private TextView mErrorContent;
-    private AlertDialog.Builder builder;
-    private AlertDialog mErrorDialog;
-    private AlertDialog mRollbackDialog;
-    private AlertDialog mResultDialog;
+
+
     private TextView mResultContent;
     private MaterialBlockBarCode mMaterbarCode;
     private int status = 1;
@@ -118,7 +118,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
         cargonTv.setFocusable(true);
         cargoned.clearFocus();
         cargoned.setFocusable(false);
-        builder = new AlertDialog.Builder(this);
+
         List<CheckStockDemo> list = new ArrayList<>();
         list.add(new CheckStockDemo("", "", "", "", ""));
         CommonBaseAdapter<CheckStockDemo> mAdapterTitle = new CommonBaseAdapter<CheckStockDemo>(getContext(), list) {
@@ -344,14 +344,25 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
     @Override
     public void onErrorSucess(String wareHouses) {
-//        ToastUtils.showMessage(this, wareHouses);
-        mResultDialog = builder.create();
+        //ToastUtils.showMessage(this, wareHouses);
+       AlertDialog mResultDialog = new AlertDialog.Builder(this).setTitle("盘点结果").setMessage(wareHouses).setPositiveButton("继续盘点本架位", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                    status=2;
+            }
+        }).setNegativeButton("完成本架位的盘点", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                dataList.clear();
+                mAdapter.notifyDataSetChanged();
+                cargonTv.setText("");
+                status=1;
+            }
+        }).create();
         mResultDialog.show();
-        mResultDialog.setContentView(R.layout.dialog_result);
-        mResultContent = (TextView) mResultDialog.findViewById(R.id.result_content);
-        mResultContent.setText(wareHouses);
-        mResultDialog.findViewById(R.id.result_cancel).setOnClickListener(this);
-        mResultDialog.findViewById(R.id.result_alteration).setOnClickListener(this);
+
 
     }
 
@@ -414,72 +425,31 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public void JudgeSuceess(String s) {
 //        isShowDialog = true;
-        mErrorDialog = builder.create();
+       AlertDialog mErrorDialog =new AlertDialog.Builder(this).setTitle("盘点异常").setMessage(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位").setPositiveButton("取消", new DialogInterface.OnClickListener() {
+           @Override
+           public void onClick(DialogInterface dialog, int which) {
+               isShowDialog = true;
+               dialog.dismiss();
+           }
+       }).setNegativeButton("变更架位", new DialogInterface.OnClickListener() {
+           @Override
+           public void onClick(DialogInterface dialog, int which) {
+               isShowDialog = true;
+               dialog.dismiss();
+               if (isJudge){
+                   getPresenter().fetchError(mMaterbarCode.getStreamNumber(), FrameLocation);
+                   getPresenter().fetchCheckStock(FrameLocation);
+               }else {
+                   getPresenter().fetchError(mMaterbarCode.getStreamNumber(), mFrameLocation.getSource());
+                   getPresenter().fetchCheckStock(mFrameLocation.getSource());
+               }
+           }
+       }).create();
         mErrorDialog.show();
-        mErrorDialog.setContentView(R.layout.dialog_error);
-        mErrorContent = (TextView) mErrorDialog.findViewById(R.id.error_content);
-        mErrorContent.setText(mMaterbarCode.getDeltaMaterialNumber() + "-" + mMaterbarCode.getCount() + "片\n不是本架位的物料，是否变更架位");
-        mErrorDialog.findViewById(R.id.error_cancel).setOnClickListener(CheckStockActivity.this);
-        mErrorDialog.findViewById(R.id.error_alteration).setOnClickListener(CheckStockActivity.this);
 
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.error_cancel:
-                if (mErrorDialog.isShowing()) {
-                    isShowDialog = true;
-                    mErrorDialog.dismiss();
-                }
-                break;
-            case R.id.error_alteration:
-                if (mErrorDialog.isShowing()) {
-                    isShowDialog = true;
-                    mErrorDialog.dismiss();
-                    if (isJudge){
-                        getPresenter().fetchError(mMaterbarCode.getStreamNumber(), FrameLocation);
-                        getPresenter().fetchCheckStock(FrameLocation);
-                    }else {
-                        getPresenter().fetchError(mMaterbarCode.getStreamNumber(), mFrameLocation.getSource());
-                        getPresenter().fetchCheckStock(mFrameLocation.getSource());
-                   }
-                }
-                break;
-            case R.id.result_cancel:
-                if (mResultDialog.isShowing()) {
-                    mResultDialog.dismiss();
-                    status=2;
-                }
-                break;
-            case R.id.result_alteration:
-                if (mResultDialog.isShowing()) {
-                    mResultDialog.dismiss();
-                    dataList.clear();
-                    mAdapter.notifyDataSetChanged();
-                    cargonTv.setText("");
-                    status=1;
-
-
-                }
-                break;
-            case R.id.rollback_affirm:
-                if (mRollbackDialog.isShowing()) {
-                    mRollbackDialog.dismiss();
-                    IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
-                }
-
-                break;
-            case R.id.rollback_cancel:
-                if (mRollbackDialog.isShowing()) {
-                    mRollbackDialog.dismiss();
-                }
-                break;
-
-            
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -496,12 +466,27 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            mRollbackDialog = builder.create();
-            mRollbackDialog.show();
-            mRollbackDialog.setContentView(R.layout.dialog_rollback);
-            mRollbackDialog.findViewById(R.id.rollback_affirm).setOnClickListener(this);
-            mRollbackDialog.findViewById(R.id.rollback_cancel).setOnClickListener(this);
+            AlertDialog mRollbackDialog = new AlertDialog.Builder(this).setTitle("提示").setMessage("请确认是否回退到上一个界面?").setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
+                    dialog.dismiss();
+                    IntentUtils.showIntent(CheckStockActivity.this, StartWorkAndStopWorkActivity.class);
+
+
+
+                }
+            }).create();
+            Button positive=mRollbackDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positive.setBackgroundColor(ContextCompat.getColor(this,R.color.background));
+            Button negative=mRollbackDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            negative.setBackgroundColor(ContextCompat.getColor(this,R.color.background));
+            mRollbackDialog.show();
             return true;
         }
 
