@@ -1,12 +1,10 @@
 package com.delta.smt.ui.storage_manger.ready;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SpUtil;
@@ -87,15 +85,15 @@ public class StorageReadyFragment extends BaseFragment<StorageReadyPresenter>
                 holder.setText(R.id.tv_material_station, "面别: " + item.getSide());
                 if (item.getStatus() == 1) {
                     holder.setText(R.id.tv_add_count, "状态：未开始发料");
-                    holder.itemView.setBackgroundColor(Color.WHITE);
+                    holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background));
                 } else {
                     holder.setText(R.id.tv_add_count, "状态：正在发料");
-                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                    holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background_yellow));
                 }
             }
         };
         adapter.setOnItemTimeOnclick(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(adapter);
 
     }
