@@ -449,6 +449,7 @@ public class MantissaWarehousePutstorageFragment extends
             case 2:
                 try {
 
+
                     LabelBarcode lableBar = (LabelBarcode) barCodeParseIpml.getEntity(barcode, BarCodeType.LABLE_BARCODE);
                     lableBarCode = lableBar.getSource();
 

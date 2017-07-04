@@ -334,6 +334,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 } catch (EntityNotFountException e) {
                     SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
                 }
+
                 break;
             case 2:
                 try {
