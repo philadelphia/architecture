@@ -60,6 +60,7 @@ import static com.delta.smt.R.id.bt_sheet_confirm;
 
 public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter>
         implements MantissaWarehouseReturnContract.View, View.OnClickListener {
+
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
     @BindView(R.id.recy_contetn)
