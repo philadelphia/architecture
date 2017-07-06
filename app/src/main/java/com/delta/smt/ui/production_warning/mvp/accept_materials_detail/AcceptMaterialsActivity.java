@@ -209,6 +209,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         //二维码识别和解析
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         Log.e(TAG, "onScanSuccess: " + barcode);
+
+        /*扫描料盘，feedID，料站的方式接料*/
         if (flag==0) {
 
             try {
@@ -372,7 +374,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
 
 
-
+        /*扫描新旧料盘方式接料*/
 /*        try {
             MaterialBlockBarCode mMaterialBlockBarCode =
                     (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
@@ -394,7 +396,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         VibratorAndVoiceUtils.correctVibrator(this);
                         VibratorAndVoiceUtils.correctVoice(this);
 //                        ToastUtils.showMessage(getContext(), "旧料盘匹配正确，请扫新料盘！");
-                        Snackbar.make(getCurrentFocus(), "旧料盘匹配正确，请扫新料盘！", Snackbar.LENGTH_SHORT).show();
+//                        Snackbar.make(getCurrentFocus(), "旧料盘匹配正确，请扫新料盘！", Snackbar.LENGTH_SHORT).show();
+                        SnackbarUtil.showRead(getRootView(this), "旧料盘匹配正确，请扫新料盘！",textToSpeechManager);
                     } else {
 
 
@@ -402,7 +405,9 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         VibratorAndVoiceUtils.wrongVibrator(this);
                         VibratorAndVoiceUtils.wrongVoice(this);
 //                        ToastUtils.showMessage(getContext(), "旧料盘匹配错误！");
-                        Snackbar.make(getCurrentFocus(), "旧料盘匹配错误", Snackbar.LENGTH_SHORT).show();
+//                        Snackbar.make(getCurrentFocus(), "旧料盘匹配错误", Snackbar.LENGTH_SHORT).show();
+                        SnackbarUtil.showRead(getRootView(this), "旧料盘匹配错误",textToSpeechManager);
+
                     }
                 } else {
                     if (dataList1.get(0).getPartNumber().equals(materialNumber)
@@ -422,7 +427,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         VibratorAndVoiceUtils.wrongVibrator(this);
                         VibratorAndVoiceUtils.wrongVoice(this);
 //                        ToastUtils.showMessage(getContext(), "新料盘匹配错误！");
-                        Snackbar.make(getCurrentFocus(), "新料盘匹配错误！", Snackbar.LENGTH_SHORT).show();
+//                        Snackbar.make(getCurrentFocus(), "新料盘匹配错误！", Snackbar.LENGTH_SHORT).show();
+                        SnackbarUtil.showRead(getRootView(this), "新料盘匹配错误！",textToSpeechManager);
                     }
                 }
 
@@ -436,7 +442,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             VibratorAndVoiceUtils.wrongVoice(this);
 
 //            ToastUtils.showMessage(getContext(), "请扫描正确的料盘！");
-            Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
+//            Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
+            SnackbarUtil.showRead(getRootView(this), "请扫描正确的料盘！",textToSpeechManager);
             materialNumber = null;
             streamNumber = null;
             e.printStackTrace();
