@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -22,6 +21,8 @@ import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -41,8 +42,6 @@ import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.di.Mantiss
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnContract;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp.MantissaWarehouseReturnPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.delta.commonlibs.utils.ViewUtils;
-import com.delta.commonlibs.widget.CustomPopWindow;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -51,7 +50,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BARCODE;
 import static com.delta.smt.R.id.bt_sheet_confirm;
@@ -68,10 +66,10 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     RecyclerView mRecyContetn;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    @BindView(R.id.button2)
+/*    @BindView(R.id.button2)
     Button mButton2;
     @BindView(R.id.checkBox)
-    CheckBox mCheckBox;
+    CheckBox mCheckBox;*/
     private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList = new ArrayList();
     private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter;
@@ -163,13 +161,13 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mRecyContetn.setAdapter(adapter2);
 
-        mCheckBox.setChecked(ischeck);
+      /*  mCheckBox.setChecked(ischeck);
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SpUtil.SetBooleanSF(getContext(), "autochecked", isChecked);
             }
-        });
+        });*/
     }
 
     @Override
@@ -334,6 +332,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 } catch (EntityNotFountException e) {
                     SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
                 }
+
                 break;
             case 2:
                 try {
@@ -390,7 +389,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         adapter2.notifyDataSetChanged();
     }
 
-    @OnClick({R.id.button2})
+/*    @OnClick({R.id.button2})
     public void onClickone(View view) {
         switch (view.getId()) {
             case R.id.button2:
@@ -401,7 +400,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 getPresenter().getManualmaticDebit();
                 break;
         }
-    }
+    }*/
 
     @Override
     public void onClick(View view) {
