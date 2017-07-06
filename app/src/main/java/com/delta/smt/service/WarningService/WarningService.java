@@ -78,7 +78,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startScreenBroadcastReceiver();
+        //startScreenBroadcastReceiver();
         String ip = SpUtil.getStringSF(this, "ip");
         String port = SpUtil.getStringSF(this, "port");
         if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
@@ -115,7 +115,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(receiver);
+//        unregisterReceiver(receiver);
         super.onDestroy();
     }
 

@@ -166,6 +166,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         mRecyContent.setAdapter(adapter1);
 
 
+
     }
 
     @Override
@@ -211,7 +212,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         Log.e(TAG, "onScanSuccess: " + barcode);
 
         /*扫描料盘，feedID，料站的方式接料*/
-        if (flag==0) {
+        /*if (flag==0) {
 
             try {
                 MaterialBlockBarCode mMaterialBlockBarCode =
@@ -223,7 +224,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
                 if (materialNumber != null && streamNumber != null&&dataList1.get(0).getPartNumber()!=null) {
 
-/*                    if (dataList1.get(0).getPartNumber().equals(materialNumber)
+*//*                    if (dataList1.get(0).getPartNumber().equals(materialNumber)
                             ) {
                         flag++;
                         oldSerialNumber = streamNumber;
@@ -233,7 +234,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         VibratorAndVoiceUtils.correctVoice(this);
                         Snackbar.make(getCurrentFocus(), "旧料盘匹配正确，请扫新料盘！", Snackbar.LENGTH_SHORT).show();
 
-                    } else {*/
+                    } else {*//*
                     if (dataList1.get(0).getPartNumber().equals(materialNumber)){
                         serialNumber=streamNumber;
                         barcode1=barcode;
@@ -260,8 +261,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 VibratorAndVoiceUtils.wrongVibrator(this);
                 VibratorAndVoiceUtils.wrongVoice(this);
 
-/*                Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
-                textToSpeechManager.readMessage( "请扫描正确的料盘！");*/
+*//*                Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
+                textToSpeechManager.readMessage( "请扫描正确的料盘！");*//*
                 SnackbarUtil.showRead(getRootView(this), "请扫描正确的料盘！",textToSpeechManager);
                 this.materialNumber = null;
                 this.streamNumber = null;
@@ -269,7 +270,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             }
         }
 
-/*        if (flag==1){
+*//*        if (flag==1){
 
             try {
                 MaterialBlockBarCode mMaterialBlockBarCode =
@@ -309,7 +310,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
 
 
-        }*/
+        }*//*
 
         else if (flag==2){
             //feeder号
@@ -322,8 +323,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 //扫码错误时调用的声音和震动
                 VibratorAndVoiceUtils.correctVibrator(this);
                 VibratorAndVoiceUtils.correctVoice(this);
-/*                Snackbar.make(getCurrentFocus(), "扫描feeder正确，请扫描料站", Snackbar.LENGTH_SHORT).show();
-                textToSpeechManager.readMessage( "扫描feeder正确，请扫描料站");*/
+*//*                Snackbar.make(getCurrentFocus(), "扫描feeder正确，请扫描料站", Snackbar.LENGTH_SHORT).show();
+                textToSpeechManager.readMessage( "扫描feeder正确，请扫描料站");*//*
 
                 SnackbarUtil.showRead(getRootView(this), "扫描feeder正确，请扫描料站",textToSpeechManager);
             } catch (EntityNotFountException e) {
@@ -331,8 +332,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 VibratorAndVoiceUtils.wrongVibrator(this);
                 VibratorAndVoiceUtils.wrongVoice(this);
 
-/*                Snackbar.make(getCurrentFocus(), "请扫描正确的feeder号！", Snackbar.LENGTH_SHORT).show();
-                textToSpeechManager.readMessage( "请扫描正确的feeder号！");*/
+*//*                Snackbar.make(getCurrentFocus(), "请扫描正确的feeder号！", Snackbar.LENGTH_SHORT).show();
+                textToSpeechManager.readMessage( "请扫描正确的feeder号！");*//*
 
                 SnackbarUtil.showRead(getRootView(this), "请扫描正确的feeder号！",textToSpeechManager);
                 e.printStackTrace();
@@ -343,9 +344,9 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
         else if (flag==3){
 
-/*            slot=barcode;
+*//*            slot=barcode;
             flag=0;
-            getPresenter().commitarcoderDate(dataList1.get(0).getPartNumber(),slot,feeder,lines,serialNumber,barcode1);*/
+            getPresenter().commitarcoderDate(dataList1.get(0).getPartNumber(),slot,feeder,lines,serialNumber,barcode1);*//*
 
             //料站
             try {
@@ -360,14 +361,15 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 VibratorAndVoiceUtils.wrongVibrator(this);
                 VibratorAndVoiceUtils.wrongVoice(this);
 
-/*                Snackbar.make(getCurrentFocus(), "请扫描正确的料站！", Snackbar.LENGTH_SHORT).show();
-                textToSpeechManager.readMessage( "请扫描正确的料站！");*/
+*//*                Snackbar.make(getCurrentFocus(), "请扫描正确的料站！", Snackbar.LENGTH_SHORT).show();
+                textToSpeechManager.readMessage( "请扫描正确的料站！");*//*
 
                 SnackbarUtil.showRead(getRootView(this), "请扫描正确的料站！",textToSpeechManager);
                 e.printStackTrace();
             }
 
-        }
+        }*/
+
 
 
 
@@ -375,7 +377,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
 
         /*扫描新旧料盘方式接料*/
-/*        try {
+        try {
             MaterialBlockBarCode mMaterialBlockBarCode =
                     (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
             materialNumber = mMaterialBlockBarCode.getDeltaMaterialNumber();
@@ -383,11 +385,12 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             Log.e(TAG, "onScanSuccess: " + "料号：" + materialNumber);
             Log.e(TAG, "onScanSuccess: " + "流水号：" + streamNumber);
             Log.e(TAG, "onScanSuccess: " + dataList1.get(0).getId());
-
+            Log.e(TAG, "onScanSuccess: "+"第一条料号"+dataList1.get(0).getPartNumber() );
+            Log.e(TAG, "onScanSuccess: "+"第一条流水号"+dataList1.get(0).getSerialNumber() );
             if (materialNumber != null && streamNumber != null) {
                 if (tag == 0) {
-                    if (dataList1.get(0).getPartNumber().equals(materialNumber)
-                            && dataList1.get(0).getSerialNumber().equals(streamNumber)
+                    if (materialNumber.equals(dataList1.get(0).getPartNumber())
+                            && streamNumber.equals(dataList1.get(0).getSerialNumber())
                             ) {
                         tag++;
                         oldSerialNumber = streamNumber;
@@ -410,8 +413,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
                     }
                 } else {
-                    if (dataList1.get(0).getPartNumber().equals(materialNumber)
-                            && !dataList1.get(0).getSerialNumber().equals(streamNumber)) {
+                    if (materialNumber.equals(dataList1.get(0).getPartNumber())
+                            && !streamNumber.equals(dataList1.get(0).getSerialNumber())) {
                         tag = 0;
                         newSerialNumber = streamNumber;
 
@@ -419,7 +422,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         VibratorAndVoiceUtils.correctVibrator(this);
                         VibratorAndVoiceUtils.correctVoice(this);
 
-                        getPresenter().commitSerialNumber(oldSerialNumber, newSerialNumber);
+                        getPresenter().commitSerialNumber(lines,materialNumber,oldSerialNumber, newSerialNumber);
 
                     } else {
 
@@ -447,7 +450,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             materialNumber = null;
             streamNumber = null;
             e.printStackTrace();
-        }*/
+        }
     }
 
     //请求item列表数据
