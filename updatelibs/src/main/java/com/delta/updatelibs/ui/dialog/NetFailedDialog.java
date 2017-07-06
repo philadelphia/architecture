@@ -15,7 +15,6 @@ import com.delta.updatelibs.R;
 public class NetFailedDialog extends AppCompatActivity {
 
     private Button ok;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
