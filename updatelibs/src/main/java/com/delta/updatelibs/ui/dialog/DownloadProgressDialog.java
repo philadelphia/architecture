@@ -148,6 +148,4 @@ public class DownloadProgressDialog extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
-
 }

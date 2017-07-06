@@ -3,7 +3,6 @@ package com.delta.smt.ui.over_receive;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,8 +22,9 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SingleClick;
-import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
@@ -46,8 +45,6 @@ import com.delta.smt.ui.over_receive.di.OverReceiveModule;
 import com.delta.smt.ui.over_receive.mvp.OverReceiveContract;
 import com.delta.smt.ui.over_receive.mvp.OverReceivePresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.delta.commonlibs.utils.ViewUtils;
-import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.widget.WarningDialog;
 import com.google.gson.Gson;
@@ -78,9 +75,9 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Shufeng.Wu on 2017/1/15.
  */
 
-public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> implements OverReceiveContract.View, /*ItemOnclick, */WarningManger.OnWarning, /*扣账代码,勿删*//*CompoundButton.OnCheckedChangeListener,*/ View.OnClickListener {
 
-    public String overReceiveAutomaticDebit = null;
+
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
@@ -89,10 +86,15 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     RecyclerView recyTitle;
     @BindView(R.id.recy_content)
     RecyclerView recyContent;
-    @BindView(R.id.manual_debit)
+
+    //扣账代码,勿删
+    //public String overReceiveAutomaticDebit = null;
+    /*@BindView(R.id.manual_debit)
     AppCompatButton manualDebit;
     @BindView(R.id.automatic_debit)
-    CheckBox automaticDebit;
+    CheckBox automaticDebit;*/
+
+
     @Inject
     WarningManger warningManger;
     String materialBlockNumber = "4020108700";
@@ -107,17 +109,11 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     String vendor = "";
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-
-    /*@BindView(R.id.testSend)
-    AppCompatButton testSend;*/
-    //@BindView(R.id.testSendArrive)
-    //AppCompatButton testSendArrive;
     Timer timer = new Timer();
     int recLen = 0;
     boolean isAllTimerEnd = true;
     @BindView(R.id.showMessage)
     TextView showMessage;
-    //private Barcode barCodeIpml = BarcodeFactory.getJigcode(this);
     private Gson gson = new Gson();
     private CommonBaseAdapter<OverReceiveWarning.RowsBean> adapterTitle;
     private CommonBaseAdapter<OverReceiveWarning.RowsBean> adapter;
@@ -163,8 +159,9 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     protected void initData() {
-        automaticDebit.setOnCheckedChangeListener(this);
-        overReceiveAutomaticDebit = SpUtil.getStringSF(OverReceiveActivity.this, "over_receive_automatic_debit");
+        //扣账代码,勿删
+        //automaticDebit.setOnCheckedChangeListener(this);
+        //overReceiveAutomaticDebit = SpUtil.getStringSF(OverReceiveActivity.this, "over_receive_automatic_debit");
 
         //接收那种预警
         warningManger.addWarning(Constant.EXCESS_ALARM_FLAG, getClass());
@@ -176,12 +173,13 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         warningManger.setOnWarning(this);
 
         getPresenter().getAllOverReceiveItems();
-        //barCodeIpml.setOnGunKeyPressListener(this);
     }
 
     @Override
     protected void initView() {
-        if (overReceiveAutomaticDebit == null) {
+
+        //扣账代码,勿删
+        /*if (overReceiveAutomaticDebit == null) {
             SpUtil.SetStringSF(OverReceiveActivity.this, "over_receive_automatic_debit", "false");
             overReceiveAutomaticDebit = "false";
             automaticDebit.setChecked(false);
@@ -189,7 +187,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
             automaticDebit.setChecked(false);
         } else {
             automaticDebit.setChecked(true);
-        }
+        }*/
 
 
         toolbar.setTitle("");
@@ -357,11 +355,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         });
     }
 
-    /*@Override
-    public void onItemClick(View item, int position) {
-
-    }*/
-
     @OnClick({R.id.manual_debit, R.id.showMessage})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -405,7 +398,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
     @Override
     public void warningComing(String message) {
-        //showDialog(warningMessage);
         Log.e(TAG, "warningComing: " + message);
 
         if (warningDialog == null) {
@@ -467,10 +459,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
 
-        /*if (barCodeIpml.isEventFromBarCode(event)) {
-            barCodeIpml.analysisKeyEvent(event);
-            return true;
-        }*/
         return super.dispatchKeyEvent(event);
     }
 
@@ -478,11 +466,6 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
     protected void onResume() {
         warningManger.registerWReceiver(this);
         super.onResume();
-        /*try {
-            barCodeIpml.hasConnectBarcode();
-        } catch (DevicePairedNotFoundException e) {
-            e.printStackTrace();
-        }*/
     }
 
     public void showDialog(String message) {
@@ -572,11 +555,12 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                     map.put("tc", tc);
                     map.put("inv_no", inv_no);
                     map.put("slot", slot);
-                    if (automaticDebit.isChecked()) {
+                    //扣账代码,勿删
+                    /*if (automaticDebit.isChecked()) {
                         map.put("code", "1");
                     } else {
                         map.put("code", "0");
-                    }
+                    }*/
                     Gson gson = new Gson();
                     String argument = gson.toJson(map);
                     getPresenter().getOverReceiveItemsAfterSend("[" + argument + "]");
@@ -600,7 +584,8 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         }
     }
 
-    @Override
+    //扣账代码,勿删
+    /*@Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView == automaticDebit) {
             if (isChecked) {
@@ -609,7 +594,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                 SpUtil.SetStringSF(OverReceiveActivity.this, "over_receive_automatic_debit", "false");
             }
         }
-    }
+    }*/
 
     private void createCustomPopWindow() {
         mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_bottom_over_receive)/*.enableBlur(true).setStartHeightBlur(100)*/.build();
@@ -701,28 +686,5 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
         rv_debit.setLayoutManager(linearLayoutManager);
         rv_debit.setAdapter(undoList_adapter);
     }
-
-    /*@Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-        }
-    }*/
-
-/*    public void showPopupWindow(View anchor) {
-        if (!mCustomPopWindow.isShowing()) {
-            if (Build.VERSION.SDK_INT < 24) {
-                mCustomPopWindow.showAsDropDown(anchor);
-            } else {
-                // 适配 android 7.0
-                int[] location = new int[2];
-                anchor.getLocationOnScreen(location);
-                int x = location[0];
-                int y = location[1];
-                mCustomPopWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, 0, y + mCustomPopWindow.getHeight() + anchor.getHeight());
-            }
-
-        }
-    }*/
 
 }
