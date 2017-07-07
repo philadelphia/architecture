@@ -214,6 +214,10 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
 
+                if (item.getStatus() == 1){
+                    holder.itemView.setBackgroundColor(Color.GREEN);
+                }
+
             }
 
             @Override

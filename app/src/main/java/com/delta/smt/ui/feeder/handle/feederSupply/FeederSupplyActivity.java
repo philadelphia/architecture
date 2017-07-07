@@ -75,14 +75,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     AutoToolbar toolbar;
     @BindView(R.id.btn_upload)
     Button btnUpload;
-    @BindView(R.id.checkBox)
-    CheckBox checkBox;
+//    @BindView(R.id.checkBox)
+//    CheckBox checkBox;
 
     @BindView(R.id.checkBox_autoUpLoadToMES)
     CheckBox checkBox_autoUpLoadToMES;
 
-    @BindView(R.id.btn_debitManually)
-    Button btn_debitManually;
+//    @BindView(R.id.btn_debitManually)
+//    Button btn_debitManually;
     @BindView(R.id.recy_title)
     RecyclerView recyclerViewTitle;
     @BindView(R.id.recy_content)
@@ -196,7 +196,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_feederID, item.getFeederID());
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_module, item.getSlot());
-                holder.setText(R.id.tv_timestamp, item.getBindTime());
+//                holder.setText(R.id.tv_timestamp, item.getBindTime());
                 holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待上模组" : " 上模组完成");
                 switch (item.getStatus()) {
                     case 0:
@@ -223,7 +223,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     }
 
-    @OnClick({R.id.tv_setting, R.id.btn_upload, R.id.btn_debitManually})
+    @OnClick({R.id.tv_setting, R.id.btn_upload})
     public void onClicks(View view) {
         Map<String, String> map = new HashMap<>();
         Map<String, Object> map_argument = new HashMap<>();
@@ -248,28 +248,28 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 }
                 getPresenter().getUnUpLoadToMESList(GsonTools.createGsonListString(map_argument));
                 break;
-            case R.id.btn_debitManually:    //请求扣账列表
-                if (isBeginSupply) {
-                    if (popUpWindow == null) {
-                        createPopupWindow();
-                    }
-                    map.clear();
-                    map.put("work_order", workId);
-                    map.put("side", side);
-                    map.put("part", "FeederBuffer");
-                    argument = GsonTools.createGsonListString(map);
-                    getPresenter().getUnDebitedItemList(argument);
-                } else {
-                    ToastUtils.showMessage(this, "还未开始发料", Toast.LENGTH_SHORT);
-                }
-                break;
+//            case R.id.btn_debitManually:    //请求扣账列表
+//                if (isBeginSupply) {
+//                    if (popUpWindow == null) {
+//                        createPopupWindow();
+//                    }
+//                    map.clear();
+//                    map.put("work_order", workId);
+//                    map.put("side", side);
+//                    map.put("part", "FeederBuffer");
+//                    argument = GsonTools.createGsonListString(map);
+//                    getPresenter().getUnDebitedItemList(argument);
+//                } else {
+//                    ToastUtils.showMessage(this, "还未开始发料", Toast.LENGTH_SHORT);
+//                }
+//                break;
 
-            case R.id.bt_sheet_cancel:
-                break;
-            case R.id.bt_sheet_select_all:
-                break;
-            case R.id.bt_sheet_confirm:
-                break;
+//            case R.id.bt_sheet_cancel:
+//                break;
+//            case R.id.bt_sheet_select_all:
+//                break;
+//            case R.id.bt_sheet_confirm:
+//                break;
             default:
                 break;
 
@@ -588,7 +588,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             map.put("material_no", mCurrentMaterialNumber);
             map.put("serial_no", mCurrentSerialNumber);
             map.put("work_order", workId);
-            map.put("code", checkBox.isChecked() ? "1" : "0");
+//            map.put("code", checkBox.isChecked() ? "1" : "0");
 
             argument = GsonTools.createGsonListString(map);
             Log.i(TAG, "argument== " + argument);
