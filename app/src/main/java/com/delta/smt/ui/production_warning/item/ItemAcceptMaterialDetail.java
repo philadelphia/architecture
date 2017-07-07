@@ -99,6 +99,7 @@ public class ItemAcceptMaterialDetail {
             private String slot;
             @SerializedName("qty")
             private int quantity;
+            @SerializedName("serial_no")
             private String serialNumber;
             private String unit;
             private String location;

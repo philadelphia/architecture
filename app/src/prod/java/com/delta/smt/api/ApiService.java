@@ -248,7 +248,7 @@ public interface ApiService {
     //提交新旧流水号
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("ams/smm/linealarmfault/connectmaterial")
+    @POST("ams/smm/linealarmfault/doconnectmaterial")
     Observable<Result> commitSerialNumber(@Field("value") String condition);
 
     //请求关灯
