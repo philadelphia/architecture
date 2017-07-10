@@ -631,14 +631,14 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 } catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                     VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                    showMessage.setText("请先扫描料盘码！");
                     showMessage.setVisibility(View.VISIBLE);
+                    showMessage.setText("请先扫描料盘码！");
                     state = 1;
                 } catch (ArrayIndexOutOfBoundsException e) {
                     VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                     VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                    showMessage.setText("请先扫描料盘码！");
                     showMessage.setVisibility(View.VISIBLE);
+                    showMessage.setText("请先扫描料盘码！");
                     state = 1;
                 }
                 break;
@@ -723,6 +723,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             } else {
                 VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
                 VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
+                String slot = getModuleID(materialBlockBarCode);
+                showMessage.setText("模组料站：" +slot );
+                showMessage.setVisibility(View.VISIBLE);
             }
             state = 2;
             Log.i(TAG, "onScanSuccess: " + "开始扫描Feeder");
@@ -804,6 +807,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             }
         }
         return flag;
+    }
+
+    public String getModuleID(MaterialBlockBarCode materialBlockBarCode){
+        for (ModuleUpBindingItem rowsBean : dataSource) {
+            if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())){
+                return rowsBean.getSlot();
+            }
+
+        }
+        return null;
     }
 
 

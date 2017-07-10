@@ -281,6 +281,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Log.i(TAG, "onSuccess: ");
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
         statusLayout.setVisibility(View.VISIBLE);
+        tvModuleID.setVisibility(View.GONE);
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
@@ -613,6 +614,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
             Log.i(TAG, "argument_MES== " + argument);
             if (isMaterialExists(mCurrentMaterial)) {
+                tvModuleID.setVisibility(View.VISIBLE);
                 tvModuleID.setText("料站：" + slot);
                 getPresenter().getFeederInsertionToSlotTimeStamp(argument);
                 getPresenter().upLoadFeederSupplyToMES(argument_MES);
