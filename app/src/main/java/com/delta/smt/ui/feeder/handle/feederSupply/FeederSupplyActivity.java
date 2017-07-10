@@ -613,21 +613,28 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
             Log.i(TAG, "argument_MES== " + argument);
             if (isMaterialExists(mCurrentMaterial)) {
+                tvModuleID.setText("料站：" + slot);
                 getPresenter().getFeederInsertionToSlotTimeStamp(argument);
                 getPresenter().upLoadFeederSupplyToMES(argument_MES);
             } else {
                 ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
+                tvModuleID.setVisibility(View.VISIBLE);
+                tvModuleID.setText("该料盘不存在，请重新扫描料盘");
             }
 
         } catch (EntityNotFountException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
+            tvModuleID.setVisibility(View.VISIBLE);
+            tvModuleID.setText("请扫描料盘");
             Toast.makeText(this, "请扫描料盘", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         } catch (ArrayIndexOutOfBoundsException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
             Toast.makeText(this, "解析错误,请重新扫描", Toast.LENGTH_SHORT).show();
+            tvModuleID.setVisibility(View.VISIBLE);
+            tvModuleID.setText("解析错误,请重新扫描");
         }
 
 
@@ -824,6 +831,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 }
 
                 break;
+
+            case R.id.tv_moduleID:
+                tvModuleID.setVisibility(View.GONE);
             default:
                 break;
         }
