@@ -61,10 +61,15 @@
                             android:textColor="@color/white"
                             android:layout_weight="1"/>
 -->
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="100px"
+                            android:layout_weight="2"/>
+
                         <CheckBox
                             android:id="@+id/checkBox_autoUpLoadToMES"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="100px"
                             android:layout_weight="1"
                             android:text="@string/upLoadToMESAuto" />
 
