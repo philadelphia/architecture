@@ -129,8 +129,8 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                     isAllTimerEnd = true;
                     for (int i = 0; i < dataSource.size(); i++) {
                         try {
-                            int remainTime = Integer.parseInt(dataSource.get(i).getRemain_time());
-                            if (remainTime > 0) {
+                            double remainTime = Double.parseDouble(dataSource.get(i).getRemain_time());
+                            if (remainTime > 1) {
                                 isAllTimerEnd = false;
                                 dataSource.get(i).setRemain_time((remainTime - 1) + "");
                             }
@@ -233,7 +233,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                 sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
                 try {
-                    long beginDate = Long.parseLong(item.getRemain_time()) * 1000;
+                    long beginDate = (long) Double.parseDouble(item.getRemain_time()) * 1000;
                     String sd = sdf.format(new Date(beginDate));
                     holder.setText(R.id.tv_materialRemainingUsageTime, sd);
                 } catch (Exception e) {
@@ -242,12 +242,16 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
 
                 if ("4".equals(item.getStatus())) {
                     holder.setText(R.id.tv_state, "等待超领发料");
+                    holder.itemView.setBackgroundColor(Color.WHITE);
                 } else if ("5".equals(item.getStatus())) {
                     holder.setText(R.id.tv_state, "正在超领发料");
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
                 } else if ("6".equals(item.getStatus())) {
                     holder.setText(R.id.tv_state, "等待送到产线");
+                    holder.itemView.setBackgroundColor(Color.GREEN);
                 } else {
                     holder.setText(R.id.tv_state, item.getStatus());
+                    holder.itemView.setBackgroundColor(Color.WHITE);
                 }
 
             }
