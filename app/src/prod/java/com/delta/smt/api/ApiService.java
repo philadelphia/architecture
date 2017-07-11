@@ -601,16 +601,17 @@ public interface ApiService {
 
     //liuzhenyu
     //尾数仓退入主仓库
-    @GET("ams/smm/mantowareh/queryreturnedwarehlist")
+    @GET("ams/smm/warehouse/backing/materials")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
 
     //点击清理按钮
-    @GET("ams/smm/mantowareh/triggerlistupdate")
+    @PUT("ams/smm/warehouse/backing/materials")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
     //点击开始绑定
-
-    @PUT("ams/smm/mantowareh/startbound")
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/mantowareh/startbound")
     Observable<MantissaWarehousePutstorageResult> getOnclickBeginButton();
 
     //尾数仓点击开始入库

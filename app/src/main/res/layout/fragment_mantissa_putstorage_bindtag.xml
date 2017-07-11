@@ -35,24 +35,9 @@
             android:textColor="@color/c_ffffff"
             android:layout_marginRight="30px"
             android:layout_marginLeft="10px"
-            android:text="开始入库"
-            android:textSize="40px"
-            />
-
-        <Button
-            android:id="@+id/begin"
-            android:background="@color/background"
-            android:textColor="@color/c_ffffff"
-            android:layout_marginLeft="30px"
-            android:layout_marginTop="30px"
-            android:layout_marginBottom="30px"
-            android:layout_width="wrap_content"
-            android:layout_height="100px"
             android:text="开始绑定"
             android:textSize="40px"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/deduct"
-            android:layout_toStartOf="@+id/deduct"/>
+            />
 
 
     </RelativeLayout>
