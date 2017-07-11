@@ -155,7 +155,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
             protected void convert(CommonViewHolder holder, OutBound.DataBean item, int position) {
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.setText(R.id.pcb_number, item.getPartNum());
-                holder.setText(R.id.pcb_price, item.getSubShelfSerial());
+                holder.setText(R.id.pcb_price, item.getLabelCode());
                 holder.setText(R.id.pcb_thenumber, "" + item.getCount());
                 if (item.getCount() != 0) {
                     mSingleAmout = item.getCount();
@@ -311,6 +311,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     @Override
     public void onCloseLightSucces(String s) {
         status=0;
+        ToastUtils.showMessage(this, s);
 
     }
 

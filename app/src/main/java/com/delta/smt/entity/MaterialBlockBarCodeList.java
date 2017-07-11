@@ -31,14 +31,14 @@ public class MaterialBlockBarCodeList {
         String invoiceNum;//发票编号
 
 
-        String subShelfCode;
+        String labelCode;
 
         public String getSubShelfCode() {
-            return subShelfCode;
+            return labelCode;
         }
 
-        public void setSubShelfCode(String subShelfCode) {
-            this.subShelfCode = subShelfCode;
+        public void setSubShelfCode(String labelCode) {
+            this.labelCode = labelCode;
         }
 
         public String getSerial() {

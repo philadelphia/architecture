@@ -70,7 +70,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
     @Override
     public void loginSucess() {
-
         startActivity(new Intent(this, MainActivity.class));
     }
 

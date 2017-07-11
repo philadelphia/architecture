@@ -1,6 +1,7 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.entity.AddSuccess;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
@@ -399,21 +400,33 @@ public interface ApiService {
     @GET("ams/pcb/inventory/alteration/judge")
     Observable<Success> getJudgeSuccsee(@Query("condition") String boxSerial);
 
+
+    // TODO: 2017-05-26 查找是否存在
     @GET("ams/pcb/inventory/submit")
-        // TODO: 2017-05-26 查找是否存在
-    Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
+    Observable<Success> getSubmit(@Query("labelCode") String boxSerial);//发送盘点结果
 
 
     Observable<String> getCheckStockSuccess();//是否成功?
 
     @GET("ams/pcb/subshelf")
-    Observable<LedLight> getSubshelf(@Query("shelfSerial") String s);
+    Observable<LedLight> getSubshelf(@Query("labelCode") String s);
 
     @GET("ams/pcb/subshelf/update")
     Observable<Success> getUpdate(@Query("id") String id, @Query("lightSerial") String lightSerial);
 
     @GET("ams/pcb/subshelf/unbound")
     Observable<Success> getUnbound(@Query("param") String id);
+
+
+    //新接口
+
+    //判断标签是否重复
+    @GET("ams/pcb/management/serial")
+    Observable<AddSuccess> isBoxSerialExist(@Query("condition") String boxSerial);
+    //判断标签是否在库存
+    @GET("ams/pcb/management/label")
+    Observable<AddSuccess> isLabelExist(@Query("condition") String labelCode);
+
 
 
     //Observable<List<MantissaWarehousePutstorage>> getBeginput();
