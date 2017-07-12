@@ -234,7 +234,6 @@ public class MantissaWarehousePutstorageFragment extends
         currentStep = begin;
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
-        Toast.makeText(baseActiviy, "可以开始绑定！", Toast.LENGTH_SHORT).show();
 
         if (dataList2.size() == 0) {
             return;
@@ -271,6 +270,7 @@ public class MantissaWarehousePutstorageFragment extends
         onclickBegingButton = 1;
         currentStep = end;
         mBegin.setEnabled(false);
+        Toast.makeText(baseActiviy, "可以开始绑定！", Toast.LENGTH_SHORT).show();
        // mBegin.setBackgroundColor(getResources().getColor(R.color.c_cfcfcf));
     }
 
@@ -448,6 +448,7 @@ public class MantissaWarehousePutstorageFragment extends
                 break;
             case 2:
                 try {
+
 
                     LabelBarcode lableBar = (LabelBarcode) barCodeParseIpml.getEntity(barcode, BarCodeType.LABLE_BARCODE);
                     lableBarCode = lableBar.getSource();

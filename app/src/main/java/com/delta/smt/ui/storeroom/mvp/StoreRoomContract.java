@@ -2,6 +2,7 @@ package com.delta.smt.ui.storeroom.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.AddSuccess;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.Success;
 
@@ -23,11 +24,17 @@ public class StoreRoomContract {
         void showContentView();
         void showErrorView();
         void showEmptyView();
+        void isBoxSerialExistSuccess();
+        void isLabelExistSuccess();
+        void onFaild(String s);
 
     }
     public interface Model extends IModel{
         Observable<String>getStoreRoomSuccess();
         Observable<Light> OnLight(String s);
         Observable<Success> PutInStorage(String s);
+        Observable<AddSuccess> isBoxSerialExist(String boxSerial);
+        Observable<AddSuccess> isLabelExist(String labelCode);
+
     }
 }

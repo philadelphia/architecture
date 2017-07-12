@@ -31,7 +31,7 @@ import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
 import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.maintain.PCBMaintainActivity;
-import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
+import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
 import com.delta.smt.ui.over_receive.OverReceiveActivity;
 import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;

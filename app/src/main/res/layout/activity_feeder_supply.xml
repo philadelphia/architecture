@@ -44,7 +44,7 @@
                         android:orientation="horizontal"
                         android:weightSum="4">
 
-                        <CheckBox
+                       <!-- <CheckBox
                             android:id="@+id/checkBox"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -60,11 +60,16 @@
                             android:text="@string/debitManually"
                             android:textColor="@color/white"
                             android:layout_weight="1"/>
+-->
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="100px"
+                            android:layout_weight="2"/>
 
                         <CheckBox
                             android:id="@+id/checkBox_autoUpLoadToMES"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="100px"
                             android:layout_weight="1"
                             android:text="@string/upLoadToMESAuto" />
 
@@ -125,9 +130,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
+        android:layout_gravity="bottom|left"
+        android:visibility="gone"
         android:alpha="10"
+        android:paddingBottom="40px"
+        android:paddingLeft="10px"
+        android:paddingRight="10px"
+        android:paddingTop="40px"
         android:background="@android:color/black"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:textColor="@android:color/white" />
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.delta.smt.ui.storeroom.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.AddSuccess;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.Success;
 
@@ -31,5 +32,15 @@ public class StoreRoomModel extends BaseModel<ApiService> implements StoreRoomCo
     @Override
     public Observable<Success> PutInStorage(String s) {
         return getService().putInStorage(s).compose(RxsRxSchedulers.<Success>io_main());
+    }
+
+    @Override
+    public Observable<AddSuccess> isBoxSerialExist(String boxSerial) {
+        return getService().isBoxSerialExist(boxSerial).compose(RxsRxSchedulers.<AddSuccess>io_main());
+    }
+
+    @Override
+    public Observable<AddSuccess> isLabelExist(String labelCode) {
+        return getService().isLabelExist(labelCode).compose(RxsRxSchedulers.<AddSuccess>io_main());
     }
 }

@@ -106,26 +106,26 @@ public class OnGoing {
         }
 
         public static class CompletedSubShelfBean {
-            private String subshelf;
+            private String labelCode;
             private String shelf;
             private String floor;
             private String height;
             private int status;
 
             public String getSubshelf() {
-                return subshelf;
+                return labelCode;
             }
 
-            public void setSubshelf(String subshelf) {
-                this.subshelf = subshelf;
+            public void setSubshelf(String labelCode) {
+                this.labelCode = labelCode;
             }
 
-            public String getShelf() {
-                return shelf;
+            public String getLabelCode() {
+                return labelCode;
             }
 
-            public void setShelf(String shelf) {
-                this.shelf = shelf;
+            public void setLabelCode(String labelCode) {
+                this.labelCode = labelCode;
             }
 
             public String getFloor() {

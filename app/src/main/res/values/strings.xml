@@ -83,7 +83,7 @@
     <string name="Status">状态</string>
     <string name="TurnNumber">序号</string>
     <string name="AreReady">准备就绪</string>
-    <string name="storage_submit">确认点灯</string>
+    <string name="storage_submit">确认入库</string>
     <string name="storage_clear"> 取&#160;消&#160; </string>
     <string name="title_storehint">提示</string>
     <string name="storehint">您确认要进行点灯操作吗？</string>
@@ -125,9 +125,13 @@
     <string name="debit_hand">手动扣账</string>
     <string name="debit_auto">自动扣账</string>
     <string name="crash_toast_text">程序崩溃，已上传服务器</string>
+    <string name="crash_dialog_text">程序崩溃</string>
     <string name="bindMatericalcar">绑定备料车</string>
     <string name="upload">上传</string>
     <string name="debitManually">手动扣账</string>
     <string name="upLoadToMESAuto">自动上传到MES</string>
+    <string name="password">Password</string>
+    <string name="user">User</string>
+    <string name="ji">记住密码</string>
 
 </resources>

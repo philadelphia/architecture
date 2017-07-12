@@ -95,7 +95,7 @@ public class PCBMaintainActivity extends BaseActivity<PCBMaintainPresenter> impl
             @Override
             protected void convert(CommonViewHolder holder, LedLight.RowsBean item, int position) {
                 holder.setText(R.id.pcbmaintain_number, "" + (position + 1));
-                holder.setText(R.id.pcbmaintain_framelocation, item.getSubshelfSerial());
+                holder.setText(R.id.pcbmaintain_framelocation, item.getLabelCode());
                 if (item.getLightSerial() == null && "".equals(item.getLightSerial())) {
                     holder.setText(R.id.pcbmaintain_Led, "");
                 } else {
