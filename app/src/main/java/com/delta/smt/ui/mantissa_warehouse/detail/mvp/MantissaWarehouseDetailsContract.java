@@ -37,6 +37,8 @@ public interface MantissaWarehouseDetailsContract {
         Observable<Result<DebitData>> deduction(String mS);
 
         Observable getDebitDataList(String mS);
+
+        Observable<Result> changecarshelf(String mGsonListString);
     }
 
     interface View extends IView {
@@ -79,5 +81,9 @@ public interface MantissaWarehouseDetailsContract {
         void getDebitDataSuccess(List<DebitData> mDebitDataResult);
 
         void getDebitDataFailed(String mMessage);
+
+        void changecarshelfSuccess(String mMessage);
+
+        void changecarshelfFailed(String mMessage);
     }
 }

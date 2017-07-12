@@ -696,6 +696,11 @@ public interface ApiService {
     @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
     Observable<Result> jumpOver(@Field("value") String bind);
 
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
+    Observable<Result> changecarshelf(@Field("value") String mGsonListString);
+
 
     //@GET("SMM/unplugmod/getModNumByMaterial")
     //Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num, @Query("workOrderNum") String num);
