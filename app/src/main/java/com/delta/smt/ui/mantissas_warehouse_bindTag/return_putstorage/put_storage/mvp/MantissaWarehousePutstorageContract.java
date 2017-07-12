@@ -2,6 +2,7 @@ package com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.put_stora
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.MantissaWarehousePutstorageBindTagResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 
 import java.util.List;
@@ -21,7 +22,9 @@ public interface MantissaWarehousePutstorageContract {
 
         Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
-        Observable<MantissaWarehousePutstorageResult> getbeginput();
+        Observable<MantissaWarehousePutstorageBindTagResult> getbeginput(String str);
+
+        Observable<MantissaWarehousePutstorageBindTagResult> bindMaterialCar(String str);
 
         Observable<MantissaWarehousePutstorageResult> getBingingLable(String str);
 
@@ -50,8 +53,11 @@ public interface MantissaWarehousePutstorageContract {
         void getYesokFailed(String message);
 
 
-        void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void getBeginSucess(MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag mantissaWarehousePutstorages);
         void getBeginFailed(String message);
+
+        void bindMaterialCarSucess(MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag mantissaWarehousePutstorages);
+        void bindMaterialCarFailed(String message);
 
         void getBingingLableSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getBingingLableFailed(String message);

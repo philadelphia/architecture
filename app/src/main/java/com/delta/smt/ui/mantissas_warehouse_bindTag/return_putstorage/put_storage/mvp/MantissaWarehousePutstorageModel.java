@@ -3,6 +3,7 @@ package com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.put_stora
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.MantissaWarehousePutstorageBindTagResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 
 import rx.Observable;
@@ -29,8 +30,13 @@ public class MantissaWarehousePutstorageModel extends BaseModel<ApiService> impl
     }
 
     @Override
-    public Observable<MantissaWarehousePutstorageResult> getbeginput() {
-        return getService().getbeginPut().compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+    public Observable<MantissaWarehousePutstorageBindTagResult> getbeginput(String str) {
+        return getService().getbeginPut(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageBindTagResult>io_main());
+    }
+
+    @Override
+    public Observable<MantissaWarehousePutstorageBindTagResult> bindMaterialCar(String str) {
+        return getService().bindMantissaWarehouseCar(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageBindTagResult>io_main());
     }
 
     @Override

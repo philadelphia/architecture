@@ -28,6 +28,7 @@ import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
+import com.delta.smt.entity.MantissaWarehousePutstorageBindTagResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
@@ -615,8 +616,18 @@ public interface ApiService {
     Observable<MantissaWarehousePutstorageResult> getOnclickBeginButton();
 
     //尾数仓点击开始入库
-    @PUT("ams/smm/mantowareh/startreturnedwareh")
-    Observable<MantissaWarehousePutstorageResult> getbeginPut();
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/warehouse/backing")
+    Observable<MantissaWarehousePutstorageBindTagResult> getbeginPut(@Field("value") String parm);
+
+    //尾数仓绑定入库车
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/warehouse/backing/car")
+    Observable<MantissaWarehousePutstorageBindTagResult> bindMantissaWarehouseCar(@Field("value") String parm);
+
+
 
     //尾数仓点击开始入库上架位完成
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -625,7 +636,6 @@ public interface ApiService {
     Observable<MantissaWarehousePutstorageResult> getUpLocation(@Field("value") String bind);
 
     //确定点击下一个架位
-
     @PUT("ams/smm/mantowareh/surenextshelf")
     Observable<MantissaWarehousePutstorageResult> getYesNext();
 

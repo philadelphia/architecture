@@ -11,11 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.FrameLocation;
+import com.delta.buletoothio.barcode.parse.entity.AddMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.LabelBarcode;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
@@ -29,10 +30,11 @@ import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.MantissaWarehousePutstorageBindTagCarResult;
+import com.delta.smt.entity.MantissaWarehousePutstorageBindTagResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.PutBarCode;
 import com.delta.smt.entity.UpLocation;
-import com.delta.smt.entity.WarehousePutstorageBean;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.put_storage.di.DaggerMantissaWarehousePutstorageComponent;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.put_storage.di.MantissaWarehousePutstorageModule;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.put_storage.mvp.MantissaWarehousePutstorageContract;
@@ -69,19 +71,28 @@ public class MantissaWarehousePutstorageFragment extends
     Button mBtNext;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
+    @BindView(R.id.number)
+    TextView mNumber;
+    @BindView(R.id.car)
+    TextView mCar;
+    @BindView(R.id.bt_submit)
+    Button mBtSubmit;
 
     private List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> dataList = new ArrayList();
     private List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter;
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> adapter2;
+    private List<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList> beginStoragedataList = new ArrayList();
+    private List<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList> beginStoragedataList2 = new ArrayList();
+    private CommonBaseAdapter<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList> beginStorageadapter;
+    private CommonBaseAdapter<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList> beginStorageadapter2;
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> StartStorageAdapter;
     private BaseActivity baseActiviy;
-    private int flag = 1;
+    private int flag = 0;
     private String materialNumber;
     private String lableBarCode;
     private String serialNum;
     private String count;
-    private String lastLocation;
     private AlertDialog dialog;
     private boolean bl_shelf_no;
 
@@ -226,16 +237,15 @@ public class MantissaWarehousePutstorageFragment extends
 
 
     @Override
-    public void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages) {
-        dataList2.clear();
+    public void getBeginSucess(MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag mantissaWarehousePutstorageBindTags) {
+        beginStoragedataList2.clear();
         currentStep = begin;
-        dataList2.addAll(mantissaWarehousePutstorages);
-        adapter2.notifyDataSetChanged();
+        List<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList> storageBind = mantissaWarehousePutstorageBindTags.getStorageBind();
+        beginStoragedataList2.addAll(storageBind);
+        mNumber.setText("入库单号: " + mantissaWarehousePutstorageBindTags.getStorageNum());
+        beginStorageadapter2.notifyDataSetChanged();
+        flag = 1;
 
-        if (dataList2.size() == 0) {
-            return;
-        }
-        firstMaterialNumber = dataList2.get(0).getMaterial_no();
     }
 
     @Override
@@ -243,6 +253,19 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.clear();
         currentStep = end;
         SnackbarUtil.showMassage(mRecyContetn, message);
+    }
+
+    @Override
+    public void bindMaterialCarSucess(MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag mantissaWarehousePutstorages) {
+        mantissaWarehousePutstorages.getCarName();
+        mCar.setText("入库车: " + mantissaWarehousePutstorages.getCarName());
+        flag = 2;
+        Toast.makeText(baseActiviy, "已绑定入库车", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void bindMaterialCarFailed(String message) {
+        Toast.makeText(baseActiviy, message, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -267,7 +290,7 @@ public class MantissaWarehousePutstorageFragment extends
         onclickBegingButton = 1;
         currentStep = end;
         Toast.makeText(baseActiviy, "可以开始绑定！", Toast.LENGTH_SHORT).show();
-       // mBegin.setBackgroundColor(getResources().getColor(R.color.c_cfcfcf));
+        // mBegin.setBackgroundColor(getResources().getColor(R.color.c_cfcfcf));
     }
 
     @Override
@@ -300,7 +323,7 @@ public class MantissaWarehousePutstorageFragment extends
     }
 
 
-    @OnClick({R.id.clean, R.id.deduct, R.id.bt_ok, R.id.bt_next})
+    @OnClick({R.id.clean, R.id.deduct, R.id.bt_ok, R.id.bt_next, R.id.bt_submit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.clean:
@@ -308,8 +331,12 @@ public class MantissaWarehousePutstorageFragment extends
                 break;
             case R.id.deduct:
 
-                    beginStorage();
-
+                getPresenter().getBeginPut("");
+                beginStorage();
+                mClean.setVisibility(View.GONE);
+                mDeduct.setVisibility(View.GONE);
+                mNumber.setVisibility(View.VISIBLE);
+                mCar.setVisibility(View.VISIBLE);
 
                 break;
 
@@ -323,10 +350,11 @@ public class MantissaWarehousePutstorageFragment extends
                 alertOKdialog();
 
                 break;
-            case R.id.begin:
+            case R.id.bt_submit:
 
-                getPresenter().getonclickBeginButton();
+
                 break;
+
         }
     }
 
@@ -400,29 +428,12 @@ public class MantissaWarehousePutstorageFragment extends
         switch (flag) {
             case 1:
                 try {
-                    if (onclickBegingButton == 1) {
-                        //尾数仓架位
-                        bl_shelf_no = false;
-                        LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
-                        lastLocation = lastMaterialCar.getSource();
-                        for (int i = 0; i < dataList2.size(); i++) {
-                            if (lastLocation.equals(dataList2.get(i).getShelf_no())) {
-                                bl_shelf_no = true;
-                            }
-                        }
-                        if (bl_shelf_no == true) {
-                            flag = 2;
-                            Toast.makeText(baseActiviy, "已扫描架位", Toast.LENGTH_SHORT).show();
-                            setItemHighLightBasedOnMID(lastLocation);
-                        } else {
-                            SnackbarUtil.showMassage(mRecyContetn, "暂无此架位！");
-                        }
-
-                    } else {
-                        SnackbarUtil.showMassage(mRecyContetn, "请先点击绑定！");
-                    }
-                } catch (EntityNotFountException e) {
-                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描架位！");
+                    AddMaterialCar Car = (AddMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.ADD_MATERIAL_CAR);
+                    String MaterialCar = Car.getSource();
+                    MantissaWarehousePutstorageBindTagCarResult carname = new MantissaWarehousePutstorageBindTagCarResult(MaterialCar);
+                    getPresenter().bindMaterialCar(GsonTools.createGsonListString(carname));
+                }catch (EntityNotFountException e){
+                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描入库车！");
                 }
                 break;
             case 2:
@@ -432,25 +443,22 @@ public class MantissaWarehousePutstorageFragment extends
                     LabelBarcode lableBar = (LabelBarcode) barCodeParseIpml.getEntity(barcode, BarCodeType.LABLE_BARCODE);
                     lableBarCode = lableBar.getSource();
 
-                    WarehousePutstorageBean bindBean = new WarehousePutstorageBean(lastLocation, lableBarCode);
+                    //WarehousePutstorageBean bindBean = new WarehousePutstorageBean(lastLocation, lableBarCode);
 
-                    getPresenter().getBindingLabel(GsonTools.createGsonListString(bindBean));
+                   // getPresenter().getBindingLabel(GsonTools.createGsonListString(bindBean));
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
                     //SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描标签！");
 
                     bl_shelf_no = false;
                     LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
-                    lastLocation = lastMaterialCar.getSource();
+                   // lastLocation = lastMaterialCar.getSource();
                     for (int i = 0; i < dataList2.size(); i++) {
-                        if (lastLocation.equals(dataList2.get(i).getShelf_no())) {
-                            bl_shelf_no = true;
-                        }
                     }
                     if (bl_shelf_no == true) {
                         flag = 2;
                         Toast.makeText(baseActiviy, "已扫描架位", Toast.LENGTH_SHORT).show();
-                        setItemHighLightBasedOnMID(lastLocation);
+
                     } else {
                         SnackbarUtil.showMassage(mRecyContetn, "暂无此架位！");
                     }
@@ -483,13 +491,6 @@ public class MantissaWarehousePutstorageFragment extends
                 } catch (EntityNotFountException e) {
                     SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
                 }
-
-                break;
-
-            case 4:
-
-                FrameLocation frameLocation = (FrameLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.FRAME_LOCATION);
-                String mainStore = frameLocation.getSource();
 
                 break;
 
@@ -563,27 +564,27 @@ public class MantissaWarehousePutstorageFragment extends
     }
 
     public void beginStorage() {
-        dataList.clear();
-        dataList.add(new MantissaWarehousePutstorageResult.MantissaWarehousePutstorage("", "", "", "", ""));
-        adapter = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getContext(), dataList) {
+        beginStoragedataList.clear();
+        beginStoragedataList.add(new MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList("", "", "", ""));
+        beginStorageadapter = new CommonBaseAdapter<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList>(getContext(), beginStoragedataList) {
             @Override
-            protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item, int position) {
+            protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList item, int position) {
                 holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item) {
+            protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList item) {
                 return R.layout.mantissa_beginputstorage_item;
             }
         };
         mRecyTitle.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyTitle.setAdapter(adapter);
+        mRecyTitle.setAdapter(beginStorageadapter);
 
 
-        dataList2.clear();
-        adapter2 = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getContext(), dataList2) {
+        beginStoragedataList2.clear();
+        beginStorageadapter2 = new CommonBaseAdapter<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList>(getContext(), beginStoragedataList2) {
             @Override
-            protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item, int position) {
+            protected void convert(CommonViewHolder holder, MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList item, int position) {
                 if (scan_position == -1) {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 } else if (scan_position == position) {
@@ -591,20 +592,20 @@ public class MantissaWarehousePutstorageFragment extends
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
-                holder.setText(R.id.tv_number, item.getMaterial_no());
-                holder.setText(R.id.tv_to_shelf_no, item.getTo_shelf_no());
-                holder.setText(R.id.tv_tag, item.getLabel_name());
-                holder.setText(R.id.tv_count, item.getNum());
+                holder.setText(R.id.tv_number, item.getMaterialNo());
+                holder.setText(R.id.tv_count, item.getMaterialTotal());
+                holder.setText(R.id.tv_tag, item.getMoveLabel());
+                holder.setText(R.id.tv_shelf_no, item.getShelf());
 
             }
 
             @Override
-            protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageResult.MantissaWarehousePutstorage item) {
+            protected int getItemViewLayoutId(int position, MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList item) {
                 return R.layout.mantissa_beginputstorage_item;
             }
         };
         mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mRecyContetn.setAdapter(adapter2);
+        mRecyContetn.setAdapter(beginStorageadapter2);
 
     }
 
@@ -620,6 +621,7 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void showErrorView() {
+        mBtSubmit.setVisibility(View.GONE);
         statusLayout.showErrorView();
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
@@ -632,6 +634,7 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void showEmptyView() {
+        mBtSubmit.setVisibility(View.GONE);
         statusLayout.showEmptyView();
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
@@ -641,6 +644,5 @@ public class MantissaWarehousePutstorageFragment extends
         });
 
     }
-
 
 }

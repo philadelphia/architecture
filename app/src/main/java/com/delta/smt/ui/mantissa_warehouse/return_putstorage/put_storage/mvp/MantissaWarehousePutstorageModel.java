@@ -30,7 +30,8 @@ public class MantissaWarehousePutstorageModel extends BaseModel<ApiService> impl
 
     @Override
     public Observable<MantissaWarehousePutstorageResult> getbeginput() {
-        return getService().getbeginPut().compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+       // return getService().getbeginPut().compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+        return  null;
     }
 
     @Override
