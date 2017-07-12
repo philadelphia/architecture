@@ -55,7 +55,7 @@ public class LedLight {
     public static class RowsBean {
         private int id;
         private String shelfSerial;
-        private String subshelfSerial;
+        private String labelCode;
         private String lightSerial;
         private String code;
         private int height;
@@ -111,12 +111,12 @@ public class LedLight {
             this.shelfSerial = shelfSerial;
         }
 
-        public String getSubshelfSerial() {
-            return subshelfSerial;
+        public String getLabelCode() {
+            return labelCode;
         }
 
-        public void setSubshelfSerial(String subshelfSerial) {
-            this.subshelfSerial = subshelfSerial;
+        public void setLabelCode(String labelCode) {
+            this.labelCode = labelCode;
         }
 
         public String getLightSerial() {

@@ -6,6 +6,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.utils.GsonTools;
+import com.delta.smt.entity.AddSuccess;
 import com.delta.smt.entity.Light;
 import com.delta.smt.entity.MaterialBlockBarCodeList;
 import com.delta.smt.entity.Success;
@@ -129,6 +130,8 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             codefo.setCount(materialBlockBarCodes.get(i).getCount());
             codefo.setVender(materialBlockBarCodes.get(i).getVendor());
             codefo.setUnit(materialBlockBarCodes.get(i).getUnit());
+            codefo.setPurchaseOrder(materialBlockBarCodes.get(i).getPO());
+            codefo.setTradingNum(materialBlockBarCodes.get(i).getBusinessCode());
             codefo.setInvoiceNum(materialBlockBarCodes.get(i).getInvNo());
             codefo.setSubShelfCode(s);
             list.add(codefo);
@@ -162,4 +165,60 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
             }
         });
     }
+
+    public void isBoxSerialExist(String boxseral){
+        getModel().isBoxSerialExist(boxseral).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<AddSuccess>() {
+            @Override
+            public void call(AddSuccess success) {
+            getView().showContentView();
+                if (success.getCode()==0){
+                    getView().isBoxSerialExistSuccess();
+                }else{
+                    getView().onFaild(success.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                Log.i("info",throwable.getMessage().toString());
+                try{
+                    getView().showErrorView();
+                    getView().onFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){}
+            }
+        });
+    }
+
+    public void isLabelExist(String lable){
+        getModel().isLabelExist(lable).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<AddSuccess>() {
+            @Override
+            public void call(AddSuccess success) {
+                getView().showContentView();
+                if (success.getCode()==0) {
+                   getView().isLabelExistSuccess();
+                }else{
+                    getView().onFaild(success.getMessage());
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try{
+                    getView().showErrorView();
+                    getView().onFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");
+                }catch (Exception e){}
+            }
+        });
+    }
+
 }

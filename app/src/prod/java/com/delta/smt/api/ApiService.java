@@ -1,6 +1,7 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.entity.AddSuccess;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
@@ -59,6 +60,12 @@ import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineItem;
 import com.delta.smt.entity.WareHouse;
+import com.delta.smt.entity.bindmaterial.BindCarBean;
+import com.delta.smt.entity.bindmaterial.BindLabelBean;
+import com.delta.smt.entity.bindmaterial.FinishPda;
+import com.delta.smt.entity.bindmaterial.ScanMaterialPanBean;
+import com.delta.smt.entity.bindmaterial.StartStoreBean;
+import com.delta.smt.entity.bindmaterial.WheatherBindStart;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
@@ -399,21 +406,33 @@ public interface ApiService {
     @GET("ams/pcb/inventory/alteration/judge")
     Observable<Success> getJudgeSuccsee(@Query("condition") String boxSerial);
 
+
+    // TODO: 2017-05-26 查找是否存在
     @GET("ams/pcb/inventory/submit")
-        // TODO: 2017-05-26 查找是否存在
-    Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
+    Observable<Success> getSubmit(@Query("labelCode") String boxSerial);//发送盘点结果
 
 
     Observable<String> getCheckStockSuccess();//是否成功?
 
     @GET("ams/pcb/subshelf")
-    Observable<LedLight> getSubshelf(@Query("shelfSerial") String s);
+    Observable<LedLight> getSubshelf(@Query("labelCode") String s);
 
     @GET("ams/pcb/subshelf/update")
     Observable<Success> getUpdate(@Query("id") String id, @Query("lightSerial") String lightSerial);
 
     @GET("ams/pcb/subshelf/unbound")
     Observable<Success> getUnbound(@Query("param") String id);
+
+
+    //新接口
+
+    //判断标签是否重复
+    @GET("ams/pcb/management/serial")
+    Observable<AddSuccess> isBoxSerialExist(@Query("condition") String boxSerial);
+    //判断标签是否在库存
+    @GET("ams/pcb/management/label")
+    Observable<AddSuccess> isLabelExist(@Query("condition") String labelCode);
+
 
 
     //Observable<List<MantissaWarehousePutstorage>> getBeginput();
@@ -696,6 +715,27 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
     Observable<Result> jumpOver(@Field("value") String bind);
+
+    /**
+     * 仓库入库相关的Api
+     */
+    @GET("/ams/smm/warehouse/storage")
+    Observable<WheatherBindStart> wheatherBindStart();
+
+    @POST("/ams/smm/warehouse/storage")
+    Observable<StartStoreBean> startStore();
+
+    @POST("/ams/smm/warehouse/storage/car")
+    Observable<BindCarBean> bindCar(@Query("value") String carName);
+
+    @POST("/ams/smm/warehouse/storage/materials")
+    Observable<ScanMaterialPanBean> scanMatePan(@Query("value") String materialPan);
+
+    @POST("ams/smm/warehouse/storage/label")
+    Observable<BindLabelBean> bindLabel(@Query("value") String moveLabel);
+
+    @PUT("/ams/smm/warehouse/storage")
+    Observable<FinishPda> finishedPda();
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")
