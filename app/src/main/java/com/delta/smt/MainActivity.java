@@ -43,6 +43,7 @@ import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
 import com.delta.smt.ui.storage_manger.storage_select.StorageSelectActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
 import com.delta.smt.ui.storeroom.StoreRoomActivity;
+import com.delta.smt.ui.warehouse.BindMaterialCarActivity;
 import com.delta.smt.ui.warningSample.WarningSampleActivity;
 import com.delta.updatelibs.UpdateUtils;
 
@@ -139,6 +140,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         functionList.add(new Function("治具归还", R.drawable.ic_thereturn));
         functionList.add(new Function("手补件", R.drawable.ic_handpatch));
         functionList.add(new Function("品管确认", R.drawable.ic_quality));
+        functionList.add(new Function("仓库入库", R.drawable.ic_quality));
        // functionList.add(new Function("warningSample", R.drawable.title));
     }
     private void checkTTS() {
@@ -219,6 +221,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 bundle = new Bundle();
                 bundle.putInt(Constant.SELECT_TYPE, 3);
                 IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
+                break;
+            case "仓库入库":
+                bundle = new Bundle();
+                IntentUtils.showIntent(this, BindMaterialCarActivity.class, bundle);
                 break;
             default:
                 break;

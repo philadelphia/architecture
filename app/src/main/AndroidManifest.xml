@@ -222,6 +222,8 @@
             android:launchMode="singleInstance"
             android:taskAffinity=""
             android:theme="@style/NoTitle" />
+        <!--仓库入库-->
+        <activity android:name=".ui.warehouse.BindMaterialCarActivity"/>
 
     </application>
 

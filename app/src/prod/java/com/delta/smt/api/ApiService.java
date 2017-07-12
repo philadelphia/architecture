@@ -61,6 +61,12 @@ import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineItem;
 import com.delta.smt.entity.WareHouse;
+import com.delta.smt.entity.bindmaterial.BindCarBean;
+import com.delta.smt.entity.bindmaterial.BindLabelBean;
+import com.delta.smt.entity.bindmaterial.FinishPda;
+import com.delta.smt.entity.bindmaterial.ScanMaterialPanBean;
+import com.delta.smt.entity.bindmaterial.StartStoreBean;
+import com.delta.smt.entity.bindmaterial.WheatherBindStart;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
@@ -719,6 +725,27 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
     Observable<Result> jumpOver(@Field("value") String bind);
+
+    /**
+     * 仓库入库相关的Api
+     */
+    @GET("/ams/smm/warehouse/storage")
+    Observable<WheatherBindStart> wheatherBindStart();
+
+    @POST("/ams/smm/warehouse/storage")
+    Observable<StartStoreBean> startStore();
+
+    @POST("/ams/smm/warehouse/storage/car")
+    Observable<BindCarBean> bindCar(@Query("value") String carName);
+
+    @POST("/ams/smm/warehouse/storage/materials")
+    Observable<ScanMaterialPanBean> scanMatePan(@Query("value") String materialPan);
+
+    @POST("ams/smm/warehouse/storage/label")
+    Observable<BindLabelBean> bindLabel(@Query("value") String moveLabel);
+
+    @PUT("/ams/smm/warehouse/storage")
+    Observable<FinishPda> finishedPda();
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")
