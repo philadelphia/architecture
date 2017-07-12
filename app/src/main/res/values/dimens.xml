@@ -36,4 +36,8 @@
     <dimen name="px_magrgTop">70px</dimen>
     <dimen name="px_margLeft">60px</dimen>
     <dimen name="px_TableHeigh">100px</dimen>
+    <dimen name="px_888">880px</dimen>
+    <dimen name="px_127">127px</dimen>
+    <dimen name="px_178">178px</dimen>
+    <dimen name="px_196">196px</dimen>
 </resources>

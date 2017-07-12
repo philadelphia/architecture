@@ -60,7 +60,7 @@ public class CheckStock {
     public static class RowsBean {
         private int id;
         private String partNum;
-        private String subShelfSerial;
+        private String labelCode;
         private String boxSerial;
         private String pcbCode;
         private String dateCode;
@@ -105,12 +105,13 @@ public class CheckStock {
             this.partNum = partNum;
         }
 
-        public String getSubShelfSerial() {
-            return subShelfSerial;
+
+        public String getLabelCode() {
+            return labelCode;
         }
 
-        public void setSubShelfSerial(String subShelfSerial) {
-            this.subShelfSerial = subShelfSerial;
+        public void setLabelCode(String labelCode) {
+            this.labelCode = labelCode;
         }
 
         public String getBoxSerial() {

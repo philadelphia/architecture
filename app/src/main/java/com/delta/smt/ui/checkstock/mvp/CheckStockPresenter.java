@@ -29,7 +29,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
     }
     public void fetchCheckStock(String s){
         Map<String,String>map=new HashMap<>();
-        map.put("subShelfCode",s);
+        map.put("labelCode",s);
         String json = GsonTools.createGsonListString(map);
         Log.i("info",json);
         getModel().getCheckStock(json).doOnSubscribe(new Action0() {
@@ -105,7 +105,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
     public void fetchError(String boxSerial, String subShelfSerial){
         Map<String,String>map=new HashMap<>();
         map.put("boxSerial",boxSerial);
-        map.put("subShelfCode",""+subShelfSerial);
+        map.put("labelCode",""+subShelfSerial);
         String JsonArray=GsonTools.createGsonListString(map);
         Log.i("info",JsonArray);
         getModel().getError(JsonArray).subscribe(new Action1<Success>() {
@@ -134,7 +134,7 @@ public class CheckStockPresenter extends BasePresenter<CheckStockContract.Model,
     }
     public void fetchException(String boxSerial){
         Map<String,String>map=new HashMap<>();
-        map.put("subShelfCode",boxSerial);
+        map.put("labelCode",boxSerial);
         String json = GsonTools.createGsonListString(map);
         Log.i("info",json);
         getModel().getException(json).doOnSubscribe(new Action0() {
