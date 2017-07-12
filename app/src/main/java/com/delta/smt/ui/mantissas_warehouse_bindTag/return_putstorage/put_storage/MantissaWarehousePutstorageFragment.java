@@ -243,8 +243,13 @@ public class MantissaWarehousePutstorageFragment extends
         List<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList> storageBind = mantissaWarehousePutstorageBindTags.getStorageBind();
         beginStoragedataList2.addAll(storageBind);
         mNumber.setText("入库单号: " + mantissaWarehousePutstorageBindTags.getStorageNum());
+        if(mantissaWarehousePutstorageBindTags.getCarName() == null){
+            flag = 1;
+        }else {
+            mCar.setText("入库车: " + mantissaWarehousePutstorageBindTags.getCarName());
+            flag = 2;
+        }
         beginStorageadapter2.notifyDataSetChanged();
-        flag = 1;
 
     }
 
@@ -331,7 +336,7 @@ public class MantissaWarehousePutstorageFragment extends
                 break;
             case R.id.deduct:
 
-                getPresenter().getBeginPut("");
+                getPresenter().getBeginPut("1");
                 beginStorage();
                 mClean.setVisibility(View.GONE);
                 mDeduct.setVisibility(View.GONE);
