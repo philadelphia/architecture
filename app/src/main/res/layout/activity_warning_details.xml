@@ -141,39 +141,46 @@
             android:layout_marginTop="@dimen/px_40"
             android:layout_marginBottom="@dimen/px_30"
             >
+
+            <LinearLayout
+                android:id="@+id/li2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px_30"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                >
+
+                <Button
+                    android:id="@+id/storage_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/px_120"
+                    style="@style/pcb_button"
+                    android:text="@string/storage_submit"
+                    />
+
+                <Button
+                    android:id="@+id/storage_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/px_120"
+                    android:text="@string/storage_clear"
+                    style="@style/pcb_button"
+                    android:layout_marginLeft="@dimen/px_20"
+                    android:layout_marginRight="@dimen/px_70"
+                    />
+            </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/storage_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/style_storagetv"
+        android:layout_above="@id/li2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="13dp" />
 
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/px_30"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        >
-
-        <Button
-            android:id="@+id/storage_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/px_120"
-            style="@style/pcb_button"
-            android:text="@string/storage_submit"
-            />
-
-        <Button
-            android:id="@+id/storage_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/px_120"
-            android:text="@string/storage_clear"
-            style="@style/pcb_button"
-            android:layout_marginLeft="@dimen/px_20"
-            android:layout_marginRight="@dimen/px_70"
-            />
-    </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
 </com.delta.commonlibs.widget.statusLayout.StatusLayout>
