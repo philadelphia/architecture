@@ -42,5 +42,10 @@ public interface BindMaterialContract {
         void bindLabelFailed(BindLabelBean bindLabelBean);
         void finishedPdaSucceed(FinishPda finishPda);
         void finishedPdaFailded(FinishPda finishPda);
+
+        void showLoadingView();
+        void showContentView();
+        void showErrorView();
+        void showEmptyView();
     }
 }
