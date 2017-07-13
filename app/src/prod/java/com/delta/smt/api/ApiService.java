@@ -29,6 +29,7 @@ import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
+import com.delta.smt.entity.MantissaWarehousePutstorageBindTagResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
@@ -532,11 +533,13 @@ public interface ApiService {
     @POST("ams/smm/warehissue/startmantississue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Field("value") String bind);
 
+
+
     //料盘绑定标签
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("ams/smm/mantowareh/materboundlabel")
-    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Field("value") String bind);
+    @POST("ams/smm/warehouse/backing/label")
+    Observable<MantissaWarehousePutstorageBindTagResult> getBingingLable(@Field("value") String bind);
 
     //查询尾数仓备料车
     @GET("ams/smm/warehissue/qprepcaridbyworkorder")
@@ -634,17 +637,30 @@ public interface ApiService {
     Observable<MantissaWarehousePutstorageResult> getOnclickBeginButton();
 
     //尾数仓点击开始入库
-    @PUT("ams/smm/mantowareh/startreturnedwareh")
-    Observable<MantissaWarehousePutstorageResult> getbeginPut();
-
-    //尾数仓点击开始入库上架位完成
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("ams/smm/mantowareh/matertoshel")
-    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Field("value") String bind);
+    @POST("ams/smm/warehouse/backing")
+    Observable<MantissaWarehousePutstorageBindTagResult> getbeginPut(@Field("value") String parm);
+
+    //尾数仓绑定入库车
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/warehouse/backing/car")
+    Observable<MantissaWarehousePutstorageBindTagResult> bindMantissaWarehouseCar(@Field("value") String parm);
+
+
+
+    //尾数仓扫描料盘
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/warehouse/backing/materials")
+    Observable<MantissaWarehousePutstorageBindTagResult> getUpLocation(@Field("value") String bind);
+
+    //点击提交按钮结束本次绑定
+    @PUT("ams/smm/warehouse/backing")
+    Observable<MantissaWarehousePutstorageBindTagResult> onlickSubmit();
 
     //确定点击下一个架位
-
     @PUT("ams/smm/mantowareh/surenextshelf")
     Observable<MantissaWarehousePutstorageResult> getYesNext();
 

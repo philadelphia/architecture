@@ -164,9 +164,9 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
 
     @Override
     public void scanMaterialSucceed(ScanMaterialPanBean scanMaterialPanBean) {
-        tvStoreCar.setText(scanMaterialPanBean.getRows().get(0).getCarName());
+        tvStoreCar.setText(scanMaterialPanBean.getRows().getCarName());
         beanArrayList.clear();
-        beanArrayList.addAll(scanMaterialPanBean.getRows().get(0).getStorageBind());
+        beanArrayList.addAll(scanMaterialPanBean.getRows().getStorageBind());
         storageBindBeanCommonBaseAdapter.notifyDataSetChanged();
     }
 
