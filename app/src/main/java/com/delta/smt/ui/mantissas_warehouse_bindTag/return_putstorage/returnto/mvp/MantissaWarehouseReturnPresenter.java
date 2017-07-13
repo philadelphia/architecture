@@ -7,6 +7,7 @@ import com.delta.smt.entity.ManualDebitBean;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -23,7 +24,12 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
 
     public void getMantissaWarehouseReturn(){
 
-        getModel().getMantissaWarehouseReturn().subscribe(new Action1<MantissaWarehouseReturnResult>() {
+        getModel().getMantissaWarehouseReturn().doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<MantissaWarehouseReturnResult>() {
             @Override
             public void call(MantissaWarehouseReturnResult mantissaWarehouseReturnes) {
 

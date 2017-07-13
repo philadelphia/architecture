@@ -7,6 +7,7 @@ import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 
 import javax.inject.Inject;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -23,7 +24,12 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
 
     public void getMantissaWarehousePutstorage(){
 
-        getModel().getMantissaWarehousePutstorage().subscribe(new Action1<MantissaWarehousePutstorageResult>() {
+        getModel().getMantissaWarehousePutstorage().doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<MantissaWarehousePutstorageResult>() {
             @Override
             public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
 
