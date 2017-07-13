@@ -343,6 +343,7 @@ public class MantissaWarehousePutstorageFragment extends
         flag = 3;
         //mBtSubmit.setEnabled(true);
        // mBtSubmit.setBackgroundColor(getResources().getColor(R.color.background));
+
         mBtSubmit.setVisibility(View.VISIBLE);
         beginStoragedataList2.clear();
         List<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList> storageBind = mantissaWarehousePutstorageBindTags.getStorageBind();
