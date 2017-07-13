@@ -204,7 +204,6 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
                 mUnCheckedList.add(list.get(i));
             }
         }
-
         mCheckedadapter.notifyDataSetChanged();
         mUnCheckedadapter.notifyDataSetChanged();
 
