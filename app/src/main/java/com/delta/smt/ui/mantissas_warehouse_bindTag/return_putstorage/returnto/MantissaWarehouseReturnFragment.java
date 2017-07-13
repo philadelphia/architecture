@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.entity.Warehouse;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
@@ -36,8 +36,8 @@ import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.ManualDebitBean;
 import com.delta.smt.entity.ManualmaticDebitBean;
 import com.delta.smt.entity.WarehousePutinStorageBean;
-import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.di.DaggerMantissaWarehouseReturnComponent;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
+import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.di.DaggerMantissaWarehouseReturnComponent;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.di.MantissaWarehouseReturnModule;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.mvp.MantissaWarehouseReturnContract;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.mvp.MantissaWarehouseReturnPresenter;
@@ -337,7 +337,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 break;
             case 2:
                 try {
-                    LastMaterialLocation lastMaterialCar = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
+                    Warehouse lastMaterialCar = (Warehouse) barCodeParseIpml.getEntity(barcode, BarCodeType.WAREHOUSE);
                     lastCar = lastMaterialCar.getSource();
                     automaticDebit = "1";
                     manualDebit = "0";

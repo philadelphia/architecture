@@ -64,7 +64,6 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                         getView().showEmptyView();
                     }else {
                         getView().getSucessUpdate(mantissaWarehousePutstorageResult.getrows());
-                        getView().showContentView();
                     }
 
                 }else{
