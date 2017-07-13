@@ -533,6 +533,8 @@ public interface ApiService {
     @POST("ams/smm/warehissue/startmantississue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Field("value") String bind);
 
+
+
     //料盘绑定标签
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
