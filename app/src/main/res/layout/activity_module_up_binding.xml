@@ -52,7 +52,7 @@
                     <android.support.v7.widget.AppCompatCheckBox
                         android:id="@+id/automatic_upload"
                         android:layout_width="wrap_content"
-                        android:layout_height="120px"
+                        android:layout_height="100px"
                         android:text="自动上传"
                         android:layout_marginRight="50px"
                         android:textSize="@dimen/px_40" />
@@ -63,6 +63,8 @@
                         android:layout_height="100px"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="50px"
+                        android:paddingLeft="30px"
+                        android:paddingRight="30px"
                         android:background="@drawable/btn_selector"
                         android:gravity="center"
                         android:text="上传到MES"

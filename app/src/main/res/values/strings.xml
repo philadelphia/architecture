@@ -130,6 +130,14 @@
     <string name="upload">上传</string>
     <string name="debitManually">手动扣账</string>
     <string name="upLoadToMESAuto">自动上传到MES</string>
+
+    <!--仓库入库-->
+    <string name="store_num">入库单号:</string>
+    <string name="storecar_num">材料入库车:</string>
+    <string name="material_num">料号</string>
+    <string name="material_sum">数量</string>
+    <string name="material_label">标签</string>
+    <string name="material_frame">架位</string>
     <string name="password">Password</string>
     <string name="user">User</string>
     <string name="ji">记住密码</string>

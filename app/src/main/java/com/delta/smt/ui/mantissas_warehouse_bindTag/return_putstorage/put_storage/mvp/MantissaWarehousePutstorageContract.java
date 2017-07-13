@@ -2,6 +2,7 @@ package com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.put_stora
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
+import com.delta.smt.entity.MantissaWarehousePutstorageBindTagResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 
 import java.util.List;
@@ -21,11 +22,15 @@ public interface MantissaWarehousePutstorageContract {
 
         Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
-        Observable<MantissaWarehousePutstorageResult> getbeginput();
+        Observable<MantissaWarehousePutstorageBindTagResult> getbeginput(String str);
 
-        Observable<MantissaWarehousePutstorageResult> getBingingLable(String str);
+        Observable<MantissaWarehousePutstorageBindTagResult> bindMaterialCar(String str);
 
-        Observable<MantissaWarehousePutstorageResult> getUpLocation(String str);
+        Observable<MantissaWarehousePutstorageBindTagResult> getBingingLable(String str);
+
+        Observable<MantissaWarehousePutstorageBindTagResult> getUpLocation(String str);
+
+        Observable<MantissaWarehousePutstorageBindTagResult> onlickSubmit();
 
         Observable<MantissaWarehousePutstorageResult> getYesNext();
 
@@ -50,17 +55,23 @@ public interface MantissaWarehousePutstorageContract {
         void getYesokFailed(String message);
 
 
-        void getBeginSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void getBeginSucess(MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag mantissaWarehousePutstorages);
         void getBeginFailed(String message);
 
-        void getBingingLableSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void bindMaterialCarSucess(MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag mantissaWarehousePutstorages);
+        void bindMaterialCarFailed(String message);
+
+        void getBingingLableSucess(MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag mantissaWarehousePutstorages);
         void getBingingLableFailed(String message);
 
         void getonclickBeginButtonSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
         void getonclickBeginButtonFailed(String message);
 
-        void getUpLocationSucess(List<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> mantissaWarehousePutstorages);
+        void getUpLocationSucess(MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag mantissaWarehousePutstorages);
         void getUpLocationFailed(String message);
+
+        void onlickSubmitSucess(MantissaWarehousePutstorageBindTagResult mantissaWarehousePutstorages);
+        void onlickSubmitFailed(String message);
 
         void showLoadingView();
 
