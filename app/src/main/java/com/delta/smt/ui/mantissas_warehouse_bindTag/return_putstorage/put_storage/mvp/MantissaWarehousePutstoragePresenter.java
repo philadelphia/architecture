@@ -156,60 +156,6 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
 
     }
 
-    public void getBindingLabel(String str){
-
-        getModel().getBingingLable(str).subscribe(new Action1<MantissaWarehousePutstorageResult>() {
-            @Override
-            public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
-
-                if("0".equals(mantissaWarehousePutstorageResult.getCode())){
-                    getView().getBingingLableSucess(mantissaWarehousePutstorageResult.getrows());
-                }else{
-                    getView().getBingingLableFailed(mantissaWarehousePutstorageResult.getMsg());
-                }
-
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                try {
-                    getView().showErrorView();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-
-    }
-
-    public void getUpLocation(String str){
-
-        getModel().getUpLocation(str).subscribe(new Action1<MantissaWarehousePutstorageResult>() {
-            @Override
-            public void call(MantissaWarehousePutstorageResult mantissaWarehousePutstorageResult) {
-
-                if("0".equals(mantissaWarehousePutstorageResult.getCode())){
-                    getView().getUpLocationSucess(mantissaWarehousePutstorageResult.getrows());
-                }else{
-                    getView().getUpLocationFailed(mantissaWarehousePutstorageResult.getMsg());
-                }
-
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                try {
-                    getView().showErrorView();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-
-    }
-
     public void getonclickBeginButton(){
 
         getModel().onclickBeginButton().subscribe(new Action1<MantissaWarehousePutstorageResult>() {
@@ -237,7 +183,6 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
 
     }
 
-
     public void bindMaterialCar(String str) {
         getModel().bindMaterialCar(str).subscribe(new Action1<MantissaWarehousePutstorageBindTagResult>() {
             @Override
@@ -258,5 +203,85 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 }
             }
         });
+    }
+
+    public void getUpLocation(String str){
+
+        getModel().getUpLocation(str).subscribe(new Action1<MantissaWarehousePutstorageBindTagResult>() {
+            @Override
+            public void call(MantissaWarehousePutstorageBindTagResult mantissaWarehousePutstorageBindTagResult) {
+
+                if("0".equals(mantissaWarehousePutstorageBindTagResult.getCode())){
+                    getView().getUpLocationSucess(mantissaWarehousePutstorageBindTagResult.getrows());
+                }else{
+                    getView().getUpLocationFailed(mantissaWarehousePutstorageBindTagResult.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+    }
+
+    public void getBindingLabel(String str){
+
+        getModel().getBingingLable(str).subscribe(new Action1<MantissaWarehousePutstorageBindTagResult>() {
+            @Override
+            public void call(MantissaWarehousePutstorageBindTagResult mantissaWarehousePutstorageBindTagResult) {
+
+                if("0".equals(mantissaWarehousePutstorageBindTagResult.getCode())){
+                    getView().getBingingLableSucess(mantissaWarehousePutstorageBindTagResult.getrows());
+                }else{
+                    getView().getBingingLableFailed(mantissaWarehousePutstorageBindTagResult.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+    }
+
+    public void onlickSubmit() {
+        getModel().onlickSubmit().subscribe(new Action1<MantissaWarehousePutstorageBindTagResult>() {
+            @Override
+            public void call(MantissaWarehousePutstorageBindTagResult mantissaWarehousePutstorageBindTagResult) {
+
+                if("0".equals(mantissaWarehousePutstorageBindTagResult.getCode())){
+                    getView().onlickSubmitSucess(mantissaWarehousePutstorageBindTagResult);
+                }else{
+                    getView().onlickSubmitFailed(mantissaWarehousePutstorageBindTagResult.getMsg());
+                }
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().showErrorView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
 }

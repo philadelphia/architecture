@@ -40,13 +40,18 @@ public class MantissaWarehousePutstorageModel extends BaseModel<ApiService> impl
     }
 
     @Override
-    public Observable<MantissaWarehousePutstorageResult> getBingingLable(String str) {
-        return getService().getBingingLable(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+    public Observable<MantissaWarehousePutstorageBindTagResult> getBingingLable(String str) {
+        return getService().getBingingLable(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageBindTagResult>io_main());
     }
 
     @Override
-    public Observable<MantissaWarehousePutstorageResult> getUpLocation(String str) {
-        return getService().getUpLocation(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+    public Observable<MantissaWarehousePutstorageBindTagResult> getUpLocation(String str) {
+        return getService().getUpLocation(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageBindTagResult>io_main());
+    }
+
+    @Override
+    public Observable<MantissaWarehousePutstorageBindTagResult> onlickSubmit() {
+        return getService().onlickSubmit().compose(RxsRxSchedulers.<MantissaWarehousePutstorageBindTagResult>io_main());
     }
 
     @Override
