@@ -36,6 +36,7 @@
             android:layout_alignParentEnd="true"
             android:background="@color/background"
             android:textColor="@color/c_ffffff"
+            android:padding="20px"
             android:layout_marginRight="30px"
             android:layout_marginLeft="10px"
             android:text="开始绑定"
