@@ -30,17 +30,20 @@ public class MantissaWarehousePutstorageModel extends BaseModel<ApiService> impl
 
     @Override
     public Observable<MantissaWarehousePutstorageResult> getbeginput() {
-        return getService().getbeginPut().compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+       // return getService().getbeginPut().compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+        return  null;
     }
 
     @Override
     public Observable<MantissaWarehousePutstorageResult> getBingingLable(String str) {
-        return getService().getBingingLable(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+       // return getService().getBingingLable(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+            return null;
     }
 
     @Override
     public Observable<MantissaWarehousePutstorageResult> getUpLocation(String str) {
-        return getService().getUpLocation(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+       // return getService().getUpLocation(str).compose(RxsRxSchedulers.<MantissaWarehousePutstorageResult>io_main());
+             return null;
     }
 
     @Override

@@ -141,4 +141,11 @@
         <item name="android:windowExitAnimation">@anim/slide_out_left</item>
         </style>
 
+    <!--入库界面的Button-->
+    <style name="Storage.blue.Button" parent="Base.TextAppearance.AppCompat.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">50px</item>
+        <item name="android:background">@drawable/blue_btn</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

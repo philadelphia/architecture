@@ -52,7 +52,7 @@ ext {
             //fragmentation
             "fragmentation"   : "me.yokeyword:fragmentation:0.9.0",
             //bar
-            "barcodecollector": "com.drc-bj:BarCodeCollector:1.0.29-SNAPSHOT",
+            "barcodecollector": "com.drc-bj:BarCodeCollector:1.0.30-SNAPSHOT",
             "lombok"          : "org.projectlombok:lombok:1.16.6",
 
             "mockito-core"    : "org.mockito:mockito-core：${android["androidSupportSdkVersion"]}",

@@ -628,17 +628,30 @@ public interface ApiService {
     Observable<MantissaWarehousePutstorageResult> getOnclickBeginButton();
 
     //尾数仓点击开始入库
-    @PUT("ams/smm/mantowareh/startreturnedwareh")
-    Observable<MantissaWarehousePutstorageResult> getbeginPut();
-
-    //尾数仓点击开始入库上架位完成
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("ams/smm/mantowareh/matertoshel")
-    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Field("value") String bind);
+    @POST("ams/smm/warehouse/backing")
+    Observable<MantissaWarehousePutstorageBindTagResult> getbeginPut(@Field("value") String parm);
+
+    //尾数仓绑定入库车
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/warehouse/backing/car")
+    Observable<MantissaWarehousePutstorageBindTagResult> bindMantissaWarehouseCar(@Field("value") String parm);
+
+
+
+    //尾数仓扫描料盘
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/warehouse/backing/materials")
+    Observable<MantissaWarehousePutstorageBindTagResult> getUpLocation(@Field("value") String bind);
+
+    //点击提交按钮结束本次绑定
+    @PUT("ams/smm/warehouse/backing")
+    Observable<MantissaWarehousePutstorageBindTagResult> onlickSubmit();
 
     //确定点击下一个架位
-
     @PUT("ams/smm/mantowareh/surenextshelf")
     Observable<MantissaWarehousePutstorageResult> getYesNext();
 
@@ -702,15 +715,34 @@ public interface ApiService {
     @GET("ams/smm/warehissue/getnodebit")
     Observable<Result<DebitData>> getDebitDataList(@Query("condition") String mMs);
 
-    //
     @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
     Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(@Query("condition") String mArgument);
 
-    // 扣账跳过
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
     Observable<Result> jumpOver(@Field("value") String bind);
+
+    /**
+     * 仓库入库相关的Api
+     */
+    @GET("/ams/smm/warehouse/storage")
+    Observable<WheatherBindStart> wheatherBindStart();
+
+    @POST("/ams/smm/warehouse/storage")
+    Observable<StartStoreBean> startStore();
+
+    @POST("/ams/smm/warehouse/storage/car")
+    Observable<BindCarBean> bindCar(@Query("value") String carName);
+
+    @POST("/ams/smm/warehouse/storage/materials")
+    Observable<ScanMaterialPanBean> scanMatePan(@Query("value") String materialPan);
+
+    @POST("ams/smm/warehouse/storage/label")
+    Observable<BindLabelBean> bindLabel(@Query("value") String moveLabel);
+
+    @PUT("/ams/smm/warehouse/storage")
+    Observable<FinishPda> finishedPda();
 
     //尾数仓更改架位
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
