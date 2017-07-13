@@ -37,6 +37,7 @@
             <CheckBox
                 android:id="@+id/checkBox"
                 android:layout_width="0dp"
+                android:visibility="invisible"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="自动扣账" />
@@ -44,6 +45,7 @@
 
             <Button
                 android:id="@+id/btn_debitManually"
+                android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:paddingLeft="30px"
@@ -56,6 +58,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:paddingLeft="30px"
+                android:layout_marginRight="30px"
                 android:layout_height="120px"
                 android:layout_gravity="right"
                 android:enabled="false"
@@ -71,7 +74,8 @@
     <HorizontalScrollView
         android:id="@+id/hr_scrow"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="30px">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,7 +85,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recy_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <com.delta.commonlibs.widget.statusLayout.StatusLayout
                 android:id="@+id/statusLayout"
@@ -92,7 +96,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recy_content"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
             </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 
