@@ -455,7 +455,7 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                IntentUtils.showIntent(this, MainActivity.class);
+            finish();
                 break;
             default:
                 break;
@@ -482,10 +482,6 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
 
                 }
             }).create();
-            Button positive=mRollbackDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positive.setBackgroundColor(ContextCompat.getColor(this,R.color.background));
-            Button negative=mRollbackDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-            negative.setBackgroundColor(ContextCompat.getColor(this,R.color.background));
             mRollbackDialog.show();
             return true;
         }
