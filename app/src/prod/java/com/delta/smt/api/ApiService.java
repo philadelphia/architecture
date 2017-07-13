@@ -702,17 +702,20 @@ public interface ApiService {
     @GET("ams/smm/warehissue/getnodebit")
     Observable<Result<DebitData>> getDebitDataList(@Query("condition") String mMs);
 
+    //
     @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
     Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(@Query("condition") String mArgument);
 
+    // 扣账跳过
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
     Observable<Result> jumpOver(@Field("value") String bind);
 
+    //尾数仓更改架位
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
+    @POST("/ams/smm/warehissue/changecarshelf")
     Observable<Result> changecarshelf(@Field("value") String mGsonListString);
 
 
