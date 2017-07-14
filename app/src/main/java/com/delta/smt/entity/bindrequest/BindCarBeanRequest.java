@@ -7,7 +7,7 @@ package com.delta.smt.entity.bindrequest;
  * @description :绑定料车的Bean
  */
 
-public class BindCarBean {
+public class BindCarBeanRequest {
     private String carName;
 
     public String getCarName() {
@@ -18,7 +18,7 @@ public class BindCarBean {
         this.carName = carName;
     }
 
-    public BindCarBean(String carName) {
+    public BindCarBeanRequest(String carName) {
 
         this.carName = carName;
     }

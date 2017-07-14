@@ -83,12 +83,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="50px"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/time_remain"
-                android:layout_width="95dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="22px"
                 android:text="已下线时长："
                 android:textColor="@color/c_333333"
                 android:textSize="40px" />
