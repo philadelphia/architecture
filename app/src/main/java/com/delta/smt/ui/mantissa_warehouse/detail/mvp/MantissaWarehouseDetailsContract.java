@@ -45,7 +45,7 @@ public interface MantissaWarehouseDetailsContract {
 
         void getFailed(String message);
 
-        void getBingingCarSucess(Result<MaterialCar> car);
+        void getBingingCarSuccess(Result<MaterialCar> car);
 
         void getBingingCarFailed(String message);
 

@@ -29,6 +29,7 @@ import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
+import com.delta.smt.entity.MantissaWarehousePutstorageBindTagResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
@@ -60,6 +61,12 @@ import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineItem;
 import com.delta.smt.entity.WareHouse;
+import com.delta.smt.entity.bindmaterial.BindCarBean;
+import com.delta.smt.entity.bindmaterial.BindLabelBean;
+import com.delta.smt.entity.bindmaterial.FinishPda;
+import com.delta.smt.entity.bindmaterial.ScanMaterialPanBean;
+import com.delta.smt.entity.bindmaterial.StartStoreBean;
+import com.delta.smt.entity.bindmaterial.WheatherBindStart;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
 import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
 import com.delta.smt.ui.production_warning.item.ItemProduceLine;
@@ -531,8 +538,8 @@ public interface ApiService {
     //料盘绑定标签
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("ams/smm/mantowareh/materboundlabel")
-    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Field("value") String bind);
+    @POST("ams/smm/warehouse/backing/label")
+    Observable<MantissaWarehousePutstorageBindTagResult> getBingingLable(@Field("value") String bind);
 
     //查询尾数仓备料车
     @GET("ams/smm/warehissue/qprepcaridbyworkorder")

@@ -4,7 +4,7 @@ package com.delta.smt.entity;
  * Created by Zhenyu.Liu on 2017/1/19.
  */
 
-public class MantissaWarehouseputBean {
+public class MantissaWarehousePutBean {
 
     private String serial_no;
     private String material_no;
@@ -52,7 +52,7 @@ public class MantissaWarehouseputBean {
         this.side = side;
     }
 
-    public MantissaWarehouseputBean(String serial_num, String material_num, String unit, String vendor, String dc, String lc, String trasaction_code, String po, String quantity) {
+    public MantissaWarehousePutBean(String serial_num, String material_num, String unit, String vendor, String dc, String lc, String trasaction_code, String po, String quantity) {
         this.serial_no = serial_num;
         this.material_no = material_num;
         this.unit = unit;

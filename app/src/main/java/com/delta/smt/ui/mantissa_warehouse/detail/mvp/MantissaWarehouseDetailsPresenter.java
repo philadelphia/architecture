@@ -108,7 +108,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             public void call(Result<MaterialCar> car) {
 
                 if (0 == car.getCode()) {
-                    getView().getBingingCarSucess(car);
+                    getView().getBingingCarSuccess(car);
                 } else {
                     getView().getBingingCarFailed(car.getMessage());
                 }

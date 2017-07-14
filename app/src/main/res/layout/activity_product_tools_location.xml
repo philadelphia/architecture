@@ -22,6 +22,8 @@
             android:textSize="@dimen/ProtectToolsTextSize" />
 
         <EditText
+            android:textSize="@dimen/px_40"
+            android:paddingLeft="@dimen/px_10"
             android:id="@+id/ProductToolsBarCode"
             android:layout_width="698px"
             android:layout_height="70px"
@@ -44,6 +46,8 @@
             android:textSize="@dimen/ProtectToolsTextSize" />
 
         <EditText
+            android:textSize="@dimen/px_40"
+            android:paddingLeft="@dimen/px_10"
             android:id="@+id/et_location_name"
             android:layout_width="698px"
             android:layout_height="70px"
@@ -66,6 +70,8 @@
             android:textSize="@dimen/ProtectToolsTextSize" />
 
         <EditText
+            android:textSize="@dimen/px_40"
+            android:paddingLeft="@dimen/px_10"
             android:id="@+id/ShiftBarcode"
             android:layout_width="698px"
             android:layout_height="70px"
