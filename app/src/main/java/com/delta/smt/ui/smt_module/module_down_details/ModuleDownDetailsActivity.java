@@ -208,6 +208,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
     @Override
     public void onSuccess(List<ModuleDownDetailsItem> data) {
+        index = -1;
         dataSource.clear();
         dataSourceForCheckIn.clear();
 
