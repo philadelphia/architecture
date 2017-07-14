@@ -10,7 +10,7 @@
 
         <TextView
             android:id="@+id/tv_number"
-            android:layout_width="300px"
+            android:layout_width="400px"
             android:gravity="center"
             android:text="料号"
             android:textColor="#333333"
@@ -19,7 +19,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_shelf_no"
-            android:layout_width="250px"
+            android:layout_width="350px"
             android:gravity="center"
             android:text="尾数仓架位"
             android:textColor="#333333"
@@ -28,7 +28,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_to_shelf_no"
-            android:layout_width="250px"
+            android:layout_width="350px"
             android:gravity="center"
             android:text="主仓库架位"
             android:textColor="#333333"
@@ -38,7 +38,7 @@
 
         <TextView
             android:id="@+id/tv_count"
-            android:layout_width="200px"
+            android:layout_width="350px"
             android:gravity="center"
             android:text="数量"
             android:textColor="#333333"
