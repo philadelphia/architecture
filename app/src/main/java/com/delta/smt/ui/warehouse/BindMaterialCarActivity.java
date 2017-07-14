@@ -6,8 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
@@ -15,6 +15,7 @@ import com.delta.buletoothio.barcode.parse.entity.ActivityLED;
 import com.delta.buletoothio.barcode.parse.entity.AddMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
@@ -69,6 +70,8 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
     Button btnStore;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
+    @BindView(R.id.ll_activity)
+    LinearLayout llActivity;
     private CommonBaseAdapter<StorageBindBean> storageBindBeanCommonBaseAdapter;
     private View mInflate;
     private ArrayList<StorageBindBean> beanArrayList;
@@ -85,7 +88,6 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
         ryCar.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         beanArrayList = new ArrayList<>();
         mInflate = LayoutInflater.from(this).inflate(R.layout.recy_bindmaterial, null);
-
     }
 
     @Override
@@ -126,7 +128,8 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
     @Override
     public void showMesage(String message) {
         try {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            SnackbarUtil.show(llActivity,message);
+           // Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -139,19 +142,22 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
         beanArrayList.clear();
         beanArrayList.addAll(wheatherBindStart.getRows().getStorageBind());
         storageBindBeanCommonBaseAdapter.notifyDataSetChanged();
-        if (wheatherBindStart.getRows().getCarName() != null) {
-
-            if(wheatherBindStart.getRows().getStorageBind().get(0).getMoveLabel().equals("N/A")){
-                state = 3;
-                showMesage("还有料盘未绑定标签，请扫描标签");
-            }else{
+        if (wheatherBindStart.getRows().getCarName() == null) {
+            showMesage("已经开始入库");
+            showMesage("请扫描料车");
+        } else {
+            for (int i = 0; i < wheatherBindStart.getRows().getStorageBind().size(); i++) {
+                if(wheatherBindStart.getRows().getStorageBind().get(i).getMoveLabel().equals("N/A")){
+                    state = 3;
+                    showMesage("还有料盘未绑定标签，请扫描标签");
+                }
+            }
+            if( state != 3){
                 state = 2;
+                showMesage("已经开始入库");
                 showMesage("请开始扫描料盘");
             }
 
-        } else {
-            showMesage("已经开始入库");
-            showMesage("请开始扫描料盘");
         }
 
 
@@ -210,7 +216,8 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
 
     @Override
     public void finishedPdaSucceed(FinishPda finishPda) {
-        showMesage("提交成功");
+
+        showMesage("已经成功提交本次记录");
     }
 
     @Override
@@ -322,5 +329,6 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
     public void onViewClicked() {
         getPresenter().finishedPda();
     }
+
 
 }
