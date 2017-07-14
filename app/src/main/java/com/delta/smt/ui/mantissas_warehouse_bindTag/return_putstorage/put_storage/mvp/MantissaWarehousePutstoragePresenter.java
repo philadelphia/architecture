@@ -90,7 +90,12 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
 
     public void getBeginPut(String str){
 
-        getModel().getbeginput(str).subscribe(new Action1<MantissaWarehousePutstorageBindTagResult>() {
+        getModel().getbeginput(str).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().showLoadingView();
+            }
+        }).subscribe(new Action1<MantissaWarehousePutstorageBindTagResult>() {
             @Override
             public void call(MantissaWarehousePutstorageBindTagResult mantissaWarehousePutstorageBindTagResult) {
 
