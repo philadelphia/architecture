@@ -240,6 +240,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getBingingCarSuccess(Result<MaterialCar> mMaterialCarResult) {
+        flag=2;
         List<MaterialCar> mMaterialCars = mMaterialCarResult.getRows();
         if (mMaterialCars.size() != 0) {
             tv_hint.setText(getString(R.string.bindMatericalcar) + mMaterialCars.get(0).getCar_name());
