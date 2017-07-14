@@ -362,9 +362,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         serialNum = materiaBar.getStreamNumber();
 
                         MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
-                        Gson gson = new Gson();
-                        String s = gson.toJson(bindBean);
-
+                        String s = GsonTools.createGsonListString(bindBean);
                         getPresenter().getMaterialLocation(s);
                     } catch (EntityNotFountException ee) {
                         SnackbarUtil.showMassage(mRecyContetn, "此处不能识别此码！");

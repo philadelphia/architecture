@@ -6,14 +6,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.ActivityLED;
+import com.delta.buletoothio.barcode.parse.entity.AddMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
+import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
@@ -26,6 +30,7 @@ import com.delta.smt.entity.bindmaterial.ScanMaterialPanBean;
 import com.delta.smt.entity.bindmaterial.StartStoreBean;
 import com.delta.smt.entity.bindmaterial.StorageBindBean;
 import com.delta.smt.entity.bindmaterial.WheatherBindStart;
+import com.delta.smt.entity.bindrequest.BindCarBeanRequest;
 import com.delta.smt.entity.bindrequest.BindLabel;
 import com.delta.smt.entity.bindrequest.BindMaterialBean;
 import com.delta.smt.ui.warehouse.di.BindMaterialModule;
@@ -63,6 +68,10 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
     Gson gson;
     @BindView(R.id.btn_store)
     Button btnStore;
+    @BindView(R.id.statusLayout)
+    StatusLayout statusLayout;
+    @BindView(R.id.ll_activity)
+    LinearLayout llActivity;
     private CommonBaseAdapter<StorageBindBean> storageBindBeanCommonBaseAdapter;
     private View mInflate;
     private ArrayList<StorageBindBean> beanArrayList;
@@ -79,7 +88,6 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
         ryCar.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         beanArrayList = new ArrayList<>();
         mInflate = LayoutInflater.from(this).inflate(R.layout.recy_bindmaterial, null);
-
     }
 
     @Override
@@ -120,7 +128,8 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
     @Override
     public void showMesage(String message) {
         try {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            SnackbarUtil.show(llActivity,message);
+           // Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -133,8 +142,24 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
         beanArrayList.clear();
         beanArrayList.addAll(wheatherBindStart.getRows().getStorageBind());
         storageBindBeanCommonBaseAdapter.notifyDataSetChanged();
-        showMesage("开始入库");
-        showMesage("请扫描料车");
+        if (wheatherBindStart.getRows().getCarName() == null) {
+            showMesage("已经开始入库");
+            showMesage("请扫描料车");
+        } else {
+            for (int i = 0; i < wheatherBindStart.getRows().getStorageBind().size(); i++) {
+                if(wheatherBindStart.getRows().getStorageBind().get(i).getMoveLabel().equals("N/A")){
+                    state = 3;
+                    showMesage("还有料盘未绑定标签，请扫描标签");
+                }
+            }
+            if( state != 3){
+                state = 2;
+                showMesage("已经开始入库");
+                showMesage("请开始扫描料盘");
+            }
+
+        }
+
 
     }
 
@@ -180,7 +205,7 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
         beanArrayList.clear();
         beanArrayList.addAll(bindLabelBean.getRows().getStorageBind());
         storageBindBeanCommonBaseAdapter.notifyDataSetChanged();
-        state = 1;
+        state = 2;
         showMesage("请继续扫描料盘");
     }
 
@@ -191,12 +216,39 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
 
     @Override
     public void finishedPdaSucceed(FinishPda finishPda) {
-        showMesage("提交成功");
+
+        showMesage("已经成功提交本次记录");
     }
 
     @Override
     public void finishedPdaFailded(FinishPda finishPda) {
         showMesage(finishPda.getMessage());
+    }
+
+    @Override
+    public void showLoadingView() {
+        statusLayout.showLoadingView();
+    }
+
+    @Override
+    public void showContentView() {
+        statusLayout.showContentView();
+    }
+
+    @Override
+    public void showErrorView() {
+        statusLayout.showErrorView();
+        statusLayout.setErrorClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().judegStart();
+            }
+        });
+    }
+
+    @Override
+    public void showEmptyView() {
+        statusLayout.showEmptyView();
     }
 
     @Override
@@ -206,19 +258,21 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
         switch (state) {
             case 1:
                 try {
-                    com.delta.smt.entity.bindrequest.BindCarBean bindCar = new com.delta.smt.entity.bindrequest.BindCarBean(barcode);
-
-                    com.delta.smt.entity.bindrequest.BindCarBean[] bindBean = new com.delta.smt.entity.bindrequest.BindCarBean[]{bindCar};
+                    AddMaterialCar addMaterialCar = (AddMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.ADD_MATERIAL_CAR);
+                    BindCarBeanRequest bindCar = new BindCarBeanRequest(addMaterialCar.getSource());
+                    BindCarBeanRequest[] bindBean = new BindCarBeanRequest[]{bindCar};
                     String bind = gson.toJson(bindBean);
+                    Log.e("请扫描料车", state + "");
                     getPresenter().bindCar(bind);
                     state = 2;
                 } catch (Exception e) {
-                    showMesage("请扫描料车");
+                    showMesage("请扫描正确的料车");
                 }
                 break;
             case 2:
                 if (barcode.length() > 20) {
                     try {
+                        btnStore.setVisibility(View.GONE);
                         MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                         BindMaterialBean bindMaterialBean = new BindMaterialBean();
                         bindMaterialBean.setSerial_no(materialBlockBarCode.getStreamNumber());
@@ -235,23 +289,46 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
                         String bind = gson.toJson(bindMaterialList);
                         getPresenter().scanMaterialPan(bind);
                     } catch (EntityNotFountException e) {
-                        showMesage("请扫描料盘");
+                        showMesage("请扫描正确的料盘");
                     }
                 } else {
-                    String moveLabel = barcode;
+                    try {
+                        ActivityLED activityLED = (ActivityLED) barCodeParseIpml.getEntity(barcode, BarCodeType.ACTIVITY_LED);
+                        String moveLabel = activityLED.getSource();
+                        BindLabel bindLabel = new BindLabel(moveLabel);
+                        BindLabel[] bindList = new BindLabel[]{bindLabel};
+                        String bind = gson.toJson(bindList);
+                        getPresenter().bindMoveLabel(bind);
+                        btnStore.setVisibility(View.VISIBLE);
+                    } catch (EntityNotFountException e) {
+                        e.printStackTrace();
+                        showMesage("请扫描正确的标签");
+                    }
+
+                }
+                break;
+            case 3:
+                try {
+                    ActivityLED activityLED = (ActivityLED) barCodeParseIpml.getEntity(barcode, BarCodeType.ACTIVITY_LED);
+                    String moveLabel = activityLED.getSource();
                     BindLabel bindLabel = new BindLabel(moveLabel);
                     BindLabel[] bindList = new BindLabel[]{bindLabel};
                     String bind = gson.toJson(bindList);
                     getPresenter().bindMoveLabel(bind);
-                }
+                    btnStore.setVisibility(View.VISIBLE);
 
+                } catch (EntityNotFountException e) {
+                    e.printStackTrace();
+                    showMesage("请扫描正确的标签");
+                }
                 break;
         }
     }
-
 
     @OnClick(R.id.btn_store)
     public void onViewClicked() {
         getPresenter().finishedPda();
     }
+
+
 }
