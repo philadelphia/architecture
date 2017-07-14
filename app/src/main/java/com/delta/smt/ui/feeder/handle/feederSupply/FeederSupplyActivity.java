@@ -119,6 +119,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
     private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
     private CommonBaseAdapter<UpLoadEntity.MaterialListBean> unSend_adapter;
+    private String argument_MES;
 
     @Override
     protected void handError(String contents) {
@@ -288,6 +289,12 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         isBeginSupply = isBeginSupply(data);
         if (index != -1) {
             RecycleViewUtils.scrollToMiddle(linearLayoutManager, getLastMaterialIndex(mCurrentMaterial, dataSource), recyclerViewContent);
+        }
+
+        if (checkBox_autoUpLoadToMES.isChecked()){
+            if (argument_MES != null){
+                getPresenter().upLoadFeederSupplyToMES(argument_MES);
+            }
         }
         if (data.size() == 0) {
             isAllItemSupplied = true;
@@ -610,14 +617,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             map2.put("slot", slot);
             feeding_list.add(map2);
             map1.put("feeding_list", feeding_list);
-            String argument_MES = GsonTools.createGsonListString(map1);
+             argument_MES = GsonTools.createGsonListString(map1);
 
             Log.i(TAG, "argument_MES== " + argument);
             if (isMaterialExists(mCurrentMaterial)) {
                 tvModuleID.setVisibility(View.VISIBLE);
                 tvModuleID.setText("料站：" + slot);
                 getPresenter().getFeederInsertionToSlotTimeStamp(argument);
-                getPresenter().upLoadFeederSupplyToMES(argument_MES);
+
             } else {
                 ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
                 tvModuleID.setVisibility(View.VISIBLE);
