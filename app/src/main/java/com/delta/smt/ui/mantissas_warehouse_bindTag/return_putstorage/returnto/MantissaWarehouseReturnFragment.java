@@ -42,7 +42,6 @@ import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.d
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.mvp.MantissaWarehouseReturnContract;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.mvp.MantissaWarehouseReturnPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 
