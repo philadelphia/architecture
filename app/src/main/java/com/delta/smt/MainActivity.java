@@ -188,7 +188,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 bundle=new Bundle();
                 bundle.putInt(Constant.SELECT_TYPE,2);
                 IntentUtils.showIntent(this,ProduceLineActivity.class,bundle);
-//                IntentUtils.showIntent(this, HandAddActivity.class);
+//               IntentUtils.showIntent(this, HandAddActivity.class);
                 break;
 
             case "尾数仓入库及退料":
