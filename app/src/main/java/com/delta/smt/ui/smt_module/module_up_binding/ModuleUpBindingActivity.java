@@ -128,6 +128,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
     private CommonBaseAdapter<UpLoadEntity.MaterialListBean> unSend_adapter;
     private UploadMESParams mUploadMESParamsA;
+    private TextView tv_up;
+    private TextView tv_supply;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -263,7 +265,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     }).create();
             dialog.show();
         }
-        if (moduleUpAutomaticUpload && mUploadMESParamsA != null) {
+        if (ckb_automaticUpload.isChecked() && mUploadMESParamsA != null) {
             getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParamsA));
         }
     }
@@ -400,11 +402,15 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         if (mT.getFeeding_list() != null) {
 
             mFeedingListBean.addAll(mT.getFeeding_list());
+            tv_up.setText("上料列表：" + mFeedingListBean.size());
+            tv_supply.setText("发料列表：" + mMaterialListBean.size());
             undoList_adapter.notifyDataSetChanged();
         }
 
         if (mT.getMaterial_list() != null) {
             mMaterialListBean.addAll(mT.getMaterial_list());
+            tv_up.setText("上料列表：" + mFeedingListBean.size());
+            tv_supply.setText("发料列表：" + mMaterialListBean.size());
             unSend_adapter.notifyDataSetChanged();
         }
 
@@ -525,8 +531,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         View mContentView = mCustomPopWindow.getContentView();
         RecyclerView rv_feeder = ViewUtils.findView(mContentView, R.id.rv_feeder);
         RecyclerView rv_feeder_send = ViewUtils.findView(mContentView, R.id.rv_feeder_send);
-        TextView tv_up = ViewUtils.findView(mContentView, R.id.tv_mount_up);
-        TextView tv_supply = ViewUtils.findView(mContentView, R.id.tv_mount_supply);
+        tv_up = ViewUtils.findView(mContentView, R.id.tv_mount_up);
+        tv_supply = ViewUtils.findView(mContentView, R.id.tv_mount_supply);
         tv_up.setText("上料列表：" + mFeedingListBean.size());
         tv_supply.setText("发料列表：" + mMaterialListBean.size());
         Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
