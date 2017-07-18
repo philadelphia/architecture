@@ -12,7 +12,7 @@ import dagger.Provides;
  * Created by Lin.Hou on 2016-12-26.
  */
 @Module
-public class StoreRoomModule {
+public class StoreRoomModule  {
     StoreRoomContract.View view;
     public StoreRoomModule(StoreRoomContract.View view){
         this.view=view;

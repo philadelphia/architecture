@@ -20,6 +20,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.BackupMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SingleClick;
@@ -159,7 +160,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
         mToolbarTitle.setText("仓库" + part);
-        JumpOver();
+       // JumpOver();
         tvWorkOrder.setText("工单：" + work_order);
         tvLineName.setText("线别：" + line_name);
         tvLineNum.setText("面别：" + side);
@@ -229,7 +230,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 mMap.put("part", part);
                 mMap.put("work_order", work_order);
                 mMap.put("side", side);
-                mMap.put("code","A");
+                mMap.put("code", "A");
                 getPresenter().issureToWarehFinish(GsonTools.createGsonListString(mMap));
             }
         });
@@ -258,11 +259,21 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         //绑定料车成功状态2
         state = 2;
         if (data.size() != 0) {
-            mTextView2.setText(data.get(0).getCar_name());
             tv_hint.setText(getString(R.string.bindMatericalcar) + data.get(0).getCar_name());
             textToSpeechManager.readMessage(getString(R.string.bindMatericalcar) + data.get(0).getCar_name());
         }
-
+        StringBuffer mStringBuffer = new StringBuffer();
+        if (data.size() != 0) {
+            for (int mI = 0; mI < data.size(); mI++) {
+                if (mI == data.size() - 1) {
+                    mStringBuffer.append(data.get(mI).getCar_name());
+                } else {
+                    mStringBuffer.append(data.get(mI).getCar_name() + ",");
+                }
+            }
+            mTextView2.setText(mStringBuffer.toString());
+            //  tv_hint.setText(rows.get(0).getCar_name());
+        }
         VibratorAndVoiceUtils.correctVoice(this);
         VibratorAndVoiceUtils.correctVibrator(this);
     }
@@ -321,8 +332,16 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void queryMaterailCar(List<MaterialCar> rows) {
+        StringBuffer mStringBuffer = new StringBuffer();
         if (rows.size() != 0) {
-            mTextView2.setText(rows.get(0).getCar_name());
+            for (int mI = 0; mI < rows.size(); mI++) {
+                if (mI == rows.size() - 1) {
+                    mStringBuffer.append(rows.get(mI).getCar_name());
+                } else {
+                    mStringBuffer.append(rows.get(mI).getCar_name() + ",");
+                }
+            }
+            mTextView2.setText(mStringBuffer.toString());
             //  tv_hint.setText(rows.get(0).getCar_name());
         }
         state = 2;
@@ -340,7 +359,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void bindMaterialCarFailed(String msg) {
-        state = 1;
+        if (state != 2) {
+            state = 1;
+        }
         tv_hint.setText(msg);
         ToastUtils.showMessage(this, msg);
         textToSpeechManager.readMessage(msg);
@@ -433,7 +454,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-               dialogInterface.dismiss();
+                dialogInterface.dismiss();
             }
         });
     }
@@ -523,6 +544,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void onScanSuccess(String barcode) {
+        Log.e(TAG, "onScanSuccess: "+barcode);
         switch (state) {
             case 1:
                 BackupMaterialCar car;
@@ -568,13 +590,33 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     //currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
                     getPresenter().issureToWareh(GsonTools.createGsonListString(issureToWarehBody));
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ToastUtils.showMessage(this, "请扫描对应架位的料盘");
-                    tv_hint.setText("请扫描对应架位的料盘");
-                    textToSpeechManager.readMessage("请扫描对应架位的料盘");
-                    VibratorAndVoiceUtils.wrongVibrator(this);
-                    VibratorAndVoiceUtils.wrongVoice(this);
+                } catch (EntityNotFountException e) {
+                    BackupMaterialCar otherCar;
+                    try {
+                        otherCar = ((BackupMaterialCar) barCodeImp.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
+                        //mTextView2.setText(car.getSource());
+                        Map<String, String> maps = new HashMap<>();
+                        maps.put("work_order", work_order);
+                        maps.put("part", part);
+                        maps.put("side", side);
+                        maps.put("pre_car", otherCar.getSource());
+                        getPresenter().bindBoundPrepCar(GsonTools.createGsonListString(maps));
+                    } catch (EntityNotFountException notFountCarException) {
+                        notFountCarException.printStackTrace();
+                        state = 2;
+//                        ToastUtils.showMessage(this, "扫描有误，请扫描备料车");
+//                        tv_hint.setText("扫描有误，请扫描备料车");
+//                        VibratorAndVoiceUtils.wrongVibrator(this);
+//                        VibratorAndVoiceUtils.wrongVoice(this);
+//                        textToSpeechManager.readMessage("扫描有误，请扫描备料车");
+                    }
+
+//                    e.printStackTrace();
+//                    ToastUtils.showMessage(this, "请扫描对应架位的料盘");
+//                    tv_hint.setText("请扫描对应架位的料盘");
+//                    textToSpeechManager.readMessage("请扫描对应架位的料盘");
+//                    VibratorAndVoiceUtils.wrongVibrator(this);
+//                    VibratorAndVoiceUtils.wrongVoice(this);
                 }
                 state = 2;
                 break;

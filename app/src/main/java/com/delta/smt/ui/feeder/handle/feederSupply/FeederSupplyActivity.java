@@ -119,6 +119,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
     private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
     private CommonBaseAdapter<UpLoadEntity.MaterialListBean> unSend_adapter;
+    private String argument_MES;
 
     @Override
     protected void handError(String contents) {
@@ -281,12 +282,19 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Log.i(TAG, "onSuccess: ");
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
         statusLayout.setVisibility(View.VISIBLE);
+        tvModuleID.setVisibility(View.GONE);
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
         isBeginSupply = isBeginSupply(data);
         if (index != -1) {
             RecycleViewUtils.scrollToMiddle(linearLayoutManager, getLastMaterialIndex(mCurrentMaterial, dataSource), recyclerViewContent);
+        }
+
+        if (checkBox_autoUpLoadToMES.isChecked()){
+            if (argument_MES != null){
+                getPresenter().upLoadFeederSupplyToMES(argument_MES);
+            }
         }
         if (data.size() == 0) {
             isAllItemSupplied = true;
@@ -609,25 +617,33 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             map2.put("slot", slot);
             feeding_list.add(map2);
             map1.put("feeding_list", feeding_list);
-            String argument_MES = GsonTools.createGsonListString(map1);
+             argument_MES = GsonTools.createGsonListString(map1);
 
             Log.i(TAG, "argument_MES== " + argument);
             if (isMaterialExists(mCurrentMaterial)) {
+                tvModuleID.setVisibility(View.VISIBLE);
+                tvModuleID.setText("料站：" + slot);
                 getPresenter().getFeederInsertionToSlotTimeStamp(argument);
-                getPresenter().upLoadFeederSupplyToMES(argument_MES);
+
             } else {
                 ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
+                tvModuleID.setVisibility(View.VISIBLE);
+                tvModuleID.setText("该料盘不存在，请重新扫描料盘");
             }
 
         } catch (EntityNotFountException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
+            tvModuleID.setVisibility(View.VISIBLE);
+            tvModuleID.setText("请扫描料盘");
             Toast.makeText(this, "请扫描料盘", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         } catch (ArrayIndexOutOfBoundsException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
             Toast.makeText(this, "解析错误,请重新扫描", Toast.LENGTH_SHORT).show();
+            tvModuleID.setVisibility(View.VISIBLE);
+            tvModuleID.setText("解析错误,请重新扫描");
         }
 
 
@@ -824,6 +840,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 }
 
                 break;
+
+            case R.id.tv_moduleID:
+                tvModuleID.setVisibility(View.GONE);
             default:
                 break;
         }

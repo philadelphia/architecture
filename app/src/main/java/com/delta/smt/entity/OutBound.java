@@ -51,7 +51,7 @@ public class OutBound {
 
     public static class DataBean {
         private String partNum;
-        private String subShelfSerial;
+        private String labelCode;
         private String pcbCode;
         private String dateCode;
         private String boxSerial;
@@ -110,12 +110,12 @@ public class OutBound {
             this.partNum = partNum;
         }
 
-        public String getSubShelfSerial() {
-            return subShelfSerial;
+        public String getLabelCode() {
+            return labelCode;
         }
 
-        public void setSubShelfSerial(String subShelfSerial) {
-            this.subShelfSerial = subShelfSerial;
+        public void setLabelCode(String labelCode) {
+            this.labelCode = labelCode;
         }
 
         public String getPcbCode() {

@@ -233,7 +233,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
     }
         public void closeLight(String s){
             Map<String,String>map=new HashMap<>();
-            map.put("subShelfCode",s);
+            map.put("labelCode",s);
             String json= createGsonListString(map);
             getModel().Closelighting(json).doOnSubscribe(new Action0() {
                 @Override

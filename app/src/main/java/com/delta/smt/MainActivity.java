@@ -31,7 +31,7 @@ import com.delta.smt.ui.main.di.MainModule;
 import com.delta.smt.ui.main.mvp.MainContract;
 import com.delta.smt.ui.main.mvp.MainPresenter;
 import com.delta.smt.ui.maintain.PCBMaintainActivity;
-import com.delta.smt.ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
+import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
 import com.delta.smt.ui.over_receive.OverReceiveActivity;
 import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;
@@ -43,6 +43,7 @@ import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
 import com.delta.smt.ui.storage_manger.storage_select.StorageSelectActivity;
 import com.delta.smt.ui.store.StoreIssueActivity;
 import com.delta.smt.ui.storeroom.StoreRoomActivity;
+import com.delta.smt.ui.warehouse.BindMaterialCarActivity;
 import com.delta.smt.ui.warningSample.WarningSampleActivity;
 import com.delta.updatelibs.UpdateUtils;
 
@@ -139,6 +140,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         functionList.add(new Function("治具归还", R.drawable.ic_thereturn));
         functionList.add(new Function("手补件", R.drawable.ic_handpatch));
         functionList.add(new Function("品管确认", R.drawable.ic_quality));
+        functionList.add(new Function("仓库入库", R.drawable.ic_putstorage));
        // functionList.add(new Function("warningSample", R.drawable.title));
     }
     private void checkTTS() {
@@ -220,12 +222,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 bundle.putInt(Constant.SELECT_TYPE, 3);
                 IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
                 break;
+            case "仓库入库":
+                bundle = new Bundle();
+                IntentUtils.showIntent(this, BindMaterialCarActivity.class, bundle);
+                break;
             default:
                 break;
         }
     }
 
-    //运行时权限请求回调方法
+    //运行时权限请求回调方法z
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {

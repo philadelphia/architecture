@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/shortList_statistics"
         style="@style/item_textstyle"
-        android:layout_width="@dimen/px_240"
+        android:layout_width="@dimen/px_480"
         android:layout_height="match_parent"
         android:text="@string/storage_pcb"
 
@@ -41,14 +41,7 @@
         style="@style/item_textstyle"
 
         />
-    <TextView
-        android:id="@+id/shortList_forprices"
-        android:layout_width="@dimen/px_240"
-        android:layout_height="match_parent"
-        android:text="@string/pcb_price"
-        style="@style/item_textstyle"
 
-        />
 
 
 
