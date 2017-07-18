@@ -231,7 +231,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         }
     }
 
-    //运行时权限请求回调方法
+    //运行时权限请求回调方法z
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {

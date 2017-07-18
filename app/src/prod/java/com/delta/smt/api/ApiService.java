@@ -753,6 +753,12 @@ public interface ApiService {
     @PUT("/ams/smm/warehouse/storage")
     Observable<FinishPda> finishedPda();
 
+    //尾数仓更改架位
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("/ams/smm/warehissue/changecarshelf")
+    Observable<Result> changecarshelf(@Field("value") String mGsonListString);
+
 
     //@GET("SMM/unplugmod/getModNumByMaterial")
     //Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num, @Query("workOrderNum") String num);

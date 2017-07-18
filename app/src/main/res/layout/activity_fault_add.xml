@@ -178,11 +178,8 @@
                         android:background="@null"
                         android:contentDescription="@null"
                         android:src="@drawable/insert_link"/>
-
                 </LinearLayout>
-
             </HorizontalScrollView>
-
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/floatingActionButton"
