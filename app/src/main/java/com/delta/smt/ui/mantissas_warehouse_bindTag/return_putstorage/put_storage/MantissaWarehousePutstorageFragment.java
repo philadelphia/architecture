@@ -261,7 +261,7 @@ public class MantissaWarehousePutstorageFragment extends
             flag = 1;
         }else {
             mCar.setText("入库车: " + mantissaWarehousePutstorageBindTags.getCarName());
-            flag = 3;
+            flag = 2;
         }
         beginStorageadapter2.notifyDataSetChanged();
 
@@ -287,7 +287,7 @@ public class MantissaWarehousePutstorageFragment extends
     public void bindMaterialCarSucess(MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag mantissaWarehousePutstorages) {
         mantissaWarehousePutstorages.getCarName();
         mCar.setText("入库车: " + mantissaWarehousePutstorages.getCarName());
-        flag = 3;
+        flag = 2;
         Toast.makeText(baseActiviy, "已绑定入库车", Toast.LENGTH_SHORT).show();
         VibratorAndVoiceUtils.correctVibrator(getActivity());
         VibratorAndVoiceUtils.correctVoice(getActivity());
@@ -306,7 +306,7 @@ public class MantissaWarehousePutstorageFragment extends
         beginStoragedataList2.clear();
         beginStoragedataList2.addAll(mantissaWarehousePutstorages.getStorageBind());
         beginStorageadapter2.notifyDataSetChanged();
-        flag = 3;
+        flag = 2;
         VibratorAndVoiceUtils.correctVibrator(getActivity());
         VibratorAndVoiceUtils.correctVoice(getActivity());
     }
@@ -501,21 +501,21 @@ public class MantissaWarehousePutstorageFragment extends
                 }
                 break;
 
-//            case 2:
-//                try {
-//
-//                    MaterialBlockBarCode lableBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-//                    count = lableBar.getCount();
-//                    materialNumber = lableBar.getDeltaMaterialNumber();
-//                    serialNum = lableBar.getStreamNumber();
-//                    UpLocation bindBean = new UpLocation(materialNumber, serialNum);
-//                    getPresenter().getUpLocation(GsonTools.createGsonListString(bindBean));
-//
-//                } catch (EntityNotFountException e) {
-//                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
-//                }
-//
-//                break;
+            case 2:
+                try {
+
+                    MaterialBlockBarCode lableBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    count = lableBar.getCount();
+                    materialNumber = lableBar.getDeltaMaterialNumber();
+                    serialNum = lableBar.getStreamNumber();
+                    UpLocation bindBean = new UpLocation(materialNumber, serialNum);
+                    getPresenter().getUpLocation(GsonTools.createGsonListString(bindBean));
+
+                } catch (EntityNotFountException e) {
+                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
+                }
+
+                break;
 
             case 3:
                 try {
