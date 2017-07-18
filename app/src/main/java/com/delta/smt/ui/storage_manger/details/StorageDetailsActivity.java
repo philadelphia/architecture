@@ -544,6 +544,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void onScanSuccess(String barcode) {
+        Log.e(TAG, "onScanSuccess: "+barcode);
         switch (state) {
             case 1:
                 BackupMaterialCar car;
