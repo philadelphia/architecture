@@ -70,11 +70,12 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                        // getView().showEmptyView();
 
                     }else {
-                        getView().getSucess(mantissaWarehousePutstorageResult.getrows());
+                        getView().showContentView();
+                        getView().getSucessUpdate(mantissaWarehousePutstorageResult.getrows());
                     }
 
                 }else{
-                    getView().getFailed(mantissaWarehousePutstorageResult.getMsg());
+                    getView().getFailedUpdate(mantissaWarehousePutstorageResult.getMsg());
                 }
             }
         }, new Action1<Throwable>() {

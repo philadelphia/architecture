@@ -390,6 +390,7 @@ public class MantissaWarehousePutstorageFragment extends
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.clean:
+                //mRecyContetn.setAdapter(adapter2);
                 getPresenter().getUpdate();
                 break;
             case R.id.deduct:
@@ -692,7 +693,7 @@ public class MantissaWarehousePutstorageFragment extends
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getMantissaWarehousePutstorage();
+                getPresenter().getMantissaWa                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               rehousePutstorage();
             }
         });
 
