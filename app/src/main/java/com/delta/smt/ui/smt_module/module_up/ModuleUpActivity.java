@@ -1,6 +1,7 @@
 package com.delta.smt.ui.smt_module.module_up;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -123,15 +124,19 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 switch (moduleUpWarningItem.getStatus()) {
                     case 203:
                         status = "接料完成";
+                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background));
                         break;
                     case 204:
                         status = "正在上模组";
+                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background_yellow));
                         break;
                     case 205:
                         status = "上模组完成";
+                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background));
                         break;
                     default:
                         status = "未知";
+                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background));
                         break;
                 }
 
