@@ -89,7 +89,7 @@ public class MantissaWarehousePutstorageFragment extends
     private CommonBaseAdapter<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList> beginStorageadapter2;
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> StartStorageAdapter;
     private BaseActivity baseActiviy;
-    private int flag = 0;
+    private int flag = 1;
     private String materialNumber;
     private String lableBarCode;
     private String serialNum;
@@ -339,9 +339,9 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void getUpLocationSucess(MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag mantissaWarehousePutstorageBindTags) {
-        flag = 3;
+        flag = 2;
         //mBtSubmit.setEnabled(true);
-       // mBtSubmit.setBackgroundColor(getResources().getColor(R.color.background));
+        // mBtSubmit.setBackgroundColor(getResources().getColor(R.color.background));
 
         mBtSubmit.setVisibility(View.VISIBLE);
         beginStoragedataList2.clear();
@@ -357,7 +357,7 @@ public class MantissaWarehousePutstorageFragment extends
     public void getUpLocationFailed(String message) {
         Toast.makeText(baseActiviy, message, Toast.LENGTH_SHORT).show();
         if(message.contains("其他料号的料盘")){
-            flag = 3;
+            flag = 2;
 
         }
         VibratorAndVoiceUtils.wrongVibrator(getActivity());
@@ -501,23 +501,23 @@ public class MantissaWarehousePutstorageFragment extends
                 }
                 break;
 
+//            case 2:
+//                try {
+//
+//                    MaterialBlockBarCode lableBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+//                    count = lableBar.getCount();
+//                    materialNumber = lableBar.getDeltaMaterialNumber();
+//                    serialNum = lableBar.getStreamNumber();
+//                    UpLocation bindBean = new UpLocation(materialNumber, serialNum);
+//                    getPresenter().getUpLocation(GsonTools.createGsonListString(bindBean));
+//
+//                } catch (EntityNotFountException e) {
+//                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
+//                }
+//
+//                break;
+
             case 2:
-                try {
-
-                    MaterialBlockBarCode lableBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    count = lableBar.getCount();
-                    materialNumber = lableBar.getDeltaMaterialNumber();
-                    serialNum = lableBar.getStreamNumber();
-                    UpLocation bindBean = new UpLocation(materialNumber, serialNum);
-                    getPresenter().getUpLocation(GsonTools.createGsonListString(bindBean));
-
-                } catch (EntityNotFountException e) {
-                    SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
-                }
-
-                break;
-
-            case 3:
                 try {
 
                     MaterialBlockBarCode lableBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);

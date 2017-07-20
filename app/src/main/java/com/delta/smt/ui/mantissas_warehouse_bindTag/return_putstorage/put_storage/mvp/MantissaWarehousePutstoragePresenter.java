@@ -67,8 +67,10 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
                 if("0".equals(mantissaWarehousePutstorageResult.getCode())){
 
                     if(mantissaWarehousePutstorageResult.getrows().size() == 0){
-                        getView().showEmptyView();
+                       // getView().showEmptyView();
+
                     }else {
+                        getView().showContentView();
                         getView().getSucessUpdate(mantissaWarehousePutstorageResult.getrows());
                     }
 
@@ -90,12 +92,7 @@ public class MantissaWarehousePutstoragePresenter extends BasePresenter<Mantissa
 
     public void getBeginPut(String str){
 
-        getModel().getbeginput(str).doOnSubscribe(new Action0() {
-            @Override
-            public void call() {
-                getView().showLoadingView();
-            }
-        }).subscribe(new Action1<MantissaWarehousePutstorageBindTagResult>() {
+        getModel().getbeginput(str).subscribe(new Action1<MantissaWarehousePutstorageBindTagResult>() {
             @Override
             public void call(MantissaWarehousePutstorageBindTagResult mantissaWarehousePutstorageBindTagResult) {
 
