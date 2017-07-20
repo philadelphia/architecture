@@ -110,6 +110,11 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     protected void initView() {
+        getTitle();
+        getDate();
+    }
+
+    public void getTitle(){
 
         dataList.add(new MantissaWarehousePutstorageResult.MantissaWarehousePutstorage("", "", "", "", ""));
         adapter = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getActivity(), dataList) {
@@ -125,7 +130,9 @@ public class MantissaWarehousePutstorageFragment extends
         };
         mRecyTitle.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyTitle.setAdapter(adapter);
+    }
 
+    public void getDate(){
 
         adapter2 = new CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage>(getActivity(), dataList2) {
             @Override
@@ -153,7 +160,6 @@ public class MantissaWarehousePutstorageFragment extends
         mRecyContetn.setAdapter(adapter2);
     }
 
-
     @Override
     protected void componentInject(AppComponent appComponent) {
         DaggerMantissaWarehousePutstorageComponent.builder().appComponent(appComponent).mantissaWarehousePutstorageModule(new MantissaWarehousePutstorageModule(this)).build().inject(this);
@@ -175,6 +181,7 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
+        getDate();
         if (mantissaWarehousePutstorages.size() == 0) {
             Toast.makeText(getActivity(), "暂无数据！", Toast.LENGTH_SHORT).show();
         }
@@ -196,6 +203,7 @@ public class MantissaWarehousePutstorageFragment extends
         dataList2.clear();
         dataList2.addAll(mantissaWarehousePutstorages);
         adapter2.notifyDataSetChanged();
+        getDate();
         VibratorAndVoiceUtils.correctVibrator(getActivity());
         VibratorAndVoiceUtils.correctVoice(getActivity());
     }
@@ -368,7 +376,7 @@ public class MantissaWarehousePutstorageFragment extends
     public void onlickSubmitSucess(MantissaWarehousePutstorageBindTagResult mantissaWarehousePutstorages) {
 
         getPresenter().getMantissaWarehousePutstorage();
-
+        getTitle();
         VibratorAndVoiceUtils.correctVibrator(getActivity());
         VibratorAndVoiceUtils.correctVoice(getActivity());
         mClean.setVisibility(View.VISIBLE);

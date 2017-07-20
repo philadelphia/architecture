@@ -193,12 +193,15 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             @Override
             public void call(Result resultFeeder) {
 
-
+                if (resultFeeder.getCode() == 0){
+                    getView().onFailed(resultFeeder.getMessage());
+                }
+                getView().onFailed(resultFeeder.getMessage());
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                getView().onFailed(throwable.getMessage());
             }
         });
     }
