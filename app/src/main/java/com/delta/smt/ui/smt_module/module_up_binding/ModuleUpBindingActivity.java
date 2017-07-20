@@ -76,7 +76,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     TextView mTvSetting;
     @BindView(R.id.rl)
     LinearLayout mRl;
-    private boolean moduleUpAutomaticUpload = false;
+    private boolean isAutomaticUpload = false;
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
@@ -139,7 +139,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     protected void initData() {
         ckb_automaticUpload.setOnCheckedChangeListener(this);
-        moduleUpAutomaticUpload = getBooleanSF(ModuleUpBindingActivity.this, "module_up_automatic_upload");
+        isAutomaticUpload = getBooleanSF(ModuleUpBindingActivity.this, "module_up_automatic_upload");
         Intent intent = ModuleUpBindingActivity.this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
@@ -173,8 +173,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     protected void initView() {
-        moduleUpAutomaticUpload = SpUtil.getBooleanSF(this, "module_up_automatic_upload");
-        ckb_automaticUpload.setChecked(moduleUpAutomaticUpload);
+        isAutomaticUpload = SpUtil.getBooleanSF(this, "module_up_automatic_upload");
+        ckb_automaticUpload.setChecked(isAutomaticUpload);
 
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
@@ -664,7 +664,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     jsonObject.addProperty("serial_no", serialNo);
                     jsonObject.addProperty("side", side);
                     jsonObject.addProperty("qty", quantaty);
-                    jsonObject.addProperty("code", ckb_automaticUpload.isChecked() ? "1" : "0");
+                    jsonObject.addProperty("code", isAutomaticUpload ? "1" : "0");
                     jsonObject.addProperty("is_feeder_buffer", "0");
                     jsonArray.add(jsonObject);
                     String argument = jsonArray.toString();
@@ -674,7 +674,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     mUploadMESParamsA.setSide(side);
                     mUploadMESParamsA.setWork_order(workItemID);
                     mUploadMESParamsA.setIs_feeder_buffer("0");
-                    mUploadMESParamsA.setMes_mode("0");
+                    mUploadMESParamsA.setMes_mode(isAutomaticUpload  ?  "1": "0");
                     UpLoadEntity.FeedingListBean mFeedingListBeanA = new UpLoadEntity.FeedingListBean();
                     mFeedingListBeanA.setFeeder_id(barcode);
                     mFeedingListBeanA.setMaterial_no(materialBlockNumber);
@@ -795,9 +795,13 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView == ckb_automaticUpload) {
             if (isChecked) {
+                ckb_automaticUpload.setChecked(true);
                 SpUtil.SetBooleanSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", true);
+                isAutomaticUpload = true;
             } else {
+                ckb_automaticUpload.setChecked(false);
                 SpUtil.SetBooleanSF(ModuleUpBindingActivity.this, "module_up_automatic_upload", false);
+                isAutomaticUpload = false;
             }
         }
     }
