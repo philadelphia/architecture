@@ -1,5 +1,6 @@
 package com.delta.smt.ui.storage_manger.details;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -26,6 +27,8 @@ import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
@@ -45,9 +48,8 @@ import com.delta.smt.ui.storage_manger.details.di.DaggerStorageDetailsComponent;
 import com.delta.smt.ui.storage_manger.details.di.StorageDetailsModule;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsContract;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsPresenter;
+import com.delta.smt.utils.BarCodeDialogUtils;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.delta.commonlibs.utils.ViewUtils;
-import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.ArrayList;
@@ -101,7 +103,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private List<DebitData> mDebitDatas = new ArrayList<>();
     private CommonBaseAdapter<StorageDetails> title_adapter;
     private CommonBaseAdapter<StorageDetails> content_adapter;
-    private BarCodeParseIpml barCodeImp;
+    private BarCodeParseIpml mBarCodeParseIpml;
     private String work_order;
     private String part;
     private MaterialBlockBarCode materialblockbarcode;
@@ -116,6 +118,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private int state = 1;
     @Inject
     TextToSpeechManager textToSpeechManager;
+    private Dialog mConfirmDialog;
 
 
     @Override
@@ -128,7 +131,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     protected void initData() {
         //textToSpeechManager = new RawTextToSpeech(App.getmContenxt());
-        barCodeImp = new BarCodeParseIpml();
+        mBarCodeParseIpml = new BarCodeParseIpml();
         part = getIntent().getStringExtra(Constant.WARE_HOUSE_NAME);
         work_order = getIntent().getStringExtra(Constant.WORK_ORDER);
         line_name = getIntent().getStringExtra(Constant.LINE_NAME);
@@ -301,12 +304,10 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         isHaveIssureOver = false;
         mStorageDetailses.clear();
         mStorageDetailses.addAll(rows.getRows());
-        int position = 0;
         boolean isFirstUndo = true;
         for (int i = 0; i < mStorageDetailses.size(); i++) {
             if (mStorageDetailses.get(i).getStatus() == 1) {
                 if (isFirstUndo) {
-                    position = i;
                     isFirstUndo = false;
                 }
             }
@@ -317,7 +318,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             }
         }
         content_adapter.notifyDataSetChanged();
-        mRecycleContent.scrollToPosition(position);
+        mRecycleContent.scrollToPosition(0);
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -402,16 +403,25 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         state = 2;
         ToastUtils.showMessage(this, message);
 
-        DialogUtils.showConfirmDialog(this, message, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                getPresenter().jumpMaterials(mS);
-            }
-        });
+        if(mConfirmDialog==null){
+
+            mConfirmDialog = BarCodeDialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    getPresenter().jumpMaterials(mS);
+                }
+            },getBarCodeIpml());
+        }
+        if(!mConfirmDialog.isShowing()){
+            mConfirmDialog.show();
+        }
+
         textToSpeechManager.readMessage(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
+
+
 
     @Override
     public void issureToWarehFinishFaildSure(String message) {
@@ -549,7 +559,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             case 1:
                 BackupMaterialCar car;
                 try {
-                    car = ((BackupMaterialCar) barCodeImp.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
+                    car = ((BackupMaterialCar) mBarCodeParseIpml.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
                     //mTextView2.setText(car.getSource());
                     Map<String, String> maps = new HashMap<>();
                     maps.put("work_order", work_order);
@@ -570,7 +580,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             case 2:
                 //扫描料盘
                 try {
-                    materialblockbarcode = (MaterialBlockBarCode) barCodeImp.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    materialblockbarcode = (MaterialBlockBarCode) mBarCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     IssureToWarehBody issureToWarehBody = new IssureToWarehBody();
                     issureToWarehBody.setMaterial_no(materialblockbarcode.getDeltaMaterialNumber());
                     issureToWarehBody.setSerial_no(materialblockbarcode.getStreamNumber());
@@ -593,7 +603,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 } catch (EntityNotFountException e) {
                     BackupMaterialCar otherCar;
                     try {
-                        otherCar = ((BackupMaterialCar) barCodeImp.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
+                        otherCar = ((BackupMaterialCar) mBarCodeParseIpml.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
                         //mTextView2.setText(car.getSource());
                         Map<String, String> maps = new HashMap<>();
                         maps.put("work_order", work_order);
