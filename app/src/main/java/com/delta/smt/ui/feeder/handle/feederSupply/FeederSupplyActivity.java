@@ -496,6 +496,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void onFailed(String message) {
         Log.i(TAG, "onFailed: " + message);
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override
