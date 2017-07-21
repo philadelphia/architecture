@@ -3,11 +3,13 @@ package com.delta.smt.ui.smt_module.module_up_binding;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -288,6 +290,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     public void onFailed(String message) {
         ToastUtils.showMessage(this, message);
+        VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+        VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
     }
 
     @Override
@@ -478,17 +482,28 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 break;
             case R.id.bt_sheet_confirm:
                 List<UpLoadEntity.FeedingListBean> mFeedingListBeans = new ArrayList<>();
+                List<UpLoadEntity.MaterialListBean> mMaterialListBeans = new ArrayList<>();
                 if(mFeedingListBean.size() != 0){
                     for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
                         if (mListBean.isChecked()) {
-
                             mFeedingListBeans.add(mListBean);
                         }
                     }
-                    if (mFeedingListBeans.size() == 0) {
-                        ToastUtils.showMessage(this, "请选择上料列表！");
-                        return;
+
+                }
+
+                if(mMaterialListBean.size() != 0){
+                    for (UpLoadEntity.MaterialListBean mListBean : mMaterialListBean) {
+                        if (mListBean.isChecked()) {
+                            mMaterialListBeans.add(mListBean);
+                        }
                     }
+
+                }
+
+                if (mFeedingListBeans.size() == 0  && mMaterialListBeans.size() == 0) {
+                    ToastUtils.showMessage(this, "请选择上料列表！");
+                    return;
                 }
 
                 UploadMESParams mUploadMESParams = new UploadMESParams();
@@ -497,7 +512,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 mUploadMESParams.setIs_feeder_buffer("0");
                 mUploadMESParams.setMes_mode("0");
                 mUploadMESParams.setFeeding_list(mFeedingListBeans);
-                mUploadMESParams.setMaterial_list(mMaterialListBean);
+                mUploadMESParams.setMaterial_list(mMaterialListBeans);
                 getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParams));
 
                 break;
@@ -509,17 +524,30 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         }
                         undoList_adapter.notifyDataSetChanged();
                     }
+
+                    if (mMaterialListBean != null && mMaterialListBean.size() != 0){
+                        for (UpLoadEntity.MaterialListBean materialListBean : mMaterialListBean) {
+                            materialListBean.setChecked(true);
+                        }
+                        unSend_adapter.notifyDataSetChanged();
+                    }
                 }
                 break;
             case R.id.bt_sheet_select_cancel:
                 if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
-                    if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
-                        for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
-                            mListBean.setChecked(false);
-                        }
-                        undoList_adapter.notifyDataSetChanged();
+                if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
+                    for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
+                        mListBean.setChecked(false);
                     }
+                    undoList_adapter.notifyDataSetChanged();
                 }
+            }
+            if (mMaterialListBean != null && mMaterialListBean.size() != 0){
+                for (UpLoadEntity.MaterialListBean materialListBean : mMaterialListBean) {
+                    materialListBean.setChecked(false);
+                }
+                unSend_adapter.notifyDataSetChanged();
+            }
 
                 break;
             default:
@@ -594,6 +622,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             }
 
         };
+
         setAdapter(rv_feeder, undoList_adapter);
         setAdapter(rv_feeder_send, unSend_adapter);
 //        rv_debit.setHasFixedSize(true);
@@ -605,7 +634,13 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     private void setAdapter(RecyclerView rv_debit, CommonBaseAdapter mUndoList_adapter) {
         rv_debit.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this){
+            @Override
+            public boolean canScrollVertically() {
+//                return super.canScrollVertically();
+                return  false;
+            }
+        };
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         rv_debit.setLayoutManager(linearLayoutManager);
         rv_debit.setAdapter(mUndoList_adapter);
@@ -654,8 +689,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 try {
                     Feeder feederCode = (Feeder) barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
                     showMessage.setVisibility(View.GONE);
-                    VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
-                    VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
                     JsonArray jsonArray = new JsonArray();
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty("work_order", workItemID);
