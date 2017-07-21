@@ -29,6 +29,7 @@ import static com.delta.commonlibs.utils.ViewUtils.findView;
 public class DialogUtils {
 
 
+
     public static Dialog createProgressDialog(Context context) {
         return createProgressDialog(context, true);
     }
@@ -43,12 +44,13 @@ public class DialogUtils {
 
     public static Dialog showCommonDialog(Context context, String message,
                                           DialogInterface.OnClickListener listener) {
-        return new AlertDialog.Builder(context)
+        AlertDialog mAlertDialog = new AlertDialog.Builder(context)
                 .setTitle("提示")
                 .setMessage(message)
                 .setPositiveButton("确定", listener)
                 .setNegativeButton("取消", null)
                 .show();
+        return mAlertDialog;
     }
 
     public static Dialog showCommonDialogWithDeltaBlue(Context context, String message,

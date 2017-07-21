@@ -123,7 +123,6 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private String mS;
     private List<DebitData> mDebitDatas = new ArrayList<>();
     private CustomPopWindow mCustomPopWindow;
-    private boolean isScanMaterialBlockBarCode;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -283,7 +282,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     public void getMantissaWarehouseputSuccess(MantissaWarehouseDetailsResult rows) {
 
         issureToWareh(rows);
-        tv_hint.setText(rows.getMsg());
+        if (rows.getMsg() != null) {
+
+            tv_hint.setText(rows.getMsg());
+            textToSpeechManager.readMessage(rows.getMsg());
+        }
         if (isOver) {
             getPresenter().getMantissaWareOver(mS);
         }
@@ -316,14 +319,18 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getMantissaWarehouseputFailed(final String message) {
+    public void getMantissaWarehouseputFailed( String message) {
 //        DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
 //            @Override
 //            public void onClick(DialogInterface dialogInterface, int i) {
 //                getPresenter().getMantissaWareOver();
 //            }
 //        });
-        ToastUtils.showMessage(this, message);
+        if (message != null) {
+            textToSpeechManager.readMessage(message);
+            tv_hint.setText(message);
+            ToastUtils.showMessage(this, message);
+        }
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
