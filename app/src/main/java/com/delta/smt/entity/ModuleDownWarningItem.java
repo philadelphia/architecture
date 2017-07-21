@@ -24,7 +24,7 @@ public class ModuleDownWarningItem  extends TimeEntity{
         private String side;
         private String product_name;
         private String product_name_main;
-        private String status;
+        private int status;
         private String unplug_mod_actual_finish_time;
 
         public String getLine_name() {
@@ -76,11 +76,11 @@ public class ModuleDownWarningItem  extends TimeEntity{
         }
 
 
-        public String getStatus() {
+        public int getStatus() {
             return status;
         }
 
-        public void setStatus(String status) {
+        public void setStatus(int status) {
             this.status = status;
         }
 

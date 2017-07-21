@@ -115,7 +115,24 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
                 holder.setText(R.id.tv_product_name_main, "主板: " + moduleUpWarningItem.getProduct_name_main());
                 holder.setText(R.id.tv_product_name, "小板: " + moduleUpWarningItem.getProduct_name());
                 //holder.setText(R.id.tv_status,"状态: "+moduleUpWarningItem.getStatus());
-                holder.setText(R.id.tv_status, "状态: " + "等待下模组");
+
+                String status = null;
+                switch ( moduleUpWarningItem.getStatus()){
+                    case 210:
+                        status = "等待下模组";
+                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background));
+                        break;
+
+                    case 211:
+                        status = "正在下模组";
+                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background_yellow));
+                        break;
+
+                    default:
+                        break;
+                }
+                holder.setText(R.id.tv_status, "状态: " + status);
+
             }
         };
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
