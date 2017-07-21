@@ -154,7 +154,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 //            if (TextUtils.isEmpty(dataSource.get(i).getUnplug_mod_actual_finish_time())) {
 //                dataSource.get(i).setCreat_time(System.currentTimeMillis());
 //            } else {
-            dataSource.get(i).setCreat_time(dataSource.get(i).getUnplug_mod_actual_finish_time());
+            dataSource.get(i).setCreat_time(dataSource.get(i).getOnline_actual_finish_time());
 //            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 //            Log.i(TAG, "onSuccess: " + dataSource.get(i).getUnplug_mod_actual_finish_time());
 //            Log.i(TAG, "onSuccess: " + format.format(dataSource.get(i).getUnplug_mod_actual_finish_time()));
