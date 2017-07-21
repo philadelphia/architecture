@@ -1,6 +1,7 @@
 package com.delta.smt.entity;
 
 import com.delta.libs.adapter.TimeEntity;
+import com.google.gson.annotations.SerializedName;
 
 import java.text.SimpleDateFormat;
 
@@ -23,9 +24,10 @@ public class ModuleDownWarningItem  extends TimeEntity{
         private String work_order;
         private String side;
         private String product_name;
-        private String product_name_main;
+        private String  product_name_main;
         private int status;
-        private String unplug_mod_actual_finish_time;
+        @SerializedName("online_actual_finish_time")
+        private long unplug_mod_actual_finish_time;
 
         public String getLine_name() {
             return line_name;
@@ -51,11 +53,11 @@ public class ModuleDownWarningItem  extends TimeEntity{
             this.product_name_main = product_name_main;
         }
 
-        public String getUnplug_mod_actual_finish_time() {
+        public long getUnplug_mod_actual_finish_time() {
             return unplug_mod_actual_finish_time;
         }
 
-        public void setUnplug_mod_actual_finish_time(String unplug_mod_actual_finish_time) {
+        public void setUnplug_mod_actual_finish_time(long unplug_mod_actual_finish_time) {
             this.unplug_mod_actual_finish_time = unplug_mod_actual_finish_time;
         }
 
