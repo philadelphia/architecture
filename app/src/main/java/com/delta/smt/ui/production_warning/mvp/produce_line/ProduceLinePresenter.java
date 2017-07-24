@@ -3,7 +3,7 @@ package com.delta.smt.ui.production_warning.mvp.produce_line;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.Result;
-import com.delta.smt.ui.production_warning.item.ItemProduceLine;
+import com.delta.smt.entity.production_warining_item.ItemProduceLine;
 
 import javax.inject.Inject;
 

@@ -40,7 +40,7 @@ import com.delta.smt.entity.BroadcastCancel;
 import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.DaggerProduceWarningFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_warning_fragment.ProduceWarningFragmentModule;
-import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
+import com.delta.smt.entity.production_warining_item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.delta.smt.widget.DialogLayout;

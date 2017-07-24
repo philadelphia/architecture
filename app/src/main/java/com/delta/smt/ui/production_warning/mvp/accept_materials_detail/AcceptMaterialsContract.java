@@ -3,7 +3,7 @@ package com.delta.smt.ui.production_warning.mvp.accept_materials_detail;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.Result;
-import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
+import com.delta.smt.entity.production_warining_item.ItemAcceptMaterialDetail;
 
 import rx.Observable;
 

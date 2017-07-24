@@ -3,7 +3,7 @@ package com.delta.smt.ui.hand_add.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.Result;
-import com.delta.smt.ui.hand_add.item.ItemHandAdd;
+import com.delta.smt.entity.ItemHandAdd;
 
 import java.util.List;
 
