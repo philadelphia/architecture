@@ -6,7 +6,7 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.Result;
-import com.delta.smt.ui.hand_add.item.ItemHandAdd;
+import com.delta.smt.entity.ItemHandAdd;
 
 import java.util.HashMap;
 import java.util.Map;

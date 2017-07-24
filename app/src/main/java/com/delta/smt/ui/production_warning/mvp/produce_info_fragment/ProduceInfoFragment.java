@@ -24,7 +24,7 @@ import com.delta.smt.entity.BroadcastCancel;
 import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.DaggerProduceInfoFragmentCompent;
 import com.delta.smt.ui.production_warning.di.produce_info_fragment.ProduceInfoFragmentModule;
-import com.delta.smt.ui.production_warning.item.ItemInfo;
+import com.delta.smt.entity.production_warining_item.ItemInfo;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.delta.smt.widget.DialogLayout;
 

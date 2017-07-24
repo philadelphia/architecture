@@ -17,9 +17,7 @@ import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
-import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
-import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -32,7 +30,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.ui.production_warning.di.accept_materials_detail.AcceptMaterialsModule;
 import com.delta.smt.ui.production_warning.di.accept_materials_detail.DaggerAcceptMaterialsCompnent;
-import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
+import com.delta.smt.entity.production_warining_item.ItemAcceptMaterialDetail;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.delta.ttsmanager.TextToSpeechManager;
 

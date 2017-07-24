@@ -20,7 +20,7 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.DaggerProduceBreakdownFragmentCompnent;
 import com.delta.smt.ui.production_warning.di.produce_breakdown_fragment.ProduceBreakdownFragmentModule;
-import com.delta.smt.ui.production_warning.item.ItemBreakDown;
+import com.delta.smt.entity.production_warining_item.ItemBreakDown;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 
 import org.greenrobot.eventbus.Subscribe;

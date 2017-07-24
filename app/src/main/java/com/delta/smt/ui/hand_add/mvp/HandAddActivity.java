@@ -24,7 +24,7 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.hand_add.di.DaggerHandAddCompent;
 import com.delta.smt.ui.hand_add.di.HandAddModule;
-import com.delta.smt.ui.hand_add.item.ItemHandAdd;
+import com.delta.smt.entity.ItemHandAdd;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

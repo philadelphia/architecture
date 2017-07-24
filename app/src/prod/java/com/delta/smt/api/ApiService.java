@@ -59,9 +59,9 @@ import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineItem;
 import com.delta.smt.entity.WareHouse;
-import com.delta.smt.ui.hand_add.item.ItemHandAdd;
-import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
-import com.delta.smt.ui.production_warning.item.ItemProduceLine;
+import com.delta.smt.entity.ItemHandAdd;
+import com.delta.smt.entity.production_warining_item.ItemAcceptMaterialDetail;
+import com.delta.smt.entity.production_warining_item.ItemProduceLine;
 
 import java.util.List;
 
