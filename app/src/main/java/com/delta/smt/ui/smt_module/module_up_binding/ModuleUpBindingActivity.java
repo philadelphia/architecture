@@ -132,6 +132,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private UploadMESParams mUploadMESParamsA;
     private TextView tv_up;
     private TextView tv_supply;
+    private boolean isAllItemBound = false;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -218,7 +219,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
 
-                if (item.getStatus() == 1){
+                if (item.getStatus() == 1) {
                     holder.itemView.setBackgroundColor(Color.GREEN);
                 }
 
@@ -245,7 +246,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         scan_position = -1;
         dataSource.clear();
         dataSource.addAll(data);
-        if(dataSource.size() == 0){
+        if (dataSource.size() == 0) {
             btn_upLoad_mes.setClickable(false);
         }
         adapter.notifyDataSetChanged();
@@ -274,7 +275,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     private boolean isAllItemIsBound(List<ModuleUpBindingItem> data) {
-        boolean isAllItemBound = false;
+        isAllItemBound = false;
         int size = data.size();
         for (int i = 0; i < size; i++) {
             ModuleUpBindingItem item = data.get(i);
@@ -408,13 +409,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
             mFeedingListBean.addAll(mT.getFeeding_list());
             tv_up.setText("上料列表：" + mFeedingListBean.size());
-            tv_supply.setText("发料列表：" + mMaterialListBean.size());
             undoList_adapter.notifyDataSetChanged();
         }
 
         if (mT.getMaterial_list() != null) {
             mMaterialListBean.addAll(mT.getMaterial_list());
-            tv_up.setText("上料列表：" + mFeedingListBean.size());
             tv_supply.setText("发料列表：" + mMaterialListBean.size());
             unSend_adapter.notifyDataSetChanged();
         }
@@ -427,7 +426,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void getNeedUpLoadTOMESMaterislsFailed(String mMsg) {
+    public void getNeedUpLoadTOMESMaterialsFailed(String mMsg) {
         ToastUtils.showMessage(this, mMsg);
     }
 
@@ -483,7 +482,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             case R.id.bt_sheet_confirm:
                 List<UpLoadEntity.FeedingListBean> mFeedingListBeans = new ArrayList<>();
                 List<UpLoadEntity.MaterialListBean> mMaterialListBeans = new ArrayList<>();
-                if(mFeedingListBean.size() != 0){
+                if (mFeedingListBean.size() != 0) {
                     for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
                         if (mListBean.isChecked()) {
                             mFeedingListBeans.add(mListBean);
@@ -492,16 +491,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
                 }
 
-                if(mMaterialListBean.size() != 0){
-                    for (UpLoadEntity.MaterialListBean mListBean : mMaterialListBean) {
-                        if (mListBean.isChecked()) {
-                            mMaterialListBeans.add(mListBean);
-                        }
-                    }
+//                if (mMaterialListBean.size() != 0) {
+//                    for (UpLoadEntity.MaterialListBean mListBean : mMaterialListBean) {
+//                        if (mListBean.isChecked()) {
+//                            mMaterialListBeans.add(mListBean);
+//                        }
+//                    }
+//
+//                }
 
-                }
-
-                if (mFeedingListBeans.size() == 0  && mMaterialListBeans.size() == 0) {
+                if (mFeedingListBeans.size() == 0) {
                     ToastUtils.showMessage(this, "请选择上料列表！");
                     return;
                 }
@@ -512,7 +511,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 mUploadMESParams.setIs_feeder_buffer("0");
                 mUploadMESParams.setMes_mode("0");
                 mUploadMESParams.setFeeding_list(mFeedingListBeans);
-                mUploadMESParams.setMaterial_list(mMaterialListBeans);
+//                mUploadMESParams.setMaterial_list(mMaterialListBeans);
                 getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParams));
 
                 break;
@@ -525,29 +524,30 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         undoList_adapter.notifyDataSetChanged();
                     }
 
-                    if (mMaterialListBean != null && mMaterialListBean.size() != 0){
-                        for (UpLoadEntity.MaterialListBean materialListBean : mMaterialListBean) {
-                            materialListBean.setChecked(true);
-                        }
-                        unSend_adapter.notifyDataSetChanged();
-                    }
+                    //不上传发料列表
+//                    if (mMaterialListBean != null && mMaterialListBean.size() != 0) {
+//                        for (UpLoadEntity.MaterialListBean materialListBean : mMaterialListBean) {
+//                            materialListBean.setChecked(true);
+//                        }
+//                        unSend_adapter.notifyDataSetChanged();
+//                    }
                 }
                 break;
             case R.id.bt_sheet_select_cancel:
                 if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
-                if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
-                    for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
-                        mListBean.setChecked(false);
+                    if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
+                        for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
+                            mListBean.setChecked(false);
+                        }
+                        undoList_adapter.notifyDataSetChanged();
                     }
-                    undoList_adapter.notifyDataSetChanged();
                 }
-            }
-            if (mMaterialListBean != null && mMaterialListBean.size() != 0){
-                for (UpLoadEntity.MaterialListBean materialListBean : mMaterialListBean) {
-                    materialListBean.setChecked(false);
-                }
-                unSend_adapter.notifyDataSetChanged();
-            }
+//                if (mMaterialListBean != null && mMaterialListBean.size() != 0) {
+//                    for (UpLoadEntity.MaterialListBean materialListBean : mMaterialListBean) {
+//                        materialListBean.setChecked(false);
+//                    }
+//                    unSend_adapter.notifyDataSetChanged();
+//                }
 
                 break;
             default:
@@ -598,14 +598,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             }
 
         };
-        unSend_adapter = new CommonBaseAdapter<UpLoadEntity.MaterialListBean>(getContext(), mMaterialListBean) {
+      //发料Adapter
+       unSend_adapter = new CommonBaseAdapter<UpLoadEntity.MaterialListBean>(getContext(), mMaterialListBean) {
             @Override
             protected void convert(CommonViewHolder holder, final UpLoadEntity.MaterialListBean item, int position) {
                 holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
                 holder.setText(R.id.tv_slot, "流水号：" + String.valueOf(item.getSerial_no()));
                 holder.setText(R.id.tv_issue, "架位：" + String.valueOf(item.getSlot()));
                 final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
-                mCheckBox.setChecked(item.isChecked());
+//                mCheckBox.setChecked(item.isChecked());
+                mCheckBox.setVisibility(View.INVISIBLE);
                 holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -634,11 +636,11 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     private void setAdapter(RecyclerView rv_debit, CommonBaseAdapter mUndoList_adapter) {
         rv_debit.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
 //                return super.canScrollVertically();
-                return  false;
+                return false;
             }
         };
         linearLayoutManager.setSmoothScrollbarEnabled(true);
@@ -707,7 +709,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     mUploadMESParamsA.setSide(side);
                     mUploadMESParamsA.setWork_order(workItemID);
                     mUploadMESParamsA.setIs_feeder_buffer("0");
-                    mUploadMESParamsA.setMes_mode(isAutomaticUpload  ?  "1": "0");
+                    mUploadMESParamsA.setMes_mode(isAutomaticUpload ? "1" : "0");
                     UpLoadEntity.FeedingListBean mFeedingListBeanA = new UpLoadEntity.FeedingListBean();
                     mFeedingListBeanA.setFeeder_id(barcode);
                     mFeedingListBeanA.setMaterial_no(materialBlockNumber);
@@ -764,7 +766,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
                 VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
                 String slot = getModuleID(materialBlockBarCode);
-                showMessage.setText("模组料站：" +slot );
+                showMessage.setText("模组料站：" + slot);
                 showMessage.setVisibility(View.VISIBLE);
             }
             state = 2;
@@ -853,9 +855,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         return flag;
     }
 
-    public String getModuleID(MaterialBlockBarCode materialBlockBarCode){
+    public String getModuleID(MaterialBlockBarCode materialBlockBarCode) {
         for (ModuleUpBindingItem rowsBean : dataSource) {
-            if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())){
+            if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())) {
                 return rowsBean.getSlot();
             }
 

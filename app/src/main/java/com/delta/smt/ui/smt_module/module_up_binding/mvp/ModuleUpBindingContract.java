@@ -38,7 +38,7 @@ public interface ModuleUpBindingContract {
 
         void getNeedUpLoadToMESMaterialsSuccess(UpLoadEntity mT);
 
-        void getNeedUpLoadTOMESMaterislsFailed(String mMsg);
+        void getNeedUpLoadTOMESMaterialsFailed(String mMsg);
 
         void uploadSuccess(String mMessage);
 

@@ -443,10 +443,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onScanSuccess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
-        if (dataSource.size() == 0){
-            ToastUtils.showMessage(this, "所有待入Feeder缓存区的料均已发完");
+        if (dataSourceForCheckIn.isEmpty()){
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
+            ToastUtils.showMessage(this, "所有要退入Feeder缓冲区的料均已发完");
             return;
         }
+
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (flag) {
             case 1:

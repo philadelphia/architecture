@@ -154,7 +154,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
                     getView().getNeedUpLoadToMESMaterialsSuccess(mUpLoadEntityResult.getT());
                 } else {
-                    getView().getNeedUpLoadTOMESMaterislsFailed(mUpLoadEntityResult.getMsg());
+                    getView().getNeedUpLoadTOMESMaterialsFailed(mUpLoadEntityResult.getMsg());
                 }
             }
         });
