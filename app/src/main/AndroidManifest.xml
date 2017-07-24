@@ -97,6 +97,9 @@
             android:name=".ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.mantissas_warehouse_bindTag.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.quality_manage.QualityManageActivity"
             android:screenOrientation="portrait" />
 
@@ -219,6 +222,8 @@
             android:launchMode="singleInstance"
             android:taskAffinity=""
             android:theme="@style/NoTitle" />
+        <!--仓库入库-->
+        <activity android:name=".ui.warehouse.BindMaterialCarActivity"/>
 
     </application>
 

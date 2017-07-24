@@ -17,6 +17,8 @@
         android:textSize="40px" />
 
     <EditText
+        android:textSize="@dimen/px_40"
+        android:paddingLeft="@dimen/px_10"
         android:id="@+id/ProductInfoBarCode"
         android:layout_width="550px"
         android:layout_height="80px"

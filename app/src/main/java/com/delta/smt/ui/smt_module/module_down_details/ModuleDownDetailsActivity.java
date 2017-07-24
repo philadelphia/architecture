@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -129,6 +131,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         map.put("side", side);
         argument = GsonTools.createGsonListString(map);
         mCurrentWorkOrder = workItemID;
+        checkBox.setChecked(SpUtil.getBooleanSF(this," ModuleDown"));
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SpUtil.SetBooleanSF(ModuleDownDetailsActivity.this, "ModuleDown", isChecked);
+            }
+        });
     }
 
     @Override
@@ -176,13 +185,14 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 }
 
 
-                if (item.getMaterial_no().equalsIgnoreCase(mCurrentMaterialID) && item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)) {
-                    Log.i(TAG, "convert: " + item.toString());
-                    Log.i(TAG, "position: " + position);
-
+//                if (item.getMaterial_no().equalsIgnoreCase(mCurrentMaterialID) && item.getSerial_no().equalsIgnoreCase(mCurrentSerialNumber)) {
+//                    Log.i(TAG, "convert: " + item.toString());
+//                    Log.i(TAG, "position: " + position);
+//
+//                    holder.itemView.setBackgroundColor(Color.YELLOW);
+//                    mCurrentSlot = item.getSlot();
+                if (position == index){
                     holder.itemView.setBackgroundColor(Color.YELLOW);
-                    mCurrentSlot = item.getSlot();
-
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
@@ -220,6 +230,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         }
         Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size());
         Log.i(TAG, "onSuccess: 后台返回的待入库数据长度是" + dataSourceForCheckIn.size());
+        index = -1;
         adapter.notifyDataSetChanged();
         if (dataSourceForCheckIn.isEmpty()) {
             btnFeederMaintain.setEnabled(true);
@@ -335,6 +346,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public void onFailed(String message) {
         flag = 2;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override
@@ -430,6 +443,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onScanSuccess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
+        if (dataSource.size() == 0){
+            ToastUtils.showMessage(this, "所有待入Feeder缓存区的料均已发完");
+            return;
+        }
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (flag) {
             case 1:
@@ -438,7 +455,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 } catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
-                    Toast.makeText(this, "请扫描料盘", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "不能解析该二维码", Toast.LENGTH_SHORT).show();
+                    index = -1;
                     flag = 1;
                 } catch (ArrayIndexOutOfBoundsException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
@@ -468,7 +486,6 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     Log.i(TAG, "料架已经扫描完成，接下来入库: ");
 
                     getPresenter().getFeederCheckInTime(argument);
-
 
                 } catch (EntityNotFountException e1) {
                     try {
@@ -500,8 +517,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         mCurrentMaterialID = materialBlockBarCode.getDeltaMaterialNumber();
         mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
         mCurrentQuantity = materialBlockBarCode.getCount();
-        getMatchedMaterialIndex(materialBlockBarCode);
+        index = getMatchedMaterialIndex(mCurrentMaterialID, mCurrentSerialNumber);
         adapter.notifyDataSetChanged();
+
         RecycleViewUtils.scrollToMiddle(linearLayoutManager, index, recyclerViewContent);
 
         Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialID);
@@ -539,12 +557,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         }
     }
 
-    public int getMatchedMaterialIndex(MaterialBlockBarCode material) {
+    public int getMatchedMaterialIndex(String materialID, String serialNumber ) {
         int length = dataSource.size();
 
         for (int i = 0; i < length; i++) {
             ModuleDownDetailsItem rowsBean = dataSource.get(i);
-            if (rowsBean.getMaterial_no().equalsIgnoreCase(material.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(material.getStreamNumber())) {
+            if (rowsBean.getMaterial_no().equalsIgnoreCase(materialID) && rowsBean.getSerial_no().equalsIgnoreCase(serialNumber)) {
                 index = i;
                 break;
             }

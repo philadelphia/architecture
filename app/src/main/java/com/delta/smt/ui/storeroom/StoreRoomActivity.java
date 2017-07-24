@@ -34,12 +34,15 @@ import com.delta.smt.ui.storeroom.mvp.StoreRoomPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.delta.buletoothio.barcode.parse.BarCodeType.PCB_FRAME_LOCATION;
+import static com.delta.commonlibs.utils.GsonTools.createGsonListString;
 
 /**
  * Created by Lin.Hou on 2016-12-26.
@@ -86,6 +89,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     private CommonBaseAdapter<ThreeOfMaterial> mShortLisrAdapter;
 
     public static String myResEx= "^[0-9A-Z]{5}$";
+    private String mBarcode;
 
 
     @Override
@@ -120,7 +124,6 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                 holder.setText(R.id.shortList_pcbcode, item.getPcbCode());
                 holder.setText(R.id.shortList_datacode, item.getDataCode());
                 holder.setText(R.id.shortList_count, item.getCount());
-                holder.setText(R.id.shortList_forprices, item.getPrice());
 
             }
 
@@ -130,6 +133,16 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
             }
         };
         mShortLisrAdapter.addHeaderView(View.inflate(this,R.layout.item_shortlist,null));
+        mShortLisrAdapter.setOnItemLongClickListener(new CommonBaseAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, Object item, int position) {
+                if (materialsList.size()!=0){
+                    materialsList.remove(position);
+                    materialBlockBarCodes.remove(position);
+                    mShortLisrAdapter.notifyDataSetChanged();
+                }
+            }
+        });
         storageShow.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         storageShow.setAdapter(mShortLisrAdapter);
 
@@ -152,14 +165,10 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
                     Log.e("barcode", mBarCode.getDeltaMaterialNumber());
                     if(materialBlockBarCodes.size() ==0) {
-                        materialBlockBarCodes.add(mBarCode);
-                        ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
-                        materialsList.add(threeOfMaterial);
-                        mShortLisrAdapter.notifyDataSetChanged();
-                        storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
-                        storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
-                        storageDatacodeed.setText(mBarCode.getDC());
-                        storageCounted.setText(mBarCode.getCount());
+                        Map<String,String>map=new HashMap<>();
+                        map.put("boxSerial",mBarCode.getStreamNumber());
+                        String jsonarrat=createGsonListString(map);
+                        getPresenter().isBoxSerialExist(jsonarrat);
 
                     }else{
                         int i=0;
@@ -178,14 +187,18 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                         }else {
                             VibratorAndVoiceUtils.correctVibrator (this);
                             VibratorAndVoiceUtils.correctVoice(this);
-                            materialBlockBarCodes.add(mBarCode);
-                            ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
-                            materialsList.add(threeOfMaterial);
-                            mShortLisrAdapter.notifyDataSetChanged();
-                            storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
-                            storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
-                            storageDatacodeed.setText(mBarCode.getDC());
-                            storageCounted.setText(mBarCode.getCount());
+                            Map<String,String>map=new HashMap<>();
+                            map.put("boxSerial",mBarCode.getStreamNumber());
+                            String jsonarrat=createGsonListString(map);
+                            getPresenter().isBoxSerialExist(jsonarrat);
+//                            materialBlockBarCodes.add(mBarCode);
+//                            ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
+//                            materialsList.add(threeOfMaterial);
+//                            mShortLisrAdapter.notifyDataSetChanged();
+//                            storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
+//                            storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
+//                            storageDatacodeed.setText(mBarCode.getDC());
+//                            storageCounted.setText(mBarCode.getCount());
                         }
 
                     }
@@ -199,19 +212,24 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
                 break;
             case 1:
-                try {
-                    PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
+//                try {
+                   // PcbFrameLocation frameCode = (PcbFrameLocation) barCodeParseIpml.getEntity(barcode, PCB_FRAME_LOCATION);
 //                Pattern pattern = Pattern.compile(myResEx);
 //                Matcher matcher = pattern.matcher(barcode);
 //                boolean isMatcher = matcher.matches();
 //                if (isMatcher) {
 
-                    storageIded.setText(barcode);
-                    if (materialBlockBarCodes.size() < 11 && materialBlockBarCodes.size() != 0) {
-                        if (!TextUtils.isEmpty(storageIded.getText())) {
+                mBarcode=barcode;
+
+                    if (materialBlockBarCodes.size() != 0) {
+                        if (!TextUtils.isEmpty(barcode)){
                             VibratorAndVoiceUtils.correctVibrator(this);
                             VibratorAndVoiceUtils.correctVoice(this);
-                            getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
+                            Map<String,String>map=new HashMap<>();
+                            map.put("labelCode",barcode);
+                            String jsonarrat=createGsonListString(map);
+                            getPresenter().isLabelExist(jsonarrat);
+
                         }
                     } else {
                         VibratorAndVoiceUtils.wrongVibrator(this);
@@ -222,11 +240,11 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                     }
 
 
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    VibratorAndVoiceUtils.wrongVibrator(this);
-                    VibratorAndVoiceUtils.wrongVoice(this);
-                }
+//                } catch (Exception e1) {
+//                    e1.printStackTrace();
+//                    VibratorAndVoiceUtils.wrongVibrator(this);
+//                    VibratorAndVoiceUtils.wrongVoice(this);
+//                }
                 break;
         }
 
@@ -251,6 +269,7 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     @Override
     public void storeFaild(String s) {
         ToastUtils.showMessage(this, s);
+
     }
 
     @Override
@@ -352,7 +371,10 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                     storageSubmit.setEnabled(false);
                     storageClear.setBackgroundColor(Color.GRAY);
                     storageClear.setEnabled(false);
-                    getPresenter().fatchOnLight(materialBlockBarCodes);
+                    if (materialBlockBarCodes!=null&&storageIded.getText()!=null){
+                    getPresenter().fatchPutInStorage(materialBlockBarCodes, storageIded.getText().toString());
+                    }
+//                    getPresenter().fatchOnLight(materialBlockBarCodes);
                 } else {
                     ToastUtils.showMessage(StoreRoomActivity.this, "请扫码后在点击确认");
                 }
@@ -377,5 +399,30 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
+    }
+
+    @Override
+    public void isBoxSerialExistSuccess() {
+        if(mBarCode!=null){
+            materialBlockBarCodes.add(mBarCode);
+            ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
+            materialsList.add(threeOfMaterial);
+            mShortLisrAdapter.notifyDataSetChanged();
+            storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
+            storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
+            storageDatacodeed.setText(mBarCode.getDC());
+            storageCounted.setText(mBarCode.getCount());
+        }
+    }
+
+    @Override
+    public void isLabelExistSuccess() {
+        storageIded.setText(mBarcode);
+
+    }
+
+    @Override
+    public void onFaild(String s) {
+        SnackbarUtil.showMassage(warningActivityMain,s);
     }
 }

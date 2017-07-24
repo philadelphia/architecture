@@ -2,6 +2,8 @@
 <com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_item"
+    android:background="@drawable/card_background"
+    android:layout_marginTop="50px"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,7 +13,6 @@
         android:layout_marginLeft="20px"
         android:layout_marginRight="20px"
         android:layout_marginTop="20px"
-        android:background="@drawable/card_background"
         android:paddingLeft="50px"
         android:paddingRight="50px">
         <TextView
@@ -83,12 +84,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="50px"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/time_remain"
-                android:layout_width="95dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="22px"
                 android:text="已下线时长："
                 android:textColor="@color/c_333333"
                 android:textSize="40px" />

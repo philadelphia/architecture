@@ -2,9 +2,9 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:background="@color/c_ffffff"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,19 +25,19 @@
             android:textSize="40px"/>
 
         <Button
-        android:id="@+id/deduct"
-        android:layout_width="wrap_content"
-        android:layout_height="100px"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="@color/background"
-        android:textColor="@color/c_ffffff"
-        android:layout_marginRight="30px"
-        android:layout_marginLeft="10px"
-        android:text="开始入库"
-        android:textSize="40px"
-        />
+            android:id="@+id/deduct"
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/background"
+            android:textColor="@color/c_ffffff"
+            android:layout_marginRight="30px"
+            android:layout_marginLeft="10px"
+            android:text="开始入库"
+            android:textSize="40px"
+            />
 
         <Button
             android:id="@+id/begin"
@@ -67,25 +67,25 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-    <HorizontalScrollView
-        android:id="@+id/hr_scrow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recy_title"
+            <HorizontalScrollView
+                android:id="@+id/hr_scrow"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recy_contetn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recy_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recy_contetn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+            </HorizontalScrollView>
         </LinearLayout>
-    </HorizontalScrollView>
-    </LinearLayout>
     </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 
     <LinearLayout

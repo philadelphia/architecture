@@ -201,6 +201,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     public void onFailed(String message) {
         ToastUtils.showMessage(this, message);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override

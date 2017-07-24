@@ -199,12 +199,11 @@ public class StartWorkAndStopWorkActivity extends BaseActivity<StartWorkAndStopW
             if (list.get(i).getStatus()==2){
                mCheckedList.add(list.get(i));
             }else if (list.get(i).getStatus()==1){
-               Log.i("info",list.get(i).getShelf());
+               Log.i("info",list.get(i).getLabelCode());
             }else{
                 mUnCheckedList.add(list.get(i));
             }
         }
-
         mCheckedadapter.notifyDataSetChanged();
         mUnCheckedadapter.notifyDataSetChanged();
 

@@ -75,14 +75,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     AutoToolbar toolbar;
     @BindView(R.id.btn_upload)
     Button btnUpload;
-    @BindView(R.id.checkBox)
-    CheckBox checkBox;
+//    @BindView(R.id.checkBox)
+//    CheckBox checkBox;
 
     @BindView(R.id.checkBox_autoUpLoadToMES)
     CheckBox checkBox_autoUpLoadToMES;
 
-    @BindView(R.id.btn_debitManually)
-    Button btn_debitManually;
+    //    @BindView(R.id.btn_debitManually)
+//    Button btn_debitManually;
     @BindView(R.id.recy_title)
     RecyclerView recyclerViewTitle;
     @BindView(R.id.recy_content)
@@ -119,6 +119,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
     private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
     private CommonBaseAdapter<UpLoadEntity.MaterialListBean> unSend_adapter;
+    private String argument_MES;
+    private TextView tv_up;
+    private TextView tv_supply;
 
     @Override
     protected void handError(String contents) {
@@ -196,7 +199,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 holder.setText(R.id.tv_feederID, item.getFeederID());
                 holder.setText(R.id.tv_materialID, item.getMaterialID());
                 holder.setText(R.id.tv_module, item.getSlot());
-                holder.setText(R.id.tv_timestamp, item.getBindTime());
+//                holder.setText(R.id.tv_timestamp, item.getBindTime());
                 holder.setText(R.id.tv_status, item.getStatus() == 0 ? "等待上模组" : " 上模组完成");
                 switch (item.getStatus()) {
                     case 0:
@@ -223,7 +226,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     }
 
-    @OnClick({R.id.tv_setting, R.id.btn_upload, R.id.btn_debitManually})
+    @OnClick({R.id.tv_setting, R.id.btn_upload})
     public void onClicks(View view) {
         Map<String, String> map = new HashMap<>();
         Map<String, Object> map_argument = new HashMap<>();
@@ -248,28 +251,28 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 }
                 getPresenter().getUnUpLoadToMESList(GsonTools.createGsonListString(map_argument));
                 break;
-            case R.id.btn_debitManually:    //请求扣账列表
-                if (isBeginSupply) {
-                    if (popUpWindow == null) {
-                        createPopupWindow();
-                    }
-                    map.clear();
-                    map.put("work_order", workId);
-                    map.put("side", side);
-                    map.put("part", "FeederBuffer");
-                    argument = GsonTools.createGsonListString(map);
-                    getPresenter().getUnDebitedItemList(argument);
-                } else {
-                    ToastUtils.showMessage(this, "还未开始发料", Toast.LENGTH_SHORT);
-                }
-                break;
+//            case R.id.btn_debitManually:    //请求扣账列表
+//                if (isBeginSupply) {
+//                    if (popUpWindow == null) {
+//                        createPopupWindow();
+//                    }
+//                    map.clear();
+//                    map.put("work_order", workId);
+//                    map.put("side", side);
+//                    map.put("part", "FeederBuffer");
+//                    argument = GsonTools.createGsonListString(map);
+//                    getPresenter().getUnDebitedItemList(argument);
+//                } else {
+//                    ToastUtils.showMessage(this, "还未开始发料", Toast.LENGTH_SHORT);
+//                }
+//                break;
 
-            case R.id.bt_sheet_cancel:
-                break;
-            case R.id.bt_sheet_select_all:
-                break;
-            case R.id.bt_sheet_confirm:
-                break;
+//            case R.id.bt_sheet_cancel:
+//                break;
+//            case R.id.bt_sheet_select_all:
+//                break;
+//            case R.id.bt_sheet_confirm:
+//                break;
             default:
                 break;
 
@@ -281,12 +284,19 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Log.i(TAG, "onSuccess: ");
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
         statusLayout.setVisibility(View.VISIBLE);
+        tvModuleID.setVisibility(View.GONE);
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
         isBeginSupply = isBeginSupply(data);
         if (index != -1) {
             RecycleViewUtils.scrollToMiddle(linearLayoutManager, getLastMaterialIndex(mCurrentMaterial, dataSource), recyclerViewContent);
+        }
+
+        if (checkBox_autoUpLoadToMES.isChecked()) {
+            if (argument_MES != null) {
+                getPresenter().upLoadFeederSupplyToMES(argument_MES);
+            }
         }
         if (data.size() == 0) {
             isAllItemSupplied = true;
@@ -368,12 +378,15 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         }
 
         if (mT.getFeeding_list() != null) {
-
+            tv_up.setText("上料列表：" + mFeedingListBean.size());
+            tv_supply.setText("发料列表：" + mMaterialListBean.size());
             mFeedingListBean.addAll(mT.getFeeding_list());
             undoList_adapter.notifyDataSetChanged();
         }
 
         if (mT.getMaterial_list() != null) {
+            tv_up.setText("上料列表：" + mFeedingListBean.size());
+            tv_supply.setText("发料列表：" + mMaterialListBean.size());
             mMaterialListBean.addAll(mT.getMaterial_list());
             unSend_adapter.notifyDataSetChanged();
         }
@@ -386,7 +399,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     }
 
     private void createPopupWindow() {
-
         popUpWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.popupAnimalStyle)
                 .setView(R.layout.dialog_bottom_sheet)
@@ -398,6 +410,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_select_cancel);
         Button btn_confirm = ViewUtils.findView(contentView, R.id.bt_sheet_confirm);
         Button btn_selectAll = ViewUtils.findView(contentView, R.id.bt_sheet_select_all);
+        tv_up = ViewUtils.findView(contentView, R.id.tv_mount_up);
+        tv_supply = ViewUtils.findView(contentView, R.id.tv_mount_supply);
+        tv_up.setText("上料列表：" + mFeedingListBean.size());
+        tv_supply.setText("发料列表：" + mMaterialListBean.size());
         btn_back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -488,6 +504,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public void onFailed(String message) {
         Log.i(TAG, "onFailed: " + message);
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override
@@ -588,7 +606,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             map.put("material_no", mCurrentMaterialNumber);
             map.put("serial_no", mCurrentSerialNumber);
             map.put("work_order", workId);
-            map.put("code", checkBox.isChecked() ? "1" : "0");
+//            map.put("code", checkBox.isChecked() ? "1" : "0");
 
             argument = GsonTools.createGsonListString(map);
             Log.i(TAG, "argument== " + argument);
@@ -609,25 +627,33 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             map2.put("slot", slot);
             feeding_list.add(map2);
             map1.put("feeding_list", feeding_list);
-            String argument_MES = GsonTools.createGsonListString(map1);
+            argument_MES = GsonTools.createGsonListString(map1);
 
             Log.i(TAG, "argument_MES== " + argument);
             if (isMaterialExists(mCurrentMaterial)) {
+                tvModuleID.setVisibility(View.VISIBLE);
+                tvModuleID.setText("料站：" + slot);
                 getPresenter().getFeederInsertionToSlotTimeStamp(argument);
-                getPresenter().upLoadFeederSupplyToMES(argument_MES);
+
             } else {
                 ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
+                tvModuleID.setVisibility(View.VISIBLE);
+                tvModuleID.setText("该料盘不存在，请重新扫描料盘");
             }
 
         } catch (EntityNotFountException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
+            tvModuleID.setVisibility(View.VISIBLE);
+            tvModuleID.setText("请扫描料盘");
             Toast.makeText(this, "请扫描料盘", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         } catch (ArrayIndexOutOfBoundsException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
             Toast.makeText(this, "解析错误,请重新扫描", Toast.LENGTH_SHORT).show();
+            tvModuleID.setVisibility(View.VISIBLE);
+            tvModuleID.setText("解析错误,请重新扫描");
         }
 
 
@@ -824,6 +850,9 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 }
 
                 break;
+
+            case R.id.tv_moduleID:
+                tvModuleID.setVisibility(View.GONE);
             default:
                 break;
         }

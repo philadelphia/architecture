@@ -1,5 +1,6 @@
 package com.delta.smt.ui.storage_manger.details;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -20,11 +21,14 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.BackupMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
@@ -44,9 +48,8 @@ import com.delta.smt.ui.storage_manger.details.di.DaggerStorageDetailsComponent;
 import com.delta.smt.ui.storage_manger.details.di.StorageDetailsModule;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsContract;
 import com.delta.smt.ui.storage_manger.details.mvp.StorageDetailsPresenter;
+import com.delta.smt.utils.BarCodeDialogUtils;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.delta.commonlibs.utils.ViewUtils;
-import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.ArrayList;
@@ -100,7 +103,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private List<DebitData> mDebitDatas = new ArrayList<>();
     private CommonBaseAdapter<StorageDetails> title_adapter;
     private CommonBaseAdapter<StorageDetails> content_adapter;
-    private BarCodeParseIpml barCodeImp;
+    private BarCodeParseIpml mBarCodeParseIpml;
     private String work_order;
     private String part;
     private MaterialBlockBarCode materialblockbarcode;
@@ -115,6 +118,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private int state = 1;
     @Inject
     TextToSpeechManager textToSpeechManager;
+    private Dialog mConfirmDialog;
 
 
     @Override
@@ -127,7 +131,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     protected void initData() {
         //textToSpeechManager = new RawTextToSpeech(App.getmContenxt());
-        barCodeImp = new BarCodeParseIpml();
+        mBarCodeParseIpml = new BarCodeParseIpml();
         part = getIntent().getStringExtra(Constant.WARE_HOUSE_NAME);
         work_order = getIntent().getStringExtra(Constant.WORK_ORDER);
         line_name = getIntent().getStringExtra(Constant.LINE_NAME);
@@ -159,7 +163,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
         mToolbarTitle.setText("仓库" + part);
-        JumpOver();
+       // JumpOver();
         tvWorkOrder.setText("工单：" + work_order);
         tvLineName.setText("线别：" + line_name);
         tvLineNum.setText("面别：" + side);
@@ -229,7 +233,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 mMap.put("part", part);
                 mMap.put("work_order", work_order);
                 mMap.put("side", side);
-                mMap.put("code","A");
+                mMap.put("code", "A");
                 getPresenter().issureToWarehFinish(GsonTools.createGsonListString(mMap));
             }
         });
@@ -258,11 +262,21 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         //绑定料车成功状态2
         state = 2;
         if (data.size() != 0) {
-            mTextView2.setText(data.get(0).getCar_name());
             tv_hint.setText(getString(R.string.bindMatericalcar) + data.get(0).getCar_name());
             textToSpeechManager.readMessage(getString(R.string.bindMatericalcar) + data.get(0).getCar_name());
         }
-
+        StringBuffer mStringBuffer = new StringBuffer();
+        if (data.size() != 0) {
+            for (int mI = 0; mI < data.size(); mI++) {
+                if (mI == data.size() - 1) {
+                    mStringBuffer.append(data.get(mI).getCar_name());
+                } else {
+                    mStringBuffer.append(data.get(mI).getCar_name() + ",");
+                }
+            }
+            mTextView2.setText(mStringBuffer.toString());
+            //  tv_hint.setText(rows.get(0).getCar_name());
+        }
         VibratorAndVoiceUtils.correctVoice(this);
         VibratorAndVoiceUtils.correctVibrator(this);
     }
@@ -290,12 +304,10 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         isHaveIssureOver = false;
         mStorageDetailses.clear();
         mStorageDetailses.addAll(rows.getRows());
-        int position = 0;
         boolean isFirstUndo = true;
         for (int i = 0; i < mStorageDetailses.size(); i++) {
             if (mStorageDetailses.get(i).getStatus() == 1) {
                 if (isFirstUndo) {
-                    position = i;
                     isFirstUndo = false;
                 }
             }
@@ -306,7 +318,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             }
         }
         content_adapter.notifyDataSetChanged();
-        mRecycleContent.scrollToPosition(position);
+        mRecycleContent.scrollToPosition(0);
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -321,8 +333,16 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void queryMaterailCar(List<MaterialCar> rows) {
+        StringBuffer mStringBuffer = new StringBuffer();
         if (rows.size() != 0) {
-            mTextView2.setText(rows.get(0).getCar_name());
+            for (int mI = 0; mI < rows.size(); mI++) {
+                if (mI == rows.size() - 1) {
+                    mStringBuffer.append(rows.get(mI).getCar_name());
+                } else {
+                    mStringBuffer.append(rows.get(mI).getCar_name() + ",");
+                }
+            }
+            mTextView2.setText(mStringBuffer.toString());
             //  tv_hint.setText(rows.get(0).getCar_name());
         }
         state = 2;
@@ -340,7 +360,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void bindMaterialCarFailed(String msg) {
-        state = 1;
+        if (state != 2) {
+            state = 1;
+        }
         tv_hint.setText(msg);
         ToastUtils.showMessage(this, msg);
         textToSpeechManager.readMessage(msg);
@@ -381,16 +403,25 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         state = 2;
         ToastUtils.showMessage(this, message);
 
-        DialogUtils.showConfirmDialog(this, message, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                getPresenter().jumpMaterials(mS);
-            }
-        });
+        if(mConfirmDialog==null){
+
+            mConfirmDialog = BarCodeDialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    getPresenter().jumpMaterials(mS);
+                }
+            },getBarCodeIpml());
+        }
+        if(!mConfirmDialog.isShowing()){
+            mConfirmDialog.show();
+        }
+
         textToSpeechManager.readMessage(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
+
+
 
     @Override
     public void issureToWarehFinishFaildSure(String message) {
@@ -433,7 +464,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-               dialogInterface.dismiss();
+                dialogInterface.dismiss();
             }
         });
     }
@@ -523,11 +554,12 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void onScanSuccess(String barcode) {
+        Log.e(TAG, "onScanSuccess: "+barcode);
         switch (state) {
             case 1:
                 BackupMaterialCar car;
                 try {
-                    car = ((BackupMaterialCar) barCodeImp.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
+                    car = ((BackupMaterialCar) mBarCodeParseIpml.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
                     //mTextView2.setText(car.getSource());
                     Map<String, String> maps = new HashMap<>();
                     maps.put("work_order", work_order);
@@ -548,7 +580,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             case 2:
                 //扫描料盘
                 try {
-                    materialblockbarcode = (MaterialBlockBarCode) barCodeImp.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    materialblockbarcode = (MaterialBlockBarCode) mBarCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     IssureToWarehBody issureToWarehBody = new IssureToWarehBody();
                     issureToWarehBody.setMaterial_no(materialblockbarcode.getDeltaMaterialNumber());
                     issureToWarehBody.setSerial_no(materialblockbarcode.getStreamNumber());
@@ -568,13 +600,33 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     //currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
                     getPresenter().issureToWareh(GsonTools.createGsonListString(issureToWarehBody));
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ToastUtils.showMessage(this, "请扫描对应架位的料盘");
-                    tv_hint.setText("请扫描对应架位的料盘");
-                    textToSpeechManager.readMessage("请扫描对应架位的料盘");
-                    VibratorAndVoiceUtils.wrongVibrator(this);
-                    VibratorAndVoiceUtils.wrongVoice(this);
+                } catch (EntityNotFountException e) {
+                    BackupMaterialCar otherCar;
+                    try {
+                        otherCar = ((BackupMaterialCar) mBarCodeParseIpml.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
+                        //mTextView2.setText(car.getSource());
+                        Map<String, String> maps = new HashMap<>();
+                        maps.put("work_order", work_order);
+                        maps.put("part", part);
+                        maps.put("side", side);
+                        maps.put("pre_car", otherCar.getSource());
+                        getPresenter().bindBoundPrepCar(GsonTools.createGsonListString(maps));
+                    } catch (EntityNotFountException notFountCarException) {
+                        notFountCarException.printStackTrace();
+                        state = 2;
+//                        ToastUtils.showMessage(this, "扫描有误，请扫描备料车");
+//                        tv_hint.setText("扫描有误，请扫描备料车");
+//                        VibratorAndVoiceUtils.wrongVibrator(this);
+//                        VibratorAndVoiceUtils.wrongVoice(this);
+//                        textToSpeechManager.readMessage("扫描有误，请扫描备料车");
+                    }
+
+//                    e.printStackTrace();
+//                    ToastUtils.showMessage(this, "请扫描对应架位的料盘");
+//                    tv_hint.setText("请扫描对应架位的料盘");
+//                    textToSpeechManager.readMessage("请扫描对应架位的料盘");
+//                    VibratorAndVoiceUtils.wrongVibrator(this);
+//                    VibratorAndVoiceUtils.wrongVoice(this);
                 }
                 state = 2;
                 break;

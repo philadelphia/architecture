@@ -1,6 +1,7 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.entity.AddSuccess;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.BindPrepCarIDByWorkOrderResult;
@@ -28,6 +29,7 @@ import com.delta.smt.entity.Light;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
+import com.delta.smt.entity.MantissaWarehousePutstorageBindTagResult;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.MantissaWarehouseReady;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
@@ -59,6 +61,15 @@ import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineItem;
 import com.delta.smt.entity.WareHouse;
+import com.delta.smt.entity.bindmaterial.BindCarBean;
+import com.delta.smt.entity.bindmaterial.BindLabelBean;
+import com.delta.smt.entity.bindmaterial.FinishPda;
+import com.delta.smt.entity.bindmaterial.ScanMaterialPanBean;
+import com.delta.smt.entity.bindmaterial.StartStoreBean;
+import com.delta.smt.entity.bindmaterial.WheatherBindStart;
+import com.delta.smt.ui.hand_add.item.ItemHandAdd;
+import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
+import com.delta.smt.ui.production_warning.item.ItemProduceLine;
 import com.delta.smt.entity.ItemHandAdd;
 import com.delta.smt.entity.production_warining_item.ItemAcceptMaterialDetail;
 import com.delta.smt.entity.production_warining_item.ItemProduceLine;
@@ -399,21 +410,33 @@ public interface ApiService {
     @GET("ams/pcb/inventory/alteration/judge")
     Observable<Success> getJudgeSuccsee(@Query("condition") String boxSerial);
 
+
+    // TODO: 2017-05-26 查找是否存在
     @GET("ams/pcb/inventory/submit")
-        // TODO: 2017-05-26 查找是否存在
-    Observable<Success> getSubmit(@Query("subShelfCode") String boxSerial);//发送盘点结果
+    Observable<Success> getSubmit(@Query("labelCode") String boxSerial);//发送盘点结果
 
 
     Observable<String> getCheckStockSuccess();//是否成功?
 
     @GET("ams/pcb/subshelf")
-    Observable<LedLight> getSubshelf(@Query("shelfSerial") String s);
+    Observable<LedLight> getSubshelf(@Query("labelCode") String s);
 
     @GET("ams/pcb/subshelf/update")
     Observable<Success> getUpdate(@Query("id") String id, @Query("lightSerial") String lightSerial);
 
     @GET("ams/pcb/subshelf/unbound")
     Observable<Success> getUnbound(@Query("param") String id);
+
+
+    //新接口
+
+    //判断标签是否重复
+    @GET("ams/pcb/management/serial")
+    Observable<AddSuccess> isBoxSerialExist(@Query("condition") String boxSerial);
+    //判断标签是否在库存
+    @GET("ams/pcb/management/label")
+    Observable<AddSuccess> isLabelExist(@Query("condition") String labelCode);
+
 
 
     //Observable<List<MantissaWarehousePutstorage>> getBeginput();
@@ -513,11 +536,13 @@ public interface ApiService {
     @POST("ams/smm/warehissue/startmantississue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Field("value") String bind);
 
+
+
     //料盘绑定标签
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("ams/smm/mantowareh/materboundlabel")
-    Observable<MantissaWarehousePutstorageResult> getBingingLable(@Field("value") String bind);
+    @POST("ams/smm/warehouse/backing/label")
+    Observable<MantissaWarehousePutstorageBindTagResult> getBingingLable(@Field("value") String bind);
 
     //查询尾数仓备料车
     @GET("ams/smm/warehissue/qprepcaridbyworkorder")
@@ -601,30 +626,44 @@ public interface ApiService {
 
     //liuzhenyu
     //尾数仓退入主仓库
-    @GET("ams/smm/mantowareh/queryreturnedwarehlist")
+    @GET("ams/smm/warehouse/backing/materials")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorage();
 
     //点击清理按钮
-    @GET("ams/smm/mantowareh/triggerlistupdate")
+    @PUT("ams/smm/warehouse/backing/materials")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
     //点击开始绑定
-
-    @PUT("ams/smm/mantowareh/startbound")
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/mantowareh/startbound")
     Observable<MantissaWarehousePutstorageResult> getOnclickBeginButton();
 
     //尾数仓点击开始入库
-    @PUT("ams/smm/mantowareh/startreturnedwareh")
-    Observable<MantissaWarehousePutstorageResult> getbeginPut();
-
-    //尾数仓点击开始入库上架位完成
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
-    @POST("ams/smm/mantowareh/matertoshel")
-    Observable<MantissaWarehousePutstorageResult> getUpLocation(@Field("value") String bind);
+    @POST("ams/smm/warehouse/backing")
+    Observable<MantissaWarehousePutstorageBindTagResult> getbeginPut(@Field("value") String parm);
+
+    //尾数仓绑定入库车
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/warehouse/backing/car")
+    Observable<MantissaWarehousePutstorageBindTagResult> bindMantissaWarehouseCar(@Field("value") String parm);
+
+
+
+    //尾数仓扫描料盘
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("ams/smm/warehouse/backing/materials")
+    Observable<MantissaWarehousePutstorageBindTagResult> getUpLocation(@Field("value") String bind);
+
+    //点击提交按钮结束本次绑定
+    @PUT("ams/smm/warehouse/backing")
+    Observable<MantissaWarehousePutstorageBindTagResult> onlickSubmit();
 
     //确定点击下一个架位
-
     @PUT("ams/smm/mantowareh/surenextshelf")
     Observable<MantissaWarehousePutstorageResult> getYesNext();
 
@@ -695,6 +734,33 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
     Observable<Result> jumpOver(@Field("value") String bind);
+
+    /**
+     * 仓库入库相关的Api
+     */
+    @GET("/ams/smm/warehouse/storage")
+    Observable<WheatherBindStart> wheatherBindStart();
+
+    @POST("/ams/smm/warehouse/storage")
+    Observable<StartStoreBean> startStore();
+
+    @POST("/ams/smm/warehouse/storage/car")
+    Observable<BindCarBean> bindCar(@Query("value") String carName);
+
+    @POST("/ams/smm/warehouse/storage/materials")
+    Observable<ScanMaterialPanBean> scanMatePan(@Query("value") String materialPan);
+
+    @POST("ams/smm/warehouse/storage/label")
+    Observable<BindLabelBean> bindLabel(@Query("value") String moveLabel);
+
+    @PUT("/ams/smm/warehouse/storage")
+    Observable<FinishPda> finishedPda();
+
+    //尾数仓更改架位
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("/ams/smm/warehissue/changecarshelf")
+    Observable<Result> changecarshelf(@Field("value") String mGsonListString);
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")

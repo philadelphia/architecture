@@ -33,7 +33,6 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.MantissaWarehousePutstorageResult;
 import com.delta.smt.entity.PutBarCode;
 import com.delta.smt.entity.UpLocation;
-import com.delta.smt.entity.WarehousePutstorageBean;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.DaggerMantissaWarehousePutstorageComponent;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.di.MantissaWarehousePutstorageModule;
 import com.delta.smt.ui.mantissa_warehouse.return_putstorage.put_storage.mvp.MantissaWarehousePutstorageContract;
@@ -453,9 +452,9 @@ public class MantissaWarehousePutstorageFragment extends
                     LabelBarcode lableBar = (LabelBarcode) barCodeParseIpml.getEntity(barcode, BarCodeType.LABLE_BARCODE);
                     lableBarCode = lableBar.getSource();
 
-                    WarehousePutstorageBean bindBean = new WarehousePutstorageBean(lastLocation, lableBarCode);
+                  //  WarehousePutstorageBean bindBean = new WarehousePutstorageBean(lastLocation, lableBarCode);
 
-                    getPresenter().getBindingLabel(GsonTools.createGsonListString(bindBean));
+                  //  getPresenter().getBindingLabel(GsonTools.createGsonListString(bindBean));
                     Toast.makeText(baseActiviy, "已扫描标签", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
                     //SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描标签！");

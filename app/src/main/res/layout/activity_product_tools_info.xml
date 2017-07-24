@@ -15,7 +15,10 @@
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -153,20 +156,22 @@
                 android:textSize="40px" />
 
             <TextView
+                android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/px_margLeft"
                 android:layout_marginTop="30px"
                 android:text="治具二维码:"
                 android:textColor="#333333"
-                android:textSize="40px" />
+                android:textSize="40px"/>
 
             <EditText
                 android:hint="请扫描"
                 android:textColorHint="#428bca"
                 android:id="@+id/ProductInfoBarCode"
                 android:layout_width="600px"
-                android:layout_height="55px"
+                android:layout_height="60px"
+                android:textSize="@dimen/px_40"
                 android:layout_marginLeft="300px"
                 android:layout_marginTop="-55px"
                 android:background="@drawable/ed_back_white"
