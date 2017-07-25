@@ -118,7 +118,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 //                            getView().onFailedBinding(moduleUpBindingItem.getMessage());
                         } else {
                             getView().showContentView();
-                            getView().onSuccess(moduleUpBindingItemResult.getRows());
+                            getView().onSuccessBinding(moduleUpBindingItemResult.getRows());
                         }
 
                     } else {
