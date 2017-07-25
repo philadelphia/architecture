@@ -383,6 +383,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 mUploadMESParams.setMaterial_list(mT.getMaterial_list());
             }
             getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParams));
+            return;
         }
 
         if (mT.getFeeding_list() != null) {

@@ -345,10 +345,13 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     }
 
+
+    //MES
     @Override
     public void showUnUpLoadToMESItemList(UpLoadEntity mT) {
         mFeedingListBean.clear();
         mMaterialListBean.clear();
+
         if (mT.getFeeding_list() == null && mT.getMaterial_list() == null) {
             ToastUtils.showMessage(this, "没有需要上传到MES列表");
             if (popUpWindow != null && popUpWindow.isShowing()) {
@@ -374,20 +377,18 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             if (mT.getMaterial_list() != null) {
                 mUploadMESParams.setMaterial_list(mT.getMaterial_list());
             }
-            getPresenter().upLoadFeederSupplyToMES(GsonTools.createGsonListString(mUploadMESParams));
+//            getPresenter().upLoadFeederSupplyToMES(GsonTools.createGsonListString(mUploadMESParams));
         }
 
         if (mT.getFeeding_list() != null) {
-            tv_up.setText("上料列表：" + mFeedingListBean.size());
-            tv_supply.setText("发料列表：" + mMaterialListBean.size());
             mFeedingListBean.addAll(mT.getFeeding_list());
+            tv_up.setText("上料列表：" + mFeedingListBean.size());
             undoList_adapter.notifyDataSetChanged();
         }
 
         if (mT.getMaterial_list() != null) {
-            tv_up.setText("上料列表：" + mFeedingListBean.size());
-            tv_supply.setText("发料列表：" + mMaterialListBean.size());
             mMaterialListBean.addAll(mT.getMaterial_list());
+            tv_supply.setText("发料列表：" + mMaterialListBean.size());
             unSend_adapter.notifyDataSetChanged();
         }
 
@@ -398,6 +399,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     }
 
+
+    //For 扣账
     private void createPopupWindow() {
         popUpWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 .setAnimationStyle(R.style.popupAnimalStyle)
@@ -732,6 +735,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
         Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
         Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
+        tv_up = ViewUtils.findView(mContentView, R.id.tv_mount_up);
+        tv_supply = ViewUtils.findView(mContentView, R.id.tv_mount_supply);
+        tv_up.setText("上料列表：" + mFeedingListBean.size());
+        tv_supply.setText("发料列表：" + mMaterialListBean.size());
         ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
         bt_cancel.setOnClickListener(this);
         bt_confirm.setOnClickListener(this);
