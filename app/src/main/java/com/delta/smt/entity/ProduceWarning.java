@@ -1,7 +1,7 @@
 package com.delta.smt.entity;
 
-import com.delta.smt.ui.production_warning.item.ItemBreakDown;
-import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
+import com.delta.smt.entity.production_warining_item.ItemBreakDown;
+import com.delta.smt.entity.production_warining_item.ItemWarningInfo;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class ProduceWarning {
     public static class RowsBean {
         private List<ItemWarningInfo> alarm;
         private List<ItemBreakDown> fault;
-        private List<com.delta.smt.ui.production_warning.item.ItemInfo> message;
+        private List<com.delta.smt.entity.production_warining_item.ItemInfo> message;
 
         public List<ItemWarningInfo> getAlarm() {
             return alarm;
@@ -68,11 +68,11 @@ public class ProduceWarning {
             this.fault = fault;
         }
 
-        public List<com.delta.smt.ui.production_warning.item.ItemInfo> getMessage() {
+        public List<com.delta.smt.entity.production_warining_item.ItemInfo> getMessage() {
             return message;
         }
 
-        public void setMessage(List<com.delta.smt.ui.production_warning.item.ItemInfo> message) {
+        public void setMessage(List<com.delta.smt.entity.production_warining_item.ItemInfo> message) {
             this.message = message;
         }
 

@@ -6,7 +6,7 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.Result;
-import com.delta.smt.ui.production_warning.item.ItemAcceptMaterialDetail;
+import com.delta.smt.entity.production_warining_item.ItemAcceptMaterialDetail;
 
 import java.util.HashMap;
 import java.util.Map;

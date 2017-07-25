@@ -5,7 +5,7 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.ProduceWarning;
 import com.delta.smt.entity.Result;
-import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
+import com.delta.smt.entity.production_warining_item.ItemWarningInfo;
 
 import java.util.List;
 

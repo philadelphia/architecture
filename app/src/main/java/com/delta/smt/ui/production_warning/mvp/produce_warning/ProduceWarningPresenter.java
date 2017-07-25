@@ -5,7 +5,7 @@ import android.util.Log;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.smt.entity.ProduceWarning;
-import com.delta.smt.ui.production_warning.item.TitleNumber;
+import com.delta.smt.entity.production_warining_item.TitleNumber;
 
 import javax.inject.Inject;
 

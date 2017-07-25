@@ -29,11 +29,11 @@ import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineBindingItem;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.ui.hand_add.item.ItemHandAdd;
-import com.delta.smt.ui.production_warning.item.ItemBreakDown;
-import com.delta.smt.ui.production_warning.item.ItemInfo;
-import com.delta.smt.ui.production_warning.item.ItemProduceLine;
-import com.delta.smt.ui.production_warning.item.ItemWarningInfo;
-import com.delta.smt.ui.production_warning.item.TitleNumber;
+import com.delta.smt.entity.production_warining_item.ItemBreakDown;
+import com.delta.smt.entity.production_warining_item.ItemInfo;
+import com.delta.smt.entity.production_warining_item.ItemProduceLine;
+import com.delta.smt.entity.production_warining_item.ItemWarningInfo;
+import com.delta.smt.entity.production_warining_item.TitleNumber;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.delta.smt.ui.production_warning.item;
+package com.delta.smt.entity.production_warining_item;
 
 import com.delta.libs.adapter.TimeEntity;
 import com.google.gson.annotations.SerializedName;
