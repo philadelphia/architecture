@@ -34,7 +34,7 @@ import javax.inject.Inject;
  * Created by V.Wenju.Tian on 2016/11/29.
  */
 @ReportsCrashes(
-        mode = ReportingInteractionMode.DIALOG,
+        mode = ReportingInteractionMode.TOAST,
         resDialogText = R.string.crash_toast_text,
         formUri = "http://172.22.34.198:8888/acra-smartsmt",
         httpMethod = HttpSender.Method.PUT,
