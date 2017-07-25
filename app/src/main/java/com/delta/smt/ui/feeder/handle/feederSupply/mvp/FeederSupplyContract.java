@@ -24,6 +24,9 @@ public interface FeederSupplyContract {
     interface View extends IView {
         void onSuccess(List<FeederSupplyItem> data);
 
+        void onFeederSupplySuccess(List<FeederSupplyItem> data);
+
+
         void showUnDebitedItemList(List<DebitData> data);
 
         void showUnUpLoadToMESItemList(UpLoadEntity mT );

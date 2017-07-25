@@ -284,7 +284,6 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Log.i(TAG, "onSuccess: ");
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
         statusLayout.setVisibility(View.VISIBLE);
-        tvModuleID.setVisibility(View.GONE);
         dataSource.clear();
         dataSource.addAll(data);
         adapter.notifyDataSetChanged();
@@ -298,7 +297,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 getPresenter().upLoadFeederSupplyToMES(argument_MES);
             }
         }
-        if (data.size() == 0) {
+        if (isAllFeederSupplied(data)) {
             isAllItemSupplied = true;
             Log.i(TAG, "feeder全部上模组，开始上传结果: ");
             Map<String, String> map = new HashMap<>();
@@ -308,6 +307,41 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             String argument = GsonTools.createGsonListString(map);
             getPresenter().resetFeederSupplyStatus(argument);
         }
+
+    }
+
+    @Override
+    public void onFeederSupplySuccess(List<FeederSupplyItem> data) {
+            Log.i(TAG, "onSuccess: ");
+            Log.i(TAG, "后台返回的数据长度是: " + data.size());
+            VibratorAndVoiceUtils.correctVibrator(FeederSupplyActivity.this);
+            VibratorAndVoiceUtils.correctVoice(FeederSupplyActivity.this);
+            statusLayout.setVisibility(View.VISIBLE);
+            tvModuleID.setVisibility(View.GONE);
+            dataSource.clear();
+            dataSource.addAll(data);
+            adapter.notifyDataSetChanged();
+            isBeginSupply = isBeginSupply(data);
+            if (index != -1) {
+                RecycleViewUtils.scrollToMiddle(linearLayoutManager, getLastMaterialIndex(mCurrentMaterial, dataSource), recyclerViewContent);
+            }
+
+            if (checkBox_autoUpLoadToMES.isChecked()) {
+                if (argument_MES != null) {
+                    getPresenter().upLoadFeederSupplyToMES(argument_MES);
+                }
+            }
+            if (isAllFeederSupplied(data)) {
+                isAllItemSupplied = true;
+                Log.i(TAG, "feeder全部上模组，开始上传结果: ");
+                Map<String, String> map = new HashMap<>();
+                map.put("work_order", workId);
+                map.put("side", side);
+
+                String argument = GsonTools.createGsonListString(map);
+                getPresenter().resetFeederSupplyStatus(argument);
+            }
+
 
     }
 
@@ -506,7 +540,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     public void onFailed(String message) {
         Log.i(TAG, "onFailed: " + message);
-        ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
+        tvModuleID.setVisibility(View.VISIBLE);
+        tvModuleID.setText(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -599,8 +634,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
             Log.i(TAG, "mCurrentMaterialID: " + mCurrentMaterialNumber);
             Log.i(TAG, "mCurrentSerialNumber: " + mCurrentSerialNumber);
-            VibratorAndVoiceUtils.correctVibrator(this);
-            VibratorAndVoiceUtils.correctVoice(this);
+
 //            adapter.notifyDataSetChanged();
 
             Map<String, String> map = new HashMap<>();
@@ -639,7 +673,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 getPresenter().getFeederInsertionToSlotTimeStamp(argument);
 
             } else {
-                ToastUtils.showMessage(this, "该料盘不存在，请重新扫描料盘");
+                VibratorAndVoiceUtils.wrongVibrator(FeederSupplyActivity.this);
+                VibratorAndVoiceUtils.wrongVoice(FeederSupplyActivity.this);
                 tvModuleID.setVisibility(View.VISIBLE);
                 tvModuleID.setText("该料盘不存在，请重新扫描料盘");
             }
@@ -649,12 +684,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             VibratorAndVoiceUtils.wrongVoice(this);
             tvModuleID.setVisibility(View.VISIBLE);
             tvModuleID.setText("请扫描料盘");
-            Toast.makeText(this, "请扫描料盘", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         } catch (ArrayIndexOutOfBoundsException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
-            Toast.makeText(this, "解析错误,请重新扫描", Toast.LENGTH_SHORT).show();
             tvModuleID.setVisibility(View.VISIBLE);
             tvModuleID.setText("解析错误,请重新扫描");
         }
@@ -864,5 +897,20 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 break;
         }
     }
+
+    private boolean isAllFeederSupplied(List<FeederSupplyItem> dataList){
+        boolean isAllFeederSupplied = false;
+        for (FeederSupplyItem feederSupplyItem : dataList) {
+            if (feederSupplyItem.getStatus() != 1){
+                isAllFeederSupplied = false;
+                break;
+            }
+            else
+                isAllFeederSupplied = true;
+        }
+
+        return isAllFeederSupplied;
+    }
+
 
 }
