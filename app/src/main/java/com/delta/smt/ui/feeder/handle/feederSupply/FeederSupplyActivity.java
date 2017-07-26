@@ -33,9 +33,9 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
+import com.delta.smt.common.MESAdapter;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.DebitData;
-import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.UpLoadEntity;
 import com.delta.smt.entity.UploadMESParams;
@@ -115,13 +115,10 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private CommonBaseAdapter<DebitData> unDebitadapter;
     private final List<DebitData> unDebitItemList = new ArrayList<>();
     private boolean isAllItemSupplied = false;
-    private CommonBaseAdapter<UpLoadEntity.FeedingListBean> undoList_adapter;
     private List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
     private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
-    private CommonBaseAdapter<UpLoadEntity.MaterialListBean> unSend_adapter;
     private String argument_MES;
-    private TextView tv_up;
-    private TextView tv_supply;
+    private MESAdapter mesAdapter;
 
     @Override
     protected void handError(String contents) {
@@ -416,15 +413,13 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
         if (mT.getFeeding_list() != null) {
             mFeedingListBean.addAll(mT.getFeeding_list());
-            tv_up.setText("上料列表：" + mFeedingListBean.size());
-            undoList_adapter.notifyDataSetChanged();
         }
 
         if (mT.getMaterial_list() != null) {
             mMaterialListBean.addAll(mT.getMaterial_list());
-            tv_supply.setText("发料列表：" + mMaterialListBean.size());
-            unSend_adapter.notifyDataSetChanged();
         }
+
+        mesAdapter.notifyDataSetChanged();
 
 
         if (popUpWindow != null) {
@@ -447,10 +442,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         Button btn_cancel = ViewUtils.findView(contentView, R.id.bt_sheet_select_cancel);
         Button btn_confirm = ViewUtils.findView(contentView, R.id.bt_sheet_confirm);
         Button btn_selectAll = ViewUtils.findView(contentView, R.id.bt_sheet_select_all);
-        tv_up = ViewUtils.findView(contentView, R.id.tv_mount_up);
-        tv_supply = ViewUtils.findView(contentView, R.id.tv_mount_supply);
-        tv_up.setText("上料列表：" + mFeedingListBean.size());
-        tv_supply.setText("发料列表：" + mMaterialListBean.size());
+
         btn_back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -763,72 +755,21 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private void createPopupWindowForMES() {
         popUpWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_upload_mes).build();
         View mContentView = popUpWindow.getContentView();
-        RecyclerView rv_feeder = ViewUtils.findView(mContentView, R.id.rv_feeder);
-        RecyclerView rv_feeder_send = ViewUtils.findView(mContentView, R.id.rv_feeder_send);
+        RecyclerView recyclerView = ViewUtils.findView(mContentView, R.id.recyclerView);
         Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
         Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
         Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
-        tv_up = ViewUtils.findView(mContentView, R.id.tv_mount_up);
-        tv_supply = ViewUtils.findView(mContentView, R.id.tv_mount_supply);
-        tv_up.setText("上料列表：" + mFeedingListBean.size());
-        tv_supply.setText("发料列表：" + mMaterialListBean.size());
+
         ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
         bt_cancel.setOnClickListener(this);
         bt_confirm.setOnClickListener(this);
         bt_select_all.setOnClickListener(this);
 
-        undoList_adapter = new CommonBaseAdapter<UpLoadEntity.FeedingListBean>(getContext(), mFeedingListBean) {
-            @Override
-            protected void convert(CommonViewHolder holder, final UpLoadEntity.FeedingListBean item, int position) {
-                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
-                holder.setText(R.id.tv_slot, "FeederId：" + item.getFeeder_id());
-                holder.setText(R.id.tv_amount, "流水号：" + String.valueOf(item.getSerial_no()));
-                holder.setText(R.id.tv_issue, "架位：" + String.valueOf(item.getSlot()));
-                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
-                mCheckBox.setChecked(item.isChecked());
-                holder.getView(R.id.al).setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mCheckBox.setChecked(!item.isChecked());
-                        item.setChecked(!item.isChecked());
-                    }
-                });
-
-            }
-
-            @Override
-            protected int getItemViewLayoutId(int position, UpLoadEntity.FeedingListBean item) {
-                return R.layout.item_feeder_list;
-
-            }
-
-        };
-        unSend_adapter = new CommonBaseAdapter<UpLoadEntity.MaterialListBean>(getContext(), mMaterialListBean) {
-            @Override
-            protected void convert(CommonViewHolder holder, final UpLoadEntity.MaterialListBean item, int position) {
-                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
-                holder.setText(R.id.tv_slot, "流水号：" + String.valueOf(item.getSerial_no()));
-                holder.setText(R.id.tv_issue, "架位：" + String.valueOf(item.getSlot()));
-                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
-                mCheckBox.setChecked(item.isChecked());
-                holder.getView(R.id.al).setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mCheckBox.setChecked(!item.isChecked());
-                        item.setChecked(!item.isChecked());
-                    }
-                });
-
-            }
-
-            @Override
-            protected int getItemViewLayoutId(int position, UpLoadEntity.MaterialListBean item) {
-                return R.layout.item_feeder_upload;
-            }
-
-        };
-        setAdapter(rv_feeder, undoList_adapter);
-        setAdapter(rv_feeder_send, unSend_adapter);
+         mesAdapter = new MESAdapter(FeederSupplyActivity.this, mFeedingListBean, mMaterialListBean );
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(mesAdapter);
 
     }
 
@@ -875,7 +816,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                         for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
                             mListBean.setChecked(true);
                         }
-                        undoList_adapter.notifyDataSetChanged();
+                        mesAdapter.notifyDataSetChanged();
                     }
                 }
                 break;
@@ -885,7 +826,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                         for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
                             mListBean.setChecked(false);
                         }
-                        undoList_adapter.notifyDataSetChanged();
+                        mesAdapter.notifyDataSetChanged();
                     }
                 }
 
