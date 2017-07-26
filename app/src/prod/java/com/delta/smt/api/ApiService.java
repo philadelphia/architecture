@@ -145,8 +145,10 @@ public interface ApiService {
     Observable<BaseEntity<UpLoadEntity>> getUnUpLoadToMESList(@Query("condition") String condition);
 
     //上传feeder备料到MES
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
     @POST("ams/smm/plugmodcontroller/uploadtomes")
-    Observable<Result> upLoadFeederSupplyToMES(@Query("value") String value);
+    Observable<Result> upLoadFeederSupplyToMES(@Field("value") String value);
 
 
     //Feeder发料手动扣账
@@ -162,8 +164,10 @@ public interface ApiService {
     Observable<Result<ModuleDownDebit>> getModuleListUnDebitList(@Query("condition") String condition);
 
     //下模组手动扣账
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
     @POST("ams/smm/feederbuffstorage/deduction")
-    Observable<Result<ModuleDownDebit>> debitManually(@Query("value") String value);
+    Observable<Result<ModuleDownDebit>> debitManually(@Field("value") String value);
 
 
     //超领
@@ -202,7 +206,8 @@ public interface ApiService {
     Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(@Query("condition") String condition);
 
     @POST("ams/smm/plugmodcontroller/uploadtomes")
-    Observable<Result> upLoadToMesManually(@Query("value") String value);
+    @FormUrlEncoded
+    Observable<Result> upLoadToMesManually(@Field("value") String value);
 
     //获取所有需要上传到MES的数据
     @POST("")

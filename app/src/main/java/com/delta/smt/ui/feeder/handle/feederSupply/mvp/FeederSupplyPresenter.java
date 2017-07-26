@@ -90,10 +90,10 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
                 if (feederSupplyItemResult.getCode() == 0) {
                     getView().showContentView();
-                    getView().onSuccess(feederSupplyItemResult.getRows());
+                    getView().onFeederSupplySuccess(feederSupplyItemResult.getRows());
                 } else {
                     getView().onFailed(feederSupplyItemResult.getMessage());
-//                    getView().showErrorView();
+                    getView().showContentView();
 
                 }
 
