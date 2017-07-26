@@ -374,9 +374,10 @@ public class MantissaWarehousePutstorageFragment extends
 
     @Override
     public void onlickSubmitSucess(MantissaWarehousePutstorageBindTagResult mantissaWarehousePutstorages) {
-
-        getPresenter().getMantissaWarehousePutstorage();
+        beginStoragedataList.clear();
+        dataList.clear();
         getTitle();
+        getPresenter().getMantissaWarehousePutstorage();
         VibratorAndVoiceUtils.correctVibrator(getActivity());
         VibratorAndVoiceUtils.correctVoice(getActivity());
         mClean.setVisibility(View.VISIBLE);
