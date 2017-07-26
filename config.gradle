@@ -4,7 +4,7 @@ ext {
                buildToolsVersion       : "25.0.0",
                minSdkVersion           : 16,
                targetSdkVersion        : 22,
-               versionCode             : 6,
+               versionCode             : 7,
                versionName             : "0.3.3",
                androidSupportSdkVersion: "25.0.0",
                retrofitSdkVersion      : "2.1.0",
