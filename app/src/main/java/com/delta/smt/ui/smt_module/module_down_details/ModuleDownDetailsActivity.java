@@ -346,6 +346,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public void onFailed(String message) {
         flag = 2;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override
@@ -441,6 +443,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onScanSuccess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
+        if (dataSourceForCheckIn.isEmpty()){
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
+            ToastUtils.showMessage(this, "所有要退入Feeder缓冲区的料均已发完");
+            return;
+        }
+
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (flag) {
             case 1:

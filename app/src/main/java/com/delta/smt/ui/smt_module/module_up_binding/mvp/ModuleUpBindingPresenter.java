@@ -118,7 +118,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 //                            getView().onFailedBinding(moduleUpBindingItem.getMessage());
                         } else {
                             getView().showContentView();
-                            getView().onSuccess(moduleUpBindingItemResult.getRows());
+                            getView().onSuccessBinding(moduleUpBindingItemResult.getRows());
                         }
 
                     } else {
@@ -154,7 +154,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
                     getView().getNeedUpLoadToMESMaterialsSuccess(mUpLoadEntityResult.getT());
                 } else {
-                    getView().getNeedUpLoadTOMESMaterislsFailed(mUpLoadEntityResult.getMsg());
+                    getView().getNeedUpLoadTOMESMaterialsFailed(mUpLoadEntityResult.getMsg());
                 }
             }
         });

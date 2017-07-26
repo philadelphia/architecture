@@ -107,7 +107,22 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
                 holder.setText(R.id.tv_title, "线别: " + feederSupplyWarningItem.getLineName());
                 holder.setText(R.id.tv_line, "工单号: " + feederSupplyWarningItem.getWorkOrder());
                 holder.setText(R.id.tv_material_station, "面别: " + feederSupplyWarningItem.getSide());
-                holder.setText(R.id.tv_add_count, "状态: " + (feederSupplyWarningItem.getStatus() == 2 ? "未开始备料" : "备料中"));
+
+                String status = null;
+                switch (feederSupplyWarningItem.getStatus()){
+                    case 3:
+                        status = "未开始备料";
+                        break;
+                    case 4:
+                        status = "正在备料";
+                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background_yellow));
+                        break;
+                    default:
+                        break;
+
+                }
+
+                holder.setText(R.id.tv_add_count, "状态: " + status);
             }
 
 

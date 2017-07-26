@@ -24,7 +24,7 @@ public interface ModuleUpBindingContract {
 
         void onNetFailed(Throwable throwable);
 
-        void onSuccessBinding(List<ModuleUpBindingItem> dataSource);
+        void onSuccessBinding(List<ModuleUpBindingItem> list);
 
         void showLoadingView();
 
@@ -38,7 +38,7 @@ public interface ModuleUpBindingContract {
 
         void getNeedUpLoadToMESMaterialsSuccess(UpLoadEntity mT);
 
-        void getNeedUpLoadTOMESMaterislsFailed(String mMsg);
+        void getNeedUpLoadTOMESMaterialsFailed(String mMsg);
 
         void uploadSuccess(String mMessage);
 
