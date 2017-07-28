@@ -67,4 +67,10 @@ public class MantissaWarehouseDetailsModel extends BaseModel<ApiService> impleme
         return getService().changecarshelf(mGsonListString).compose(RxsRxSchedulers.<Result>io_main());
     }
 
+    @Override
+    public Observable<Result> offcarshelflight(String mS) {
+        return getService().offcarshelflight(mS).compose(RxsRxSchedulers.<Result>io_main());
+    }
+
+
 }

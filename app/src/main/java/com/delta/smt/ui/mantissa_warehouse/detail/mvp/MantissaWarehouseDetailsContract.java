@@ -39,6 +39,8 @@ public interface MantissaWarehouseDetailsContract {
         Observable getDebitDataList(String mS);
 
         Observable<Result> changecarshelf(String mGsonListString);
+
+        Observable<Result> offcarshelflight(String mS);
     }
 
     interface View extends IView {
