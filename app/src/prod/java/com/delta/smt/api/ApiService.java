@@ -766,6 +766,9 @@ public interface ApiService {
     @POST("/ams/smm/warehissue/changecarshelf")
     Observable<Result> changecarshelf(@Field("value") String mGsonListString);
 
+    @GET("/ams/smm/warehissue/offcarshelflight")
+    Observable<Result> offcarshelflight(@Query("value") String mS);
+
 
     //@GET("SMM/unplugmod/getModNumByMaterial")
     //Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num, @Query("workOrderNum") String num);

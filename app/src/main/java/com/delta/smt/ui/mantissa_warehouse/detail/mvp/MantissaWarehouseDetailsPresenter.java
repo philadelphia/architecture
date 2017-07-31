@@ -240,4 +240,19 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             }
         });
     }
+
+    public void offcarshelflight(String mS) {
+
+        getModel().offcarshelflight(mS).subscribe(new RxErrorHandlerSubscriber<Result>(mRxErrorHandler) {
+            @Override
+            public void onNext(Result mResult) {
+                if (0==mResult.getCode()){
+                    getView().changecarshelfSuccess(mResult.getMessage());
+                }else {
+                    getView().changecarshelfFailed(mResult.getMessage());
+                }
+
+            }
+        });
+    }
 }
