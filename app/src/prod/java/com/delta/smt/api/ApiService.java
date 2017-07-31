@@ -150,6 +150,8 @@ public interface ApiService {
     @POST("ams/smm/plugmodcontroller/uploadtomes")
     Observable<Result> upLoadFeederSupplyToMES(@Field("value") String value);
 
+    @GET("ams/smm/buffer/light/off")
+    Observable<Result> lightOff(@Query("condition") String condition);
 
     //Feeder发料手动扣账
     @POST("ams/smm/warehissue/deduction")

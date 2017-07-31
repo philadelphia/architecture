@@ -294,16 +294,16 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 getPresenter().upLoadFeederSupplyToMES(argument_MES);
             }
         }
-        if (isAllFeederSupplied(data)) {
-            isAllItemSupplied = true;
-            Log.i(TAG, "feeder全部上模组，开始上传结果: ");
-            Map<String, String> map = new HashMap<>();
-            map.put("work_order", workId);
-            map.put("side", side);
-
-            String argument = GsonTools.createGsonListString(map);
-            getPresenter().resetFeederSupplyStatus(argument);
-        }
+//        if (isAllFeederSupplied(data)) {
+//            isAllItemSupplied = true;
+//            Log.i(TAG, "feeder全部上模组，开始上传结果: ");
+//            Map<String, String> map = new HashMap<>();
+//            map.put("work_order", workId);
+//            map.put("side", side);
+//
+//            String argument = GsonTools.createGsonListString(map);
+//            getPresenter().resetFeederSupplyStatus(argument);
+//        }
 
     }
 
@@ -756,12 +756,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         popUpWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_upload_mes).build();
         View mContentView = popUpWindow.getContentView();
         RecyclerView recyclerView = ViewUtils.findView(mContentView, R.id.recyclerView);
-        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
+        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_cancel);
+        Button bt_back = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
         Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
         Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
 
         ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
         bt_cancel.setOnClickListener(this);
+        bt_back.setOnClickListener(this);
         bt_confirm.setOnClickListener(this);
         bt_select_all.setOnClickListener(this);
 
@@ -854,4 +856,16 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     }
 
 
+    public void lightOff(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("work_order", workId);
+        map.put("side", side);
+        getPresenter().lightOff(GsonTools.createGsonListString(map));
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        lightOff();
+    }
 }

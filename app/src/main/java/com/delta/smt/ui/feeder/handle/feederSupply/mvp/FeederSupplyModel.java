@@ -69,5 +69,10 @@ public class FeederSupplyModel extends BaseModel<ApiService> implements FeederSu
         return getService().upLoadFeederSupplyToMES(value).compose(RxsRxSchedulers.<Result>io_main());
     }
 
+    @Override
+    public Observable<Result> lightOff(String argument) {
+        return getService().lightOff(argument).compose(RxsRxSchedulers.<Result>io_main());
+    }
+
 
 }

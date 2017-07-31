@@ -69,5 +69,8 @@ public interface FeederSupplyContract {
 
         //上传Feeder发料到MES
         Observable<Result> upLoadFeederSupplyToMES(String value);
+
+        //light off
+        Observable <Result> lightOff(String argument);
     }
 }
