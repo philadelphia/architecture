@@ -56,8 +56,12 @@ public class StorageReadyPresenter extends BasePresenter<StorageReadyContract.Mo
             @Override
             public void call(Throwable throwable) {
 
-                getView().getStorageReadyFailed(throwable.getMessage());
-                getView().showErrorView();
+                try {
+                    getView().getStorageReadyFailed(throwable.getMessage());
+                    getView().showErrorView();
+                } finally {
+
+                }
 
             }
         });

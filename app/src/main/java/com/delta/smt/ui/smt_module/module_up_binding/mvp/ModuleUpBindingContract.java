@@ -43,6 +43,8 @@ public interface ModuleUpBindingContract {
         void uploadSuccess(String mMessage);
 
         void upLoadFailed(String mMessage);
+
+        void upLoading();
     }
 
     interface Model extends IModel {

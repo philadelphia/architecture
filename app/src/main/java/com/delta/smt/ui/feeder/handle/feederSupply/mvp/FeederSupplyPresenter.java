@@ -90,10 +90,10 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
                 if (feederSupplyItemResult.getCode() == 0) {
                     getView().showContentView();
-                    getView().onSuccess(feederSupplyItemResult.getRows());
+                    getView().onFeederSupplySuccess(feederSupplyItemResult.getRows());
                 } else {
                     getView().onFailed(feederSupplyItemResult.getMessage());
-//                    getView().showErrorView();
+                    getView().showContentView();
 
                 }
 
@@ -223,5 +223,22 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
             }
         });
+    }
+
+   public void lightOff(String argument){
+        getModel().lightOff(argument).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                    if (0 == result.getCode()){
+
+                    }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+
     }
 }
