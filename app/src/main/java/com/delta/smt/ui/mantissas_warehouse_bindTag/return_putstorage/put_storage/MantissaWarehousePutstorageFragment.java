@@ -147,7 +147,6 @@ public class MantissaWarehousePutstorageFragment extends
                 holder.setText(R.id.tv_number, item.getMaterial_no());
                 holder.setText(R.id.tv_shelf_no, item.getShelf_no());
                 holder.setText(R.id.tv_to_shelf_no, item.getTo_shelf_no());
-                holder.setText(R.id.tv_count, item.getNum());
 
             }
 
