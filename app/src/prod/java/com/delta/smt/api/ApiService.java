@@ -113,7 +113,7 @@ public interface ApiService {
 
     //重置Feeder发料状态
     @POST("ams/smm/buffer/completebufferissue")
-    Observable<Result> resetFeederSupplyStatus(@Query("value") String contidion);
+    Observable<Result> resetFeederSupplyStatus(@Query("value") String condition);
 
     //Feeder 发料跳过MES
     @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")
@@ -767,7 +767,7 @@ public interface ApiService {
     Observable<Result> changecarshelf(@Field("value") String mGsonListString);
 
     @GET("/ams/smm/warehissue/offcarshelflight")
-    Observable<Result> offcarshelflight(@Query("value") String mS);
+    Observable<Result> offcarshelflight(@Query("condition") String mS);
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")
