@@ -767,7 +767,7 @@ public interface ApiService {
     Observable<Result> changecarshelf(@Field("value") String mGsonListString);
 
     @GET("/ams/smm/warehissue/offcarshelflight")
-    Observable<Result> offcarshelflight(@Query("value") String mS);
+    Observable<Result> offcarshelflight(@Query("condition") String mS);
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")

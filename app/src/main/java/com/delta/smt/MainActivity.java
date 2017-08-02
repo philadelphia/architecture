@@ -81,6 +81,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
     @Override
     protected void initView() {
+
+
         toolbarTitle.setText("首页");
         tvSetting.setVisibility(View.VISIBLE);
         CommonBaseAdapter<Function> adapter = new CommonBaseAdapter<Function>(this, functionList) {
