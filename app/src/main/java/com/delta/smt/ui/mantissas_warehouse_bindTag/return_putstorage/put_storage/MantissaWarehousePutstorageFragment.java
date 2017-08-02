@@ -89,7 +89,7 @@ public class MantissaWarehousePutstorageFragment extends
     private CommonBaseAdapter<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList> beginStorageadapter2;
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> StartStorageAdapter;
     private BaseActivity baseActiviy;
-    private int flag = 1;
+    private int flag = 0;
     private String materialNumber;
     private String lableBarCode;
     private String serialNum;
@@ -553,6 +553,10 @@ public class MantissaWarehousePutstorageFragment extends
 
 
                 }
+                break;
+
+            default:
+                Toast.makeText(baseActiviy, "还未开始绑定！", Toast.LENGTH_SHORT).show();
                 break;
 
         }
