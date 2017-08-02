@@ -113,7 +113,7 @@ public interface ApiService {
 
     //重置Feeder发料状态
     @POST("ams/smm/buffer/completebufferissue")
-    Observable<Result> resetFeederSupplyStatus(@Query("value") String contidion);
+    Observable<Result> resetFeederSupplyStatus(@Query("value") String condition);
 
     //Feeder 发料跳过MES
     @POST("ams/smm/plugmodcontroller/updateprepworkorderstatus")

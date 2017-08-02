@@ -4,6 +4,7 @@ package com.delta.smt.ui.feeder.handle.feederSupply;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -328,16 +329,16 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                     getPresenter().upLoadFeederSupplyToMES(argument_MES);
                 }
             }
-            if (isAllFeederSupplied(data)) {
-                isAllItemSupplied = true;
-                Log.i(TAG, "feeder全部上模组，开始上传结果: ");
-                Map<String, String> map = new HashMap<>();
-                map.put("work_order", workId);
-                map.put("side", side);
-
-                String argument = GsonTools.createGsonListString(map);
-                getPresenter().resetFeederSupplyStatus(argument);
-            }
+//            if (isAllFeederSupplied(data)) {
+//                isAllItemSupplied = true;
+//                Log.i(TAG, "feeder全部上模组，开始上传结果: ");
+//                Map<String, String> map = new HashMap<>();
+//                map.put("work_order", workId);
+//                map.put("side", side);
+//
+//                String argument = GsonTools.createGsonListString(map);
+//                getPresenter().resetFeederSupplyStatus(argument);
+//            }
 
 
     }
@@ -712,7 +713,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressedSupport();
                 break;
 
             case R.id.tv_setting:
@@ -863,9 +864,12 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         getPresenter().lightOff(GsonTools.createGsonListString(map));
     }
 
+
     @Override
-    public void finish() {
-        super.finish();
+    public void onBackPressedSupport() {
+        super.onBackPressedSupport();
         lightOff();
     }
+
+
 }
