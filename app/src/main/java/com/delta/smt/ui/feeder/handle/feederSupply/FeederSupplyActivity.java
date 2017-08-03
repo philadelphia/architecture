@@ -757,7 +757,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         popUpWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_upload_mes).build();
         View mContentView = popUpWindow.getContentView();
         RecyclerView recyclerView = ViewUtils.findView(mContentView, R.id.recyclerView);
-        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_cancel);
+        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel);
         Button bt_back = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
         Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
         Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);

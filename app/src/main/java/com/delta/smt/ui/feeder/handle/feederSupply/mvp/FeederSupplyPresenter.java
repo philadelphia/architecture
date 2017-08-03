@@ -214,7 +214,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                 if ("0".equalsIgnoreCase(result.getCode())) {
                     getView().showUnUpLoadToMESItemList(result.getT());
                 } else {
-                    getView().onFailed(result.getMsg());
+                    getView().onUpLoadFailed(result.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
