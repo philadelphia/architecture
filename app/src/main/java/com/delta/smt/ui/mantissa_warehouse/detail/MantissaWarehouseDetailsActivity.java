@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
+import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
@@ -24,6 +26,8 @@ import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.utils.ViewUtils;
+import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
@@ -35,11 +39,12 @@ import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.DebitData;
 import com.delta.smt.entity.DebitParameters;
 import com.delta.smt.entity.IssureToWarehFinishResult;
+import com.delta.smt.entity.MantissaBingingCar;
 import com.delta.smt.entity.MantissaBingingCarBean;
 import com.delta.smt.entity.MantissaCarBean;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
+import com.delta.smt.entity.MantissaWarehousePutBean;
 import com.delta.smt.entity.MantissaWarehouseReady;
-import com.delta.smt.entity.MantissaWarehouseputBean;
 import com.delta.smt.entity.MaterialCar;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.WarehouseDetailBean;
@@ -48,8 +53,6 @@ import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsMod
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsContract;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.delta.commonlibs.utils.ViewUtils;
-import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.ArrayList;
@@ -137,7 +140,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         work_order = mMantissaWarehouse.getWork_order();
         side = mMantissaWarehouse.getSide();
         line_name = mMantissaWarehouse.getLine_name();
-        WarehouseDetailBean bindBean = new WarehouseDetailBean(side, "Mantissa",work_order);
+        WarehouseDetailBean bindBean = new WarehouseDetailBean(side, "Mantissa", work_order);
         mS = GsonTools.createGsonListString(bindBean);
         getPresenter().getMantissaWarehouseDetails(mS);
         //备料车
@@ -234,12 +237,27 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         VibratorAndVoiceUtils.wrongVoice(this);
     }
 
+
     @Override
-    public void getBingingCarSucess(Result<MaterialCar> car) {
-        mCar.setText(car.getRows().get(0).getCar_name());
-        flag = 2;
-        tv_hint.setText(car.getRows().get(0).getCar_name());
-        textToSpeechManager.readMessage("绑定余料车" + car.getRows().get(0).getCar_name());
+    public void getBingingCarSuccess(Result<MaterialCar> mMaterialCarResult) {
+        flag=2;
+        List<MaterialCar> mMaterialCars = mMaterialCarResult.getRows();
+        if (mMaterialCars.size() != 0) {
+            tv_hint.setText(getString(R.string.bindMatericalcar) + mMaterialCars.get(0).getCar_name());
+            textToSpeechManager.readMessage(getString(R.string.bindMatericalcar) + mMaterialCars.get(0).getCar_name());
+        }
+        StringBuffer mStringBuffer = new StringBuffer();
+        if (mMaterialCars.size() != 0) {
+            for (int mI = 0; mI < mMaterialCars.size(); mI++) {
+                if (mI == mMaterialCars.size() - 1) {
+                    mStringBuffer.append(mMaterialCars.get(mI).getCar_name());
+                } else {
+                    mStringBuffer.append(mMaterialCars.get(mI).getCar_name() + ",");
+                }
+            }
+            mCar.setText(mStringBuffer.toString());
+            //  tv_hint.setText(rows.get(0).getCar_name());
+        }
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -247,7 +265,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getBingingCarFailed(String msg) {
-        flag = 1;
+        // 保证没有备料车成功的时候继续绑定，有备料车绑定的时候继续绑定
+        if (flag != 2) {
+
+            flag = 1;
+        }
         tv_hint.setText(msg);
         // tv_hint.setText(msg);
         ToastUtils.showMessage(this, msg);
@@ -261,7 +283,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     public void getMantissaWarehouseputSuccess(MantissaWarehouseDetailsResult rows) {
 
         issureToWareh(rows);
-        tv_hint.setText(rows.getMsg());
+        if (rows.getMsg() != null) {
+
+            tv_hint.setText(rows.getMsg());
+            textToSpeechManager.readMessage(rows.getMsg());
+        }
         if (isOver) {
             getPresenter().getMantissaWareOver(mS);
         }
@@ -294,14 +320,18 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getMantissaWarehouseputFailed(final String message) {
+    public void getMantissaWarehouseputFailed( String message) {
 //        DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
 //            @Override
 //            public void onClick(DialogInterface dialogInterface, int i) {
 //                getPresenter().getMantissaWareOver();
 //            }
 //        });
-        ToastUtils.showMessage(this, message);
+        if (message != null) {
+            textToSpeechManager.readMessage(message);
+            tv_hint.setText(message);
+            ToastUtils.showMessage(this, message);
+        }
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
@@ -323,10 +353,19 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getFindCarSucess(Result<MaterialCar> car) {
-        String carName = car.getRows().get(0).getCar_name();
-        tv_hint.setText(carName);
-        mCar.setText(carName);
+    public void getFindCarSucess(Result<MaterialCar> mMaterialCarResult) {
+        StringBuffer mStringBuffer = new StringBuffer();
+        if (mMaterialCarResult.getRows().size() != 0) {
+            for (int mI = 0; mI < mMaterialCarResult.getRows().size(); mI++) {
+                if (mI == mMaterialCarResult.getRows().size() - 1) {
+                    mStringBuffer.append(mMaterialCarResult.getRows().get(mI).getCar_name());
+                } else {
+                    mStringBuffer.append(mMaterialCarResult.getRows().get(mI).getCar_name() + ",");
+                }
+            }
+            mCar.setText(mStringBuffer.toString());
+            //  tv_hint.setText(rows.get(0).getCar_name());
+        }
         flag = 2;
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
@@ -371,18 +410,14 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
         statusLayout.showContentView();
     }
-
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
     }
-
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
     }
-
-
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
@@ -403,35 +438,49 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     e.printStackTrace();
                 }
                 break;
-
-            case 2:
+            case 2://料盘 料盘
                 try {
-                    MaterialBlockBarCode materiaBar = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
-                    serial_num = materiaBar.getStreamNumber();
-                    material_num = materiaBar.getDeltaMaterialNumber();
-                    String unit = materiaBar.getUnit();
-                    String vendor = materiaBar.getVendor();
-                    String dc = materiaBar.getDC();
-                    String lc = materiaBar.getLC();
-                    String trasaction_code = materiaBar.getBusinessCode();
-                    String po = materiaBar.getPO();
-                    String quantity = materiaBar.getCount();
-                    MantissaWarehouseputBean bindBean = new MantissaWarehouseputBean(serial_num, material_num, unit, vendor, dc, lc, trasaction_code, po, quantity);
+                    MaterialBlockBarCode mBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, MATERIAL_BLOCK_BARCODE);
+                    serial_num = mBlockBarCode.getStreamNumber();
+                    material_num = mBlockBarCode.getDeltaMaterialNumber();
+                    String unit = mBlockBarCode.getUnit();
+                    String vendor = mBlockBarCode.getVendor();
+                    String dc = mBlockBarCode.getDC();
+                    String lc = mBlockBarCode.getLC();
+                    String mBusinessCode = mBlockBarCode.getBusinessCode();
+                    String po = mBlockBarCode.getPO();
+                    String quantity = mBlockBarCode.getCount();
+                    MantissaWarehousePutBean bindBean = new MantissaWarehousePutBean(serial_num, material_num, unit, vendor, dc, lc, mBusinessCode, po, quantity);
                     bindBean.setSide(side);
                     bindBean.setWork_order(work_order);
                     String code = btnSwitch.isChecked() ? "1" : "0";
                     bindBean.setCode(code);
                     bindBean.setPart("Mantissa");
                     getPresenter().getMantissaWarehouseput(GsonTools.createGsonListString(bindBean));
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ToastUtils.showMessage(this, getString(R.string.scan_corresponding_materials_plate));
-                    VibratorAndVoiceUtils.wrongVibrator(this);
-                    VibratorAndVoiceUtils.wrongVoice(this);
+                } catch (EntityNotFountException e) {
+                    //1.因为是发料完成后才扫描标签，android端不可以保存状态，此状态可能会和server不同步，
+                    // 这会造成这样的情况，当app重新进入的时候不知道上次发料的是哪个，因为数据存在内存中，而用户又不能在此扫描这个料盘。所以说后台会做判断。
+                    try {
+                        LastMaterialCar LastMaterialCar = (LastMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_CAR);
+                        lastCar = LastMaterialCar.getSource();
+                        MantissaBingingCarBean bindBean = new MantissaBingingCarBean(work_order, "Mantissa", lastCar, side);
+                        getPresenter().getbingingCar(GsonTools.createGsonListString(bindBean));
+                    } catch (EntityNotFountException notFoundException) {
+                        notFoundException.printStackTrace();
+                        try {
+                            LastMaterialLocation mLastMaterialLocation = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
+                            MantissaBingingCar mMantissaBingingCar = new MantissaBingingCar(work_order, side, "",mLastMaterialLocation.getSource());
+                            getPresenter().changecarshelf(GsonTools.createGsonListString(mMantissaBingingCar));
+                        } catch (EntityNotFountException mE) {
+                            mE.printStackTrace();
+                            VibratorAndVoiceUtils.wrongVibrator(this);
+                            VibratorAndVoiceUtils.wrongVoice(this);
+                        }
+                    }
                 }
-
                 break;
+
+
 
         }
     }
@@ -460,8 +509,24 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getDebitDataFailed(String mMessage) {
 
-        ToastUtils.showMessage(this,mMessage);
+        ToastUtils.showMessage(this, mMessage);
 
+    }
+
+    @Override
+    public void changecarshelfSuccess(String mMessage) {
+        ToastUtils.showMessage(this,mMessage);
+        tv_hint.setText(mMessage);
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
+    }
+
+    @Override
+    public void changecarshelfFailed(String mMessage) {
+        ToastUtils.showMessage(this, mMessage);
+        tv_hint.setText(mMessage);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override
@@ -479,12 +544,32 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                offcarshelflight();
                 finish();
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) { //表示按返回键 时的操作
+                // 监听到返回按钮点击事件
+                offcarshelflight();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void offcarshelflight() {
+
+        if (mS != null) {
+
+            getPresenter().offcarshelflight(mS);
+        }
     }
 
     @OnClick(R.id.button2)
@@ -531,6 +616,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     }
                 });
             }
+
             @Override
             protected int getItemViewLayoutId(int position, DebitData item) {
                 return R.layout.item_debit_list;
@@ -564,8 +650,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                         mDebitCheckedData.add(mListBean);
                     }
                 }
-                if(mDebitCheckedData.size()==0){
-                    ToastUtils.showMessage(this,"还未选择口账列表！");
+                if (mDebitCheckedData.size() == 0) {
+                    ToastUtils.showMessage(this, "还未选择口账列表！");
                     return;
                 }
                 DebitParameters mDebitParameters = new DebitParameters();

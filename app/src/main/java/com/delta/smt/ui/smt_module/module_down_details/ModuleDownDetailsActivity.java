@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -129,6 +131,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         map.put("side", side);
         argument = GsonTools.createGsonListString(map);
         mCurrentWorkOrder = workItemID;
+        checkBox.setChecked(SpUtil.getBooleanSF(this," ModuleDown"));
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SpUtil.SetBooleanSF(ModuleDownDetailsActivity.this, "ModuleDown", isChecked);
+            }
+        });
     }
 
     @Override
@@ -221,6 +230,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         }
         Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size());
         Log.i(TAG, "onSuccess: 后台返回的待入库数据长度是" + dataSourceForCheckIn.size());
+        index = -1;
         adapter.notifyDataSetChanged();
         if (dataSourceForCheckIn.isEmpty()) {
             btnFeederMaintain.setEnabled(true);
@@ -336,6 +346,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public void onFailed(String message) {
         flag = 2;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override
@@ -431,6 +443,13 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onScanSuccess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
+        if (dataSourceForCheckIn.isEmpty()){
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
+            ToastUtils.showMessage(this, "所有要退入Feeder缓冲区的料均已发完");
+            return;
+        }
+
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (flag) {
             case 1:
@@ -440,6 +459,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                     Toast.makeText(this, "不能解析该二维码", Toast.LENGTH_SHORT).show();
+                    index = -1;
                     flag = 1;
                 } catch (ArrayIndexOutOfBoundsException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
@@ -501,7 +521,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         mCurrentSerialNumber = materialBlockBarCode.getStreamNumber();
         mCurrentQuantity = materialBlockBarCode.getCount();
         index = getMatchedMaterialIndex(mCurrentMaterialID, mCurrentSerialNumber);
-        adapter.notifyItemChanged(index);
+        adapter.notifyDataSetChanged();
 
         RecycleViewUtils.scrollToMiddle(linearLayoutManager, index, recyclerViewContent);
 

@@ -1,6 +1,7 @@
 package com.delta.smt.ui.feeder.warning.supply;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -107,7 +108,22 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
                 holder.setText(R.id.tv_title, "线别: " + feederSupplyWarningItem.getLineName());
                 holder.setText(R.id.tv_line, "工单号: " + feederSupplyWarningItem.getWorkOrder());
                 holder.setText(R.id.tv_material_station, "面别: " + feederSupplyWarningItem.getSide());
-                holder.setText(R.id.tv_add_count, "状态: " + (feederSupplyWarningItem.getStatus() == 2 ? "未开始备料" : "备料中"));
+
+                String status = null;
+                switch (feederSupplyWarningItem.getStatus()){
+                    case 3:
+                        status = "未开始备料";
+                        break;
+                    case 4:
+                        status = "正在备料";
+                        holder.itemView.setBackground(ContextCompat.getDrawable(FeederSupplyListActivity.this, R.drawable.card_background_yellow));
+                        break;
+                    default:
+                        break;
+
+                }
+
+                holder.setText(R.id.tv_add_count, "状态: " + status);
             }
 
 
@@ -134,31 +150,6 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
             updateMessage(warningMessage);
     }
 
-    private void updateMessage(String warningMessage) {
-        List<WaringDialogEntity> dataList = warningDialog.getDatas();
-        dataList.clear();
-        WaringDialogEntity warningEntity = new WaringDialogEntity();
-        warningEntity.setTitle("Feeder预警:");
-       StringBuilder sb = new StringBuilder();
-        try {
-            JSONArray jsonArray = new JSONArray(warningMessage);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(0);
-                //可能有多种预警的情况
-                    Object message1 = jsonObject.get("message");
-                    sb.append(message1).append("\n");
-
-            }
-            String content = sb.toString();
-            warningEntity.setContent(content + "\n");
-            dataList.add(warningEntity);
-            warningDialog.notifyData();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     @Override
     public void onSuccess(List<FeederSupplyWarningItem> data) {
         Log.i(TAG, "onSuccess: ");
@@ -179,7 +170,6 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         Log.i(TAG, "onSuccess: " + dataList.size());
 
     }
-
 
     @Override
     public void onFailed(String message) {
@@ -218,23 +208,6 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         });
     }
 
-
-    private WarningDialog createDialog() {
-        warningDialog = new WarningDialog(this);
-        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
-            @Override
-            public void onclick(View view) {
-                warningManager.setConsume(true);
-                onRefresh();
-
-            }
-        });
-        warningDialog.show();
-
-        return warningDialog;
-    }
-
-
     @Override
     public void onResume() {
         warningManager.registerWReceiver(this);
@@ -249,7 +222,6 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         getPresenter().getAllSupplyWorkItems();
 
     }
-
 
     @Override
     protected void onPause() {
@@ -289,7 +261,6 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         IntentUtils.showIntent(this, FeederSupplyActivity.class, bundle);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -303,9 +274,46 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         return super.onOptionsItemSelected(item);
     }
 
-
     private void onRefresh(){
         getPresenter().getAllSupplyWorkItems();
     }
 
+    private WarningDialog createDialog() {
+        warningDialog = new WarningDialog(this);
+        warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
+            @Override
+            public void onclick(View view) {
+                warningManager.setConsume(true);
+                onRefresh();
+
+            }
+        });
+        warningDialog.show();
+
+        return warningDialog;
+    }
+
+    private void updateMessage(String warningMessage) {
+        List<WaringDialogEntity> dataList = warningDialog.getDatas();
+        dataList.clear();
+        WaringDialogEntity warningEntity = new WaringDialogEntity();
+        warningEntity.setTitle("Feeder预警:");
+        StringBuilder sb = new StringBuilder();
+        try {
+            JSONArray jsonArray = new JSONArray(warningMessage);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                //可能有多种预警的情况
+                Object message1 = jsonObject.get("message");
+                sb.append(message1).append("\n");
+
+            }
+            String content = sb.toString();
+            warningEntity.setContent(content + "\n");
+            dataList.add(warningEntity);
+            warningDialog.notifyData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

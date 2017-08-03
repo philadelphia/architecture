@@ -3,7 +3,6 @@ package com.delta.smt.ui.smt_module.module_down;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -33,12 +32,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -115,7 +110,24 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
                 holder.setText(R.id.tv_product_name_main, "主板: " + moduleUpWarningItem.getProduct_name_main());
                 holder.setText(R.id.tv_product_name, "小板: " + moduleUpWarningItem.getProduct_name());
                 //holder.setText(R.id.tv_status,"状态: "+moduleUpWarningItem.getStatus());
-                holder.setText(R.id.tv_status, "状态: " + "等待下模组");
+
+                String status = null;
+                switch (moduleUpWarningItem.getStatus()) {
+                    case 210:
+                        status = "等待下模组";
+                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background));
+                        break;
+
+                    case 211:
+                        status = "正在下模组";
+                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background_yellow));
+                        break;
+
+                    default:
+                        break;
+                }
+                holder.setText(R.id.tv_status, "状态: " + status);
+
             }
         };
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
@@ -133,18 +145,22 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     public void onSuccess(List<ModuleDownWarningItem> dataSource) {
         dataList.clear();
         for (int i = 0; i < dataSource.size(); i++) {
-            if (TextUtils.isEmpty(dataSource.get(i).getUnplug_mod_actual_finish_time())) {
-                dataSource.get(i).setCreat_time(System.currentTimeMillis());
-            } else {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                try {
-                    Date parse = format.parse(dataSource.get(i).getUnplug_mod_actual_finish_time());
-                    dataSource.get(i).setCreat_time(parse.getTime());
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
+//            if (TextUtils.isEmpty(dataSource.get(i).getUnplug_mod_actual_finish_time())) {
+//                dataSource.get(i).setCreat_time(System.currentTimeMillis());
+//            } else {
+            dataSource.get(i).setCreat_time(dataSource.get(i).getOnline_actual_finish_time());
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//            Log.i(TAG, "onSuccess: " + dataSource.get(i).getUnplug_mod_actual_finish_time());
+//            Log.i(TAG, "onSuccess: " + format.format(dataSource.get(i).getUnplug_mod_actual_finish_time()));
+////                try {
+////                    Date parse = format.parse(dataSource.get(i).getUnplug_mod_actual_finish_time());
+////                    dataSource.get(i).setCreat_time(parse.getTime());
+//
+//
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//            }
             dataSource.get(i).setEntityId(i);
 
         }
@@ -209,7 +225,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         }
         warningManager.registerWReceiver(this);
         //需要定制的信息
-        warningManager.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG),0));
+        warningManager.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG), 0));
         getPresenter().getAllModuleDownWarningItems();
     }
 
@@ -237,8 +253,8 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             JSONArray jsonArray = new JSONArray(warningMessage);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    Object message1 = jsonObject.get("message");
-                   sb.append(message1).append("\n");
+                Object message1 = jsonObject.get("message");
+                sb.append(message1).append("\n");
 
 
             }
@@ -251,7 +267,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         }
 
 
-}
+    }
 
     public WarningDialog createDialog() {
         warningDialog = new WarningDialog(this);
@@ -285,7 +301,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             myAdapter.cancelRefreshTime();
         }
 
-        warningManager.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG),1));
+        warningManager.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG), 1));
     }
 
     @Override
@@ -311,7 +327,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         IntentUtils.showIntent(this, VirtualLineBindingActivity.class, bundle);
     }
 
-    public void onRefresh(){
+    public void onRefresh() {
         getPresenter().getAllModuleDownWarningItems();
     }
 }

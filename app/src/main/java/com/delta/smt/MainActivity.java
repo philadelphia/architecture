@@ -81,6 +81,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
 
     @Override
     protected void initView() {
+
+
         toolbarTitle.setText("首页");
         tvSetting.setVisibility(View.VISIBLE);
         CommonBaseAdapter<Function> adapter = new CommonBaseAdapter<Function>(this, functionList) {
@@ -140,7 +142,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         functionList.add(new Function("治具归还", R.drawable.ic_thereturn));
         functionList.add(new Function("手补件", R.drawable.ic_handpatch));
         functionList.add(new Function("品管确认", R.drawable.ic_quality));
-        functionList.add(new Function("仓库入库", R.drawable.ic_quality));
+        functionList.add(new Function("仓库入库", R.drawable.ic_putstorage));
        // functionList.add(new Function("warningSample", R.drawable.title));
     }
     private void checkTTS() {
@@ -188,7 +190,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 bundle=new Bundle();
                 bundle.putInt(Constant.SELECT_TYPE,2);
                 IntentUtils.showIntent(this,ProduceLineActivity.class,bundle);
-//                IntentUtils.showIntent(this, HandAddActivity.class);
+//               IntentUtils.showIntent(this, HandAddActivity.class);
                 break;
 
             case "尾数仓入库及退料":
@@ -231,7 +233,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         }
     }
 
-    //运行时权限请求回调方法
+    //运行时权限请求回调方法z
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {

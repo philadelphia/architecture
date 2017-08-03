@@ -6,54 +6,14 @@
                                      android:background="#e0ffffff"
                                      android:orientation="vertical">
 
-    <android.support.v4.widget.NestedScrollView
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/recyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:padding="30px"
+    android:layout_weight="1">
 
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:id="@+id/tv_mount_up"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/c_cfcfcf"
-                android:padding="30px"
-                android:text="上料列表"
-                android:textColor="@color/c_333333"
-                android:textSize="40px"
-                />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_feeder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="30px"/>
-
-            <TextView
-                android:id="@+id/tv_mount_supply"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/c_cfcfcf"
-                android:padding="30px"
-                android:text="发料列表"
-                android:textColor="@color/c_333333"
-                android:textSize="40px"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_feeder_send"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="30px"/>
-        </com.zhy.autolayout.AutoLinearLayout>
-
-
-    </android.support.v4.widget.NestedScrollView>
+</android.support.v7.widget.RecyclerView>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"

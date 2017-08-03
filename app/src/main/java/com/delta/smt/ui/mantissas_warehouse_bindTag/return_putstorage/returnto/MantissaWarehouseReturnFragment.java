@@ -42,7 +42,6 @@ import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.d
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.mvp.MantissaWarehouseReturnContract;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.mvp.MantissaWarehouseReturnPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -362,9 +361,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         serialNum = materiaBar.getStreamNumber();
 
                         MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
-                        Gson gson = new Gson();
-                        String s = gson.toJson(bindBean);
-
+                        String s = GsonTools.createGsonListString(bindBean);
                         getPresenter().getMaterialLocation(s);
                     } catch (EntityNotFountException ee) {
                         SnackbarUtil.showMassage(mRecyContetn, "此处不能识别此码！");

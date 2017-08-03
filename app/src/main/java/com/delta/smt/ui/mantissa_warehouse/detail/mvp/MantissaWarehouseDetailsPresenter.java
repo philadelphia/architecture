@@ -108,7 +108,7 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             public void call(Result<MaterialCar> car) {
 
                 if (0 == car.getCode()) {
-                    getView().getBingingCarSucess(car);
+                    getView().getBingingCarSuccess(car);
                 } else {
                     getView().getBingingCarFailed(car.getMessage());
                 }
@@ -222,6 +222,36 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
                 } else {
                     getView().getDebitDataFailed(mDebitDataResult.getMessage());
                 }
+            }
+        });
+    }
+
+    public void changecarshelf(String mGsonListString) {
+
+        getModel().changecarshelf(mGsonListString).subscribe(new RxErrorHandlerSubscriber<Result>(mRxErrorHandler) {
+            @Override
+            public void onNext(Result mResult) {
+
+                if (0==mResult.getCode()){
+                    getView().changecarshelfSuccess(mResult.getMessage());
+                }else {
+                    getView().changecarshelfFailed(mResult.getMessage());
+                }
+            }
+        });
+    }
+
+    public void offcarshelflight(String mS) {
+
+        getModel().offcarshelflight(mS).subscribe(new RxErrorHandlerSubscriber<Result>(mRxErrorHandler) {
+            @Override
+            public void onNext(Result mResult) {
+                if (0==mResult.getCode()){
+                    getView().changecarshelfSuccess(mResult.getMessage());
+                }else {
+                    getView().changecarshelfFailed(mResult.getMessage());
+                }
+
             }
         });
     }

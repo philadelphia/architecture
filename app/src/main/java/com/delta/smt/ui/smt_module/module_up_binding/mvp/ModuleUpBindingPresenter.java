@@ -79,7 +79,12 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
 
     public void upLoadToMESManually(String value){
-        getModel().upLoadToMesManually(value).subscribe(new Action1<Result>() {
+        getModel().upLoadToMesManually(value).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().upLoading();
+            }
+        }).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
                 if (0 == result.getCode()){
@@ -118,7 +123,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 //                            getView().onFailedBinding(moduleUpBindingItem.getMessage());
                         } else {
                             getView().showContentView();
-                            getView().onSuccess(moduleUpBindingItemResult.getRows());
+                            getView().onSuccessBinding(moduleUpBindingItemResult.getRows());
                         }
 
                     } else {
@@ -154,7 +159,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
                     getView().getNeedUpLoadToMESMaterialsSuccess(mUpLoadEntityResult.getT());
                 } else {
-                    getView().getNeedUpLoadTOMESMaterislsFailed(mUpLoadEntityResult.getMsg());
+                    getView().getNeedUpLoadTOMESMaterialsFailed(mUpLoadEntityResult.getMsg());
                 }
             }
         });

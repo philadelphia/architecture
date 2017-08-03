@@ -1,4 +1,4 @@
-package com.delta.smt.ui.hand_add.item;
+package com.delta.smt.entity;
 
 import com.delta.libs.adapter.TimeEntity;
 import com.google.gson.annotations.SerializedName;

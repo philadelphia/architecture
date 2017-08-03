@@ -234,6 +234,9 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                 sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
                 try {
                     long beginDate = (long) Double.parseDouble(item.getRemain_time()) * 1000;
+                    if (beginDate < 0) {
+                        beginDate = 0;
+                    }
                     String sd = sdf.format(new Date(beginDate));
                     holder.setText(R.id.tv_materialRemainingUsageTime, sd);
                 } catch (Exception e) {

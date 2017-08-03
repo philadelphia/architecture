@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.ToastUtils;
+import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -32,7 +33,6 @@ import com.delta.smt.ui.fault_processing.fault_add.di.DaggerFaultProcessingAddCo
 import com.delta.smt.ui.fault_processing.fault_add.di.FaultProcessingAddModule;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddContract;
 import com.delta.smt.ui.fault_processing.fault_add.mvp.FaultProcessingAddPresenter;
-import com.delta.commonlibs.utils.ViewUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -203,6 +203,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
 
         // 创建 RequestBody，用于封装 请求RequestBody
+
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         try {
             long size = requestFile.contentLength();

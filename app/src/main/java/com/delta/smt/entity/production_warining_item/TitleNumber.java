@@ -1,4 +1,4 @@
-package com.delta.smt.ui.production_warning.item;
+package com.delta.smt.entity.production_warining_item;
 
 /**
  * Created by Fuxiang.Zhang on 2016/12/26.
