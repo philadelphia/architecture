@@ -35,7 +35,7 @@ import javax.inject.Inject;
  */
 @ReportsCrashes(
         mode = ReportingInteractionMode.TOAST,
-        resDialogText = R.string.crash_toast_text,
+        resToastText = R.string.crash_toast_text,
         formUri = "http://172.22.34.198:8888/acra-smartsmt",
         httpMethod = HttpSender.Method.PUT,
         reportType = HttpSender.Type.JSON
