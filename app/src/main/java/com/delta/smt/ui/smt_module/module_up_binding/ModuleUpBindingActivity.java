@@ -271,7 +271,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onNetFailed(Throwable throwable) {
-        ToastUtils.showMessage(this, throwable.getMessage());
+//        ToastUtils.showMessage(this, throwable.getMessage());
     }
 
     @SuppressWarnings("all")

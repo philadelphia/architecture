@@ -295,16 +295,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 getPresenter().upLoadFeederSupplyToMES(argument_MES);
             }
         }
-//        if (isAllFeederSupplied(data)) {
-//            isAllItemSupplied = true;
-//            Log.i(TAG, "feeder全部上模组，开始上传结果: ");
-//            Map<String, String> map = new HashMap<>();
-//            map.put("work_order", workId);
-//            map.put("side", side);
-//
-//            String argument = GsonTools.createGsonListString(map);
-//            getPresenter().resetFeederSupplyStatus(argument);
-//        }
+                                                                                                                                                                  
 
     }
 
