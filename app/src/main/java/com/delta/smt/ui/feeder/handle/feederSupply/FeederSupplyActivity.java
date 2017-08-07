@@ -1,6 +1,7 @@
 package com.delta.smt.ui.feeder.handle.feederSupply;
 
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -120,6 +122,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
     private String argument_MES;
     private MESAdapter mesAdapter;
+    private Dialog loadingDialog;
 
     @Override
     protected void handError(String contents) {
@@ -595,6 +598,23 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
             }
         });
 
+    }
+
+    @Override
+    public void upLoading() {
+        loadingDialog = DialogUtils.createProgressDialog(this);
+        if (loadingDialog == null){
+            loadingDialog = DialogUtils.createProgressDialog(this);
+        }
+        if (!loadingDialog.isShowing()){
+            loadingDialog.show();
+        }
+    }
+
+    @Override
+    public void upLoadFailed(String mMessage) {
+        loadingDialog.dismiss();
+        ToastUtils.showMessage(this, mMessage);
     }
 
     @Override

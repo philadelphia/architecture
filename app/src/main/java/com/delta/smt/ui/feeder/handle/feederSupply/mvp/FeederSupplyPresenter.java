@@ -189,14 +189,19 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
     //上传Feeder发料到MES
     public void upLoadFeederSupplyToMES(String value) {
-        getModel().upLoadFeederSupplyToMES(value).subscribe(new Action1<Result>() {
+        getModel().upLoadFeederSupplyToMES(value).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().upLoading();
+            }
+        }).subscribe(new Action1<Result>() {
             @Override
             public void call(Result resultFeeder) {
 
                 if (resultFeeder.getCode() == 0){
-                    getView().onFailed(resultFeeder.getMessage());
+                    getView().upLoadFailed("Success");
                 }
-                getView().onFailed(resultFeeder.getMessage());
+                getView().upLoadFailed("Failed"); //hardCode
             }
         }, new Action1<Throwable>() {
             @Override
