@@ -46,6 +46,10 @@ public interface FeederSupplyContract {
         void showErrorView();
 
         void showEmptyView();
+
+        void upLoading();
+
+        void upLoadFailed(String mMessage);
     }
 
     interface Model extends IModel {
