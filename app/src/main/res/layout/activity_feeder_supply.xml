@@ -40,46 +40,28 @@
                     <!--MES-->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="200px"
                         android:orientation="horizontal"
-                        android:weightSum="5">
-
-                       <!-- <CheckBox
-                            android:id="@+id/checkBox"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="自动扣账" />
-
-
-                        <Button
-                            android:id="@+id/btn_debitManually"
-                            android:layout_width="0dp"
-                            android:layout_height="100px"
-                            android:background="@drawable/btn_selector"
-                            android:text="@string/debitManually"
-                            android:textColor="@color/white"
-                            android:layout_weight="1"/>
--->
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="100px"
-                            android:layout_weight="2"/>
+                        android:gravity="right"
+                        android:layout_marginTop="20px">
 
                         <CheckBox
                             android:id="@+id/checkBox_autoUpLoadToMES"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="100px"
-                            android:layout_weight="2"
+                            android:layout_marginRight="50px"
+                            android:layout_gravity="center_vertical"
                             android:text="@string/upLoadToMESAuto" />
 
 
                         <Button
                             android:id="@+id/btn_upload"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="100px"
-                            android:layout_gravity="end"
-                            android:layout_weight="1"
+                            android:layout_marginRight="50px"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="30px"
+                            android:paddingRight="30px"
                             android:gravity="center"
                             android:textColor="@color/white"
                             android:background="@drawable/btn_selector"

@@ -429,6 +429,11 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
            @Override
            public void onClick(DialogInterface dialog, int which) {
                isShowDialog = true;
+               if(isJudge){
+                   getPresenter().fetchCheckStock(FrameLocation);
+               }else{
+                   getPresenter().fetchCheckStock(mFrameLocation.getSource());
+               }
                dialog.dismiss();
            }
        }).setNegativeButton("变更架位", new DialogInterface.OnClickListener() {
