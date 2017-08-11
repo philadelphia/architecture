@@ -97,7 +97,7 @@ public class AllQuery {
     }
 
     public static class RowsBean extends TimeEntity{
-        private int id;
+        private String id;
         private String productLine;
         private String sapWorkOrderId;
         private String partNum;
@@ -143,11 +143,11 @@ public class AllQuery {
             this.side = side;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
