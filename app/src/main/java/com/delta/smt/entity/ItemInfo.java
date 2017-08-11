@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
  * Created by Lin.Hou on 2016-12-27.
  */
 public class ItemInfo extends TimeEntity {
-    private int alarminfoId;
+    private String alarminfoId;
     private Long endTime;
 
 
@@ -67,13 +67,12 @@ public class ItemInfo extends TimeEntity {
     }
 
 
-
-    public void setAlarminfoId(int alarminfoId) {
-        this.alarminfoId = alarminfoId;
+    public String getAlarminfoId() {
+        return alarminfoId;
     }
 
-    public int getAlarminfoId() {
-        return alarminfoId;
+    public void setAlarminfoId(String alarminfoId) {
+        this.alarminfoId = alarminfoId;
     }
 
     public String getAmount() {

@@ -90,7 +90,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
     private int mAdapterposition;
     private int mId;
     private int mAmoutString;
-    private int mAlarminfoId;
+    private String mAlarminfoId;
     private boolean mIsAlarmInfo;
     private String mMainBoard;
     private String mSubBoard;
@@ -112,7 +112,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
             mMachineString = bundle.getString("machine");
             mMaterialNumberString = bundle.getString("materialNumber");
             mAmoutString = bundle.getInt("amout");
-            mAlarminfoId = bundle.getInt("alarminfoid");
+            mAlarminfoId = bundle.getString("alarminfoid");
             mIsAlarmInfo = bundle.getBoolean("alarminfo");
             mMainBoard = bundle.getString("mainBoard");
             mSubBoard = bundle.getString("subBoard");

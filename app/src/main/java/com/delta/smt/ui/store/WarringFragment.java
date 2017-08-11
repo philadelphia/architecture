@@ -86,7 +86,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             mPosition=position;
-                            getPresenter().closeLights(mList.get(position).getAlarminfoId(),0);
+                            getPresenter().closeLights(mList.get(position).getAlarminfoId(),"0");
                             dialog.dismiss();
 
                         }
@@ -155,7 +155,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
         EventBus.getDefault().post(new WarningInt(wareHouses.size()));
         mAdapter.notifyDataSetChanged();
         for (int i = 0; i < mList.size(); i++) {
-            if (mList.get(i).getAlarminfoId()==1&&"2016980001".equals(mList.get(i).getWorkNumber())&&"50".equals(mList.get(i).getAmount())) {
+            if ("1".equals(mList.get(i).getAlarminfoId())&&"2016980001".equals(mList.get(i).getWorkNumber())&&"50".equals(mList.get(i).getAmount())) {
                 ItemInfo productWorkItem = mList.get(i);
                 mList.remove(i);
                 mList.add(1, productWorkItem);
@@ -172,7 +172,7 @@ public class WarringFragment extends BaseFragment<WarningPresenter> implements W
         bundle.putString("machine", itemInfo.getMaterialNumber());
         bundle.putString("materialNumber", itemInfo.getMachine());
         bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
-        bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
+        bundle.putString("alarminfoid", itemInfo.getAlarminfoId());
         bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
         bundle.putString("mainBoard", itemInfo.getMainBoard());
         bundle.putString("subBoard", itemInfo.getSubBoard());
