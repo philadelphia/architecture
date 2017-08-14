@@ -24,6 +24,9 @@ public interface FeederSupplyContract {
     interface View extends IView {
         void onSuccess(List<FeederSupplyItem> data);
 
+        void onFeederSupplySuccess(List<FeederSupplyItem> data);
+
+
         void showUnDebitedItemList(List<DebitData> data);
 
         void showUnUpLoadToMESItemList(UpLoadEntity mT );
@@ -43,6 +46,10 @@ public interface FeederSupplyContract {
         void showErrorView();
 
         void showEmptyView();
+
+        void upLoading();
+
+        void upLoadFailed(String mMessage);
     }
 
     interface Model extends IModel {
@@ -66,5 +73,8 @@ public interface FeederSupplyContract {
 
         //上传Feeder发料到MES
         Observable<Result> upLoadFeederSupplyToMES(String value);
+
+        //light off
+        Observable <Result> lightOff(String argument);
     }
 }

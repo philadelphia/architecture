@@ -1,15 +1,13 @@
 package com.delta.smt.ui.smt_module.module_up_binding;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -30,6 +27,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.SingleClick;
@@ -44,6 +42,7 @@ import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
+import com.delta.smt.common.MESAdapter;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.ModuleUpBindingItem;
 import com.delta.smt.entity.UpLoadEntity;
@@ -62,7 +61,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.delta.commonlibs.utils.SpUtil.getBooleanSF;
@@ -125,13 +123,12 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private LinearLayoutManager linearLayoutManager;
     private String quantaty;
     private CustomPopWindow mCustomPopWindow;
-    private CommonBaseAdapter<UpLoadEntity.FeedingListBean> undoList_adapter;
     private List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
     private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
-    private CommonBaseAdapter<UpLoadEntity.MaterialListBean> unSend_adapter;
     private UploadMESParams mUploadMESParamsA;
-    private TextView tv_up;
-    private TextView tv_supply;
+    private boolean isAllItemBound = false;
+    private MESAdapter mesAdapter;
+    private Dialog loadingDialog;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -218,7 +215,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 holder.setText(R.id.tv_feederID, item.getFeeder_id());
                 holder.setText(R.id.tv_moduleMaterialStationID, item.getSlot());
 
-                if (item.getStatus() == 1){
+                if (item.getStatus() == 1) {
                     holder.itemView.setBackgroundColor(Color.GREEN);
                 }
 
@@ -245,36 +242,14 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         scan_position = -1;
         dataSource.clear();
         dataSource.addAll(data);
-        if(dataSource.size() == 0){
+        if (dataSource.size() == 0) {
             btn_upLoad_mes.setClickable(false);
         }
         adapter.notifyDataSetChanged();
-        if (isAllItemIsBound(data)) {
-            AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setTitle("提示")
-                    .setMessage("所有料盘上模组已经完成")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    }).create();
-            dialog.show();
-//           3q                                                                                                                                                                           mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmg
-
-        }
-        if (ckb_automaticUpload.isChecked() && mUploadMESParamsA != null) {
-            getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParamsA));
-        }
     }
 
     private boolean isAllItemIsBound(List<ModuleUpBindingItem> data) {
-        boolean isAllItemBound = false;
+        isAllItemBound = false;
         int size = data.size();
         for (int i = 0; i < size; i++) {
             ModuleUpBindingItem item = data.get(i);
@@ -291,25 +266,25 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     public void onFailed(String message) {
         ToastUtils.showMessage(this, message);
         VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
-        VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+        VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
     }
 
     @Override
     public void onNetFailed(Throwable throwable) {
-        ToastUtils.showMessage(this, throwable.getMessage());
+//        ToastUtils.showMessage(this, throwable.getMessage());
     }
 
     @SuppressWarnings("all")
     @Override
-    public void onSuccessBinding(List<ModuleUpBindingItem> dataSource) {
-
+    public void onSuccessBinding(List<ModuleUpBindingItem> list) {
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
         dataSource.clear();
-        List<ModuleUpBindingItem> rowsBeen = dataSource;
-        dataSource.addAll(rowsBeen);
+        dataSource.addAll(list);
         scan_position = -1;
         adapter.notifyDataSetChanged();
         state = 1;
-        if (isAllFeederBound()) {
+        if (isAllItemIsBound(list)) {
             new AlertDialog.Builder(this)
                     .setTitle("提示")
                     .setMessage("工单" + workItemID + "上模组完成！")
@@ -330,7 +305,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     .create()
                     .show();
         }
-
+        if (ckb_automaticUpload.isChecked() && mUploadMESParamsA != null) {
+            getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParamsA));
+        }
 
     }
 
@@ -402,23 +379,18 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 mUploadMESParams.setMaterial_list(mT.getMaterial_list());
             }
             getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParams));
+            return;
         }
 
         if (mT.getFeeding_list() != null) {
-
             mFeedingListBean.addAll(mT.getFeeding_list());
-            tv_up.setText("上料列表：" + mFeedingListBean.size());
-            tv_supply.setText("发料列表：" + mMaterialListBean.size());
-            undoList_adapter.notifyDataSetChanged();
         }
 
         if (mT.getMaterial_list() != null) {
             mMaterialListBean.addAll(mT.getMaterial_list());
-            tv_up.setText("上料列表：" + mFeedingListBean.size());
-            tv_supply.setText("发料列表：" + mMaterialListBean.size());
-            unSend_adapter.notifyDataSetChanged();
         }
 
+        mesAdapter.notifyDataSetChanged();
 
         if (mCustomPopWindow != null) {
             mCustomPopWindow.showAsDropDown(toolbar);
@@ -427,12 +399,13 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void getNeedUpLoadTOMESMaterislsFailed(String mMsg) {
+    public void getNeedUpLoadTOMESMaterialsFailed(String mMsg) {
         ToastUtils.showMessage(this, mMsg);
     }
 
     @Override
     public void uploadSuccess(String mMessage) {
+        loadingDialog.dismiss();
         Map<String, Object> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
@@ -443,7 +416,19 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void upLoadFailed(String mMessage) {
+        loadingDialog.dismiss();
         ToastUtils.showMessage(this, mMessage);
+    }
+
+    @Override
+    public void upLoading() {
+         loadingDialog = DialogUtils.createProgressDialog(this);
+        if (loadingDialog == null){
+            loadingDialog = DialogUtils.createProgressDialog(this);
+        }
+        if (!loadingDialog.isShowing()){
+            loadingDialog.show();
+        }
     }
 
 
@@ -483,7 +468,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             case R.id.bt_sheet_confirm:
                 List<UpLoadEntity.FeedingListBean> mFeedingListBeans = new ArrayList<>();
                 List<UpLoadEntity.MaterialListBean> mMaterialListBeans = new ArrayList<>();
-                if(mFeedingListBean.size() != 0){
+                if (mFeedingListBean.size() != 0) {
                     for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
                         if (mListBean.isChecked()) {
                             mFeedingListBeans.add(mListBean);
@@ -492,16 +477,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
                 }
 
-                if(mMaterialListBean.size() != 0){
-                    for (UpLoadEntity.MaterialListBean mListBean : mMaterialListBean) {
-                        if (mListBean.isChecked()) {
-                            mMaterialListBeans.add(mListBean);
-                        }
-                    }
+//                if (mMaterialListBean.size() != 0) {
+//                    for (UpLoadEntity.MaterialListBean mListBean : mMaterialListBean) {
+//                        if (mListBean.isChecked()) {
+//                            mMaterialListBeans.add(mListBean);
+//                        }
+//                    }
+//
+//                }
 
-                }
-
-                if (mFeedingListBeans.size() == 0  && mMaterialListBeans.size() == 0) {
+                if (mFeedingListBeans.size() == 0) {
                     ToastUtils.showMessage(this, "请选择上料列表！");
                     return;
                 }
@@ -512,7 +497,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 mUploadMESParams.setIs_feeder_buffer("0");
                 mUploadMESParams.setMes_mode("0");
                 mUploadMESParams.setFeeding_list(mFeedingListBeans);
-                mUploadMESParams.setMaterial_list(mMaterialListBeans);
+//                mUploadMESParams.setMaterial_list(mMaterialListBeans);
                 getPresenter().upLoadToMESManually(GsonTools.createGsonListString(mUploadMESParams));
 
                 break;
@@ -522,32 +507,33 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                         for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
                             mListBean.setChecked(true);
                         }
-                        undoList_adapter.notifyDataSetChanged();
+                        mesAdapter.notifyDataSetChanged();
                     }
 
-                    if (mMaterialListBean != null && mMaterialListBean.size() != 0){
-                        for (UpLoadEntity.MaterialListBean materialListBean : mMaterialListBean) {
-                            materialListBean.setChecked(true);
-                        }
-                        unSend_adapter.notifyDataSetChanged();
-                    }
+                    //不上传发料列表
+//                    if (mMaterialListBean != null && mMaterialListBean.size() != 0) {
+//                        for (UpLoadEntity.MaterialListBean materialListBean : mMaterialListBean) {
+//                            materialListBean.setChecked(true);
+//                        }
+//                        unSend_adapter.notifyDataSetChanged();
+//                    }
                 }
                 break;
             case R.id.bt_sheet_select_cancel:
                 if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
-                if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
-                    for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
-                        mListBean.setChecked(false);
+                    if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
+                        for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
+                            mListBean.setChecked(false);
+                        }
+                       mesAdapter.notifyDataSetChanged();
                     }
-                    undoList_adapter.notifyDataSetChanged();
                 }
-            }
-            if (mMaterialListBean != null && mMaterialListBean.size() != 0){
-                for (UpLoadEntity.MaterialListBean materialListBean : mMaterialListBean) {
-                    materialListBean.setChecked(false);
-                }
-                unSend_adapter.notifyDataSetChanged();
-            }
+//                if (mMaterialListBean != null && mMaterialListBean.size() != 0) {
+//                    for (UpLoadEntity.MaterialListBean materialListBean : mMaterialListBean) {
+//                        materialListBean.setChecked(false);
+//                    }
+//                    unSend_adapter.notifyDataSetChanged();
+//                }
 
                 break;
             default:
@@ -558,12 +544,8 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private void createCustomPopWindow() {
         mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_upload_mes).build();
         View mContentView = mCustomPopWindow.getContentView();
-        RecyclerView rv_feeder = ViewUtils.findView(mContentView, R.id.rv_feeder);
-        RecyclerView rv_feeder_send = ViewUtils.findView(mContentView, R.id.rv_feeder_send);
-        tv_up = ViewUtils.findView(mContentView, R.id.tv_mount_up);
-        tv_supply = ViewUtils.findView(mContentView, R.id.tv_mount_supply);
-        tv_up.setText("上料列表：" + mFeedingListBean.size());
-        tv_supply.setText("发料列表：" + mMaterialListBean.size());
+        RecyclerView recyclerView = ViewUtils.findView(mContentView, R.id.recyclerView);
+
         Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
         Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
         Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
@@ -572,73 +554,20 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         bt_confirm.setOnClickListener(this);
         bt_select_all.setOnClickListener(this);
 
-        undoList_adapter = new CommonBaseAdapter<UpLoadEntity.FeedingListBean>(getContext(), mFeedingListBean) {
-            @Override
-            protected void convert(CommonViewHolder holder, final UpLoadEntity.FeedingListBean item, int position) {
-                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
-                holder.setText(R.id.tv_slot, "FeederId：" + item.getFeeder_id());
-                holder.setText(R.id.tv_amount, "流水号：" + String.valueOf(item.getSerial_no()));
-                holder.setText(R.id.tv_issue, "架位：" + String.valueOf(item.getSlot()));
-                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
-                mCheckBox.setChecked(item.isChecked());
-                holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mCheckBox.setChecked(!item.isChecked());
-                        item.setChecked(!item.isChecked());
-                    }
-                });
-
-            }
-
-            @Override
-            protected int getItemViewLayoutId(int position, UpLoadEntity.FeedingListBean item) {
-                return R.layout.item_feeder_list;
-
-            }
-
-        };
-        unSend_adapter = new CommonBaseAdapter<UpLoadEntity.MaterialListBean>(getContext(), mMaterialListBean) {
-            @Override
-            protected void convert(CommonViewHolder holder, final UpLoadEntity.MaterialListBean item, int position) {
-                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
-                holder.setText(R.id.tv_slot, "流水号：" + String.valueOf(item.getSerial_no()));
-                holder.setText(R.id.tv_issue, "架位：" + String.valueOf(item.getSlot()));
-                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
-                mCheckBox.setChecked(item.isChecked());
-                holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mCheckBox.setChecked(!item.isChecked());
-                        item.setChecked(!item.isChecked());
-                    }
-                });
-
-            }
-
-            @Override
-            protected int getItemViewLayoutId(int position, UpLoadEntity.MaterialListBean item) {
-                return R.layout.item_feeder_upload;
-            }
-
-        };
-
-        setAdapter(rv_feeder, undoList_adapter);
-        setAdapter(rv_feeder_send, unSend_adapter);
-//        rv_debit.setHasFixedSize(true);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        linearLayoutManager.setSmoothScrollbarEnabled(true);
-//        rv_debit.setLayoutManager(linearLayoutManager);
-//        rv_debit.setAdapter(undoList_adapter);
+        mesAdapter = new MESAdapter(ModuleUpBindingActivity.this, mFeedingListBean, mMaterialListBean );
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(mesAdapter);
     }
 
     private void setAdapter(RecyclerView rv_debit, CommonBaseAdapter mUndoList_adapter) {
         rv_debit.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
 //                return super.canScrollVertically();
-                return  false;
+                return false;
             }
         };
         linearLayoutManager.setSmoothScrollbarEnabled(true);
@@ -707,7 +636,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     mUploadMESParamsA.setSide(side);
                     mUploadMESParamsA.setWork_order(workItemID);
                     mUploadMESParamsA.setIs_feeder_buffer("0");
-                    mUploadMESParamsA.setMes_mode(isAutomaticUpload  ?  "1": "0");
+                    mUploadMESParamsA.setMes_mode(isAutomaticUpload ? "1" : "0");
                     UpLoadEntity.FeedingListBean mFeedingListBeanA = new UpLoadEntity.FeedingListBean();
                     mFeedingListBeanA.setFeeder_id(barcode);
                     mFeedingListBeanA.setMaterial_no(materialBlockNumber);
@@ -756,15 +685,18 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             showMessage.setVisibility(View.VISIBLE);
             state = 1;
         } else {
+            //料盘已经绑定
             if (isMaterialBound(materialBlockBarCode)) {
                 VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                 VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                Toast.makeText(this, "注意:该料盘已经绑定", Toast.LENGTH_SHORT).show();
+                showMessage.setText("注意:该料盘已经绑定");
+                showMessage.setVisibility(View.VISIBLE);
             } else {
+                //料盘尚未绑定
                 VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
                 VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
                 String slot = getModuleID(materialBlockBarCode);
-                showMessage.setText("模组料站：" +slot );
+                showMessage.setText("模组料站：" + slot);
                 showMessage.setVisibility(View.VISIBLE);
             }
             state = 2;
@@ -853,9 +785,9 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         return flag;
     }
 
-    public String getModuleID(MaterialBlockBarCode materialBlockBarCode){
+    public String getModuleID(MaterialBlockBarCode materialBlockBarCode) {
         for (ModuleUpBindingItem rowsBean : dataSource) {
-            if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())){
+            if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())) {
                 return rowsBean.getSlot();
             }
 

@@ -90,10 +90,10 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             public void onNext(Result<FeederSupplyItem> feederSupplyItemResult) {
                 if (feederSupplyItemResult.getCode() == 0) {
                     getView().showContentView();
-                    getView().onSuccess(feederSupplyItemResult.getRows());
+                    getView().onFeederSupplySuccess(feederSupplyItemResult.getRows());
                 } else {
                     getView().onFailed(feederSupplyItemResult.getMessage());
-//                    getView().showErrorView();
+                    getView().showContentView();
 
                 }
 
@@ -189,14 +189,19 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
     //上传Feeder发料到MES
     public void upLoadFeederSupplyToMES(String value) {
-        getModel().upLoadFeederSupplyToMES(value).subscribe(new Action1<Result>() {
+        getModel().upLoadFeederSupplyToMES(value).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                getView().upLoading();
+            }
+        }).subscribe(new Action1<Result>() {
             @Override
             public void call(Result resultFeeder) {
 
                 if (resultFeeder.getCode() == 0){
-                    getView().onFailed(resultFeeder.getMessage());
+                    getView().upLoadFailed("Success");
                 }
-                getView().onFailed(resultFeeder.getMessage());
+                getView().upLoadFailed("Failed"); //hardCode
             }
         }, new Action1<Throwable>() {
             @Override
@@ -214,7 +219,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                 if ("0".equalsIgnoreCase(result.getCode())) {
                     getView().showUnUpLoadToMESItemList(result.getT());
                 } else {
-                    getView().onFailed(result.getMsg());
+                    getView().onUpLoadFailed(result.getMsg());
                 }
             }
         }, new Action1<Throwable>() {
@@ -223,5 +228,22 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
             }
         });
+    }
+
+   public void lightOff(String argument){
+        getModel().lightOff(argument).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                    if (0 == result.getCode()){
+
+                    }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+
     }
 }

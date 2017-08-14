@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -543,12 +544,32 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                offcarshelflight();
                 finish();
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) { //表示按返回键 时的操作
+                // 监听到返回按钮点击事件
+                offcarshelflight();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void offcarshelflight() {
+
+        if (mS != null) {
+
+            getPresenter().offcarshelflight(mS);
+        }
     }
 
     @OnClick(R.id.button2)
