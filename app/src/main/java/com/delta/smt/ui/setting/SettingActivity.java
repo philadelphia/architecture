@@ -229,7 +229,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
 
                 break;
             case R.id.setting_cache:
-                DialogUtils.showCommonDialog(this, "是否清楚缓存？", new DialogInterface.OnClickListener() {
+                DialogUtils.showCommonDialog(this, "是否清除缓存？", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DataClearManager.clearAllCache(getContext());
