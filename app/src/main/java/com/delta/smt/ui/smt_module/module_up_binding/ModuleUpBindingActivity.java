@@ -271,7 +271,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     @Override
     public void onNetFailed(Throwable throwable) {
-        ToastUtils.showMessage(this, throwable.getMessage());
+//        ToastUtils.showMessage(this, throwable.getMessage());
     }
 
     @SuppressWarnings("all")
@@ -685,11 +685,14 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
             showMessage.setVisibility(View.VISIBLE);
             state = 1;
         } else {
+            //料盘已经绑定
             if (isMaterialBound(materialBlockBarCode)) {
                 VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                 VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
-                Toast.makeText(this, "注意:该料盘已经绑定", Toast.LENGTH_SHORT).show();
+                showMessage.setText("注意:该料盘已经绑定");
+                showMessage.setVisibility(View.VISIBLE);
             } else {
+                //料盘尚未绑定
                 VibratorAndVoiceUtils.correctVibrator(ModuleUpBindingActivity.this);
                 VibratorAndVoiceUtils.correctVoice(ModuleUpBindingActivity.this);
                 String slot = getModuleID(materialBlockBarCode);

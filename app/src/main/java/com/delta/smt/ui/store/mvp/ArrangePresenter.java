@@ -87,8 +87,8 @@ public class ArrangePresenter extends BasePresenter<ArrangeContract.Model,Arrang
         });
     }
 
-    public void closeLights(int s,int type){
-        Map<String,Integer>map=new HashMap<>();
+        public void closeLights(String s,String type){
+        Map<String,String>map=new HashMap<>();
         map.put("id",s);
         map.put("type",type);
         String json=GsonTools.createGsonListString(map);
