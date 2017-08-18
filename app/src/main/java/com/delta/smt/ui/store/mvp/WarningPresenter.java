@@ -94,8 +94,8 @@ public class WarningPresenter extends BasePresenter<WarningContract.Model,Warnin
             }
         });
     }
-    public void closeLights(int s,int type){
-        Map<String,Integer> map=new HashMap<>();
+    public void closeLights(String s,String type){
+        Map<String,String> map=new HashMap<>();
         map.put("id",s);
         map.put("type",type);
         String jsonArray= GsonTools.createGsonListString(map);

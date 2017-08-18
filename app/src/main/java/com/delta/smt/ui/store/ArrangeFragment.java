@@ -86,7 +86,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             mPosition=position;
-                            getPresenter().closeLights(mList.get(position).getAlarminfoId(),1);
+                            getPresenter().closeLights(mList.get(position).getAlarminfoId(),"1");
                             dialog.dismiss();
 
                         }
@@ -134,7 +134,7 @@ public class ArrangeFragment extends BaseFragment<ArrangePresenter> implements A
         bundle.putString("machine", itemInfo.getMaterialNumber());
         bundle.putString("materialNumber", itemInfo.getMachine());
         bundle.putInt("amout", Integer.valueOf(itemInfo.getAmount()));
-        bundle.putInt("alarminfoid", itemInfo.getAlarminfoId());
+        bundle.putString("alarminfoid", itemInfo.getAlarminfoId());
         bundle.putBoolean("alarminfo", itemInfo.isAlarminfo());
         bundle.putString("mainBoard", itemInfo.getMainBoard());
         bundle.putString("subBoard", itemInfo.getSubBoard());

@@ -601,6 +601,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     getPresenter().issureToWareh(GsonTools.createGsonListString(issureToWarehBody));
 
                 } catch (EntityNotFountException e) {
+                    e.printStackTrace();
                     BackupMaterialCar otherCar;
                     try {
                         otherCar = ((BackupMaterialCar) mBarCodeParseIpml.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
