@@ -326,9 +326,6 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
 
     /**
      * SetttingActivity页面，关闭检查更新ProgressDialog
-     *
-     * @param context
-     * @param needCancle
      */
     public void closeProgressDialog() {
         if (pDialog != null) {
