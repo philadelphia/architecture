@@ -2,6 +2,8 @@ package com.delta.smt.ui.setting;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -79,6 +81,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     ImageView mImageView2;
     @BindView(R.id.tv_speech)
     TextView mTvSpeech;
+    ProgressDialog pDialog = null;
     private View dialog_view;
     private EditText et_ip;
     private EditText et_port;
@@ -207,6 +210,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                     ActivityCompat.requestPermissions(SettingActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
                 } else {
                     //检查更新，第三个参数为1
+                    createProgressDialog(this, false);
                     UpdateUtils.checkUpdateInfo(getApplication(), SettingActivity.this.getPackageName() + ".fileprovider", 1);
                     Log.i(TAG, "onClick: " + SettingActivity.this.getPackageName());
                 }
@@ -287,6 +291,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //手动检查更新，checkUpdateInfo方法第三个参数设置为1
+                    createProgressDialog(this, false);
                     UpdateUtils.checkUpdateInfo(getApplication(), SettingActivity.this.getPackageName() + ".fileprovider", 1);
                 } else {
                 }
@@ -300,4 +305,50 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
+    /**
+     * SetttingActivity页面，检查更新ProgressDialog
+     *
+     * @param context
+     * @param needCancle
+     */
+    public void createProgressDialog(Context context, boolean needCancle) {
+        if (pDialog == null) {
+            pDialog = new ProgressDialog(context);
+            pDialog.setMessage("检查更新中...");
+            pDialog.setCancelable(needCancle);
+            pDialog.setCanceledOnTouchOutside(false);
+            pDialog.show();
+        } else {
+            pDialog.show();
+        }
+    }
+
+    /**
+     * SetttingActivity页面，关闭检查更新ProgressDialog
+     *
+     * @param context
+     * @param needCancle
+     */
+    public void closeProgressDialog() {
+        if (pDialog != null) {
+            pDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop: ");
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause: ");
+        closeProgressDialog();
+    }
+
+
 }
