@@ -1,2 +1,3 @@
 /build
 /src/prod/java/com/delta/smt/api/API.java
+/signing.properties

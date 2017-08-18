@@ -1,3 +1,4 @@
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
@@ -6,7 +7,18 @@ def releaseTime() {
 }
 
 Properties props = new Properties()
-props.load(new FileInputStream(file("signing.properties")))
+FileInputStream mFileInputStream
+try {
+    mFileInputStream=new FileInputStream(file("signing.properties"))
+}catch (FileNotFoundException e){
+    mFileInputStream =null
+}
+
+if (mFileInputStream!=null){
+    props.load(mFileInputStream)
+}
+
+
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
@@ -20,7 +32,7 @@ android {
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
     }
-    /*signingConfigs {
+    if (mFileInputStream!=null){signingConfigs {
         release {//发布版本的签名配置
             storeFile file(props['KEYSTORE_FILE'])
             keyAlias props['KEY_ALIAS']
@@ -33,7 +45,9 @@ android {
             storePassword props['DEBUG_KEYSTORE_PWD']
             keyPassword props['DEBUG_KEY_PWD']
         }
-    }*/
+    }}
+
+
     buildTypes {
         applicationVariants.all { variant ->
             variant.outputs.each { output ->
@@ -66,7 +80,7 @@ android {
             zipAlignEnabled true
             // 移除无用的resource文件
             shrinkResources true
-            //signingConfig signingConfigs.debug
+            if (mFileInputStream!=null){signingConfig signingConfigs.debug}
             // 前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
