@@ -101,6 +101,7 @@ android {
         disable "ResourceType"
         abortOnError false
     }
+
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
 
@@ -116,6 +117,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
 
     })
+
     testCompile rootProject.ext.dependencies["junit"]
     apt rootProject.ext.dependencies["dagger2-apt-compiler"]
     provided rootProject.ext.dependencies["javax.annotation"]
