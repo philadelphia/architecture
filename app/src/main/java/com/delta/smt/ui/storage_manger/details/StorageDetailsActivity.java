@@ -287,7 +287,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
-        //issureToWareh(rows);
+        issureToWareh(rows);
         tv_hint.setText(rows.getMessage());
         textToSpeechManager.stop();
         textToSpeechManager.readMessage(rows.getMessage());
