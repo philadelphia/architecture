@@ -33,6 +33,7 @@ import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
+import com.delta.smt.base.BaseApplication;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
@@ -527,6 +528,17 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         tv_hint.setText(mMessage);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
+
+    }
+
+    @Override
+    public void offcarshelflightSuccess(String mMessage) {
+        //ToastUtils.showMessage(BaseApplication.getContext(), mMessage);
+    }
+
+    @Override
+    public void offcarshelflightFailed(String mMessage) {
+        ToastUtils.showMessage(BaseApplication.getContext(), mMessage);
     }
 
     @Override
