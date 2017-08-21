@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
 
+import com.delta.commonlibs.utils.SpUtil;
 import com.delta.smt.R;
 
 /**
@@ -17,15 +18,19 @@ public class VibratorAndVoiceUtils {
     private static MediaPlayer music;// 播放器引用
 
     public static void correctVibrator(Context context) {
-        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        //扫码正确的情况下不震动
+        /*vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         long[] pattern = {30, 150, 30, 150}; // 停止 开启 停止 开启
-        vibrator.vibrate(pattern, -1); //重复两次上面的pattern 如果只想震动一次，index设为-1
+        vibrator.vibrate(pattern, -1); //重复两次上面的pattern 如果只想震动一次，index设为-1*/
     }
 
     public static void wrongVibrator(Context context) {
-        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = {30, 400}; // 停止 开启 停止 开启
-        vibrator.vibrate(pattern, -1); //重复两次上面的pattern 如果只想震动一次，index设为-1
+        if (SpUtil.getBooleanSF(context, "vibrate_switch")) {
+            vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            long[] pattern = {30, 400}; // 停止 开启 停止 开启
+            vibrator.vibrate(pattern, -1); //重复两次上面的pattern 如果只想震动一次，index设为-1
+        }
+
     }
 
     //自定义时常的震动模式
