@@ -193,6 +193,11 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
     }
 
     @Override
+    public void bindCarFailed(BindCarBean bindCarBean) {
+        state = 1;
+    }
+
+    @Override
     public void scanMaterialSucceed(ScanMaterialPanBean scanMaterialPanBean) {
         tvStoreCar.setText(scanMaterialPanBean.getRows().getCarName());
         beanArrayList.clear();
@@ -221,7 +226,7 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
 
     @Override
     public void finishedPdaSucceed(FinishPda finishPda) {
-
+        btnStore.setVisibility(View.GONE);
         showMesage("已经成功提交本次记录");
     }
 
@@ -268,7 +273,7 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
 
     @Override
     public void onScanSuccess(String barcode) {
-        Log.e(TAG, "onScanSuccess: " + barcode);
+        Log.e(TAG, "onScanSuccess: " + barcode +"::;"+state);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (state) {
             case 1:
