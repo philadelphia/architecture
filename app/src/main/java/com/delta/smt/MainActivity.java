@@ -199,7 +199,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "warningSample":
                 IntentUtils.showIntent(this, WarningSampleActivity.class);
                 break;
-            case "上模组":
+            case "上Feeder":
                 IntentUtils.showIntent(this, ModuleUpActivity.class);
                 break;
             case "下模组":
