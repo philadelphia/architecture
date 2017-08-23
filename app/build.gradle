@@ -1,3 +1,4 @@
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
@@ -5,8 +6,11 @@ def releaseTime() {
     return new Date().format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
 }
 
-Properties props = new Properties()
-props.load(new FileInputStream(file("signing.properties")))
+
+    Properties props = new Properties()
+    FileInputStream mFileInputStream=new FileInputStream(file("signing.properties"))
+    props.load(mFileInputStream)
+
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
@@ -20,7 +24,8 @@ android {
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
     }
-    /*signingConfigs {
+
+    signingConfigs {
         release {//发布版本的签名配置
             storeFile file(props['KEYSTORE_FILE'])
             keyAlias props['KEY_ALIAS']
@@ -33,7 +38,9 @@ android {
             storePassword props['DEBUG_KEYSTORE_PWD']
             keyPassword props['DEBUG_KEY_PWD']
         }
-    }*/
+    }
+
+
     buildTypes {
         applicationVariants.all { variant ->
             variant.outputs.each { output ->
@@ -66,7 +73,7 @@ android {
             zipAlignEnabled true
             // 移除无用的resource文件
             shrinkResources true
-            //signingConfig signingConfigs.debug
+            signingConfig signingConfigs.debug
             // 前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -94,10 +101,12 @@ android {
         disable "ResourceType"
         abortOnError false
     }
+
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
 
     lintOptions {
+
 
         disable 'RestrictedApi'
     }
@@ -109,6 +118,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
 
     })
+
     testCompile rootProject.ext.dependencies["junit"]
     apt rootProject.ext.dependencies["dagger2-apt-compiler"]
     provided rootProject.ext.dependencies["javax.annotation"]

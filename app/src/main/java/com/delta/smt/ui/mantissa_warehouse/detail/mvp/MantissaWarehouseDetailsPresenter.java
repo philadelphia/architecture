@@ -247,9 +247,9 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             @Override
             public void onNext(Result mResult) {
                 if (0==mResult.getCode()){
-                    getView().changecarshelfSuccess(mResult.getMessage());
+                    getView().offcarshelflightSuccess(mResult.getMessage());
                 }else {
-                    getView().changecarshelfFailed(mResult.getMessage());
+                    getView().offcarshelflightFailed(mResult.getMessage());
                 }
 
             }

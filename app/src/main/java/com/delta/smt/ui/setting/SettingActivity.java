@@ -81,6 +81,11 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
     ImageView mImageView2;
     @BindView(R.id.tv_speech)
     TextView mTvSpeech;
+    @BindView(R.id.sc_vibrator)
+    SwitchCompat scVibrator;
+    @BindView(R.id.tv_vibrator)
+    TextView mTvVibrator;
+
     ProgressDialog pDialog = null;
     private View dialog_view;
     private EditText et_ip;
@@ -133,6 +138,11 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         }
         scSpeech.setChecked(speech_switch);
         scSpeech.setOnCheckedChangeListener(this);
+
+        //是否振动
+        boolean vibrate_switch = SpUtil.getBooleanSF(this, "vibrate_switch");
+        scVibrator.setChecked(vibrate_switch);
+        scVibrator.setOnCheckedChangeListener(this);
     }
 
     private Dialog createDialog() {
@@ -199,7 +209,7 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
         return DialogUtils.showDefineDialog(this, dialog_view);
     }
 
-    @OnClick({R.id.setting_update, R.id.setting_server_address,R.id.setting_cache})
+    @OnClick({R.id.setting_update, R.id.setting_server_address, R.id.setting_cache})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setting_update:
@@ -276,9 +286,13 @@ public class SettingActivity extends BaseActivity<MainPresenter> implements Main
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (buttonView == scSpeech) {
+            SpUtil.SetBooleanSF(this, "speech_switch", isChecked);
+            textToSpeechManager.setRead(isChecked);
+        } else if (buttonView == scVibrator) {
+            SpUtil.SetBooleanSF(this, "vibrate_switch", isChecked);
+        }
 
-        SpUtil.SetBooleanSF(this, "speech_switch", isChecked);
-        textToSpeechManager.setRead(isChecked);
     }
 
     //运行时权限请求回调方法

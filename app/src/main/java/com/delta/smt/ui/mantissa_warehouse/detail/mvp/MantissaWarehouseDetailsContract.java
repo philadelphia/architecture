@@ -87,5 +87,9 @@ public interface MantissaWarehouseDetailsContract {
         void changecarshelfSuccess(String mMessage);
 
         void changecarshelfFailed(String mMessage);
+
+        void offcarshelflightSuccess(String mMessage);
+
+        void offcarshelflightFailed(String mMessage);
     }
 }

@@ -344,6 +344,9 @@
 -keep interface android.support.test.espresso.** { *; }
 
 
+################updateLib###############
+-keep class com.delta.updatelibs.** { *; }
+
 
 ################annotation###############
 -keep class android.support.annotation.** { *; }
