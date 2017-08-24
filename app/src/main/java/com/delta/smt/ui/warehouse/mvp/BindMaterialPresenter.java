@@ -105,6 +105,7 @@ public class BindMaterialPresenter extends BasePresenter<BindMaterialContract.Mo
                     getView().bindCarSucceed(bindCarBean);
                 }else if(bindCarBean.getCode() == -1){
                     getView().showContentView();
+                    getView().bindCarFailed(bindCarBean);
                     getView().showMesage(bindCarBean.getMessage());
                 }
             }

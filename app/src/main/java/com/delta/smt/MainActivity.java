@@ -132,7 +132,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         functionList.add(new Function("仓库超领", R.drawable.ic_warehouseroomchaoling));
         functionList.add(new Function("Feeder缓冲区", R.drawable.ic_feederbuffer));
         //functionList.add(new Function("尾数仓备料", R.drawable.ic_mantissawarehousestock));
-        functionList.add(new Function("上模组", R.drawable.ic_onthemodule));
+        functionList.add(new Function("上Feeder", R.drawable.ic_onthemodule));
         functionList.add(new Function("下模组", R.drawable.ic_themodule));
         functionList.add(new Function("故障处理", R.drawable.ic_faulthandling));
         functionList.add(new Function("尾数仓入库及退料", R.drawable.ic_return));
@@ -199,7 +199,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "warningSample":
                 IntentUtils.showIntent(this, WarningSampleActivity.class);
                 break;
-            case "上模组":
+            case "上Feeder":
                 IntentUtils.showIntent(this, ModuleUpActivity.class);
                 break;
             case "下模组":

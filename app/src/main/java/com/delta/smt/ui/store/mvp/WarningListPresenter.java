@@ -95,9 +95,9 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
     }
 
 
-    public void fetchAlarminfoOutBound(int id, String sapWorkOrderId, String partNum, int amount){
+    public void fetchAlarminfoOutBound(String id, String sapWorkOrderId, String partNum, int amount){
         Map<String,String>map=new HashMap<>();
-        map.put("id",""+id);
+        map.put("id",id);
         map.put("sapWorkOrderId",sapWorkOrderId);
         map.put("partNum",partNum);
         map.put("amount",""+amount);
@@ -131,7 +131,7 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             }
         });
     }
-    public void fetchScheduleOutBound(int id,String sapWorkOrderId,String partNum,int amount){
+    public void fetchScheduleOutBound(String id,String sapWorkOrderId,String partNum,int amount){
         Map<String,String>map=new HashMap<>();
         map.put("id",""+id);
         map.put("sapWorkOrderId",sapWorkOrderId);
@@ -197,12 +197,12 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
 
-    public void fetchPcbSuccess(int mAlarminfoId,int amout, int id,int type){
-        Map<String,Integer>map=new HashMap<>();
+    public void fetchPcbSuccess(String mAlarminfoId,int amout, int id,int type){
+        Map<String,String>map=new HashMap<>();
         map.put("billId",mAlarminfoId);
-        map.put("id",id);
-        map.put("amount",amout);
-        map.put("type",type);
+        map.put("id",""+id);
+        map.put("amount",""+amout);
+        map.put("type",""+type);
        String s= createGsonListString(map);
         getModel().getPcbSuccess(s).doOnSubscribe(new Action0() {
             @Override
@@ -263,8 +263,8 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
                 }
             });
         }
-    public void getOutSumbit(int scheduleId){
-        Map<String,Integer>map=new HashMap<>();
+    public void getOutSumbit(String scheduleId){
+        Map<String,String>map=new HashMap<>();
         map.put("scheduleId",scheduleId);
         String jsonArray=createGsonListString(map);
         getModel().getOutSubmit(jsonArray).doOnSubscribe(new Action0() {
@@ -294,9 +294,9 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
             }
         });
     }
-    public void getAlarmOutSumbit(int scheduleId){
+    public void getAlarmOutSumbit(String scheduleId){
         Map<String,String>map=new HashMap<>();
-        map.put("alarmId",""+scheduleId);
+        map.put("alarmId",scheduleId);
         String jsonArray=createGsonListString(map);
         Log.i("info",jsonArray);
         getModel().getAlarmOutSubmit(jsonArray).doOnSubscribe(new Action0() {
@@ -327,9 +327,9 @@ public class WarningListPresenter extends BasePresenter<WarningListContract.Mode
         });
     }
 
-    public void getRefresh(int id, String partNum, int offset, int type){
+    public void getRefresh(String id, String partNum, int offset, int type){
         Map<String,String>map=new HashMap<>();
-        map.put("id",""+id);
+        map.put("id",id);
         map.put("partNum",partNum);
         map.put("offset",""+offset);
         map.put("type",""+type);

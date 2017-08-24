@@ -54,6 +54,7 @@ import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -116,9 +117,12 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private String line_name;
     private CustomPopWindow mCustomPopWindow;
     private int state = 1;
+    private static final int  JUMPMATERIAL=3;
+    private static final int  UNWAREHMATERIAL =1;
     @Inject
     TextToSpeechManager textToSpeechManager;
     private Dialog mConfirmDialog;
+    private IssureToWarehBody mIssureToWarehBody;
 
 
     @Override
@@ -300,27 +304,50 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     private void issureToWareh(Result<StorageDetails> rows) {
+        //红色置顶
+        mStorageDetailses.clear();
+        isToWarehOver(rows.getRows());
+        removeJumpMaterialFromRows(rows);
+        mStorageDetailses.addAll(rows.getRows());
+        content_adapter.notifyDataSetChanged();
+        mRecycleContent.scrollToPosition(0);
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
+    }
+
+    private void removeJumpMaterialFromRows(Result<StorageDetails> rows) {
+        //只有状态是发完料和跳料的状态才能removeFromRows
+        Iterator<StorageDetails> mIterator = rows.getRows().iterator();
+        while (mIterator.hasNext()) {
+
+            StorageDetails mNext = mIterator.next();
+            //因为后台排序是 未发料，发料，跳料所以说可以写成下面的
+            if(mNext.getStatus()==UNWAREHMATERIAL){
+                break;
+            }
+            if (mNext.getStatus()==JUMPMATERIAL){
+                mStorageDetailses.add(mNext);
+                mIterator.remove();
+            }
+        }
+    }
+
+    private void isToWarehOver(List<StorageDetails> mRows) {
         isOver = true;
         isHaveIssureOver = false;
-        mStorageDetailses.clear();
-        mStorageDetailses.addAll(rows.getRows());
         boolean isFirstUndo = true;
-        for (int i = 0; i < mStorageDetailses.size(); i++) {
-            if (mStorageDetailses.get(i).getStatus() == 1) {
+        for (int i = 0; i < mRows.size(); i++) {
+            if (mRows.get(i).getStatus() == 1) {
                 if (isFirstUndo) {
                     isFirstUndo = false;
                 }
             }
-            if (mStorageDetailses.get(i).getStatus() == 2) {
+            if (mRows.get(i).getStatus() == 2) {
                 isHaveIssureOver = true;
             } else {
                 isOver = false;
             }
         }
-        content_adapter.notifyDataSetChanged();
-        mRecycleContent.scrollToPosition(0);
-        VibratorAndVoiceUtils.correctVibrator(this);
-        VibratorAndVoiceUtils.correctVoice(this);
     }
 
     @Override
@@ -372,24 +399,30 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void jumpMaterialsSuccess(Result<StorageDetails> result) {
+//        mStorageDetailses.clear();
+//        isToWarehOver(result.getRows());
+//        removeJumpMaterialFromRows(result);
+//        mStorageDetailses.addAll(result.getRows());
+//        content_adapter.notifyDataSetChanged();
+//        mRecycleContent.scrollToPosition(0);
         issureToWareh(result);
+        getPresenter().issureToWareh(GsonTools.createGsonListString(mIssureToWarehBody));
+       // issureToWareh(result);
         tv_hint.setText(result.getMessage());
-        if (isOver) {
-            getPresenter().issureToWarehFinish(mS);
-        }
+//        if (isOver) {
+//            getPresenter().issureToWarehFinish(mS);
+//        }
     }
 
     @Override
     public void jumpMaterialsFailed(String message) {
         ToastUtils.showMessage(this, message);
-
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override
     public void issureToWarehFailedWithoutJumpMaterials(String message) {
-
         state = 2;
         ToastUtils.showMessage(this, message);
         tv_hint.setText(message);
@@ -408,6 +441,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             mConfirmDialog = BarCodeDialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+
                     getPresenter().jumpMaterials(mS);
                 }
             },getBarCodeIpml());
@@ -581,26 +615,29 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 //扫描料盘
                 try {
                     materialblockbarcode = (MaterialBlockBarCode) mBarCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                    IssureToWarehBody issureToWarehBody = new IssureToWarehBody();
-                    issureToWarehBody.setMaterial_no(materialblockbarcode.getDeltaMaterialNumber());
-                    issureToWarehBody.setSerial_no(materialblockbarcode.getStreamNumber());
-                    issureToWarehBody.setUnit(materialblockbarcode.getUnit());
-                    issureToWarehBody.setDc(materialblockbarcode.getDC());
-                    issureToWarehBody.setLc(materialblockbarcode.getDC());
-                    issureToWarehBody.setVendor(materialblockbarcode.getDC());
-                    issureToWarehBody.setVendor(materialblockbarcode.getVendor());
-                    issureToWarehBody.setTc(materialblockbarcode.getBusinessCode());
-                    issureToWarehBody.setPo(materialblockbarcode.getPO());
-                    issureToWarehBody.setQty(materialblockbarcode.getCount());
-                    issureToWarehBody.setWork_order(work_order);
-                    issureToWarehBody.setSide(side);
-                    issureToWarehBody.setPart(part);
+                    if (mIssureToWarehBody == null) {
+                        mIssureToWarehBody = new IssureToWarehBody();
+                    }
+                    mIssureToWarehBody.setMaterial_no(materialblockbarcode.getDeltaMaterialNumber());
+                    mIssureToWarehBody.setSerial_no(materialblockbarcode.getStreamNumber());
+                    mIssureToWarehBody.setUnit(materialblockbarcode.getUnit());
+                    mIssureToWarehBody.setDc(materialblockbarcode.getDC());
+                    mIssureToWarehBody.setLc(materialblockbarcode.getDC());
+                    mIssureToWarehBody.setVendor(materialblockbarcode.getDC());
+                    mIssureToWarehBody.setVendor(materialblockbarcode.getVendor());
+                    mIssureToWarehBody.setTc(materialblockbarcode.getBusinessCode());
+                    mIssureToWarehBody.setPo(materialblockbarcode.getPO());
+                    mIssureToWarehBody.setQty(materialblockbarcode.getCount());
+                    mIssureToWarehBody.setWork_order(work_order);
+                    mIssureToWarehBody.setSide(side);
+                    mIssureToWarehBody.setPart(part);
                     String code = btnSwitch.isChecked() ? "1" : "0";
-                    issureToWarehBody.setCode(code);
+                    mIssureToWarehBody.setCode(code);
                     //currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
-                    getPresenter().issureToWareh(GsonTools.createGsonListString(issureToWarehBody));
+                    getPresenter().issureToWareh(GsonTools.createGsonListString(mIssureToWarehBody));
 
                 } catch (EntityNotFountException e) {
+                    e.printStackTrace();
                     BackupMaterialCar otherCar;
                     try {
                         otherCar = ((BackupMaterialCar) mBarCodeParseIpml.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));

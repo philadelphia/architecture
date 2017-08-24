@@ -1,10 +1,10 @@
 package com.delta.smt.ui.feeder.handle.feederSupply;
 
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -120,6 +121,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
     private String argument_MES;
     private MESAdapter mesAdapter;
+    private Dialog loadingDialog;
 
     @Override
     protected void handError(String contents) {
@@ -295,16 +297,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 getPresenter().upLoadFeederSupplyToMES(argument_MES);
             }
         }
-//        if (isAllFeederSupplied(data)) {
-//            isAllItemSupplied = true;
-//            Log.i(TAG, "feeder全部上模组，开始上传结果: ");
-//            Map<String, String> map = new HashMap<>();
-//            map.put("work_order", workId);
-//            map.put("side", side);
-//
-//            String argument = GsonTools.createGsonListString(map);
-//            getPresenter().resetFeederSupplyStatus(argument);
-//        }
+                                                                                                                                                                  
 
     }
 
@@ -607,6 +600,23 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     }
 
     @Override
+    public void upLoading() {
+        loadingDialog = DialogUtils.createProgressDialog(this);
+        if (loadingDialog == null){
+            loadingDialog = DialogUtils.createProgressDialog(this);
+        }
+        if (!loadingDialog.isShowing()){
+            loadingDialog.show();
+        }
+    }
+
+    @Override
+    public void upLoadFailed(String mMessage) {
+        loadingDialog.dismiss();
+        ToastUtils.showMessage(this, mMessage);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         getPresenter().getAllToBeSuppliedFeeders(argument);
@@ -757,7 +767,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         popUpWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_upload_mes).build();
         View mContentView = popUpWindow.getContentView();
         RecyclerView recyclerView = ViewUtils.findView(mContentView, R.id.recyclerView);
-        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_cancel);
+        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel);
         Button bt_back = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
         Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
         Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);

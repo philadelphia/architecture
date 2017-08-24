@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
-import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -41,7 +40,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.delta.buletoothio.barcode.parse.BarCodeType.PCB_FRAME_LOCATION;
 import static com.delta.commonlibs.utils.GsonTools.createGsonListString;
 
 /**
@@ -157,12 +155,13 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
     @Override
     public void onScanSuccess(String barcode) {
+        Log.i(TAG, "onScanSuccess: "+barcode);
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         switch (status){
             case 0:
                 try {
                     mBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-
+                    Log.i(TAG, "onScanSuccess: "+mBarCode.getDeltaMaterialNumber());
                     Log.e("barcode", mBarCode.getDeltaMaterialNumber());
                     if(materialBlockBarCodes.size() ==0) {
                         Map<String,String>map=new HashMap<>();

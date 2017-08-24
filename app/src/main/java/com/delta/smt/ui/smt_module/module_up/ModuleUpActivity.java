@@ -95,7 +95,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
-        toolbarTitle.setText("上模组");
+        toolbarTitle.setText("上Feeder");
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
