@@ -132,6 +132,10 @@ public interface ApiService {
     @POST("ams/smm/buffer/startbufferissue")
     Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("value") String value);
 
+    //下模组灭灯
+    @GET("ams/smm/unplugmodcontroller/turnoffalllight")
+    Observable<Result> moduleDownlightOff(@Query("condition") String condition);
+
     //获取Feeder备料时间
     @POST("ams/smm/buffer/bufferissue")
     Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(@Query("value") String condition);

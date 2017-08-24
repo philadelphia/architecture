@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -411,6 +412,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                lightOff();
                 finish();
                 break;
             default:
@@ -605,5 +607,16 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         return flag;
     }
 
+    public void lightOff(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("work_order", workItemID);
+        map.put("side", side);
+        getPresenter().lightOff(GsonTools.createGsonListString(map));
+    }
 
+    @Override
+    public void onBackPressedSupport() {
+        super.onBackPressedSupport();
+        lightOff();
+    }
 }

@@ -47,4 +47,9 @@ public class ModuleDownDetailsModel extends BaseModel<ApiService> implements Mod
     public Observable<Result<ModuleDownDebit>> debitManually(String value) {
         return getService().debitManually(value).compose(RxsRxSchedulers.<Result<ModuleDownDebit>>io_main());
     }
+
+    @Override
+    public Observable<Result> lightOff(String argument) {
+        return getService().moduleDownlightOff(argument).compose(RxsRxSchedulers.<Result>io_main());
+    }
 }

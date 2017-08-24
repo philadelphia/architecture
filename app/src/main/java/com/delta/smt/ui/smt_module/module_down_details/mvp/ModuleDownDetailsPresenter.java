@@ -160,4 +160,21 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             }
         });
     }
+
+    public void lightOff(String argument) {
+        getModel().lightOff(argument).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                if (0 == result.getCode()){
+
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+
+    }
 }

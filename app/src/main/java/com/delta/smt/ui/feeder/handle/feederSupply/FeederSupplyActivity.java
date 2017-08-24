@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -723,7 +724,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressedSupport();
+                lightOff();
+                finish();
                 break;
 
             case R.id.tv_setting:
@@ -880,6 +882,5 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         super.onBackPressedSupport();
         lightOff();
     }
-
 
 }
