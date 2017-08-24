@@ -60,6 +60,7 @@ import com.delta.smt.entity.UpLoadEntity;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineItem;
+import com.delta.smt.entity.VirtualModuleID;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.entity.bindmaterial.BindCarBean;
 import com.delta.smt.entity.bindmaterial.BindLabelBean;
@@ -230,6 +231,9 @@ public interface ApiService {
     //虚拟线体绑定接口
     @GET("ams/smm/unplugmodcontroller/bindvirtualline")
     Observable<Result<VirtualLineItem>> getVirtualBindingResult(@Query("condition") String condition);
+
+    @GET("ams/smm/unplugmodcontroller/locationmodel")
+    Observable<VirtualModuleID> getVirtualModuleID(@Query("condition") String condition);
 
 
     //对应工单的下模组列表
