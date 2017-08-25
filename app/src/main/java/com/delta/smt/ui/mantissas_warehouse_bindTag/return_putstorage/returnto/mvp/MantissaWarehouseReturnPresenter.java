@@ -180,4 +180,31 @@ public class MantissaWarehouseReturnPresenter extends BasePresenter<MantissaWare
 
 
     }
+
+    public void offLights() {
+        getModel().offLights().subscribe(new Action1<ManualDebitBean>() {
+        @Override
+        public void call(ManualDebitBean manualDebitBean) {
+
+            if("0".equals(manualDebitBean.getCode())){
+                getView().offLightsSucess();
+            }else{
+                getView().offLightsFailed( manualDebitBean.getmessage());
+            }
+
+        }
+    }, new Action1<Throwable>() {
+        @Override
+        public void call(Throwable throwable) {
+
+            try {
+                getView().offLightsFailed(throwable.getMessage());
+                getView().showErrorView();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    });
+    }
 }

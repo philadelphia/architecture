@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -89,6 +90,19 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         //关键 初始化预警接口
         WarningManger.getInstance().setOnWarning(this);
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) { //表示按返回键 时的操作
+                // 监听到返回按钮点击事件
+                if (mMantissaWarehouseReturnFragment != null) {
+                    mMantissaWarehouseReturnFragment.onBack();
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -211,6 +225,9 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                if (mMantissaWarehouseReturnFragment != null) {
+                    mMantissaWarehouseReturnFragment.onBack();
+                }
                 finish();
                 break;
 
