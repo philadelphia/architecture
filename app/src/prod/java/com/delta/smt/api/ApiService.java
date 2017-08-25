@@ -645,6 +645,10 @@ public interface ApiService {
     @PUT("ams/smm/warehouse/backing/materials")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
+    //位数仓点击后退关灯
+    @GET("ams/smm/mantissastorage/back")
+    Observable<ManualDebitBean> offLights();
+
     //点击开始绑定
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
@@ -776,6 +780,8 @@ public interface ApiService {
 
     @GET("/ams/smm/warehissue/offcarshelflight")
     Observable<Result> offcarshelflight(@Query("condition") String mS);
+
+
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")

@@ -26,6 +26,8 @@ public interface MantissaWarehouseReturnContract {
 
         Observable<ManualDebitBean> getManualmaticDebit();
 
+        Observable<ManualDebitBean> offLights();
+
         Observable<ManualDebitBean> deduction(String str);
     }
 
@@ -45,6 +47,9 @@ public interface MantissaWarehouseReturnContract {
 
         void getdeductionSucess(List<ManualDebitBean.ManualDebit> manualDebits);
         void getdeductionFailed(String message);
+
+        void offLightsSucess();
+        void offLightsFailed(String message);
 
 
         void showLoadingView();

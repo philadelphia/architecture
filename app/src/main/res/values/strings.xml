@@ -26,7 +26,7 @@
     <string name="storage_PCBCODE">P/C: </string>
     <string name="storage_datacodetv">D/C: </string>
     <string name="storage_labeltv">标签编号：</string>
-    <string name="storage_idtv">对应架位：</string>
+    <string name="storage_idtv">标签：</string>
     <string name="storage_numbertv">入库数量：</string>
     <string name="storage_factorytv">厂别：</string>
     <string name="storage_pcbcodetv">PCBCode: </string>
