@@ -48,5 +48,7 @@ public interface ModuleDownDetailsContract {
         Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition);
         Observable<Result<ModuleDownDebit>> getModuleListUnDebitList(String condition);
         Observable<Result<ModuleDownDebit>> debitManually(String value);
+
+        Observable<Result> lightOff(String argument);
     }
 }
