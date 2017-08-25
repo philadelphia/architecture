@@ -76,11 +76,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void onNext(Result result) {
                 if (result.getCode() == 0) {
-                    if (result.getRows().size()==0) {
-                        getView().showEmptyView();
-                    }else {
                         getView().onMaintainResult(result.getMessage());
-                    }
                 }else {
                     getView().onFailed(result.getMessage());
                 }

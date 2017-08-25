@@ -73,7 +73,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @BindView(R.id.recy_content)
     RecyclerView recyclerViewContent;
     @BindView(R.id.btn_feederMaintain)
-    AppCompatButton btnFeederMaintain;
+    Button btnFeederMaintain;
     @BindView(R.id.checkBox)
     CheckBox checkBox;
     @BindView(R.id.btn_debitManually)
@@ -359,7 +359,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onMaintainResult(String message) {
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
-        statusLayout.showEmptyView();
+       btnFeederMaintain.setEnabled(false);
     }
 
 
