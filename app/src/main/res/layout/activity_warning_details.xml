@@ -159,12 +159,12 @@
                     android:text="@string/storage_submit"
                     />
 
-                <Button
+                <android.support.v7.widget.AppCompatButton
                     android:id="@+id/storage_clear"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/px_200"
                     android:layout_height="@dimen/px_120"
                     android:text="@string/storage_clear"
-                    style="@style/pcb_button"
+                    style="@style/button_style"
                     android:layout_marginLeft="@dimen/px_20"
                     android:layout_marginRight="@dimen/px_70"
                     />

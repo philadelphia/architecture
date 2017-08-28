@@ -66,14 +66,14 @@
             android:inputType="number"
 
             />
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/cargon_affirm"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/px_200"
             android:layout_height="@dimen/px_100"
             android:text="@string/cargon_affirm"
             android:layout_marginRight="@dimen/px_16"
             android:layout_alignParentRight="true"
-            style="@style/pcb_button"
+            style="@style/button_style"
             android:layout_alignBottom="@id/cargontv"
             android:layout_alignTop="@id/cargontv"
             />
