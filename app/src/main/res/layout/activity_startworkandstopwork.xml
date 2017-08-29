@@ -127,7 +127,7 @@
                     android:layout_height="@dimen/px_120"
                     android:layout_marginTop="@dimen/px_40"
                     android:layout_marginLeft="@dimen/px_40"
-                    style="@style/pcb_button"
+                    style="@style/button_style"
                     android:text="@string/startAndstop_stopwork"/>
                 </com.zhy.autolayout.AutoLinearLayout>
             </com.zhy.autolayout.AutoLinearLayout>

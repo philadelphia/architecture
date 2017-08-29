@@ -125,7 +125,7 @@
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/warning_sum"
                         style="@style/button_style"
-                        android:layout_width="@dimen/px_200"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/px_120"
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="@dimen/px_40"
