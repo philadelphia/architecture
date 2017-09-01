@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/appbar" />
+
+
+    <com.delta.commonlibs.widget.statusLayout.StatusLayout
+        android:id="@+id/statusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px_30"
+                android:layout_marginLeft="@dimen/px_60"
+                android:layout_marginRight="@dimen/px_60"
+                android:layout_marginTop="@dimen/px_60"
+                android:orientation="vertical">
+
+                <include layout="@layout/layout_workorder_side_line" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/px_30"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px_60"
+                    android:layout_marginRight="@dimen/px_60">
+
+                    <TextView
+                        android:id="@+id/tv_material_no_label"
+                        style="@style/style_storagetv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="料盘：" />
+
+                    <EditText
+                        android:id="@+id/tv_material_no"
+                        style="@style/style_storageedi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_material_no_label"
+                        android:layout_marginLeft="@dimen/px_80"
+                        android:layout_toRightOf="@id/tv_material_no_label"
+                        android:hint="请扫描料盘"
+                        android:singleLine="true"
+                        android:textColorHint="@color/background" />
+
+                    <TextView
+                        android:id="@+id/tv_material_station_label"
+                        style="@style/style_storagetv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/tv_material_no_label"
+                        android:layout_below="@id/tv_material_no_label"
+                        android:text="料站：" />
+
+                    <EditText
+                        android:id="@+id/tv_material_station"
+                        style="@style/style_storageedi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_material_station_label"
+                        android:layout_alignLeft="@id/tv_material_no"
+                        android:layout_toRightOf="@id/tv_material_station_label"
+                        android:hint="请扫描料站"
+                        android:singleLine="true"
+                        android:textColorHint="@color/background" />
+
+                    <TextView
+                        android:id="@+id/tv_feeder_label"
+                        style="@style/style_storagetv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/tv_material_station_label"
+                        android:layout_below="@id/tv_material_station_label"
+                        android:text="feeder：" />
+
+                    <EditText
+                        android:id="@+id/tv_feeder"
+                        style="@style/style_storageedi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_feeder_label"
+                        android:layout_alignLeft="@id/tv_material_station"
+                        android:layout_toRightOf="@id/tv_feeder_label"
+                        android:hint="请扫描feeder"
+                        android:singleLine="true"
+                        android:textColorHint="@color/background" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_hint"
+                android:layout_width="match_parent"
+                android:layout_height="150px"
+                android:background="@color/C_333333"
+                android:gravity="center"
+                android:textColor="@color/c_ffffff"
+                android:textSize="40px" />
+        </LinearLayout>
+    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
+</android.support.design.widget.CoordinatorLayout>

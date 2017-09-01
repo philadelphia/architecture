@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:layout_marginTop="20px">
+
+        <TextView
+            android:id="@+id/tv_workID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25px"
+            android:text="工单号："
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
+
+
+        <TextView
+            android:id="@+id/tv_faceID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_workID"
+            android:layout_marginTop="25px"
+            android:text="面别："
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/tv_line_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_faceID"
+            android:layout_marginTop="25px"
+            android:text="线别："
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_line_name"
+            android:layout_marginBottom="25px"
+            android:layout_marginTop="25px"
+            android:text="状态："
+            android:textColor="@color/c_333333"
+            android:textSize="40px" />
+
+    </RelativeLayout>
+
+</com.zhy.autolayout.AutoRelativeLayout>

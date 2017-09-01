@@ -16,6 +16,7 @@ import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.FeederSupplyWarningItem;
 import com.delta.smt.entity.InventoryExecption;
 import com.delta.smt.entity.IssureToWarehFinishResult;
+import com.delta.smt.entity.ItemHandAdd;
 import com.delta.smt.entity.JsonLocationVerfyRoot;
 import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
@@ -67,7 +68,6 @@ import com.delta.smt.entity.bindmaterial.FinishPda;
 import com.delta.smt.entity.bindmaterial.ScanMaterialPanBean;
 import com.delta.smt.entity.bindmaterial.StartStoreBean;
 import com.delta.smt.entity.bindmaterial.WheatherBindStart;
-import com.delta.smt.entity.ItemHandAdd;
 import com.delta.smt.entity.production_warining_item.ItemAcceptMaterialDetail;
 import com.delta.smt.entity.production_warining_item.ItemProduceLine;
 
@@ -772,4 +772,16 @@ public interface ApiService {
 
     //@GET("SMM/unplugmod/getModNumByMaterial")
     //Observable<ModNumByMaterialResult> getModNumByMaterial(@Query("material_num") String material_num, @Query("workOrderNum") String num);
+
+    /**
+     * 产中扫描
+     */
+    //请求预警中item数据
+    @GET("ams/smm/linealarmfault/alarmfaultinfos")
+    Observable<com.delta.smt.entity.production_scan.ProduceWarning> getWorkOrderDatas(@Query("condition") String condition);
+
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    @FormUrlEncoded
+    @POST("/ams/smm/linealarmfault/uploadtomesfromprocessline")
+    Observable<Result> uploadToMesFromProcessline(@Field("value") String value);
 }

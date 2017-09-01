@@ -22,11 +22,12 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.production_warining_item.ItemProduceLine;
 import com.delta.smt.ui.fault_processing.processing.FaultProcessingActivity;
 import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
+import com.delta.smt.ui.production_scan.work_order.WorkOrderActivity;
 import com.delta.smt.ui.production_warning.di.produce_line.DaggerProduceLineCompnent;
 import com.delta.smt.ui.production_warning.di.produce_line.ProduceLineModule;
-import com.delta.smt.entity.production_warining_item.ItemProduceLine;
 import com.delta.smt.ui.production_warning.mvp.produce_warning.ProduceWarningActivity;
 import com.delta.smt.ui.quality_manage.QualityManageActivity;
 
@@ -79,6 +80,9 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                 break;
             case 3:
                 lineNames = SpUtil.getStringSF(this, Constant.QUALITY_MANAGE);
+                break;
+            case 4:
+                lineNames = SpUtil.getStringSF(this, Constant.PRODUCE_WARNING_LINE_NAME);
                 break;
         }
     }
@@ -162,6 +166,10 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                     case 3:
                         SpUtil.SetStringSF(this, Constant.QUALITY_MANAGE, mStringBuffer.toString());
                         IntentUtils.showIntent(this, QualityManageActivity.class);
+                        break;
+                    case 4:
+                        SpUtil.SetStringSF(this, Constant.PRODUCE_WARNING_LINE_NAME, mStringBuffer.toString());
+                        IntentUtils.showIntent(this, WorkOrderActivity.class);
                         break;
                 }
                 break;

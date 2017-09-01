@@ -225,6 +225,10 @@
         <!--仓库入库-->
         <activity android:name=".ui.warehouse.BindMaterialCarActivity"/>
 
+        <!--产中扫描-->
+        <activity android:name=".ui.production_scan.work_order.WorkOrderActivity" />
+        <activity android:name=".ui.production_scan.binding.BindingActivity" />
+
     </application>
 
 </manifest>
