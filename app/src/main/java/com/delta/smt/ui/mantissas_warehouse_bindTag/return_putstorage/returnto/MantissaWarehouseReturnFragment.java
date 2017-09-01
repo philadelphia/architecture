@@ -274,6 +274,15 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     }
 
     @Override
+    public void offLightsSucess() {
+    }
+
+    @Override
+    public void offLightsFailed(String message) {
+        ToastUtils.showMessage(getContext(), message);
+    }
+
+    @Override
     public void showLoadingView() {
         statusLayout.showLoadingView();
     }
@@ -351,7 +360,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         getPresenter().getputinstrage(s);
                     }
 
-                    Toast.makeText(getActivity(), "已扫描架位", Toast.LENGTH_SHORT).show();
                 } catch (EntityNotFountException e) {
                     // SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描架位！");
 
@@ -446,6 +454,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         }
     }
 
+
     public void createWindow(){
 
         mCustomPopWindow = CustomPopWindow.builder().with(getContext()).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -494,4 +503,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     }
 
+    public void onBack() {
+        getPresenter().offLights();
+    }
 }

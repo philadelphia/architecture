@@ -89,7 +89,7 @@ public class MantissaWarehousePutstorageFragment extends
     private CommonBaseAdapter<MantissaWarehousePutstorageBindTagResult.MantissaWarehousePutstorageBindTag.storageBindList> beginStorageadapter2;
     private CommonBaseAdapter<MantissaWarehousePutstorageResult.MantissaWarehousePutstorage> StartStorageAdapter;
     private BaseActivity baseActiviy;
-    private int flag = 1;
+    private int flag = 0;
     private String materialNumber;
     private String lableBarCode;
     private String serialNum;
@@ -147,7 +147,6 @@ public class MantissaWarehousePutstorageFragment extends
                 holder.setText(R.id.tv_number, item.getMaterial_no());
                 holder.setText(R.id.tv_shelf_no, item.getShelf_no());
                 holder.setText(R.id.tv_to_shelf_no, item.getTo_shelf_no());
-                holder.setText(R.id.tv_count, item.getNum());
 
             }
 
@@ -554,6 +553,10 @@ public class MantissaWarehousePutstorageFragment extends
 
 
                 }
+                break;
+
+            default:
+                Toast.makeText(baseActiviy, "还未开始绑定！", Toast.LENGTH_SHORT).show();
                 break;
 
         }

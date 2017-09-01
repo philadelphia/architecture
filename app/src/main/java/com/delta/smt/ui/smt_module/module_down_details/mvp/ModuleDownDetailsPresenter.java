@@ -76,11 +76,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void onNext(Result result) {
                 if (result.getCode() == 0) {
-                    if (result.getRows().size()==0) {
-                        getView().showEmptyView();
-                    }else {
                         getView().onMaintainResult(result.getMessage());
-                    }
                 }else {
                     getView().onFailed(result.getMessage());
                 }
@@ -159,5 +155,22 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                 throwable.getMessage();
             }
         });
+    }
+
+    public void lightOff(String argument) {
+        getModel().lightOff(argument).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result result) {
+                if (0 == result.getCode()){
+
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+
     }
 }

@@ -61,6 +61,7 @@ import com.delta.smt.entity.UpLoadEntity;
 import com.delta.smt.entity.Update;
 import com.delta.smt.entity.User;
 import com.delta.smt.entity.VirtualLineItem;
+import com.delta.smt.entity.VirtualModuleID;
 import com.delta.smt.entity.WareHouse;
 import com.delta.smt.entity.bindmaterial.BindCarBean;
 import com.delta.smt.entity.bindmaterial.BindLabelBean;
@@ -131,6 +132,10 @@ public interface ApiService {
     //获取指定工单的Feeder备料列表
     @POST("ams/smm/buffer/startbufferissue")
     Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("value") String value);
+
+    //下模组灭灯
+    @GET("ams/smm/unplugmodcontroller/turnoffalllight")
+    Observable<Result> moduleDownlightOff(@Query("condition") String condition);
 
     //获取Feeder备料时间
     @POST("ams/smm/buffer/bufferissue")
@@ -226,6 +231,9 @@ public interface ApiService {
     //虚拟线体绑定接口
     @GET("ams/smm/unplugmodcontroller/bindvirtualline")
     Observable<Result<VirtualLineItem>> getVirtualBindingResult(@Query("condition") String condition);
+
+    @GET("ams/smm/unplugmodcontroller/locationmodel")
+    Observable<VirtualModuleID> getVirtualModuleID(@Query("condition") String condition);
 
 
     //对应工单的下模组列表
@@ -637,6 +645,10 @@ public interface ApiService {
     @PUT("ams/smm/warehouse/backing/materials")
     Observable<MantissaWarehousePutstorageResult> getMantissaWarehousePutstorageUpdate();
 
+    //位数仓点击后退关灯
+    @GET("ams/smm/mantissastorage/back")
+    Observable<ManualDebitBean> offLights();
+
     //点击开始绑定
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
@@ -768,6 +780,8 @@ public interface ApiService {
 
     @GET("/ams/smm/warehissue/offcarshelflight")
     Observable<Result> offcarshelflight(@Query("condition") String mS);
+
+
 
 
     //@GET("SMM/unplugmod/getModNumByMaterial")

@@ -40,4 +40,5 @@
     <dimen name="px_127">127px</dimen>
     <dimen name="px_178">178px</dimen>
     <dimen name="px_196">196px</dimen>
+    <dimen name="px_200">200px</dimen>
 </resources>

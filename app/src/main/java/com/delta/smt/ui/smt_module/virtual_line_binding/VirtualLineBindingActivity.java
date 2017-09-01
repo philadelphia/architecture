@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -91,6 +92,8 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     private CommonBaseAdapter<VirtualLineItem> adapter;
     private List<VirtualLineItem> dataList = new ArrayList<>();
     private List<VirtualLineItem> dataSource = new ArrayList<>();
+    private String moduleID;
+    private static final String TAG = "VirtualLineBindingActiv";
     //二维码
     private int scan_position = -1;
 
@@ -150,11 +153,16 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         adapter = new CommonBaseAdapter<VirtualLineItem>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, VirtualLineItem item, int position) {
-                if (scan_position == -1) {
-                    holder.itemView.setBackgroundColor(Color.WHITE);
-                } else if (scan_position == position) {
+//                if (scan_position == -1) {
+//                    holder.itemView.setBackgroundColor(Color.WHITE);
+//                } else if (scan_position == position) {
+//                    holder.itemView.setBackgroundColor(Color.YELLOW);
+//                } else {
+//                    holder.itemView.setBackgroundColor(Color.WHITE);
+//                }
+                if(item.getModel_id().equalsIgnoreCase(moduleID)){
                     holder.itemView.setBackgroundColor(Color.YELLOW);
-                } else {
+                }else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
                 }
                 holder.setText(R.id.tv_moduleID, item.getModel_id());
@@ -208,6 +216,18 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     @Override
     public void onNetFailed(Throwable throwable) {
         ToastUtils.showMessage(this, throwable.getMessage());
+    }
+
+    @Override
+    public void onGetModuleIDSuccess(String value) {
+        Log.i(TAG, "onGetModuleIDSuccess: value== " + value);
+        moduleID = value;
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onGetModuleIDFailed() {
+
     }
 
     @Override
@@ -286,6 +306,13 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                     tv_showScan_2.setText("");
                     VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
                     VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
+                    Map<String, String> map = new HashMap<>();
+                    map.put("work_order", workItemID);
+                    map.put("side", side);
+                    map.put("material_no", materialBlockNumber);
+                    map.put("serial_no", serialNo);
+                    String condition = GsonTools.createGsonListString(map);
+                    getPresenter().getVirtualModuleID(condition);
                     state = 2;
                 } catch (EntityNotFountException e) {
                     /*try{

@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +73,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @BindView(R.id.recy_content)
     RecyclerView recyclerViewContent;
     @BindView(R.id.btn_feederMaintain)
-    AppCompatButton btnFeederMaintain;
+    Button btnFeederMaintain;
     @BindView(R.id.checkBox)
     CheckBox checkBox;
     @BindView(R.id.btn_debitManually)
@@ -358,7 +359,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onMaintainResult(String message) {
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
-        statusLayout.showEmptyView();
+       btnFeederMaintain.setEnabled(false);
     }
 
 
@@ -411,6 +412,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                lightOff();
                 finish();
                 break;
             default:
@@ -605,5 +607,16 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         return flag;
     }
 
+    public void lightOff(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("work_order", workItemID);
+        map.put("side", side);
+        getPresenter().lightOff(GsonTools.createGsonListString(map));
+    }
 
+    @Override
+    public void onBackPressedSupport() {
+        super.onBackPressedSupport();
+        lightOff();
+    }
 }

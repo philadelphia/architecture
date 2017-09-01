@@ -4,6 +4,7 @@ import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.VirtualLineItem;
+import com.delta.smt.entity.VirtualModuleID;
 
 import java.util.List;
 
@@ -21,6 +22,9 @@ public interface VirtualLineBindingContract {
         void onFailed(String message);
 
         void onNetFailed(Throwable throwable);
+
+        void onGetModuleIDSuccess(String value);
+        void onGetModuleIDFailed();
 
         /*public void onSuccessBinding(VirtualLineBindingItem data);
 
@@ -43,6 +47,8 @@ public interface VirtualLineBindingContract {
         Observable<Result<VirtualLineItem>> getAllVirtualLineBindingItems(String str);
 
         Observable<Result<VirtualLineItem>> getVirtualBinding(String str);
+
+        Observable<VirtualModuleID> getVirtualModuleID(String condition);
 
         //public Observable<ModNumByMaterialResult>getModNumByMaterial(String str,String num);
     }

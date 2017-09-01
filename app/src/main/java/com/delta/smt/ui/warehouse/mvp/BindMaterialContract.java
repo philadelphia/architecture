@@ -36,6 +36,7 @@ public interface BindMaterialContract {
         void startSucceed(StartStoreBean startStoreBean);
         void startFailed(StartStoreBean startStoreBean);
         void bindCarSucceed(BindCarBean bindCarBean);
+        void bindCarFailed(BindCarBean bindCarBean);
         void scanMaterialSucceed(ScanMaterialPanBean scanMaterialPanBean);
         void scanMaterialFailed(ScanMaterialPanBean scanMaterialPanBean);
         void bindLabelSucceed(BindLabelBean bindLabelBean);

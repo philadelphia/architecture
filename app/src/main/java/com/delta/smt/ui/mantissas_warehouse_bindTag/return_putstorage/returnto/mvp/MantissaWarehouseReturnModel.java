@@ -41,6 +41,11 @@ public class MantissaWarehouseReturnModel extends BaseModel<ApiService> implemen
     }
 
     @Override
+    public Observable<ManualDebitBean> offLights() {
+        return getService().offLights().compose(RxsRxSchedulers.<ManualDebitBean>io_main());
+    }
+
+    @Override
     public Observable<ManualDebitBean> deduction(String str) {
         return getService().getdeduction(str).compose(RxsRxSchedulers.<ManualDebitBean>io_main());
     }

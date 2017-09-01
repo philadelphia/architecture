@@ -5,6 +5,7 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.VirtualLineItem;
+import com.delta.smt.entity.VirtualModuleID;
 
 import rx.Observable;
 
@@ -25,6 +26,11 @@ public class VirtualLineBindingModel extends BaseModel<ApiService> implements Vi
     @Override
     public Observable<Result<VirtualLineItem>> getVirtualBinding(String str) {
         return getService().getVirtualBindingResult(str).compose(RxsRxSchedulers.<Result<VirtualLineItem>>io_main());
+    }
+
+    @Override
+    public Observable<VirtualModuleID> getVirtualModuleID(String condition) {
+        return getService().getVirtualModuleID(condition).compose(RxsRxSchedulers.<VirtualModuleID>io_main());
     }
 
     /*@Override

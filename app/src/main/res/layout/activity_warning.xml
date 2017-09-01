@@ -122,9 +122,9 @@
                     android:layout_alignParentBottom="true"
                     android:gravity="center_horizontal">
 
-                    <Button
+                    <android.support.v7.widget.AppCompatButton
                         android:id="@+id/warning_sum"
-                        style="@style/pcb_button"
+                        style="@style/button_style"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/px_120"
                         android:layout_alignParentBottom="true"
