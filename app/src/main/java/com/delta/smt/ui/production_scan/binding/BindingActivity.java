@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
@@ -58,6 +60,8 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
     TextView etFeeder;
     @BindView(R.id.tv_hint)
     TextView tvHint;
+    @BindView(R.id.update_progress)
+    LinearLayout updateProgress;
 
     String workOrderStr;
     String sideStr;
@@ -76,6 +80,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
 
     @Override
     protected void initData() {
+
     }
 
     @Override
@@ -121,6 +126,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
 
     @Override
     public void getSuccess(Result result) {
+        updateProgress.setVisibility(View.GONE);
         txtClear();
         if (!TextUtils.isEmpty(result.getMessage())) {
             tvHint.setText(result.getMessage());
@@ -129,6 +135,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
 
     @Override
     public void getFailed(Result result) {
+        updateProgress.setVisibility(View.GONE);
         txtClear();
         if (!TextUtils.isEmpty(result.getMessage())) {
             tvHint.setText(result.getMessage());
@@ -138,6 +145,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
 
     @Override
     public void getFailed(Throwable throwable) {
+        updateProgress.setVisibility(View.GONE);
         txtClear();
         if (!TextUtils.isEmpty(throwable.getMessage())) {
             tvHint.setText(throwable.getMessage());
@@ -193,6 +201,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
                 listRes.add(map);
                 Log.i(TAG, "onScanSuccess: " + new Gson().toJson(listRes));
                 getPresenter().uploadToMesFromProcessline(new Gson().toJson(listRes));
+                updateProgress.setVisibility(View.VISIBLE);
             }
             return;
         } catch (EntityNotFountException e) {
@@ -213,6 +222,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
                     listRes.add(map);
                     Log.i(TAG, "onScanSuccess: " + new Gson().toJson(listRes));
                     getPresenter().uploadToMesFromProcessline(new Gson().toJson(listRes));
+                    updateProgress.setVisibility(View.VISIBLE);
                 }
                 return;
             } catch (EntityNotFountException e2) {
@@ -233,6 +243,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
                         listRes.add(map);
                         Log.i(TAG, "onScanSuccess: " + new Gson().toJson(listRes));
                         getPresenter().uploadToMesFromProcessline(new Gson().toJson(listRes));
+                        updateProgress.setVisibility(View.VISIBLE);
                     }
                     return;
                 } catch (EntityNotFountException e3) {

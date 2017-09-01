@@ -95,7 +95,6 @@ public class WorkOrderActivity extends BaseActivity<WorkOrderPresenter> implemen
 
             @Override
             protected void convert(CommonViewHolder holder, ItemWarningInfo itemWarningInfo, int position) {
-
                 holder.setText(R.id.tv_line_name, "线别：" + itemWarningInfo.getLine());
                 holder.setText(R.id.tv_workID, "工单号：" + itemWarningInfo.getWork_order());
                 holder.setText(R.id.tv_faceID, "面别：" + itemWarningInfo.getSide());
