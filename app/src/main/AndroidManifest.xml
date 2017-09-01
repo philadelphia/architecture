@@ -226,8 +226,13 @@
         <activity android:name=".ui.warehouse.BindMaterialCarActivity"/>
 
         <!--产中扫描-->
-        <activity android:name=".ui.production_scan.work_order.WorkOrderActivity" />
-        <activity android:name=".ui.production_scan.binding.BindingActivity" />
+        <activity
+            android:name=".ui.production_scan.work_order.WorkOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.production_scan.binding.BindingActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden"
+            android:screenOrientation="portrait" />
 
     </application>
 

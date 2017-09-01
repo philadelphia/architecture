@@ -96,10 +96,10 @@ public class WorkOrderActivity extends BaseActivity<WorkOrderPresenter> implemen
             @Override
             protected void convert(CommonViewHolder holder, ItemWarningInfo itemWarningInfo, int position) {
 
-                holder.setText(R.id.tv_line_name, "线别：" + itemWarningInfo.getProductionline());
-                holder.setText(R.id.tv_workID, "工单号：" + itemWarningInfo.getWorkcode());
-                holder.setText(R.id.tv_faceID, "面别：" + itemWarningInfo.getFace());
-                holder.setText(R.id.tv_status, "状态：" + itemWarningInfo.getStatus());
+                holder.setText(R.id.tv_line_name, "线别：" + itemWarningInfo.getLine());
+                holder.setText(R.id.tv_workID, "工单号：" + itemWarningInfo.getWork_order());
+                holder.setText(R.id.tv_faceID, "面别：" + itemWarningInfo.getSide());
+                holder.setText(R.id.tv_status, "状态：" + "开始生产");
             }
 
 
@@ -233,9 +233,9 @@ public class WorkOrderActivity extends BaseActivity<WorkOrderPresenter> implemen
     @Override
     public void onItemClick(View view, ItemWarningInfo item, int position) {
         Bundle bundle = new Bundle();
-        bundle.putString("pro_scan_work_order", item.getWorkcode());
-        bundle.putString("pro_scan_face", item.getFace());
-        bundle.putString("pro_scan_line", item.getProductionline());
+        bundle.putString("pro_scan_work_order", item.getWork_order());
+        bundle.putString("pro_scan_face", item.getSide());
+        bundle.putString("pro_scan_line", item.getLine());
         IntentUtils.showIntent(this, BindingActivity.class, bundle);
     }
 }

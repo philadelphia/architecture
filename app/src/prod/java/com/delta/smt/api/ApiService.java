@@ -791,7 +791,7 @@ public interface ApiService {
      * 产中扫描
      */
     //请求预警中item数据
-    @GET("ams/smm/linealarmfault/alarmfaultinfos")
+    @GET("/ams/smm/linealarmfault/getworkorderalarmlist")
     Observable<com.delta.smt.entity.production_scan.ProduceWarning> getWorkOrderDatas(@Query("condition") String condition);
 
     @Headers({"Content-Type: application/x-www-form-urlencoded"})

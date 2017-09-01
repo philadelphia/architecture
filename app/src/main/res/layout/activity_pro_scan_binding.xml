@@ -56,7 +56,7 @@
                         android:layout_height="wrap_content"
                         android:text="料盘：" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_material_no"
                         style="@style/style_storageedi"
                         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
                         android:layout_below="@id/tv_material_no_label"
                         android:text="料站：" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_material_station"
                         style="@style/style_storageedi"
                         android:layout_width="match_parent"
@@ -98,7 +98,7 @@
                         android:layout_below="@id/tv_material_station_label"
                         android:text="feeder：" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_feeder"
                         style="@style/style_storageedi"
                         android:layout_width="match_parent"

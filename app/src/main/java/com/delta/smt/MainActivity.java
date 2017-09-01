@@ -143,7 +143,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         functionList.add(new Function("手补件", R.drawable.ic_handpatch));
         functionList.add(new Function("品管确认", R.drawable.ic_quality));
         functionList.add(new Function("仓库入库", R.drawable.ic_putstorage));
-        functionList.add(new Function("产中扫描", R.drawable.ic_quality));
+        functionList.add(new Function("产中扫描", R.drawable.ic_scan));
        // functionList.add(new Function("warningSample", R.drawable.title));
     }
     private void checkTTS() {

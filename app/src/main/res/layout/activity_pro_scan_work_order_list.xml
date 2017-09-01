@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/module_up_warning"
     android:layout_width="match_parent"
@@ -24,11 +24,12 @@
                 android:id="@+id/ryv_produce_warning"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20px" />
+                android:paddingLeft="20px"
+                android:paddingRight="20px" />
 
 
         </com.delta.commonlibs.widget.statusLayout.StatusLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

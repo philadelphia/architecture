@@ -3,9 +3,10 @@
     android:id="@+id/rl_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="20px"
     android:background="@drawable/card_background">
 
-    <RelativeLayout
+    <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20px"
@@ -54,6 +55,6 @@
             android:textColor="@color/c_333333"
             android:textSize="40px" />
 
-    </RelativeLayout>
+    </com.zhy.autolayout.AutoRelativeLayout>
 
 </com.zhy.autolayout.AutoRelativeLayout>

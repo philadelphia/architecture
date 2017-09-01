@@ -3,11 +3,7 @@ package com.delta.smt.ui.production_scan.work_order.mvp;
 import android.util.Log;
 
 import com.delta.commonlibs.base.mvp.BasePresenter;
-import com.delta.smt.entity.production_scan.ItemWarningInfo;
 import com.delta.smt.entity.production_scan.ProduceWarning;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,24 +32,12 @@ public class WorkOrderPresenter extends BasePresenter<WorkOrderContract.Model, W
             @Override
             public void call(ProduceWarning itemWarningInfos) {
                 if (itemWarningInfos.getCode().equals("0")) {
-
-                    //过滤接料预警item
-                    List<ItemWarningInfo> list = itemWarningInfos.getRows().getAlarm();
-                    List<ItemWarningInfo> listRes = new ArrayList<ItemWarningInfo>();
-                    for (int i = 0; i < list.size(); i++) {
-                        ItemWarningInfo item = list.get(i);
-                        if ("接料预警".equals(item.getTitle())) {
-                            listRes.add(item);
-                        }
-                    }
-
-
-                    if (listRes.size() == 0) {
+                    if (itemWarningInfos.getRows().size() == 0) {
                         getView().showEmptyView();
                     } else {
                         getView().showContentView();
-                        getView().getItemWarningDatas(itemWarningInfos.getRows().getAlarm());
-                        Log.e("aaa", "fagment:预警数量" + String.valueOf(itemWarningInfos.getRows().getAlarm().size()));
+                        getView().getItemWarningDatas(itemWarningInfos.getRows());
+                        Log.e("aaa", "fagment:预警数量" + String.valueOf(itemWarningInfos.getRows().size()));
                     }
 
                 } else {
