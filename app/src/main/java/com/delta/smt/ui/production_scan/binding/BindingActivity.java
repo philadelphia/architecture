@@ -182,9 +182,11 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
     public void onScanSuccess(String barcode) {
 
         Log.i(TAG, "onScanSuccess: " + barcode);
+        String materialBlockBarcodeStr = null;
 
         try {
             MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+            materialBlockBarcodeStr = barcode;
             tvHint.setText("");
             etMaterialCode.setText(materialBlockBarCode.getDeltaMaterialNumber());
             serialNo = materialBlockBarCode.getStreamNumber();
@@ -198,6 +200,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
                 map.put("line", lineStr);
                 map.put("work_order", workOrderStr);
                 map.put("side", sideStr);
+                map.put("barcode", materialBlockBarcodeStr);
                 listRes.add(map);
                 Log.i(TAG, "onScanSuccess: " + new Gson().toJson(listRes));
                 getPresenter().uploadToMesFromProcessline(new Gson().toJson(listRes));
@@ -219,6 +222,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
                     map.put("line", lineStr);
                     map.put("work_order", workOrderStr);
                     map.put("side", sideStr);
+                    map.put("barcode", materialBlockBarcodeStr);
                     listRes.add(map);
                     Log.i(TAG, "onScanSuccess: " + new Gson().toJson(listRes));
                     getPresenter().uploadToMesFromProcessline(new Gson().toJson(listRes));
@@ -240,6 +244,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
                         map.put("line", lineStr);
                         map.put("work_order", workOrderStr);
                         map.put("side", sideStr);
+                        map.put("barcode", materialBlockBarcodeStr);
                         listRes.add(map);
                         Log.i(TAG, "onScanSuccess: " + new Gson().toJson(listRes));
                         getPresenter().uploadToMesFromProcessline(new Gson().toJson(listRes));
