@@ -69,7 +69,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
     String serialNo;
 
     BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-
+    String materialBlockBarcodeStr = null;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -111,21 +111,19 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
 
     }
 
-
     @Override
     protected int getContentViewId() {
         return R.layout.activity_pro_scan_binding;
     }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
-
     @Override
     public void getSuccess(Result result) {
+        materialBlockBarcodeStr = null;
         updateProgress.setVisibility(View.GONE);
         txtClear();
         if (!TextUtils.isEmpty(result.getMessage())) {
@@ -135,6 +133,7 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
 
     @Override
     public void getFailed(Result result) {
+        materialBlockBarcodeStr = null;
         updateProgress.setVisibility(View.GONE);
         txtClear();
         if (!TextUtils.isEmpty(result.getMessage())) {
@@ -142,9 +141,9 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
         }
     }
 
-
     @Override
     public void getFailed(Throwable throwable) {
+        materialBlockBarcodeStr = null;
         updateProgress.setVisibility(View.GONE);
         txtClear();
         if (!TextUtils.isEmpty(throwable.getMessage())) {
@@ -156,7 +155,6 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
     public void showLoadingView() {
 
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -182,7 +180,6 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
     public void onScanSuccess(String barcode) {
 
         Log.i(TAG, "onScanSuccess: " + barcode);
-        String materialBlockBarcodeStr = null;
 
         try {
             MaterialBlockBarCode materialBlockBarCode = (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
