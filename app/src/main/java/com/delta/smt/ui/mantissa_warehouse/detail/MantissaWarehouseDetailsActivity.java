@@ -193,6 +193,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                 holder.setText(R.id.tv_location, item.getShelf_no());
                 holder.setText(R.id.tv_needNumber, String.valueOf(item.getAmount()));
                 holder.setText(R.id.tv_shipments, String.valueOf(item.getIssue_amount()));
+                holder.setText(R.id.tv_slot, item.getSlot());
 
 
                 if (item.getMaterial_no().equals(serial_num)) {

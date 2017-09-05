@@ -201,6 +201,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 holder.setText(R.id.tv_location, item.getShelf_no());
                 holder.setText(R.id.tv_needNumber, String.valueOf(item.getAmount()));
                 holder.setText(R.id.tv_shipments, String.valueOf(item.getIssue_amount()));
+                holder.setText(R.id.tv_slot, item.getSlot());
                 switch (item.getStatus()) {
                     case 0:
                         holder.itemView.setBackgroundColor(Color.YELLOW);
