@@ -45,7 +45,9 @@ public class StorageDetailsPresenter extends BasePresenter<StorageDetailsContrac
                 if (0==storageDetailses.getCode()) {
 
                     if (storageDetailses.getRows().size() == 0) {
+                        getView().issureToWarehFinish();
                         getView().showEmptyView();
+
                     } else {
                         getView().showContentView();
                         getView().getSuccess(storageDetailses);

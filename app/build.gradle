@@ -6,7 +6,6 @@ def releaseTime() {
     return new Date().format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
 }
 
-
     Properties props = new Properties()
     FileInputStream mFileInputStream=new FileInputStream(file("signing.properties"))
     props.load(mFileInputStream)
@@ -79,8 +78,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-
     productFlavors {
         mock {
             applicationIdSuffix = ".mock"

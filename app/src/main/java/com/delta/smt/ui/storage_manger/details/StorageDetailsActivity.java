@@ -71,6 +71,8 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter> implements StorageDetailsContract.View, View.OnClickListener {
 
+    private static final int JUMPMATERIAL = 3;
+    private static final int UNWAREHMATERIAL = 1;
     @BindView(R.id.recy_title)
     RecyclerView mRecycleTitle;
     @BindView(R.id.recy_contetn)
@@ -99,6 +101,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     TextView tvLineNum;
     @BindView(R.id.textView)
     TextView textView;
+    @Inject
+    TextToSpeechManager textToSpeechManager;
     private List<StorageDetails> dataList = new ArrayList<>();
     private List<StorageDetails> mStorageDetailses = new ArrayList<>();
     private List<DebitData> mDebitDatas = new ArrayList<>();
@@ -117,10 +121,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private String line_name;
     private CustomPopWindow mCustomPopWindow;
     private int state = 1;
-    private static final int  JUMPMATERIAL=3;
-    private static final int  UNWAREHMATERIAL =1;
-    @Inject
-    TextToSpeechManager textToSpeechManager;
     private Dialog mConfirmDialog;
     private IssureToWarehBody mIssureToWarehBody;
 
@@ -584,6 +584,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     @Override
     public void getDebitDataFailed(String mMessage) {
 
+    }
+
+    @Override
+    public void issureToWarehFinish() {
+        getPresenter().issureToWarehFinish(mS);
     }
 
     @Override

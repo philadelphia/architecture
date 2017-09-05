@@ -95,6 +95,8 @@ public interface StorageDetailsContract {
         void getDebitDataSuccess(List<DebitData> mDebitDataResult);
 
         void getDebitDataFailed(String mMessage);
+
+        void issureToWarehFinish();
     }
 
 }
