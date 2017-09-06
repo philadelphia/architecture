@@ -94,23 +94,6 @@ public class Constant {
     public static final String STORAGE_NAME = "storage_name";
     public static final String WORK_ORDER = "work_order";
     public static final String ACTION ="000" ;
-
-    public static String FAULT_SOLUTION_ID = "fault_solution_id";
-    /**
-     * 产线跳转 生产中预警  故障处理
-     **/
-    public static String SELECT_TYPE = "select_type";
-    public static String FAULT_SOLUTION_NAME = "fault_solution_name";
-    public static String FAULT_CODE = "fault_code";
-    public static String FAULT_ID = "fault_id";
-    public static String PRODUCTION_LINE = "production_line";
-    public static String ACCEPT_MATERIALS_LINES = "accept_materials_line";
-    public static String ACCEPT_MATERIALS_NUM = "accept_materials_num";
-    public static String ACCEPT_MATERIALS_FACE = "accept_materials_face";
-    public static String ACCEPT_MATERIALS_WORK = "accept_materials_work";
-
-    public static String CONDITION = null;
-
     //后台需要判断的字段
     public static final String NEED_BIND_PRECAR_STRING = "需要绑定备料车";
     public static final String FAILURE_BIND_PRECAR_STRING = "绑定备料车失败，请重试";
@@ -131,10 +114,27 @@ public class Constant {
     public static final String CAN_NOT_END_ISSUE_STRING = "发料没有完成，不能完成发料";
     public static final String FAILURE_START_ISSUE_STRING = "有未完成的发料工单，不允许再次开始发料";
     public static final String SCAN_FAILED = "扫描有误，请确认所扫二维码";
-
     /**
      * 品管确认
      */
     public static final String QUALITY_MANAGE = "quality_manage";
+    /**
+     * 仓库发料尾数仓发料
+     */
+    public static final String DIVIDE_MATERIAL_AND_ISSUE = "请先拆分料盘，然后再进行发料";
+    public static String FAULT_SOLUTION_ID = "fault_solution_id";
+    /**
+     * 产线跳转 生产中预警  故障处理
+     **/
+    public static String SELECT_TYPE = "select_type";
+    public static String FAULT_SOLUTION_NAME = "fault_solution_name";
+    public static String FAULT_CODE = "fault_code";
+    public static String FAULT_ID = "fault_id";
+    public static String PRODUCTION_LINE = "production_line";
+    public static String ACCEPT_MATERIALS_LINES = "accept_materials_line";
+    public static String ACCEPT_MATERIALS_NUM = "accept_materials_num";
+    public static String ACCEPT_MATERIALS_FACE = "accept_materials_face";
+    public static String ACCEPT_MATERIALS_WORK = "accept_materials_work";
+    public static String CONDITION = null;
 
 }

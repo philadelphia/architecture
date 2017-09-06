@@ -288,6 +288,13 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void issureToWarehSuccess(Result<StorageDetails> rows) {
+
+        if (Constant.DIVIDE_MATERIAL_AND_ISSUE.equals(rows.getMessage())) {
+            tv_hint.setText(Constant.DIVIDE_MATERIAL_AND_ISSUE);
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
+        }
+
         issureToWareh(rows);
         tv_hint.setText(rows.getMessage());
         textToSpeechManager.stop();
