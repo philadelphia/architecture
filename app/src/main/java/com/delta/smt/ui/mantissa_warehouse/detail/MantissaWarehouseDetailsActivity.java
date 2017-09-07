@@ -20,6 +20,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
@@ -459,6 +460,11 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                     bindBean.setCode(code);
                     bindBean.setPart("Mantissa");
                     getPresenter().getMantissaWarehouseput(GsonTools.createGsonListString(bindBean));
+                } catch (DCTimeFormatException mDCException) {
+                    ToastUtils.showMessage(this, mDCException.getMessage());
+                    tv_hint.setText(mDCException.getMessage());
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
                 } catch (EntityNotFountException e) {
                     //1.因为是发料完成后才扫描标签，android端不可以保存状态，此状态可能会和server不同步，
                     // 这会造成这样的情况，当app重新进入的时候不知道上次发料的是哪个，因为数据存在内存中，而用户又不能在此扫描这个料盘。所以说后台会做判断。
