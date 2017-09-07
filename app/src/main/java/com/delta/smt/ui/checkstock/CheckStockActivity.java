@@ -21,6 +21,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.PcbFrameLocation;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.IntentUtils;
 import com.delta.commonlibs.utils.SnackbarUtil;
@@ -290,7 +291,13 @@ public class CheckStockActivity extends BaseActivity<CheckStockPresenter> implem
                             }
                         }
 
-                    } catch(EntityNotFountException e){
+                    } catch (DCTimeFormatException exception){
+                    ToastUtils.showMessage(this, exception.getMessage());
+//                    tv_hint.setText(exception.getMessage());
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+
+                }catch(EntityNotFountException e){
                         e.printStackTrace();
                         VibratorAndVoiceUtils.wrongVibrator(this);
                         VibratorAndVoiceUtils.wrongVoice(this);
