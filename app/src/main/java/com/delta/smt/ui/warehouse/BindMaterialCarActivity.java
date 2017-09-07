@@ -15,8 +15,10 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.ActivityLED;
 import com.delta.buletoothio.barcode.parse.entity.AddMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
@@ -38,6 +40,7 @@ import com.delta.smt.ui.warehouse.di.BindMaterialModule;
 import com.delta.smt.ui.warehouse.di.DaggerBindMaterialComponent;
 import com.delta.smt.ui.warehouse.mvp.BindMaterialContract;
 import com.delta.smt.ui.warehouse.mvp.BindMaterialPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -308,7 +311,12 @@ public class BindMaterialCarActivity extends BaseActivity<BindMaterialPresenter>
                         BindMaterialBean[] bindMaterialList = new BindMaterialBean[]{bindMaterialBean};
                         String bind = gson.toJson(bindMaterialList);
                         getPresenter().scanMaterialPan(bind);
-                    } catch (EntityNotFountException e) {
+                    }catch (DCTimeFormatException mDCException){
+                        ToastUtils.showMessage(this, mDCException.getMessage());
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
+                    }
+                    catch (EntityNotFountException e) {
                         showMesage("请扫描正确的料盘");
                     }
                 } else {

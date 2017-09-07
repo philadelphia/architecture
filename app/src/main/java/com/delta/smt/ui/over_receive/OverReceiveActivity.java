@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -578,6 +579,10 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                 Toast.makeText(this, "列表中不存在此料盘码", Toast.LENGTH_SHORT).show();
             }
 
+        } catch (DCTimeFormatException mDCException) {
+            ToastUtils.showMessage(this, mDCException.getMessage());
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
         } catch (EntityNotFountException e) {
             VibratorAndVoiceUtils.wrongVibrator(OverReceiveActivity.this);
             VibratorAndVoiceUtils.wrongVoice(OverReceiveActivity.this);

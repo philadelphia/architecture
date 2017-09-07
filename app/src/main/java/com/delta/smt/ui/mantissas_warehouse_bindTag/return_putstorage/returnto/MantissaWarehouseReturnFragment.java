@@ -16,6 +16,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.Warehouse;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
@@ -338,7 +339,12 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     String s = GsonTools.createGsonListString(bindBean);
 
                     getPresenter().getMaterialLocation(s);
-                } catch (EntityNotFountException e) {
+                }catch (DCTimeFormatException mDCException){
+                    ToastUtils.showMessage(getContext(), mDCException.getMessage());
+                    VibratorAndVoiceUtils.wrongVibrator(getContext());
+                    VibratorAndVoiceUtils.wrongVoice(getContext());
+                }
+                catch (EntityNotFountException e) {
                     SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
                 }
 
@@ -371,7 +377,12 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
                         String s = GsonTools.createGsonListString(bindBean);
                         getPresenter().getMaterialLocation(s);
-                    } catch (EntityNotFountException ee) {
+                    } catch (DCTimeFormatException mDCException){
+                        ToastUtils.showMessage(getContext(), mDCException.getMessage());
+                        VibratorAndVoiceUtils.wrongVibrator(getContext());
+                        VibratorAndVoiceUtils.wrongVoice(getContext());
+                    }
+                    catch (EntityNotFountException ee) {
                         SnackbarUtil.showMassage(mRecyContetn, "此处不能识别此码！");
                     }
 
