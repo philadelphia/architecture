@@ -19,9 +19,11 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.AddMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.LabelBarcode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -536,7 +538,12 @@ public class MantissaWarehousePutstorageFragment extends
                     getPresenter().getUpLocation(GsonTools.createGsonListString(bindBean));
 
 
-                } catch (EntityNotFountException e) {
+                } catch (DCTimeFormatException mDCException){
+                    ToastUtils.showMessage(getContext(), mDCException.getMessage());
+                    VibratorAndVoiceUtils.wrongVibrator(getContext());
+                    VibratorAndVoiceUtils.wrongVoice(getContext());
+                }
+                catch (EntityNotFountException e) {
                     try {
                         LabelBarcode bindlableBar = (LabelBarcode) barCodeParseIpml.getEntity(barcode, BarCodeType.LABLE_BARCODE);
                         lableBarCode = bindlableBar.getSource();
