@@ -387,7 +387,7 @@ public class WarningListActivity extends BaseActivity<WarningListPresenter> impl
                     ToastUtils.showMessage(this, exception.getMessage());
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
-                    status=1;
+                    status=0;
                 }
                 catch (EntityNotFountException e) {
                     e.printStackTrace();
