@@ -21,6 +21,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.BackupMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
@@ -321,7 +322,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
-
     private void removeJumpMaterialFromRows(Result<StorageDetails> rows) {
         //只有状态是发完料和跳料的状态才能removeFromRows
         Iterator<StorageDetails> mIterator = rows.getRows().iterator();
@@ -648,6 +648,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     //currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
                     getPresenter().issureToWareh(GsonTools.createGsonListString(mIssureToWarehBody));
 
+                } catch (DCTimeFormatException mDCException) {
+                    ToastUtils.showMessage(this, mDCException.getMessage());
+                    tv_hint.setText(mDCException.getMessage());
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
                     BackupMaterialCar otherCar;

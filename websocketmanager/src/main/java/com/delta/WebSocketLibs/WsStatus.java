@@ -1,8 +1,5 @@
 package com.delta.WebSocketLibs;
 
-/**
- * @author zjm
- */
 
 public class WsStatus {
     public final static int CONNECTED = 1;

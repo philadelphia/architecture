@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 def releaseTime() {
+
     return new Date().format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
 }
-
     Properties props = new Properties()
     FileInputStream mFileInputStream=new FileInputStream(file("signing.properties"))
     props.load(mFileInputStream)
