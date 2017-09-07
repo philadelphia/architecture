@@ -36,7 +36,7 @@ import com.delta.smt.ui.over_receive.OverReceiveActivity;
 import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;
 import com.delta.smt.ui.product_tools.location.ProduceToolsLocationActivity;
-import com.delta.smt.ui.production_warning.mvp.produce_line.ProduceLineActivity;
+import com.delta.smt.ui.production_warning.produce_line.ProduceLineActivity;
 import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.smt_module.module_down.ModuleDownActivity;
 import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
