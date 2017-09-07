@@ -14,7 +14,9 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.MaterialStation;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
@@ -24,6 +26,7 @@ import com.delta.smt.ui.production_scan.binding.di.BindingModule;
 import com.delta.smt.ui.production_scan.binding.di.DaggerBindingComponent;
 import com.delta.smt.ui.production_scan.binding.mvp.BindingContract;
 import com.delta.smt.ui.production_scan.binding.mvp.BindingPresenter;
+import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -204,6 +207,11 @@ public class BindingActivity extends BaseActivity<BindingPresenter> implements B
                 updateProgress.setVisibility(View.VISIBLE);
             }
             return;
+        } catch (DCTimeFormatException mDCException) {
+            ToastUtils.showMessage(this, mDCException.getMessage());
+            tvHint.setText(mDCException.getMessage());
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
         } catch (EntityNotFountException e) {
             try {
                 MaterialStation materialStation = (MaterialStation) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_STATION);
