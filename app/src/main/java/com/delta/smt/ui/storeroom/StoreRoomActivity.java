@@ -205,9 +205,10 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
 
                 }catch (DCTimeFormatException exception){
                     ToastUtils.showMessage(this, exception.getMessage());
+
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
-                    status=1;
+                    status=0;
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
