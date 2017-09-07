@@ -22,6 +22,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.FeederBuffer;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
@@ -457,7 +458,11 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             case 1:
                 try {
                     parseMaterial(barcode, barCodeParseIpml);
-                } catch (EntityNotFountException e) {
+                } catch (DCTimeFormatException e){
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                    ToastUtils.showMessage(this, e.getMessage(), Toast.LENGTH_SHORT);
+                }catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                     Toast.makeText(this, "不能解析该二维码", Toast.LENGTH_SHORT).show();

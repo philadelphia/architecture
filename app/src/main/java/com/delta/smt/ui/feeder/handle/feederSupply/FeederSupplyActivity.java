@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
@@ -683,7 +684,14 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 tvModuleID.setText("该料盘不存在，请重新扫描料盘");
             }
 
-        } catch (EntityNotFountException e) {
+        } catch (DCTimeFormatException e){
+            tvModuleID.setText(e.getMessage());
+            tvModuleID.setVisibility(View.VISIBLE);
+            ToastUtils.showMessage(this, e.getMessage());
+            VibratorAndVoiceUtils.wrongVibrator(this);
+            VibratorAndVoiceUtils.wrongVoice(this);
+
+        }catch (EntityNotFountException e) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
             tvModuleID.setVisibility(View.VISIBLE);
