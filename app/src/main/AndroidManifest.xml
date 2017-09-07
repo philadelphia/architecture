@@ -105,16 +105,16 @@
 
         <!-- production warning activity -->
         <activity
-            android:name=".ui.production_warning.mvp.produce_line.ProduceLineActivity"
+            android:name=".ui.production_warning.produce_line.ProduceLineActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.production_warning.mvp.produce_warning.ProduceWarningActivity"
+            android:name=".ui.production_warning.produce_warning.ProduceWarningActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.hand_add.mvp.HandAddActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.production_warning.mvp.accept_materials_detail.AcceptMaterialsActivity"
+            android:name=".ui.production_warning.accept_materials_detail.AcceptMaterialsActivity"
             android:configChanges="orientation|keyboard|keyboardHidden"
             android:screenOrientation="portrait" />
 

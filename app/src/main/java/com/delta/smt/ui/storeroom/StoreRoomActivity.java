@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.ToastUtils;
@@ -201,6 +202,12 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
                         }
 
                     }
+
+                }catch (DCTimeFormatException exception){
+                    ToastUtils.showMessage(this, exception.getMessage());
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                    status=1;
 
                 } catch (EntityNotFountException e) {
                     e.printStackTrace();
@@ -403,14 +410,23 @@ public class StoreRoomActivity extends BaseActivity<StoreRoomPresenter> implemen
     @Override
     public void isBoxSerialExistSuccess() {
         if(mBarCode!=null){
-            materialBlockBarCodes.add(mBarCode);
-            ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
-            materialsList.add(threeOfMaterial);
-            mShortLisrAdapter.notifyDataSetChanged();
-            storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
-            storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
-            storageDatacodeed.setText(mBarCode.getDC());
-            storageCounted.setText(mBarCode.getCount());
+            if(mBarCode.getStreamNumber()!=null){
+                if ("0".equals(mBarCode.getStreamNumber().substring(0,1))){
+                    materialBlockBarCodes.add(mBarCode);
+                    ThreeOfMaterial threeOfMaterial = new ThreeOfMaterial(mBarCode.getDeltaMaterialNumber(), mBarCode.getStreamNumber().substring(0, 2), mBarCode.getDC(),mBarCode.getCount());
+                    materialsList.add(threeOfMaterial);
+                    mShortLisrAdapter.notifyDataSetChanged();
+                    storagePcbed.setText(mBarCode.getDeltaMaterialNumber());
+                    storageVendored.setText(mBarCode.getStreamNumber().substring(0, 2));
+                    storageDatacodeed.setText(mBarCode.getDC());
+                    storageCounted.setText(mBarCode.getCount());
+                }else{
+                    ToastUtils.showMessage(getApplicationContext(),"二维码格式不正确，请验证二维码格式");
+                }
+            }else{
+                ToastUtils.showMessage(getApplicationContext(),"流水码是空的，请验证标签");
+            }
+
         }
     }
 

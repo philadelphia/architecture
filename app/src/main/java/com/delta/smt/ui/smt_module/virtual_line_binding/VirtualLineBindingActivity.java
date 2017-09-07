@@ -16,6 +16,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.VirtualModuleID;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.IntentUtils;
@@ -314,7 +315,13 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                     String condition = GsonTools.createGsonListString(map);
                     getPresenter().getVirtualModuleID(condition);
                     state = 2;
-                } catch (EntityNotFountException e) {
+                } catch (DCTimeFormatException e){
+                    VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
+                    VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
+                    showMessage.setText(e.getMessage());
+                    showMessage.setVisibility(View.VISIBLE);
+                    ToastUtils.showMessage(this, e.getMessage());
+                }catch (EntityNotFountException e) {
                     /*try{
                         showMessage.setVisibility(View.GONE);
                         Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);

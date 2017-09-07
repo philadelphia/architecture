@@ -5,11 +5,15 @@ package com.delta.smt.ui.checkstock.mvp;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.api.ApiService;
  import com.delta.smt.app.App;
+ import com.delta.smt.di.component.AppComponent;
  import com.delta.smt.entity.CheckStock;
+ import com.delta.smt.ui.checkstock.di.CheckStockComponent;
+ import com.delta.smt.ui.checkstock.di.CheckStockModule;
 
-import org.junit.After;
+ import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+ import org.junit.Rule;
+ import org.junit.Test;
 import org.junit.rules.Verifier;
  import org.junit.runner.RunWith;
  import org.mockito.Mock;
@@ -21,7 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import dagger.Module;
-import rx.Observable;
+ import it.cosenonjaviste.daggermock.DaggerMockRule;
+ import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
 
@@ -42,8 +47,7 @@ public class CheckStockPresenterTest {
     CheckStockContract.View view;
     @Mock
     CheckStockContract.Model model;
-    @Mock
-    ApiService apiserver;
+
 
     CheckStockPresenter checkStockPresenter;
 
@@ -90,49 +94,5 @@ public class CheckStockPresenterTest {
 
     }
 
-    @Test
-    public void fetchCheckStockSuccessNumber() throws Exception {
-        Map<String,String> map=new HashMap<>();
-        map.put("labelCode","T-000001");
-        String json = GsonTools.createGsonListString(map);
-
-        //模拟真实的网络请求
-        model.getCheckStock(json).subscribe(new Action1<CheckStock>() {
-            @Override
-            public void call(CheckStock checkStock) {
-                assertEquals(checkStock.getCode(), "0");
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-
-            }
-        });
-    }
-
-    @Test
-    public void fetchError() throws Exception {
-
-    }
-
-    @Test
-    public void fetchException() throws Exception {
-
-    }
-
-    @Test
-    public void fetchSubmit() throws Exception {
-
-    }
-
-    @Test
-    public void fetchCheckStockSuccess() throws Exception {
-
-    }
-
-    @Test
-    public void fetchJudgeSuceess() throws Exception {
-
-    }
 
 }

@@ -25,6 +25,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.Feeder;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
@@ -598,7 +599,13 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 try {
                     parseMaterial(barcode, barCodeParseIpml);
 
-                } catch (EntityNotFountException e) {
+                } catch (DCTimeFormatException e){
+                    ToastUtils.showMessage(this, e.getMessage());
+                    VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
+                    VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
+                    showMessage.setVisibility(View.VISIBLE);
+                    showMessage.setText(e.getMessage());
+                }catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
                     VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
                     showMessage.setVisibility(View.VISIBLE);
