@@ -2,6 +2,8 @@ package com.delta.smt.ui.smt_module.module_down_details;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Looper;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -360,6 +362,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onMaintainResult(String message) {
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
+        statusLayout.showContentView();
        btnFeederMaintain.setEnabled(false);
     }
 
@@ -555,7 +558,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     VibratorAndVoiceUtils.wrongVoice(this);
                     ToastUtils.showMessage(this, "请先扫描待入库的料盘");
                 }
-            }
+      }
+
             flag = 2;
 
 

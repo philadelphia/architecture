@@ -78,6 +78,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                 if (result.getCode() == 0) {
                         getView().onMaintainResult(result.getMessage());
                 }else {
+                    getView().showContentView();
                     getView().onFailed(result.getMessage());
                 }
             }
