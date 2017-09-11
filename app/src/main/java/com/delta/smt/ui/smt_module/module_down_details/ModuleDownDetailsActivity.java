@@ -239,6 +239,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         if (dataSourceForCheckIn.isEmpty()) {
             btnFeederMaintain.setEnabled(true);
         }
+        if (dataSource.size() - dataSourceForCheckIn.size() > 0){
+            btnFeederMaintain.setEnabled(true);
+        }
 
     }
 
