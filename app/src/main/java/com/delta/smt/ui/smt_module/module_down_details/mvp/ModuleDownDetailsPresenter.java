@@ -44,6 +44,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                     if ( 0 == moduleDownDetailsItemResult.getCode()) {
                         if (moduleDownDetailsItemResult.getRows().size() == 0) {
                             getView().showEmptyView();
+                            getView().onEmptyResult();
                             getView().onResult(moduleDownDetailsItemResult.getMessage());
                         }else {
                             getView().showContentView();

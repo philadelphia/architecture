@@ -39,6 +39,8 @@ public interface ModuleDownDetailsContract {
 
         void showEmptyView();
 
+        void onEmptyResult();
+
     }
 
     interface Model extends IModel {

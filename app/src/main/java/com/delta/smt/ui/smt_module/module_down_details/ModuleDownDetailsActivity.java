@@ -135,7 +135,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         map.put("side", side);
         argument = GsonTools.createGsonListString(map);
         mCurrentWorkOrder = workItemID;
-        checkBox.setChecked(SpUtil.getBooleanSF(this," ModuleDown"));
+        checkBox.setChecked(SpUtil.getBooleanSF(this, " ModuleDown"));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -195,7 +195,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 //
 //                    holder.itemView.setBackgroundColor(Color.YELLOW);
 //                    mCurrentSlot = item.getSlot();
-                if (position == index){
+                if (position == index) {
                     holder.itemView.setBackgroundColor(Color.YELLOW);
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
@@ -299,8 +299,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
                 for (ModuleDownDebit debitData : unDebitItemList) {
                     if (debitData.isChecked())
-                    mapItem.put("material_no", debitData.getMaterial_no());
-                    mapItem.put("serial_no" , String.valueOf(debitData.getSerial_no()));
+                        mapItem.put("material_no", debitData.getMaterial_no());
+                    mapItem.put("serial_no", String.valueOf(debitData.getSerial_no()));
                     list.add(mapItem);
                 }
                 map.put("list", list);
@@ -363,7 +363,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     public void onMaintainResult(String message) {
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
         statusLayout.showContentView();
-       btnFeederMaintain.setEnabled(false);
+        btnFeederMaintain.setEnabled(false);
     }
 
 
@@ -404,6 +404,15 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 getPresenter().getAllModuleDownDetailsItems(argument);
             }
         });
+    }
+
+    @Override
+    public void onEmptyResult() {
+        Map<String, String> map = new HashMap<>();
+        map.put("work_order", mCurrentWorkOrder);
+        map.put("side", side);
+        String argument = GsonTools.createGsonListString(map);
+        getPresenter().getAllModuleDownMaintainResult(argument);
     }
 
     @Override
@@ -449,7 +458,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     public void onScanSuccess(String barcode) {
         Log.i(TAG, "onScanSuccess: ");
-        if (dataSourceForCheckIn.isEmpty()){
+        if (dataSourceForCheckIn.isEmpty()) {
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
             ToastUtils.showMessage(this, "所有要退入Feeder缓冲区的料均已发完");
@@ -461,11 +470,11 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             case 1:
                 try {
                     parseMaterial(barcode, barCodeParseIpml);
-                } catch (DCTimeFormatException e){
+                } catch (DCTimeFormatException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                     ToastUtils.showMessage(this, e.getMessage(), Toast.LENGTH_SHORT);
-                }catch (EntityNotFountException e) {
+                } catch (EntityNotFountException e) {
                     VibratorAndVoiceUtils.wrongVibrator(this);
                     VibratorAndVoiceUtils.wrongVoice(this);
                     Toast.makeText(this, "不能解析该二维码", Toast.LENGTH_SHORT).show();
@@ -558,7 +567,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     VibratorAndVoiceUtils.wrongVoice(this);
                     ToastUtils.showMessage(this, "请先扫描待入库的料盘");
                 }
-      }
+            }
 
             flag = 2;
 
@@ -571,7 +580,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         }
     }
 
-    public int getMatchedMaterialIndex(String materialID, String serialNumber ) {
+    public int getMatchedMaterialIndex(String materialID, String serialNumber) {
         int length = dataSource.size();
 
         for (int i = 0; i < length; i++) {
@@ -616,7 +625,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         return flag;
     }
 
-    public void lightOff(){
+    public void lightOff() {
         Map<String, Object> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
