@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -396,6 +397,13 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         tv_showScan_2.setText("");
                         VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
                         VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
+                        Map<String, String> map = new HashMap<>();
+                        map.put("work_order", workItemID);
+                        map.put("side", side);
+                        map.put("material_no", materialBlockNumber);
+                        map.put("serial_no", serialNo);
+                        String condition = GsonTools.createGsonListString(map);
+                        getPresenter().getVirtualModuleID(condition);
                         state = 2;
                     } catch (EntityNotFountException ee) {
                         /*try{
