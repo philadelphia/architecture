@@ -243,7 +243,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getBingingCarSuccess(Result<MaterialCar> mMaterialCarResult) {
-        flag=2;
+        flag = 2;
         List<MaterialCar> mMaterialCars = mMaterialCarResult.getRows();
         if (mMaterialCars.size() != 0) {
             tv_hint.setText(getString(R.string.bindMatericalcar) + mMaterialCars.get(0).getCar_name());
@@ -323,7 +323,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
-    public void getMantissaWarehouseputFailed( String message) {
+    public void getMantissaWarehouseputFailed(String message) {
 //        DialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
 //            @Override
 //            public void onClick(DialogInterface dialogInterface, int i) {
@@ -413,14 +413,17 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
         statusLayout.showContentView();
     }
+
     @Override
     public void showErrorView() {
         statusLayout.showErrorView();
     }
+
     @Override
     public void showEmptyView() {
         statusLayout.showEmptyView();
     }
+
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
@@ -477,17 +480,18 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                         notFoundException.printStackTrace();
                         try {
                             LastMaterialLocation mLastMaterialLocation = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
-                            MantissaBingingCar mMantissaBingingCar = new MantissaBingingCar(work_order, side, "",mLastMaterialLocation.getSource());
+                            MantissaBingingCar mMantissaBingingCar = new MantissaBingingCar(work_order, side, "", mLastMaterialLocation.getSource());
                             getPresenter().changecarshelf(GsonTools.createGsonListString(mMantissaBingingCar));
                         } catch (EntityNotFountException mE) {
-                            mE.printStackTrace();
+                            ToastUtils.showMessage(this, "条码格式不正确！不能识别此码！");
+                            tv_hint.setText("条码格式不正确！不能识别此码！");
                             VibratorAndVoiceUtils.wrongVibrator(this);
                             VibratorAndVoiceUtils.wrongVoice(this);
+
                         }
                     }
                 }
                 break;
-
 
 
         }
@@ -523,7 +527,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void changecarshelfSuccess(String mMessage) {
-        ToastUtils.showMessage(this,mMessage);
+        ToastUtils.showMessage(this, mMessage);
         tv_hint.setText(mMessage);
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
