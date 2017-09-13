@@ -58,7 +58,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
 
 
     //提交新旧料盘数据
-    public void commitSerialNumber(String line,String material_number,String oldSerialNumber, String newSerialNumber){
+    public void commitSerialNumber(String line,String material_number,String oldSerialNumber, String newSerialNumber,String newBarcode){
         Log.e("aaa", "commitSerialNumber:old: "+oldSerialNumber );
         Log.e("aaa", "commitSerialNumber:new: "+newSerialNumber );
 
@@ -68,7 +68,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         map.put("serial_no", newSerialNumber);
         map.put("old_material_no", material_number);
         map.put("old_serial_no", oldSerialNumber);
-        map.put("barcode", "");
+        map.put("barcode", newBarcode);
 
         String argu = GsonTools.createGsonListString(map);
 
