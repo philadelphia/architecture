@@ -87,7 +87,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     private final String TAG = "AcceptMaterialsActivity";
 
     private String lines,work,face,material_number;
-    private String materialNumber, oldSerialNumber, newSerialNumber;
+    private String materialNumber, oldSerialNumber, newSerialNumber,newBarcode;
     private String slot,feeder,serialNumber,barcode1;
     private String streamNumber;
     private int tag = 0;
@@ -418,12 +418,14 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                             && !streamNumber.equals(dataList1.get(0).getSerialNumber())) {
                         tag = 0;
                         newSerialNumber = streamNumber;
-
+                        newBarcode=mMaterialBlockBarCode.getSource();
                         //扫码正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
                         VibratorAndVoiceUtils.correctVoice(this);
+                        if (newBarcode!=null) {
+                            getPresenter().commitSerialNumber(lines,materialNumber,oldSerialNumber, newSerialNumber,newBarcode);
+                        }
 
-                        getPresenter().commitSerialNumber(lines,materialNumber,oldSerialNumber, newSerialNumber);
 
                     } else {
 
