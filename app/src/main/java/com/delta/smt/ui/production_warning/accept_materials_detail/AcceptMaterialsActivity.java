@@ -422,8 +422,10 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         //扫码正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
                         VibratorAndVoiceUtils.correctVoice(this);
+                        if (newBarcode!=null) {
+                            getPresenter().commitSerialNumber(lines,materialNumber,oldSerialNumber, newSerialNumber,newBarcode);
+                        }
 
-                        getPresenter().commitSerialNumber(lines,materialNumber,oldSerialNumber, newSerialNumber,newBarcode);
 
                     } else {
 
