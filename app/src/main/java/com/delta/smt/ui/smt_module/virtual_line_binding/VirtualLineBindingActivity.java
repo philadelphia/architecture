@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.entity.VirtualModuleID;
+import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.IntentUtils;
@@ -314,7 +316,13 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                     String condition = GsonTools.createGsonListString(map);
                     getPresenter().getVirtualModuleID(condition);
                     state = 2;
-                } catch (EntityNotFountException e) {
+                } catch (DCTimeFormatException e){
+                    VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
+                    VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
+                    showMessage.setText(e.getMessage());
+                    showMessage.setVisibility(View.VISIBLE);
+                    ToastUtils.showMessage(this, e.getMessage());
+                }catch (EntityNotFountException e) {
                     /*try{
                         showMessage.setVisibility(View.GONE);
                         Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
@@ -389,6 +397,13 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         tv_showScan_2.setText("");
                         VibratorAndVoiceUtils.correctVibrator(VirtualLineBindingActivity.this);
                         VibratorAndVoiceUtils.correctVoice(VirtualLineBindingActivity.this);
+                        Map<String, String> map = new HashMap<>();
+                        map.put("work_order", workItemID);
+                        map.put("side", side);
+                        map.put("material_no", materialBlockNumber);
+                        map.put("serial_no", serialNo);
+                        String condition = GsonTools.createGsonListString(map);
+                        getPresenter().getVirtualModuleID(condition);
                         state = 2;
                     } catch (EntityNotFountException ee) {
                         /*try{

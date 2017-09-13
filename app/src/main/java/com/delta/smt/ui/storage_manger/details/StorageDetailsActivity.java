@@ -23,6 +23,7 @@ import com.delta.buletoothio.barcode.parse.entity.BackupMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.buletoothio.barcode.parse.exception.EntityWrongException;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SingleClick;
@@ -648,6 +649,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     //currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
                     getPresenter().issureToWareh(GsonTools.createGsonListString(mIssureToWarehBody));
 
+                } catch (EntityWrongException mEWrongException) {
+                    ToastUtils.showMessage(this, mEWrongException.getMessage());
+                    tv_hint.setText(mEWrongException.getMessage());
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
                 } catch (DCTimeFormatException mDCException) {
                     ToastUtils.showMessage(this, mDCException.getMessage());
                     tv_hint.setText(mDCException.getMessage());
@@ -666,6 +672,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                         maps.put("pre_car", otherCar.getSource());
                         getPresenter().bindBoundPrepCar(GsonTools.createGsonListString(maps));
                     } catch (EntityNotFountException notFountCarException) {
+
+                        ToastUtils.showMessage(this, "条码格式不正确！不能识别此码！");
+                        tv_hint.setText("条码格式不正确！不能识别此码！");
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
                         notFountCarException.printStackTrace();
                         state = 2;
 //                        ToastUtils.showMessage(this, "扫描有误，请扫描备料车");
