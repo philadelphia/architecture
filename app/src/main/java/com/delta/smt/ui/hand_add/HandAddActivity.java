@@ -39,8 +39,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/27.
- */
+ *@description :手补件通知页面
+ *
+ *@author : Fuxiang.Zhang
+ *@date : 2017/9/18 16:05
+*/
 
 public class HandAddActivity extends BaseActivity<HandAddPresenter>
         implements HandAddContract.View, WarningManger.OnWarning, ItemOnclick {
@@ -206,6 +209,10 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
     }
 
 
+    /**
+     * 成功获取item数据的回调方法
+     * @param itemHandAdds
+     */
     @Override
     public void getItemHandAddDatas(List<ItemHandAdd> itemHandAdds) {
 
@@ -235,6 +242,10 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 失败获取item数据的回调方法
+     * @param message
+     */
     @Override
     public void getItemHandAddDatasFailed(String message) {
         //ToastUtils.showMessage(this,message);
@@ -246,7 +257,10 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
     }
 
-
+    /**
+     * 接收到预警信息的回调方法
+     * @param warningMessage
+     */
     @Override
     public void warningComing(String warningMessage) {
 
@@ -262,6 +276,11 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
 
     }
 
+    /**
+     * 预警的弹框通知
+     * @param warningMessage
+     * @return
+     */
     private AlertDialog createDialog(String warningMessage) {
         DialogLayout dialogLayout = new DialogLayout(this);
         //传入的是黑色字体的二级标题
@@ -281,7 +300,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
         }).show();
     }
 
-
+    //item 的点击事件
     @Override
     public void onItemClick(View item, Object o, int position) {
         final ItemHandAdd mItemHandAdd = datas.get(position);
@@ -318,6 +337,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
             mItemDialog.show();
         }
     }
+
 
     /**
      *@description :根据不同的数据状态显示不同的view

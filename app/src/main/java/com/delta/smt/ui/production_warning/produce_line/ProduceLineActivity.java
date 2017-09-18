@@ -40,8 +40,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/22.
- */
+ *@description :产线选择页面
+ *
+ *@author : Fuxiang.Zhang
+ *@date : 2017/9/18 16:03
+*/
 
 public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         implements ProduceLineContract.View, CommonBaseAdapter.OnItemClickListener<ItemProduceLine> {
