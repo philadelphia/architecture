@@ -475,7 +475,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
             finish();
         }else {
-            mTvMaterialStationNum.setText("待接料料站："+String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
+            mTvMaterialStationNum.setText("待接料料站数："+String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
             dataList1.clear();
             dataList1.addAll(itemAcceptMaterialDetail.getRows().getLineMaterialEntities());
             //对adapter刷新改变

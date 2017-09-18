@@ -1,4 +1,4 @@
-package com.delta.smt.ui.hand_add.mvp;
+package com.delta.smt.ui.hand_add;
 
 import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
@@ -19,6 +19,8 @@ import com.delta.libs.adapter.ItemTimeViewHolder;
 import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
+import com.delta.smt.ui.hand_add.mvp.HandAddContract;
+import com.delta.smt.ui.hand_add.mvp.HandAddPresenter;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.manager.WarningManger;

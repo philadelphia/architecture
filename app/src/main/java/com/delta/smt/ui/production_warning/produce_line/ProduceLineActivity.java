@@ -24,7 +24,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.production_warining_item.ItemProduceLine;
 import com.delta.smt.ui.fault_processing.processing.FaultProcessingActivity;
-import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
+import com.delta.smt.ui.hand_add.HandAddActivity;
 import com.delta.smt.ui.production_scan.work_order.WorkOrderActivity;
 import com.delta.smt.ui.production_warning.produce_line.di.DaggerProduceLineCompnent;
 import com.delta.smt.ui.production_warning.produce_line.di.ProduceLineModule;
