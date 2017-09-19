@@ -47,9 +47,13 @@ import butterknife.ButterKnife;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
+
 /**
- * Created by Fuxiang.Zhang on 2017/2/13.
- */
+ *@description :接料详情页面，有扫码操作
+ *
+ *@author : Fuxiang.Zhang
+ *@date : 2017/9/18 16:01
+*/
 
 public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresenter>
         implements AcceptMaterialsContract.View {
@@ -99,6 +103,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 .acceptMaterialsModule(new AcceptMaterialsModule(this)).build().inject(this);
     }
 
+    //获得跟view
     private View getRootView(Activity context) {
         return ((ViewGroup) context.findViewById(android.R.id.content)).getChildAt(0);
     }
@@ -199,6 +204,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //关灯操作
             getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
         }
         return super.onKeyDown(keyCode, event);
@@ -212,7 +218,10 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         Log.e(TAG, "onScanSuccess: " + barcode);
 
-        /*扫描料盘，feedID，料站的方式接料*/
+
+        /**
+         * 扫描料盘，feedID，料站的方式进行接料
+         */
         /*if (flag==0) {
 
             try {
@@ -372,12 +381,9 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         }*/
 
 
-
-
-
-
-
-        /*扫描新旧料盘方式接料*/
+        /**
+         * 扫描新旧料盘方式的接料
+         */
         try {
             MaterialBlockBarCode mMaterialBlockBarCode =
                     (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
@@ -475,7 +481,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
             finish();
         }else {
-            mTvMaterialStationNum.setText("待接料料站："+String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
+            mTvMaterialStationNum.setText("待接料料站数："+String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
             dataList1.clear();
             dataList1.addAll(itemAcceptMaterialDetail.getRows().getLineMaterialEntities());
             //对adapter刷新改变

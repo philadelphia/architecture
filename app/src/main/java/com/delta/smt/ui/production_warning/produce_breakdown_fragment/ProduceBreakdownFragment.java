@@ -34,8 +34,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/22.
- */
+ *@description :故障页面
+ *
+ *@author : Fuxiang.Zhang
+ *@date : 2017/9/18 16:01
+*/
 
 public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragmentPresenter> implements ProduceBreakdownFragmentContract.View, SwipeRefreshLayout.OnRefreshListener {
 
@@ -105,6 +108,10 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
     }
 
 
+    /**
+     * 成功获取item数据的回调方法
+     * @param itemBreakDown
+     */
     @Override
     public void getItemBreakdownDatas(List<ItemBreakDown> itemBreakDown) {
         datas.clear();
@@ -123,6 +130,10 @@ public class ProduceBreakdownFragment extends BaseFragment<ProduceBreakdownFragm
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 失败获取item数据的回调方法
+     * @param message
+     */
     @Override
     public void getItemBreakdownDatasFailed(String message) {
         if ("Error".equals(message)) {
