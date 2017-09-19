@@ -56,6 +56,55 @@
             android:textSize="40px"/>
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="40px"
+        android:orientation="horizontal"
+    >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="料号:"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <EditText
+            android:textSize="@dimen/px_40"
+            android:id="@+id/et_materialnumber"
+            android:layout_width="550px"
+            android:layout_height="39dp"
+            android:layout_marginLeft="40px"
+            android:focusable="false"
+            android:background="@drawable/ed_back_white"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="40px"
+        android:orientation="horizontal"
+    >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="流水号:"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <EditText
+            android:textSize="@dimen/px_40"
+            android:id="@+id/et_serialnumber"
+            android:layout_width="550px"
+            android:layout_height="39dp"
+            android:layout_marginLeft="40px"
+            android:focusable="false"
+            android:background="@drawable/ed_back_white"/>
+
+    </LinearLayout>
+
     <!--    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
