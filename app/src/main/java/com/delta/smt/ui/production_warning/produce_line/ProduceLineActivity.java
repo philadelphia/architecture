@@ -156,6 +156,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 //                Bundle bundle = new Bundle();
 //                bundle.putString(Constant.PRODUCTION_LINE,  mStringBuffer.toString());
                 switch (type) {
+                    //生产中预警页面
                     case 0:
                         SpUtil.SetStringSF(this, Constant.PRODUCE_WARNING_LINE_NAME, mStringBuffer.toString());
                         IntentUtils.showIntent(this, ProduceWarningActivity.class);
@@ -164,6 +165,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                         SpUtil.SetStringSF(this, Constant.FAULT_PROCESSING_LINE_NAME, mStringBuffer.toString());
                         IntentUtils.showIntent(this, FaultProcessingActivity.class);
                         break;
+                    //手补件页面
                     case 2:
                         SpUtil.SetStringSF(this, Constant.HAND_ADD_LINE_NAME, mStringBuffer.toString());
                         IntentUtils.showIntent(this, HandAddActivity.class);

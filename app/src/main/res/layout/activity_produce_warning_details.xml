@@ -75,6 +75,7 @@
             android:id="@+id/et_materialnumber"
             android:layout_width="550px"
             android:layout_height="39dp"
+            android:hint="料号"
             android:layout_marginLeft="40px"
             android:focusable="false"
             android:background="@drawable/ed_back_white"/>
@@ -101,6 +102,7 @@
             android:layout_height="39dp"
             android:layout_marginLeft="40px"
             android:focusable="false"
+            android:hint="流水号:"
             android:background="@drawable/ed_back_white"/>
 
     </LinearLayout>

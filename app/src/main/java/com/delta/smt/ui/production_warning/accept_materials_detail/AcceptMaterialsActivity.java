@@ -92,10 +92,12 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
     private String lines,work,face,material_number;
     private String materialNumber, oldSerialNumber, newSerialNumber,newBarcode;
+    private String oldMaterialNumber;
     private String slot,feeder,serialNumber,barcode1;
     private String streamNumber;
     private int tag = 0;
     private int flag= 0;
+    private int index = -1;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -158,8 +160,11 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                 holder.setText(R.id.tv_remain_num, String.valueOf(item.getQuantity()));
 //                holder.setText(R.id.tv_unit,item.getUnit());
                 holder.setText(R.id.tv_location, item.getLocation());
-
-                holder.itemView.setBackgroundColor(Color.YELLOW);
+                if (index == position){
+                    holder.itemView.setBackgroundColor(Color.YELLOW);
+                }else {
+                    holder.itemView.setBackgroundColor(Color.WHITE);
+                }
 
             }
 
@@ -218,169 +223,6 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
         Log.e(TAG, "onScanSuccess: " + barcode);
 
-
-        /**
-         * 扫描料盘，feedID，料站的方式进行接料
-         */
-        /*if (flag==0) {
-
-            try {
-                MaterialBlockBarCode mMaterialBlockBarCode =
-                        (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                materialNumber = mMaterialBlockBarCode.getDeltaMaterialNumber();
-                streamNumber = mMaterialBlockBarCode.getStreamNumber();
-                Log.e(TAG, "onScanSuccess: " + "料号：" + materialNumber);
-                Log.e(TAG, "onScanSuccess: " + "流水号：" + streamNumber);
-
-                if (materialNumber != null && streamNumber != null&&dataList1.get(0).getPartNumber()!=null) {
-
-*//*                    if (dataList1.get(0).getPartNumber().equals(materialNumber)
-                            ) {
-                        flag++;
-                        oldSerialNumber = streamNumber;
-
-                        //扫码 正确时调用的声音和震动
-                        VibratorAndVoiceUtils.correctVibrator(this);
-                        VibratorAndVoiceUtils.correctVoice(this);
-                        Snackbar.make(getCurrentFocus(), "旧料盘匹配正确，请扫新料盘！", Snackbar.LENGTH_SHORT).show();
-
-                    } else {*//*
-                    if (dataList1.get(0).getPartNumber().equals(materialNumber)){
-                        serialNumber=streamNumber;
-                        barcode1=barcode;
-                        flag=flag+2;
-                        //扫码正确时调用的声音和震动
-                        VibratorAndVoiceUtils.correctVibrator(this);
-                        VibratorAndVoiceUtils.correctVoice(this);
-//                        Snackbar.make(getCurrentFocus(), "新料盘扫描成功，请扫Feeder。", Snackbar.LENGTH_SHORT).show();
-                        SnackbarUtil.showRead(getRootView(this), "新料盘扫描成功，请扫Feeder。",textToSpeechManager);
-
-                    }else {
-//                        Snackbar.make(getCurrentFocus(), "与第一条的料号匹配错误！", Snackbar.LENGTH_SHORT).show();
-//                        textToSpeechManager.readMessage( "与第一条的料号匹配错误！");
-                        SnackbarUtil.showRead(getRootView(this), "与第一条的料号匹配错误！",textToSpeechManager);
-                        flag=0;
-                    }
-
-
-                }
-
-            } catch (EntityNotFountException e) {
-
-                //扫码错误时调用的声音和震动
-                VibratorAndVoiceUtils.wrongVibrator(this);
-                VibratorAndVoiceUtils.wrongVoice(this);
-
-*//*                Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
-                textToSpeechManager.readMessage( "请扫描正确的料盘！");*//*
-                SnackbarUtil.showRead(getRootView(this), "请扫描正确的料盘！",textToSpeechManager);
-                this.materialNumber = null;
-                this.streamNumber = null;
-                e.printStackTrace();
-            }
-        }
-
-*//*        if (flag==1){
-
-            try {
-                MaterialBlockBarCode mMaterialBlockBarCode =
-                        (MaterialBlockBarCode) barCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
-                materialNumber = mMaterialBlockBarCode.getDeltaMaterialNumber();
-                streamNumber = mMaterialBlockBarCode.getStreamNumber();
-
-                if (dataList1.get(0).getPartNumber().equals(materialNumber)
-                        ) {
-                    flag = 0;
-                    newSerialNumber = streamNumber;
-
-                    //扫码正确时调用的声音和震动
-                    VibratorAndVoiceUtils.correctVibrator(this);
-                    VibratorAndVoiceUtils.correctVoice(this);
-
-                    getPresenter().commitSerialNumber(oldSerialNumber, newSerialNumber);
-
-                } else {
-
-                    //扫码错误时调用的声音和震动
-                    VibratorAndVoiceUtils.wrongVibrator(this);
-                    VibratorAndVoiceUtils.wrongVoice(this);
-                    Snackbar.make(getCurrentFocus(), "新料盘匹配错误,请扫描正确的新料盘！", Snackbar.LENGTH_SHORT).show();
-                }
-            } catch (EntityNotFountException e) {
-
-                //扫码错误时调用的声音和震动
-                VibratorAndVoiceUtils.wrongVibrator(this);
-                VibratorAndVoiceUtils.wrongVoice(this);
-
-                Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
-                materialNumber = null;
-                streamNumber = null;
-                e.printStackTrace();
-            }
-
-
-
-        }*//*
-
-        else if (flag==2){
-            //feeder号
-            try {
-                Feeder mFeeder= (Feeder) barCodeParseIpml.getEntity(barcode,BarCodeType.FEEDER);
-                feeder=barcode;
-
-                flag++;
-
-                //扫码错误时调用的声音和震动
-                VibratorAndVoiceUtils.correctVibrator(this);
-                VibratorAndVoiceUtils.correctVoice(this);
-*//*                Snackbar.make(getCurrentFocus(), "扫描feeder正确，请扫描料站", Snackbar.LENGTH_SHORT).show();
-                textToSpeechManager.readMessage( "扫描feeder正确，请扫描料站");*//*
-
-                SnackbarUtil.showRead(getRootView(this), "扫描feeder正确，请扫描料站",textToSpeechManager);
-            } catch (EntityNotFountException e) {
-                //扫码错误时调用的声音和震动
-                VibratorAndVoiceUtils.wrongVibrator(this);
-                VibratorAndVoiceUtils.wrongVoice(this);
-
-*//*                Snackbar.make(getCurrentFocus(), "请扫描正确的feeder号！", Snackbar.LENGTH_SHORT).show();
-                textToSpeechManager.readMessage( "请扫描正确的feeder号！");*//*
-
-                SnackbarUtil.showRead(getRootView(this), "请扫描正确的feeder号！",textToSpeechManager);
-                e.printStackTrace();
-
-            }
-
-        }
-
-        else if (flag==3){
-
-*//*            slot=barcode;
-            flag=0;
-            getPresenter().commitarcoderDate(dataList1.get(0).getPartNumber(),slot,feeder,lines,serialNumber,barcode1);*//*
-
-            //料站
-            try {
-
-                MaterialStation mMaterialStation= (MaterialStation) barCodeParseIpml.getEntity(barcode,BarCodeType.MATERIAL_STATION);
-                slot=barcode;
-                flag=0;
-                getPresenter().commitarcoderDate(dataList1.get(0).getPartNumber(),slot,feeder,lines,serialNumber,barcode1);
-
-            } catch (EntityNotFountException e) {
-                //扫码错误时调用的声音和震动
-                VibratorAndVoiceUtils.wrongVibrator(this);
-                VibratorAndVoiceUtils.wrongVoice(this);
-
-*//*                Snackbar.make(getCurrentFocus(), "请扫描正确的料站！", Snackbar.LENGTH_SHORT).show();
-                textToSpeechManager.readMessage( "请扫描正确的料站！");*//*
-
-                SnackbarUtil.showRead(getRootView(this), "请扫描正确的料站！",textToSpeechManager);
-                e.printStackTrace();
-            }
-
-        }*/
-
-
         /**
          * 扫描新旧料盘方式的接料
          */
@@ -391,58 +233,58 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             streamNumber = mMaterialBlockBarCode.getStreamNumber();
             Log.e(TAG, "onScanSuccess: " + "料号：" + materialNumber);
             Log.e(TAG, "onScanSuccess: " + "流水号：" + streamNumber);
-            Log.e(TAG, "onScanSuccess: " + dataList1.get(0).getId());
-            Log.e(TAG, "onScanSuccess: "+"第一条料号"+dataList1.get(0).getPartNumber() );
-            Log.e(TAG, "onScanSuccess: "+"第一条流水号"+dataList1.get(0).getSerialNumber() );
+
             if (materialNumber != null && streamNumber != null) {
                 if (tag == 0) {
-                    if (materialNumber.equals(dataList1.get(0).getPartNumber())
-                            && streamNumber.equals(dataList1.get(0).getSerialNumber())
-                            ) {
-                        tag++;
+                    if (isOldMaterial(materialNumber, streamNumber)) {
+                        Log.i(TAG, "onScanSuccess: 旧料盘");
+                        tag = 1;
                         oldSerialNumber = streamNumber;
-
+                        oldMaterialNumber = materialNumber;
                         //扫码正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
                         VibratorAndVoiceUtils.correctVoice(this);
-//                        ToastUtils.showMessage(getContext(), "旧料盘匹配正确，请扫新料盘！");
-//                        Snackbar.make(getCurrentFocus(), "旧料盘匹配正确，请扫新料盘！", Snackbar.LENGTH_SHORT).show();
-                        SnackbarUtil.showRead(getRootView(this), "旧料盘匹配正确，请扫新料盘！",textToSpeechManager);
+                        adapter1.notifyDataSetChanged();
+                        SnackbarUtil.showRead(getRootView(this), "料站需要接料，请继续扫描新料盘！",textToSpeechManager);
                     } else {
-
-
                         //扫码错误时调用的声音和震动
                         VibratorAndVoiceUtils.wrongVibrator(this);
                         VibratorAndVoiceUtils.wrongVoice(this);
-//                        ToastUtils.showMessage(getContext(), "旧料盘匹配错误！");
-//                        Snackbar.make(getCurrentFocus(), "旧料盘匹配错误", Snackbar.LENGTH_SHORT).show();
-                        SnackbarUtil.showRead(getRootView(this), "旧料盘匹配错误",textToSpeechManager);
-
+                        SnackbarUtil.showRead(getRootView(this), "模组上不存在该料盘或不需要接料，请重新扫描或刷新页面！",textToSpeechManager);
                     }
                 } else {
-                    if (materialNumber.equals(dataList1.get(0).getPartNumber())
-                            && !streamNumber.equals(dataList1.get(0).getSerialNumber())) {
-                        tag = 0;
-                        newSerialNumber = streamNumber;
-                        newBarcode=mMaterialBlockBarCode.getSource();
+                    //扫描新料盘
+                    if (isOldMaterial(materialNumber, streamNumber)) {
+                        tag = 1;
+                        oldSerialNumber = streamNumber;
+                        oldMaterialNumber = materialNumber;
                         //扫码正确时调用的声音和震动
                         VibratorAndVoiceUtils.correctVibrator(this);
                         VibratorAndVoiceUtils.correctVoice(this);
-                        if (newBarcode!=null) {
-                            getPresenter().commitSerialNumber(lines,materialNumber,oldSerialNumber, newSerialNumber,newBarcode);
+                        adapter1.notifyDataSetChanged();
+                        SnackbarUtil.showRead(getRootView(this), "旧料盘匹配正确，请扫新料盘！",textToSpeechManager);
+                    } else {
+                        if (materialNumber.equalsIgnoreCase(oldMaterialNumber)){
+                            newSerialNumber = streamNumber;
+                            newBarcode=mMaterialBlockBarCode.getSource();
+                            //扫码正确时调用的声音和震动
+                            VibratorAndVoiceUtils.correctVibrator(this);
+                            VibratorAndVoiceUtils.correctVoice(this);
+                            Log.i(TAG, "onScanSuccess: 是新料盘，开始接料");
+                            if (newBarcode!=null) {
+                                Log.i(TAG, "onScanSuccess: newBarcode ==" + newBarcode);
+                                Log.i(TAG, "onScanSuccess:  开始发送请求" );
+                                getPresenter().commitSerialNumber(lines,materialNumber,oldSerialNumber, newSerialNumber,newBarcode);
+                            }
+                            tag  = 0 ;
+                        }else {
+                            Log.i(TAG, "onScanSuccess: 是别的新料盘，不是所需要的新料盘，还需要扫描新料盘");
+                            tag = 1;
                         }
 
-
-                    } else {
-
-                        //扫码错误时调用的声音和震动
-                        VibratorAndVoiceUtils.wrongVibrator(this);
-                        VibratorAndVoiceUtils.wrongVoice(this);
-//                        ToastUtils.showMessage(getContext(), "新料盘匹配错误！");
-//                        Snackbar.make(getCurrentFocus(), "新料盘匹配错误！", Snackbar.LENGTH_SHORT).show();
-                        SnackbarUtil.showRead(getRootView(this), "新料盘匹配错误！",textToSpeechManager);
                     }
                 }
+
 
 
             }
@@ -472,11 +314,34 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         }
     }
 
+    private boolean isOldMaterial(String materialNumber, String streamNumber) {
+        Log.i(TAG, "isOldMaterial: materialNumber==" + materialNumber+ "streamNumber==" + streamNumber);
+         ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean lineMaterialEntitiesBean = null;
+        for (int i = 0; i < dataList1.size(); i++) {
+            lineMaterialEntitiesBean = dataList1.get(i);
+            if (lineMaterialEntitiesBean.getSerialNumber().equalsIgnoreCase(streamNumber) && lineMaterialEntitiesBean.getPartNumber().equalsIgnoreCase(materialNumber)) {
+               index = i;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isNewMaterial(String materialNumber, String streamNumber) {
+        for (ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean lineMaterialEntitiesBean : dataList1) {
+            if (!lineMaterialEntitiesBean.getSerialNumber().equalsIgnoreCase(streamNumber) && lineMaterialEntitiesBean.getPartNumber().equalsIgnoreCase(materialNumber)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+
     //请求item列表数据
     @Override
     public void getAcceptMaterialsItemDatas(ItemAcceptMaterialDetail itemAcceptMaterialDetail) {
-
-
+        index = -1;
         if (itemAcceptMaterialDetail.getRows().getConnectMaterialCount()==0){
             getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
             finish();
@@ -498,7 +363,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         if ("Error".equals(message)) {
             Snackbar.make(getCurrentFocus(), this.getString(R.string.server_error_message), Snackbar.LENGTH_LONG).show();
         } else {
-            Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getCurrentFocus(), "料站接料失败，"+ message + "，请重新扫描!", Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -514,7 +379,8 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 //        ToastUtils.showMessage(getContext(), "新料盘匹配正确，接料完成！");
 /*        Snackbar.make(getCurrentFocus(), "扫描正确，接料完成！", Snackbar.LENGTH_SHORT).show();
         textToSpeechManager.readMessage( "扫描正确，接料完成！");*/
-        SnackbarUtil.showRead(getRootView(this),"扫描正确，接料完成！",textToSpeechManager);
+        SnackbarUtil.showRead(getRootView(this),"料站接料完成，请继续扫描旧料盘进行接料！",textToSpeechManager);
+        index = -1;
         getPresenter().getItemDatas(lines);
     }
 
