@@ -16,7 +16,9 @@ public interface AcceptMaterialsContract {
         void getAcceptMaterialsItemDatas(ItemAcceptMaterialDetail itemAcceptMaterialDetail);
         void getItemDatasFailed(String message);
         void showMessage(String message);
-        void commitSerialNumberSucess();
+        void commitSerialNumberSuccess();
+        void onNewMaterialNotExists(String message);
+        void onOldMaterialNotExists(String message);
     }
 
     interface Model extends IModel {

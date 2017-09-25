@@ -72,7 +72,7 @@
 
         <EditText
             android:textSize="@dimen/px_40"
-            android:id="@+id/et_materialnumber"
+            android:id="@+id/edt_materialNumber"
             android:layout_width="550px"
             android:layout_height="39dp"
             android:hint="料号"
@@ -97,7 +97,7 @@
 
         <EditText
             android:textSize="@dimen/px_40"
-            android:id="@+id/et_serialnumber"
+            android:id="@+id/edt_serialNumber"
             android:layout_width="550px"
             android:layout_height="39dp"
             android:layout_marginLeft="40px"

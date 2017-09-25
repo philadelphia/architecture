@@ -76,12 +76,29 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         getModel().commitSerialNumber(argu).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
-                if (0 == result.getCode()) {
-                    getView().commitSerialNumberSucess();
-                }else{
-                    getView().getItemDatasFailed(result.getMessage());
-                    Log.e("aaa", "请求错误 "+result.getMessage());
+                switch (result.getCode()){
+                    case 0:
+                        getView().commitSerialNumberSuccess();
+                        break;
+                    case -1:
+//                        服务器错误。
+                        break;
+                    case -2:
+                        getView().onNewMaterialNotExists(result.getMessage());
+                        break;
+                    case -3:
+                        getView().onOldMaterialNotExists(result.getMessage());
+                        break;
+                    case -4:
+//                        上传MES失败。暂时不实现。
+                        break;
+                    default:
+                        getView().getItemDatasFailed(result.getMessage());
+                        Log.e("aaa", "请求错误 "+result.getMessage());
+
+                        break;
                 }
+
             }
         }, new Action1<Throwable>() {
             @Override
@@ -120,7 +137,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
             @Override
             public void call(Result result) {
                 if (0 == result.getCode()) {
-                    getView().commitSerialNumberSucess();
+                    getView().commitSerialNumberSuccess();
                 }else{
                     getView().getItemDatasFailed(result.getMessage());
                     Log.e("aaa", "请求错误 "+result.getMessage());
