@@ -3,6 +3,7 @@ package com.delta.smt.ui.production_warning.accept_materials_detail.mvp;
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
+import com.delta.smt.entity.AcceptMaterialResult;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.production_warining_item.ItemAcceptMaterialDetail;
 
@@ -25,8 +26,8 @@ public class AcceptMaterialsModel extends BaseModel<ApiService> implements Accep
     }
 
     @Override
-    public Observable<Result> commitSerialNumber(String condition) {
-        return getService().commitSerialNumber(condition).compose(RxsRxSchedulers.<Result>io_main());
+    public Observable<AcceptMaterialResult> commitSerialNumber(String condition) {
+        return getService().commitSerialNumber(condition).compose(RxsRxSchedulers.<AcceptMaterialResult>io_main());
     }
 
     @Override

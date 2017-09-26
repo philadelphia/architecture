@@ -121,7 +121,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         face = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_FACE);
 //        material_number = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_NUM);
         Log.e(TAG, "initData: " + lines);
-        getPresenter().getItemDatas(lines);
+        getPresenter().getAllItems(lines);
 
     }
 
@@ -237,7 +237,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             streamNumber = mMaterialBlockBarCode.getStreamNumber();
             Log.e(TAG, "onScanSuccess: " + "料号：" + materialNumber);
             Log.e(TAG, "onScanSuccess: " + "流水号：" + streamNumber);
-            edtMaterialNumber.setText(material_number);
+            edtMaterialNumber.setText(materialNumber);
             edtSerialNumber.setText(streamNumber);
             if (tag == 0) {
                 if (isOldMaterial(materialNumber, streamNumber)) {
@@ -249,7 +249,12 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                     VibratorAndVoiceUtils.correctVibrator(this);
                     VibratorAndVoiceUtils.correctVoice(this);
                     adapter1.notifyDataSetChanged();
-                    SnackbarUtil.showRead(getRootView(this), "料站需要接料，请继续扫描新料盘！", textToSpeechManager);
+                    if (isNeedReplaceMaterial()){
+                        SnackbarUtil.showRead(getRootView(this), "料站需要换料，请继续扫描新料盘！", textToSpeechManager);
+                    } else {
+                        SnackbarUtil.showRead(getRootView(this), "料站需要接料，请继续扫描新料盘！", textToSpeechManager);
+                    }
+
                 } else {
                     //扫码错误时调用的声音和震动
                     VibratorAndVoiceUtils.wrongVibrator(this);
@@ -266,7 +271,11 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                     VibratorAndVoiceUtils.correctVibrator(this);
                     VibratorAndVoiceUtils.correctVoice(this);
                     adapter1.notifyDataSetChanged();
-                    SnackbarUtil.showRead(getRootView(this), "旧料盘匹配正确，请扫新料盘！", textToSpeechManager);
+                    if (isNeedReplaceMaterial()){
+                        SnackbarUtil.showRead(getRootView(this), "旧料盘匹配正确，请继续扫描新料盘进行换料！", textToSpeechManager);
+                    } else {
+                        SnackbarUtil.showRead(getRootView(this), "旧料盘匹配正确，请继续扫描新料盘进行接料！", textToSpeechManager);
+                    }
                 } else {
                     newMaterialNumber = materialNumber;
                     newSerialNumber = streamNumber;
@@ -279,10 +288,12 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                         Log.i(TAG, "onScanSuccess:  开始发送请求");
                         Log.i(TAG, "onScanSuccess: newBarcode ==" + newBarcode);
                         Log.i(TAG, "onScanSuccess:lines=  " + lines);
-                        Log.i(TAG, "onScanSuccess:materialNumber=  " + materialNumber);
-                        Log.i(TAG, "onScanSuccess:oldSerialNumber=  " + oldSerialNumber);
+                        Log.i(TAG, "onScanSuccess:oldMaterialNumber=  " + oldMaterialNumber);
+                        Log.i(TAG, "onScanSuccess:oldStreamNumber=  " + oldSerialNumber);
+
+                        Log.i(TAG, "onScanSuccess:newMaterialNumber=  " + newMaterialNumber);
                         Log.i(TAG, "onScanSuccess:newSerialNumber=  " + newSerialNumber);
-                        getPresenter().commitSerialNumber(lines, materialNumber, oldSerialNumber, newSerialNumber, newBarcode);
+                        getPresenter().commitSerialNumber(lines, oldMaterialNumber, oldSerialNumber, newMaterialNumber, newSerialNumber, newBarcode);
                     }
                     tag = 0;
 
@@ -305,8 +316,6 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             VibratorAndVoiceUtils.wrongVibrator(this);
             VibratorAndVoiceUtils.wrongVoice(this);
 
-//            ToastUtils.showMessage(getContext(), "请扫描正确的料盘！");
-//            Snackbar.make(getCurrentFocus(), "请扫描正确的料盘！", Snackbar.LENGTH_SHORT).show();
             SnackbarUtil.showRead(getRootView(this), "请扫描正确的料盘！", textToSpeechManager);
             materialNumber = null;
             streamNumber = null;
@@ -327,6 +336,22 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         return false;
     }
 
+    /**
+     *
+     * @return true--换料
+     *
+     */
+    private boolean isNeedReplaceMaterial() {
+        Log.i(TAG, "isOldMaterial: materialNumber==" + materialNumber + "streamNumber==" + streamNumber);
+        ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean lineMaterialEntitiesBean = dataList1.get(index);
+        return lineMaterialEntitiesBean.getMode() == 1 ? true : false;
+    }
+
+    /**
+     * @param materialNumber 料号
+     * @param streamNumber  流水码
+     * @return true--扫描的是新料盘，false--不是新料盘
+     */
     private boolean isNewMaterial(String materialNumber, String streamNumber) {
         for (ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean lineMaterialEntitiesBean : dataList1) {
             if (!lineMaterialEntitiesBean.getSerialNumber().equalsIgnoreCase(streamNumber) && lineMaterialEntitiesBean.getPartNumber().equalsIgnoreCase(materialNumber)) {
@@ -367,6 +392,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         }
     }
 
+
     @Override
     public void showMessage(String message) {
         ToastUtils.showMessage(this, message);
@@ -374,14 +400,24 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
 
     //扫码数据提交成功的操作
+    /**
+     *
+     * @param rows  剩余的待换料或接料的数量
+     *
+     */
+
     @Override
-    public void commitSerialNumberSuccess() {
-//        ToastUtils.showMessage(getContext(), "新料盘匹配正确，接料完成！");
-/*        Snackbar.make(getCurrentFocus(), "扫描正确，接料完成！", Snackbar.LENGTH_SHORT).show();
-        textToSpeechManager.readMessage( "扫描正确，接料完成！");*/
+    public void commitSerialNumberSuccess(int rows) {
         SnackbarUtil.showRead(getRootView(this), "料站接料完成，请继续扫描旧料盘进行接料！", textToSpeechManager);
         index = -1;
-        getPresenter().getItemDatas(lines);
+//        该工单接料或换料未完成。
+        if (rows >0){
+            getPresenter().getAllItems(lines);
+        }else if (rows ==0){    //        该工单接料或换料完成。
+            finish();
+        }
+
+
     }
 
     @Override
@@ -396,7 +432,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     }
 
     private void refresh() {
-        getPresenter().getItemDatas(lines);
+        getPresenter().getAllItems(lines);
     }
 
 
