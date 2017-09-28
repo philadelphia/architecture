@@ -67,4 +67,9 @@ public class StorageDetailsModel extends BaseModel<ApiService> implements Storag
     public Observable<Result<DebitData>> getDebitDataList(String ms) {
         return getService().getDebitDataList(ms).compose(RxsRxSchedulers.<Result<DebitData>>io_main());
     }
+
+    @Override
+    public Observable<Result> sendBackArea(String mS) {
+        return getService().sendBackArea(mS).compose(RxsRxSchedulers.<Result>io_main());
+    }
 }

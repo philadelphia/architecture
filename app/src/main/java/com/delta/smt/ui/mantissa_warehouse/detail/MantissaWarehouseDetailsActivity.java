@@ -84,9 +84,9 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     TextView mTvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar mToolbar;
-    @BindView(R.id.button2)
-    Button mButton2;
-    @BindView(R.id.textView2)
+    @BindView(R.id.btn_debitManually)
+    Button btn_debitManually;
+    @BindView(R.id.tv_car_name)
     TextView mCar;
     @BindView(R.id.tv_hint)
     TextView tv_hint;
@@ -595,7 +595,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         }
     }
 
-    @OnClick(R.id.button2)
+    @OnClick(R.id.btn_debitManually)
     public void onClick() {
         if (!isHaveIsSureOver) {
             ToastUtils.showMessage(this, getString(R.string.unfinished_station));

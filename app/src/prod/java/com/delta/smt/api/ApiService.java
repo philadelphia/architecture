@@ -548,7 +548,9 @@ public interface ApiService {
     @POST("ams/smm/warehissue/startmantississue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Field("value") String bind);
 
-
+    // 将物料发送给备料区
+    @GET("ams/smm/warehouse/workorder/materials")
+    Observable<Result> sendBackArea(@Query("condition") String mS);
 
     //料盘绑定标签
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -798,4 +800,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/ams/smm/linealarmfault/uploadtomesfromprocessline")
     Observable<Result> uploadToMesFromProcessline(@Field("value") String value);
+
+
 }

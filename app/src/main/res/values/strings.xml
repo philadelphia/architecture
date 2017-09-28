@@ -143,5 +143,6 @@
     <string name="ji">记住密码</string>
     <string name="feedingList">上料列表：</string>
     <string name="materialList">发料列表：</string>
+    <string name="send_backup_area">发送到备料区</string>
 
 </resources>

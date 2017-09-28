@@ -133,6 +133,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         functionList.add(new Function("Feeder缓冲区", R.drawable.ic_feederbuffer));
         //functionList.add(new Function("尾数仓备料", R.drawable.ic_mantissawarehousestock));
         functionList.add(new Function("上Feeder", R.drawable.ic_onthemodule));
+        functionList.add(new Function("绑定虚拟线体", R.drawable.ic_themodule));
         functionList.add(new Function("下模组", R.drawable.ic_themodule));
         functionList.add(new Function("故障处理", R.drawable.ic_faulthandling));
         functionList.add(new Function("尾数仓入库及退料", R.drawable.ic_return));
@@ -201,6 +202,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
                 IntentUtils.showIntent(this, WarningSampleActivity.class);
                 break;
             case "上Feeder":
+                bundle = new Bundle();
+                bundle.putInt(Constant.SELECT_TYPE, 1);
+                IntentUtils.showIntent(this, ModuleUpActivity.class);
+                break;
+            case "绑定虚拟线体":
+                bundle = new Bundle();
+                bundle.putInt(Constant.SELECT_TYPE, 2);
                 IntentUtils.showIntent(this, ModuleUpActivity.class);
                 break;
             case "下模组":

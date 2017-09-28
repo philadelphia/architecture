@@ -1,7 +1,6 @@
 package com.delta.smt.ui.smt_module.module_up;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,10 +33,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,25 +49,22 @@ import butterknife.BindView;
 public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         ModuleUpContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleUpWarningItem> {
 
+    private static final String TAG = "ModuleUpActivity";
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-
     @BindView(R.id.module_up_warning)
     LinearLayout moduleUpWarning;
-
     @BindView(R.id.recyclerView)
     RecyclerView recyclerview;
     @Inject
     WarningManger warningManager;
-
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
     private List<ModuleUpWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<ModuleUpWarningItem> myAdapter;
     private WarningDialog warningDialog;
-    private static final String TAG = "ModuleUpActivity";
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -80,6 +74,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     @Override
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
+
         warningManager.addWarning(Constant.PLUG_MOD_ALARM_FLAG, getClass());
 
         //是否接收预警 可以控制预警时机
