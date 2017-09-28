@@ -61,8 +61,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/22.
- */
+ *@description :预警页面
+ *
+ *@author : Fuxiang.Zhang
+ *@date : 2017/9/18 16:05
+*/
 
 public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentPresenter>
         implements ProduceWarningFragmentContract.View,
@@ -240,7 +243,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         return R.layout.fragment_produce_warning;
     }
 
-
+    /**
+     * 成功获取item数据回调方法
+     * @param itemWarningInfo 含有item数据的对象
+     */
     @Override
     public void getItemWarningDatas(List<ItemWarningInfo> itemWarningInfo) {
         datas.clear();
@@ -260,6 +266,11 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mAdapter.notifyDataSetChanged();
     }
 
+
+    /**
+     * 失败获取item数据回调方法
+     * @param message 错误信息
+     */
     @Override
     public void getItemWarningDatasFailed(String message) {
 /*        ToastUtils.showMessage(getContext(), message);*/
@@ -270,13 +281,21 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         }
     }
 
+    /**
+     * item点击确定时回到方法
+     */
     @Override
     public void getItemWarningConfirmSuccess() {
         getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
     }
 
 
-    //item点击事件处理
+    /**
+     * item点击事件处理
+     * @param item
+     * @param o
+     * @param position
+     */
     @Override
     public void onItemClick(View item, Object o, int position) {
 /*        if(mPopupWindow!=null&&mPopupWindow.isShowing()){
@@ -287,6 +306,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         barcodedatas.clear();
         final ItemWarningInfo mItemWarningInfo = datas.get(position);
 
+        //当item是接料预警的进行的操作
         if (mItemWarningInfo.getTitle().equals("接料预警")) {
 
 //                makePopupWindow();
@@ -298,6 +318,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             IntentUtils.showIntent(getmActivity(), AcceptMaterialsActivity.class, bundle);
             id = String.valueOf(mItemWarningInfo.getId());
 
+        //当item不是接料预警的进行的操作
         } else {
 
             final ArrayList<String> dialogDatas = new ArrayList<>();
@@ -360,6 +381,10 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     }*/
 
+    /**
+     * 扫码回调，已经弃用
+     * @param barcode
+     */
     @Override
     public void onScanSuccess(String barcode) {
 
@@ -432,6 +457,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
     }
 
+    //弃用
     private Handler hanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -467,7 +493,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         }
     };
 
-    //popupwindow点击事件
+    //popupwindow点击事件 弃用
     @Override
     public void onClick(View v) {
         mPopupWindow.dismiss();

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include layout="@layout/appbar"/>
+    <include layout="@layout/appbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_weight="1"
             android:text="线别：**"
             android:textColor="@color/c_333333"
-            android:textSize="40px"/>
+            android:textSize="40px" />
 
         <TextView
             android:id="@+id/tv_material_station_num"
@@ -28,7 +28,7 @@
             android:layout_weight="1"
             android:text="待接料料站数：**"
             android:textColor="@color/c_333333"
-            android:textSize="40px"/>
+            android:textSize="40px" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:layout_weight="1"
             android:text="面别：**"
             android:textColor="@color/c_333333"
-            android:textSize="40px"/>
+            android:textSize="40px" />
 
         <TextView
             android:id="@+id/tv_work_order"
@@ -53,7 +53,58 @@
             android:layout_weight="1"
             android:text="工单号：**"
             android:textColor="@color/c_333333"
-            android:textSize="40px"/>
+            android:textSize="40px" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="40px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="料号:"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <EditText
+            android:id="@+id/edt_materialNumber"
+            android:layout_width="550px"
+            android:layout_height="39dp"
+            android:layout_marginLeft="40px"
+            android:background="@drawable/ed_back_white"
+            android:focusable="false"
+            android:hint="料号"
+            android:textSize="@dimen/px_40" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="40px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="流水号:"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <EditText
+            android:id="@+id/edt_serialNumber"
+            android:layout_width="550px"
+            android:layout_height="39dp"
+            android:layout_marginLeft="40px"
+            android:background="@drawable/ed_back_white"
+            android:focusable="false"
+            android:hint="流水号:"
+            android:textSize="@dimen/px_40" />
+
     </LinearLayout>
 
     <!--    <RelativeLayout
@@ -113,12 +164,12 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recy_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recy_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </HorizontalScrollView>
 

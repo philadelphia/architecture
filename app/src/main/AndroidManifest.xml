@@ -111,7 +111,7 @@
             android:name=".ui.production_warning.produce_warning.ProduceWarningActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.hand_add.mvp.HandAddActivity"
+            android:name=".ui.hand_add.HandAddActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.production_warning.accept_materials_detail.AcceptMaterialsActivity"

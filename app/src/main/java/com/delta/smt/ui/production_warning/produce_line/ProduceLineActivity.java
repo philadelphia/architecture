@@ -24,7 +24,7 @@ import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
 import com.delta.smt.entity.production_warining_item.ItemProduceLine;
 import com.delta.smt.ui.fault_processing.processing.FaultProcessingActivity;
-import com.delta.smt.ui.hand_add.mvp.HandAddActivity;
+import com.delta.smt.ui.hand_add.HandAddActivity;
 import com.delta.smt.ui.production_scan.work_order.WorkOrderActivity;
 import com.delta.smt.ui.production_warning.produce_line.di.DaggerProduceLineCompnent;
 import com.delta.smt.ui.production_warning.produce_line.di.ProduceLineModule;
@@ -40,8 +40,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/22.
- */
+ *@description :产线选择页面
+ *
+ *@author : Fuxiang.Zhang
+ *@date : 2017/9/18 16:03
+*/
 
 public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
         implements ProduceLineContract.View, CommonBaseAdapter.OnItemClickListener<ItemProduceLine> {
@@ -153,6 +156,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
 //                Bundle bundle = new Bundle();
 //                bundle.putString(Constant.PRODUCTION_LINE,  mStringBuffer.toString());
                 switch (type) {
+                    //生产中预警页面
                     case 0:
                         SpUtil.SetStringSF(this, Constant.PRODUCE_WARNING_LINE_NAME, mStringBuffer.toString());
                         IntentUtils.showIntent(this, ProduceWarningActivity.class);
@@ -161,6 +165,7 @@ public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
                         SpUtil.SetStringSF(this, Constant.FAULT_PROCESSING_LINE_NAME, mStringBuffer.toString());
                         IntentUtils.showIntent(this, FaultProcessingActivity.class);
                         break;
+                    //手补件页面
                     case 2:
                         SpUtil.SetStringSF(this, Constant.HAND_ADD_LINE_NAME, mStringBuffer.toString());
                         IntentUtils.showIntent(this, HandAddActivity.class);

@@ -106,6 +106,16 @@ public class ItemAcceptMaterialDetail {
             private int status;
             private int id;
 
+            private int mode;
+
+            public int getMode() {
+                return mode;
+            }
+
+            public void setMode(int mode) {
+                this.mode = mode;
+            }
+
             public String getLine() {
                 return line;
             }

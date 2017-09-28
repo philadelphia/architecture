@@ -5,6 +5,7 @@ import android.util.Log;
 import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.utils.GsonTools;
+import com.delta.smt.entity.AcceptMaterialResult;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.production_warining_item.ItemAcceptMaterialDetail;
 
@@ -27,12 +28,12 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
     }
 
     //请求item数据
-    public void getItemDatas(String line){
+    public void getAllItems(String line){
 
         Map<String,String> mMap=new HashMap<>();
         mMap.put("line",line);
         line=GsonTools.createGsonListString(mMap);
-        Log.e("aaa", "getItemDatas: "+line);
+        Log.e("aaa", "getAllItems: "+line);
         getModel().getAcceptMaterialsItemDatas(line)
                 .subscribe(new Action1<ItemAcceptMaterialDetail>() {
             @Override
@@ -58,30 +59,44 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
 
 
     //提交新旧料盘数据
-    public void commitSerialNumber(String line,String material_number,String oldSerialNumber, String newSerialNumber,String newBarcode){
-        Log.e("aaa", "commitSerialNumber:old: "+oldSerialNumber );
-        Log.e("aaa", "commitSerialNumber:new: "+newSerialNumber );
-
+    public void commitSerialNumber(String line,String oldMaterial_number,String oldSerialNumber, String newMaterial_number, String newSerialNumber,String newBarcode){
         Map<String, String> map = new HashMap<>();
         map.put("line", line);
-        map.put("material_no", material_number);
+        map.put("material_no", newMaterial_number);
         map.put("serial_no", newSerialNumber);
-        map.put("old_material_no", material_number);
+        map.put("old_material_no", oldMaterial_number);
         map.put("old_serial_no", oldSerialNumber);
         map.put("barcode", newBarcode);
+        Log.i(TAG, "commitSerialNumber: " + map.toString());
+        String argument = GsonTools.createGsonListString(map);
 
-        String argu = GsonTools.createGsonListString(map);
-
-        Log.e(TAG, "commitSerialNumber: "+argu );
-        getModel().commitSerialNumber(argu).subscribe(new Action1<Result>() {
+        getModel().commitSerialNumber(argument).subscribe(new Action1<AcceptMaterialResult>() {
             @Override
-            public void call(Result result) {
-                if (0 == result.getCode()) {
-                    getView().commitSerialNumberSucess();
-                }else{
-                    getView().getItemDatasFailed(result.getMessage());
-                    Log.e("aaa", "请求错误 "+result.getMessage());
+            public void call(AcceptMaterialResult result) {
+                Log.i(TAG, "call--code == : " + result.getCode());
+                switch (result.getCode()){
+                    case 0:
+                        getView().commitSerialNumberSuccess(result.getRows());
+                        break;
+                    case -1:
+//                        服务器错误。
+                        break;
+                    case -2:
+                        getView().onNewMaterialNotExists(result.getMessage());
+                        break;
+                    case -3:
+                        getView().onOldMaterialNotExists(result.getMessage());
+                        break;
+                    case -4:
+//                        上传MES失败。暂时不实现。
+                        break;
+                    default:
+                        getView().getItemDatasFailed(result.getMessage());
+                        Log.e("aaa", "请求错误 "+result.getMessage());
+
+                        break;
                 }
+
             }
         }, new Action1<Throwable>() {
             @Override
@@ -99,13 +114,6 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
     //提交料盘，feeder，料站成功数据
     public void commitarcoderDate(String partNumber, String slot
     ,String feeder,String line,String serialNumber,String barcode){
-        Log.e("eee", "partNumber: "+partNumber );
-        Log.e("eee", "slot: "+slot );
-        Log.e("eee", "feeder: "+feeder );
-        Log.e("eee", "line: "+line );
-        Log.e("eee", "serialNumber: "+serialNumber );
-        Log.e("eee", "barcode: "+barcode );
-
         Map<String, String> map = new HashMap<>();
         map.put("partNumber", partNumber);
         map.put("slot", slot);
@@ -113,14 +121,15 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         map.put("line", line);
         map.put("serialNumber", serialNumber);
         map.put("barcode", barcode);
-        String argu =GsonTools.createGsonListString(map);
+        Log.i(TAG, "commitarcoderDate: " + map.toString());
+        String argument =GsonTools.createGsonListString(map);
 
 
-        getModel().commitSerialNumber(argu).subscribe(new Action1<Result>() {
+        getModel().commitSerialNumber(argument).subscribe(new Action1<AcceptMaterialResult>() {
             @Override
-            public void call(Result result) {
+            public void call(AcceptMaterialResult result) {
                 if (0 == result.getCode()) {
-                    getView().commitSerialNumberSucess();
+                    getView().commitSerialNumberSuccess(result.getRows());
                 }else{
                     getView().getItemDatasFailed(result.getMessage());
                     Log.e("aaa", "请求错误 "+result.getMessage());

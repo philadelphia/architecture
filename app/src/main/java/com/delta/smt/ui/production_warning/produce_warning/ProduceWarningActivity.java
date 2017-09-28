@@ -50,8 +50,11 @@ import butterknife.BindView;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/22.
- */
+ *@description :生产中预警进入的主Activity页面
+ *
+ *@author : Fuxiang.Zhang
+ *@date : 2017/9/18 16:04
+*/
 
 public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter> implements
         TabLayout.OnTabSelectedListener, ProduceWarningContract.View, WarningManger.OnWarning {
@@ -197,6 +200,10 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         super.onDestroy();
     }
 
+    /**
+     * fragment 页面切换
+     * @param tab
+     */
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -230,7 +237,10 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     }
 
-
+    /**
+     * 获取成功统计的item个数的数据触发的方法
+     * @param titleNumber 获得的数据对象
+     */
     @Override
     public void getTitleDatas(TitleNumber titleNumber) {
 
@@ -248,6 +258,10 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         ViewUtils.setTabTitle(mTlTitle, titles);
     }
 
+    /**
+     * 获取失败统计的item个数的数据触发的方法
+     * @param message 错误信息
+     */
     @Override
     public void getTitleDatasFailed(String message) {
 //        ToastUtils.showMessage(this, message);
@@ -259,6 +273,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         titles = new String[]{"预警", "故障", "消息"};
     }
     private WarningDialog warningDialog;
+
 
     //收到预警广播触发的方法
     @Override
@@ -275,6 +290,10 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         updateMessage(message);
     }
 
+    /**
+     * 更新推送的预警信息的呈现的内容
+     * @param message
+     */
     private void updateMessage(String message) {
         List<WaringDialogEntity> datas = warningDialog.getDatas();
         List<String> types = new ArrayList<>();
@@ -340,6 +359,8 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
             e.printStackTrace();
         }*/
     }
+
+    //弃用
     private List<WaringDialogEntity> getWarningEntities(JSONArray jsonArray) throws JSONException {
         List<String> types = new ArrayList<>();
         List<WaringDialogEntity> waringDialogEntities = new ArrayList<>();
@@ -376,6 +397,11 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         return waringDialogEntities;
     }
 
+    /**
+     * 创建预警的dialog
+     * @param message
+     * @return
+     */
     public WarningDialog createDialog(String message) {
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
@@ -448,6 +474,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         return super.onOptionsItemSelected(item);
     }
 
+    //初始化产线
     public String initLine() {
         Map<String, String> map = new HashMap<>();
         map.put("lines",lines);

@@ -40,8 +40,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/22.
- */
+ *@description :消息页面
+ *
+ *@author : Fuxiang.Zhang
+ *@date : 2017/9/18 16:02
+*/
 
 public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresenter>
         implements ProduceInfoFragmentContract.View, CommonBaseAdapter.OnItemClickListener<ItemInfo>, SwipeRefreshLayout.OnRefreshListener {
@@ -108,6 +111,10 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
     }
 
 
+    /**
+     * 成功获取item数据的回调
+     * @param itemInfos
+     */
     @Override
     public void getItemInfoDatas(List<ItemInfo> itemInfos) {
         datas.clear();
@@ -116,6 +123,10 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 失败获取item数据的回调
+     * @param message
+     */
     @Override
     public void getItemInfoDatasFailed(String message) {
         if ("Error".equals(message)) {
@@ -125,12 +136,21 @@ public class ProduceInfoFragment extends BaseFragment<ProduceInfoFragmentPresent
         }
     }
 
+    /**
+     *item确实成功回调
+     */
     @Override
     public void getItemInfoConfirmSucess() {
         getPresenter().getItemInfoDatas(((ProduceWarningActivity) getmActivity()).initLine());
     }
 
 
+    /**
+     * itme点击事件处理
+     * @param view
+     * @param item
+     * @param position
+     */
     @Override
     public void onItemClick(View view, final ItemInfo item, int position) {
         EventBus.getDefault().post(new BroadcastCancel());

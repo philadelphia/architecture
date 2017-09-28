@@ -1,6 +1,7 @@
 package com.delta.smt.api;
 
 
+import com.delta.smt.entity.AcceptMaterialResult;
 import com.delta.smt.entity.AddSuccess;
 import com.delta.smt.entity.AllQuery;
 import com.delta.smt.entity.BaseEntity;
@@ -272,7 +273,7 @@ public interface ApiService {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @POST("ams/smm/linealarmfault/doconnectmaterial")
-    Observable<Result> commitSerialNumber(@Field("value") String condition);
+    Observable<AcceptMaterialResult> commitSerialNumber(@Field("value") String condition);
 
     //请求关灯
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
