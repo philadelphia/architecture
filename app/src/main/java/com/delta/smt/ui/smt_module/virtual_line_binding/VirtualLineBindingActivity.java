@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.ArrayMap;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +52,7 @@ import butterknife.OnClick;
 
 public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View{
 
+    private static final String TAG = "VirtualLineBindingActiv";
     @BindView(R.id.toolbar)
     AutoToolbar toolbar;
     @BindView(R.id.toolbar_title)
@@ -95,9 +95,9 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     private List<VirtualLineItem> dataList = new ArrayList<>();
     private List<VirtualLineItem> dataSource = new ArrayList<>();
     private String moduleID;
-    private static final String TAG = "VirtualLineBindingActiv";
     //二维码
     private int scan_position = -1;
+    private int mType;//mType =2 代表从上模组进来的虚拟线体绑定
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -113,6 +113,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         linName = intent.getStringExtra(Constant.LINE_NAME);
         productName = intent.getStringExtra(Constant.PRODUCT_NAME);
         productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
+        mType = intent.getIntExtra(Constant.SELECT_TYPE, -1);
         Map<String, String> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);
@@ -128,7 +129,12 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        toolbarTitle.setText("虚拟线体绑定");
+        if (mType == 2) {
+
+            toolbarTitle.setText("上模组虚拟线体绑定");
+        } else {
+            toolbarTitle.setText("下模组虚拟线体绑定");
+        }
 
         tv_showWorkOrder.setText("工单号: "+workItemID);
         tv_showProductNameMain.setText("主板: "+productNameMain);
@@ -193,19 +199,19 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         dataSource.addAll(data_tmp);
         adapter.notifyDataSetChanged();
         adapterTitle.notifyDataSetChanged();
-        if (isAllModuleBinded(dataSource)) {
-            Bundle bundle = new Bundle();
-            bundle.putString(Constant.WORK_ITEM_ID, workItemID);
-            bundle.putString(Constant.PRODUCT_NAME_MAIN, productNameMain);
-            bundle.putString(Constant.PRODUCT_NAME, productName);
-            bundle.putString(Constant.SIDE, side);
-            bundle.putString(Constant.LINE_NAME, linName);
-            IntentUtils.showIntent(VirtualLineBindingActivity.this, ModuleDownDetailsActivity.class, bundle);
-            VirtualLineBindingActivity.this.finish();
+        if (mType != 2) {
+            if (isAllModuleBinded(dataSource)) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.WORK_ITEM_ID, workItemID);
+                bundle.putString(Constant.PRODUCT_NAME_MAIN, productNameMain);
+                bundle.putString(Constant.PRODUCT_NAME, productName);
+                bundle.putString(Constant.SIDE, side);
+                bundle.putString(Constant.LINE_NAME, linName);
+                IntentUtils.showIntent(VirtualLineBindingActivity.this, ModuleDownDetailsActivity.class, bundle);
+                VirtualLineBindingActivity.this.finish();
 
+            }
         }
-
-
     }
 
     @Override

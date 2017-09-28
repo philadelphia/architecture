@@ -27,6 +27,7 @@ import com.delta.smt.ui.smt_module.module_up.di.ModuleUpModule;
 import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpContract;
 import com.delta.smt.ui.smt_module.module_up.mvp.ModuleUpPresenter;
 import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
+import com.delta.smt.ui.smt_module.virtual_line_binding.VirtualLineBindingActivity;
 import com.delta.smt.widget.WarningDialog;
 
 import org.json.JSONArray;
@@ -65,6 +66,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     private List<ModuleUpWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<ModuleUpWarningItem> myAdapter;
     private WarningDialog warningDialog;
+    private int mType;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -75,6 +77,14 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     protected void initData() {
         //接收那种预警，没有的话自己定义常量
 
+        if (getIntent() != null) {
+            Bundle mExtras = getIntent().getExtras();
+            Log.e(TAG, "initData: ----");
+            if (mExtras != null) {
+                mType = mExtras.getInt(Constant.SELECT_TYPE, -1);
+                Log.e(TAG, "initData: " + mType);
+            }
+        }
         warningManager.addWarning(Constant.PLUG_MOD_ALARM_FLAG, getClass());
 
         //是否接收预警 可以控制预警时机
@@ -90,7 +100,17 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
-        toolbarTitle.setText("上Feeder");
+        switch (mType) {
+            case 1:
+                toolbarTitle.setText("上Feeder");
+                break;
+            case 2:
+                toolbarTitle.setText("虚拟线体绑定");
+                break;
+            default:
+                break;
+        }
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -345,7 +365,20 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         bundle.putString(Constant.PRODUCT_NAME, moduleUpWarningItem.getProductName());
         bundle.putString(Constant.LINE_NAME, moduleUpWarningItem.getLineName());
 
-        Intent intent = new Intent(this, ModuleUpBindingActivity.class);
+        Intent intent = null;
+        switch (mType) {
+            case 1:
+                intent = new Intent(this, ModuleUpBindingActivity.class);
+                // bundle.putInt(Constant.SELECT_TYPE, mType);
+                break;
+            case 2:
+                intent = new Intent(this, VirtualLineBindingActivity.class);
+                bundle.putInt(Constant.SELECT_TYPE, mType);
+                break;
+            default:
+                break;
+        }
+
         intent.putExtras(bundle);
         //this.startActivity(intent);
         startActivityForResult(intent, Constant.ACTIVITY_REQUEST_WORK_ITEM_ID);
