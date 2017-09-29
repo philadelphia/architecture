@@ -1,88 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/rl_item"
-                android:background="@drawable/card_background"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:text="第一行数据"
-        android:textSize="40px"
-        android:padding="20px"
-        android:textColor="#333333"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/tv_line"
-        android:text="第二行数据"
-        android:layout_below="@+id/tv_title"
-        android:textSize="40px"
-        android:padding="20px"
-        android:textColor="#333333"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/tv_material_station"
-        android:text="第三行数据"
-        android:textSize="40px"
-        android:padding="20px"
-        android:textColor="#333333"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="50px"
+    android:background="@drawable/card_background">
+
+    <RelativeLayout
+        android:id="@+id/rl_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_line"
-        android:layout_alignParentLeft="true"
-        />
+        android:layout_margin="20px"
+        android:paddingLeft="50px"
+        android:paddingRight="50px">
 
-    <TextView
-        android:id="@+id/tv_add_count"
-        android:text="第四行数据"
-        android:layout_below="@+id/tv_material_station"
-        android:textSize="40px"
-        android:padding="20px"
-        android:textColor="#333333"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-    <!--这里右边的倒数计我是默认和左边的第三个和第四个高度保持一致的，数据少可自行更改-->
-    <LinearLayout
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/time_remain"
-            android:text="上线剩余时间："
-            android:textSize="50px"
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="第一行数据"
+            android:layout_marginTop="25px"
             android:textColor="#333333"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="40px" />
 
-        <com.delta.libs.CountTimeView
-            android:id="@+id/cv_countView"
+        <TextView
+            android:id="@+id/tv_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:text="第二行数据"
+            android:layout_marginTop="25px"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/tv_material_station"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="25px"
+            android:layout_below="@+id/tv_line"
+            android:text="第三行数据"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/tv_add_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_material_station"
+            android:text="第四行数据"
+            android:layout_marginTop="25px"
+            android:textColor="#333333"
+            android:textSize="40px" />
+
+
+        <!--这里右边的倒数计我是默认和左边的第三个和第四个高度保持一致的，数据少可自行更改-->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            app:isCountUp="false"
-            app:isShowDay="false"
-            app:isShowHour="true"
-            app:isShowMinute="true"
-            app:isShowSecond="true"
-            app:isShowMillisecond="false"
-            app:suffixDayRightMargin="10dp"
-            app:suffixGravity="center"
-            app:suffixHour=":"
-            app:suffixMinute=":"
-            app:suffixTextColor="#e61010"
-            app:suffixTextSize="17sp"
-            app:timeTextColor="#e60b0b"
-            app:timeTextSize="20sp" />
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
 
-    </LinearLayout>
-</RelativeLayout>
+            <TextView
+                android:id="@+id/time_remain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上线剩余时间："
+                android:textColor="#333333"
+                android:textSize="50px"
+                android:textStyle="bold" />
+
+            <com.delta.libs.CountTimeView
+                android:id="@+id/cv_countView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                app:isCountUp="false"
+                app:isShowDay="false"
+                app:isShowHour="true"
+                app:isShowMillisecond="false"
+                app:isShowMinute="true"
+                app:isShowSecond="true"
+                app:suffixDayRightMargin="10dp"
+                app:suffixGravity="center"
+                app:suffixHour=":"
+                app:suffixMinute=":"
+                app:suffixTextColor="#e61010"
+                app:suffixTextSize="17sp"
+                app:timeTextColor="#e60b0b"
+                app:timeTextSize="20sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

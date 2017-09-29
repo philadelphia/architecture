@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -23,13 +22,11 @@ import com.delta.buletoothio.barcode.parse.entity.BackupMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
-import com.delta.buletoothio.barcode.parse.exception.EntityWrongException;
 import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SingleClick;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
-import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.commonlibs.widget.CustomPopWindow;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
@@ -68,13 +65,16 @@ import butterknife.OnClick;
 import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
- * Created by Zhenyu.Liu on 2016/12/28.
+ * Created by Zhenu.Liu on 2016/12/28.
  */
 
-public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter> implements StorageDetailsContract.View, View.OnClickListener {
+public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter> implements StorageDetailsContract.View, View.OnClickListener, DialogInterface.OnClickListener {
 
     private static final int JUMPMATERIAL = 3;
     private static final int UNWAREHMATERIAL = 1;
+    private final List<StorageDetails> dataList = new ArrayList<>();
+    private final List<StorageDetails> mDetailses = new ArrayList<>();
+    private final List<DebitData> mDebitDatas = new ArrayList<>();
     @BindView(R.id.recy_title)
     RecyclerView mRecycleTitle;
     @BindView(R.id.recy_contetn)
@@ -85,10 +85,10 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     TextView mTvSetting;
     @BindView(R.id.toolbar)
     AutoToolbar mToolbar;
-    @BindView(R.id.button2)
-    Button mButton2;
-    @BindView(R.id.textView2)
-    TextView mTextView2;
+    @BindView(R.id.btn_debitManually)
+    Button btn_debitManually;
+    @BindView(R.id.tv_car_name)
+    TextView mCarName;
     @BindView(R.id.tv_hint)
     TextView tv_hint;
     @BindView(R.id.statusLayout)
@@ -105,17 +105,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     TextView textView;
     @Inject
     TextToSpeechManager textToSpeechManager;
-    private List<StorageDetails> dataList = new ArrayList<>();
-    private List<StorageDetails> mStorageDetailses = new ArrayList<>();
-    private List<DebitData> mDebitDatas = new ArrayList<>();
-    private CommonBaseAdapter<StorageDetails> title_adapter;
     private CommonBaseAdapter<StorageDetails> content_adapter;
     private BarCodeParseIpml mBarCodeParseIpml;
     private String work_order;
     private String part;
-    private MaterialBlockBarCode materialblockbarcode;
     private String side;
-    private boolean isHaveIssureOver;
     private boolean ischeck = true;
     private boolean isOver;
     private CommonBaseAdapter<DebitData> undoList_adapter;
@@ -125,6 +119,8 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private int state = 1;
     private Dialog mConfirmDialog;
     private IssureToWarehBody mIssureToWarehBody;
+    private Dialog mProgressDialog;
+    private Dialog mSendDialolg;
 
 
     @Override
@@ -150,12 +146,10 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         getPresenter().getStorageDetails(mS);
         getPresenter().queryMaterailCar(mS);
         ischeck = SpUtil.getBooleanSF(this, part + "checked");
-
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-
         Log.e(TAG, "onConfigurationChanged: " + newConfig.toString());
         super.onConfigurationChanged(newConfig);
     }
@@ -168,11 +162,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
-        mToolbarTitle.setText("仓库" + part);
-       // JumpOver();
-        tvWorkOrder.setText("工单：" + work_order);
-        tvLineName.setText("线别：" + line_name);
-        tvLineNum.setText("面别：" + side);
+        mToolbarTitle.setText(getString(R.string.storage) + part);
+        // JumpOver();
+        tvWorkOrder.setText(getString(R.string.workOrder) + work_order);
+        tvLineName.setText(getString(R.string.line) + line_name);
+        tvLineNum.setText(getString(R.string.side) + side);
         dataList.add(new StorageDetails("", "", 0, 0));
         btnSwitch.setChecked(ischeck);
         btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -181,7 +175,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 SpUtil.SetBooleanSF(StorageDetailsActivity.this, part + "checked", b);
             }
         });
-        title_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList) {
+        CommonBaseAdapter<StorageDetails> mTitle_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), dataList) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
@@ -193,10 +187,10 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             }
         };
         mRecycleTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mRecycleTitle.setAdapter(title_adapter);
+        mRecycleTitle.setAdapter(mTitle_adapter);
 
 
-        content_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), mStorageDetailses) {
+        content_adapter = new CommonBaseAdapter<StorageDetails>(getContext(), mDetailses) {
             @Override
             protected void convert(CommonViewHolder holder, StorageDetails item, int position) {
                 holder.setText(R.id.tv_number, item.getMaterial_no());
@@ -230,21 +224,21 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         mRecycleContent.setAdapter(content_adapter);
     }
 
-    private void JumpOver() {
-        mTvSetting.setText("跳过");
-        mTvSetting.setVisibility(View.VISIBLE);
-        mTvSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, String> mMap = new HashMap<>();
-                mMap.put("part", part);
-                mMap.put("work_order", work_order);
-                mMap.put("side", side);
-                mMap.put("code", "A");
-                getPresenter().issureToWarehFinish(GsonTools.createGsonListString(mMap));
-            }
-        });
-    }
+//    private void JumpOver() {
+//        mTvSetting.setText("跳过");
+//        mTvSetting.setVisibility(View.VISIBLE);
+//        mTvSetting.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Map<String, String> mMap = new HashMap<>();
+//                mMap.put("part", part);
+//                mMap.put("work_order", work_order);
+//                mMap.put("side", side);
+//                mMap.put("code", "A");
+//                getPresenter().issureToWarehFinish(GsonTools.createGsonListString(mMap));
+//            }
+//        });
+//    }
 
     @Override
     protected int getContentViewId() {
@@ -272,16 +266,16 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             tv_hint.setText(getString(R.string.bindMatericalcar) + data.get(0).getCar_name());
             textToSpeechManager.readMessage(getString(R.string.bindMatericalcar) + data.get(0).getCar_name());
         }
-        StringBuffer mStringBuffer = new StringBuffer();
+        StringBuilder mStringBuffer = new StringBuilder();
         if (data.size() != 0) {
             for (int mI = 0; mI < data.size(); mI++) {
                 if (mI == data.size() - 1) {
                     mStringBuffer.append(data.get(mI).getCar_name());
                 } else {
-                    mStringBuffer.append(data.get(mI).getCar_name() + ",");
+                    mStringBuffer.append(data.get(mI).getCar_name()).append(",");
                 }
             }
-            mTextView2.setText(mStringBuffer.toString());
+            mCarName.setText(mStringBuffer.toString());
             //  tv_hint.setText(rows.get(0).getCar_name());
         }
         VibratorAndVoiceUtils.correctVoice(this);
@@ -306,23 +300,18 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
 
-    @Override
-    protected void onDestroy() {
-        //textToSpeechManager.freeSource();
-        super.onDestroy();
-    }
-
     private void issureToWareh(Result<StorageDetails> rows) {
         //红色置顶
-        mStorageDetailses.clear();
+        mDetailses.clear();
         isToWarehOver(rows.getRows());
         removeJumpMaterialFromRows(rows);
-        mStorageDetailses.addAll(rows.getRows());
+        mDetailses.addAll(rows.getRows());
         content_adapter.notifyDataSetChanged();
         mRecycleContent.scrollToPosition(0);
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
+
     private void removeJumpMaterialFromRows(Result<StorageDetails> rows) {
         //只有状态是发完料和跳料的状态才能removeFromRows
         Iterator<StorageDetails> mIterator = rows.getRows().iterator();
@@ -330,11 +319,11 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
             StorageDetails mNext = mIterator.next();
             //因为后台排序是 未发料，发料，跳料所以说可以写成下面的
-            if(mNext.getStatus()==UNWAREHMATERIAL){
+            if (mNext.getStatus() == UNWAREHMATERIAL) {
                 break;
             }
-            if (mNext.getStatus()==JUMPMATERIAL){
-                mStorageDetailses.add(mNext);
+            if (mNext.getStatus() == JUMPMATERIAL) {
+                mDetailses.add(mNext);
                 mIterator.remove();
             }
         }
@@ -342,7 +331,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     private void isToWarehOver(List<StorageDetails> mRows) {
         isOver = true;
-        isHaveIssureOver = false;
+        //boolean mIsHaveIssureOver = false;
         boolean isFirstUndo = true;
         for (int i = 0; i < mRows.size(); i++) {
             if (mRows.get(i).getStatus() == 1) {
@@ -351,7 +340,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 }
             }
             if (mRows.get(i).getStatus() == 2) {
-                isHaveIssureOver = true;
+                //  mIsHaveIssureOver = true;
             } else {
                 isOver = false;
             }
@@ -368,16 +357,16 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void queryMaterailCar(List<MaterialCar> rows) {
-        StringBuffer mStringBuffer = new StringBuffer();
+        StringBuilder mStringBuffer = new StringBuilder();
         if (rows.size() != 0) {
             for (int mI = 0; mI < rows.size(); mI++) {
                 if (mI == rows.size() - 1) {
                     mStringBuffer.append(rows.get(mI).getCar_name());
                 } else {
-                    mStringBuffer.append(rows.get(mI).getCar_name() + ",");
+                    mStringBuffer.append(rows.get(mI).getCar_name()).append(",");
                 }
             }
-            mTextView2.setText(mStringBuffer.toString());
+            mCarName.setText(mStringBuffer.toString());
             //  tv_hint.setText(rows.get(0).getCar_name());
         }
         state = 2;
@@ -388,6 +377,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     public void queryMaterailCarFailed(String msg) {
         ToastUtils.showMessage(this, msg);
         tv_hint.setText(msg);
+        mCarName.setText("无");
         textToSpeechManager.readMessage(msg);
         state = 1;
 
@@ -407,18 +397,18 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     public void jumpMaterialsSuccess(Result<StorageDetails> result) {
-//        mStorageDetailses.clear();
+//        mDetailses.clear();
 //        isToWarehOver(result.getRows());
 //        removeJumpMaterialFromRows(result);
-//        mStorageDetailses.addAll(result.getRows());
+//        mDetailses.addAll(result.getRows());
 //        content_adapter.notifyDataSetChanged();
 //        mRecycleContent.scrollToPosition(0);
         issureToWareh(result);
         getPresenter().issureToWareh(GsonTools.createGsonListString(mIssureToWarehBody));
-       // issureToWareh(result);
+        // issureToWareh(result);
         tv_hint.setText(result.getMessage());
 //        if (isOver) {
-//            getPresenter().issureToWarehFinish(mS);
+//            getPresenter().isSureToWarehFinish(mS);
 //        }
     }
 
@@ -444,7 +434,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         state = 2;
         ToastUtils.showMessage(this, message);
 
-        if(mConfirmDialog==null){
+        if (mConfirmDialog == null) {
 
             mConfirmDialog = BarCodeDialogUtils.showCommonDialog(this, message, new DialogInterface.OnClickListener() {
                 @Override
@@ -452,9 +442,9 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
                     getPresenter().jumpMaterials(mS);
                 }
-            },getBarCodeIpml());
+            }, getBarCodeIpml());
         }
-        if(!mConfirmDialog.isShowing()){
+        if (!mConfirmDialog.isShowing()) {
             mConfirmDialog.show();
         }
 
@@ -462,7 +452,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
     }
-
 
 
     @Override
@@ -491,7 +480,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     @Override
-    public void sureCompleteIssueSucess(String message) {
+    public void sureCompleteIssueSuccess(String message) {
         ToastUtils.showMessage(this, message);
         textToSpeechManager.readMessage(message);
         tv_hint.setText(message);
@@ -595,19 +584,60 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
     @Override
-    public void issureToWarehFinish() {
+    public void isSureToWarehFinish() {
         getPresenter().issureToWarehFinish(mS);
     }
 
     @Override
+    public void showDialogLoadingView() {
+        if (mProgressDialog == null) {
+            mProgressDialog = DialogUtils.createProgressDialog(this, "正在发送到备料区。。。", false);
+            mProgressDialog.show();
+        }
+    }
+
+    @Override
+    public void showBacAreaMessageSuccess(Result mResult) {
+        //刷新列表
+        getPresenter().getStorageDetails(mS);
+        getPresenter().queryMaterailCar(mS);
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
+        tv_hint.setText(mResult.getMessage());
+        ToastUtils.showMessage(this, mResult.getMessage());
+    }
+
+    @Override
+    public void showBacAreaMessageFailed(String mMessage) {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+        tv_hint.setText(mMessage);
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
+        ToastUtils.showMessage(this, mMessage);
+    }
+
+    @Override
+    protected void handError(String contents) {
+        super.handError(contents);
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    @Override
     public void onScanSuccess(String barcode) {
-        Log.e(TAG, "onScanSuccess: "+barcode);
+        Log.e(TAG, "onScanSuccess: " + barcode);
         switch (state) {
             case 1:
                 BackupMaterialCar car;
                 try {
                     car = ((BackupMaterialCar) mBarCodeParseIpml.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
-                    //mTextView2.setText(car.getSource());
+                    //mCarName.setText(car.getSource());
                     Map<String, String> maps = new HashMap<>();
                     maps.put("work_order", work_order);
                     maps.put("part", part);
@@ -627,20 +657,20 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
             case 2:
                 //扫描料盘
                 try {
-                    materialblockbarcode = (MaterialBlockBarCode) mBarCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
+                    MaterialBlockBarCode mMaterialblockbarcode = (MaterialBlockBarCode) mBarCodeParseIpml.getEntity(barcode, BarCodeType.MATERIAL_BLOCK_BARCODE);
                     if (mIssureToWarehBody == null) {
                         mIssureToWarehBody = new IssureToWarehBody();
                     }
-                    mIssureToWarehBody.setMaterial_no(materialblockbarcode.getDeltaMaterialNumber());
-                    mIssureToWarehBody.setSerial_no(materialblockbarcode.getStreamNumber());
-                    mIssureToWarehBody.setUnit(materialblockbarcode.getUnit());
-                    mIssureToWarehBody.setDc(materialblockbarcode.getDC());
-                    mIssureToWarehBody.setLc(materialblockbarcode.getDC());
-                    mIssureToWarehBody.setVendor(materialblockbarcode.getDC());
-                    mIssureToWarehBody.setVendor(materialblockbarcode.getVendor());
-                    mIssureToWarehBody.setTc(materialblockbarcode.getBusinessCode());
-                    mIssureToWarehBody.setPo(materialblockbarcode.getPO());
-                    mIssureToWarehBody.setQty(materialblockbarcode.getCount());
+                    mIssureToWarehBody.setMaterial_no(mMaterialblockbarcode.getDeltaMaterialNumber());
+                    mIssureToWarehBody.setSerial_no(mMaterialblockbarcode.getStreamNumber());
+                    mIssureToWarehBody.setUnit(mMaterialblockbarcode.getUnit());
+                    mIssureToWarehBody.setDc(mMaterialblockbarcode.getDC());
+                    mIssureToWarehBody.setLc(mMaterialblockbarcode.getDC());
+                    mIssureToWarehBody.setVendor(mMaterialblockbarcode.getDC());
+                    mIssureToWarehBody.setVendor(mMaterialblockbarcode.getVendor());
+                    mIssureToWarehBody.setTc(mMaterialblockbarcode.getBusinessCode());
+                    mIssureToWarehBody.setPo(mMaterialblockbarcode.getPO());
+                    mIssureToWarehBody.setQty(mMaterialblockbarcode.getCount());
                     mIssureToWarehBody.setWork_order(work_order);
                     mIssureToWarehBody.setSide(side);
                     mIssureToWarehBody.setPart(part);
@@ -649,11 +679,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     //currentDeltaMaterialNumber = materialblockbarcode.getDeltaMaterialNumber();
                     getPresenter().issureToWareh(GsonTools.createGsonListString(mIssureToWarehBody));
 
-                } catch (EntityWrongException mEWrongException) {
-                    ToastUtils.showMessage(this, mEWrongException.getMessage());
-                    tv_hint.setText(mEWrongException.getMessage());
-                    VibratorAndVoiceUtils.wrongVibrator(this);
-                    VibratorAndVoiceUtils.wrongVoice(this);
                 } catch (DCTimeFormatException mDCException) {
                     ToastUtils.showMessage(this, mDCException.getMessage());
                     tv_hint.setText(mDCException.getMessage());
@@ -664,7 +689,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                     BackupMaterialCar otherCar;
                     try {
                         otherCar = ((BackupMaterialCar) mBarCodeParseIpml.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
-                        //mTextView2.setText(car.getSource());
+                        //mCarName.setText(car.getSource());
                         Map<String, String> maps = new HashMap<>();
                         maps.put("work_order", work_order);
                         maps.put("part", part);
@@ -713,71 +738,50 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        //mToolbarHeight = mToolbar.getHeight();
-        super.onWindowFocusChanged(hasFocus);
-    }
 
-
-    @OnClick(R.id.button2)
-    public void onClick() {
-        if (!isHaveIssureOver) {
-            ToastUtils.showMessage(this, getString(R.string.unfinished_station));
-            return;
-        }
-        if (mCustomPopWindow == null) {
-            createCustomPopWindow();
-
-        }
-        if (SingleClick.isSingle(1000)) {
-            getPresenter().getDebitDataList(mS);
-        }
-    }
-
-    private void createCustomPopWindow() {
-        mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_bottom_sheet).build();
-        View mContentView = mCustomPopWindow.getContentView();
-        RecyclerView rv_debit = ViewUtils.findView(mContentView, R.id.rv_sheet);
-        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
-        Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
-        Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
-        ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
-        bt_cancel.setOnClickListener(this);
-        bt_confirm.setOnClickListener(this);
-        bt_select_all.setOnClickListener(this);
-
-        undoList_adapter = new CommonBaseAdapter<DebitData>(getContext(), mDebitDatas) {
-            @Override
-            protected void convert(CommonViewHolder holder, final DebitData item, int position) {
-                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
-                holder.setText(R.id.tv_slot, "架位：" + item.getSlot());
-                holder.setText(R.id.tv_amount, "需求量：" + String.valueOf(item.getAmount()));
-                holder.setText(R.id.tv_issue, "已发料量：" + String.valueOf(item.getIssue_amount()));
-                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
-                mCheckBox.setChecked(item.isChecked());
-                holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mCheckBox.setChecked(!item.isChecked());
-                        item.setChecked(!item.isChecked());
-                    }
-                });
-
-            }
-
-            @Override
-            protected int getItemViewLayoutId(int position, DebitData item) {
-                return R.layout.item_debit_list;
-            }
-
-        };
-        rv_debit.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
-        rv_debit.setLayoutManager(linearLayoutManager);
-        rv_debit.setAdapter(undoList_adapter);
-    }
+//    private void createCustomPopWindow() {
+//        mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_bottom_sheet).build();
+//        View mContentView = mCustomPopWindow.getContentView();
+//        RecyclerView rv_debit = ViewUtils.findView(mContentView, R.id.rv_sheet);
+//        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
+//        Button bt_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
+//        Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
+//        ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
+//        bt_cancel.setOnClickListener(this);
+//        bt_confirm.setOnClickListener(this);
+//        bt_select_all.setOnClickListener(this);
+//
+//        undoList_adapter = new CommonBaseAdapter<DebitData>(getContext(), mDebitDatas) {
+//            @Override
+//            protected void convert(CommonViewHolder holder, final DebitData item, int position) {
+//                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
+//                holder.setText(R.id.tv_slot, "架位：" + item.getSlot());
+//                holder.setText(R.id.tv_amount, "需求量：" + String.valueOf(item.getAmount()));
+//                holder.setText(R.id.tv_issue, "已发料量：" + String.valueOf(item.getIssue_amount()));
+//                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
+//                mCheckBox.setChecked(item.isChecked());
+//                holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        mCheckBox.setChecked(!item.isChecked());
+//                        item.setChecked(!item.isChecked());
+//                    }
+//                });
+//
+//            }
+//
+//            @Override
+//            protected int getItemViewLayoutId(int position, DebitData item) {
+//                return R.layout.item_debit_list;
+//            }
+//
+//        };
+//        rv_debit.setHasFixedSize(true);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setSmoothScrollbarEnabled(true);
+//        rv_debit.setLayoutManager(linearLayoutManager);
+//        rv_debit.setAdapter(undoList_adapter);
+//    }
 
 
     @Override
@@ -816,7 +820,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 break;
             case R.id.bt_sheet_select_all:
                 if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
-                    if (mDebitDatas != null && mDebitDatas.size() != 0) {
+                    if (mDebitDatas.size() != 0) {
                         for (DebitData mDebitData : mDebitDatas) {
                             mDebitData.setChecked(true);
                         }
@@ -826,7 +830,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
                 break;
             case R.id.bt_sheet_select_cancel:
                 if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
-                    if (mDebitDatas != null && mDebitDatas.size() != 0) {
+                    if (mDebitDatas.size() != 0) {
                         for (DebitData mDebitData : mDebitDatas) {
                             mDebitData.setChecked(false);
                         }
@@ -840,4 +844,49 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
 
+//    @OnClick({R.id.btn_debitManually})
+//    public void onViewClicked(View view) {
+//        switch (view.getId()) {
+//            case R.id.bt_send_back_area:
+//
+//                break;
+//            case R.id.btn_debitManually:
+//                if (!isHaveIssureOver) {
+//                    ToastUtils.showMessage(this, getString(R.string.unfinished_station));
+//                    return;
+//                }
+//                if (mCustomPopWindow == null) {
+//                    createCustomPopWindow();
+//
+//                }
+//                if (SingleClick.isSingle(1000)) {
+//                    getPresenter().getDebitDataList(mS);
+//                }
+//                break;
+//        }
+//    }
+
+
+    @OnClick(R.id.bt_send_back_area)
+    public void onViewClicked() {
+        Log.d(TAG, "onViewClicked() called");
+        if (state == 2) {
+            if (mSendDialolg == null) {
+                mSendDialolg = BarCodeDialogUtils.showCommonDialog(this, "是否将料发送到备料区？", this, getBarCodeIpml());
+            }
+            mSendDialolg.show();
+        } else {
+            ToastUtils.showMessage(StorageDetailsActivity.this, "请先绑定备料车！");
+        }
+
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+
+                if (mS != null && SingleClick.isSingle(1000)) {
+                    getPresenter().sendBackArea(mS);
+                }
+        dialog.dismiss();
+    }
 }

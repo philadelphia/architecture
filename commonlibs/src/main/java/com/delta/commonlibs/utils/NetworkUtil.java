@@ -6,6 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+
+import java.net.InetAddress;
 
 import retrofit2.adapter.rxjava.HttpException;
 
@@ -60,5 +66,45 @@ public class NetworkUtil {
         activity.startActivityForResult(intent, requestCode);
     }
 
+    public static void getNetIP(final String host, final OnGetHostAddress mOnGetHostAddress) {
+
+        final Handler mHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+
+                super.handleMessage(msg);
+                if (msg.what == 1) {
+                    Bundle mData = msg.getData();
+                    String mHost = mData.getString("host");
+                    mOnGetHostAddress.getHostAddressSuccess(mHost);
+                } else {
+                    mOnGetHostAddress.getHostAddressField();
+                }
+            }
+        };
+        mOnGetHostAddress.startLoading();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message mObtain = Message.obtain();
+                Bundle mBundle = new Bundle();
+                try {
+                    InetAddress mByName = InetAddress.getByName(host);
+                    mObtain.what = 1;
+                    mBundle.putString("host", mByName.getHostAddress());
+
+                } catch (Exception mE) {
+                    mE.printStackTrace();
+                    mObtain.what = -1;
+                }
+                mObtain.setData(mBundle);
+                mHandler.sendMessage(mObtain);
+            }
+        }).start();
+
+
+    }
+
 
 }
+

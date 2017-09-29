@@ -28,6 +28,7 @@ import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.LedLight;
 import com.delta.smt.entity.Light;
+import com.delta.smt.entity.LightOnResultItem;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
@@ -83,6 +84,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -269,6 +271,23 @@ public interface ApiService {
     //请求接料预警详情页面item数据
     @GET("ams/smm/linealarmfault/getlinematerialconnectdetail")
     Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(@Query("condition") String condition);
+
+    /**
+     * 接料时点灯
+     */
+    @POST("ams/smm/linealarmfault/turnonlightfornextmaterial")
+    @FormUrlEncoded
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    Observable<Result<LightOnResultItem>> lightOnMaterial(@Field("value") String value);
+
+    /**
+     * @param value
+     * @return
+     */
+    @POST("ams/smm/linealarmfault/turnofflight")
+    @FormUrlEncoded
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    Observable<Result> lightOffMaterial(@Field("value") String value);
 
     //提交新旧流水号
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -550,7 +569,9 @@ public interface ApiService {
     @POST("ams/smm/warehissue/startmantississue")
     Observable<MantissaWarehouseDetailsResult> getMantissaWarehouseDetails(@Field("value") String bind);
 
-
+    // 将物料发送给备料区
+    @GET("ams/smm/warehouse/workorder/materials")
+    Observable<Result> sendBackArea(@Query("condition") String mS);
 
     //料盘绑定标签
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -804,4 +825,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/ams/smm/linealarmfault/uploadtomesfromprocessline")
     Observable<Result> uploadToMesFromProcessline(@Field("value") String value);
+
+
 }

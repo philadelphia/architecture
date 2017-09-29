@@ -6,6 +6,7 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.smt.entity.AcceptMaterialResult;
+import com.delta.smt.entity.LightOnResultItem;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.production_warining_item.ItemAcceptMaterialDetail;
 
@@ -181,5 +182,46 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         });
 
     }
+
+    /**
+     * 点灯
+     * @param value
+     */
+    public void turnLightOn(String value){
+        getModel().turnLightOn(value).subscribe(new Action1<Result<LightOnResultItem>>() {
+            @Override
+            public void call(Result<LightOnResultItem> lightOnResultItemResult) {
+                    if (lightOnResultItemResult.getCode() == 0){
+                        getView().onLightOnSuccess(lightOnResultItemResult.getRows().get(0));
+                    }else {
+                        getView().onLightOnFailed();
+                    }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+    }
+
+    /**
+     * 灭灯
+     * @param value
+     */
+    public void turnLightOff(String value){
+        getModel().turnLightOff(value).subscribe(new Action1<Result>() {
+            @Override
+            public void call(Result lightOnResultItemResult) {
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+    }
+
 
 }

@@ -108,7 +108,7 @@
 
         <!-- production warning activity -->
         <activity
-            android:name=".ui.production_warning.produce_line.ProduceLineActivity"
+            android:name=".ui.production_warning.produce_line.ProductionLineSelectActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.production_warning.produce_warning.ProduceWarningActivity"

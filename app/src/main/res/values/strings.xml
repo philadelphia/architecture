@@ -104,7 +104,7 @@
     <string name="LittleBoard">小板:</string>
     <string name="unfinished_station">还没有开始发料，不能扣账！</string>
     <string name="server_error_message"> 无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理员！</string>
-    <string name="scan_remain_car_message">请扫描对应余料车</string>
+    <string name="scan_remain_car_message">请扫描对应料车</string>
     <string name="scan_corresponding_materials_plate">请扫描对应料盘！</string>
     <string name="debit_success">扣账成功</string>
     <string name="debit_failed">扣账失败</string>
@@ -143,5 +143,10 @@
     <string name="ji">记住密码</string>
     <string name="feedingList">上料列表：</string>
     <string name="materialList">发料列表：</string>
+    <string name="send_backup_area">发送到备料区</string>
+    <string name="storage">仓库</string>
+    <string name="workOrder">工单：</string>
+    <string name="line">线别：</string>
+    <string name="side">面别：</string>
 
 </resources>

@@ -41,6 +41,8 @@ public interface MantissaWarehouseDetailsContract {
         Observable<Result> changecarshelf(String mGsonListString);
 
         Observable<Result> offcarshelflight(String mS);
+
+        Observable<Result> sendBackArea(String mS);
     }
 
     interface View extends IView {
@@ -91,5 +93,11 @@ public interface MantissaWarehouseDetailsContract {
         void offcarshelflightSuccess(String mMessage);
 
         void offcarshelflightFailed(String mMessage);
+
+        void showDialogLoadingView();
+
+        void showBacAreaMessageSuccess(Result mResult);
+
+        void showBacAreaMessageFailed(String mMessage);
     }
 }
