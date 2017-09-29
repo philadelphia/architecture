@@ -17,8 +17,8 @@ import rx.Observable;
 
 public interface ProduceWarningFragmentContract{
     interface View extends IView {
-        void getItemWarningDatas(List<ItemWarningInfo> itemWarningInfo);
-        void getItemWarningDatasFailed(String message);
+        void onGetWarningItemSuccess(List<ItemWarningInfo> itemWarningInfo);
+        void onGetWarningItemFailed(String message);
 
         void getItemWarningConfirmSuccess();
 
@@ -32,9 +32,8 @@ public interface ProduceWarningFragmentContract{
     }
 
     interface Model extends IModel {
-
         Observable<ProduceWarning> getItemWarningDatas(String condition);
         Observable<Result> getItemWarningConfirm(String condition);
-        Observable<Result> getBarcodeInfo(String codition);
+        Observable<Result> getBarcodeInfo(String condition);
     }
 }

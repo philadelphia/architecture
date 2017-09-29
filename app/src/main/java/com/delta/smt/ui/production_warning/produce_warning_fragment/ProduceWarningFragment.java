@@ -217,7 +217,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         if (null != mAdapter) {
             mAdapter.startRefreshTime();
         }
-        getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+//        getPresenter().onGetWarningItemSuccess(((ProduceWarningActivity) getmActivity()).initLine());
     }
 
     @Override
@@ -248,13 +248,13 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
      * @param itemWarningInfo 含有item数据的对象
      */
     @Override
-    public void getItemWarningDatas(List<ItemWarningInfo> itemWarningInfo) {
+    public void onGetWarningItemSuccess(List<ItemWarningInfo> itemWarningInfo) {
         datas.clear();
 
         for (int i = 0; i < itemWarningInfo.size(); i++) {
 /*            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                 Date parse = format.parse(itemWarningInfo.get(i).getTime());*/
-            Log.e("aaa", "getItemWarningDatas: " + itemWarningInfo.get(i).getTime());
+            Log.e("aaa", "onGetWarningItemSuccess: " + itemWarningInfo.get(i).getTime());
             long time = System.currentTimeMillis();
             itemWarningInfo.get(i).setEnd_time(time + Math.round(itemWarningInfo.get(i).getTime()) * 1000);
             itemWarningInfo.get(i).setEntityId(i);
@@ -272,7 +272,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
      * @param message 错误信息
      */
     @Override
-    public void getItemWarningDatasFailed(String message) {
+    public void onGetWarningItemFailed(String message) {
 /*        ToastUtils.showMessage(getContext(), message);*/
         if ("Error".equals(message)) {
             Snackbar.make(getActivity().getCurrentFocus(), this.getString(R.string.server_error_message), Snackbar.LENGTH_LONG).show();
@@ -532,7 +532,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mStatusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+                getPresenter().onGetWarningItemSuccess(((ProduceWarningActivity) getmActivity()).initLine());
             }
         });
     }*/

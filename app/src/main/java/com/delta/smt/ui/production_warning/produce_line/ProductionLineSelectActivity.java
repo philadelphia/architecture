@@ -46,7 +46,7 @@ import butterknife.OnClick;
  *@date : 2017/9/18 16:03
 */
 
-public class ProduceLineActivity extends BaseActivity<ProduceLinePresenter>
+public class ProductionLineSelectActivity extends BaseActivity<ProduceLinePresenter>
         implements ProduceLineContract.View, CommonBaseAdapter.OnItemClickListener<ItemProduceLine> {
 
     @BindView(R.id.ryv_production_line)

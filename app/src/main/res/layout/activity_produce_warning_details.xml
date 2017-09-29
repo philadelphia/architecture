@@ -9,8 +9,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40px"
         android:orientation="horizontal"
-        android:padding="40px">
+        android:paddingLeft="40px"
+        android:paddingRight="40px">
 
         <TextView
             android:id="@+id/tv_line"
@@ -57,16 +59,68 @@
     </LinearLayout>
 
 
-    <LinearLayout
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:padding="40px">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="料号:     "-->
+    <!--android:textColor="#333333"-->
+    <!--android:textSize="40px" />-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/edt_materialNumber"-->
+    <!--android:layout_width="550px"-->
+    <!--android:layout_height="39dp"-->
+    <!--android:layout_marginLeft="40px"-->
+    <!--android:background="@drawable/ed_back_white"-->
+    <!--android:focusable="false"-->
+    <!--android:hint="料号:"-->
+    <!--android:textSize="@dimen/px_40" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:padding="40px">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="流水号:"-->
+    <!--android:textColor="#333333"-->
+    <!--android:textSize="40px" />-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/edt_serialNumber"-->
+    <!--android:layout_width="550px"-->
+    <!--android:layout_height="39dp"-->
+    <!--android:layout_marginLeft="40px"-->
+    <!--android:background="@drawable/ed_back_white"-->
+    <!--android:focusable="false"-->
+    <!--android:hint="流水号:"-->
+    <!--android:textSize="@dimen/px_40" />-->
+
+    <!--</LinearLayout>-->
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="40px">
+        android:paddingLeft="40px"
+        android:paddingRight="40px">
 
         <TextView
+            android:id="@+id/tv_material_id"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="料号:"
+            android:layout_height="39dp"
+            android:gravity="center_vertical"
+            android:text="料号:  "
             android:textColor="#333333"
             android:textSize="40px" />
 
@@ -74,23 +128,22 @@
             android:id="@+id/edt_materialNumber"
             android:layout_width="550px"
             android:layout_height="39dp"
-            android:layout_marginLeft="40px"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/tv_material_id"
             android:background="@drawable/ed_back_white"
             android:focusable="false"
-            android:hint="料号"
+            android:hint="料号:"
+            android:paddingLeft="20px"
             android:textSize="@dimen/px_40" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="40px">
 
         <TextView
+            android:id="@+id/tv_serial_num"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="39dp"
+            android:layout_alignTop="@+id/edt_serialNumber"
+            android:layout_below="@+id/tv_material_id"
+            android:gravity="center_vertical"
             android:text="流水号:"
             android:textColor="#333333"
             android:textSize="40px" />
@@ -99,62 +152,24 @@
             android:id="@+id/edt_serialNumber"
             android:layout_width="550px"
             android:layout_height="39dp"
-            android:layout_marginLeft="40px"
+            android:layout_alignLeft="@+id/edt_materialNumber"
+            android:layout_below="@+id/edt_materialNumber"
+            android:layout_toRightOf="@id/tv_serial_num"
             android:background="@drawable/ed_back_white"
             android:focusable="false"
             android:hint="流水号:"
+            android:layout_marginTop="10px"
+            android:paddingLeft="20px"
             android:textSize="@dimen/px_40" />
 
-    </LinearLayout>
 
-    <!--    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="40px">
-            <TextView
-                android:text="线别：**"
-                android:textSize="40px"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_line"/>
-
-            <TextView
-                android:text="带接料料站：**"
-                android:textSize="40px"
-                android:layout_weight="1"
-                android:layout_marginLeft="40px"
-                android:layout_toRightOf="@+id/tv_line"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_material_station_num"/>
-
-            <TextView
-                android:text="面别：**"
-                android:textSize="40px"
-                android:layout_below="@+id/tv_line"
-                android:layout_marginTop="40px"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_face"/>
-
-            <TextView
-                android:text="工单号：**"
-                android:textSize="40px"
-                android:layout_toRightOf="@+id/tv_face"
-                android:layout_below="@+id/tv_line"
-                android:layout_marginLeft="40px"
-                android:layout_marginTop="40px"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_work_order"/>
-
-        </RelativeLayout>-->
+    </RelativeLayout>
 
     <HorizontalScrollView
         android:id="@+id/hr_scrow"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40px">
 
         <LinearLayout
             android:layout_width="match_parent"
