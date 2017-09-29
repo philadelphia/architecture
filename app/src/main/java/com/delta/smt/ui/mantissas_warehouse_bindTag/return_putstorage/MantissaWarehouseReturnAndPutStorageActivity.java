@@ -23,7 +23,7 @@ import com.delta.smt.entity.SendMessage;
 import com.delta.smt.entity.WaringDialogEntity;
 import com.delta.smt.manager.WarningManger;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.put_storage.MantissaWarehousePutstorageFragment;
-import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.MantissaWarehouseReturnFragment;
+import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.schedule.ScheduleFragment;
 import com.delta.smt.widget.DialogLayout;
 import com.delta.smt.widget.WarningDialog;
 
@@ -57,7 +57,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     @BindView(R.id.fl_container)
     FrameLayout mFlContainer;
     private FragmentTransaction mFragmentTransaction;
-    private MantissaWarehouseReturnFragment mMantissaWarehouseReturnFragment;
+    private ScheduleFragment mScheduleFragment;
     private MantissaWarehousePutstorageFragment mMantissaWarehousePutstorageFragment;
 
     private SupportFragment currentFragment;
@@ -97,8 +97,8 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             if (keyCode == KeyEvent.KEYCODE_BACK) { //表示按返回键 时的操作
                 // 监听到返回按钮点击事件
-                if (mMantissaWarehouseReturnFragment != null) {
-                    mMantissaWarehouseReturnFragment.onBack();
+                if (mScheduleFragment != null) {
+                  //  mScheduleFragment.onBack();
                 }
             }
         }
@@ -134,9 +134,9 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         ViewUtils.setTabTitle(mTlTitle, titles);
         mTlTitle.addOnTabSelectedListener(this);
         mMantissaWarehousePutstorageFragment = new MantissaWarehousePutstorageFragment();
-        mMantissaWarehouseReturnFragment = new MantissaWarehouseReturnFragment();
-        loadMultipleRootFragment(R.id.fl_container, 0, mMantissaWarehouseReturnFragment, mMantissaWarehousePutstorageFragment);
-        currentFragment = mMantissaWarehouseReturnFragment;
+        mScheduleFragment = new ScheduleFragment();
+        loadMultipleRootFragment(R.id.fl_container, 0, mScheduleFragment, mMantissaWarehousePutstorageFragment);
+        currentFragment = mScheduleFragment;
         mTlTitle.getTabAt(currentTab).select();
     }
 
@@ -160,8 +160,8 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
         switch (tab.getPosition()) {
             case 0:
                // currentTab = 0;
-                showHideFragment(mMantissaWarehouseReturnFragment, currentFragment);
-                currentFragment = mMantissaWarehouseReturnFragment;
+                showHideFragment(mScheduleFragment, currentFragment);
+                currentFragment = mScheduleFragment;
                 Log.e(TAG, "onTabSelected: ");
                 break;
             case 1:
@@ -225,8 +225,8 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (mMantissaWarehouseReturnFragment != null) {
-                    mMantissaWarehouseReturnFragment.onBack();
+                if (mScheduleFragment != null) {
+                 //   mScheduleFragment.onBack();
                 }
                 finish();
                 break;
@@ -244,7 +244,7 @@ public class MantissaWarehouseReturnAndPutStorageActivity extends BaseActivity
 
     @Override
     public void onScanSuccess(String barcode) {
-        if (currentFragment == mMantissaWarehouseReturnFragment) {
+        if (currentFragment == mScheduleFragment) {
 
             EventBus.getDefault().post(new BacKBarCode(barcode));
         } else {

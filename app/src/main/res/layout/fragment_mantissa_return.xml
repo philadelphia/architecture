@@ -4,6 +4,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <include layout="@layout/appbar"/>
 
     <com.delta.commonlibs.widget.statusLayout.StatusLayout
         android:layout_marginTop="20px"

@@ -1,4 +1,4 @@
-package com.delta.smt.ui.mantissa_warehouse.return_putstorage.returnto.mvp;
+package com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto_details.mvp;
 
 import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
@@ -12,18 +12,17 @@ import rx.Observable;
  * Created by Zhenyu.Liu on 2016/12/29.
  */
 
-public class MantissaWarehouseReturnModel extends BaseModel<ApiService> implements MantissaWarehouseReturnContract.Model{
+public class MantissaWarehouseReturnDetailsModel extends BaseModel<ApiService> implements MantissaWarehouseReturnDetailsContract.Model{
 
 
-    public MantissaWarehouseReturnModel(ApiService apiService) {
+    public MantissaWarehouseReturnDetailsModel(ApiService apiService) {
         super(apiService);
     }
 
 
     @Override
-    public Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn() {
-            return null;
-//        return getService().getMantissaWarehouseReturn().compose(RxsRxSchedulers.<MantissaWarehouseReturnResult>io_main());
+    public Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn(String str) {
+        return getService().getMantissaWarehouseReturn(str).compose(RxsRxSchedulers.<MantissaWarehouseReturnResult>io_main());
     }
 
     @Override
@@ -39,6 +38,11 @@ public class MantissaWarehouseReturnModel extends BaseModel<ApiService> implemen
     @Override
     public Observable<ManualDebitBean> getManualmaticDebit() {
         return getService().getManualmaticDebit().compose(RxsRxSchedulers.<ManualDebitBean>io_main());
+    }
+
+    @Override
+    public Observable<ManualDebitBean> offLights() {
+        return getService().offLights().compose(RxsRxSchedulers.<ManualDebitBean>io_main());
     }
 
     @Override

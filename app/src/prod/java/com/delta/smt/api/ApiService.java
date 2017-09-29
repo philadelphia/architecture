@@ -53,6 +53,7 @@ import com.delta.smt.entity.QualityManage;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFault;
 import com.delta.smt.entity.ResultFeeder;
+import com.delta.smt.entity.ScheduleResult;
 import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -688,9 +689,10 @@ public interface ApiService {
     @PUT("ams/smm/mantowareh/surecomplete")
     Observable<MantissaWarehousePutstorageResult> getYesok();
 
+
     //尾数仓入库
     @GET("ams/smm/mantissastorage/qmantissastoragelist")
-    Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
+    Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn(@Query("condition") String bind);
 
     //尾数仓查询料盘的位置
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -724,6 +726,9 @@ public interface ApiService {
     @POST("ams/smm/mantissastorage/deduction")
     Observable<ManualDebitBean> getdeduction(@Field("value") String bind);
 
+    //位数仓入库获取入库工单排程
+    @GET("ams/smm/mantissastorage/schedul")
+    Observable<ScheduleResult> getSchedule();
     /**
      * @description :
      * 1.更新
