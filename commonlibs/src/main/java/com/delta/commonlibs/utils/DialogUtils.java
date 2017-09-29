@@ -42,6 +42,13 @@ public class DialogUtils {
         return dialog;
     }
 
+    public static Dialog createProgressDialog(Context context, String message, boolean needCancle) {
+        ProgressDialog dialog = new ProgressDialog(context);
+        dialog.setMessage(message);
+        dialog.setCancelable(needCancle);
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
+    }
     public static Dialog showCommonDialog(Context context, String message,
                                           DialogInterface.OnClickListener listener) {
         AlertDialog mAlertDialog = new AlertDialog.Builder(context)

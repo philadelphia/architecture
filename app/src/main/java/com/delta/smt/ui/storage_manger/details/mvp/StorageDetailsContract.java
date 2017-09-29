@@ -39,6 +39,8 @@ public interface StorageDetailsContract {
         Observable<Result<DebitData>> deduction(String mS);
 
         Observable<Result<DebitData>> getDebitDataList(String ms);
+
+        Observable<Result> sendBackArea(String mS);
     }
 
     interface View extends IView {
@@ -97,6 +99,12 @@ public interface StorageDetailsContract {
         void getDebitDataFailed(String mMessage);
 
         void issureToWarehFinish();
+
+        void showDialogLoadingView();
+
+        void showBacAreaMessageSuccess(Result mMessage);
+
+        void showBacAreaMessageFailed(String mMessage);
     }
 
 }

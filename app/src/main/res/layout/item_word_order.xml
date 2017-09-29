@@ -30,7 +30,7 @@
                 android:textSize="40px" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tv_car_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="无"
