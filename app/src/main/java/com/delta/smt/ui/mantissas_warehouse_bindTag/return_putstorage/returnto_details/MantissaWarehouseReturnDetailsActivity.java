@@ -29,7 +29,6 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.BacKBarCode;
 import com.delta.smt.entity.MantissaWarehouseReturnBean;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.ManualDebitBean;
@@ -40,8 +39,6 @@ import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto_d
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto_details.mvp.MantissaWarehouseReturnDetailsContract;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto_details.mvp.MantissaWarehouseReturnDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
-
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -321,13 +318,11 @@ public class MantissaWarehouseReturnDetailsActivity extends BaseActivity<Mantiss
     }
 
 
-    @Subscribe
-    public void scanSucceses(BacKBarCode bacKBarCode) {
-
-        String barcode = bacKBarCode.getBarCode();
+    @Override
+    public void onScanSuccess(String barcode) {
 
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-
+        System.out.println(barcode);
         switch (flag) {
             case 1:
                 try {
@@ -357,11 +352,11 @@ public class MantissaWarehouseReturnDetailsActivity extends BaseActivity<Mantiss
                     manualDebit = "0";
 
                     if (ischeck) {
-                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, automaticDebit);
+                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, work_order,side,automaticDebit);
                         String s = GsonTools.createGsonListString(bindBean);
                         getPresenter().getputinstrage(s);
                     } else {
-                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, manualDebit);
+                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, work_order,side, manualDebit);
                         String s = GsonTools.createGsonListString(bindBean);
                         getPresenter().getputinstrage(s);
                     }
@@ -392,7 +387,9 @@ public class MantissaWarehouseReturnDetailsActivity extends BaseActivity<Mantiss
         }
 
 
+
     }
+
 
 
     public void setItemHighLightBasedOnMID(String materialID) {

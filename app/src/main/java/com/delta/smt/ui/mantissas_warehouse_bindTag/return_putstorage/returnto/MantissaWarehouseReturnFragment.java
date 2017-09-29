@@ -36,7 +36,6 @@ import com.delta.smt.entity.MantissaWarehouseReturnBean;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.ManualDebitBean;
 import com.delta.smt.entity.ManualmaticDebitBean;
-import com.delta.smt.entity.WarehousePutinStorageBean;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.di.DaggerMantissaWarehouseReturnComponent;
 import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.di.MantissaWarehouseReturnModule;
@@ -357,13 +356,13 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     manualDebit = "0";
 
                     if (ischeck) {
-                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, automaticDebit);
-                        String s = GsonTools.createGsonListString(bindBean);
-                        getPresenter().getputinstrage(s);
+//                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, automaticDebit);
+//                        String s = GsonTools.createGsonListString(bindBean);
+//                        getPresenter().getputinstrage(s);
                     } else {
-                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, manualDebit);
-                        String s = GsonTools.createGsonListString(bindBean);
-                        getPresenter().getputinstrage(s);
+//                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, manualDebit);
+//                        String s = GsonTools.createGsonListString(bindBean);
+//                        getPresenter().getputinstrage(s);
                     }
 
                 } catch (EntityNotFountException e) {
