@@ -228,7 +228,7 @@ public class HandAddActivity extends BaseActivity<HandAddPresenter>
                     itemHandAdds.get(i).setEntityId(i);
                 }else {
 
-                    Log.e("aaa", "getItemWarningDatas: " + parse.getTime());
+                    Log.e("aaa", "onGetWarningItemSuccess: " + parse.getTime());
                     itemHandAdds.get(i).setEnd_time(parse.getTime());
                     itemHandAdds.get(i).setEntityId(i);
                 }

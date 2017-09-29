@@ -36,7 +36,7 @@ import com.delta.smt.ui.over_receive.OverReceiveActivity;
 import com.delta.smt.ui.product_tools.back.ProduceToolsBackActivity;
 import com.delta.smt.ui.product_tools.borrow.ProduceToolsBorrowActivity;
 import com.delta.smt.ui.product_tools.location.ProduceToolsLocationActivity;
-import com.delta.smt.ui.production_warning.produce_line.ProduceLineActivity;
+import com.delta.smt.ui.production_warning.produce_line.ProductionLineSelectActivity;
 import com.delta.smt.ui.setting.SettingActivity;
 import com.delta.smt.ui.smt_module.module_down.ModuleDownActivity;
 import com.delta.smt.ui.smt_module.module_up.ModuleUpActivity;
@@ -184,13 +184,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "生产中预警":
                 bundle = new Bundle();
                 bundle.putInt(Constant.SELECT_TYPE, 0);
-                IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
+                IntentUtils.showIntent(this, ProductionLineSelectActivity.class, bundle);
                 break;
 
             case "手补件":
                 bundle=new Bundle();
                 bundle.putInt(Constant.SELECT_TYPE,2);
-                IntentUtils.showIntent(this,ProduceLineActivity.class,bundle);
+                IntentUtils.showIntent(this,ProductionLineSelectActivity.class,bundle);
 //               IntentUtils.showIntent(this, HandAddActivity.class);
                 break;
 
@@ -209,7 +209,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "故障处理":
                 bundle = new Bundle();
                 bundle.putInt(Constant.SELECT_TYPE, 1);
-                IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
+                IntentUtils.showIntent(this, ProductionLineSelectActivity.class, bundle);
                 break;
             case "治具借出":
                 IntentUtils.showIntent(this, ProduceToolsBorrowActivity.class);
@@ -223,7 +223,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "品管确认":
                 bundle = new Bundle();
                 bundle.putInt(Constant.SELECT_TYPE, 3);
-                IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
+                IntentUtils.showIntent(this, ProductionLineSelectActivity.class, bundle);
                 break;
             case "仓库入库":
                 bundle = new Bundle();
@@ -232,7 +232,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
             case "产中扫描":
                 bundle = new Bundle();
                 bundle.putInt(Constant.SELECT_TYPE, 4);
-                IntentUtils.showIntent(this, ProduceLineActivity.class, bundle);
+                IntentUtils.showIntent(this, ProductionLineSelectActivity.class, bundle);
                 break;
             default:
                 break;

@@ -41,12 +41,12 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
                         getView().showEmptyView();
                     }else {
                         getView().showContentView();
-                        getView().getItemWarningDatas(itemWarningInfos.getRows().getAlarm());
+                        getView().onGetWarningItemSuccess(itemWarningInfos.getRows().getAlarm());
                         Log.e("aaa", "fagment:预警数量"+String.valueOf(itemWarningInfos.getRows().getAlarm().size()) );
                     }
 
                 }else {
-                    getView().getItemWarningDatasFailed(itemWarningInfos.getMsg());
+                    getView().onGetWarningItemFailed(itemWarningInfos.getMsg());
                     //getView().showErrorView();
                 }
             }
@@ -55,7 +55,7 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
             public void call(Throwable throwable) {
                 try {
                     //getView().showErrorView();
-                    getView().getItemWarningDatasFailed("Error");
+                    getView().onGetWarningItemFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -72,14 +72,14 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
                     getView().getItemWarningConfirmSuccess();
 
                 }else {
-                    getView().getItemWarningDatasFailed(result.getMessage());
+                    getView().onGetWarningItemFailed(result.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemWarningDatasFailed("Error");
+                    getView().onGetWarningItemFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -94,14 +94,14 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
                 if (0==result.getCode()) {
                     getView().getItemWarningConfirmSuccess();
                 }else {
-                    getView().getItemWarningDatasFailed(result.getMessage());
+                    getView().onGetWarningItemFailed(result.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemWarningDatasFailed("Error");
+                    getView().onGetWarningItemFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
