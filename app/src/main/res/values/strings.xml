@@ -144,5 +144,9 @@
     <string name="feedingList">上料列表：</string>
     <string name="materialList">发料列表：</string>
     <string name="send_backup_area">发送到备料区</string>
+    <string name="storage">仓库</string>
+    <string name="workOrder">工单：</string>
+    <string name="line">线别：</string>
+    <string name="side">面别：</string>
 
 </resources>
