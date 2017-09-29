@@ -14,7 +14,8 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
- * Created by Shufeng.Wu on 2017/1/5.
+ * Author Shufeng.Wu
+ * Date   2017/1/5  
  */
 
 public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsContract.Model,ModuleDownDetailsContract.View> {
@@ -164,7 +165,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void call(Result result) {
                 if (0 == result.getCode()){
-
+                    // TODO: 2017/9/29  
                 }
             }
         }, new Action1<Throwable>() {

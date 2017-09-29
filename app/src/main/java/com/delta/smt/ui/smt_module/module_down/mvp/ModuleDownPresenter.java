@@ -10,7 +10,8 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
- * Created by Shufeng.Wu on 2017/1/3.
+ * Author Shufeng.Wu
+ * Date   2017/1/3
  */
 
 public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,ModuleDownContract.View>{

@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -67,7 +66,8 @@ import static com.delta.commonlibs.utils.SpUtil.getBooleanSF;
 import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresenter> implements ModuleUpBindingContract.View, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
@@ -90,7 +90,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     LinearLayout linearLayout;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    FrameLayout frameLayout;
     @BindView(R.id.automatic_upload)
     AppCompatCheckBox ckb_automaticUpload;
     @BindView(R.id.btn_upload)
@@ -107,7 +106,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private int state = 1;
     @BindView(R.id.showMessage)
     TextView showMessage;
-    private CommonBaseAdapter<ModuleUpBindingItem> adapterTitle;
     private CommonBaseAdapter<ModuleUpBindingItem> adapter;
     private final List<ModuleUpBindingItem> dataList = new ArrayList<>();
     private final List<ModuleUpBindingItem> dataSource = new ArrayList<>();
@@ -115,18 +113,16 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     private String workItemID;
     private String side;
 
-    private String lineName;
     private String materialBlockNumber;
     private String serialNo;
     private String argument;
     private static final String TAG = "ModuleUpBindingActivity";
     private LinearLayoutManager linearLayoutManager;
-    private String quantaty;
+    private String quantity;
     private CustomPopWindow mCustomPopWindow;
-    private List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
-    private List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
+    private final List<UpLoadEntity.FeedingListBean> mFeedingListBean = new ArrayList<>();
+    private final List<UpLoadEntity.MaterialListBean> mMaterialListBean = new ArrayList<>();
     private UploadMESParams mUploadMESParamsA;
-    private boolean isAllItemBound = false;
     private MESAdapter mesAdapter;
     private Dialog loadingDialog;
 
@@ -142,7 +138,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         Intent intent = ModuleUpBindingActivity.this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
-        lineName = intent.getStringExtra(Constant.LINE_NAME);
+        String lineName = intent.getStringExtra(Constant.LINE_NAME);
 //        productName = intent.getStringExtra(Constant.PRODUCT_NAME);
 //        productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
         tv_workOrder.setText(getResources().getString(R.string.WorkID) + ":   " + workItemID);
@@ -185,7 +181,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         }
         jumpOver();
         dataList.add(new ModuleUpBindingItem());
-        adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataList) {
+        CommonBaseAdapter<ModuleUpBindingItem> adapterTitle = new CommonBaseAdapter<ModuleUpBindingItem>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, ModuleUpBindingItem item, int position) {
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.c_efefef));
@@ -249,7 +245,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     private boolean isAllItemIsBound(List<ModuleUpBindingItem> data) {
-        isAllItemBound = false;
+        boolean isAllItemBound = false;
         int size = data.size();
         for (int i = 0; i < size; i++) {
             ModuleUpBindingItem item = data.get(i);
@@ -411,7 +407,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         map.put("side", side);
         map.put("is_feeder_buffer", 0);
         String argument = GsonTools.createGsonListString(map);
-        getPresenter().getneeduploadtomesmaterials(argument);
+        getPresenter().getNeedUpLoadToMesMaterials(argument);
     }
 
     @Override
@@ -447,7 +443,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
                 }
                 if (SingleClick.isSingle(1000)) {
-                    getPresenter().getneeduploadtomesmaterials(argument);
+                    getPresenter().getNeedUpLoadToMesMaterials(argument);
                 }
 
                 break;
@@ -503,7 +499,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 break;
             case R.id.bt_sheet_select_all:
                 if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
-                    if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
+                    if (mFeedingListBean.size() != 0) {
                         for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
                             mListBean.setChecked(true);
                         }
@@ -521,7 +517,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                 break;
             case R.id.bt_sheet_select_cancel:
                 if (mCustomPopWindow != null && mCustomPopWindow.isShowing()) {
-                    if (mFeedingListBean != null && mFeedingListBean.size() != 0) {
+                    if (mFeedingListBean.size() != 0) {
                         for (UpLoadEntity.FeedingListBean mListBean : mFeedingListBean) {
                             mListBean.setChecked(false);
                         }
@@ -561,20 +557,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         recyclerView.setAdapter(mesAdapter);
     }
 
-    private void setAdapter(RecyclerView rv_debit, CommonBaseAdapter mUndoList_adapter) {
-        rv_debit.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
-            @Override
-            public boolean canScrollVertically() {
-//                return super.canScrollVertically();
-                return false;
-            }
-        };
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
-        rv_debit.setLayoutManager(linearLayoutManager);
-        rv_debit.setAdapter(mUndoList_adapter);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -582,10 +564,6 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     @SuppressWarnings("all")
     @Override
@@ -631,7 +609,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
                     jsonObject.addProperty("feeder_id", barcode);
                     jsonObject.addProperty("serial_no", serialNo);
                     jsonObject.addProperty("side", side);
-                    jsonObject.addProperty("qty", quantaty);
+                    jsonObject.addProperty("qty", quantity);
                     jsonObject.addProperty("code", isAutomaticUpload ? "1" : "0");
                     jsonObject.addProperty("is_feeder_buffer", "0");
                     jsonArray.add(jsonObject);
@@ -680,7 +658,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         showMessage.setVisibility(View.GONE);
         materialBlockNumber = materialBlockBarCode.getDeltaMaterialNumber();
         serialNo = materialBlockBarCode.getStreamNumber();
-        quantaty = materialBlockBarCode.getCount();
+        quantity = materialBlockBarCode.getCount();
         Log.i(TAG, "materialBlockNumber: " + materialBlockNumber);
         Log.i(TAG, "serialNo: " + serialNo
         );
@@ -711,7 +689,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
 
-    public void setItemHighLightBasedOnMID(int position) {
+    private void setItemHighLightBasedOnMID(int position) {
         scan_position = position;
         RecycleViewUtils.scrollToMiddle(linearLayoutManager, position, recyclerViewContent);
         adapter.notifyDataSetChanged();
@@ -729,7 +707,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean isExistInDataSourceAndHighLight(String item_m, String item_s, List<ModuleUpBindingItem> list) {
+    private boolean isExistInDataSourceAndHighLight(String item_m, String item_s, List<ModuleUpBindingItem> list) {
         if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getMaterial_no().equals(item_m) && list.get(i).getSerial_no().equals(item_s)) {
@@ -777,7 +755,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         }
     }
 
-    public boolean isMaterialBound(MaterialBlockBarCode materialBlockBarCode) {
+    private boolean isMaterialBound(MaterialBlockBarCode materialBlockBarCode) {
         boolean flag = false;
         for (ModuleUpBindingItem rowsBean : dataSource) {
             if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())) {
@@ -791,7 +769,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         return flag;
     }
 
-    public String getModuleID(MaterialBlockBarCode materialBlockBarCode) {
+    private String getModuleID(MaterialBlockBarCode materialBlockBarCode) {
         for (ModuleUpBindingItem rowsBean : dataSource) {
             if (rowsBean.getMaterial_no().equalsIgnoreCase(materialBlockBarCode.getDeltaMaterialNumber()) && rowsBean.getSerial_no().equalsIgnoreCase(materialBlockBarCode.getStreamNumber())) {
                 return rowsBean.getSlot();

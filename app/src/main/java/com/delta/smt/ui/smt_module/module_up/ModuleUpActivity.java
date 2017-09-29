@@ -2,6 +2,7 @@ package com.delta.smt.ui.smt_module.module_up;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,7 +46,8 @@ import butterknife.BindView;
 
 
 /**
- * Created by Shufeng.Wu on 2017/1/3.
+ * Author Shufeng.Wu
+ * Date   2017/1/3
  */
 public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         ModuleUpContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleUpWarningItem> {
@@ -63,7 +65,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     WarningManger warningManager;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    private List<ModuleUpWarningItem> dataList = new ArrayList<>();
+    private final List<ModuleUpWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<ModuleUpWarningItem> myAdapter;
     private WarningDialog warningDialog;
     private int mType;
@@ -139,19 +141,19 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
                 switch (moduleUpWarningItem.getStatus()) {
                     case 203:
                         status = "接料完成";
-                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background));
+                        holder.itemView.setBackground(ContextCompat.getDrawable(ModuleUpActivity.this, R.drawable.card_background));
                         break;
                     case 204:
                         status = "正在上模组";
-                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background_yellow));
+                        holder.itemView.setBackground(ContextCompat.getDrawable(ModuleUpActivity.this, R.drawable.card_background_yellow));
                         break;
                     case 205:
                         status = "上模组完成";
-                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background));
+                        holder.itemView.setBackground(ContextCompat.getDrawable(ModuleUpActivity.this, R.drawable.card_background));
                         break;
                     default:
                         status = "未知";
-                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background));
+                        holder.itemView.setBackground(ContextCompat.getDrawable(ModuleUpActivity.this, R.drawable.card_background));
                         break;
                 }
 
@@ -270,7 +272,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         updateMessage(warningMessage);
     }
 
-    public WarningDialog createDialog() {
+    private WarningDialog createDialog() {
 
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
@@ -288,8 +290,8 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
 
     private void updateMessage(String warningMessage) {
 
-        List<WaringDialogEntity> datas = warningDialog.getDatas();
-        datas.clear();
+        List<WaringDialogEntity> warningList = warningDialog.getDatas();
+        warningList.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("上模组预警:");
         StringBuilder sb = new StringBuilder();
@@ -302,7 +304,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
             }
             String content = sb.toString();
             warningEntity.setContent(content + "\n");
-            datas.add(warningEntity);
+            warningList.add(warningEntity);
             warningDialog.notifyData();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -387,5 +389,6 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     private void onRefresh() {
         getPresenter().getAllModuleUpWarningItems();
     }
+
 
 }

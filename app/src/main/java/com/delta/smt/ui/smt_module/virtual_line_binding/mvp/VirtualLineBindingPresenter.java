@@ -13,7 +13,8 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindingContract.Model, VirtualLineBindingContract.View> {
@@ -114,7 +115,6 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
             @Override
             public void call(VirtualModuleID result) {
                 if (result.getCode() == 0) {
-                    Log.i(TAG, "call: --------------------------");
                     Log.i(TAG, "call: " + result.toString());
                     getView().onGetModuleIDSuccess(result.getRows());
                 }

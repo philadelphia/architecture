@@ -12,7 +12,8 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 public interface ModuleUpBindingContract {

@@ -10,7 +10,8 @@ import com.delta.smt.entity.VirtualModuleID;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 public class VirtualLineBindingModel extends BaseModel<ApiService> implements VirtualLineBindingContract.Model {

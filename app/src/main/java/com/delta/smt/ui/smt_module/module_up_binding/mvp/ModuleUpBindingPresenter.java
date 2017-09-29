@@ -15,7 +15,8 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContract.Model, ModuleUpBindingContract.View> {
@@ -24,7 +25,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
 
     @Inject
-    public ModuleUpBindingPresenter(ModuleUpBindingContract.Model model, ModuleUpBindingContract.View mView, RxErrorHandler mRxErrorHandler, JumpOverModel mJumpOverModule) {
+    ModuleUpBindingPresenter(ModuleUpBindingContract.Model model, ModuleUpBindingContract.View mView, RxErrorHandler mRxErrorHandler, JumpOverModel mJumpOverModule) {
         super(model, mView);
         this.mRxErrorHandler = mRxErrorHandler;
         this.mJumpOverModule =mJumpOverModule;
@@ -149,9 +150,9 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
         });
     }
 
-    public void getneeduploadtomesmaterials(String mArgument) {
+    public void getNeedUpLoadToMesMaterials(String argument) {
 
-        getModel().getneeduploadtomesmaterials(mArgument).subscribe(new RxErrorHandlerSubscriber<BaseEntity<UpLoadEntity>>(mRxErrorHandler) {
+        getModel().getneeduploadtomesmaterials(argument).subscribe(new RxErrorHandlerSubscriber<BaseEntity<UpLoadEntity>>(mRxErrorHandler) {
             @Override
             public void onNext(BaseEntity<UpLoadEntity> mUpLoadEntityResult) {
 
@@ -166,8 +167,8 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
     }
 
-    public void jumpOver(String mGsonListString) {
-        mJumpOverModule.jumpOver(mGsonListString).subscribe(new RxErrorHandlerSubscriber<Result>(mRxErrorHandler) {
+    public void jumpOver(String argument) {
+        mJumpOverModule.jumpOver(argument).subscribe(new RxErrorHandlerSubscriber<Result>(mRxErrorHandler) {
             @Override
             public void onNext(Result mResult) {
 

@@ -149,7 +149,7 @@ public interface ApiService {
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
     //获取没有上传到MES的列表
-    @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    @GET("ams/smm/plugmodcontroller/getNeedUpLoadToMesMaterials")
     Observable<BaseEntity<UpLoadEntity>> getUnUpLoadToMESList(@Query("condition") String condition);
 
     //上传feeder备料到MES
@@ -765,7 +765,7 @@ public interface ApiService {
     @GET("ams/smm/warehissue/getnodebit")
     Observable<Result<DebitData>> getDebitDataList(@Query("condition") String mMs);
 
-    @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    @GET("ams/smm/plugmodcontroller/getNeedUpLoadToMesMaterials")
     Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(@Query("condition") String mArgument);
 
     @Headers({"Content-Type: application/x-www-form-urlencoded"})

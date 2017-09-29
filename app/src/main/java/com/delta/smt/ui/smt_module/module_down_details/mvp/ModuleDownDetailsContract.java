@@ -12,7 +12,8 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/5.
+ * Author Shufeng.Wu
+ * Date   2017/1/5
  */
 
 public interface ModuleDownDetailsContract {

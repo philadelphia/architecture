@@ -5,12 +5,9 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.DebitData;
-import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
-import com.delta.smt.entity.ResultFeeder;
 import com.delta.smt.entity.UpLoadEntity;
-
 
 import rx.Observable;
 

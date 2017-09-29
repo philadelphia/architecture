@@ -4,13 +4,10 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.commonlibs.di.scope.ActivityScope;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandler;
 import com.delta.commonlibs.rx.rxerrorhandler.RxErrorHandlerSubscriber;
-import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.DebitData;
-import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
-import com.delta.smt.entity.ResultFeeder;
 import com.delta.smt.entity.UpLoadEntity;
 
 import javax.inject.Inject;

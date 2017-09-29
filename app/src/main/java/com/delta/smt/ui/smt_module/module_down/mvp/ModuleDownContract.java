@@ -10,7 +10,8 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/3.
+ * Author Shufeng.Wu
+ * Date   2017/1/3
  */
 
 public interface ModuleDownContract {

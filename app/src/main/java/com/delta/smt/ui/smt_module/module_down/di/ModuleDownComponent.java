@@ -7,7 +7,8 @@ import com.delta.smt.ui.smt_module.module_down.ModuleDownActivity;
 import dagger.Component;
 
 /**
- * Created by Shufeng.Wu on 2017/1/3.
+ * Author Shufeng.Wu
+ * Date   2017/1/3
  */
 
 @ActivityScope
