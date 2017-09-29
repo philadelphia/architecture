@@ -17,9 +17,9 @@ import rx.Observable;
 public interface ModuleUpContract {
     interface View extends IView {
 
-        void onSuccess(List<ModuleUpWarningItem> dataSource);
+        void onGetWarningListSuccess(List<ModuleUpWarningItem> dataSource);
 
-        void onFailed(String message);
+        void onGetWarningListFailed(String message);
 
         void onNetFailed(Throwable throwable);
 
@@ -34,6 +34,6 @@ public interface ModuleUpContract {
     }
 
     interface Model extends IModel {
-        Observable<Result<ModuleUpWarningItem>> getAllModuleUpWarningItems();
+        Observable<Result<ModuleUpWarningItem>> getModuleUpWarningList();
     }
 }

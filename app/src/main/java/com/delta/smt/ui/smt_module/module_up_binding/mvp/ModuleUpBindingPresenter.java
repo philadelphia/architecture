@@ -31,8 +31,8 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
         this.mJumpOverModule =mJumpOverModule;
     }
 
-    public void getAllModuleUpBindingItems(String str) {
-        getModel().getAllModuleUpBindingItems(str).doOnSubscribe(new Action0() {
+    public void getModuleUpBindingList(String str) {
+        getModel().getModuleUpBindingList(str).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 try {
@@ -50,14 +50,14 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
                         if (moduleUpBindingItemResult.getRows().size() == 0) {
                             getView().showEmptyView();
-//                            getView().onFailed(moduleUpBindingItems);
+//                            getView().onGetWarningListFailed(moduleUpBindingItems);
                         } else {
                             getView().showContentView();
-                            getView().onSuccess(moduleUpBindingItemResult.getRows());
+                            getView().onGetModuleUpBindingListSuccess(moduleUpBindingItemResult.getRows());
                         }
 
                     } else {
-                        getView().onFailed(moduleUpBindingItemResult.getMessage());
+                        getView().onGetModuleUpBindingListFailed(moduleUpBindingItemResult.getMessage());
                         getView().showErrorView();
                     }
                 } catch (Exception e) {
@@ -97,7 +97,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.getMessage());
+                getView().onGetModuleUpBindingListFailed(throwable.getMessage());
             }
         });
 
@@ -129,7 +129,7 @@ public class ModuleUpBindingPresenter extends BasePresenter<ModuleUpBindingContr
 
                     } else {
                         getView().showContentView();
-                        getView().onFailed(moduleUpBindingItemResult.getMessage());
+                        getView().onGetModuleUpBindingListFailed(moduleUpBindingItemResult.getMessage());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

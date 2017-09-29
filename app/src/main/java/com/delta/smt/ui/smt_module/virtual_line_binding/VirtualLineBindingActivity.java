@@ -120,7 +120,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         map.put("side", side);
 
         String argument = GsonTools.createGsonListString(map);
-        getPresenter().getAllVirtualLineBindingItems(argument);
+        getPresenter().getVirtualLineBindingList(argument);
     }
 
     @Override
@@ -189,7 +189,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     }
 
     @Override
-    public void onSuccess(List<VirtualLineItem> data) {
+    public void onGetVirtualLineBindingListSuccess(List<VirtualLineItem> data) {
         dataSource.clear();
         data_tmp = data ;
         dataSource.addAll(data_tmp);
@@ -211,7 +211,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     }
 
     @Override
-    public void onFailed(String message) {
+    public void onGetVirtualLineBindingListFailed(String message) {
         ToastUtils.showMessage(this, message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -255,7 +255,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                 map.put("side", side);
                 Gson gson = new Gson();
                 String argument = gson.toJson(map);
-                getPresenter().getAllVirtualLineBindingItems(argument);
+                getPresenter().getVirtualLineBindingList(argument);
             }
         });
     }
@@ -270,7 +270,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                 map.put("work_order", workItemID);
                 map.put("side", side);
                 String argument = GsonTools.createGsonListString(map);
-                getPresenter().getAllVirtualLineBindingItems(argument);
+                getPresenter().getVirtualLineBindingList(argument);
             }
         });
     }

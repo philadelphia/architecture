@@ -132,7 +132,7 @@
             android:layout_toRightOf="@+id/tv_material_id"
             android:background="@drawable/ed_back_white"
             android:focusable="false"
-            android:hint="料号:"
+            android:hint="料号"
             android:paddingLeft="20px"
             android:textSize="@dimen/px_40" />
 
@@ -157,7 +157,7 @@
             android:layout_toRightOf="@id/tv_serial_num"
             android:background="@drawable/ed_back_white"
             android:focusable="false"
-            android:hint="流水号:"
+            android:hint="流水号"
             android:layout_marginTop="10px"
             android:paddingLeft="20px"
             android:textSize="@dimen/px_40" />

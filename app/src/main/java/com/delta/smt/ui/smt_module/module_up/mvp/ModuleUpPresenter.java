@@ -21,8 +21,8 @@ public class ModuleUpPresenter extends BasePresenter<ModuleUpContract.Model,Modu
         super(model, mView);
     }
 
-    public void getAllModuleUpWarningItems(){
-        getModel().getAllModuleUpWarningItems().doOnSubscribe(new Action0() {
+    public void getModuleUpWarningList(){
+        getModel().getModuleUpWarningList().doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 try{
@@ -41,7 +41,7 @@ public class ModuleUpPresenter extends BasePresenter<ModuleUpContract.Model,Modu
                             getView().showEmptyView();
                         }else {
                             getView().showContentView();
-                            getView().onSuccess(moduleUpWarningItemResult.getRows());
+                            getView().onGetWarningListSuccess(moduleUpWarningItemResult.getRows());
                         }
 
                     } else {

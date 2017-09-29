@@ -12,7 +12,8 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/23.
+ * Author Fuxiang.Zhang
+ * Date   2016/12/23
  */
 
 public interface ProduceWarningFragmentContract{
@@ -32,7 +33,7 @@ public interface ProduceWarningFragmentContract{
     }
 
     interface Model extends IModel {
-        Observable<ProduceWarning> getItemWarningDatas(String condition);
+        Observable<ProduceWarning> getWarningItemList(String condition);
         Observable<Result> getItemWarningConfirm(String condition);
         Observable<Result> getBarcodeInfo(String condition);
     }

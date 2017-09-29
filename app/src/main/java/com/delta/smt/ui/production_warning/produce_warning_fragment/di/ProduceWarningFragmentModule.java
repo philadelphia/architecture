@@ -10,11 +10,12 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/26.
+ * Author Fuxiang.Zhang
+ * Date   2016/12/26
  */
 @Module
 public class ProduceWarningFragmentModule {
-    ProduceWarningFragmentContract.View mView;
+    private ProduceWarningFragmentContract.View mView;
 
     public ProduceWarningFragmentModule(ProduceWarningFragmentContract.View mView){
         this.mView= mView;

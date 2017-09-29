@@ -20,8 +20,8 @@ public class VirtualLineBindingModel extends BaseModel<ApiService> implements Vi
     }
 
     @Override
-    public Observable<Result<VirtualLineItem>> getAllVirtualLineBindingItems(String str) {
-        return getService().getVirtualLineBindingItems(str).compose(RxsRxSchedulers.<Result<VirtualLineItem>>io_main());
+    public Observable<Result<VirtualLineItem>> getVirtualLineBindingList(String str) {
+        return getService().getVirtualLineBindingList(str).compose(RxsRxSchedulers.<Result<VirtualLineItem>>io_main());
     }
 
     @Override

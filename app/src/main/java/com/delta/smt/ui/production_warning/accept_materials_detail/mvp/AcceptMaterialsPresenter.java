@@ -21,46 +21,45 @@ import rx.functions.Action1;
  * Created by Fuxiang.Zhang on 2017/2/13.
  */
 @ActivityScope
-public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContract.Model,AcceptMaterialsContract.View>{
+public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContract.Model, AcceptMaterialsContract.View> {
 
     @Inject
     public AcceptMaterialsPresenter(AcceptMaterialsContract.Model model, AcceptMaterialsContract.View mView) {
         super(model, mView);
     }
 
-    //请求item数据
-    public void getAllItems(String line){
-
-        Map<String,String> mMap=new HashMap<>();
-        mMap.put("line",line);
-        line=GsonTools.createGsonListString(mMap);
-        Log.e("aaa", "getAllItems: "+line);
-        getModel().getAcceptMaterialsItemDatas(line)
+    //请求接料列表
+    public void getAcceptMaterialList(String line) {
+        Map<String, String> mMap = new HashMap<>();
+        mMap.put("line", line);
+        line = GsonTools.createGsonListString(mMap);
+        Log.e("aaa", "getAcceptMaterialList: " + line);
+        getModel().getAcceptMaterialList(line)
                 .subscribe(new Action1<ItemAcceptMaterialDetail>() {
-            @Override
-            public void call(ItemAcceptMaterialDetail itemAcceptMaterialDetail) {
-                if (itemAcceptMaterialDetail.getCode().equals("0")) {
-                    getView().getAcceptMaterialsItemDatas(itemAcceptMaterialDetail);
-                }else{
-                    getView().getItemDatasFailed(itemAcceptMaterialDetail.getMsg());
+                    @Override
+                    public void call(ItemAcceptMaterialDetail itemAcceptMaterialDetail) {
+                        if (itemAcceptMaterialDetail.getCode().equals("0")) {
+                            getView().getAcceptMaterialListSuccess(itemAcceptMaterialDetail);
+                        } else {
+                            getView().getAcceptMaterialListFailed(itemAcceptMaterialDetail.getMsg());
 
-                }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                try {
-                    getView().getItemDatasFailed("Error");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        try {
+                            getView().getAcceptMaterialListFailed("Error");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
 
     //提交新旧料盘数据
-    public void commitSerialNumber(String line,String oldMaterial_number,String oldSerialNumber, String newMaterial_number, String newSerialNumber,String newBarcode){
+    public void commitSerialNumber(String line, String oldMaterial_number, String oldSerialNumber, String newMaterial_number, String newSerialNumber, String newBarcode) {
         Map<String, String> map = new HashMap<>();
         map.put("line", line);
         map.put("material_no", newMaterial_number);
@@ -75,8 +74,9 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
             @Override
             public void call(AcceptMaterialResult result) {
                 Log.i(TAG, "call--code == : " + result.getCode());
-                switch (result.getCode()){
+                switch (result.getCode()) {
                     case 0:
+                        //接料成功
                         getView().commitSerialNumberSuccess(result.getRows());
                         break;
                     case -1:
@@ -92,8 +92,8 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
 //                        上传MES失败。暂时不实现。
                         break;
                     default:
-                        getView().getItemDatasFailed(result.getMessage());
-                        Log.e("aaa", "请求错误 "+result.getMessage());
+                        getView().commitSerialNumberFailed(result.getMessage());
+                        Log.e("aaa", "请求错误 " + result.getMessage());
 
                         break;
                 }
@@ -103,8 +103,8 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemDatasFailed("Error");
-                    Log.e("aaa", "请求异常 "+throwable.getMessage());
+                    getView().getAcceptMaterialListFailed("Error");
+                    Log.e("aaa", "请求异常 " + throwable.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -113,8 +113,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
     }
 
     //提交料盘，feeder，料站成功数据
-    public void commitarcoderDate(String partNumber, String slot
-    ,String feeder,String line,String serialNumber,String barcode){
+    public void commitarcoderDate(String partNumber, String slot, String feeder, String line, String serialNumber, String barcode) {
         Map<String, String> map = new HashMap<>();
         map.put("partNumber", partNumber);
         map.put("slot", slot);
@@ -123,7 +122,7 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         map.put("serialNumber", serialNumber);
         map.put("barcode", barcode);
         Log.i(TAG, "commitarcoderDate: " + map.toString());
-        String argument =GsonTools.createGsonListString(map);
+        String argument = GsonTools.createGsonListString(map);
 
 
         getModel().commitSerialNumber(argument).subscribe(new Action1<AcceptMaterialResult>() {
@@ -131,17 +130,17 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
             public void call(AcceptMaterialResult result) {
                 if (0 == result.getCode()) {
                     getView().commitSerialNumberSuccess(result.getRows());
-                }else{
-                    getView().getItemDatasFailed(result.getMessage());
-                    Log.e("aaa", "请求错误 "+result.getMessage());
+                } else {
+                    getView().getAcceptMaterialListFailed(result.getMessage());
+                    Log.e("aaa", "请求错误 " + result.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemDatasFailed("Error");
-                    Log.e("aaa", "请求异常 "+throwable.getMessage());
+                    getView().getAcceptMaterialListFailed("Error");
+                    Log.e("aaa", "请求异常 " + throwable.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -149,32 +148,32 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
         });
     }
 
-    //返回关灯请求
-    public void requestCloseLight(String line){
+    //关灯请求
+    public void requestCloseLight(String line) {
         // XXX wenming.huang
         String[] temp = line.split("线别：");
-        Log.d("onKeyDown",temp[1]);
+        Log.d("onKeyDown", temp[1]);
         line = temp[1];
 
-        Log.e(TAG, "requestCloseLight: "+line );
-        Map<String,String> map=new HashMap<>();
-        map.put("line",line);
-        line= GsonTools.createGsonListString(map);
+        Log.e(TAG, "requestCloseLight: " + line);
+        Map<String, String> map = new HashMap<>();
+        map.put("line", line);
+        line = GsonTools.createGsonListString(map);
 
         getModel().requestCloseLight(line).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
                 if (0 == result.getCode()) {
                     getView().showMessage("已关灯");
-                }else{
-                    getView().getItemDatasFailed(result.getMessage());
+                } else {
+                    getView().getAcceptMaterialListFailed(result.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 try {
-                    getView().getItemDatasFailed("Error");
+                    getView().getAcceptMaterialListFailed("Error");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -185,17 +184,18 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
 
     /**
      * 点灯
+     *
      * @param value
      */
-    public void turnLightOn(String value){
+    public void turnLightOn(String value) {
         getModel().turnLightOn(value).subscribe(new Action1<Result<LightOnResultItem>>() {
             @Override
             public void call(Result<LightOnResultItem> lightOnResultItemResult) {
-                    if (lightOnResultItemResult.getCode() == 0){
-                        getView().onLightOnSuccess(lightOnResultItemResult.getRows().get(0));
-                    }else {
-                        getView().onLightOnFailed();
-                    }
+                if (lightOnResultItemResult.getCode() == 0) {
+                    getView().onLightOnSuccess(lightOnResultItemResult.getRows().get(0));
+                } else {
+                    getView().onLightOnFailed();
+                }
             }
         }, new Action1<Throwable>() {
             @Override
@@ -207,9 +207,10 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
 
     /**
      * 灭灯
+     *
      * @param value
      */
-    public void turnLightOff(String value){
+    public void turnLightOff(String value) {
         getModel().turnLightOff(value).subscribe(new Action1<Result>() {
             @Override
             public void call(Result lightOnResultItemResult) {

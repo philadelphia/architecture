@@ -20,10 +20,8 @@ public class AcceptMaterialsModel extends BaseModel<ApiService> implements Accep
     }
 
     @Override
-    public Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(String conditon) {
-
-
-        return getService().getAcceptMaterialsItemDatas(conditon).compose(RxsRxSchedulers.<ItemAcceptMaterialDetail>io_main());
+    public Observable<ItemAcceptMaterialDetail> getAcceptMaterialList(String condition) {
+        return getService().getAcceptMaterialList(condition).compose(RxsRxSchedulers.<ItemAcceptMaterialDetail>io_main());
     }
 
     @Override
@@ -38,11 +36,11 @@ public class AcceptMaterialsModel extends BaseModel<ApiService> implements Accep
 
     @Override
     public Observable<Result<LightOnResultItem>> turnLightOn(String condition) {
-        return getService().lightOnMaterial(condition).compose(RxsRxSchedulers.<Result<LightOnResultItem>>io_main());
+        return getService().turnLightOn(condition).compose(RxsRxSchedulers.<Result<LightOnResultItem>>io_main());
     }
 
     @Override
     public Observable<Result> turnLightOff(String condition) {
-        return getService().lightOffMaterial(condition).compose(RxsRxSchedulers.<Result>io_main());
+        return getService().turnLightOff(condition).compose(RxsRxSchedulers.<Result>io_main());
     }
 }

@@ -19,9 +19,9 @@ import rx.Observable;
 public interface ModuleUpBindingContract {
     interface View extends IView {
 
-        void onSuccess(List<ModuleUpBindingItem> dataSource);
+        void onGetModuleUpBindingListSuccess(List<ModuleUpBindingItem> dataSource);
 
-        void onFailed(String message);
+        void onGetModuleUpBindingListFailed(String message);
 
         void onNetFailed(Throwable throwable);
 
@@ -49,7 +49,7 @@ public interface ModuleUpBindingContract {
     }
 
     interface Model extends IModel {
-        Observable<Result<ModuleUpBindingItem>> getAllModuleUpBindingItems(String str);
+        Observable<Result<ModuleUpBindingItem>> getModuleUpBindingList(String str);
 
         Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str);
 

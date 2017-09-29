@@ -19,11 +19,11 @@ import rx.Observable;
 public interface ModuleDownDetailsContract {
     interface View extends IView {
 
-        void onSuccess(List<ModuleDownDetailsItem> data);
+        void onGetModuleDownItemListSuccess(List<ModuleDownDetailsItem> data);
+
+        void onGetModuleDownItemListFailed(String message);
 
         void showModuleDownUnDebitedItemList(List<ModuleDownDebit> data);
-
-        void onFailed(String message);
 
         void onResult(String message);
 
@@ -45,7 +45,7 @@ public interface ModuleDownDetailsContract {
     }
 
     interface Model extends IModel {
-         Observable<Result<ModuleDownDetailsItem>> getAllModuleDownDetailsItems(String str);
+         Observable<Result<ModuleDownDetailsItem>> getModuleDownItemList(String str);
          Observable<Result> getModuleDownMaintainResult(String str);
 //        Observable<Result<ModuleDownDetailsItem>> getDownModuleList(String condition);
         Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition);

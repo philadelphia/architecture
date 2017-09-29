@@ -214,7 +214,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     }
 
     @Override
-    public void onSuccess(List<ModuleDownDetailsItem> data) {
+    public void onGetModuleDownItemListSuccess(List<ModuleDownDetailsItem> data) {
         dataSource.clear();
         dataSourceForCheckIn.clear();
 
@@ -226,8 +226,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             if (bean.getDest().equalsIgnoreCase("1"))
                 dataSourceForCheckIn.add(bean);
         }
-        Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size());
-        Log.i(TAG, "onSuccess: 后台返回的待入库数据长度是" + dataSourceForCheckIn.size());
+        Log.i(TAG, "onGetWarningListSuccess: 后台返回的数据长度是" + dataSource.size());
+        Log.i(TAG, "onGetWarningListSuccess: 后台返回的待入库数据长度是" + dataSourceForCheckIn.size());
         index = -1;
         adapter.notifyDataSetChanged();
         if (dataSourceForCheckIn.isEmpty()) {
@@ -344,7 +344,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
 
     @Override
-    public void onFailed(String message) {
+    public void onGetModuleDownItemListFailed(String message) {
         flag = 2;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
         VibratorAndVoiceUtils.wrongVibrator(this);
@@ -387,7 +387,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllModuleDownDetailsItems(argument);
+                getPresenter().getModuleDownItemList(argument);
             }
         });
     }
@@ -398,7 +398,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllModuleDownDetailsItems(argument);
+                getPresenter().getModuleDownItemList(argument);
             }
         });
     }
@@ -415,7 +415,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     protected void onResume() {
         super.onResume();
-        getPresenter().getAllModuleDownDetailsItems(argument);
+        getPresenter().getModuleDownItemList(argument);
     }
 
     @Override

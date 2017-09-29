@@ -22,8 +22,8 @@ public class FeederSupplyModel extends BaseModel<ApiService> implements FeederSu
     }
 
     @Override
-    public Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(String workID) {
-        return getService().getAllToBeSuppliedFeeders(workID).compose(RxsRxSchedulers.<Result<FeederSupplyItem>>io_main());
+    public Observable<Result<FeederSupplyItem>> getFeederList(String workID) {
+        return getService().getFeederList(workID).compose(RxsRxSchedulers.<Result<FeederSupplyItem>>io_main());
     }
 
     //获取feeder上模组时间

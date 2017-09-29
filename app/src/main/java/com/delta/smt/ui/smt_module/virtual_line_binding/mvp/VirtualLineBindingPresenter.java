@@ -24,8 +24,8 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
         super(model, mView);
     }
 
-    public void getAllVirtualLineBindingItems(String str) {
-        getModel().getAllVirtualLineBindingItems(str).doOnSubscribe(new Action0() {
+    public void getVirtualLineBindingList(String str) {
+        getModel().getVirtualLineBindingList(str).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 /*try {
@@ -43,10 +43,10 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
                             getView().showEmptyView();
                         } else {
                             getView().showContentView();
-                            getView().onSuccess(virtualLineItemResult.getRows());
+                            getView().onGetVirtualLineBindingListSuccess(virtualLineItemResult.getRows());
                         }
                     } else {
-                        getView().onFailed(virtualLineItemResult.getMessage());
+                        getView().onGetVirtualLineBindingListFailed(virtualLineItemResult.getMessage());
                         getView().showErrorView();
                     }
                 } catch (Exception e) {
@@ -86,10 +86,10 @@ public class VirtualLineBindingPresenter extends BasePresenter<VirtualLineBindin
                             getView().showEmptyView();
                         } else {
                             getView().showContentView();
-                            getView().onSuccess(virtualLineItemResult.getRows());
+                            getView().onGetVirtualLineBindingListSuccess(virtualLineItemResult.getRows());
                         }
                     } else if (virtualLineItemResult.getCode() == -1){
-                        getView().onFailed(virtualLineItemResult.getMessage());
+                        getView().onGetVirtualLineBindingListFailed(virtualLineItemResult.getMessage());
                         getView().showContentView();
                     }
                 } catch (Exception e) {

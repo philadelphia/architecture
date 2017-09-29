@@ -37,7 +37,7 @@ public class ProduceLinePresenter extends BasePresenter<ProduceLineContract.Mode
                         getView().showEmptyView();
                     }else {
                         getView().showContentView();
-                        getView().getDataLineDatas(itemProduceLines.getRows());
+                        getView().getAllProductionLines(itemProduceLines.getRows());
                     }
 
                 }else{

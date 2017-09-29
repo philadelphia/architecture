@@ -61,7 +61,7 @@ public class StorageSelectPresenter extends BasePresenter<StorageSelectContract.
 //                    }
 //                    getView().onSucess(storageSelect.getRows());
 //                } else {
-//                    getView().onFailed(storageSelect.getMessage());
+//                    getView().onGetWarningListFailed(storageSelect.getMessage());
 //                    getView().showContentView();
 //                }
 //            }
@@ -69,7 +69,7 @@ public class StorageSelectPresenter extends BasePresenter<StorageSelectContract.
 //            @Override
 //            public void call(Throwable throwable) {
 //                try {
-//                    getView().onFailed(throwable.getMessage());
+//                    getView().onGetWarningListFailed(throwable.getMessage());
 //                    getView().showErrorView();
 //                } catch (Exception e) {
 //                    e.printStackTrace();

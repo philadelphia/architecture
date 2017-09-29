@@ -176,15 +176,15 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     }
 
     @Override
-    public void onSuccess(List<ModuleUpWarningItem> dataSource) {
-        Log.i(TAG, "onSuccess: 后台返回的数据长度是: " + dataSource.size());
+    public void onGetWarningListSuccess(List<ModuleUpWarningItem> dataSource) {
+        Log.i(TAG, "onGetWarningListSuccess: 后台返回的数据长度是: " + dataSource.size());
         dataList.clear();
         int size = dataSource.size();
         for (int i = 0; i < size; i++) {
 //            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 //            try {
 ////                Date parse = format.parse(String.valueOf(dataSource.get(i).getOnlinePlanStartTime()));
-////                Log.i(TAG, "onSuccess: parse " + parse.toString());
+////                Log.i(TAG, "onGetWarningListSuccess: parse " + parse.toString());
 ////                dataSource.get(i).setEnd_time(parse.getTime());
 //
 //            } catch (ParseException e) {
@@ -198,7 +198,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
     }
 
     @Override
-    public void onFailed(String message) {
+    public void onGetWarningListFailed(String message) {
         ToastUtils.showMessage(this, message);
     }
 
@@ -257,7 +257,7 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         }
 
         super.onResume();
-        getPresenter().getAllModuleUpWarningItems();
+        getPresenter().getModuleUpWarningList();
     }
 
     //预警
@@ -367,27 +367,24 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         bundle.putString(Constant.PRODUCT_NAME, moduleUpWarningItem.getProductName());
         bundle.putString(Constant.LINE_NAME, moduleUpWarningItem.getLineName());
 
-        Intent intent = null;
         switch (mType) {
             case 1:
-                intent = new Intent(this, ModuleUpBindingActivity.class);
-                // bundle.putInt(Constant.SELECT_TYPE, mType);
+                Intent  intent = new Intent(this, ModuleUpBindingActivity.class);
+                startActivity(intent);
                 break;
             case 2:
-                intent = new Intent(this, VirtualLineBindingActivity.class);
-                bundle.putInt(Constant.SELECT_TYPE, mType);
+                Intent  intent1 = new Intent(this, VirtualLineBindingActivity.class);
+                intent1.putExtra(Constant.SELECT_TYPE, mType);
+                startActivity(intent1);
                 break;
             default:
                 break;
         }
 
-        intent.putExtras(bundle);
-        //this.startActivity(intent);
-        startActivityForResult(intent, Constant.ACTIVITY_REQUEST_WORK_ITEM_ID);
     }
 
     private void onRefresh() {
-        getPresenter().getAllModuleUpWarningItems();
+        getPresenter().getModuleUpWarningList();
     }
 
 

@@ -144,7 +144,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     }
 
     @Override
-    public void onSuccess(List<ModuleDownWarningItem> dataSource) {
+    public void onGetModuleDownWarningListSuccess(List<ModuleDownWarningItem> dataSource) {
         dataList.clear();
         for (int i = 0; i < dataSource.size(); i++) {
 //            if (TextUtils.isEmpty(dataSource.get(i).getUnplug_mod_actual_finish_time())) {
@@ -152,8 +152,8 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 //            } else {
             dataSource.get(i).setCreat_time(dataSource.get(i).getOnline_actual_finish_time());
 //            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-//            Log.i(TAG, "onSuccess: " + dataSource.get(i).getUnplug_mod_actual_finish_time());
-//            Log.i(TAG, "onSuccess: " + format.format(dataSource.get(i).getUnplug_mod_actual_finish_time()));
+//            Log.i(TAG, "onGetWarningListSuccess: " + dataSource.get(i).getUnplug_mod_actual_finish_time());
+//            Log.i(TAG, "onGetWarningListSuccess: " + format.format(dataSource.get(i).getUnplug_mod_actual_finish_time()));
 ////                try {
 ////                    Date parse = format.parse(dataSource.get(i).getUnplug_mod_actual_finish_time());
 ////                    dataSource.get(i).setCreat_time(parse.getTime());
@@ -171,7 +171,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     }
 
     @Override
-    public void onFailed(String message) {
+    public void onGetModuleDownWarningFailed(String message) {
         ToastUtils.showMessage(this, message);
     }
 
@@ -228,7 +228,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         warningManager.registerWReceiver(this);
         //需要定制的信息
         warningManager.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG), 0));
-        getPresenter().getAllModuleDownWarningItems();
+        getPresenter().getModuleDownWarningList();
     }
 
     //预警
@@ -330,6 +330,6 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     }
 
     private void onRefresh() {
-        getPresenter().getAllModuleDownWarningItems();
+        getPresenter().getModuleDownWarningList();
     }
 }

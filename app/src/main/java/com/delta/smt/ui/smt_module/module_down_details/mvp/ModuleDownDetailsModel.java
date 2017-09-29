@@ -20,8 +20,8 @@ public class ModuleDownDetailsModel extends BaseModel<ApiService> implements Mod
     }
 
     @Override
-    public Observable<Result<ModuleDownDetailsItem>> getAllModuleDownDetailsItems(String str) {
-        return getService().getModuleDownDetailsItems(str).compose(RxsRxSchedulers.<Result<ModuleDownDetailsItem>>io_main());
+    public Observable<Result<ModuleDownDetailsItem>> getModuleDownItemList(String str) {
+        return getService().getModuleDownItemList(str).compose(RxsRxSchedulers.<Result<ModuleDownDetailsItem>>io_main());
     }
 
     @Override

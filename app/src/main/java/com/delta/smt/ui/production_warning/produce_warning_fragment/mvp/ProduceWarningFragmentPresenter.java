@@ -13,10 +13,11 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/23.
+ * Author Fuxiang.Zhang
+ * Date   2016/12/23
  */
 @FragmentScope
-public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarningFragmentContract.Model,ProduceWarningFragmentContract.View>{
+public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarningFragmentContract.Model, ProduceWarningFragmentContract.View> {
 
     @Inject
     public ProduceWarningFragmentPresenter(ProduceWarningFragmentContract.Model model, ProduceWarningFragmentContract.View mView) {
@@ -24,8 +25,8 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
     }
 
 
-    public void getItemWarningDatas(String condition){
-        getModel().getItemWarningDatas(condition).doOnSubscribe(new Action0() {
+    public void getWarningItemList(String condition) {
+        getModel().getWarningItemList(condition).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 getView().showLoadingView();
@@ -33,20 +34,20 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
         }).subscribe(new Action1<ProduceWarning>() {
 
             @Override
-            public void call(ProduceWarning itemWarningInfos) {
+            public void call(ProduceWarning produceWarning) {
 
-                if (itemWarningInfos.getCode().equals("0")) {
+                if (produceWarning.getCode().equals("0")) {
 
-                    if (itemWarningInfos.getRows().getAlarm().size()==0){
+                    if (produceWarning.getRows().getAlarm().size() == 0) {
                         getView().showEmptyView();
-                    }else {
+                    } else {
                         getView().showContentView();
-                        getView().onGetWarningItemSuccess(itemWarningInfos.getRows().getAlarm());
-                        Log.e("aaa", "fagment:预警数量"+String.valueOf(itemWarningInfos.getRows().getAlarm().size()) );
+                        getView().onGetWarningItemSuccess(produceWarning.getRows().getAlarm());
+                        Log.e("aaa", "fragment:预警数量" + String.valueOf(produceWarning.getRows().getAlarm().size()));
                     }
 
-                }else {
-                    getView().onGetWarningItemFailed(itemWarningInfos.getMsg());
+                } else {
+                    getView().onGetWarningItemFailed(produceWarning.getMsg());
                     //getView().showErrorView();
                 }
             }
@@ -64,14 +65,14 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
     }
 
 
-    public void getItemWarningConfirm(String condition){
+    public void getItemWarningConfirm(String condition) {
         getModel().getItemWarningConfirm(condition).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
                 if (0 == result.getCode()) {
                     getView().getItemWarningConfirmSuccess();
 
-                }else {
+                } else {
                     getView().onGetWarningItemFailed(result.getMessage());
                 }
             }
@@ -87,13 +88,13 @@ public class ProduceWarningFragmentPresenter extends BasePresenter<ProduceWarnin
         });
     }
 
-    public void getBarcodeInfo(String condition){
+    public void getBarcodeInfo(String condition) {
         getModel().getBarcodeInfo(condition).subscribe(new Action1<Result>() {
             @Override
             public void call(Result result) {
-                if (0==result.getCode()) {
+                if (0 == result.getCode()) {
                     getView().getItemWarningConfirmSuccess();
-                }else {
+                } else {
                     getView().onGetWarningItemFailed(result.getMessage());
                 }
             }

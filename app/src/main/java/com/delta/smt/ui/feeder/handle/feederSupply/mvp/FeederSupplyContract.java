@@ -19,7 +19,7 @@ import rx.Observable;
 
 public interface FeederSupplyContract {
     interface View extends IView {
-        void onSuccess(List<FeederSupplyItem> data);
+        void onGetFeederListSuccess(List<FeederSupplyItem> data);
 
         void onFeederSupplySuccess(List<FeederSupplyItem> data);
 
@@ -28,7 +28,7 @@ public interface FeederSupplyContract {
 
         void showUnUpLoadToMESItemList(UpLoadEntity mT );
 
-        void onFailed(String message);
+        void onGetFeederListFailed(String message);
 
         void onAllSupplyComplete();
 
@@ -50,7 +50,7 @@ public interface FeederSupplyContract {
     }
 
     interface Model extends IModel {
-        Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(String workID);
+        Observable<Result<FeederSupplyItem>> getFeederList(String workID);
 
         Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(String condition);
 

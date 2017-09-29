@@ -233,7 +233,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void onSuccess(List<ModuleUpBindingItem> data) {
+    public void onGetModuleUpBindingListSuccess(List<ModuleUpBindingItem> data) {
         state = 1;
         scan_position = -1;
         dataSource.clear();
@@ -259,7 +259,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     }
 
     @Override
-    public void onFailed(String message) {
+    public void onGetModuleUpBindingListFailed(String message) {
         ToastUtils.showMessage(this, message);
         VibratorAndVoiceUtils.wrongVibrator(ModuleUpBindingActivity.this);
         VibratorAndVoiceUtils.wrongVoice(ModuleUpBindingActivity.this);
@@ -323,7 +323,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllModuleUpBindingItems(argument);
+                getPresenter().getModuleUpBindingList(argument);
             }
         });
     }
@@ -334,7 +334,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllModuleUpBindingItems(argument);
+                getPresenter().getModuleUpBindingList(argument);
             }
         });
     }
@@ -560,7 +560,7 @@ public class ModuleUpBindingActivity extends BaseActivity<ModuleUpBindingPresent
     @Override
     protected void onResume() {
         super.onResume();
-        getPresenter().getAllModuleUpBindingItems(argument);
+        getPresenter().getModuleUpBindingList(argument);
 
     }
 

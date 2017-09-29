@@ -32,8 +32,8 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
 
 
     //    //获取对应工单的Feeder备料列表
-    public void getAllToBeSuppliedFeeders(String workID) {
-        getModel().getAllToBeSuppliedFeeders(workID)
+    public void getFeederList(String workID) {
+        getModel().getFeederList(workID)
                 .subscribe(new RxErrorHandlerSubscriber<Result<FeederSupplyItem>>(rxErrorHandler) {
                     @Override
                     public void onStart() {
@@ -47,14 +47,14 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                         if (feederSupplyItemResult.getCode() == 0) {
                             if (feederSupplyItemResult.getRows().size() == 0) {
                                 getView().showEmptyView();
-                                getView().onFailed(feederSupplyItemResult.getMessage());
+                                getView().onGetFeederListFailed(feederSupplyItemResult.getMessage());
                             } else {
                                 getView().showContentView();
-                                getView().onSuccess(feederSupplyItemResult.getRows());
+                                getView().onGetFeederListSuccess(feederSupplyItemResult.getRows());
                             }
 
                         } else {
-                            getView().onFailed(feederSupplyItemResult.getMessage());
+                            getView().onGetFeederListFailed(feederSupplyItemResult.getMessage());
                             getView().showErrorView();
                         }
 
@@ -89,7 +89,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                     getView().showContentView();
                     getView().onFeederSupplySuccess(feederSupplyItemResult.getRows());
                 } else {
-                    getView().onFailed(feederSupplyItemResult.getMessage());
+                    getView().onGetFeederListFailed(feederSupplyItemResult.getMessage());
                     getView().showContentView();
 
                 }
@@ -106,13 +106,13 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                 if (0 == result.getCode()) {
                     getView().onAllSupplyComplete();
                 } else {
-                    getView().onFailed(result.getMessage());
+                    getView().onGetFeederListFailed(result.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.toString());
+                getView().onGetFeederListFailed(throwable.toString());
             }
         });
 
@@ -124,15 +124,15 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             @Override
             public void call(Result result) {
                 if (0 == result.getCode()) {
-                    getView().onFailed(result.getMessage());
+                    getView().onGetFeederListFailed(result.getMessage());
                 } else {
-                    getView().onFailed(result.getMessage());
+                    getView().onGetFeederListFailed(result.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.getMessage());
+                getView().onGetFeederListFailed(throwable.getMessage());
             }
         });
     }
@@ -147,14 +147,14 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
                 if (0 == debitDataResult.getCode()) {
                     getView().showUnDebitedItemList(debitDataResult.getRows());
                 } else {
-                    getView().onFailed(debitDataResult.getMessage());
+                    getView().onGetFeederListFailed(debitDataResult.getMessage());
                 }
 
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.getMessage());
+                getView().onGetFeederListFailed(throwable.getMessage());
             }
         });
     }
@@ -167,18 +167,18 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
             public void call(Result<DebitData> debitDataResult) {
                 if (0 == debitDataResult.getCode()) {
                     if (debitDataResult.getRows().size() == 0) {
-                        getView().onFailed("没有扣账列表");
+                        getView().onGetFeederListFailed("没有扣账列表");
                     } else {
                         getView().showUnDebitedItemList(debitDataResult.getRows());
                     }
                 } else {
-                    getView().onFailed(debitDataResult.getMessage());
+                    getView().onGetFeederListFailed(debitDataResult.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.getMessage());
+                getView().onGetFeederListFailed(throwable.getMessage());
             }
         });
     }
@@ -203,7 +203,7 @@ public class FeederSupplyPresenter extends BasePresenter<FeederSupplyContract.Mo
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                getView().onFailed(throwable.getMessage());
+                getView().onGetFeederListFailed(throwable.getMessage());
             }
         });
     }
