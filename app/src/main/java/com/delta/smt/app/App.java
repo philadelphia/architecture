@@ -12,6 +12,7 @@ import android.text.TextUtils;
 
 import com.delta.commonlibs.utils.DeviceUuidFactory;
 import com.delta.commonlibs.utils.SpUtil;
+import com.delta.smt.BuildConfig;
 import com.delta.smt.R;
 import com.delta.smt.api.API;
 import com.delta.smt.base.BaseApplication;
@@ -72,7 +73,9 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        ACRA.init(this);
+        if (!BuildConfig.DEBUG) {
+            ACRA.init(this);
+        }
     }
 
     @Override

@@ -1,9 +1,12 @@
 package com.delta.smt.ui.mantissa_warehouse.detail;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +20,13 @@ import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
 import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.BackupMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialCar;
 import com.delta.buletoothio.barcode.parse.entity.LastMaterialLocation;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.DialogUtils;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.RecycleViewUtils;
 import com.delta.commonlibs.utils.SingleClick;
@@ -43,7 +48,6 @@ import com.delta.smt.entity.DebitParameters;
 import com.delta.smt.entity.IssureToWarehFinishResult;
 import com.delta.smt.entity.MantissaBingingCar;
 import com.delta.smt.entity.MantissaBingingCarBean;
-import com.delta.smt.entity.MantissaCarBean;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
 import com.delta.smt.entity.MantissaWarehousePutBean;
 import com.delta.smt.entity.MantissaWarehouseReady;
@@ -54,6 +58,7 @@ import com.delta.smt.ui.mantissa_warehouse.detail.di.DaggerMantissaWarehouseDeta
 import com.delta.smt.ui.mantissa_warehouse.detail.di.MantissaWarehouseDetailsModule;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsContract;
 import com.delta.smt.ui.mantissa_warehouse.detail.mvp.MantissaWarehouseDetailsPresenter;
+import com.delta.smt.utils.BarCodeDialogUtils;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.delta.ttsmanager.TextToSpeechManager;
 
@@ -72,7 +77,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Zhenyu.Liu on 2016/12/27.
  */
 
-public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWarehouseDetailsPresenter> implements MantissaWarehouseDetailsContract.View, View.OnClickListener {
+public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWarehouseDetailsPresenter> implements MantissaWarehouseDetailsContract.View, View.OnClickListener, DialogInterface.OnClickListener {
 
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
@@ -100,6 +105,8 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     TextView tvLineName;
     @BindView(R.id.tv_line_num)
     TextView tvLineNum;
+    @BindView(R.id.bt_send_back_area)
+    Button mBtSendBackArea;
     @Inject
     TextToSpeechManager textToSpeechManager;
     boolean isOver = true;
@@ -115,7 +122,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private MantissaWarehouseReady.RowsBean mMantissaWarehouse;
     private String work_order;
     private String lastCar;
-    private int flag = 1;
+    private int state = 1;
     private String side;
     private boolean isChecked = true;
     private String line_name;
@@ -126,6 +133,9 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     private String mS;
     private List<DebitData> mDebitDatas = new ArrayList<>();
     private CustomPopWindow mCustomPopWindow;
+    private Dialog mProgressDialog;
+    private Dialog mSendDialolg;
+
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -144,10 +154,10 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         line_name = mMantissaWarehouse.getLine_name();
         WarehouseDetailBean bindBean = new WarehouseDetailBean(side, "Mantissa", work_order);
         mS = GsonTools.createGsonListString(bindBean);
-        getPresenter().getMantissaWarehouseDetails(mS);
         //备料车
-        MantissaCarBean car = new MantissaCarBean(work_order, "Mantissa", side);
-        getPresenter().getFindCar(GsonTools.createGsonListString(car));
+        //mCar1 = new MantissaCarBean(work_order, "Mantissa", side);
+        getPresenter().getMantissaWarehouseDetails(mS);
+        getPresenter().getFindCar(mS);
         isChecked = SpUtil.getBooleanSF(this, "Mantissa" + "checked");
     }
 
@@ -163,7 +173,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         tvLineName.setText("线别：" + line_name);
         tvLineNum.setText("面别：" + side);
         btnSwitch.setChecked(isChecked);
-        textView.setText("余料车：");
+        textView.setText("料车：");
 
         btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -243,7 +253,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getBingingCarSuccess(Result<MaterialCar> mMaterialCarResult) {
-        flag = 2;
+        state = 2;
         List<MaterialCar> mMaterialCars = mMaterialCarResult.getRows();
         if (mMaterialCars.size() != 0) {
             tv_hint.setText(getString(R.string.bindMatericalcar) + mMaterialCars.get(0).getCar_name());
@@ -269,9 +279,9 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void getBingingCarFailed(String msg) {
         // 保证没有备料车成功的时候继续绑定，有备料车绑定的时候继续绑定
-        if (flag != 2) {
+        if (state != 2) {
 
-            flag = 1;
+            state = 1;
         }
         tv_hint.setText(msg);
         // tv_hint.setText(msg);
@@ -369,7 +379,7 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
             mCar.setText(mStringBuffer.toString());
             //  tv_hint.setText(rows.get(0).getCar_name());
         }
-        flag = 2;
+        state = 2;
         VibratorAndVoiceUtils.correctVibrator(this);
         VibratorAndVoiceUtils.correctVoice(this);
     }
@@ -381,8 +391,9 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
 
     @Override
     public void getFindCarFailed(String message) {
-        flag = 1;
+        state = 1;
         tv_hint.setText(message);
+        mCar.setText("无");
         textToSpeechManager.readMessage(message);
         //ToastUtils.showMessage(this, message);
     }
@@ -427,21 +438,27 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
-
-        switch (flag) {
+        switch (state) {
             case 1:
                 try {
                     LastMaterialCar LastMaterialCar = (LastMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_CAR);
-                    lastCar = LastMaterialCar.getSource();
-                    MantissaBingingCarBean bindBean = new MantissaBingingCarBean(work_order, "Mantissa", lastCar, side);
+                    MantissaBingingCarBean bindBean = new MantissaBingingCarBean(work_order, "Mantissa", LastMaterialCar.getSource(), side);
                     getPresenter().getbingingCar(GsonTools.createGsonListString(bindBean));
                 } catch (EntityNotFountException e) {
-                    ToastUtils.showMessage(this, getString(R.string.scan_remain_car_message));
-                    textToSpeechManager.readMessage(getString(R.string.scan_remain_car_message));
-                    tv_hint.setText(getString(R.string.scan_remain_car_message));
-                    VibratorAndVoiceUtils.wrongVibrator(this);
-                    VibratorAndVoiceUtils.wrongVoice(this);
-                    e.printStackTrace();
+
+                    try {
+                        BackupMaterialCar mBackupMaterialCar = ((BackupMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
+                        MantissaBingingCarBean bindBean = new MantissaBingingCarBean(work_order, "Mantissa", mBackupMaterialCar.getSource(), side);
+                        getPresenter().getbingingCar(GsonTools.createGsonListString(bindBean));
+                    } catch (EntityNotFountException mE) {
+                        mE.printStackTrace();
+                        ToastUtils.showMessage(this, getString(R.string.scan_remain_car_message));
+                        textToSpeechManager.readMessage(getString(R.string.scan_remain_car_message));
+                        tv_hint.setText(getString(R.string.scan_remain_car_message));
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case 2://料盘 料盘
@@ -478,17 +495,26 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
                         getPresenter().getbingingCar(GsonTools.createGsonListString(bindBean));
                     } catch (EntityNotFountException notFoundException) {
                         notFoundException.printStackTrace();
-                        try {
-                            LastMaterialLocation mLastMaterialLocation = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
-                            MantissaBingingCar mMantissaBingingCar = new MantissaBingingCar(work_order, side, "", mLastMaterialLocation.getSource());
-                            getPresenter().changecarshelf(GsonTools.createGsonListString(mMantissaBingingCar));
-                        } catch (EntityNotFountException mE) {
-                            ToastUtils.showMessage(this, "条码格式不正确！不能识别此码！");
-                            tv_hint.setText("条码格式不正确！不能识别此码！");
-                            VibratorAndVoiceUtils.wrongVibrator(this);
-                            VibratorAndVoiceUtils.wrongVoice(this);
 
+                        try {
+                            BackupMaterialCar mBackupMaterialCar = ((BackupMaterialCar) barCodeParseIpml.getEntity(barcode, BarCodeType.BACKUP_MATERIAL_CAR));
+                            MantissaBingingCarBean bindBean = new MantissaBingingCarBean(work_order, "Mantissa", mBackupMaterialCar.getSource(), side);
+                            getPresenter().getbingingCar(GsonTools.createGsonListString(bindBean));
+                        } catch (EntityNotFountException mE) {
+                            mE.printStackTrace();
+                            try {
+                                LastMaterialLocation mLastMaterialLocation = (LastMaterialLocation) barCodeParseIpml.getEntity(barcode, BarCodeType.LAST_MATERIAL_LOCATION);
+                                MantissaBingingCar mMantissaBingingCar = new MantissaBingingCar(work_order, side, "", mLastMaterialLocation.getSource());
+                                getPresenter().changecarshelf(GsonTools.createGsonListString(mMantissaBingingCar));
+                            } catch (EntityNotFountException mE1) {
+                                ToastUtils.showMessage(this, "条码格式不正确！不能识别此码！");
+                                tv_hint.setText("条码格式不正确！不能识别此码！");
+                                VibratorAndVoiceUtils.wrongVibrator(this);
+                                VibratorAndVoiceUtils.wrongVoice(this);
+
+                            }
                         }
+
                     }
                 }
                 break;
@@ -553,6 +579,46 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     @Override
+    public void showDialogLoadingView() {
+        if (mProgressDialog == null) {
+            mProgressDialog = DialogUtils.createProgressDialog(this, "正在发送到备料区。。。", false);
+            mProgressDialog.show();
+        }
+    }
+
+    @Override
+    public void showBacAreaMessageSuccess(Result mResult) {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+        getPresenter().getMantissaWarehouseDetails(mS);
+        getPresenter().getFindCar(mS);
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
+        tv_hint.setText(mResult.getMessage());
+        ToastUtils.showMessage(this, mResult.getMessage());
+    }
+
+    @Override
+    public void showBacAreaMessageFailed(String mMessage) {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
+        tv_hint.setText(mMessage);
+        ToastUtils.showMessage(this, mMessage);
+    }
+
+    @Override
+    protected void handError(String contents) {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+        super.handError(contents);
+    }
+
+    @Override
     public void deductionSuccess(List<DebitData> mRows) {
         if (mRows != null && mRows.size() == 0 && isOver) {
             getPresenter().getMantissaWareOver(mS);// 确保扣账完成;
@@ -588,29 +654,34 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
     }
 
     private void offcarshelflight() {
-
         if (mS != null) {
-
             getPresenter().offcarshelflight(mS);
         }
     }
 
-    @OnClick(R.id.btn_debitManually)
-    public void onClick() {
-        if (!isHaveIsSureOver) {
-            ToastUtils.showMessage(this, getString(R.string.unfinished_station));
-            return;
-        }
-        if (mCustomPopWindow == null) {
-            createCustomPopWindow();
-
-        }
-        if (SingleClick.isSingle(1000)) {
-
-            getPresenter().getDebitDataList(mS);
-        }
-    }
-
+    //    @OnClick({R.id.bt_send_back_area, R.id.btn_debitManually})
+//    public void onViewClicked(View view) {
+//        switch (view.getId()) {
+//            case R.id.bt_send_back_area:
+//
+//
+//                break;
+//            case R.id.btn_debitManually:
+//                if (!isHaveIsSureOver) {
+//                    ToastUtils.showMessage(this, getString(R.string.unfinished_station));
+//                    return;
+//                }
+//                if (mCustomPopWindow == null) {
+//                    createCustomPopWindow();
+//
+//                }
+//                if (SingleClick.isSingle(1000)) {
+//
+//                    getPresenter().getDebitDataList(mS);
+//                }
+//                break;
+//        }
+//    }
     private void createCustomPopWindow() {
         mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_bottom_sheet).build();
         View mContentView = mCustomPopWindow.getContentView();
@@ -711,5 +782,26 @@ public class MantissaWarehouseDetailsActivity extends BaseActivity<MantissaWareh
         }
     }
 
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (mS != null && SingleClick.isSingle(1000)) {
+            getPresenter().sendBackArea(mS);
+        }
+        dialog.dismiss();
+    }
+
+
+    @OnClick(R.id.bt_send_back_area)
+    public void onViewClicked() {
+        Log.d(TAG, "onViewClicked() called");
+        if (state == 2) {
+            if (mSendDialolg == null) {
+                mSendDialolg = BarCodeDialogUtils.showCommonDialog(this, "是否将料发送到备料区？", this, getBarCodeIpml());
+            }
+            mSendDialolg.show();
+        } else {
+            ToastUtils.showMessage(this, "请先绑定料车！");
+        }
+    }
 
 }

@@ -70,7 +70,7 @@ import static com.delta.smt.base.BaseApplication.getContext;
  * Created by Zhenyu.Liu on 2016/12/28.
  */
 
-public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter> implements StorageDetailsContract.View, View.OnClickListener {
+public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter> implements StorageDetailsContract.View, View.OnClickListener, DialogInterface.OnClickListener {
 
     private static final int JUMPMATERIAL = 3;
     private static final int UNWAREHMATERIAL = 1;
@@ -104,8 +104,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     TextView textView;
     @Inject
     TextToSpeechManager textToSpeechManager;
-    @BindView(R.id.bt_send_back_area)
-    Button mBtSendBackArea;
     private List<StorageDetails> dataList = new ArrayList<>();
     private List<StorageDetails> mStorageDetailses = new ArrayList<>();
     private List<DebitData> mDebitDatas = new ArrayList<>();
@@ -127,6 +125,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     private Dialog mConfirmDialog;
     private IssureToWarehBody mIssureToWarehBody;
     private Dialog mProgressDialog;
+    private Dialog mSendDialolg;
 
 
     @Override
@@ -757,8 +756,6 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
 
-
-
     private void createCustomPopWindow() {
         mCustomPopWindow = CustomPopWindow.builder().with(this).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT).setAnimationStyle(R.style.popupAnimalStyle).setView(R.layout.dialog_bottom_sheet).build();
         View mContentView = mCustomPopWindow.getContentView();
@@ -864,33 +861,49 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
     }
 
 
-    @OnClick({R.id.bt_send_back_area, R.id.btn_debitManually})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.bt_send_back_area:
+//    @OnClick({R.id.btn_debitManually})
+//    public void onViewClicked(View view) {
+//        switch (view.getId()) {
+//            case R.id.bt_send_back_area:
+//
+//                break;
+//            case R.id.btn_debitManually:
+//                if (!isHaveIssureOver) {
+//                    ToastUtils.showMessage(this, getString(R.string.unfinished_station));
+//                    return;
+//                }
+//                if (mCustomPopWindow == null) {
+//                    createCustomPopWindow();
+//
+//                }
+//                if (SingleClick.isSingle(1000)) {
+//                    getPresenter().getDebitDataList(mS);
+//                }
+//                break;
+//        }
+//    }
+
+
+    @OnClick(R.id.bt_send_back_area)
+    public void onViewClicked() {
+        Log.d(TAG, "onViewClicked() called");
+        if (state == 2) {
+            if (mSendDialolg == null) {
+                mSendDialolg = BarCodeDialogUtils.showCommonDialog(this, "是否将料发送到备料区？", this, getBarCodeIpml());
+            }
+            mSendDialolg.show();
+        } else {
+            ToastUtils.showMessage(StorageDetailsActivity.this, "请先绑定备料车！");
+        }
+
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
 
                 if (mS != null && SingleClick.isSingle(1000)) {
-
-                    if (state == 2) {
-                        getPresenter().sendBackArea(mS);
-                    } else {
-                        ToastUtils.showMessage(this, "请先绑定备料车！");
-                    }
+                    getPresenter().sendBackArea(mS);
                 }
-                break;
-            case R.id.btn_debitManually:
-                if (!isHaveIssureOver) {
-                    ToastUtils.showMessage(this, getString(R.string.unfinished_station));
-                    return;
-                }
-                if (mCustomPopWindow == null) {
-                    createCustomPopWindow();
-
-                }
-                if (SingleClick.isSingle(1000)) {
-                    getPresenter().getDebitDataList(mS);
-                }
-                break;
-        }
+        dialog.dismiss();
     }
 }
