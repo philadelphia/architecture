@@ -75,7 +75,7 @@ public interface StorageDetailsContract {
 
         void issureToWarehFinishFailedWithoutSure(String msg);
 
-        void sureCompleteIssueSucess(String msg);
+        void sureCompleteIssueSuccess(String msg);
 
         void sureCompleteIssueFailed(String msg);
 
@@ -98,7 +98,7 @@ public interface StorageDetailsContract {
 
         void getDebitDataFailed(String mMessage);
 
-        void issureToWarehFinish();
+        void isSureToWarehFinish();
 
         void showDialogLoadingView();
 

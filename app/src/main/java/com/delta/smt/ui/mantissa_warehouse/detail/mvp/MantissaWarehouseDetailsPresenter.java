@@ -255,4 +255,26 @@ public class MantissaWarehouseDetailsPresenter extends BasePresenter<MantissaWar
             }
         });
     }
+
+    public void sendBackArea(String mS) {
+        getModel().sendBackArea(mS).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+
+                getView().showDialogLoadingView();
+            }
+        }).subscribe(new RxErrorHandlerSubscriber<Result>(mRxErrorHandler) {
+            @Override
+            public void onNext(Result mResult) {
+
+                if (mResult.getCode() == 0) {
+                    getView().showBacAreaMessageSuccess(mResult);
+                } else {
+                    getView().showBacAreaMessageFailed(mResult.getMessage());
+                }
+
+
+            }
+        });
+    }
 }
