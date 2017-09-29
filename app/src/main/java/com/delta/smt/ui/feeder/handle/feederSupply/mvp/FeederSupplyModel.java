@@ -5,12 +5,9 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.DebitData;
-import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
-import com.delta.smt.entity.ResultFeeder;
 import com.delta.smt.entity.UpLoadEntity;
-
 
 import rx.Observable;
 
@@ -25,8 +22,8 @@ public class FeederSupplyModel extends BaseModel<ApiService> implements FeederSu
     }
 
     @Override
-    public Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(String workID) {
-        return getService().getAllToBeSuppliedFeeders(workID).compose(RxsRxSchedulers.<Result<FeederSupplyItem>>io_main());
+    public Observable<Result<FeederSupplyItem>> getFeederList(String workID) {
+        return getService().getFeederList(workID).compose(RxsRxSchedulers.<Result<FeederSupplyItem>>io_main());
     }
 
     //获取feeder上模组时间

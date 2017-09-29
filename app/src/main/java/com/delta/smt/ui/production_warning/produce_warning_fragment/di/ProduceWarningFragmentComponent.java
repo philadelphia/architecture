@@ -7,10 +7,11 @@ import com.delta.smt.ui.production_warning.produce_warning_fragment.ProduceWarni
 import dagger.Component;
 
 /**
- * Created by Fuxiang.Zhang on 2016/12/26.
+ * Author Fuxiang.Zhang
+ * Date   2016/12/26
  */
 @FragmentScope
 @Component(modules=ProduceWarningFragmentModule.class,dependencies = AppComponent.class)
-public interface ProduceWarningFragmentCompnent {
+public interface ProduceWarningFragmentComponent {
     void inject(ProduceWarningFragment produceWarningFragment);
 }

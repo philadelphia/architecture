@@ -19,7 +19,7 @@ public class SupplyModel extends BaseModel<ApiService> implements SupplyContract
     }
 
     @Override
-    public Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems() {
-        return getService().getAllSupplyWorkItems().compose(RxsRxSchedulers.<Result<FeederSupplyWarningItem>>io_main());
+    public Observable<Result<FeederSupplyWarningItem>> getSupplyWorkItemList() {
+        return getService().getSupplyWorkItemList().compose(RxsRxSchedulers.<Result<FeederSupplyWarningItem>>io_main());
     }
 }

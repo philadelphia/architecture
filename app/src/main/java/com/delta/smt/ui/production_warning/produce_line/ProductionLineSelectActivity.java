@@ -62,7 +62,7 @@ public class ProductionLineSelectActivity extends BaseActivity<ProduceLinePresen
 
 
     private CommonBaseAdapter<ItemProduceLine> mAdapter;
-    private List<ItemProduceLine> datas = new ArrayList<>();
+    private final List<ItemProduceLine> productionLines = new ArrayList<>();
 
     private int type;
     private String lineNames;
@@ -89,6 +89,8 @@ public class ProductionLineSelectActivity extends BaseActivity<ProduceLinePresen
             case 4:
                 lineNames = SpUtil.getStringSF(this, Constant.PRODUCE_WARNING_LINE_NAME);
                 break;
+            default:
+                break;
         }
     }
 
@@ -96,11 +98,14 @@ public class ProductionLineSelectActivity extends BaseActivity<ProduceLinePresen
     protected void initView() {
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
+
         mToolbarTitle.setText("产线选择");
-        //设置Recyleview的adapter
-        mAdapter = new CommonBaseAdapter<ItemProduceLine>(this, datas) {
+
+        mAdapter = new CommonBaseAdapter<ItemProduceLine>(this, productionLines) {
             @Override
             protected void convert(CommonViewHolder holder, ItemProduceLine item, int position) {
                 holder.setText(R.id.cb_production_line, item.getLinename());
@@ -140,9 +145,9 @@ public class ProductionLineSelectActivity extends BaseActivity<ProduceLinePresen
 
                 Log.e(TAG, "onClick: " + type);
                 StringBuffer mStringBuffer = new StringBuffer();
-                for (int mI = 0; mI < datas.size(); mI++) {
-                    if (datas.get(mI).isChecked()) {
-                        mStringBuffer.append(datas.get(mI).getLinename()).append(",");
+                for (int i = 0; i < productionLines.size(); i++) {
+                    if (productionLines.get(i).isChecked()) {
+                        mStringBuffer.append(productionLines.get(i).getLinename()).append(",");
                     }
                 }
                 if (TextUtils.isEmpty(mStringBuffer.toString())) {
@@ -183,29 +188,29 @@ public class ProductionLineSelectActivity extends BaseActivity<ProduceLinePresen
 
             case R.id.btn_all_select:
 
-                if (datas.size() != 0) {
-                    for (ItemProduceLine data : datas) {
+                if (productionLines.size() != 0) {
+                    for (ItemProduceLine data : productionLines) {
                         data.setChecked(true);
                     }
                     mAdapter.notifyDataSetChanged();
                 }
-                Log.e(TAG, "onClick: " + datas.toString());
+                Log.e(TAG, "onClick: " + productionLines.toString());
 
                 break;
 
             case R.id.btn_all_cancel:
-                if (datas.size() != 0) {
-                    for (ItemProduceLine data : datas) {
+                if (productionLines.size() != 0) {
+                    for (ItemProduceLine data : productionLines) {
                         data.setChecked(false);
                     }
                 }
-                Log.e(TAG, "onClick: " + datas.toString());
+                Log.e(TAG, "onClick: " + productionLines.toString());
                 mAdapter.notifyDataSetChanged();
                 break;
             case R.id.btn_un_select:
 
-                if (datas.size() != 0) {
-                    for (ItemProduceLine data : datas) {
+                if (productionLines.size() != 0) {
+                    for (ItemProduceLine data : productionLines) {
                         data.setChecked(!data.isChecked());
                     }
                     mAdapter.notifyDataSetChanged();
@@ -215,7 +220,7 @@ public class ProductionLineSelectActivity extends BaseActivity<ProduceLinePresen
     }
 
     @Override
-    public void getDataLineDatas(List<ItemProduceLine> itemProduceLines) {
+    public void getAllProductionLines(List<ItemProduceLine> itemProduceLines) {
         if (lineNames != null) {
             String[] split = lineNames.split(",");
 
@@ -226,8 +231,8 @@ public class ProductionLineSelectActivity extends BaseActivity<ProduceLinePresen
                 }
             }
         }
-        datas.clear();
-        datas.addAll(itemProduceLines);
+        productionLines.clear();
+        productionLines.addAll(itemProduceLines);
         //对adapter刷新改变
         mAdapter.notifyDataSetChanged();
 
@@ -244,9 +249,9 @@ public class ProductionLineSelectActivity extends BaseActivity<ProduceLinePresen
     @Override
     public void getFailed(String message) {
         if ("Error".equals(message)) {
-            Snackbar.make(getCurrentFocus(), this.getString(R.string.server_error_message), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mToolbar, this.getString(R.string.server_error_message), Snackbar.LENGTH_LONG).show();
         } else {
-            Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mToolbar, message, Snackbar.LENGTH_LONG).show();
         }
     }
 

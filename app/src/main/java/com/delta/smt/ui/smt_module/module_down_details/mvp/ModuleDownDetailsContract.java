@@ -12,17 +12,18 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/5.
+ * Author Shufeng.Wu
+ * Date   2017/1/5
  */
 
 public interface ModuleDownDetailsContract {
     interface View extends IView {
 
-        void onSuccess(List<ModuleDownDetailsItem> data);
+        void onGetModuleDownItemListSuccess(List<ModuleDownDetailsItem> data);
+
+        void onGetModuleDownItemListFailed(String message);
 
         void showModuleDownUnDebitedItemList(List<ModuleDownDebit> data);
-
-        void onFailed(String message);
 
         void onResult(String message);
 
@@ -44,7 +45,7 @@ public interface ModuleDownDetailsContract {
     }
 
     interface Model extends IModel {
-         Observable<Result<ModuleDownDetailsItem>> getAllModuleDownDetailsItems(String str);
+         Observable<Result<ModuleDownDetailsItem>> getModuleDownItemList(String str);
          Observable<Result> getModuleDownMaintainResult(String str);
 //        Observable<Result<ModuleDownDetailsItem>> getDownModuleList(String condition);
         Observable<Result<ModuleDownDetailsItem>> getFeederCheckInTime(String condition);

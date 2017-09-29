@@ -131,11 +131,11 @@ public interface ApiService {
 
     //获取所有的Feeder备料工单列表
     @GET("ams/smm/buffer/queryschedule")
-    Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
+    Observable<Result<FeederSupplyWarningItem>> getSupplyWorkItemList();
 
     //获取指定工单的Feeder备料列表
     @POST("ams/smm/buffer/startbufferissue")
-    Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("value") String value);
+    Observable<Result<FeederSupplyItem>> getFeederList(@Query("value") String value);
 
     //下模组灭灯
     @GET("ams/smm/unplugmodcontroller/turnoffalllight")
@@ -150,7 +150,7 @@ public interface ApiService {
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
     //获取没有上传到MES的列表
-    @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    @GET("ams/smm/plugmodcontroller/getNeedUpLoadToMesMaterials")
     Observable<BaseEntity<UpLoadEntity>> getUnUpLoadToMESList(@Query("condition") String condition);
 
     //上传feeder备料到MES
@@ -206,11 +206,11 @@ public interface ApiService {
 
     //上模组排程
     @GET("ams/smm/plugmodcontroller/getproductionlines")
-    Observable<Result<ModuleUpWarningItem>> getModuleUpWarningItems();
+    Observable<Result<ModuleUpWarningItem>> getModuleUpWarningList();
 
     //对应工单的上模组列表
     @GET("ams/smm/plugmodcontroller/getmodsbywordorder")
-    Observable<Result<ModuleUpBindingItem>> getModuleUpBindingItems(@Query("condition") String condition);
+    Observable<Result<ModuleUpBindingItem>> getModuleUpBindingList(@Query("condition") String condition);
 
     //上模组,料盘feeder绑定
     @GET("ams/smm/plugmodcontroller/updatemod")
@@ -226,11 +226,11 @@ public interface ApiService {
 
     //下模组排程
     @GET("ams/smm/unplugmodcontroller/getproductionlines")
-    Observable<Result<ModuleDownWarningItem>> getModuleDownWarningItems();
+    Observable<Result<ModuleDownWarningItem>> getModuleDownWarningList();
 
     //虚拟线体绑定列表
     @GET("ams/smm/unplugmodcontroller/getmodellist")
-    Observable<Result<VirtualLineItem>> getVirtualLineBindingItems(@Query("condition") String condition);
+    Observable<Result<VirtualLineItem>> getVirtualLineBindingList(@Query("condition") String condition);
 
     //虚拟线体绑定接口
     @GET("ams/smm/unplugmodcontroller/bindvirtualline")
@@ -242,7 +242,7 @@ public interface ApiService {
 
     //对应工单的下模组列表
     @GET("/ams/smm/unplugmodcontroller/getmodsbywordorder")
-    Observable<Result<ModuleDownDetailsItem>> getModuleDownDetailsItems(@Query("condition") String condition);
+    Observable<Result<ModuleDownDetailsItem>> getModuleDownItemList(@Query("condition") String condition);
 
     //Feeder保养
     @GET("ams/smm/unplugmodcontroller/feedermaintain")
@@ -270,7 +270,7 @@ public interface ApiService {
 
     //请求接料预警详情页面item数据
     @GET("ams/smm/linealarmfault/getlinematerialconnectdetail")
-    Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(@Query("condition") String condition);
+    Observable<ItemAcceptMaterialDetail> getAcceptMaterialList(@Query("condition") String condition);
 
     /**
      * 接料时点灯
@@ -278,7 +278,7 @@ public interface ApiService {
     @POST("ams/smm/linealarmfault/turnonlightfornextmaterial")
     @FormUrlEncoded
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
-    Observable<Result<LightOnResultItem>> lightOnMaterial(@Field("value") String value);
+    Observable<Result<LightOnResultItem>> turnLightOn(@Field("value") String value);
 
     /**
      * @param value
@@ -287,7 +287,7 @@ public interface ApiService {
     @POST("ams/smm/linealarmfault/turnofflight")
     @FormUrlEncoded
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
-    Observable<Result> lightOffMaterial(@Field("value") String value);
+    Observable<Result> turnLightOff(@Field("value") String value);
 
     //提交新旧流水号
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -770,7 +770,7 @@ public interface ApiService {
     @GET("ams/smm/warehissue/getnodebit")
     Observable<Result<DebitData>> getDebitDataList(@Query("condition") String mMs);
 
-    @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    @GET("ams/smm/plugmodcontroller/getNeedUpLoadToMesMaterials")
     Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(@Query("condition") String mArgument);
 
     @Headers({"Content-Type: application/x-www-form-urlencoded"})

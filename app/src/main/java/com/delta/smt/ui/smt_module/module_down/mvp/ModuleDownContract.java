@@ -10,15 +10,16 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/3.
+ * Author Shufeng.Wu
+ * Date   2017/1/3
  */
 
 public interface ModuleDownContract {
     interface View extends IView {
 
-        void onSuccess(List<ModuleDownWarningItem> data);
+        void onGetModuleDownWarningListSuccess(List<ModuleDownWarningItem> data);
 
-        void onFailed(String message);
+        void onGetModuleDownWarningFailed(String message);
 
         void onNetFailed(Throwable throwable);
 
@@ -33,6 +34,6 @@ public interface ModuleDownContract {
     }
 
     interface Model extends IModel {
-        Observable<Result<ModuleDownWarningItem>> getAllModuleDownWarningItems();
+        Observable<Result<ModuleDownWarningItem>> getModuleDownWarningList();
     }
 }

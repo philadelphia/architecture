@@ -3,6 +3,7 @@ package com.delta.smt.ui.smt_module.virtual_line_binding;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -47,7 +48,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingPresenter> implements VirtualLineBindingContract.View{
@@ -61,10 +63,10 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     RecyclerView recyclerViewTitle;
     @BindView(R.id.recy_content)
     RecyclerView recyclerViewContent;
-    List<VirtualLineItem> data_tmp = null;
-    String materialBlockNumber;
-    String feederNumber;
-    String serialNo;
+    private List<VirtualLineItem> data_tmp = null;
+    private String materialBlockNumber;
+    private String feederNumber;
+    private String serialNo;
     @BindView(R.id.tv_showWorkOrder)
     TextView tv_showWorkOrder;
     @BindView(R.id.tv_showProductNameMain)
@@ -79,24 +81,23 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     TextView tv_showScan_1;
     @BindView(R.id.tv_showScan_2)
     TextView tv_showScan_2;
-    String workItemID;
-    String side;
-    String productNameMain;
-    String productName;
-    String linName;
-    String scan1_label = null;
+    private String workItemID;
+    private String side;
+    private String productNameMain;
+    private String productName;
+    private String linName;
+    private String scan1_label = null;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    int state = 1;
+    private int state = 1;
     @BindView(R.id.showMessage)
     TextView showMessage;
     private CommonBaseAdapter<VirtualLineItem> adapterTitle;
     private CommonBaseAdapter<VirtualLineItem> adapter;
-    private List<VirtualLineItem> dataList = new ArrayList<>();
-    private List<VirtualLineItem> dataSource = new ArrayList<>();
+    private final List<VirtualLineItem> dataList = new ArrayList<>();
+    private final List<VirtualLineItem> dataSource = new ArrayList<>();
     private String moduleID;
     //二维码
-    private int scan_position = -1;
     private int mType;//mType =2 代表从上模组进来的虚拟线体绑定
 
     @Override
@@ -119,7 +120,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         map.put("side", side);
 
         String argument = GsonTools.createGsonListString(map);
-        getPresenter().getAllVirtualLineBindingItems(argument);
+        getPresenter().getVirtualLineBindingList(argument);
     }
 
     @Override
@@ -127,8 +128,10 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         toolbar.setTitle("");
         toolbar.findViewById(R.id.tv_setting).setVisibility(View.INVISIBLE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
         if (mType == 2) {
 
             toolbarTitle.setText("上模组虚拟线体绑定");
@@ -146,7 +149,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         adapterTitle = new CommonBaseAdapter<VirtualLineItem>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, VirtualLineItem item, int position) {
-                holder.itemView.setBackgroundColor(getResources().getColor(R.color.c_efefef));
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(VirtualLineBindingActivity.this, R.color.c_efefef));
                 holder.setText(R.id.tv_moduleID, item.getModel_id());
                 holder.setText(R.id.tv_virtualModuleID, item.getVitual_id());
             }
@@ -161,13 +164,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
         adapter = new CommonBaseAdapter<VirtualLineItem>(this, dataSource) {
             @Override
             protected void convert(CommonViewHolder holder, VirtualLineItem item, int position) {
-//                if (scan_position == -1) {
-//                    holder.itemView.setBackgroundColor(Color.WHITE);
-//                } else if (scan_position == position) {
-//                    holder.itemView.setBackgroundColor(Color.YELLOW);
-//                } else {
-//                    holder.itemView.setBackgroundColor(Color.WHITE);
-//                }
                 if(item.getModel_id().equalsIgnoreCase(moduleID)){
                     holder.itemView.setBackgroundColor(Color.YELLOW);
                 }else {
@@ -193,14 +189,14 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     }
 
     @Override
-    public void onSuccess(List<VirtualLineItem> data) {
+    public void onGetVirtualLineBindingListSuccess(List<VirtualLineItem> data) {
         dataSource.clear();
         data_tmp = data ;
         dataSource.addAll(data_tmp);
         adapter.notifyDataSetChanged();
         adapterTitle.notifyDataSetChanged();
         if (mType != 2) {
-            if (isAllModuleBinded(dataSource)) {
+            if (isAllModuleBound(dataSource)) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constant.WORK_ITEM_ID, workItemID);
                 bundle.putString(Constant.PRODUCT_NAME_MAIN, productNameMain);
@@ -215,7 +211,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     }
 
     @Override
-    public void onFailed(String message) {
+    public void onGetVirtualLineBindingListFailed(String message) {
         ToastUtils.showMessage(this, message);
         VibratorAndVoiceUtils.wrongVibrator(this);
         VibratorAndVoiceUtils.wrongVoice(this);
@@ -259,7 +255,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                 map.put("side", side);
                 Gson gson = new Gson();
                 String argument = gson.toJson(map);
-                getPresenter().getAllVirtualLineBindingItems(argument);
+                getPresenter().getVirtualLineBindingList(argument);
             }
         });
     }
@@ -274,19 +270,9 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                 map.put("work_order", workItemID);
                 map.put("side", side);
                 String argument = GsonTools.createGsonListString(map);
-                getPresenter().getAllVirtualLineBindingItems(argument);
+                getPresenter().getVirtualLineBindingList(argument);
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @OnClick({R.id.showMessage})
@@ -328,7 +314,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                     showMessage.setText(e.getMessage());
                     showMessage.setVisibility(View.VISIBLE);
                     ToastUtils.showMessage(this, e.getMessage());
-                }catch (EntityNotFountException e) {
+                }catch (EntityNotFountException | ArrayIndexOutOfBoundsException e) {
                     /*try{
                         showMessage.setVisibility(View.GONE);
                         Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
@@ -349,12 +335,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                     VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
                     showMessage.setText("请扫描料盘！");
                     showMessage.setVisibility(View.VISIBLE);
-                } catch (ArrayIndexOutOfBoundsException e){
-                    VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
-                    VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
-                    showMessage.setText("请扫描料盘！");
-                    showMessage.setVisibility(View.VISIBLE);
-
                 }
                 break;
             //扫描虚拟线体
@@ -411,7 +391,7 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         String condition = GsonTools.createGsonListString(map);
                         getPresenter().getVirtualModuleID(condition);
                         state = 2;
-                    } catch (EntityNotFountException ee) {
+                    } catch (EntityNotFountException | ArrayIndexOutOfBoundsException ee) {
                         /*try{
                             showMessage.setVisibility(View.GONE);
                             Feeder feeder = (Feeder)barCodeParseIpml.getEntity(barcode, BarCodeType.FEEDER);
@@ -429,12 +409,6 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
                         }*/
                         VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
                         VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
-                        showMessage.setText("请扫描虚拟模组！");
-                        showMessage.setVisibility(View.VISIBLE);
-                    }catch (ArrayIndexOutOfBoundsException ee){
-                        VibratorAndVoiceUtils.wrongVibrator(VirtualLineBindingActivity.this);
-                        VibratorAndVoiceUtils.wrongVoice(VirtualLineBindingActivity.this);
-
                         showMessage.setText("请扫描虚拟模组！");
                         showMessage.setVisibility(View.VISIBLE);
                     }
@@ -459,20 +433,20 @@ public class VirtualLineBindingActivity extends BaseActivity<VirtualLineBindingP
     }
 
     //判断是否所有的模组被绑定
-    public boolean isAllModuleBinded(List<VirtualLineItem> rb){
-        boolean res = true;
+    private boolean isAllModuleBound(List<VirtualLineItem> rb){
+        boolean flag = true;
         if (rb.size()>0){
             for(int i=0;i<rb.size();i++){
                 VirtualLineItem virtualLineItem = rb.get(i);
                     if (TextUtils.isEmpty(virtualLineItem.getVitual_id())) {
-                        res = false;
+                        flag = false;
                         break;
                     }
             }
         }else{
-            res = false;
+            flag = false;
         }
 
-        return res;
+        return flag;
     }
 }

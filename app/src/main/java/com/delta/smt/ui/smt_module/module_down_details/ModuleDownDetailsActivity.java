@@ -2,14 +2,10 @@ package com.delta.smt.ui.smt_module.module_down_details;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Looper;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +57,8 @@ import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BAR
 import static com.delta.smt.base.BaseApplication.getContext;
 
 /**
- * Created by Shu feng.Wu on 2017/1/5.
+ * Author Shufeng.Wu
+ * Date   2017/1/5
  */
 
 public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPresenter> implements ModuleDownDetailsContract.View {
@@ -88,18 +85,15 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @BindView(R.id.tv_line_num)
     TextView tv_line;
 
-    String workItemID;
-    String side;
-    String productNameMain;
-    String productName;
-    String lineName;
+    private String workItemID;
+    private String side;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    private CommonBaseAdapter<ModuleDownDebit> unDebitadapter;
+    private CommonBaseAdapter<ModuleDownDebit> unDebitAdapter;
     private CommonBaseAdapter<ModuleDownDetailsItem> adapter;
-    private List<ModuleDownDetailsItem> dataList = new ArrayList<>();
-    private List<ModuleDownDetailsItem> dataSource = new ArrayList<>();
-    private List<ModuleDownDetailsItem> dataSourceForCheckIn = new ArrayList<>();
+    private final List<ModuleDownDetailsItem> dataList = new ArrayList<>();
+    private final List<ModuleDownDetailsItem> dataSource = new ArrayList<>();
+    private final List<ModuleDownDetailsItem> dataSourceForCheckIn = new ArrayList<>();
     private String mCurrentWorkOrder;
     private String mCurrentMaterialID;
     private String mCurrentSerialNumber;
@@ -112,7 +106,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     private String argument;
     private LinearLayoutManager linearLayoutManager;
     private CustomPopWindow popUpWindow;
-    private List<ModuleDownDebit> unDebitItemList = new ArrayList<>();
+    private final List<ModuleDownDebit> unDebitItemList = new ArrayList<>();
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -124,9 +118,9 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         Intent intent = this.getIntent();
         workItemID = intent.getStringExtra(Constant.WORK_ITEM_ID);
         side = intent.getStringExtra(Constant.SIDE);
-        lineName = intent.getStringExtra(Constant.LINE_NAME);
-        productName = intent.getStringExtra(Constant.PRODUCT_NAME);
-        productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
+        String lineName = intent.getStringExtra(Constant.LINE_NAME);
+        String productName = intent.getStringExtra(Constant.PRODUCT_NAME);
+        String productNameMain = intent.getStringExtra(Constant.PRODUCT_NAME_MAIN);
         tv_workOrder.setText(getResources().getString(R.string.WorkID) + ":   " + workItemID);
         tv_line.setText(getResources().getString(R.string.Line) + ":   " + lineName);
         tv_side.setText(getResources().getString(R.string.Side) + ":   " + side);
@@ -220,7 +214,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     }
 
     @Override
-    public void onSuccess(List<ModuleDownDetailsItem> data) {
+    public void onGetModuleDownItemListSuccess(List<ModuleDownDetailsItem> data) {
         dataSource.clear();
         dataSourceForCheckIn.clear();
 
@@ -232,8 +226,8 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             if (bean.getDest().equalsIgnoreCase("1"))
                 dataSourceForCheckIn.add(bean);
         }
-        Log.i(TAG, "onSuccess: 后台返回的数据长度是" + dataSource.size());
-        Log.i(TAG, "onSuccess: 后台返回的待入库数据长度是" + dataSourceForCheckIn.size());
+        Log.i(TAG, "onGetWarningListSuccess: 后台返回的数据长度是" + dataSource.size());
+        Log.i(TAG, "onGetWarningListSuccess: 后台返回的待入库数据长度是" + dataSourceForCheckIn.size());
         index = -1;
         adapter.notifyDataSetChanged();
         if (dataSourceForCheckIn.isEmpty()) {
@@ -255,7 +249,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
 
         unDebitItemList.clear();
         unDebitItemList.addAll(data);
-        unDebitadapter.notifyDataSetChanged();
+        unDebitAdapter.notifyDataSetChanged();
 
         popUpWindow.showAsDropDown(toolbar);
     }
@@ -287,7 +281,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                     if (moduleDownDebit.isChecked())
                         moduleDownDebit.setChecked(false);
                 }
-                unDebitadapter.notifyDataSetChanged();
+                unDebitAdapter.notifyDataSetChanged();
             }
         });
 
@@ -298,7 +292,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 Map<String, String> mapItem = new HashMap<>();
                 map.put("work_order", workItemID);
                 map.put("side", side);
-                List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+                List<Map<String, String>> list = new ArrayList<>();
 
                 for (ModuleDownDebit debitData : unDebitItemList) {
                     if (debitData.isChecked())
@@ -320,10 +314,10 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
                 for (ModuleDownDebit debitData : unDebitItemList) {
                     debitData.setChecked(true);
                 }
-                unDebitadapter.notifyDataSetChanged();
+                unDebitAdapter.notifyDataSetChanged();
             }
         });
-        unDebitadapter = new CommonBaseAdapter<ModuleDownDebit>(this, unDebitItemList) {
+        unDebitAdapter = new CommonBaseAdapter<ModuleDownDebit>(this, unDebitItemList) {
             @Override
             protected void convert(final CommonViewHolder holder, final ModuleDownDebit item, int position) {
                 holder.setText(R.id.tv_material_id, "料号 :\t" + item.getMaterial_no());
@@ -345,12 +339,12 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
             }
         };
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(unDebitadapter);
+        recyclerView.setAdapter(unDebitAdapter);
     }
 
 
     @Override
-    public void onFailed(String message) {
+    public void onGetModuleDownItemListFailed(String message) {
         flag = 2;
         ToastUtils.showMessage(this, message, Toast.LENGTH_SHORT);
         VibratorAndVoiceUtils.wrongVibrator(this);
@@ -393,7 +387,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllModuleDownDetailsItems(argument);
+                getPresenter().getModuleDownItemList(argument);
             }
         });
     }
@@ -404,7 +398,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllModuleDownDetailsItems(argument);
+                getPresenter().getModuleDownItemList(argument);
             }
         });
     }
@@ -421,7 +415,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
     @Override
     protected void onResume() {
         super.onResume();
-        getPresenter().getAllModuleDownDetailsItems(argument);
+        getPresenter().getModuleDownItemList(argument);
     }
 
     @Override
@@ -583,7 +577,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         }
     }
 
-    public int getMatchedMaterialIndex(String materialID, String serialNumber) {
+    private int getMatchedMaterialIndex(String materialID, String serialNumber) {
         int length = dataSource.size();
 
         for (int i = 0; i < length; i++) {
@@ -598,7 +592,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         return index;
     }
 
-    public boolean isMaterialExists(MaterialBlockBarCode material) {
+    private boolean isMaterialExists(MaterialBlockBarCode material) {
         boolean flag = false;
         for (int i = 0; i < dataSource.size(); i++) {
             ModuleDownDetailsItem item = dataSource.get(i);
@@ -613,7 +607,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         return flag;
     }
 
-    public boolean isMaterialInFeederCheckInList(MaterialBlockBarCode material) {
+    private boolean isMaterialInFeederCheckInList(MaterialBlockBarCode material) {
         boolean flag = false;
         for (int i = 0; i < dataSourceForCheckIn.size(); i++) {
             ModuleDownDetailsItem item = dataSourceForCheckIn.get(i);
@@ -628,7 +622,7 @@ public class ModuleDownDetailsActivity extends BaseActivity<ModuleDownDetailsPre
         return flag;
     }
 
-    public void lightOff() {
+    private void lightOff() {
         Map<String, Object> map = new HashMap<>();
         map.put("work_order", workItemID);
         map.put("side", side);

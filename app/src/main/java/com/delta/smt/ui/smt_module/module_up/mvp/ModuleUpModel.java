@@ -9,7 +9,8 @@ import com.delta.smt.entity.Result;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/3.
+ * Author Shufeng.Wu
+ * Date   2017/1/3
  */
 
 public class ModuleUpModel extends BaseModel<ApiService> implements ModuleUpContract.Model{
@@ -18,7 +19,7 @@ public class ModuleUpModel extends BaseModel<ApiService> implements ModuleUpCont
     }
 
     @Override
-    public Observable<Result<ModuleUpWarningItem>> getAllModuleUpWarningItems() {
+    public Observable<Result<ModuleUpWarningItem>> getModuleUpWarningList() {
         /*ModuleUpWarningItem mi = new ModuleUpWarningItem();
         mi.setCode("0");
         mi.setMsg("success");
@@ -34,6 +35,6 @@ public class ModuleUpModel extends BaseModel<ApiService> implements ModuleUpCont
         l.add(r);
         mi.setRows(l);
         return Observable.just(mi);*/
-        return getService().getModuleUpWarningItems().compose(RxsRxSchedulers.<Result<ModuleUpWarningItem>>io_main());
+        return getService().getModuleUpWarningList().compose(RxsRxSchedulers.<Result<ModuleUpWarningItem>>io_main());
     }
 }

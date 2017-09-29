@@ -2,13 +2,10 @@ package com.delta.smt.ui.feeder.handle.feederSupply.mvp;
 
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
-import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.entity.BaseEntity;
 import com.delta.smt.entity.DebitData;
-import com.delta.smt.entity.FeederMESItem;
 import com.delta.smt.entity.FeederSupplyItem;
 import com.delta.smt.entity.Result;
-import com.delta.smt.entity.ResultFeeder;
 import com.delta.smt.entity.UpLoadEntity;
 
 import java.util.List;
@@ -22,7 +19,7 @@ import rx.Observable;
 
 public interface FeederSupplyContract {
     interface View extends IView {
-        void onSuccess(List<FeederSupplyItem> data);
+        void onGetFeederListSuccess(List<FeederSupplyItem> data);
 
         void onFeederSupplySuccess(List<FeederSupplyItem> data);
 
@@ -31,7 +28,7 @@ public interface FeederSupplyContract {
 
         void showUnUpLoadToMESItemList(UpLoadEntity mT );
 
-        void onFailed(String message);
+        void onGetFeederListFailed(String message);
 
         void onAllSupplyComplete();
 
@@ -53,7 +50,7 @@ public interface FeederSupplyContract {
     }
 
     interface Model extends IModel {
-        Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(String workID);
+        Observable<Result<FeederSupplyItem>> getFeederList(String workID);
 
         Observable<Result<FeederSupplyItem>> getFeederInsertionToSlotTimeStamp(String condition);
 

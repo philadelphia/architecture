@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -128,7 +127,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     protected void handError(String contents) {
         super.handError(contents);
-        onFailed(contents);
+        onGetFeederListFailed(contents);
         showErrorView();
 
     }
@@ -282,8 +281,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     }
 
     @Override
-    public void onSuccess(List<FeederSupplyItem> data) {
-        Log.i(TAG, "onSuccess: ");
+    public void onGetFeederListSuccess(List<FeederSupplyItem> data) {
+        Log.i(TAG, "onGetWarningListSuccess: ");
         Log.i(TAG, "后台返回的数据长度是: " + data.size());
         statusLayout.setVisibility(View.VISIBLE);
         dataSource.clear();
@@ -305,7 +304,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
 
     @Override
     public void onFeederSupplySuccess(List<FeederSupplyItem> data) {
-            Log.i(TAG, "onSuccess: ");
+            Log.i(TAG, "onGetWarningListSuccess: ");
             Log.i(TAG, "后台返回的数据长度是: " + data.size());
             VibratorAndVoiceUtils.correctVibrator(FeederSupplyActivity.this);
             VibratorAndVoiceUtils.correctVoice(FeederSupplyActivity.this);
@@ -526,8 +525,8 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     }
 
     @Override
-    public void onFailed(String message) {
-        Log.i(TAG, "onFailed: " + message);
+    public void onGetFeederListFailed(String message) {
+        Log.i(TAG, "onGetWarningListFailed: " + message);
         tvModuleID.setVisibility(View.VISIBLE);
         tvModuleID.setText(message);
         VibratorAndVoiceUtils.wrongVibrator(this);
@@ -583,7 +582,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         statusLayout.setErrorClick(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllToBeSuppliedFeeders(workId);
+                getPresenter().getFeederList(workId);
             }
         });
 
@@ -595,7 +594,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
         statusLayout.setEmptyClick(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getAllToBeSuppliedFeeders(argument);
+                getPresenter().getFeederList(argument);
             }
         });
 
@@ -621,7 +620,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
     @Override
     protected void onResume() {
         super.onResume();
-        getPresenter().getAllToBeSuppliedFeeders(argument);
+        getPresenter().getFeederList(argument);
     }
 
     @Override

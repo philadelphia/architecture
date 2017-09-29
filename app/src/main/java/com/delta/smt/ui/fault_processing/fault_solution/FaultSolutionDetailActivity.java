@@ -123,7 +123,7 @@ public class FaultSolutionDetailActivity extends BaseActivity<FaultSolutionPrese
 
     @Override
     public void onSuccess(String message) {
-        Log.i(TAG, "onSuccess: " + message);
+        Log.i(TAG, "onGetWarningListSuccess: " + message);
         mWebView.loadDataWithBaseURL(null, message, "text/html", "UTF-8", null);
 
     }

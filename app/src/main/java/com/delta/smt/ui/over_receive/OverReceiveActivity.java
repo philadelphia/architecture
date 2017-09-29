@@ -494,7 +494,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //getPresenter().getAllModuleUpWarningItems();
+                        //getPresenter().getModuleUpWarningList();
                     }
                 }).show();
     }

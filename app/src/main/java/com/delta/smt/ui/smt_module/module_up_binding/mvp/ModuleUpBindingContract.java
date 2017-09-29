@@ -12,15 +12,16 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 public interface ModuleUpBindingContract {
     interface View extends IView {
 
-        void onSuccess(List<ModuleUpBindingItem> dataSource);
+        void onGetModuleUpBindingListSuccess(List<ModuleUpBindingItem> dataSource);
 
-        void onFailed(String message);
+        void onGetModuleUpBindingListFailed(String message);
 
         void onNetFailed(Throwable throwable);
 
@@ -48,7 +49,7 @@ public interface ModuleUpBindingContract {
     }
 
     interface Model extends IModel {
-        Observable<Result<ModuleUpBindingItem>> getAllModuleUpBindingItems(String str);
+        Observable<Result<ModuleUpBindingItem>> getModuleUpBindingList(String str);
 
         Observable<Result<ModuleUpBindingItem>> getMaterialAndFeederBindingResult(String str);
 

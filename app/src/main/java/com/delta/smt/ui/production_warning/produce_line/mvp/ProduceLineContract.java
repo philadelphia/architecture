@@ -18,7 +18,7 @@ import rx.Observable;
 
 public interface ProduceLineContract {
     interface View extends IView {
-        void getDataLineDatas(List<ItemProduceLine> itemProduceLine);
+        void getAllProductionLines(List<ItemProduceLine> itemProduceLine);
 
         void getFailed(String message);
 

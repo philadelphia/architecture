@@ -151,8 +151,8 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     }
 
     @Override
-    public void onSuccess(List<FeederSupplyWarningItem> data) {
-        Log.i(TAG, "onSuccess: ");
+    public void onGetSupplyWorkItemListSuccess(List<FeederSupplyWarningItem> data) {
+        Log.i(TAG, "onGetWarningListSuccess: ");
         Log.i(TAG, "后台返回的数据长度为: " + data.size());
         dataList.clear();
         for (int i = 0; i < data.size(); i++) {
@@ -160,20 +160,20 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
             entity.setEntityId(i);
             long time = System.currentTimeMillis();
             entity.setEnd_time(Math.round(time + entity.getRemainTime() * 1000));
-            Log.e(TAG, "onSuccess: " + entity.toString());
+            Log.e(TAG, "onGetWarningListSuccess: " + entity.toString());
             dataList.add(entity);
 
         }
 
         adapter.notifyDataSetChanged();
         Log.i(TAG, "后台返回的数据长度为: " + dataList.get(0).getRemainTime());
-        Log.i(TAG, "onSuccess: " + dataList.size());
+        Log.i(TAG, "onGetWarningListSuccess: " + dataList.size());
 
     }
 
     @Override
-    public void onFailed(String message) {
-        Log.i(TAG, "onFailed: " + message);
+    public void onGetSupplyWorkItemListFailed(String message) {
+        Log.i(TAG, "onGetWarningListFailed: " + message);
     }
 
     @Override
@@ -219,7 +219,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
         if (null != adapter) {
             adapter.startRefreshTime();
         }
-        getPresenter().getAllSupplyWorkItems();
+        getPresenter().getSupplyWorkItemList();
 
     }
 
@@ -275,7 +275,7 @@ public class FeederSupplyListActivity extends BaseActivity<SupplyPresenter> impl
     }
 
     private void onRefresh(){
-        getPresenter().getAllSupplyWorkItems();
+        getPresenter().getSupplyWorkItemList();
     }
 
     private WarningDialog createDialog() {

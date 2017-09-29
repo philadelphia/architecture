@@ -9,7 +9,8 @@ import com.delta.smt.entity.Result;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/3.
+ * Author Shufeng.Wu
+ * Date   2017/1/3
  */
 
 public class ModuleDownModel extends BaseModel<ApiService> implements ModuleDownContract.Model{
@@ -18,8 +19,8 @@ public class ModuleDownModel extends BaseModel<ApiService> implements ModuleDown
     }
 
     @Override
-    public Observable<Result<ModuleDownWarningItem>> getAllModuleDownWarningItems() {
+    public Observable<Result<ModuleDownWarningItem>> getModuleDownWarningList() {
 
-        return getService().getModuleDownWarningItems().compose(RxsRxSchedulers.<Result<ModuleDownWarningItem>>io_main());
+        return getService().getModuleDownWarningList().compose(RxsRxSchedulers.<Result<ModuleDownWarningItem>>io_main());
     }
 }

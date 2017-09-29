@@ -11,19 +11,21 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 public interface VirtualLineBindingContract {
     interface View extends IView {
 
-        void onSuccess(List<VirtualLineItem> data);
+        void onGetVirtualLineBindingListSuccess(List<VirtualLineItem> data);
 
-        void onFailed(String message);
+        void onGetVirtualLineBindingListFailed(String message);
 
         void onNetFailed(Throwable throwable);
 
         void onGetModuleIDSuccess(String value);
+
         void onGetModuleIDFailed();
 
         /*public void onSuccessBinding(VirtualLineBindingItem data);
@@ -44,7 +46,7 @@ public interface VirtualLineBindingContract {
     }
 
     interface Model extends IModel {
-        Observable<Result<VirtualLineItem>> getAllVirtualLineBindingItems(String str);
+        Observable<Result<VirtualLineItem>> getVirtualLineBindingList(String str);
 
         Observable<Result<VirtualLineItem>> getVirtualBinding(String str);
 
