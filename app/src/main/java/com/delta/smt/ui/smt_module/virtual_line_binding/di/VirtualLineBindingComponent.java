@@ -7,7 +7,8 @@ import com.delta.smt.ui.smt_module.virtual_line_binding.VirtualLineBindingActivi
 import dagger.Component;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 @ActivityScope

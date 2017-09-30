@@ -1,6 +1,7 @@
 package com.delta.smt.ui.smt_module.module_down;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -40,7 +41,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 /**
- * Created by Shufeng.Wu on 2017/1/3.
+ * Author Shufeng.Wu
+ * Date   2017/1/3
  */
 public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implements ModuleDownContract.View, WarningManger.OnWarning, com.delta.libs.adapter.ItemOnclick<ModuleDownWarningItem> {
 
@@ -57,7 +59,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-    private List<ModuleDownWarningItem> dataList = new ArrayList<>();
+    private final List<ModuleDownWarningItem> dataList = new ArrayList<>();
     private ItemCountViewAdapter<ModuleDownWarningItem> myAdapter;
 
     private WarningDialog warningDialog;
@@ -115,12 +117,12 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
                 switch (moduleUpWarningItem.getStatus()) {
                     case 210:
                         status = "等待下模组";
-                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background));
+                        holder.itemView.setBackground(ContextCompat.getDrawable(ModuleDownActivity.this, R.drawable.card_background));
                         break;
 
                     case 211:
                         status = "正在下模组";
-                        holder.itemView.setBackground(getResources().getDrawable(R.drawable.card_background_yellow));
+                        holder.itemView.setBackground(ContextCompat.getDrawable(ModuleDownActivity.this, R.drawable.card_background_yellow));
                         break;
 
                     default:
@@ -142,7 +144,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     }
 
     @Override
-    public void onSuccess(List<ModuleDownWarningItem> dataSource) {
+    public void onGetModuleDownWarningListSuccess(List<ModuleDownWarningItem> dataSource) {
         dataList.clear();
         for (int i = 0; i < dataSource.size(); i++) {
 //            if (TextUtils.isEmpty(dataSource.get(i).getUnplug_mod_actual_finish_time())) {
@@ -150,8 +152,8 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 //            } else {
             dataSource.get(i).setCreat_time(dataSource.get(i).getOnline_actual_finish_time());
 //            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-//            Log.i(TAG, "onSuccess: " + dataSource.get(i).getUnplug_mod_actual_finish_time());
-//            Log.i(TAG, "onSuccess: " + format.format(dataSource.get(i).getUnplug_mod_actual_finish_time()));
+//            Log.i(TAG, "onGetWarningListSuccess: " + dataSource.get(i).getUnplug_mod_actual_finish_time());
+//            Log.i(TAG, "onGetWarningListSuccess: " + format.format(dataSource.get(i).getUnplug_mod_actual_finish_time()));
 ////                try {
 ////                    Date parse = format.parse(dataSource.get(i).getUnplug_mod_actual_finish_time());
 ////                    dataSource.get(i).setCreat_time(parse.getTime());
@@ -169,7 +171,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
     }
 
     @Override
-    public void onFailed(String message) {
+    public void onGetModuleDownWarningFailed(String message) {
         ToastUtils.showMessage(this, message);
     }
 
@@ -226,7 +228,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         warningManager.registerWReceiver(this);
         //需要定制的信息
         warningManager.sendMessage(new SendMessage(String.valueOf(Constant.UNPLUG_MOD_ALARM_FLAG), 0));
-        getPresenter().getAllModuleDownWarningItems();
+        getPresenter().getModuleDownWarningList();
     }
 
     //预警
@@ -243,8 +245,8 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     private void updateMessage(String warningMessage) {
 
-        List<WaringDialogEntity> datas = warningDialog.getDatas();
-        datas.clear();
+        List<WaringDialogEntity> warningList = warningDialog.getDatas();
+        warningList.clear();
         WaringDialogEntity warningEntity = new WaringDialogEntity();
         warningEntity.setTitle("下模组预警:");
 
@@ -260,7 +262,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
             }
             String content = sb.toString();
             warningEntity.setContent(content + "\n");
-            datas.add(warningEntity);
+            warningList.add(warningEntity);
             warningDialog.notifyData();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -269,7 +271,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
 
     }
 
-    public WarningDialog createDialog() {
+    private WarningDialog createDialog() {
         warningDialog = new WarningDialog(this);
         warningDialog.setOnClickListener(new WarningDialog.OnClickListener() {
             @Override
@@ -327,7 +329,7 @@ public class ModuleDownActivity extends BaseActivity<ModuleDownPresenter> implem
         IntentUtils.showIntent(this, VirtualLineBindingActivity.class, bundle);
     }
 
-    public void onRefresh() {
-        getPresenter().getAllModuleDownWarningItems();
+    private void onRefresh() {
+        getPresenter().getModuleDownWarningList();
     }
 }

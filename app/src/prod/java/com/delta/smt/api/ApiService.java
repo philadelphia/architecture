@@ -26,6 +26,7 @@ import com.delta.smt.entity.JsonProductToolsLocationRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.LedLight;
 import com.delta.smt.entity.Light;
+import com.delta.smt.entity.LightOnResultItem;
 import com.delta.smt.entity.ListWarning;
 import com.delta.smt.entity.LoginResult;
 import com.delta.smt.entity.MantissaWarehouseDetailsResult;
@@ -51,6 +52,7 @@ import com.delta.smt.entity.QualityManage;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFault;
 import com.delta.smt.entity.ResultFeeder;
+import com.delta.smt.entity.ScheduleResult;
 import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -80,6 +82,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -126,11 +129,11 @@ public interface ApiService {
 
     //获取所有的Feeder备料工单列表
     @GET("ams/smm/buffer/queryschedule")
-    Observable<Result<FeederSupplyWarningItem>> getAllSupplyWorkItems();
+    Observable<Result<FeederSupplyWarningItem>> getSupplyWorkItemList();
 
     //获取指定工单的Feeder备料列表
     @POST("ams/smm/buffer/startbufferissue")
-    Observable<Result<FeederSupplyItem>> getAllToBeSuppliedFeeders(@Query("value") String value);
+    Observable<Result<FeederSupplyItem>> getFeederList(@Query("value") String value);
 
     //下模组灭灯
     @GET("ams/smm/unplugmodcontroller/turnoffalllight")
@@ -145,7 +148,7 @@ public interface ApiService {
     Observable<ResultFeeder> upLoadFeederSupplyResult();
 
     //获取没有上传到MES的列表
-    @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    @GET("ams/smm/plugmodcontroller/getNeedUpLoadToMesMaterials")
     Observable<BaseEntity<UpLoadEntity>> getUnUpLoadToMESList(@Query("condition") String condition);
 
     //上传feeder备料到MES
@@ -201,11 +204,11 @@ public interface ApiService {
 
     //上模组排程
     @GET("ams/smm/plugmodcontroller/getproductionlines")
-    Observable<Result<ModuleUpWarningItem>> getModuleUpWarningItems();
+    Observable<Result<ModuleUpWarningItem>> getModuleUpWarningList();
 
     //对应工单的上模组列表
     @GET("ams/smm/plugmodcontroller/getmodsbywordorder")
-    Observable<Result<ModuleUpBindingItem>> getModuleUpBindingItems(@Query("condition") String condition);
+    Observable<Result<ModuleUpBindingItem>> getModuleUpBindingList(@Query("condition") String condition);
 
     //上模组,料盘feeder绑定
     @GET("ams/smm/plugmodcontroller/updatemod")
@@ -221,11 +224,11 @@ public interface ApiService {
 
     //下模组排程
     @GET("ams/smm/unplugmodcontroller/getproductionlines")
-    Observable<Result<ModuleDownWarningItem>> getModuleDownWarningItems();
+    Observable<Result<ModuleDownWarningItem>> getModuleDownWarningList();
 
     //虚拟线体绑定列表
     @GET("ams/smm/unplugmodcontroller/getmodellist")
-    Observable<Result<VirtualLineItem>> getVirtualLineBindingItems(@Query("condition") String condition);
+    Observable<Result<VirtualLineItem>> getVirtualLineBindingList(@Query("condition") String condition);
 
     //虚拟线体绑定接口
     @GET("ams/smm/unplugmodcontroller/bindvirtualline")
@@ -237,7 +240,7 @@ public interface ApiService {
 
     //对应工单的下模组列表
     @GET("/ams/smm/unplugmodcontroller/getmodsbywordorder")
-    Observable<Result<ModuleDownDetailsItem>> getModuleDownDetailsItems(@Query("condition") String condition);
+    Observable<Result<ModuleDownDetailsItem>> getModuleDownItemList(@Query("condition") String condition);
 
     //Feeder保养
     @GET("ams/smm/unplugmodcontroller/feedermaintain")
@@ -265,7 +268,24 @@ public interface ApiService {
 
     //请求接料预警详情页面item数据
     @GET("ams/smm/linealarmfault/getlinematerialconnectdetail")
-    Observable<ItemAcceptMaterialDetail> getAcceptMaterialsItemDatas(@Query("condition") String condition);
+    Observable<ItemAcceptMaterialDetail> getAcceptMaterialList(@Query("condition") String condition);
+
+    /**
+     * 接料时点灯
+     */
+    @POST("ams/smm/linealarmfault/turnonlightfornextmaterial")
+    @FormUrlEncoded
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    Observable<Result<LightOnResultItem>> turnLightOn(@Field("value") String value);
+
+    /**
+     * @param value
+     * @return
+     */
+    @POST("ams/smm/linealarmfault/turnofflight")
+    @FormUrlEncoded
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    Observable<Result> turnLightOff(@Field("value") String value);
 
     //提交新旧流水号
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -688,9 +708,10 @@ public interface ApiService {
     @PUT("ams/smm/mantowareh/surecomplete")
     Observable<MantissaWarehousePutstorageResult> getYesok();
 
+
     //尾数仓入库
     @GET("ams/smm/mantissastorage/qmantissastoragelist")
-    Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
+    Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn(@Query("condition") String bind);
 
     //尾数仓查询料盘的位置
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -724,6 +745,9 @@ public interface ApiService {
     @POST("ams/smm/mantissastorage/deduction")
     Observable<ManualDebitBean> getdeduction(@Field("value") String bind);
 
+    //位数仓入库获取入库工单排程
+    @GET("ams/smm/mantissastorage/schedul")
+    Observable<ScheduleResult> getSchedule();
     /**
      * @description :
      * 1.更新
@@ -744,7 +768,7 @@ public interface ApiService {
     @GET("ams/smm/warehissue/getnodebit")
     Observable<Result<DebitData>> getDebitDataList(@Query("condition") String mMs);
 
-    @GET("ams/smm/plugmodcontroller/getneeduploadtomesmaterials")
+    @GET("ams/smm/plugmodcontroller/getNeedUpLoadToMesMaterials")
     Observable<BaseEntity<UpLoadEntity>> getneeduploadtomesmaterials(@Query("condition") String mArgument);
 
     @Headers({"Content-Type: application/x-www-form-urlencoded"})

@@ -11,7 +11,7 @@ import dagger.Component;
  */
 @ActivityScope
 @Component(modules = AcceptMaterialsModule.class,dependencies = AppComponent.class)
-public interface AcceptMaterialsCompnent {
+public interface AcceptMaterialsComponent {
 
     void inject(AcceptMaterialsActivity acceptMaterialsActivity);
 }

@@ -124,7 +124,7 @@ public class WorkOrderActivity extends BaseActivity<WorkOrderPresenter> implemen
         /*for (int i = 0; i < itemWarningInfo.size(); i++) {
 *//*            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                 Date parse = format.parse(itemWarningInfo.get(i).getTime());*//*
-            //Log.e("aaa", "getItemWarningDatas: " + itemWarningInfo.get(i).getTime());
+            //Log.e("aaa", "onGetWarningItemSuccess: " + itemWarningInfo.get(i).getTime());
             //long time = System.currentTimeMillis();
             //itemWarningInfo.get(i).setEnd_time(time + Math.round(itemWarningInfo.get(i).getTime()) * 1000);
             itemWarningInfo.get(i).setEntityId(i);

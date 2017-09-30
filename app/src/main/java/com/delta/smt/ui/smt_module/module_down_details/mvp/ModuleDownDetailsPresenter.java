@@ -14,7 +14,8 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
- * Created by Shufeng.Wu on 2017/1/5.
+ * Author Shufeng.Wu
+ * Date   2017/1/5  
  */
 
 public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsContract.Model,ModuleDownDetailsContract.View> {
@@ -27,8 +28,8 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
         this.rxErrorHandler = rxErrorHandler;
     }
 
-    public void getAllModuleDownDetailsItems(String str){
-        getModel().getAllModuleDownDetailsItems(str).doOnSubscribe(new Action0() {
+    public void getModuleDownItemList(String str){
+        getModel().getModuleDownItemList(str).doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 try{
@@ -49,10 +50,10 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                         }else {
                             getView().showContentView();
                             getView().onResult(moduleDownDetailsItemResult.getMessage());
-                            getView().onSuccess(moduleDownDetailsItemResult.getRows());
+                            getView().onGetModuleDownItemListSuccess(moduleDownDetailsItemResult.getRows());
                         }
                     } else {
-                        getView().onFailed(moduleDownDetailsItemResult.getMessage());
+                        getView().onGetModuleDownItemListFailed(moduleDownDetailsItemResult.getMessage());
                         getView().showErrorView();
                     }
                 }catch (Exception e){
@@ -80,7 +81,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                         getView().onMaintainResult(result.getMessage());
                 }else {
                     getView().showContentView();
-                    getView().onFailed(result.getMessage());
+                    getView().onGetModuleDownItemListFailed(result.getMessage());
                 }
             }
 
@@ -95,7 +96,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
 //        getModel().getDownModuleList(condition).subscribe(new Action1<ModuleDownDetailsItem>() {
 //            @Override
 //            public void call(ModuleDownDetailsItem moduleDownDetailsItem) {
-//                getView().onSuccess(moduleDownDetailsItem);
+//                getView().onGetWarningListSuccess(moduleDownDetailsItem);
 //            }
 //        }, new Action1<Throwable>() {
 //            @Override
@@ -110,9 +111,9 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void call(Result<ModuleDownDetailsItem> moduleDownDetailsItem) {
                     if (moduleDownDetailsItem.getCode() == 0){
-                        getView().onSuccess(moduleDownDetailsItem.getRows());
+                        getView().onGetModuleDownItemListSuccess(moduleDownDetailsItem.getRows());
                     }else {
-                        getView().onFailed(moduleDownDetailsItem.getMessage());
+                        getView().onGetModuleDownItemListFailed(moduleDownDetailsItem.getMessage());
                     }
             }
         }, new Action1<Throwable>() {
@@ -130,13 +131,13 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                     if (0 == moduleDownDebitResult.getCode()){
                         getView().showModuleDownUnDebitedItemList(moduleDownDebitResult.getRows());
                     }else {
-                        getView().onFailed(moduleDownDebitResult.getMessage());
+                        getView().onGetModuleDownItemListFailed(moduleDownDebitResult.getMessage());
                     }
                 }
             }, new Action1<Throwable>() {
                 @Override
                 public void call(Throwable throwable) {
-                    getView().onFailed(throwable.getMessage());
+                    getView().onGetModuleDownItemListFailed(throwable.getMessage());
                 }
             });
     }
@@ -148,7 +149,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
                 if (0 == moduleDownDebitResult.getCode()) {
                     getView().showModuleDownUnDebitedItemList(moduleDownDebitResult.getRows());
                 } else {
-                    getView().onFailed(moduleDownDebitResult.getMessage());
+                    getView().onGetModuleDownItemListFailed(moduleDownDebitResult.getMessage());
                 }
             }
         }, new Action1<Throwable>() {
@@ -164,7 +165,7 @@ public class ModuleDownDetailsPresenter extends BasePresenter<ModuleDownDetailsC
             @Override
             public void call(Result result) {
                 if (0 == result.getCode()){
-
+                    // TODO: 2017/9/29  
                 }
             }
         }, new Action1<Throwable>() {

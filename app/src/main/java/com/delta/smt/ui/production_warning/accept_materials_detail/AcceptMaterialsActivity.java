@@ -1,12 +1,15 @@
 package com.delta.smt.ui.production_warning.accept_materials_detail;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -21,6 +24,8 @@ import com.delta.buletoothio.barcode.parse.BarCodeType;
 import com.delta.buletoothio.barcode.parse.entity.MaterialBlockBarCode;
 import com.delta.buletoothio.barcode.parse.exception.DCTimeFormatException;
 import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
+import com.delta.commonlibs.utils.DialogUtils;
+import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.ToastUtils;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -30,21 +35,23 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
+import com.delta.smt.entity.LightOnResultItem;
 import com.delta.smt.entity.production_warining_item.ItemAcceptMaterialDetail;
 import com.delta.smt.ui.production_warning.accept_materials_detail.di.AcceptMaterialsModule;
-import com.delta.smt.ui.production_warning.accept_materials_detail.di.DaggerAcceptMaterialsCompnent;
+import com.delta.smt.ui.production_warning.accept_materials_detail.di.DaggerAcceptMaterialsComponent;
 import com.delta.smt.ui.production_warning.accept_materials_detail.mvp.AcceptMaterialsContract;
 import com.delta.smt.ui.production_warning.accept_materials_detail.mvp.AcceptMaterialsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 import com.delta.ttsmanager.TextToSpeechManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.delta.smt.base.BaseApplication.getContext;
 
@@ -102,10 +109,14 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     private int tag = 0;
     private int flag = 0;
     private int index = -1;
+    private String mCurrentSlot;
+    private String lastCarID;
+    private String lastLocation;
+    private String lastMaterialID;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
-        DaggerAcceptMaterialsCompnent.builder().appComponent(appComponent)
+        DaggerAcceptMaterialsComponent.builder().appComponent(appComponent)
                 .acceptMaterialsModule(new AcceptMaterialsModule(this)).build().inject(this);
     }
 
@@ -121,7 +132,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         face = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_FACE);
 //        material_number = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_NUM);
         Log.e(TAG, "initData: " + lines);
-        getPresenter().getAllItems(lines);
+        getPresenter().getAcceptMaterialList(lines);
 
     }
 
@@ -214,9 +225,31 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //关灯操作
-            getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
+//            getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onLightOnSuccess(LightOnResultItem lightOnResultItem) {
+        lastCarID = lightOnResultItem.getCar();
+        lastLocation = lightOnResultItem.getLocation();
+        lastMaterialID = lightOnResultItem.getMaterial_no();
+    }
+
+    @Override
+    public void onLightOnFailed() {
+
+    }
+
+    @Override
+    public void onLightOffSuccess() {
+
+    }
+
+    @Override
+    public void onLightOffFailed() {
+
     }
 
     //扫码成功处理
@@ -245,14 +278,29 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                     tag = 1;
                     oldSerialNumber = streamNumber;
                     oldMaterialNumber = materialNumber;
+                    mCurrentSlot = dataList1.get(index).getSlot();
                     //扫码正确时调用的声音和震动
                     VibratorAndVoiceUtils.correctVibrator(this);
                     VibratorAndVoiceUtils.correctVoice(this);
                     adapter1.notifyDataSetChanged();
-                    if (isNeedReplaceMaterial()){
-                        SnackbarUtil.showRead(getRootView(this), "料站需要换料，请继续扫描新料盘！", textToSpeechManager);
+
+                    /*
+                    如果料车和价位不为空，则先灭灯。
+                     */
+                    if (!TextUtils.isEmpty(lastCarID) && !TextUtils.isEmpty(lastLocation)) {
+                        turnLightOff(lastCarID, lastLocation);
+                    }
+
+                     /*
+                   点灯
+                    */
+                    turnLightOn(face, mCurrentSlot, work, oldMaterialNumber);
+
+
+                    if (isNeedReplaceMaterial()) {
+                        SnackbarUtil.showRead(getRootView(this), "料站" + mCurrentSlot + "需要换料，请继续扫描新料盘！", textToSpeechManager);
                     } else {
-                        SnackbarUtil.showRead(getRootView(this), "料站需要接料，请继续扫描新料盘！", textToSpeechManager);
+                        SnackbarUtil.showRead(getRootView(this), "料站" + mCurrentSlot + "需要接料，请继续扫描新料盘！", textToSpeechManager);
                     }
 
                 } else {
@@ -267,14 +315,27 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
                     tag = 1;
                     oldSerialNumber = streamNumber;
                     oldMaterialNumber = materialNumber;
+                    mCurrentSlot = dataList1.get(index).getSlot();
                     //扫码正确时调用的声音和震动
                     VibratorAndVoiceUtils.correctVibrator(this);
                     VibratorAndVoiceUtils.correctVoice(this);
                     adapter1.notifyDataSetChanged();
-                    if (isNeedReplaceMaterial()){
-                        SnackbarUtil.showRead(getRootView(this), "旧料盘匹配正确，请继续扫描新料盘进行换料！", textToSpeechManager);
+                    /*
+                    如果料车和价位不为空，则先灭灯。
+                     */
+                    if (!TextUtils.isEmpty(lastCarID) && !TextUtils.isEmpty(lastLocation)) {
+                        turnLightOff(lastCarID, lastLocation);
+                    }
+
+                     /*
+                   点灯
+                    */
+                    turnLightOn(face, mCurrentSlot, work, oldMaterialNumber);
+
+                    if (isNeedReplaceMaterial()) {
+                        SnackbarUtil.showRead(getRootView(this), "料站" + mCurrentSlot + "需要换料，请继续扫描新料盘!", textToSpeechManager);
                     } else {
-                        SnackbarUtil.showRead(getRootView(this), "旧料盘匹配正确，请继续扫描新料盘进行接料！", textToSpeechManager);
+                        SnackbarUtil.showRead(getRootView(this), "料站" + mCurrentSlot + "需要接料，请继续扫描新料盘!", textToSpeechManager);
                     }
                 } else {
                     newMaterialNumber = materialNumber;
@@ -337,9 +398,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     }
 
     /**
-     *
      * @return true--换料
-     *
      */
     private boolean isNeedReplaceMaterial() {
         Log.i(TAG, "isOldMaterial: materialNumber==" + materialNumber + "streamNumber==" + streamNumber);
@@ -347,29 +406,22 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         return lineMaterialEntitiesBean.getMode() == 1 ? true : false;
     }
 
-    /**
-     * @param materialNumber 料号
-     * @param streamNumber  流水码
-     * @return true--扫描的是新料盘，false--不是新料盘
-     */
-    private boolean isNewMaterial(String materialNumber, String streamNumber) {
-        for (ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean lineMaterialEntitiesBean : dataList1) {
-            if (!lineMaterialEntitiesBean.getSerialNumber().equalsIgnoreCase(streamNumber) && lineMaterialEntitiesBean.getPartNumber().equalsIgnoreCase(materialNumber)) {
-                return true;
-            }
-
-        }
-        return false;
-    }
-
-
-    //请求item列表数据
+    //请求接料列表数据成功
     @Override
-    public void getAcceptMaterialsItemDatas(ItemAcceptMaterialDetail itemAcceptMaterialDetail) {
+    public void getAcceptMaterialListSuccess(ItemAcceptMaterialDetail itemAcceptMaterialDetail) {
         index = -1;
         if (itemAcceptMaterialDetail.getRows().getConnectMaterialCount() == 0) {
             getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
-            finish();
+            Dialog dialog = DialogUtils.showCommonDialog(this, "所有接料已完成,是否返回上级页面", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (((AlertDialog) dialog).isShowing()){
+                        finish();
+                    }
+                }
+            });
+            dialog.show();
+
         } else {
             mTvMaterialStationNum.setText("待接料料站数：" + String.valueOf(itemAcceptMaterialDetail.getRows().getConnectMaterialCount()));
             dataList1.clear();
@@ -381,15 +433,14 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
     }
 
-    //网络请求失败
+    //请求接料列表数据失败
     @Override
-    public void getItemDatasFailed(String message) {
-//        ToastUtils.showMessage(this,message);
+    public void getAcceptMaterialListFailed(String message) {
         if ("Error".equals(message)) {
             Snackbar.make(getCurrentFocus(), this.getString(R.string.server_error_message), Snackbar.LENGTH_LONG).show();
-        } else {
-            Snackbar.make(getCurrentFocus(), "料站接料失败，" + message + "，请重新扫描!", Snackbar.LENGTH_LONG).show();
         }
+
+
     }
 
 
@@ -399,25 +450,30 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     }
 
 
-    //扫码数据提交成功的操作
-    /**
-     *
-     * @param rows  剩余的待换料或接料的数量
-     *
+    /**接料成功
+     * @param rows 剩余的待换料或接料的数量
      */
-
     @Override
     public void commitSerialNumberSuccess(int rows) {
-        SnackbarUtil.showRead(getRootView(this), "料站接料完成，请继续扫描旧料盘进行接料！", textToSpeechManager);
+        SnackbarUtil.showRead(getRootView(this), "料站" + mCurrentSlot +"接料完成，请继续扫描旧料盘进行接料！", textToSpeechManager);
         index = -1;
 //        该工单接料或换料未完成。
-        if (rows >0){
-            getPresenter().getAllItems(lines);
-        }else if (rows ==0){    //        该工单接料或换料完成。
+        if (rows > 0) {
+            lastCarID = null;
+            lastLocation = null;
+            lastMaterialID = null;
+            getPresenter().getAcceptMaterialList(lines);
+        } else if (rows == 0) {    //        该工单接料或换料完成。
+            turnLightOff(lastCarID, lastLocation);
             finish();
         }
 
 
+    }
+
+    @Override
+    public void commitSerialNumberFailed(String message) {
+        Snackbar.make(getCurrentFocus(), "料站" + mCurrentSlot +"接料失败，" + message + "，请重新扫描!", Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -432,14 +488,27 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     }
 
     private void refresh() {
-        getPresenter().getAllItems(lines);
+        getPresenter().getAcceptMaterialList(lines);
     }
 
+    public void turnLightOn(String side, String slot, String work_order, String material_no) {
+        Map<String, String> map = new HashMap<>();
+        map.put("side", side);
+        map.put("slot", slot);
+        map.put("work_order", work_order);
+        map.put("material_no", material_no);
+        String argument = GsonTools.createGsonListString(map);
+        Log.i(TAG, "lightOn:argument ==  " + argument.toString());
+        getPresenter().turnLightOn(argument);
+    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    public void turnLightOff(String lastCarID, String lastLocation) {
+        Map<String, String> map = new HashMap<>();
+        map.put("car", lastCarID);
+        map.put("location", lastLocation);
+
+        String argument = GsonTools.createGsonListString(map);
+        Log.i(TAG, "turnLightOff---argument: " + argument.toString());
+        getPresenter().turnLightOff(argument);
     }
 }

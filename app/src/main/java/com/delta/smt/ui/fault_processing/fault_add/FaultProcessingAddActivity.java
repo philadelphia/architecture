@@ -273,7 +273,7 @@ public class FaultProcessingAddActivity extends BaseActivity<FaultProcessingAddP
 
     @Override
     public void onSuccess(String message) {
-        Log.i(TAG, "onSuccess: " + message);
+        Log.i(TAG, "onGetWarningListSuccess: " + message);
         richEditor.setHtml(message);
         richEditor.setInputEnabled(false);
         floatingActionButton.setVisibility(View.GONE);

@@ -83,7 +83,7 @@ public class OverReceivePresenter extends BasePresenter<OverReceiveContract.Mode
         }).subscribe(new Action1<OverReceiveWarning>() {
             @Override
             public void call(OverReceiveWarning overReceiveWarning) {
-                //getView().onSuccess(overReceiveWarning);
+                //getView().onGetWarningListSuccess(overReceiveWarning);
                 try {
                     if ("0".equals(overReceiveWarning.getCode())) {
 

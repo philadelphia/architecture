@@ -11,9 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -42,7 +40,7 @@ import com.delta.smt.entity.ProduceWarningMessage;
 import com.delta.smt.entity.production_warining_item.ItemWarningInfo;
 import com.delta.smt.ui.production_warning.accept_materials_detail.AcceptMaterialsActivity;
 import com.delta.smt.ui.production_warning.produce_warning.ProduceWarningActivity;
-import com.delta.smt.ui.production_warning.produce_warning_fragment.di.DaggerProduceWarningFragmentCompnent;
+import com.delta.smt.ui.production_warning.produce_warning_fragment.di.DaggerProduceWarningFragmentComponent;
 import com.delta.smt.ui.production_warning.produce_warning_fragment.di.ProduceWarningFragmentModule;
 import com.delta.smt.ui.production_warning.produce_warning_fragment.mvp.ProduceWarningFragmentContract;
 import com.delta.smt.ui.production_warning.produce_warning_fragment.mvp.ProduceWarningFragmentPresenter;
@@ -58,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  *@description :预警页面
@@ -81,14 +78,14 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
 
 
     private ItemCountViewAdapter<ItemWarningInfo> mAdapter;
-    private List<ItemWarningInfo> datas = new ArrayList<>();
+    private final List<ItemWarningInfo> waringItemList = new ArrayList<>();
 
     private DialogLayout mDialogLayout;
-    public ArrayList<String> barcodedatas = new ArrayList<>();
-    private BaseActivity baseActiviy;
+    private final ArrayList<String> barcodedatas = new ArrayList<>();
+    private BaseActivity baseActivity;
     private String currentBarcode;
     private AlertDialog mAlertDialog;
-    private PopupWindow mPopupWindow;
+    private  PopupWindow mPopupWindow;
     private int tag = 0;
     private static final String TAG = "ProduceWarningFragment";
 
@@ -97,7 +94,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     //注入初始化
     @Override
     protected void componentInject(AppComponent appComponent) {
-        DaggerProduceWarningFragmentCompnent.builder().appComponent(appComponent).
+        DaggerProduceWarningFragmentComponent.builder().appComponent(appComponent).
                 produceWarningFragmentModule(new ProduceWarningFragmentModule(this)).build().inject(this);
     }
 
@@ -106,7 +103,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         Log.i("aaa", "argument== " + ((ProduceWarningActivity) getmActivity()).initLine());
 
         if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
-            getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+            getPresenter().getWarningItemList(((ProduceWarningActivity) getmActivity()).initLine());
         }
     }
 
@@ -114,7 +111,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     protected void initView() {
         Log.i(TAG, "initView: ");
 
-        mAdapter = new ItemCountViewAdapter<ItemWarningInfo>(getContext(), datas) {
+        mAdapter = new ItemCountViewAdapter<ItemWarningInfo>(getContext(), waringItemList) {
             @Override
             protected int getCountViewId() {
                 return R.id.cv_countView;
@@ -189,8 +186,8 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         Log.i(TAG, "onAttach: ");
         super.onAttach(context);
         if (context instanceof BaseActivity) {
-            this.baseActiviy = ((BaseActivity) context);
-            baseActiviy.addOnBarCodeSuccess(this);
+            this.baseActivity = ((BaseActivity) context);
+            baseActivity.addOnBarCodeSuccess(this);
         }
     }
 
@@ -204,9 +201,9 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         tag = 0;
         Log.e(TAG, "onHiddenChanged: " + hidden);
         if (hidden) {
-            baseActiviy.removeOnBarCodeSuccess(this);
+            baseActivity.removeOnBarCodeSuccess(this);
         } else {
-            baseActiviy.addOnBarCodeSuccess(this);
+            baseActivity.addOnBarCodeSuccess(this);
         }
     }
 
@@ -217,7 +214,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         if (null != mAdapter) {
             mAdapter.startRefreshTime();
         }
-        getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+        getPresenter().getWarningItemList(((ProduceWarningActivity) getmActivity()).initLine());
     }
 
     @Override
@@ -248,20 +245,19 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
      * @param itemWarningInfo 含有item数据的对象
      */
     @Override
-    public void getItemWarningDatas(List<ItemWarningInfo> itemWarningInfo) {
-        datas.clear();
-
+    public void onGetWarningItemSuccess(List<ItemWarningInfo> itemWarningInfo) {
+        waringItemList.clear();
         for (int i = 0; i < itemWarningInfo.size(); i++) {
 /*            SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                 Date parse = format.parse(itemWarningInfo.get(i).getTime());*/
-            Log.e("aaa", "getItemWarningDatas: " + itemWarningInfo.get(i).getTime());
+            Log.e("aaa", "onGetWarningItemSuccess: " + itemWarningInfo.get(i).getTime());
             long time = System.currentTimeMillis();
             itemWarningInfo.get(i).setEnd_time(time + Math.round(itemWarningInfo.get(i).getTime()) * 1000);
             itemWarningInfo.get(i).setEntityId(i);
 
         }
 
-        datas.addAll(itemWarningInfo);
+        waringItemList.addAll(itemWarningInfo);
         //对adapter刷新改变
         mAdapter.notifyDataSetChanged();
     }
@@ -272,7 +268,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
      * @param message 错误信息
      */
     @Override
-    public void getItemWarningDatasFailed(String message) {
+    public void onGetWarningItemFailed(String message) {
 /*        ToastUtils.showMessage(getContext(), message);*/
         if ("Error".equals(message)) {
             Snackbar.make(getActivity().getCurrentFocus(), this.getString(R.string.server_error_message), Snackbar.LENGTH_LONG).show();
@@ -286,7 +282,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
      */
     @Override
     public void getItemWarningConfirmSuccess() {
-        getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+        getPresenter().getWarningItemList(((ProduceWarningActivity) getmActivity()).initLine());
     }
 
 
@@ -304,7 +300,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         EventBus.getDefault().post(new BroadcastCancel());
         mDialogLayout = new DialogLayout(getContext());
         barcodedatas.clear();
-        final ItemWarningInfo mItemWarningInfo = datas.get(position);
+        final ItemWarningInfo mItemWarningInfo = waringItemList.get(position);
 
         //当item是接料预警的进行的操作
         if (mItemWarningInfo.getTitle().equals("接料预警")) {
@@ -450,7 +446,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
             mDialogLayout.setDatas(barcodedatas);
             tag++;
             if (tag == 3) {
-                hanlder.sendEmptyMessageDelayed(1, 1000);
+                handler.sendEmptyMessageDelayed(1, 1000);
             }
         }
 
@@ -458,7 +454,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     }
 
     //弃用
-    private Handler hanlder = new Handler() {
+    private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -511,7 +507,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
     @Subscribe
     public void event(ProduceWarningMessage produceWarningMessage) {
         if (((ProduceWarningActivity) getmActivity()).initLine() != null) {
-            getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+            getPresenter().getWarningItemList(((ProduceWarningActivity) getmActivity()).initLine());
         }
         Log.e(TAG, "event1: ");
     }
@@ -532,7 +528,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mStatusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+                getPresenter().onGetWarningItemSuccess(((ProduceWarningActivity) getmActivity()).initLine());
             }
         });
     }*/
@@ -543,17 +539,9 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         mStatusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+                getPresenter().getWarningItemList(((ProduceWarningActivity) getmActivity()).initLine());
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
     }
 
     //下拉刷新
@@ -562,7 +550,7 @@ public class ProduceWarningFragment extends BaseFragment<ProduceWarningFragmentP
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                getPresenter().getItemWarningDatas(((ProduceWarningActivity) getmActivity()).initLine());
+                getPresenter().getWarningItemList(((ProduceWarningActivity) getmActivity()).initLine());
                 mSrfRefresh.setRefreshing(false);
             }
         });

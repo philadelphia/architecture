@@ -9,7 +9,8 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 @Module

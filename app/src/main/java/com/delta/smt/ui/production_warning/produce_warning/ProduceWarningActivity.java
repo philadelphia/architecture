@@ -54,12 +54,13 @@ import me.yokeyword.fragmentation.SupportFragment;
  *
  *@author : Fuxiang.Zhang
  *@date : 2017/9/18 16:04
+ *
 */
 
 public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter> implements
         TabLayout.OnTabSelectedListener, ProduceWarningContract.View, WarningManger.OnWarning {
 
-
+    private static final String TAG = "ProduceWarningActivity";
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
     @BindView(R.id.tv_setting)
@@ -101,12 +102,10 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     @Override
     protected void initData() {
-
-
-        Log.i("aaa", "选择进入：" + Constant.CONDITION);
-        if (initLine() != null) {
-            getPresenter().getTitileNumber(initLine());
-        }
+        Log.i(TAG, "选择进入：" + Constant.CONDITION);
+//        if (initLine() != null) {
+//            getPresenter().getTitileNumber(initLine());
+//        }
         if (warning_number == 0 && breakdown_number == 0 && info_number == 0) {
             titles = new String[]{"预警", "故障", "消息"};
         } else {
@@ -127,7 +126,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
         warningManger.addWarning(String.valueOf(Constant.PRODUCTION_LINE_ALARM_FLAG), getClass());
         warningManger.addWarning(String.valueOf(Constant.OPERATOR_FAULT_ALARM_FLAG), getClass());
         for (int mI = 0; mI < line.length; mI++) {
-            Log.e("eee", "initData: "+ line[mI]);
+            Log.e(TAG, "initData: "+ line[mI]);
             //需要定制的信息
             warningManger.sendMessage(new SendMessage(Constant.PRODUCTION_LINE_ALARM_FLAG+"_"+line[mI], 0));
             warningManger.sendMessage(new SendMessage(Constant.OPERATOR_FAULT_ALARM_FLAG+"_"+line[mI], 0));
@@ -140,7 +139,6 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     @Override
     protected void initView() {
-
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -170,26 +168,27 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
 
     @Override
     protected void onResume() {
-        Log.e(TAG, "onResume: ");
+        Log.i(TAG, "onResume: ");
         warningManger.registerWReceiver(this);
-        getPresenter().getTitileNumber(initLine());
+//        getPresenter().getTitileNumber(initLine());
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        Log.e(TAG, "onPause: ");
+        Log.i(TAG, "onPause: ");
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        Log.e(TAG, "onStop: ");
+        Log.i(TAG, "onStop: ");
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
+        Log.i(TAG, "onDestroy: ");
         warningManger.unregisterWReceiver(this);
         for (int mI = 0; mI < line.length; mI++) {
             //需要定制的信息
@@ -243,7 +242,6 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
      */
     @Override
     public void getTitleDatas(TitleNumber titleNumber) {
-
         warning_number = titleNumber.getWarning_number();
         breakdown_number = titleNumber.getBreakdown_number();
         info_number = titleNumber.getInfo_number();
@@ -409,7 +407,7 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
             public void onclick(View view) {
                 warningManger.setConsume(true);
 //                getPresenter().getAllOverReceiveItems();
-                getPresenter().getTitileNumber(initLine());
+//                getPresenter().getTitileNumber(initLine());
                 warningDialog.dismiss();
             }
         });
@@ -453,9 +451,9 @@ public class ProduceWarningActivity extends BaseActivity<ProduceWarningPresenter
             alertDialog = createDialog(lastWarningMessage);
             lastWarningMessage = null;
         }
-        if (initLine() != null) {
-            getPresenter().getTitileNumber(initLine());
-        }
+//        if (initLine() != null) {
+//            getPresenter().getTitileNumber(initLine());
+//        }
 
         Log.e(TAG, "event5: ");
     }

@@ -11,7 +11,8 @@ import com.delta.smt.entity.UpLoadEntity;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 public class ModuleUpBindingModel extends BaseModel<ApiService> implements ModuleUpBindingContract.Model {
@@ -21,9 +22,9 @@ public class ModuleUpBindingModel extends BaseModel<ApiService> implements Modul
     }
 
     @Override
-    public Observable<Result<ModuleUpBindingItem>> getAllModuleUpBindingItems(String str) {
+    public Observable<Result<ModuleUpBindingItem>> getModuleUpBindingList(String str) {
 
-        return getService().getModuleUpBindingItems(str).compose(RxsRxSchedulers.<Result<ModuleUpBindingItem>>io_main());
+        return getService().getModuleUpBindingList(str).compose(RxsRxSchedulers.<Result<ModuleUpBindingItem>>io_main());
     }
 
     @Override

@@ -10,7 +10,8 @@ import com.delta.smt.entity.VirtualModuleID;
 import rx.Observable;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 public class VirtualLineBindingModel extends BaseModel<ApiService> implements VirtualLineBindingContract.Model {
@@ -19,8 +20,8 @@ public class VirtualLineBindingModel extends BaseModel<ApiService> implements Vi
     }
 
     @Override
-    public Observable<Result<VirtualLineItem>> getAllVirtualLineBindingItems(String str) {
-        return getService().getVirtualLineBindingItems(str).compose(RxsRxSchedulers.<Result<VirtualLineItem>>io_main());
+    public Observable<Result<VirtualLineItem>> getVirtualLineBindingList(String str) {
+        return getService().getVirtualLineBindingList(str).compose(RxsRxSchedulers.<Result<VirtualLineItem>>io_main());
     }
 
     @Override

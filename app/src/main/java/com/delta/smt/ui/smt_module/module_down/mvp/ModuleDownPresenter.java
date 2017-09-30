@@ -10,7 +10,8 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
- * Created by Shufeng.Wu on 2017/1/3.
+ * Author Shufeng.Wu
+ * Date   2017/1/3
  */
 
 public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,ModuleDownContract.View>{
@@ -20,8 +21,8 @@ public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,
         super(model, mView);
     }
 
-    public void getAllModuleDownWarningItems(){
-        getModel().getAllModuleDownWarningItems().doOnSubscribe(new Action0() {
+    public void getModuleDownWarningList(){
+        getModel().getModuleDownWarningList().doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 try{
@@ -38,15 +39,15 @@ public class ModuleDownPresenter extends BasePresenter<ModuleDownContract.Model,
 
                         if (moduleDownWarningItemResult.getRows().size() == 0) {
                             getView().showEmptyView();
-//                            getView().onFailed(moduleDownWarningItemResult);
+//                            getView().onGetWarningListFailed(moduleDownWarningItemResult);
                         }else {
                             getView().showContentView();
-                            getView().onSuccess(moduleDownWarningItemResult.getRows());
+                            getView().onGetModuleDownWarningListSuccess(moduleDownWarningItemResult.getRows());
                         }
 
                     } else {
                         getView().showErrorView();
-                        getView().onFailed(moduleDownWarningItemResult.getMessage());
+                        getView().onGetModuleDownWarningFailed(moduleDownWarningItemResult.getMessage());
                     }
                 }catch (Exception e){
                     e.printStackTrace();

@@ -10,18 +10,19 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
- * Created by Shufeng.Wu on 2017/1/3.
+ * Author Shufeng.Wu
+ * Date   2017/1/3
  */
 
 public class ModuleUpPresenter extends BasePresenter<ModuleUpContract.Model,ModuleUpContract.View>{
 
     @Inject
-    public ModuleUpPresenter(ModuleUpContract.Model model, ModuleUpContract.View mView) {
+     ModuleUpPresenter(ModuleUpContract.Model model, ModuleUpContract.View mView) {
         super(model, mView);
     }
 
-    public void getAllModuleUpWarningItems(){
-        getModel().getAllModuleUpWarningItems().doOnSubscribe(new Action0() {
+    public void getModuleUpWarningList(){
+        getModel().getModuleUpWarningList().doOnSubscribe(new Action0() {
             @Override
             public void call() {
                 try{
@@ -40,7 +41,7 @@ public class ModuleUpPresenter extends BasePresenter<ModuleUpContract.Model,Modu
                             getView().showEmptyView();
                         }else {
                             getView().showContentView();
-                            getView().onSuccess(moduleUpWarningItemResult.getRows());
+                            getView().onGetWarningListSuccess(moduleUpWarningItemResult.getRows());
                         }
 
                     } else {

@@ -22,7 +22,8 @@ public class MantissaWarehouseReturnModel extends BaseModel<ApiService> implemen
 
     @Override
     public Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn() {
-        return getService().getMantissaWarehouseReturn().compose(RxsRxSchedulers.<MantissaWarehouseReturnResult>io_main());
+            return null;
+//        return getService().getMantissaWarehouseReturn().compose(RxsRxSchedulers.<MantissaWarehouseReturnResult>io_main());
     }
 
     @Override

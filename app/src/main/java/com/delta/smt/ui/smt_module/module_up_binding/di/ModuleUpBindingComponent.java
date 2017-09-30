@@ -7,7 +7,8 @@ import com.delta.smt.ui.smt_module.module_up_binding.ModuleUpBindingActivity;
 import dagger.Component;
 
 /**
- * Created by Shufeng.Wu on 2017/1/4.
+ * Author Shufeng.Wu
+ * Date   2017/1/4
  */
 
 @ActivityScope
