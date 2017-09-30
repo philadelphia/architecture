@@ -30,7 +30,7 @@ public class ProduceToolsLocationPresenter extends BasePresenter<ProduceToolsLoc
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                getView().onFailedGetLocation(throwable);
             }
         });
     }

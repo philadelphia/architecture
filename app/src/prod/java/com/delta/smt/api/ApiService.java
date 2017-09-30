@@ -24,7 +24,6 @@ import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
 import com.delta.smt.entity.JsonProductToolsSubmitRoot;
-import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.LedLight;
 import com.delta.smt.entity.Light;
@@ -630,7 +629,7 @@ public interface ApiService {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @PUT("/ams/jig/life/use/loan/verify")
-    Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(@Field("value") String parm);
+    Observable<JsonProductRequestToolsRoot> getProductToolsVerfy(@Field("value") String parm);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
     @Headers({"Content-Type: application/x-www-form-urlencoded"})

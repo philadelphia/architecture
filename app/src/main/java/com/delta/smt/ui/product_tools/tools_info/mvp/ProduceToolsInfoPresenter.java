@@ -6,8 +6,6 @@ import com.delta.commonlibs.base.mvp.BasePresenter;
 import com.delta.smt.entity.JsonProductRequestToolsList;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsSubmitRoot;
-import com.delta.smt.entity.JsonProductToolsVerfyList;
-import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.ProductToolsInfo;
 
 import java.util.ArrayList;
@@ -53,7 +51,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                             toolsStatus = "准备中";
                             break;
                         case 1:
-                            toolsStatus = "待发";
+                            toolsStatus = "待取";
                             break;
                         case 2:
                             toolsStatus = "已借出";
@@ -63,6 +61,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                             break;
                         default:
                             toolsStatus = "未知";
+                            break;
                     }
 
                     ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getJigcode(), j.getJigTypeName(), j.getShelfName(), "更多", toolsStatus, String.valueOf(j.getJigTypeId()), String.valueOf(j.getJigId()));
@@ -88,6 +87,101 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
 
     }
 
+
+    public void getToolsInfoInit(String parm) {
+        getView().showLoadingView();
+        getModel().getProductToolsInfoItem(parm).subscribe(new Action1<JsonProductRequestToolsRoot>() {
+            @Override
+            public void call(JsonProductRequestToolsRoot jsonProductRequestToolsRoot) {
+                //getView().getToolsInfo();
+                getView().showContentView();
+                List<JsonProductRequestToolsList> rows = jsonProductRequestToolsRoot.getRows();
+                List<ProductToolsInfo> data = new ArrayList<>();
+                int size = 0;
+                for (JsonProductRequestToolsList j : rows) {
+                    size++;
+                    String toolsStatus = "";
+                    switch (j.getLoanStatus()) {
+                        case 0:
+                            toolsStatus = "准备中";
+                            break;
+                        case 1:
+                            toolsStatus = "待取";
+                            break;
+                        case 2:
+                            toolsStatus = "已借出";
+                            break;
+                        case 3:
+                            toolsStatus = "待确定";
+                            break;
+                        default:
+                            toolsStatus = "未知";
+                            break;
+                    }
+                    ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getJigcode(), j.getJigTypeName(), j.getShelfName(), "更多", toolsStatus, String.valueOf(j.getJigTypeId()), String.valueOf(j.getJigId()));
+                    data.add(p);
+                    Log.e("-------===-------->>>", j.toString());
+                }
+                getView().getToolsInfoInit(data);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().getFail(throwable.getMessage());
+                } catch (Exception e) {
+                }
+            }
+        });
+    }
+
+    public void getToolsInfoAndChangeTool(String parm) {
+        getView().showLoadingView();
+        getModel().getProductToolsInfoItem(parm).subscribe(new Action1<JsonProductRequestToolsRoot>() {
+            @Override
+            public void call(JsonProductRequestToolsRoot jsonProductRequestToolsRoot) {
+                //getView().getToolsInfo();
+                getView().showContentView();
+                List<JsonProductRequestToolsList> rows = jsonProductRequestToolsRoot.getRows();
+                List<ProductToolsInfo> data = new ArrayList<>();
+                int size = 0;
+                for (JsonProductRequestToolsList j : rows) {
+                    size++;
+                    String toolsStatus = "";
+                    switch (j.getLoanStatus()) {
+                        case 0:
+                            toolsStatus = "准备中";
+                            break;
+                        case 1:
+                            toolsStatus = "待取";
+                            break;
+                        case 2:
+                            toolsStatus = "已借出";
+                            break;
+                        case 3:
+                            toolsStatus = "待确定";
+                            break;
+                        default:
+                            toolsStatus = "未知";
+                            break;
+                    }
+                    ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getJigcode(), j.getJigTypeName(), j.getShelfName(), "更多", toolsStatus, String.valueOf(j.getJigTypeId()), String.valueOf(j.getJigId()));
+                    data.add(p);
+                    Log.e("-------===-------->>>", j.toString());
+                }
+                getView().getToolsInfoAndChangeTool(data);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                try {
+                    getView().getFail(throwable.getMessage());
+                } catch (Exception e) {
+                }
+            }
+        });
+    }
+
     //点击确定，开始扫描
     public void getToolsVerfy(String parm) {
 
@@ -96,26 +190,44 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
             public void call() {
                 getView().showLoadingView();
             }
-        }).subscribe(new Action1<JsonProductToolsVerfyRoot>() {
+        }).subscribe(new Action1<JsonProductRequestToolsRoot>() {
             @Override
-            public void call(JsonProductToolsVerfyRoot jsonProductToolsVerfyRoot) {
+            public void call(JsonProductRequestToolsRoot jsonProductToolsVerfyRoot) {
 
                 if (jsonProductToolsVerfyRoot.getCode() == 0) {
                     List<ProductToolsInfo> data = new ArrayList<>();
 
-                    List<JsonProductToolsVerfyList> rows = jsonProductToolsVerfyRoot.getRows();
+                    List<JsonProductRequestToolsList> rows = jsonProductToolsVerfyRoot.getRows();
                     getView().showContentView();
                     int size = 0;
-                    for (JsonProductToolsVerfyList j : rows) {
+                    for (JsonProductRequestToolsList j : rows) {
                         size++;
-                        if (j.getLoanStatus() == 1) {
+                        /*if (j.getLoanStatus() == 1) {
                             status = "待取";
-                        } else {
+                        } else if(j.getLoanStatus() == 0){
                             status = j.getStatName();
 
+                        }*/
+
+                        switch (j.getLoanStatus()) {
+                            case 0:
+                                status = "准备中";
+                                break;
+                            case 1:
+                                status = "待取";
+                                break;
+                            case 2:
+                                status = "已借出";
+                                break;
+                            case 3:
+                                status = "待确定";
+                                break;
+                            default:
+                                status = "未知";
+                                break;
                         }
 
-                        ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getJigcode(), j.getJigTypeName(), "", "更多", status, String.valueOf(j.getJigTypeId()), String.valueOf(j.getJigId()));
+                        ProductToolsInfo p = new ProductToolsInfo(String.valueOf(size), j.getJigcode(), j.getJigTypeName(), j.getShelfName(), "更多", status, String.valueOf(j.getJigTypeId()), String.valueOf(j.getJigId()));
                         data.add(p);
 
                     }
@@ -135,6 +247,7 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
                 try {
                     Log.i(TAG, "call: " + throwable.getMessage());
                     getView().getFail(throwable.getMessage());
+                    getView().showContentView();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -163,7 +276,6 @@ public class ProduceToolsInfoPresenter extends BasePresenter<ProduceToolsInfoCon
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
 
             }
         });

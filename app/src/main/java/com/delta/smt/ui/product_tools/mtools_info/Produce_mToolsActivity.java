@@ -24,7 +24,6 @@ import com.delta.smt.ui.product_tools.mtools_info.di.DaggerProduct_mToolsCompone
 import com.delta.smt.ui.product_tools.mtools_info.di.Product_mToolsModule;
 import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsContract;
 import com.delta.smt.ui.product_tools.mtools_info.mvp.Produce_mToolsPresenter;
-import com.delta.smt.ui.product_tools.tools_info.ProduceToolsInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +39,8 @@ import static com.delta.smt.base.BaseApplication.getContext;
 
 public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter> implements Produce_mToolsContract.View, CommonBaseAdapter.OnItemClickListener<Product_mToolsInfo> {
 
+    public static final int MORE_RESULT_OK = 2;
     private final String TAG="Produce_mToolsActivity";
-
     @BindView(R.id.ProductInfoRecyclerView)
     RecyclerView mProductBorrowRecyclerView;
 
@@ -53,30 +52,26 @@ public class Produce_mToolsActivity extends BaseActivity<Produce_mToolsPresenter
 
     @BindView(R.id.mToolsConfirm)
     Button confirm;
+    View selectView;
+    List<Product_mToolsInfo> data = new ArrayList<>();
+    CommonBaseAdapter<Product_mToolsInfo> adapter;
+    Product_mToolsInfo selectItem;
+    private String workNumber;
+    private String jigTypeID;
 
     @OnClick(R.id.mToolsConfirm)
     public void confirmData(){
         if(selectItem!=null) {
-            Intent i = new Intent();
+            Intent i = getIntent();
             Bundle b = new Bundle();
             b.putSerializable(TAG, selectItem);
             b.putString("workNumber",workNumber);
             i.putExtras(b);
-            i.setClass(this, ProduceToolsInfoActivity.class);
-            startActivity(i);
+            //i.setClass(this, ProduceToolsInfoActivity.class);
+            setResult(MORE_RESULT_OK, i);
             finish();
         }
     }
-
-    private String workNumber;
-    private String jigTypeID;
-
-    View selectView;
-
-    List<Product_mToolsInfo> data=new ArrayList<>();
-    CommonBaseAdapter<Product_mToolsInfo> adapter;
-
-    Product_mToolsInfo selectItem;
 
     @Override
     protected void componentInject(AppComponent appComponent) {

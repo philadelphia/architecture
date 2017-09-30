@@ -228,4 +228,10 @@ public class ProduceToolsBorrowActivity extends BaseActivity<ProduceToolsBorrowP
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPresenter().getData();
+    }
 }

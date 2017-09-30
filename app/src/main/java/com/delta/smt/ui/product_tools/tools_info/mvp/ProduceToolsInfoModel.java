@@ -5,7 +5,6 @@ import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsSubmitRoot;
-import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 
 import rx.Observable;
 
@@ -26,8 +25,8 @@ public class ProduceToolsInfoModel extends BaseModel<ApiService> implements Prod
     }
 
     @Override
-    public Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(String parm) {
-        return getService().getProductToolsVerfy(parm).compose(RxsRxSchedulers.<JsonProductToolsVerfyRoot>io_main());
+    public Observable<JsonProductRequestToolsRoot> getProductToolsVerfy(String parm) {
+        return getService().getProductToolsVerfy(parm).compose(RxsRxSchedulers.<JsonProductRequestToolsRoot>io_main());
     }
 
     @Override
