@@ -551,7 +551,7 @@ public class ACache {
      * @version 1.0
      * @title 缓存管理器
      */
-    public class ACacheManager {
+    public static class ACacheManager {
         private final AtomicLong cacheSize;
         private final AtomicInteger cacheCount;
         private final long sizeLimit;
@@ -581,7 +581,7 @@ public class ACache {
                     File[] cachedFiles = cacheDir.listFiles();
                     if (cachedFiles != null) {
                         for (File cachedFile : cachedFiles) {
-                            size += calculateSize(cachedFile);
+                            size += (int)calculateSize(cachedFile);
                             count += 1;
                             lastUsageDates.put(cachedFile,
                                     cachedFile.lastModified());

@@ -11,7 +11,6 @@ import com.zhy.autolayout.utils.AutoUtils;
 
 public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> mViews = new SparseArray<>();
-    ;
     public CountTimeView mCountdownViewTest;
 
     private TimeEntity mItemInfo;

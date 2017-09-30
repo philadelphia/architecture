@@ -22,23 +22,21 @@ import java.util.TimerTask;
 public abstract class ItemCountViewAdapter<T extends TimeEntity> extends RecyclerView.Adapter<ItemTimeViewHolder> {
     private LayoutInflater mLayoutinflater;
     private List<T> mList;
-    private Context mContext;
-    private SparseArray<ItemTimeViewHolder> mCountdownVHList;
+    private final SparseArray<ItemTimeViewHolder> mCountdownVHList = new SparseArray<>();
     private Handler mHandler = new Handler();
     private Timer mTimer;
     private boolean isCancel = true;
 
-    private ItemOnclick itemTimeOnclck;
+    private ItemOnclick itemTimeOnLock;
 
-    public void setOnItemTimeOnclick(ItemOnclick itemTimeOnclck) {
-        this.itemTimeOnclck = itemTimeOnclck;
+    public void setOnItemTimeOnclick(ItemOnclick itemTimeOnLock) {
+        this.itemTimeOnLock = itemTimeOnLock;
 
     }
 
     public ItemCountViewAdapter(Context context, List<T> list) {
         this.mList = list;
         mLayoutinflater = LayoutInflater.from(context);
-        mCountdownVHList = new SparseArray<>();
         startRefreshTime();
     }
 
@@ -102,8 +100,8 @@ public abstract class ItemCountViewAdapter<T extends TimeEntity> extends Recycle
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (itemTimeOnclck != null) {
-                    itemTimeOnclck.onItemClick(holder.itemView,mList.get(position), position);
+                if (itemTimeOnLock != null) {
+                    itemTimeOnLock.onItemClick(holder.itemView,mList.get(position), position);
                 }
             }
         });

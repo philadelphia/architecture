@@ -20,6 +20,7 @@ public class NoNetException extends Exception {
         this.code = code;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }

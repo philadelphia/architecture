@@ -48,8 +48,7 @@ public class RxErrorHandler {
         return new Builder();
     }
 
-    public void handleError(Throwable e)
-    {
+    public void handleError(Throwable e) {
         if (responseErrorListener != null) {
             UnifyThrowable ex;
             if (e instanceof HttpException) {
@@ -58,24 +57,34 @@ public class RxErrorHandler {
                 switch (httpException.code()) {
                     case UNAUTHORIZED:
                         ex.setMessage("未授权的请求");
+                        break;
                     case FORBIDDEN:
                         ex.setMessage("禁止访问");
+                        break;
                     case NOT_FOUND:
                         ex.setMessage("服务器地址未找到");
+                        break;
                     case REQUEST_TIMEOUT:
                         ex.setMessage("请求超时");
+                        break;
                     case GATEWAY_TIMEOUT:
                         ex.setMessage("网关响应超时");
+                        break;
                     case INTERNAL_SERVER_ERROR:
                         ex.setMessage("服务器出错");
+                        break;
                     case BAD_GATEWAY:
                         ex.setMessage("无效的请求");
+                        break;
                     case SERVICE_UNAVAILABLE:
                         ex.setMessage("服务器不可用");
+                        break;
                     case ACCESS_DENIED:
                         ex.setMessage("网络错误");
+                        break;
                     case HANDEL_ERRROR:
                         ex.setMessage("接口处理失败");
+                        break;
                     default:
                         ex.setMessage(e.getMessage());
                         break;
@@ -94,7 +103,7 @@ public class RxErrorHandler {
                 ex.setMessage("解析错误");
 
             } else if (e instanceof ConnectException) {
-                ex = new UnifyThrowable(e, ERROR.NETWORD_ERROR);
+                ex = new UnifyThrowable(e, ERROR.NETWORK_ERROR);
                 ex.setMessage("连接失败");
 
             } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
@@ -168,7 +177,7 @@ public class RxErrorHandler {
     /**
      * 约定异常
      */
-    public class ERROR {
+    public static class ERROR {
         /**
          * 未知错误
          */
@@ -180,7 +189,7 @@ public class RxErrorHandler {
         /**
          * 网络错误
          */
-        public static final int NETWORD_ERROR = 1002;
+        public static final int NETWORK_ERROR = 1002;
         /**
          * 协议出错
          */

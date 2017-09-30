@@ -62,6 +62,7 @@ public class RawTextToSpeech implements TextToSpeech.OnInitListener, OnSpeakList
     }
 
     //释放资源
+    @Override
     public void freeSource() {
         synchronized (this) {
             this.mTextToSpeech.shutdown();
@@ -89,6 +90,7 @@ public class RawTextToSpeech implements TextToSpeech.OnInitListener, OnSpeakList
         this.mTextToSpeech.playSilence(100, TextToSpeech.QUEUE_ADD, params);//间隔多长时间
     }
 
+    @Override
     public void stop() {
 
         mTextToSpeech.stop();

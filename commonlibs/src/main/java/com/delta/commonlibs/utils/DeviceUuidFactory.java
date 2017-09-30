@@ -44,7 +44,7 @@ public class DeviceUuidFactory {
     protected static final String DEVICE_UUID_FILE_NAME = ".dev_id.txt";
     protected static final String PREFS_DEVICE_ID = "dev_id";
     protected static final String KEY = "cyril'98";
-    protected static UUID uuid;
+    protected static volatile UUID uuid;
 
     public DeviceUuidFactory(Context context) {
         if (uuid == null) {
