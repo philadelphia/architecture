@@ -4,7 +4,6 @@ import com.delta.commonlibs.utils.RxsRxSchedulers;
 import com.delta.smt.api.ApiService;
 import com.delta.smt.base.BaseModel;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
-import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 
 import rx.Observable;
 
@@ -30,7 +29,7 @@ public class ProduceToolsInfoModel extends BaseModel<ApiService> implements Prod
     }
 
     @Override
-    public Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(String parm) {
-        return getService().getProductToolsBorrowSubmit(parm).compose(RxsRxSchedulers.<JsonProductToolsSubmitRoot>io_main());
+    public Observable<JsonProductRequestToolsRoot> getProductToolsBorrowSubmit(String parm) {
+        return getService().getProductToolsBorrowSubmit(parm).compose(RxsRxSchedulers.<JsonProductRequestToolsRoot>io_main());
     }
 }

@@ -25,7 +25,6 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.ui.product_tools.SharedPreferencesUtils;
@@ -324,12 +323,19 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     }
 
     @Override
-    public void getToolsBorrowSubmit(JsonProductToolsSubmitRoot jsonProductToolsSubmitRoot) {
-        if (jsonProductToolsSubmitRoot == null) {
+    public void getToolsBorrowSubmit(List<ProductToolsInfo> ProductToolsItem) {
+        if (ProductToolsItem == null) {
             SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(), "请求的数据不存在");
         }
-        Log.e("getToolsBorrowSubmit", jsonProductToolsSubmitRoot.toString());
-        if (jsonProductToolsSubmitRoot.getCode() == 0) {
+
+        data.clear();
+        data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态", "", ""));
+        data.addAll(ProductToolsItem);
+        data_cache.clear();
+        data_cache.addAll(ProductToolsItem);
+        adapter.notifyDataSetChanged();
+
+        /*if (jsonProductRequestToolsRoot.getCode() == 0) {
 
             for (int i = 1; i < data.size(); i++) {
 
@@ -357,7 +363,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             VibratorAndVoiceUtils.wrongVibrator(ProduceToolsInfoActivity.this);
             VibratorAndVoiceUtils.wrongVoice(ProduceToolsInfoActivity.this);
 
-        }
+        }*/
 
     }
 
@@ -365,6 +371,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     public void getFail(String message) {
         if (!TextUtils.isEmpty(message)) {
             SnackbarUtil.showMassage(this.getCurrentFocus(), message);
+            VibratorAndVoiceUtils.wrongVibrator(ProduceToolsInfoActivity.this);
+            VibratorAndVoiceUtils.wrongVoice(ProduceToolsInfoActivity.this);
         }
     }
 

@@ -3,7 +3,6 @@ package com.delta.smt.ui.product_tools.tools_info.mvp;
 import com.delta.commonlibs.base.mvp.IModel;
 import com.delta.commonlibs.base.mvp.IView;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
-import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.ProductToolsInfo;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public interface ProduceToolsInfoContract {
 
         Observable<JsonProductRequestToolsRoot> getProductToolsVerfy(String parm);
 
-        Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(String parm);
+        Observable<JsonProductRequestToolsRoot> getProductToolsBorrowSubmit(String parm);
     }
 
     interface View extends IView {
@@ -35,11 +34,9 @@ public interface ProduceToolsInfoContract {
 
         void getToolsVerfy(List<ProductToolsInfo> ProductToolsItem);
 
-        void getToolsBorrowSubmit(JsonProductToolsSubmitRoot j);
+        void getToolsBorrowSubmit(List<ProductToolsInfo> ProductToolsItem);
 
-        void getFail(String message);/*
-        void getFailInit(String message);
-        void getFailChangeTool(String message);*/
+        void getFail(String message);
 
         void showLoadingView();
 

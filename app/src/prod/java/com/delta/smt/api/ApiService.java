@@ -23,7 +23,6 @@ import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
-import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.LedLight;
 import com.delta.smt.entity.Light;
@@ -635,7 +634,7 @@ public interface ApiService {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @POST("ams/jig/life/use/loan/submit")
-    Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(@Field("value") String parm);
+    Observable<JsonProductRequestToolsRoot> getProductToolsBorrowSubmit(@Field("value") String parm);
 
 
     //liuzhenyu
