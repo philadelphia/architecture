@@ -23,8 +23,6 @@ import com.delta.smt.entity.JsonProductBackRoot;
 import com.delta.smt.entity.JsonProductBorrowRoot;
 import com.delta.smt.entity.JsonProductRequestToolsRoot;
 import com.delta.smt.entity.JsonProductToolsLocationRoot;
-import com.delta.smt.entity.JsonProductToolsSubmitRoot;
-import com.delta.smt.entity.JsonProductToolsVerfyRoot;
 import com.delta.smt.entity.JsonProduct_mToolsRoot;
 import com.delta.smt.entity.LedLight;
 import com.delta.smt.entity.Light;
@@ -54,6 +52,7 @@ import com.delta.smt.entity.QualityManage;
 import com.delta.smt.entity.Result;
 import com.delta.smt.entity.ResultFault;
 import com.delta.smt.entity.ResultFeeder;
+import com.delta.smt.entity.ScheduleResult;
 import com.delta.smt.entity.SolutionMessage;
 import com.delta.smt.entity.StorageDetails;
 import com.delta.smt.entity.StorageReady;
@@ -649,13 +648,13 @@ public interface ApiService {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @PUT("/ams/jig/life/use/loan/verify")
-    Observable<JsonProductToolsVerfyRoot> getProductToolsVerfy(@Field("value") String parm);
+    Observable<JsonProductRequestToolsRoot> getProductToolsVerfy(@Field("value") String parm);
 
     //    @GET("http://172.22.34.100:8081/webapi/sms/jig/life/use/loan/submit")
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     @FormUrlEncoded
     @POST("ams/jig/life/use/loan/submit")
-    Observable<JsonProductToolsSubmitRoot> getProductToolsBorrowSubmit(@Field("value") String parm);
+    Observable<JsonProductRequestToolsRoot> getProductToolsBorrowSubmit(@Field("value") String parm);
 
 
     //liuzhenyu
@@ -709,9 +708,10 @@ public interface ApiService {
     @PUT("ams/smm/mantowareh/surecomplete")
     Observable<MantissaWarehousePutstorageResult> getYesok();
 
+
     //尾数仓入库
     @GET("ams/smm/mantissastorage/qmantissastoragelist")
-    Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn();
+    Observable<MantissaWarehouseReturnResult> getMantissaWarehouseReturn(@Query("condition") String bind);
 
     //尾数仓查询料盘的位置
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -745,6 +745,9 @@ public interface ApiService {
     @POST("ams/smm/mantissastorage/deduction")
     Observable<ManualDebitBean> getdeduction(@Field("value") String bind);
 
+    //位数仓入库获取入库工单排程
+    @GET("ams/smm/mantissastorage/schedul")
+    Observable<ScheduleResult> getSchedule();
     /**
      * @description :
      * 1.更新

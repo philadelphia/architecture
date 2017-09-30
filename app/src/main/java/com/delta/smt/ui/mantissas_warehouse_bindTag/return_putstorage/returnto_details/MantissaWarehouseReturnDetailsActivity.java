@@ -1,15 +1,13 @@
-package com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto;
+package com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto_details;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
@@ -22,31 +20,30 @@ import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.utils.SpUtil;
 import com.delta.commonlibs.utils.ToastUtils;
-import com.delta.commonlibs.utils.ViewUtils;
 import com.delta.commonlibs.widget.CustomPopWindow;
+import com.delta.commonlibs.widget.autolayout.AutoToolbar;
 import com.delta.commonlibs.widget.statusLayout.StatusLayout;
+import com.delta.smt.Constant;
 import com.delta.smt.R;
 import com.delta.smt.base.BaseActivity;
-import com.delta.smt.base.BaseFragment;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.BacKBarCode;
 import com.delta.smt.entity.MantissaWarehouseReturnBean;
 import com.delta.smt.entity.MantissaWarehouseReturnResult;
 import com.delta.smt.entity.ManualDebitBean;
 import com.delta.smt.entity.ManualmaticDebitBean;
-import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity;
-import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.di.DaggerMantissaWarehouseReturnComponent;
-import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.di.MantissaWarehouseReturnModule;
-import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.mvp.MantissaWarehouseReturnContract;
-import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto.mvp.MantissaWarehouseReturnPresenter;
+import com.delta.smt.entity.WarehousePutinStorageBean;
+import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto_details.di.DaggerMantissaWarehouseReturnDetailsComponent;
+import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto_details.di.MantissaWarehouseReturnDetailsModule;
+import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto_details.mvp.MantissaWarehouseReturnDetailsContract;
+import com.delta.smt.ui.mantissas_warehouse_bindTag.return_putstorage.returnto_details.mvp.MantissaWarehouseReturnDetailsPresenter;
 import com.delta.smt.utils.VibratorAndVoiceUtils;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -54,11 +51,11 @@ import static com.delta.buletoothio.barcode.parse.BarCodeType.MATERIAL_BLOCK_BAR
 import static com.delta.smt.R.id.bt_sheet_confirm;
 
 /**
- * Created by Zhenyu.Liu on 2016/12/29.
+ * Created by Zhenyu.Liu on 2017/9/29.
  */
 
-public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWarehouseReturnPresenter>
-        implements MantissaWarehouseReturnContract.View, View.OnClickListener {
+public class MantissaWarehouseReturnDetailsActivity extends BaseActivity<MantissaWarehouseReturnDetailsPresenter>
+        implements MantissaWarehouseReturnDetailsContract.View, View.OnClickListener {
 
     @BindView(R.id.recy_title)
     RecyclerView mRecyTitle;
@@ -66,15 +63,16 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     RecyclerView mRecyContetn;
     @BindView(R.id.statusLayout)
     StatusLayout statusLayout;
-/*    @BindView(R.id.button2)
-    Button mButton2;
-    @BindView(R.id.checkBox)
-    CheckBox mCheckBox;*/
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
     private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList = new ArrayList();
     private List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> dataList2 = new ArrayList();
     private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter;
     private CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn> adapter2;
-    private BaseActivity baseActiviy;
 
     private int flag = 1;
 
@@ -86,11 +84,14 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     private String manualDebit;
     private boolean ischeck = false;
 
+    private String work_order;
+    private String side;
+    private String mS;
+
     private CustomPopWindow mCustomPopWindow;
     private CommonBaseAdapter<ManualDebitBean.ManualDebit> undoList_adapter;
     private List<ManualDebitBean.ManualDebit> mDebitDatas = new ArrayList<>();
 
-    private MantissaWarehouseReturnAndPutStorageActivity mantissaWarehouseReturnAndPutStorageActivity;
 
     private int scan_position = -1;
 
@@ -98,34 +99,42 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
     @Override
     protected void componentInject(AppComponent appComponent) {
 
-        DaggerMantissaWarehouseReturnComponent.builder().appComponent(appComponent).mantissaWarehouseReturnModule(new MantissaWarehouseReturnModule(this)).build().inject(this);
+        DaggerMantissaWarehouseReturnDetailsComponent.builder().appComponent(appComponent).mantissaWarehouseReturnDetailsModule(new MantissaWarehouseReturnDetailsModule(this)).build().inject(this);
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof MantissaWarehouseReturnAndPutStorageActivity){
-             mantissaWarehouseReturnAndPutStorageActivity = (MantissaWarehouseReturnAndPutStorageActivity) context;
-        }
-    }
 
     @Override
     protected void initData() {
 
-        getPresenter().getMantissaWarehouseReturn();
+        work_order = getIntent().getStringExtra(Constant.WORK_ORDER);
+        side = getIntent().getStringExtra(Constant.SIDE);
+        Map<String, String> mMap = new HashMap<>();
+        mMap.put("side", side);
+        mMap.put("work_order", work_order);
+        mS = GsonTools.createGsonListString(mMap);
+        System.out.println(mS);
+        getPresenter().getMantissaWarehouseReturn(mS);
 
-        ischeck = SpUtil.getBooleanSF(getContext(), "autochecked");
+        ischeck = SpUtil.getBooleanSF(this, "autochecked");
     }
 
     @Override
     protected void initView() {
 
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
+        mToolbarTitle.setText("尾数仓入库");
+
         dataList.add(new MantissaWarehouseReturnResult.MantissaWarehouseReturn("", "", ""));
-        adapter = new CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn>(getContext(), dataList) {
+        adapter = new CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn>(this, dataList) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehouseReturnResult.MantissaWarehouseReturn item, int position) {
-                holder.itemView.setBackgroundColor(getContext().getResources().getColor(R.color.c_efefef));
+                holder.itemView.setBackgroundColor(getApplication().getResources().getColor(R.color.c_efefef));
             }
 
             @Override
@@ -133,11 +142,11 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 return R.layout.mantissa_return_item;
             }
         };
-        mRecyTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mRecyTitle.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mRecyTitle.setAdapter(adapter);
 
 
-        adapter2 = new CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn>(getContext(), dataList2) {
+        adapter2 = new CommonBaseAdapter<MantissaWarehouseReturnResult.MantissaWarehouseReturn>(this, dataList2) {
             @Override
             protected void convert(CommonViewHolder holder, MantissaWarehouseReturnResult.MantissaWarehouseReturn item, int position) {
                 if (scan_position == -1) {
@@ -158,16 +167,10 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
             }
 
         };
-        mRecyContetn.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        mRecyContetn.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         mRecyContetn.setAdapter(adapter2);
 
-      /*  mCheckBox.setChecked(ischeck);
-        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SpUtil.SetBooleanSF(getContext(), "autochecked", isChecked);
-            }
-        });*/
+
     }
 
     @Override
@@ -186,32 +189,28 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getFailed(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void getMaterialLocationSucess() {
         flag = 2;
         //扫描成功震动并发声
-        VibratorAndVoiceUtils.correctVibrator(getmActivity());
-        VibratorAndVoiceUtils.correctVoice(getmActivity());
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
         setItemHighLightBasedOnMID(materialNumber);
         mRecyContetn.scrollToPosition(scan_position);
-        Toast.makeText(getActivity(), "已扫描料盘", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "已扫描料盘", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void getMaterialLocationFailed(String message) {
         SnackbarUtil.showMassage(mRecyContetn, message);
         //扫描失败震动并发声
-        VibratorAndVoiceUtils.wrongVibrator(getActivity());
-        VibratorAndVoiceUtils.wrongVoice(getActivity());
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
-    @Override
-    protected boolean UseEventBus() {
-        return true;
-    }
 
     @Override
     public void getputinstrageSucess(List<MantissaWarehouseReturnResult.MantissaWarehouseReturn> mantissaWarehouseReturns) {
@@ -222,27 +221,27 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         flag = 1;
         scan_position = -1;
         //扫描成功震动并发声
-        VibratorAndVoiceUtils.correctVibrator(getmActivity());
-        VibratorAndVoiceUtils.correctVoice(getmActivity());
+        VibratorAndVoiceUtils.correctVibrator(this);
+        VibratorAndVoiceUtils.correctVoice(this);
     }
 
     @Override
     public void getputinstrageFailed(String message) {
         SnackbarUtil.showMassage(mRecyContetn, message);
         //扫描失败震动并发声
-        VibratorAndVoiceUtils.wrongVibrator(getActivity());
-        VibratorAndVoiceUtils.wrongVoice(getActivity());
+        VibratorAndVoiceUtils.wrongVibrator(this);
+        VibratorAndVoiceUtils.wrongVoice(this);
     }
 
     @Override
     public void getManualmaticDebitSucess(List<ManualDebitBean.ManualDebit> manualDebits) {
         if (manualDebits.size() == 0 || manualDebits == null) {
 
-            ToastUtils.showMessage(getContext(), "已完成所有扣账,暂无扣账列表！");
+            ToastUtils.showMessage(this, "已完成所有扣账,暂无扣账列表！");
 
         } else {
 
-            mCustomPopWindow.showAsDropDown(mantissaWarehouseReturnAndPutStorageActivity.getToolbar());
+            // mCustomPopWindow.showAsDropDown(mantissaWarehouseReturnAndPutStorageActivity.getToolbar());
             mDebitDatas.clear();
             mDebitDatas.addAll(manualDebits);
             undoList_adapter.notifyDataSetChanged();
@@ -253,15 +252,15 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getManualmaticDebitFailed(String message) {
-        ToastUtils.showMessage(getContext(), message );
+        ToastUtils.showMessage(this, message);
     }
 
     @Override
     public void getdeductionSucess(List<ManualDebitBean.ManualDebit> manualDebits) {
 
-        if(manualDebits.size() == 0){
+        if (manualDebits.size() == 0) {
             mCustomPopWindow.dissmiss();
-            ToastUtils.showMessage(getContext(), "已完成所有扣账！");
+            ToastUtils.showMessage(this, "已完成所有扣账！");
         }
         mDebitDatas.clear();
         mDebitDatas.addAll(manualDebits);
@@ -270,7 +269,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void getdeductionFailed(String message) {
-        ToastUtils.showMessage(getContext(), message);
+        ToastUtils.showMessage(this, message);
     }
 
     @Override
@@ -279,7 +278,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
 
     @Override
     public void offLightsFailed(String message) {
-        ToastUtils.showMessage(getContext(), message);
+        ToastUtils.showMessage(this, message);
     }
 
     @Override
@@ -299,7 +298,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         statusLayout.setErrorClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getMantissaWarehouseReturn();
+                //   getPresenter().getMantissaWarehouseReturn();
             }
         });
 
@@ -312,20 +311,18 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         statusLayout.setEmptyClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPresenter().getMantissaWarehouseReturn();
+                //  getPresenter().getMantissaWarehouseReturn();
             }
         });
 
     }
 
 
-    @Subscribe
-    public void scanSucceses(BacKBarCode bacKBarCode) {
-
-        String barcode = bacKBarCode.getBarCode();
+    @Override
+    public void onScanSuccess(String barcode) {
 
         BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
-
+        System.out.println(barcode);
         switch (flag) {
             case 1:
                 try {
@@ -338,12 +335,11 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     String s = GsonTools.createGsonListString(bindBean);
 
                     getPresenter().getMaterialLocation(s);
-                }catch (DCTimeFormatException mDCException){
-                    ToastUtils.showMessage(getContext(), mDCException.getMessage());
-                    VibratorAndVoiceUtils.wrongVibrator(getContext());
-                    VibratorAndVoiceUtils.wrongVoice(getContext());
-                }
-                catch (EntityNotFountException e) {
+                } catch (DCTimeFormatException mDCException) {
+                    ToastUtils.showMessage(this, mDCException.getMessage());
+                    VibratorAndVoiceUtils.wrongVibrator(this);
+                    VibratorAndVoiceUtils.wrongVoice(this);
+                } catch (EntityNotFountException e) {
                     SnackbarUtil.showMassage(mRecyContetn, "扫描有误，请扫描料盘！");
                 }
 
@@ -356,13 +352,13 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                     manualDebit = "0";
 
                     if (ischeck) {
-//                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, automaticDebit);
-//                        String s = GsonTools.createGsonListString(bindBean);
-//                        getPresenter().getputinstrage(s);
+                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, work_order,side,automaticDebit);
+                        String s = GsonTools.createGsonListString(bindBean);
+                        getPresenter().getputinstrage(s);
                     } else {
-//                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, manualDebit);
-//                        String s = GsonTools.createGsonListString(bindBean);
-//                        getPresenter().getputinstrage(s);
+                        WarehousePutinStorageBean bindBean = new WarehousePutinStorageBean(materialNumber, serialNum, lastCar, work_order,side, manualDebit);
+                        String s = GsonTools.createGsonListString(bindBean);
+                        getPresenter().getputinstrage(s);
                     }
 
                 } catch (EntityNotFountException e) {
@@ -376,12 +372,11 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                         MantissaWarehouseReturnBean bindBean = new MantissaWarehouseReturnBean(materialNumber, serialNum);
                         String s = GsonTools.createGsonListString(bindBean);
                         getPresenter().getMaterialLocation(s);
-                    } catch (DCTimeFormatException mDCException){
-                        ToastUtils.showMessage(getContext(), mDCException.getMessage());
-                        VibratorAndVoiceUtils.wrongVibrator(getContext());
-                        VibratorAndVoiceUtils.wrongVoice(getContext());
-                    }
-                    catch (EntityNotFountException ee) {
+                    } catch (DCTimeFormatException mDCException) {
+                        ToastUtils.showMessage(this, mDCException.getMessage());
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
+                    } catch (EntityNotFountException ee) {
                         SnackbarUtil.showMassage(mRecyContetn, "此处不能识别此码！");
                     }
 
@@ -392,7 +387,9 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         }
 
 
+
     }
+
 
 
     public void setItemHighLightBasedOnMID(String materialID) {
@@ -405,18 +402,6 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         adapter2.notifyDataSetChanged();
     }
 
-/*    @OnClick({R.id.button2})
-    public void onClickone(View view) {
-        switch (view.getId()) {
-            case R.id.button2:
-
-                if (mCustomPopWindow == null) {
-                    createWindow();
-                }
-                getPresenter().getManualmaticDebit();
-                break;
-        }
-    }*/
 
     @Override
     public void onClick(View view) {
@@ -428,7 +413,7 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
                 break;
             case bt_sheet_confirm:
                 List<ManualmaticDebitBean> mDebitCheckedData = new ArrayList<>();
-                Log.e("bt_sheet_confirm","ddddddddddddd");
+                Log.e("bt_sheet_confirm", "ddddddddddddd");
                 for (ManualDebitBean.ManualDebit mDebitData : mDebitDatas) {
                     if (mDebitData.isChecked()) {
                         ManualmaticDebitBean mListBean = new ManualmaticDebitBean();
@@ -464,56 +449,18 @@ public class MantissaWarehouseReturnFragment extends BaseFragment<MantissaWareho
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
 
-    public void createWindow(){
-
-        mCustomPopWindow = CustomPopWindow.builder().with(getContext()).size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                .setAnimationStyle(R.style.popupAnimalStyle)
-                .setView(R.layout.dialog_bottom_sheet)
-                .enableBlur(true).setStartHeightBlur(100).build();
-
-        View mContentView = mCustomPopWindow.getContentView();
-        RecyclerView rv_debit = ViewUtils.findView(mContentView, R.id.rv_sheet);
-        undoList_adapter = new CommonBaseAdapter<ManualDebitBean.ManualDebit>(getContext(), mDebitDatas) {
-            @Override
-            protected void convert(CommonViewHolder holder, final ManualDebitBean.ManualDebit item, int position) {
-                holder.setText(R.id.tv_material_id, "料号：" + item.getMaterial_no());
-                holder.setText(R.id.tv_serial_num, "流水号：" + item.getSerial_no());
-                final CheckBox mCheckBox = holder.getView(R.id.cb_debit);
-                mCheckBox.setChecked(item.isChecked());
-                holder.getView(R.id.al).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mCheckBox.setChecked(!item.isChecked());
-                        item.setChecked(!item.isChecked());
-                    }
-                });
-            }
-
-            @Override
-            protected int getItemViewLayoutId(int position, ManualDebitBean.ManualDebit item) {
-                return R.layout.item_mantissawarehousedebit_list;
-            }
-
-        };
-        rv_debit.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
-        rv_debit.setLayoutManager(linearLayoutManager);
-        rv_debit.setAdapter(undoList_adapter);
-
-
-        Button bt_cancel = ViewUtils.findView(mContentView, R.id.bt_sheet_back);
-        Button bt_sheet_confirm = ViewUtils.findView(mContentView, R.id.bt_sheet_confirm);
-        Button bt_select_all = ViewUtils.findView(mContentView, R.id.bt_sheet_select_all);
-        ViewUtils.findView(mContentView, R.id.bt_sheet_select_cancel).setOnClickListener(this);
-        bt_cancel.setOnClickListener(this);
-        bt_sheet_confirm.setOnClickListener(this);
-        bt_select_all.setOnClickListener(this);
-
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-    public void onBack() {
-        getPresenter().offLights();
-    }
+
 }

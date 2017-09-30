@@ -97,6 +97,9 @@
             android:name=".ui.mantissa_warehouse.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.mantissas_warehouse_bindTag.return_putstorage.returnto_details.MantissaWarehouseReturnDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.mantissas_warehouse_bindTag.return_putstorage.MantissaWarehouseReturnAndPutStorageActivity"
             android:screenOrientation="portrait" />
         <activity

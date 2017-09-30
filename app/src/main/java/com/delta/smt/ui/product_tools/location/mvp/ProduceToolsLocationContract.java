@@ -26,6 +26,8 @@ public interface ProduceToolsLocationContract {
         int getSubmitResult(JsonLocationVerfyRoot JsonLocationVerfyRoot);
         void Fail();
 
+        void onFailedGetLocation(Throwable throwable);
+
     }
 
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.delta.buletoothio.barcode.parse.BarCodeParseIpml;
+import com.delta.buletoothio.barcode.parse.BarCodeType;
+import com.delta.buletoothio.barcode.parse.entity.ProductToolsBarcode;
+import com.delta.buletoothio.barcode.parse.exception.EntityNotFountException;
 import com.delta.commonlibs.utils.GsonTools;
 import com.delta.commonlibs.utils.SnackbarUtil;
 import com.delta.commonlibs.widget.autolayout.AutoToolbar;
@@ -20,7 +25,6 @@ import com.delta.smt.base.BaseActivity;
 import com.delta.smt.common.CommonBaseAdapter;
 import com.delta.smt.common.CommonViewHolder;
 import com.delta.smt.di.component.AppComponent;
-import com.delta.smt.entity.JsonProductToolsSubmitRoot;
 import com.delta.smt.entity.ProductToolsInfo;
 import com.delta.smt.entity.Product_mToolsInfo;
 import com.delta.smt.ui.product_tools.SharedPreferencesUtils;
@@ -45,6 +49,8 @@ import static com.delta.smt.base.BaseApplication.getContext;
  */
 
 public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPresenter> implements ProduceToolsInfoContract.View, CommonBaseAdapter.OnItemClickListener<ProductToolsInfo> {
+
+    public static final int MORE_REQUEST_OK = 1;
 
     @BindView(R.id.ProductInfoRecyclerView)
     RecyclerView mProductBorrowRecyclerView;
@@ -81,18 +87,18 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     @BindView(R.id.ProductToolStatusLayout)
     StatusLayout statusLayout;
-
-    private StringBuffer mStringBuffer;
     String parm = "";
     List<ProductToolsInfo> data = new ArrayList<>();
+    List<ProductToolsInfo> data_cache = new ArrayList<>();
     CommonBaseAdapter<ProductToolsInfo> adapter;
     String workNumber;
-
     String sourceActivity = "ProduceToolsBorrowActivity";
     String TAG = "ProduceToolsInfoActivity";
     Product_mToolsInfo selectItem;
     String barcode;
     String ID = "admin";
+    BarCodeParseIpml barCodeParseIpml = new BarCodeParseIpml();
+    private StringBuffer mStringBuffer;
 
     @OnClick(R.id.confirm)
     public void confirmData() {
@@ -110,14 +116,13 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
         }
         List<String> datas = new ArrayList<>();
         for (ProductToolsInfo productToolsInfo : data) {
-            if(!productToolsInfo.getProductToolsBarCode().equals("治具二维码"))
-            datas.add(productToolsInfo.getProductToolsBarCode());
+            if (!productToolsInfo.getProductToolsBarCode().equals("治具二维码"))
+                datas.add(productToolsInfo.getProductToolsBarCode());
         }
         parm = GsonTools.createGsonString(new String[]{"workOrderId", "jig", "user"}, new Object[]{Integer.parseInt(workNumber), datas, ID});
         getPresenter().getToolsVerfy(parm);
 
     }
-
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -128,23 +133,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     protected void initData() {
 
         workNumber = this.getIntent().getExtras().getString(sourceActivity);
-
-        if (workNumber == null) {
-
-            this.selectItem = (Product_mToolsInfo) this.getIntent().getExtras().getSerializable("Produce_mToolsActivity");
-            String workNumber = this.getIntent().getExtras().getString("workNumber");
-            this.workNumber = workNumber;
-            HashMap<String, String> parm = new HashMap<>();
-            parm.put("value", "{\"workOrderId\":" + workNumber + "}");
-            String gsonListString = GsonTools.createGsonString(new String[]{"workOrderId"}, new Object[]{Integer.parseInt(workNumber)});
-            getPresenter().getToolsInfo(gsonListString);
-
-        } else {
-
-            String gsonString = GsonTools.createGsonString(new String[]{"workOrderId"}, new Object[]{Integer.parseInt(workNumber)});
-            getPresenter().getToolsInfo(gsonString);
-
-        }
+        String gsonString = GsonTools.createGsonString(new String[]{"workOrderId"}, new Object[]{Integer.parseInt(workNumber)});
+        getPresenter().getToolsInfoInit(gsonString);
     }
 
     @Override
@@ -206,7 +196,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
 
                 }
-                Log.e("jigTypeID",item.getJigTypeId());
+                Log.e("jigTypeID", item.getJigTypeId());
                 holder.setOnClickListener(R.id.ReSelect, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -216,8 +206,8 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
                         bundle.putString("jigTypeID", item.getJigTypeId());
                         intent.putExtras(bundle);
                         intent.setClass(ProduceToolsInfoActivity.this, Produce_mToolsActivity.class);
-                        startActivity(intent);
-                        finish();
+                        startActivityForResult(intent, MORE_REQUEST_OK);
+                        //finish();
                     }
                 });
 
@@ -263,6 +253,7 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
 
     }
 
+
     @Override
     public void getToolsInfo(List<ProductToolsInfo> ProductToolsItem) {
         if (ProductToolsItem == null) {
@@ -290,39 +281,75 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     }
 
     @Override
-    public void getToolsVerfy(List<ProductToolsInfo> ProductToolsItem) {
-        if (ProductToolsItem == null) {
-            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(), "请求的数据不存在");
+    public void getToolsInfoAndChangeTool(List<ProductToolsInfo> ProductToolsItem) {
+        data.clear();
+        data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态", "", ""));
+        data.addAll(ProductToolsItem);
+        for (int i = 0; i < data.size(); i++) {
+            for (int j = 0; j < data_cache.size(); j++) {
+                if (data.get(i).getProduceToolsType().equals(data_cache.get(j).getProduceToolsType())) {
+                    data.get(i).setProductToolsBarCode(data_cache.get(j).getProductToolsBarCode());
+                    data.get(i).setProductToolsLocation(data_cache.get(j).getProductToolsLocation());
+                    data.get(i).setJigId(data_cache.get(j).getJigId());
+                    break;
+                }
+            }
         }
-        int i = 0;
-        for (ProductToolsInfo p : ProductToolsItem) {
-            i++;
-            data.get(i).setTurnNumber(p.getTurnNumber());
-            data.get(i).setProductToolsBarCode(p.getProductToolsBarCode());
-            data.get(i).setJigTypeId(p.getJigTypeId());
-            data.get(i).setStatus(p.getStatus());
-            data.get(i).setProduceToolsType(p.getProduceToolsType());
+        adapter.notifyDataSetChanged();
 
-        }
+    }
+
+    @Override
+    public void getToolsInfoInit(List<ProductToolsInfo> ProductToolsItem) {
+        //data.clear();
+        data_cache.clear();
+        data.addAll(ProductToolsItem);
+        data_cache.addAll(ProductToolsItem);
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void getToolsBorrowSubmit(JsonProductToolsSubmitRoot j) {
-        if (j == null) {
+    public void getToolsVerfy(List<ProductToolsInfo> ProductToolsItem) {
+        if (ProductToolsItem == null) {
             SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(), "请求的数据不存在");
         }
-        Log.e("getToolsBorrowSubmit", j.toString());
-        if (j.getCode() == 0) {
 
-            int i = 0;
-            for (ProductToolsInfo p : data) {
+        data.clear();
+        data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态", "", ""));
+        data.addAll(ProductToolsItem);
+        data_cache.clear();
+        data_cache.addAll(ProductToolsItem);
+        adapter.notifyDataSetChanged();
+    }
 
-                i++;
+    @Override
+    public void getToolsBorrowSubmit(List<ProductToolsInfo> ProductToolsItem) {
+        if (ProductToolsItem == null) {
+            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(), "请求的数据不存在");
+        }
+
+        data.clear();
+        data.add(0, new ProductToolsInfo("序号", "治具二维码", "治具类型", "所在架位", "重新选择", "状态", "", ""));
+        data.addAll(ProductToolsItem);
+        data_cache.clear();
+        data_cache.addAll(ProductToolsItem);
+        adapter.notifyDataSetChanged();
+
+        /*if (jsonProductRequestToolsRoot.getCode() == 0) {
+
+            for (int i = 1; i < data.size(); i++) {
+
                 if (data.get(i).getProductToolsBarCode().equals(this.barcode)) {
 
-                    data.get(i).setStatus("已完成");
-                    productInfoBarCodeEditText.setText(this.barcode);
+                    data.get(i).setStatus("已借出");
+
+                    //data_cache中缓存状态
+                    for (int j = 0; j < data_cache.size(); j++) {
+                        if (data_cache.get(j).getProductToolsBarCode().equals(this.barcode)) {
+                            data_cache.get(j).setStatus("已借出");
+                            break;
+                        }
+                    }
                     adapter.notifyDataSetChanged();
                     SnackbarUtil.showMassage(getCurrentFocus(), "借出成功");
                     VibratorAndVoiceUtils.correctVibrator(ProduceToolsInfoActivity.this);
@@ -332,18 +359,21 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
             }
         } else {
 
-            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(), j.getMessage());
+            SnackbarUtil.showMassage(ProduceToolsInfoActivity.this.getWindow().getCurrentFocus(), jsonProductToolsSubmitRoot.getMessage());
             VibratorAndVoiceUtils.wrongVibrator(ProduceToolsInfoActivity.this);
             VibratorAndVoiceUtils.wrongVoice(ProduceToolsInfoActivity.this);
 
-        }
+        }*/
 
     }
 
     @Override
     public void getFail(String message) {
-        SnackbarUtil.showMassage(getCurrentFocus(), message);
-
+        if (!TextUtils.isEmpty(message)) {
+            SnackbarUtil.showMassage(this.getCurrentFocus(), message);
+            VibratorAndVoiceUtils.wrongVibrator(ProduceToolsInfoActivity.this);
+            VibratorAndVoiceUtils.wrongVoice(ProduceToolsInfoActivity.this);
+        }
     }
 
     @Override
@@ -370,10 +400,79 @@ public class ProduceToolsInfoActivity extends BaseActivity<ProduceToolsInfoPrese
     @Override
     public void onScanSuccess(String barcode) {
         super.onScanSuccess(barcode);
+        productInfoBarCodeEditText.setText(barcode);
+        /**
+         * 判断二维码是否是治具二维码
+         */
+        try {
+            ProductToolsBarcode productToolsBarcode = (ProductToolsBarcode) barCodeParseIpml.getEntity(barcode, BarCodeType.PRODUCT_TOOLS);
+        } catch (EntityNotFountException e) {
+            SnackbarUtil.showMassage(this.getCurrentFocus(), "请扫描正确的治具二维码!");
+            VibratorAndVoiceUtils.wrongVibrator(ProduceToolsInfoActivity.this);
+            VibratorAndVoiceUtils.wrongVoice(ProduceToolsInfoActivity.this);
+            return;
+        }
+        /**
+         * 判断二维码在列表中是否存在
+         */
+        if (!existInList(barcode, data)) {
+            SnackbarUtil.showMassage(this.getCurrentFocus(), "此二维码在列表中不存在!");
+            VibratorAndVoiceUtils.wrongVibrator(ProduceToolsInfoActivity.this);
+            VibratorAndVoiceUtils.wrongVoice(ProduceToolsInfoActivity.this);
+            return;
+        }
+
         String param = GsonTools.createGsonString(new String[]{"workOrderId", "jigCode", "user"}, new Object[]{Integer.parseInt(workNumber), barcode, ID});
         getPresenter().getToolsBorrowSubmit(param);
         this.barcode = barcode;
 
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == MORE_REQUEST_OK && resultCode == Produce_mToolsActivity.MORE_RESULT_OK) {
+            this.selectItem = (Product_mToolsInfo) intent.getExtras().getSerializable("Produce_mToolsActivity");
+            String workNumber = intent.getExtras().getString("workNumber");
+            this.workNumber = workNumber;
+            HashMap<String, String> parm = new HashMap<>();
+            parm.put("value", "{\"workOrderId\":" + workNumber + "}");
+            String gsonListString = GsonTools.createGsonString(new String[]{"workOrderId"}, new Object[]{Integer.parseInt(workNumber)});
+            //将更改后的结果写入data_cache
+            changeToolCache(selectItem);
+            getPresenter().getToolsInfoAndChangeTool(gsonListString);
+        }
+    }
+
+    private void changeToolCache(Product_mToolsInfo p) {
+        for (int i = 0; i < data_cache.size(); i++) {
+            if (p.getProductToolsType().equals(data_cache.get(i).getProduceToolsType())) {
+                data_cache.get(i).setProductToolsBarCode(p.getProductToolsBarCode());
+                data_cache.get(i).setProductToolsLocation(p.getProductToolsLocation());
+                data_cache.get(i).setJigId(p.getJigID());
+            }
+
+        }
+    }
+
+    /**
+     * 判断所扫描治具条码在列表中是否存在
+     *
+     * @param code 所扫描治具条码
+     * @param data 列表对应List
+     * @return true存在，false不存在
+     */
+    public boolean existInList(String code, List<ProductToolsInfo> data) {
+        for (ProductToolsInfo d : data) {
+            if (code.equals(d.getProductToolsBarCode())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
+
+

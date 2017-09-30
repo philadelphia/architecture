@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,16 +63,12 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     RecyclerView mRecyContent;
     @BindView(R.id.tv_setting)
     TextView mTvSetting;
-
-
-    private int flag1 = 1;
-    private String ID = "admin";
-
-    private String tools;
-    private String shelfBarcode;
-
     List<ItemLocationVerfyList> data = new ArrayList<>();
     CommonBaseAdapter<ItemLocationVerfyList> adapter;
+    private int flag1 = 1;
+    private String ID = "admin";
+    private String tools;
+    private String shelfBarcode;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -176,6 +173,8 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
 
                     } else {
                         SnackbarUtil.showMassage(getRootView(this), "架位二维码不一致，请重新扫描！");
+                        VibratorAndVoiceUtils.wrongVibrator(this);
+                        VibratorAndVoiceUtils.wrongVoice(this);
                     }
                 }
 
@@ -263,6 +262,15 @@ public class ProduceToolsLocationActivity extends BaseActivity<ProduceToolsLocat
     @Override
     public void Fail() {
         SnackbarUtil.showMassage(getRootView(this), "请求的数据不存在!");
+        VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
+        VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
+    }
+
+    @Override
+    public void onFailedGetLocation(Throwable throwable) {
+        if (!TextUtils.isEmpty(throwable.getMessage())) {
+            SnackbarUtil.showMassage(getRootView(this), throwable.getMessage());
+        }
         VibratorAndVoiceUtils.wrongVibrator(ProduceToolsLocationActivity.this);
         VibratorAndVoiceUtils.wrongVoice(ProduceToolsLocationActivity.this);
     }
