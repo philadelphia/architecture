@@ -15,7 +15,6 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
 
     private TimeEntity mItemInfo;
     private boolean isCountUp;
-    public View itemView ;
 
     public boolean isCountUp() {
         return isCountUp;
@@ -28,7 +27,6 @@ public class ItemTimeViewHolder extends RecyclerView.ViewHolder {
     public ItemTimeViewHolder(View itemView, int countViewId) {
         super(itemView);
         AutoUtils.auto(itemView);
-        this.itemView =itemView;
         //AutoUtils.autoSize(itemView);
         mCountdownViewTest = getView(countViewId);
         isCountUp = mCountdownViewTest.isCountUp();
