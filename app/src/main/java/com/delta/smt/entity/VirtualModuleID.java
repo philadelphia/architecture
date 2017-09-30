@@ -21,7 +21,7 @@ public class VirtualModuleID {
     public VirtualModuleID(int code, String message, String rows) {
         this.code = code;
         this.message = message;
-        rows = rows;
+        this.rows = rows;
     }
 
     public int getCode() {
@@ -45,7 +45,7 @@ public class VirtualModuleID {
     }
 
     public void setRows(String rows) {
-        rows = rows;
+        this.rows = rows;
     }
 
     @Override

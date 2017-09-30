@@ -116,6 +116,7 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
         }
     }
 
+    @Override
     public void setWsStatusListener(WsStatusListener wsStatusListener) {
         this.wsStatusListener = wsStatusListener;
     }
@@ -148,7 +149,7 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
 
         if (!isNetworkConnected(mContext)) return;
 
-        long delay = reconnectCount * RECONNECT_INTERVAL;
+        long delay = (long)reconnectCount * RECONNECT_INTERVAL;
         wsHandler.postDelayed(reconnectRunnable, delay > RECONNECT_MAX_TIME ? RECONNECT_MAX_TIME : delay);
         reconnectCount++;
     }
@@ -178,7 +179,7 @@ public class OkHttpWebSocketStrategy implements BaseWebSocketStrategy {
     }
 
     private void buildConnect() {
-        if (mCurrentStatus == WsStatus.CONNECTED | mCurrentStatus == WsStatus.CONNECTING | !isNetworkConnected(mContext))
+        if (mCurrentStatus == WsStatus.CONNECTED || mCurrentStatus == WsStatus.CONNECTING || !isNetworkConnected(mContext))
             return;
         mCurrentStatus = WsStatus.CONNECTING;
         initWebSocket();
