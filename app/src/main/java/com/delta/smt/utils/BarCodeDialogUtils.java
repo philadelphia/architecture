@@ -23,10 +23,7 @@ public class BarCodeDialogUtils {
         mDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (mBarcode.isEventFromBarCode(event)){
-                    return true;
-                }
-                return false;
+                return mBarcode.isEventFromBarCode(event);
             }
         });
         return mDialog;

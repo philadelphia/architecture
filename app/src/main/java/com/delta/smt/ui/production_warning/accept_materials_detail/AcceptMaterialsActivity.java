@@ -403,7 +403,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     private boolean isNeedReplaceMaterial() {
         Log.i(TAG, "isOldMaterial: materialNumber==" + materialNumber + "streamNumber==" + streamNumber);
         ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean lineMaterialEntitiesBean = dataList1.get(index);
-        return lineMaterialEntitiesBean.getMode() == 1 ? true : false;
+        return lineMaterialEntitiesBean.getMode() == 1;
     }
 
     //请求接料列表数据成功
