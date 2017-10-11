@@ -243,5 +243,10 @@ public class ActivityMonitor {
             }
             return false;
         }
+
+        @Override
+        public int hashCode() {
+            return mActivityRef.hashCode() + mState.hashCode();
+        }
     }
 }
