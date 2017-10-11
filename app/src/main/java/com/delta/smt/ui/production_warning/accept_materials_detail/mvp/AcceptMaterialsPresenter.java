@@ -75,21 +75,27 @@ public class AcceptMaterialsPresenter extends BasePresenter<AcceptMaterialsContr
             public void call(AcceptMaterialResult result) {
                 Log.i(TAG, "call--code == : " + result.getCode());
                 switch (result.getCode()) {
+                     /*接料成功*/
                     case 0:
-                        //接料成功
                         getView().commitSerialNumberSuccess(result.getRows());
                         break;
+                      /*服务器错误*/
                     case -1:
-//                        服务器错误。
                         break;
+                     /*新料盘不存在，导致接料失败*/
                     case -2:
                         getView().onNewMaterialNotExists(result.getMessage());
                         break;
+                       /*旧料盘不存在，导致接料失败*/
                     case -3:
                         getView().onOldMaterialNotExists(result.getMessage());
                         break;
+                     /*上传MES失败。暂时不实现。*/
                     case -4:
-//                        上传MES失败。暂时不实现。
+                        break;
+                    /*接料失败*/
+                    case -5:
+                        getView().commitSerialNumberFailed(result.getMessage());
                         break;
                     default:
                         getView().commitSerialNumberFailed(result.getMessage());

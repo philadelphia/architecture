@@ -474,6 +474,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     @Override
     public void commitSerialNumberFailed(String message) {
         Snackbar.make(getCurrentFocus(), "料站" + mCurrentSlot +"接料失败，" + message + "，请重新扫描!", Snackbar.LENGTH_LONG).show();
+        tag = 1;
     }
 
     @Override
