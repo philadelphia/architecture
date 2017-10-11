@@ -210,7 +210,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
+//                getPresenter().requestCloseLight(String.valueOf(mTvLine.getText()));
                 finish();
                 break;
 
