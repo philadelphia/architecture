@@ -430,7 +430,7 @@ public class MantissaWarehousePutstorageFragment extends
                                 bl_shelf_no = true;
                             }
                         }
-                        if (bl_shelf_no == true) {
+                        if (bl_shelf_no) {
                             flag = 2;
                             Toast.makeText(baseActiviy, "已扫描架位", Toast.LENGTH_SHORT).show();
                             setItemHighLightBasedOnMID(lastLocation);
@@ -467,7 +467,7 @@ public class MantissaWarehousePutstorageFragment extends
                             bl_shelf_no = true;
                         }
                     }
-                    if (bl_shelf_no == true) {
+                    if (bl_shelf_no) {
                         flag = 2;
                         Toast.makeText(baseActiviy, "已扫描架位", Toast.LENGTH_SHORT).show();
                         setItemHighLightBasedOnMID(lastLocation);

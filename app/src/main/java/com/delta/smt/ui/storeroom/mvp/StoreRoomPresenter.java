@@ -185,7 +185,7 @@ public class StoreRoomPresenter extends BasePresenter<StoreRoomContract.Model,St
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                Log.i("info",throwable.getMessage().toString());
+                Log.i("info", throwable.getMessage());
                 try{
                     getView().showErrorView();
                     getView().onFaild("无法连接到服务器，请确认是否处于联网状态，服务器是否开启，如果一直有问题请联系管理員");

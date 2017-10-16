@@ -132,7 +132,7 @@ public class StorageDetailsActivity extends BaseActivity<StorageDetailsPresenter
 
     @Override
     protected void initData() {
-        //textToSpeechManager = new RawTextToSpeech(App.getmContenxt());
+        //textToSpeechManager = new RawTextToSpeech(App.getmContext());
         mBarCodeParseIpml = new BarCodeParseIpml();
         part = getIntent().getStringExtra(Constant.WARE_HOUSE_NAME);
         work_order = getIntent().getStringExtra(Constant.WORK_ORDER);

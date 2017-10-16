@@ -1,12 +1,6 @@
 package com.delta.smt.entity;
 
-import android.util.Log;
-
 import com.google.gson.annotations.SerializedName;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by Tao.ZT.Zhang on 2016/12/28.

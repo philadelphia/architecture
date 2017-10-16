@@ -464,7 +464,7 @@ public class FeederSupplyActivity extends BaseActivity<FeederSupplyPresenter> im
                 Map<String, String> mapItem = new HashMap<>();
                 map.put("work_order", workId);
                 map.put("side", side);
-                List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+                List<Map<String, String>> list = new ArrayList<>();
 
                 for (DebitData debitData : unDebitItemList) {
                     if (debitData.isChecked()) {

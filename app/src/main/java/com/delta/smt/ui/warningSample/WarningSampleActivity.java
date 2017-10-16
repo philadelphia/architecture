@@ -79,7 +79,7 @@ public class WarningSampleActivity extends BaseActivity<LoginPresenter> implemen
             @Override
             public void run() {
 
-                App.getMainHander().post(new Runnable() {
+                App.getMainHandler().post(new Runnable() {
                     @Override
                     public void run() {
                         Intent intent1 = new Intent(WarningSampleActivity.this, WarningActivity.class);

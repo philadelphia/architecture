@@ -54,7 +54,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -158,7 +158,7 @@ public class FaultProcessingActivity extends BaseActivity<FaultProcessingPresent
         View contentView = LayoutInflater.from(this).inflate(R.layout.recycleview_content, null);
         rvFaultProcessing = ViewUtils.findView(contentView, R.id.rv_faultProcessing);
         statusLayout = ViewUtils.findView(contentView, R.id.statusLayouts);
-        dropDownMenu.setDropDownMenu(Arrays.asList("故障类型：全部"), popupViews, contentView);
+        dropDownMenu.setDropDownMenu(Collections.singletonList("故障类型：全部"), popupViews, contentView);
         mMyAdapter = new ItemCountViewAdapter<RowsBean.FailuresBean>(this, failuresBeen) {
             @Override
             protected int getCountViewId() {

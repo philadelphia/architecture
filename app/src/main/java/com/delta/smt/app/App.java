@@ -45,17 +45,17 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
 
     public static AppComponent appComponent;
     private static int appCount = 0;
-    private static Handler mainHander;
-    private static Context mContenxt;
+    private static Handler mainHandler;
+    private static Context mContext;
     @Inject
     TextToSpeechManager textToSpeechManager;
 
-    public static Context getmContenxt() {
-        return mContenxt;
+    public static Context getmContext() {
+        return mContext;
     }
 
-    public static Handler getMainHander() {
-        return mainHander;
+    public static Handler getMainHandler() {
+        return mainHandler;
     }
 
     public static AppComponent getAppComponent() {
@@ -82,8 +82,8 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     public void onCreate() {
         super.onCreate();
         new DeviceUuidFactory(this);
-        mContenxt = this;
-        mainHander = new Handler(Looper.getMainLooper());
+        mContext = this;
+        mainHandler = new Handler(Looper.getMainLooper());
         appComponent = DaggerAppComponent.builder().clientModule(getClientModule()).appModule(getAppModule()).serviceModule(getServiceModule()).build();
         appComponent.inject(this);
         textToSpeechManager.setRead(SpUtil.getBooleanSF(this, "speech_switch"));
@@ -114,18 +114,18 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
         if (activity.getParent() != null) {
-            mContenxt = activity.getParent();
+            mContext = activity.getParent();
         } else
-            mContenxt = activity;
+            mContext = activity;
         ActivityMonitor.getInstance().onActivityEvent(activity, ActivityState.CREATED);
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
         if (activity.getParent() != null) {
-            mContenxt = activity.getParent();
+            mContext = activity.getParent();
         } else
-            mContenxt = activity;
+            mContext = activity;
         ActivityMonitor.getInstance().onActivityEvent(activity, ActivityState.STARTED);
         appCount++;
     }
@@ -133,9 +133,9 @@ public class App extends BaseApplication implements Application.ActivityLifecycl
     @Override
     public void onActivityResumed(Activity activity) {
         if (activity.getParent() != null) {
-            mContenxt = activity.getParent();
+            mContext = activity.getParent();
         } else
-            mContenxt = activity;
+            mContext = activity;
         ActivityMonitor.getInstance().onActivityEvent(activity, ActivityState.RESUMED);
     }
 

@@ -468,7 +468,6 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             finish();
         }
 
-
     }
 
     @Override
@@ -499,7 +498,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         map.put("work_order", work_order);
         map.put("material_no", material_no);
         String argument = GsonTools.createGsonListString(map);
-        Log.i(TAG, "lightOn:argument ==  " + argument.toString());
+        Log.i(TAG, "lightOn:argument ==  " + argument);
         getPresenter().turnLightOn(argument);
     }
 
@@ -509,7 +508,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         map.put("location", lastLocation);
 
         String argument = GsonTools.createGsonListString(map);
-        Log.i(TAG, "turnLightOff---argument: " + argument.toString());
+        Log.i(TAG, "turnLightOff---argument: " + argument);
         getPresenter().turnLightOff(argument);
     }
 }

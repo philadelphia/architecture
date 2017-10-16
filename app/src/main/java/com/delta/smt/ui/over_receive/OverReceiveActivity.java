@@ -639,7 +639,7 @@ public class OverReceiveActivity extends BaseActivity<OverReceivePresenter> impl
                                 mDebitDatas.get(i).getIssue_amount(),
                                 mDebitDatas.get(i).getIssue_amount()
                         );
-                        List<DebitInputPara.ListBean> listBeenList = new ArrayList<DebitInputPara.ListBean>();
+                        List<DebitInputPara.ListBean> listBeenList = new ArrayList<>();
                         listBeenList.add(listBean);
                         debitInputPara.setList(listBeenList);
                         list.add(debitInputPara);

@@ -176,7 +176,7 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
                 hmap.put("lines", lines);
 
                 String s = GsonTools.createGsonListString(hmap);
-                getPresenter().getQualityList(s.toString());
+                getPresenter().getQualityList(s);
             }
         });
     }
@@ -192,7 +192,7 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
                 Map hmap = new HashMap();
                 hmap.put("lines", lines);
                 String s = GsonTools.createGsonListString(hmap);
-                getPresenter().getQualityList(s.toString());
+                getPresenter().getQualityList(s);
             }
         });
     }
@@ -221,7 +221,7 @@ public class QualityManageActivity extends BaseActivity<QualityManagePresenter> 
         Map hmap = new HashMap();
         hmap.put("lines", lines);
         String s = GsonTools.createGsonListString(hmap);
-        getPresenter().getQualityList(s.toString());
+        getPresenter().getQualityList(s);
         dataList.clear();
         adapter.notifyDataSetChanged();
     }

@@ -142,7 +142,7 @@ public class WarningService extends IntentService implements WarningSocketPresen
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
-//        App.getMainHander().post(new Runnable() {
+//        App.getMainHandler().post(new Runnable() {
 //            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
 //            @Override
 //            public void run() {
