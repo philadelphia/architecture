@@ -2,7 +2,11 @@ package com.delta.smt.ui.production_warning.accept_materials_detail;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
@@ -99,7 +103,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     private List<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> dataList = new ArrayList();
     private List<ItemAcceptMaterialDetail.RowsBean.LineMaterialEntitiesBean> dataList1 = new ArrayList();
 
-    private final String TAG = "AcceptMaterialsActivity";
+    private final static String TAG = "AcceptMaterialsActivity";
 
     private String lines, work, face, material_number;
     private String materialNumber, oldSerialNumber, newSerialNumber, newBarcode, newMaterialNumber;
@@ -113,6 +117,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     private String lastCarID;
     private String lastLocation;
     private String lastMaterialID;
+    private MyBroadcastReceiver myBroadcastReceiver;
 
     @Override
     protected void componentInject(AppComponent appComponent) {
@@ -133,6 +138,13 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 //        material_number = getIntent().getExtras().getString(Constant.ACCEPT_MATERIALS_NUM);
         Log.e(TAG, "initData: " + lines);
         getPresenter().getAcceptMaterialList(lines);
+        myBroadcastReceiver = new MyBroadcastReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        registerReceiver(myBroadcastReceiver, filter);
+
 
     }
 
@@ -415,7 +427,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
             Dialog dialog = DialogUtils.showCommonDialog(this, "所有接料已完成,是否返回上级页面", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (((AlertDialog) dialog).isShowing()){
+                    if (((AlertDialog) dialog).isShowing()) {
                         finish();
                     }
                 }
@@ -450,12 +462,14 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
     }
 
 
-    /**接料成功
+    /**
+     * 接料成功
+     *
      * @param rows 剩余的待换料或接料的数量
      */
     @Override
     public void commitSerialNumberSuccess(int rows) {
-        SnackbarUtil.showRead(getRootView(this), "料站" + mCurrentSlot +"接料完成，请继续扫描旧料盘进行接料！", textToSpeechManager);
+        SnackbarUtil.showRead(getRootView(this), "料站" + mCurrentSlot + "接料完成，请继续扫描旧料盘进行接料！", textToSpeechManager);
         index = -1;
 //        该工单接料或换料未完成。
         if (rows > 0) {
@@ -472,7 +486,7 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
 
     @Override
     public void commitSerialNumberFailed(String message) {
-        Snackbar.make(getCurrentFocus(), "料站" + mCurrentSlot +"接料失败，" + message + "，请重新扫描!", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getCurrentFocus(), "料站" + mCurrentSlot + "接料失败，" + message + "，请重新扫描!", Snackbar.LENGTH_LONG).show();
         tag = 1;
     }
 
@@ -510,5 +524,28 @@ public class AcceptMaterialsActivity extends BaseActivity<AcceptMaterialsPresent
         String argument = GsonTools.createGsonListString(map);
         Log.i(TAG, "turnLightOff---argument: " + argument);
         getPresenter().turnLightOff(argument);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(myBroadcastReceiver);
+    }
+
+
+    public  class MyBroadcastReceiver extends BroadcastReceiver {
+
+        public MyBroadcastReceiver() {
+
+        }
+
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "onReceive:  " + intent.getAction());
+           AcceptMaterialsActivity.this.finish();
+        }
+
     }
 }
