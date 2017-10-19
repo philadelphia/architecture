@@ -370,10 +370,12 @@ public class ModuleUpActivity extends BaseActivity<ModuleUpPresenter> implements
         switch (mType) {
             case 1:
                 Intent  intent = new Intent(this, ModuleUpBindingActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 break;
             case 2:
                 Intent  intent1 = new Intent(this, VirtualLineBindingActivity.class);
+                intent1.putExtras(bundle);
                 intent1.putExtra(Constant.SELECT_TYPE, mType);
                 startActivity(intent1);
                 break;
