@@ -1,40 +1,29 @@
-package com.delta.smt.api;
+package com.delta.app.api;
 
 
-import com.delta.smt.entity.CheckStock;
-import com.delta.smt.entity.FalutMesage;
-import com.delta.smt.entity.FeederCheckInItem;
-import com.delta.smt.entity.FeederSupplyItem;
-import com.delta.smt.entity.FeederSupplyWarningItem;
-import com.delta.smt.entity.ListWarning;
-import com.delta.smt.entity.LoginResult;
-import com.delta.smt.entity.MantissaWarehouseDetailsResult;
-import com.delta.smt.entity.MantissaWarehousePutstorageResult;
-import com.delta.smt.entity.MantissaWarehouseReady;
-import com.delta.smt.entity.MantissaWarehouseReturn;
-import com.delta.smt.entity.ModuleDownDetailsItem;
-import com.delta.smt.entity.ModuleDownWarningItem;
-import com.delta.smt.entity.ModuleUpBindingItem;
-import com.delta.smt.entity.ModuleUpWarningItem;
-import com.delta.smt.entity.OverReceiveWarning;
-import com.delta.smt.entity.ProductToolsBack;
-import com.delta.smt.entity.ProductToolsInfo;
-import com.delta.smt.entity.ProductWorkItem;
-import com.delta.smt.entity.Product_mToolsInfo;
-import com.delta.smt.entity.Result;
-import com.delta.smt.entity.StorageDetails;
-import com.delta.smt.entity.StorageReady;
-import com.delta.smt.entity.StorageSelect;
-import com.delta.smt.entity.Update;
-import com.delta.smt.entity.User;
-import com.delta.smt.entity.VirtualLineBindingItem;
-import com.delta.smt.entity.WareHouse;
-import com.delta.smt.ui.hand_add.item.ItemHandAdd;
-import com.delta.smt.entity.production_warining_item.ItemBreakDown;
-import com.delta.smt.entity.production_warining_item.ItemInfo;
-import com.delta.smt.entity.production_warining_item.ItemProduceLine;
-import com.delta.smt.entity.production_warining_item.ItemWarningInfo;
-import com.delta.smt.entity.production_warining_item.TitleNumber;
+import com.delta.app.entity.CheckStock;
+import com.delta.app.entity.FalutMesage;
+import com.delta.app.entity.FeederCheckInItem;
+import com.delta.app.entity.FeederSupplyItem;
+import com.delta.app.entity.FeederSupplyWarningItem;
+import com.delta.app.entity.MantissaWarehouseReturn;
+import com.delta.app.entity.ModuleDownDetailsItem;
+import com.delta.app.entity.ModuleDownWarningItem;
+import com.delta.app.entity.ModuleUpBindingItem;
+import com.delta.app.entity.ModuleUpWarningItem;
+import com.delta.app.entity.ProductToolsBack;
+import com.delta.app.entity.ProductToolsInfo;
+import com.delta.app.entity.ProductWorkItem;
+import com.delta.app.entity.Product_mToolsInfo;
+import com.delta.app.entity.Result;
+import com.delta.app.entity.VirtualLineBindingItem;
+import com.delta.app.entity.WareHouse;
+import com.delta.app.ui.hand_add.item.ItemHandAdd;
+import com.delta.app.entity.production_warining_item.ItemBreakDown;
+import com.delta.app.entity.production_warining_item.ItemInfo;
+import com.delta.app.entity.production_warining_item.ItemProduceLine;
+import com.delta.app.entity.production_warining_item.ItemWarningInfo;
+import com.delta.app.entity.production_warining_item.TitleNumber;
 
 import java.util.List;
 
@@ -90,7 +79,7 @@ public interface ApiService {
 
     //接口PCB库房发料
 
-    Observable<List<com.delta.smt.entity.ItemInfo>> getWarning();//获取所有预警信息
+    Observable<List<com.delta.app.entity.ItemInfo>> getWarning();//获取所有预警信息
 
     Observable<List<ListWarning>> getListWarning();//获取发料列表
 

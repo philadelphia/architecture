@@ -1,4 +1,4 @@
-package com.delta.smt.api;
+package com.delta.app.api;
 
 public interface API {
 
