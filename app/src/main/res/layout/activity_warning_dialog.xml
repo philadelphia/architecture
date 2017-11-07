@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.delta.commonlibs.widget.autolayout.AutoLinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.commonlibs.widget.autolayout.AutoLinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.delta.app.service.warningService.WarningDialogActivity">
+    tools:context=".warningService.WarningDialogActivity">
 
     <TextView
         android:text="sdfsfdsf"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</com.delta.commonlibs.widget.autolayout.AutoLinearLayoutCompat>
+</com.example.commonlibs.widget.autolayout.AutoLinearLayoutCompat>

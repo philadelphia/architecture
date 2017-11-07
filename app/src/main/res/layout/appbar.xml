@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<com.delta.commonlibs.widget.autolayout.AutoAppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.commonlibs.widget.autolayout.AutoAppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <com.delta.commonlibs.widget.autolayout.AutoToolbar
+    <com.example.commonlibs.widget.autolayout.AutoToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -37,8 +37,8 @@
             android:focusableInTouchMode="true"
             android:focusable="true"
             />
-    </com.delta.commonlibs.widget.autolayout.AutoToolbar>
+    </com.example.commonlibs.widget.autolayout.AutoToolbar>
 
-</com.delta.commonlibs.widget.autolayout.AutoAppBarLayout>
+</com.example.commonlibs.widget.autolayout.AutoAppBarLayout>
 
 

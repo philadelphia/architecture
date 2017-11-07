@@ -1,0 +1,14 @@
+package com.example.commonlibs.rxerrorhandler;
+
+import android.content.Context;
+
+/**
+ * @description :
+ * @autor :  V.Wenju.Tian
+ * @date : 2016/12/5 14:44
+ */
+
+
+public interface ResponseErrorListener {
+    void handlerResponseError(Context context, Exception e);
+}

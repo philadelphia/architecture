@@ -16,7 +16,7 @@
         <include layout="@layout/appbar" />
 
 
-        <com.delta.commonlibs.widget.statusLayout.StatusLayout
+        <com.example.commonlibs.widget.statusLayout.StatusLayout
             android:id="@+id/statusLayout"
             android:visibility="invisible"
             android:layout_width="match_parent"
@@ -102,7 +102,7 @@
 
             </LinearLayout>
 
-        </com.delta.commonlibs.widget.statusLayout.StatusLayout>
+        </com.example.commonlibs.widget.statusLayout.StatusLayout>
 
     </LinearLayout>
 

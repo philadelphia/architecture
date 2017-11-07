@@ -85,7 +85,7 @@
         android:layout_height="wrap_content" />
 
 
-    <com.delta.libs.CountTimeView
+    <com.example.libs.CountTimeView
         android:id="@+id/cv_countView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

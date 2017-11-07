@@ -1,28 +1,28 @@
-package com.delta.app.di.module;
+package com.example.app.di.module;
 
 import com.delta.app.api.ApiService;
-import com.delta.app.entity.CheckStock;
-import com.delta.app.entity.FalutMesage;
-import com.delta.app.entity.FeederCheckInItem;
-import com.delta.app.entity.FeederSupplyItem;
-import com.delta.app.entity.FeederSupplyWarningItem;
-import com.delta.app.entity.ModuleDownDetailsItem;
-import com.delta.app.entity.ModuleDownWarningItem;
-import com.delta.app.entity.ModuleUpBindingItem;
-import com.delta.app.entity.ModuleUpWarningItem;
-import com.delta.app.entity.ProductToolsBack;
-import com.delta.app.entity.ProductToolsInfo;
-import com.delta.app.entity.ProductWorkItem;
-import com.delta.app.entity.Product_mToolsInfo;
-import com.delta.app.entity.Result;
-import com.delta.app.entity.VirtualLineBindingItem;
-import com.delta.app.entity.WareHouse;
-import com.delta.app.ui.hand_add.item.ItemHandAdd;
-import com.delta.app.entity.production_warining_item.ItemBreakDown;
-import com.delta.app.entity.production_warining_item.ItemInfo;
-import com.delta.app.entity.production_warining_item.ItemProduceLine;
-import com.delta.app.entity.production_warining_item.ItemWarningInfo;
-import com.delta.app.entity.production_warining_item.TitleNumber;
+import com.example.app.entity.CheckStock;
+import com.example.app.entity.FalutMesage;
+import com.example.app.entity.FeederCheckInItem;
+import com.example.app.entity.FeederSupplyItem;
+import com.example.app.entity.FeederSupplyWarningItem;
+import com.example.app.entity.ModuleDownDetailsItem;
+import com.example.app.entity.ModuleDownWarningItem;
+import com.example.app.entity.ModuleUpBindingItem;
+import com.example.app.entity.ModuleUpWarningItem;
+import com.example.app.entity.ProductToolsBack;
+import com.example.app.entity.ProductToolsInfo;
+import com.example.app.entity.ProductWorkItem;
+import com.example.app.entity.Product_mToolsInfo;
+import com.example.app.entity.Result;
+import com.example.app.entity.VirtualLineBindingItem;
+import com.example.app.entity.WareHouse;
+import com.example.app.ui.hand_add.item.ItemHandAdd;
+import com.example.app.entity.production_warining_item.ItemBreakDown;
+import com.example.app.entity.production_warining_item.ItemInfo;
+import com.example.app.entity.production_warining_item.ItemProduceLine;
+import com.example.app.entity.production_warining_item.ItemWarningInfo;
+import com.example.app.entity.production_warining_item.TitleNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,10 +158,10 @@ public class ServiceModule {
             }
 
             @Override
-            public Observable<List<com.delta.app.entity.ItemInfo>> getWarning() {
-                List<com.delta.app.entity.ItemInfo> list = new ArrayList<>();
+            public Observable<List<com.example.app.entity.ItemInfo>> getWarning() {
+                List<com.example.app.entity.ItemInfo> list = new ArrayList<>();
                 for (int i = 0; i < 10; i++) {
-                    com.delta.app.entity.ItemInfo item = new com.delta.app.entity.ItemInfo();
+                    com.example.app.entity.ItemInfo item = new com.example.app.entity.ItemInfo();
                     //TODO  控件有问题
                     item.setText("产线:H" + i + "\n" + "工单号:24561215" + i + "\n" + "PCB料号：457485645" + i + "\n" + "机种：H123-" + i + "\n" + "需求量：" + 50 + "\n" + "状态:" + "备料");
                     item.setCountdown(9000);

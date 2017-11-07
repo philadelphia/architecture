@@ -76,7 +76,7 @@
             android:layout_marginBottom="10px"
             android:textSize="50px" />
 
-        <com.delta.libs.CountTimeView
+        <com.example.libs.CountTimeView
             android:id="@+id/cv_countView"
             android:layout_width="match_parent"
             android:layout_height="30px"

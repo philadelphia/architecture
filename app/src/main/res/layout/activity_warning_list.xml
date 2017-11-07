@@ -5,7 +5,7 @@
     <include layout="@layout/appbar" />
     <include layout="@layout/main_option"
         />
-    <com.delta.commonlibs.widget.statusLayout.StatusLayout
+    <com.example.commonlibs.widget.statusLayout.StatusLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <LinearLayout
@@ -17,5 +17,5 @@
         android:layout_height="match_parent"
         />
     </LinearLayout>
-    </com.delta.commonlibs.widget.statusLayout.StatusLayout>
+    </com.example.commonlibs.widget.statusLayout.StatusLayout>
 </LinearLayout>

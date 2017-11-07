@@ -1,29 +1,29 @@
 package com.delta.app.api;
 
 
-import com.delta.app.entity.CheckStock;
-import com.delta.app.entity.FalutMesage;
-import com.delta.app.entity.FeederCheckInItem;
-import com.delta.app.entity.FeederSupplyItem;
-import com.delta.app.entity.FeederSupplyWarningItem;
-import com.delta.app.entity.MantissaWarehouseReturn;
-import com.delta.app.entity.ModuleDownDetailsItem;
-import com.delta.app.entity.ModuleDownWarningItem;
-import com.delta.app.entity.ModuleUpBindingItem;
-import com.delta.app.entity.ModuleUpWarningItem;
-import com.delta.app.entity.ProductToolsBack;
-import com.delta.app.entity.ProductToolsInfo;
-import com.delta.app.entity.ProductWorkItem;
-import com.delta.app.entity.Product_mToolsInfo;
-import com.delta.app.entity.Result;
-import com.delta.app.entity.VirtualLineBindingItem;
-import com.delta.app.entity.WareHouse;
-import com.delta.app.ui.hand_add.item.ItemHandAdd;
-import com.delta.app.entity.production_warining_item.ItemBreakDown;
-import com.delta.app.entity.production_warining_item.ItemInfo;
-import com.delta.app.entity.production_warining_item.ItemProduceLine;
-import com.delta.app.entity.production_warining_item.ItemWarningInfo;
-import com.delta.app.entity.production_warining_item.TitleNumber;
+import com.example.app.entity.CheckStock;
+import com.example.app.entity.FalutMesage;
+import com.example.app.entity.FeederCheckInItem;
+import com.example.app.entity.FeederSupplyItem;
+import com.example.app.entity.FeederSupplyWarningItem;
+import com.example.app.entity.MantissaWarehouseReturn;
+import com.example.app.entity.ModuleDownDetailsItem;
+import com.example.app.entity.ModuleDownWarningItem;
+import com.example.app.entity.ModuleUpBindingItem;
+import com.example.app.entity.ModuleUpWarningItem;
+import com.example.app.entity.ProductToolsBack;
+import com.example.app.entity.ProductToolsInfo;
+import com.example.app.entity.ProductWorkItem;
+import com.example.app.entity.Product_mToolsInfo;
+import com.example.app.entity.Result;
+import com.example.app.entity.VirtualLineBindingItem;
+import com.example.app.entity.WareHouse;
+import com.example.app.ui.hand_add.item.ItemHandAdd;
+import com.example.app.entity.production_warining_item.ItemBreakDown;
+import com.example.app.entity.production_warining_item.ItemInfo;
+import com.example.app.entity.production_warining_item.ItemProduceLine;
+import com.example.app.entity.production_warining_item.ItemWarningInfo;
+import com.example.app.entity.production_warining_item.TitleNumber;
 
 import java.util.List;
 
@@ -79,7 +79,7 @@ public interface ApiService {
 
     //接口PCB库房发料
 
-    Observable<List<com.delta.app.entity.ItemInfo>> getWarning();//获取所有预警信息
+    Observable<List<com.example.app.entity.ItemInfo>> getWarning();//获取所有预警信息
 
     Observable<List<ListWarning>> getListWarning();//获取发料列表
 
