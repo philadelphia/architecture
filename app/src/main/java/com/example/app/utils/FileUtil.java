@@ -8,10 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * Author:   tao.zt.zhang
- * Date:     2017/5/15.
- */
 
 public class FileUtil {
 

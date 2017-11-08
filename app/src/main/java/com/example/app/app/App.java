@@ -10,17 +10,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.example.app.api.API;
-import com.example.commonlibs.utils.DeviceUuidFactory;
-import com.example.commonlibs.utils.SpUtil;
 import com.example.app.BuildConfig;
 import com.example.app.R;
+import com.example.app.api.API;
 import com.example.app.base.BaseApplication;
 import com.example.app.di.component.AppComponent;
 import com.example.app.di.component.DaggerAppComponent;
 import com.example.app.manager.ActivityMonitor;
 import com.example.app.manager.ActivityState;
 import com.example.app.warningService.WarningService;
+import com.example.commonlibs.utils.DeviceUuidFactory;
+import com.example.commonlibs.utils.SpUtil;
 import com.example.ttsmanager.TextToSpeechManager;
 import com.example.updatelibs.UpdateUtils;
 
@@ -31,8 +31,6 @@ import org.acra.sender.HttpSender;
 
 import javax.inject.Inject;
 
-/**
- */
 @ReportsCrashes(
         mode = ReportingInteractionMode.TOAST,
         resToastText = R.string.crash_toast_text,
