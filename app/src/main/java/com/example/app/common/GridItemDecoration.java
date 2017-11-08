@@ -10,11 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
-/**
- * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/20 15:11
- */
 
 
 public class GridItemDecoration extends RecyclerView.ItemDecoration {

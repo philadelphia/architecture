@@ -6,17 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import com.example.app.Constant;
 import com.example.app.entity.SendMessage;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/27 15:00
- */
 
 
 public class WarningManger {

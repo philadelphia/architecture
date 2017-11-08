@@ -11,11 +11,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2017/1/4 9:28
- */
+
 
 @Module
 public class MangerModule {

@@ -5,11 +5,6 @@ import com.example.commonlibs.di.scope.FragmentScope;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/14 10:57
- */
 
 @Module
 public abstract class BaseFragmentModule<E> {

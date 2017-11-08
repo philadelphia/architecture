@@ -6,9 +6,6 @@ import android.os.Environment;
 import java.io.File;
 import java.math.BigDecimal;
 
-/**
- * Created by Fuxiang.Zhang on 2017/6/21.
- */
 
 public class DataClearManager {
 

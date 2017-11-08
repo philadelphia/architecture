@@ -21,14 +21,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import timber.log.Timber;
 
-/**
- * 本项目由
- * mvp
- * +dagger2
- * +retrofit
- * +rxjava
- * +butterknife组成
- */
 public abstract class BaseApplication extends Application implements ResponseErrorListener {
     static private BaseApplication mApplication;
     private LinkedList<BaseCommonActivity> mActivityList;

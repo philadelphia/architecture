@@ -1,9 +1,6 @@
 package com.example.app.base;
 
 
-/**
- * Created by V.Wenju.Tian on 2016/11/29.
- */
 
 public class BaseModel<T> {
 

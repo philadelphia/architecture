@@ -13,12 +13,7 @@ import com.example.app.R;
 
 import java.util.ArrayList;
 
-/**
- * @copyright : 台达电子企业管理(上海)有限公司 (c) 2016
- * @creator : YangS
- * @create-time : 2016/12/22 16:31
- * @description :自定义的Dialog的View
- */
+
 
 public class DialogLayout extends LinearLayout {
 

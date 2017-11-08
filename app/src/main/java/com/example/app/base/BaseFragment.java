@@ -22,11 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.yokeyword.fragmentation.SupportFragment;
 
-/**
- * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/12 15:30
- */
+
 
 public abstract class BaseFragment<p extends BasePresenter> extends SupportFragment {
     @Inject

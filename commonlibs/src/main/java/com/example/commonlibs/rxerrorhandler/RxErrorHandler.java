@@ -15,11 +15,6 @@ import java.net.ConnectException;
 
 import retrofit2.adapter.rxjava.HttpException;
 
-/**
- * @description :通过builder方式创建RxErrorHandler
- * @author: V.Wenju.Tian
- * @date : 2016/12/5 14:42
- */
 public class RxErrorHandler {
     private static final int UNAUTHORIZED = 401;
     private static final int FORBIDDEN = 403;

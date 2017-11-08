@@ -29,11 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.yokeyword.fragmentation.SupportActivity;
 
-/**
- * @description :不带Presenter的Activity
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/14 11:24
- */
+
 
 
 public abstract class BaseCommonActivity extends SupportActivity {

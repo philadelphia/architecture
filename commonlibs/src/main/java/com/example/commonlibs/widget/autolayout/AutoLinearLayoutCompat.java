@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import com.zhy.autolayout.utils.AutoLayoutHelper;
 
 /**
- * Created by Lin.Hou on 2017-01-04.
  */
 
 public class AutoLinearLayoutCompat extends LinearLayoutCompat{

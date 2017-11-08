@@ -9,8 +9,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2017/3/14 10:14
  */
 
 

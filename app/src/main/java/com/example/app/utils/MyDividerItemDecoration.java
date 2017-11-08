@@ -15,9 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
-/**
- * Created by Lin.Hou on 2017-06-20.
- */
+
 
 public class MyDividerItemDecoration extends RecyclerView.ItemDecoration {
 

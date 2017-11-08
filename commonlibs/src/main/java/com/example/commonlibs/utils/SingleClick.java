@@ -3,7 +3,6 @@ package com.example.commonlibs.utils;
 import android.util.Log;
 
 /**
- * @author :  V.Wenju.Tian
  * @description : 防止多次点击
  * @date : 2016/12/19 14:04
  */

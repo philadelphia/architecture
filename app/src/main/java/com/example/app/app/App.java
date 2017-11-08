@@ -32,7 +32,6 @@ import org.acra.sender.HttpSender;
 import javax.inject.Inject;
 
 /**
- * Created by V.Wenju.Tian on 2016/11/29.
  */
 @ReportsCrashes(
         mode = ReportingInteractionMode.TOAST,

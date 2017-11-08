@@ -8,8 +8,7 @@ import com.example.commonlibs.animation.AnimationType;
 
 /**
  * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/19 12:19
+
  */
 
 

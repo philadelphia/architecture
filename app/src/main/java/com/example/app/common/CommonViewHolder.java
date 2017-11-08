@@ -13,11 +13,6 @@ import android.widget.TextView;
 import com.zhy.autolayout.utils.AutoUtils;
 
 
-/**
- * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/16 9:02
- */
 
 public class CommonViewHolder extends RecyclerView.ViewHolder {
     private final SparseArray<View> mViews;

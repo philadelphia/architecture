@@ -13,9 +13,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.Inflater;
 
-/**
- * Created by jess on 16/5/10.
- */
 public class ZipHelper {
 
 

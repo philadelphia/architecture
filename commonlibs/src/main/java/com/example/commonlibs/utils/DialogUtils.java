@@ -22,9 +22,7 @@ import com.example.commonlibs.widget.CustomPopWindow;
 import static com.example.commonlibs.utils.ViewUtils.findView;
 
 /**
- * @author :  V.Wenju.Tian
  * @description :对话框工具类, 提供常用对话框显示, 使用support.v7包内的AlertDialog样式
- * @date : 2016/12/19 14:05
  */
 public class DialogUtils {
 

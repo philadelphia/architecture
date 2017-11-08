@@ -6,8 +6,6 @@ import android.view.View;
 
 /**
  * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2017/3/31 15:11
  */
 
 

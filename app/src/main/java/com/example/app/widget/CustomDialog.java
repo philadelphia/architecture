@@ -8,14 +8,6 @@ import android.content.IntentFilter;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-
-/**
- * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/27 18:59
- */
-
-
 public class CustomDialog extends Dialog {
     private CloseSystemDialogsReceiver mCloseSystemDialogsReceiver;
     private Window mWindow;

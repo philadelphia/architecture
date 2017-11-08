@@ -2,8 +2,7 @@ package com.example.commonlibs.utils;
 
 /**
  * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2017/3/14 10:15
+
  */
 
 

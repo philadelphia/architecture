@@ -21,9 +21,7 @@ import timber.log.Timber;
 
 import static com.example.commonlibs.utils.CharactorHandler.jsonFormat;
 
-/**
- * Created by jess on 7/1/16.
- */
+
 public class RequestIntercept implements Interceptor {
     private GlobeHttpHandler mHandler;
     private Context context;

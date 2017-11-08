@@ -16,23 +16,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.app.base.BaseActivity;
 import com.example.app.common.CommonBaseAdapter;
 import com.example.app.common.CommonViewHolder;
 import com.example.app.common.GridItemDecoration;
 import com.example.app.di.component.AppComponent;
-import com.example.app.entity.Function;
-import com.example.app.ui.feeder.warning.supply.FeederSupplyListActivity;
-import com.example.app.ui.main.di.DaggerMainComponent;
-import com.example.app.ui.main.di.MainModule;
-import com.example.app.ui.main.mvp.MainContract;
-import com.example.app.ui.main.mvp.MainPresenter;
 import com.example.commonlibs.utils.DeviceUtil;
 import com.example.commonlibs.utils.IntentUtils;
-import com.example.updatelibs.UpdateUtils;
-import com.example.app.base.BaseActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -108,27 +100,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
         Log.e(TAG, "initData: " + appInstalled);
 
         functionList = new ArrayList<>();
-        functionList.add(new Function("PCB入库", R.drawable.ic_warehousestorage));
-        functionList.add(new Function("PCB盘点", R.drawable.ic_warehouseinventory));
-        functionList.add(new Function("PCB发料", R.drawable.ic_warehouseforsending));
-       // functionList.add(new Function("PCB维护", R.drawable.ic_pcbsetting));
-        functionList.add(new Function("仓库备料", R.drawable.ic_warehouseroompreparation));
-        functionList.add(new Function("仓库超领", R.drawable.ic_warehouseroomchaoling));
-        functionList.add(new Function("Feeder缓冲区", R.drawable.ic_feederbuffer));
-        //functionList.add(new Function("尾数仓备料", R.drawable.ic_mantissawarehousestock));
-        functionList.add(new Function("上Feeder", R.drawable.ic_onthemodule));
-        functionList.add(new Function("绑定虚拟线体", R.drawable.ic_onthemodule));
-        functionList.add(new Function("下模组", R.drawable.ic_themodule));
-        functionList.add(new Function("故障处理", R.drawable.ic_faulthandling));
-        functionList.add(new Function("尾数仓入库及退料", R.drawable.ic_return));
-        functionList.add(new Function("生产中预警", R.drawable.ic_warning));
-        functionList.add(new Function("治具入架位", R.drawable.ic_intherack));
-        functionList.add(new Function("治具借出", R.drawable.ic_lend));
-        functionList.add(new Function("治具归还", R.drawable.ic_thereturn));
-        functionList.add(new Function("手补件", R.drawable.ic_handpatch));
-        functionList.add(new Function("品管确认", R.drawable.ic_quality));
-        functionList.add(new Function("仓库入库", R.drawable.ic_putstorage));
-        functionList.add(new Function("产中扫描", R.drawable.ic_scan));
+
        // functionList.add(new Function("warningSample", R.drawable.title));
     }
     private void checkTTS() {
@@ -145,87 +117,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     public void onItemClick(View view, Function item, int position) {
 
         switch (item.getTitle()) {
-            case "Feeder缓冲区":
-                IntentUtils.showIntent(this, FeederSupplyListActivity.class);
-                break;
-//            case "仓库备料":
-//                IntentUtils.showIntent(this, StorageSelectActivity.class);
-//                break;
-//            case "仓库超领":
-//                IntentUtils.showIntent(this, OverReceiveActivity.class);
-//                break;
-//            case "PCB发料":
-//                IntentUtils.showIntent(this, StoreIssueActivity.class);
-//                break;
-//            case "PCB入库":
-//                IntentUtils.showIntent(this, StoreRoomActivity.class);
-//                break;
-//            case "PCB盘点":
-//                IntentUtils.showIntent(this, StartWorkAndStopWorkActivity.class);
-//                break;
-//            case "PCB维护":
-//                IntentUtils.showIntent(this, PCBMaintainActivity.class);
-//                break;
-//            case "生产中预警":
-//                bundle = new Bundle();
-//                bundle.putInt(Constant.SELECT_TYPE, 0);
-//                IntentUtils.showIntent(this, ProductionLineSelectActivity.class, bundle);
-//                break;
+
 //
-//            case "手补件":
-//                bundle=new Bundle();
-//                bundle.putInt(Constant.SELECT_TYPE,2);
-//                IntentUtils.showIntent(this,ProductionLineSelectActivity.class,bundle);
-////               IntentUtils.showIntent(this, HandAddActivity.class);
-//                break;
-//
-//            case "尾数仓入库及退料":
-//                IntentUtils.showIntent(this, MantissaWarehouseReturnAndPutStorageActivity.class);
-//                break;
-//            case "warningSample":
-//                IntentUtils.showIntent(this, WarningSampleActivity.class);
-//                break;
-//            case "上Feeder":
-//                bundle = new Bundle();
-//                bundle.putInt(Constant.SELECT_TYPE, 1);
-//                IntentUtils.showIntent(this, ModuleUpActivity.class, bundle);
-//                break;
-//            case "绑定虚拟线体":
-//                bundle = new Bundle();
-//                bundle.putInt(Constant.SELECT_TYPE, 2);
-//                IntentUtils.showIntent(this, ModuleUpActivity.class, bundle);
-//                break;
-//            case "下模组":
-//                IntentUtils.showIntent(this, ModuleDownActivity.class);
-//                break;
-//            case "故障处理":
-//                bundle = new Bundle();
-//                bundle.putInt(Constant.SELECT_TYPE, 1);
-//                IntentUtils.showIntent(this, ProductionLineSelectActivity.class, bundle);
-//                break;
-//            case "治具借出":
-//                IntentUtils.showIntent(this, ProduceToolsBorrowActivity.class);
-//                break;
-//            case "治具归还":
-//                IntentUtils.showIntent(this, ProduceToolsBackActivity.class);
-//                break;
-//            case "治具入架位":
-//                IntentUtils.showIntent(this, ProduceToolsLocationActivity.class);
-//                break;
-//            case "品管确认":
-//                bundle = new Bundle();
-//                bundle.putInt(Constant.SELECT_TYPE, 3);
-//                IntentUtils.showIntent(this, ProductionLineSelectActivity.class, bundle);
-//                break;
-//            case "仓库入库":
-//                bundle = new Bundle();
-//                IntentUtils.showIntent(this, BindMaterialCarActivity.class, bundle);
-//                break;
-//            case "产中扫描":
-//                bundle = new Bundle();
-//                bundle.putInt(Constant.SELECT_TYPE, 4);
-//                IntentUtils.showIntent(this, ProductionLineSelectActivity.class, bundle);
-//                break;
             default:
                 break;
         }
@@ -253,18 +146,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements CommonB
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //更新
-        //解除注册时，使用注册时的manager解绑
-        /*if (broadcastReceiver != null && bManager != null) {
-            bManager.unregisterReceiver(broadcastReceiver);
-        }*/
 
     }
 
 
     @OnClick(R.id.tv_setting)
     public void onClick() {
-//        IntentUtils.showIntent(this, SettingActivity.class);
     }
 
     @Override

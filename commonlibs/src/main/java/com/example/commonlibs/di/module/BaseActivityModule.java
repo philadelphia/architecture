@@ -7,8 +7,6 @@ import dagger.Provides;
 
 /**
  * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/13 14:24
  */
 
 @Module

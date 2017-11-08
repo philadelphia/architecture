@@ -13,8 +13,7 @@ import dagger.Provides;
 
 /**
 * @description :提供Application以及Gson对象
-* @author :  V.Wenju.Tian
-* @date : 2016/12/5 14:34
+
 */
 @Module
 public class AppModule {

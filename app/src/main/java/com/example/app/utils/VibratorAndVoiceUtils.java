@@ -7,9 +7,6 @@ import android.os.Vibrator;
 import com.example.commonlibs.utils.SpUtil;
 import com.example.app.R;
 
-/**
- * Created by Shaoqiang.Zhang on 2017/2/15.
- */
 
 public class VibratorAndVoiceUtils {
 

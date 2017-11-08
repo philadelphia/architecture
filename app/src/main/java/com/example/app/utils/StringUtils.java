@@ -5,9 +5,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Shufeng.Wu on 2016/12/27.
- */
+
 
 public class StringUtils {
 

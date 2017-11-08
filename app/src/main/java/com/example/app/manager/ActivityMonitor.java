@@ -11,11 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * @description :
- * @autHor :  V.Wenju.Tian
- * @date : 2016/12/27 10:20
- */
+
 
 
 public class ActivityMonitor {

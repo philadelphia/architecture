@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-/**
- * Created by Shufeng.Wu on 2016/12/27.
- */
+
 
 public class PkgInfoUtils {
     //获取versionName

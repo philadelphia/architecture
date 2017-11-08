@@ -18,9 +18,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-/**
- * Created by V.Wenju.Tian on 2016/11/22.
- */
+
 @Singleton
 @Component(modules = {AppModule.class, ClientModule.class, ServiceModule.class, MangerModule.class})
 public interface AppComponent {
